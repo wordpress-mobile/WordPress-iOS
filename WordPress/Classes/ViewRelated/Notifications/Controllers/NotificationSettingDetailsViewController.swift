@@ -23,7 +23,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     /// TableView Sections to be rendered
     ///
-    private var sections = [Section]()
+    private var sections = [SettingsSection]()
 
     /// Contains all of the updated Stream Settings
     ///
@@ -98,8 +98,8 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     private func setupTableView() {
         // Register the cells
-        tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Row.Kind.Setting.rawValue)
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Row.Kind.Text.rawValue)
+        tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: CellKind.Setting.rawValue)
+        tableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: CellKind.Text.rawValue)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -122,18 +122,18 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
 
     // MARK: - Private Helpers
-    private func sectionsForSettings(_ settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Section] {
+    private func sectionsForSettings(_ settings: NotificationSettings, stream: NotificationSettings.Stream) -> [SettingsSection] {
         // WordPress.com Channel requires a brief description per row.
         // For that reason, we'll render each row in its own section, with it's very own footer
         let singleSectionMode = settings.channel != .wordPressCom
 
         // Parse the Rows
-        var rows = [Row]()
+        var rows = [SettingsRow]()
 
         for key in settings.sortedPreferenceKeys(stream) {
             let description = settings.localizedDescription(key)
             let value       = stream.preferences?[key] ?? true
-            let row         = Row(kind: .Setting, description: description, key: key, value: value)
+            let row         = SwitchSettingsRow(kind: .Setting, description: description, key: key, value: value)
 
             rows.append(row)
         }
@@ -143,50 +143,57 @@ class NotificationSettingDetailsViewController: UITableViewController {
             // Switch on stream type to provide descriptive text in footer for more context
             switch stream.kind {
             case .Device:
-                return [Section(rows: rows, footerText: NSLocalizedString("Settings for push notifications that appear on your mobile device.", comment: "Descriptive text for the Push Notifications Settings"))]
+                if let blog = settings.blog {
+                    // This should only be added for the device push notifications settings view
+                    rows.append(TextSettingsRow(kind: .Text, description: NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting"), value: schedule(for: blog), onTap: { [weak self] in
+                        self?.presentBloggingRemindersFlow()
+                    }))
+                }
+
+                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for push notifications that appear on your mobile device.", comment: "Descriptive text for the Push Notifications Settings"))]
             case .Email:
-                return [Section(rows: rows, footerText: NSLocalizedString("Settings for notifications that are sent to the email tied to your account.", comment: "Descriptive text for the Email Notifications Settings"))]
+                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for notifications that are sent to the email tied to your account.", comment: "Descriptive text for the Email Notifications Settings"))]
             case .Timeline:
-                return [Section(rows: rows, footerText: NSLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
+                return [SettingsSection(rows: rows, footerText: NSLocalizedString("Settings for notifications that appear in the Notifications tab.", comment: "Descriptive text for the Notifications Tab Settings"))]
             }
         }
 
 
         // Multi Section Mode: We'll have one Section per Row
-        var sections = [Section]()
+        var sections = [SettingsSection]()
 
         for row in rows {
             let unwrappedKey    = row.key ?? String()
             let footerText      = settings.localizedDetails(unwrappedKey)
-            let section         = Section(rows: [row], footerText: footerText)
+            let section         = SettingsSection(rows: [row], footerText: footerText)
             sections.append(section)
         }
 
         return sections
     }
 
-    private func sectionsForDisabledDeviceStream() -> [Section] {
+    private func sectionsForDisabledDeviceStream() -> [SettingsSection] {
         let description     = NSLocalizedString("Go to iOS Settings", comment: "Opens WPiOS Settings.app Section")
-        let row             = Row(kind: .Text, description: description, key: nil, value: nil)
+        let row             = TextSettingsRow(kind: .Text, description: description, value: "")
 
         let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
                                                 "Toggle \"Allow Notifications\" to turn them back on.",
                                                 comment: "Suggests to enable Push Notification Settings in Settings.app")
-        let section         = Section(rows: [row], footerText: footerText)
+        let section         = SettingsSection(rows: [row], footerText: footerText)
 
         return [section]
     }
 
-    private func sectionsForUnknownDeviceStream() -> [Section] {
+    private func sectionsForUnknownDeviceStream() -> [SettingsSection] {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
         let description     = NSLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
-        let row             = Row(kind: .Text, description: description, key: nil, value: nil)
+        let row             = TextSettingsRow(kind: .Text, description: description, value: "")
 
         let footerText      = NSLocalizedString("Allow WordPress to send you push notifications",
                                                 comment: "Suggests the user allow push notifications. Appears within app settings.")
-        let section         = Section(rows: [row], footerText: footerText)
+        let section         = SettingsSection(rows: [row], footerText: footerText)
 
         return [section]
     }
@@ -234,7 +241,13 @@ class NotificationSettingDetailsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        if isDeviceStreamDisabled() {
+        let section = sections[indexPath.section]
+
+        if let row = section.rows[indexPath.row] as? TextSettingsRow,
+           let onTap = row.onTap {
+            onTap()
+            return
+        } else if isDeviceStreamDisabled() {
             openApplicationSettings()
         } else if isDeviceStreamUnknown() {
             requestNotificationAuthorization()
@@ -243,12 +256,21 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
 
     // MARK: - UITableView Helpers
-    private func configureTextCell(_ cell: WPTableViewCell, row: Row) {
-        cell.textLabel?.text    = row.description
+    private func configureTextCell(_ cell: WPTableViewCell, row: SettingsRow) {
+        guard let row = row as? TextSettingsRow else {
+            return
+        }
+
+        cell.textLabel?.text       = row.description
+        cell.detailTextLabel?.text = row.value
         WPStyleGuide.configureTableViewCell(cell)
     }
 
-    private func configureSwitchCell(_ cell: SwitchTableViewCell, row: Row) {
+    private func configureSwitchCell(_ cell: SwitchTableViewCell, row: SettingsRow) {
+        guard let row = row as? SwitchSettingsRow else {
+            return
+        }
+
         let settingKey          = row.key ?? String()
 
         cell.name               = row.description
@@ -277,7 +299,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         defer {
             WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
-        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] in
+        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] _ in
             self?.refreshPushAuthorizationStatus()
         }
     }
@@ -328,39 +350,79 @@ class NotificationSettingDetailsViewController: UITableViewController {
         alertController.presentFromRootViewController()
     }
 
+    // MARK: - Blogging Reminders
 
-    // MARK: - Private Nested Class'ess
-    private class Section {
-        var rows: [Row]
-        var footerText: String?
+    func presentBloggingRemindersFlow() {
+        guard let blog = settings?.blog else {
+            return
+        }
 
-        init(rows: [Row], footerText: String? = nil) {
-            self.rows           = rows
-            self.footerText     = footerText
+        BloggingRemindersFlow.present(from: self, for: blog, source: .notificationSettings) { [weak self] in
+            self?.reloadTable()
         }
     }
 
-    private class Row {
-        let description: String
-        let kind: Kind
-        let key: String?
-        let value: Bool?
-
-        init(kind: Kind, description: String, key: String? = nil, value: Bool? = nil) {
-            self.description    = description
-            self.kind           = kind
-            self.key            = key
-            self.value          = value
+    private func schedule(for blog: Blog) -> String {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
+            return NSLocalizedString("None set", comment: "Title shown on table row where no blogging reminders have been set up yet")
         }
 
-        enum Kind: String {
-            case Setting        = "SwitchCell"
-            case Text           = "TextCell"
-        }
+        let formatter = BloggingRemindersScheduleFormatter()
+        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     private struct Analytics {
         static let locationKey = "location"
         static let alertKey = "settings"
+    }
+}
+
+private enum CellKind: String {
+    case Setting        = "SwitchCell"
+    case Text           = "TextCell"
+}
+
+private protocol SettingsRow {
+    var description: String { get }
+    var kind: CellKind { get }
+    var key: String? { get }
+}
+
+private struct SwitchSettingsRow: SettingsRow {
+    let description: String
+    let kind: CellKind
+    let key: String?
+    let value: Bool?
+
+    init(kind: CellKind, description: String, key: String? = nil, value: Bool? = nil) {
+        self.description    = description
+        self.kind           = kind
+        self.key            = key
+        self.value          = value
+    }
+}
+
+private struct TextSettingsRow: SettingsRow {
+    let description: String
+    let kind: CellKind
+    let key: String? = nil
+    let value: String
+    let onTap: (() -> Void)?
+
+    init(kind: CellKind, description: String, value: String, onTap: (() -> Void)? = nil) {
+        self.description    = description
+        self.kind           = kind
+        self.value          = value
+        self.onTap          = onTap
+    }
+}
+
+private struct SettingsSection {
+    var rows: [SettingsRow]
+    var footerText: String?
+
+    init(rows: [SettingsRow], footerText: String? = nil) {
+        self.rows           = rows
+        self.footerText     = footerText
     }
 }

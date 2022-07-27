@@ -2,7 +2,7 @@ import Foundation
 import WordPressFlux
 import Gridicons
 
-protocol PluginListPresenter: class {
+protocol PluginListPresenter: AnyObject {
     func present(site: JetpackSiteRef, query: PluginQuery)
 }
 

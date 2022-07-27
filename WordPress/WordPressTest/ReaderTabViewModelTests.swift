@@ -1,6 +1,7 @@
 @testable import WordPress
 import XCTest
 import WordPressFlux
+import CoreData
 
 
 class MockItemsStore: ItemsStore {
@@ -39,16 +40,13 @@ class MockSettingsPresenter: ScenePresenter {
     }
 }
 
-class ReaderTabViewModelTests: XCTestCase {
+class ReaderTabViewModelTests: CoreDataTestCase {
 
     var makeContentControllerExpectation: XCTestExpectation?
 
     var store: MockItemsStore!
     var viewModel: ReaderTabViewModel!
     var settingsPresenter: MockSettingsPresenter!
-
-    var contextManager: TestContextManager!
-    var context: MockContext!
 
     override func setUp() {
         store = MockItemsStore()
@@ -57,9 +55,6 @@ class ReaderTabViewModelTests: XCTestCase {
                                        searchNavigationFactory: { },
                                        tabItemsStore: store,
                                        settingsPresenter: settingsPresenter)
-
-        contextManager = TestContextManager()
-        context = contextManager.getMockContext()
     }
 
     override func tearDown() {
@@ -67,9 +62,6 @@ class ReaderTabViewModelTests: XCTestCase {
         store = nil
         settingsPresenter = nil
         makeContentControllerExpectation = nil
-
-        contextManager = nil
-        context = nil
     }
 
     func testRefreshTabBar() {
@@ -124,7 +116,7 @@ class ReaderTabViewModelTests: XCTestCase {
 
     func testResetFilter() {
         // Given
-        let selectedTopic = ReaderAbstractTopic(context: context)
+        let selectedTopic = ReaderAbstractTopic(context: mainContext)
         selectedTopic.title = "selected topic"
         let item = ReaderTabItem(ReaderContent(topic: selectedTopic))
 
@@ -147,7 +139,7 @@ class ReaderTabViewModelTests: XCTestCase {
         // Given
         makeContentControllerExpectation = expectation(description: "Content controller was constructed")
 
-        let topic = ReaderAbstractTopic(context: context)
+        let topic = ReaderAbstractTopic(context: mainContext)
         topic.title = "content topic"
         let content = ReaderContent(topic: topic)
         store.items = [ReaderTabItem(content)]
@@ -173,29 +165,5 @@ extension ReaderTabViewModelTests {
         let controller = MockContentController()
         controller.setContentExpectation = expectation(description: "Topic was set")
         return controller
-    }
-
-    private func switchToTabSetup(_ context: MockContext) {
-        let showTabExpectation = expectation(description: "tab was shown")
-        let selectIndexExpectation = expectation(description: "index was selected")
-
-        let topicOne = ReaderAbstractTopic(context: context)
-        topicOne.title = "first topic"
-        topicOne.path = "myPath/read/following"
-
-        let topicTwo = ReaderAbstractTopic(context: context)
-        topicTwo.title = "second topic"
-
-        store.items = [ReaderTabItem(ReaderContent(topic: topicOne)), ReaderTabItem(ReaderContent(topic: topicTwo))]
-
-        viewModel.setContent = { content in
-            showTabExpectation.fulfill()
-            XCTAssertNotNil(content.topic)
-            XCTAssertEqual("first topic", content.topic!.title)
-        }
-        viewModel.didSelectIndex = { index in
-            selectIndexExpectation.fulfill()
-            XCTAssertEqual(0, index)
-        }
     }
 }

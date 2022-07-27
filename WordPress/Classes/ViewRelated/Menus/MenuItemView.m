@@ -49,8 +49,10 @@
     UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
     button.accessibilityLabel = NSLocalizedString(@"Move menu item", @"Screen reader text for button that will move the menu item");
-    button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down", @"Screen reader hint for button that will move the menu item");
+    button.accessibilityHint = NSLocalizedString(@"Double tap and hold to move this menu item up or down. Move horizontally to change hierarchy.", @"Screen reader hint for button that will move the menu item");
     button.userInteractionEnabled = NO;
+    // Override the accessibility traits so that VoiceOver doesn't read "Dimmed" due to userInteractionEnabled = NO
+    [button setAccessibilityTraits:UIAccessibilityTraitButton];
     _orderingButton = button;
 }
 
@@ -109,6 +111,21 @@
 {
     self.iconView.image = [MenuItem iconImageForItemType:self.item.type];
     self.textLabel.text = self.item.name;
+    [self refreshAccessibilityLabels];
+}
+
+- (void)refreshAccessibilityLabels
+{
+    NSString *parentString;
+    if (self.item.parent) {
+        parentString = [NSString stringWithFormat:NSLocalizedString(@"Child of %@", @"Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item."), self.item.parent.name];
+    } else {
+        parentString = NSLocalizedString(@"Top level", @"Screen reader text expressing the menu item is at the top level and has no parent.");
+    }
+    self.textLabel.accessibilityLabel = [NSString stringWithFormat:@"%@. %@", self.textLabel.text, parentString];
+
+    NSString *labelString = NSLocalizedString(@"Move %@", @"Screen reader text for button that will move the menu item. Argument is menu item's name.");
+    self.orderingButton.accessibilityLabel = [NSString stringWithFormat:labelString, self.item.name];
 }
 
 - (CGRect)orderingToggleRect

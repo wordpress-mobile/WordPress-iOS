@@ -1,0 +1,107 @@
+# Translation of Release Notes & Apple Store Description in English (US)
+# This file is distributed under the same license as the Release Notes & Apple Store Description package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2018-01-29 17:30-0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.0.1\n"
+"Project-Id-Version: Release Notes & Apple Store Description\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#. translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
+msgctxt "app_store_name"
+msgid "Jetpack"
+msgstr ""
+
+#. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
+msgctxt "app_store_subtitle"
+msgid "Faster, safer WordPress"
+msgstr ""
+
+#. translators: Multi-paragraph text used to display in the Apple App Store.
+msgctxt "app_store_desc"
+msgid ""
+"Get powerful security and performance tools in your pocket with Jetpack for iOS.\n"
+"\n"
+"Restore your site from anywhere if something goes wrong. Scan for threats and resolve them with a tap. Keep tabs on site activity to see who changed what and when. Check your stats to see what new countries today’s visitors are coming from.\n"
+"\n"
+"The app also supports WordPress features that you expect. Draft a spontaneous haiku from the couch. Snap and post a photo on your lunch break. Respond to your latest comments.\n"
+"\n"
+"Jetpack for iOS supports WordPress sites with Jetpack enabled and an account connected to WordPress.com.\n"
+"\n"
+"View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
+msgstr ""
+
+#. translators: Keywords used in the App Store search engine to find the app.
+#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+msgctxt "app_store_keywords"
+msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
+msgstr ""
+
+msgctxt "v20.3-whats-new"
+msgid ""
+"We’ve added some changes in the block editor to make your publishing experience even better.\n"
+"\n"
+"- No more copying and pasting alt text—when you add an item in the media library to an Image block, the item’s alt text is carried over with it.\n"
+"- You can insert media from a URL in Video blocks.\n"
+"- If a block contains unexpected or invalid content, you can use the block recovery option to display the content properly—without re-adding it all from scratch.\n"
+"\n"
+"Post comments are a bit user friendlier, too. When you hit the @ symbol to mention another user in your comment, the post or comment author comes first in the list of suggested users. Sweet.\n"
+"\n"
+"Finally, we fixed a problem with the editor’s media picker where search queries would stick around even after closing and reopening the window. We also squashed a bug that made the app crash when adding multiple items to a Story post.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-1"
+msgid ""
+"Safer.\n"
+"Faster.\n"
+"More traffic.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-2"
+msgid ""
+"Bring your\n"
+"Jetpack with you.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-3"
+msgid ""
+"Keep tabs on\n"
+"your site activity.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-4"
+msgid ""
+"Scan for issues\n"
+"on the go.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-5"
+msgid ""
+"Back up your site\n"
+"at any moment.\n"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "screenshot-text-6"
+msgid ""
+"Site stats in your\n"
+"pocket.\n"
+msgstr ""
+

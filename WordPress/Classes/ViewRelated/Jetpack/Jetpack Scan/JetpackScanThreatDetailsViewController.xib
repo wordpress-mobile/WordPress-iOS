@@ -32,6 +32,7 @@
                 <outlet property="technicalDetailsStackView" destination="2UH-SE-rOp" id="XPk-GV-hIs"/>
                 <outlet property="technicalDetailsTitleLabel" destination="tO3-nw-cpH" id="eT7-Uc-mRF"/>
                 <outlet property="view" destination="Jav-0d-xYk" id="ugv-Oj-yJp"/>
+                <outlet property="warningButton" destination="0AT-2h-oW4" id="Fd2-zm-851"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -43,10 +44,10 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xhr-6F-hsq">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="681"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="713"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="2wc-xZ-ViF">
-                                    <rect key="frame" x="16" y="24" width="382" height="633"/>
+                                    <rect key="frame" x="16" y="24" width="382" height="665"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qsb-nP-xMd">
                                             <rect key="frame" x="0.0" y="0.0" width="382" height="89"/>
@@ -165,8 +166,8 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="VuK-rQ-GXS">
-                                            <rect key="frame" x="0.0" y="469" width="382" height="164"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="VuK-rQ-GXS">
+                                            <rect key="frame" x="0.0" y="469" width="382" height="196"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSM-Kx-kG9" customClass="FancyButton" customModule="WordPressUI">
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
@@ -178,8 +179,17 @@
                                                         <action selector="fixThreatButtonTapped:" destination="-1" eventType="touchUpInside" id="ARq-1t-2nf"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="top" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="0AT-2h-oW4" customClass="MultilineButton" customModule="WordPress" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="54" width="382" height="34"/>
+                                                    <inset key="contentEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="10"/>
+                                                    <inset key="titleEdgeInsets" minX="2" minY="2" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="Button" image="plus-small"/>
+                                                    <connections>
+                                                        <action selector="warningButtonTapped:" destination="-1" eventType="touchUpInside" id="rT7-WX-vvI"/>
+                                                    </connections>
+                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UtF-fM-vn6" customClass="FancyButton" customModule="WordPressUI">
-                                                    <rect key="frame" x="0.0" y="60" width="382" height="44"/>
+                                                    <rect key="frame" x="0.0" y="98" width="382" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="rml-Co-TMA"/>
                                                     </constraints>
@@ -189,7 +199,7 @@
                                                     </connections>
                                                 </button>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="TJx-Vn-QMb">
-                                                    <rect key="frame" x="0.0" y="120" width="382" height="44"/>
+                                                    <rect key="frame" x="0.0" y="152" width="382" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="Xpd-PH-uoL"/>
                                                     </constraints>
@@ -229,6 +239,7 @@
         </view>
     </objects>
     <resources>
+        <image name="plus-small" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

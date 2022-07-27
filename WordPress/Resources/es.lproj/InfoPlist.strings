@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.";
-NSLocationWhenInUseUsageDescription = "WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.";
-NSCameraUsageDescription = "Para hacer las fotos o vídeos que deseas usar en tus entradas.";
-NSPhotoLibraryUsageDescription = "Para añadir fotos o vídeos en tus entradas.";
-NSMicrophoneUsageDescription = "Para que tus vídeos tengan sonido.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Para hacer las fotos o vídeos que deseas usar en tus entradas.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Activa el acceso al micrófono para poder grabar sonido en tus vídeos.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Para añadir fotos o vídeos en tus entradas.</string>
+  </dict>
+</plist>

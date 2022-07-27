@@ -139,6 +139,13 @@ class SignupEpilogueTableViewController: UITableViewController, EpilogueUserInfo
         return UITableView.automaticDimension
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cellType = EpilogueCellType(rawValue: indexPath.row),
+           cellType == .username {
+            delegate?.usernameTapped(userInfo: epilogueUserInfo)
+        }
+    }
+
 }
 
 // MARK: - Private Extension
@@ -272,10 +279,6 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
         } else if forType == .password {
             delegate?.passwordUpdated(newPassword: value)
         }
-    }
-
-    func usernameSelected() {
-        delegate?.usernameTapped(userInfo: epilogueUserInfo)
     }
 
 }

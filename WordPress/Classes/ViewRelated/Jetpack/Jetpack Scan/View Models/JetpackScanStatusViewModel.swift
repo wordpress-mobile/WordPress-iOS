@@ -6,13 +6,16 @@ struct JetpackScanStatusViewModel {
     let description: String
 
     private(set) var primaryButtonTitle: String?
+    private(set) var primaryButtonEnabled: Bool = true
     private(set) var secondaryButtonTitle: String?
+    private(set) var warningButtonTitle: HighlightedText?
     private(set) var progress: Float?
 
     private let coordinator: JetpackScanCoordinator
 
     private var primaryButtonAction: ButtonAction?
     private var secondaryButtonAction: ButtonAction?
+    private var warningButtonAction: ButtonAction?
 
     init?(coordinator: JetpackScanCoordinator) {
         self.coordinator = coordinator
@@ -74,6 +77,16 @@ struct JetpackScanStatusViewModel {
 
                     secondaryButtonTitle = Strings.scanAgainTitle
                     secondaryButtonAction = .triggerScan
+
+                    if !scan.hasValidCredentials {
+                        let warningString = String(format: Strings.enterServerCredentialsFormat,
+                                                   Strings.enterServerCredentialsSubstring)
+                        warningButtonTitle = HighlightedText(substring: Strings.enterServerCredentialsSubstring,
+                                                             string: warningString)
+                        warningButtonAction = .enterServerCredentials
+
+                        primaryButtonEnabled = false
+                    }
                 }
             }
 
@@ -107,6 +120,7 @@ struct JetpackScanStatusViewModel {
         case triggerScan
         case fixAll
         case contactSupport
+        case enterServerCredentials
     }
 
     func primaryButtonTapped(_ sender: Any) {
@@ -125,6 +139,14 @@ struct JetpackScanStatusViewModel {
         buttonTapped(action: action)
     }
 
+    func warningButtonTapped(_ sender: Any) {
+        guard let action = warningButtonAction else {
+            return
+        }
+
+        buttonTapped(action: action)
+    }
+
     private func buttonTapped(action: ButtonAction) {
         switch action {
         case .fixAll:
@@ -137,6 +159,9 @@ struct JetpackScanStatusViewModel {
 
         case .contactSupport:
             coordinator.openSupport()
+
+        case .enterServerCredentials:
+            coordinator.openJetpackSettings()
         }
     }
 
@@ -177,6 +202,10 @@ struct JetpackScanStatusViewModel {
             let isPreparing = (scan.current?.progress ?? 0) == 0
 
             viewState = isPreparing ? .preparingToScan : .scanning
+
+        case .unavailable:
+            viewState = .error
+
         default:
             viewState = .noThreats
         }
@@ -199,6 +228,8 @@ struct JetpackScanStatusViewModel {
 
     // MARK: - Localized Strings
     private struct Strings {
+        static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+        static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix threats.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
         static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
         static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
         static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",

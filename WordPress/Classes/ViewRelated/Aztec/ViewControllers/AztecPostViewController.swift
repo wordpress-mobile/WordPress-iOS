@@ -69,6 +69,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
 
+    var entryPoint: PostEditorEntryPoint = .unknown {
+        didSet {
+            editorSession.entryPoint = entryPoint
+        }
+    }
+
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
@@ -1278,9 +1284,7 @@ private extension AztecPostViewController {
             }
         }
 
-        if post.blog.isGutenbergEnabled,
-            let postContent = post.content,
-            postContent.count > 0 && post.containsGutenbergBlocks() {
+        if post.blog.isGutenbergEnabled, post.isContentEmpty() || post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
                 self.editorSession.switch(editor: .gutenberg)

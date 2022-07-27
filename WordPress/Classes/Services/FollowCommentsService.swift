@@ -5,17 +5,22 @@ class FollowCommentsService: NSObject {
 
     let post: ReaderPost
     let remote: ReaderPostServiceRemote
+    let context: NSManagedObjectContext
 
     fileprivate let postID: Int
     fileprivate let siteID: Int
 
     @objc required init?(post: ReaderPost,
                          remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
-        guard let postID = post.postID as? Int, let siteID = post.siteID as? Int else {
+        guard let postID = post.postID as? Int,
+              let siteID = post.siteID as? Int,
+              let context = post.managedObjectContext
+        else {
             return nil
         }
 
         self.post = post
+        self.context = context
         self.postID = postID
         self.siteID = siteID
         self.remote = remote
@@ -28,7 +33,7 @@ class FollowCommentsService: NSObject {
     /// Returns a Bool indicating whether or not the comments on the post can be followed.
     ///
     @objc var canFollowConversation: Bool {
-        return post.isJetpack || post.isWPCom
+        return post.canSubscribeComments
     }
 
     /// Fetches the subscription status of the specified post for the current user.
@@ -53,16 +58,19 @@ class FollowCommentsService: NSObject {
     @objc func toggleSubscribed(_ isSubscribed: Bool,
                                 success: @escaping (Bool) -> Void,
                                 failure: @escaping (Error?) -> Void) {
+        let objID = post.objectID
+        let context = self.context
         let successBlock = { (taskSuccessful: Bool) -> Void in
-            let newIsSubscribed = !isSubscribed
-            let followAction: FollowCommentsService.FollowAction = newIsSubscribed ? .followed : .unfollowed
-
-            var properties = [String: Any]()
-            properties[WPAppAnalyticsKeyFollowAction] = followAction.rawValue
-            properties[WPAppAnalyticsKeyBlogID] = self.siteID
-            WPAnalytics.trackReader(.readerToggleFollowConversation, properties: properties)
-
-            success(taskSuccessful)
+            context.perform {
+                if let post = try? context.existingObject(with: objID) as? ReaderPost {
+                    post.isSubscribedComments = !isSubscribed
+                }
+                ContextManager.sharedInstance().save(context) {
+                    DispatchQueue.main.async {
+                        success(taskSuccessful)
+                    }
+                }
+            }
         }
 
         if isSubscribed {
@@ -78,8 +86,30 @@ class FollowCommentsService: NSObject {
         }
     }
 
-    private enum FollowAction: String {
-        case followed
-        case unfollowed
+    /// Toggles the notification setting for a specified post.
+    ///
+    /// - Parameters:
+    ///   - isNotificationsEnabled: Determines whether the user should receive notifications for new comments on the specified post.
+    ///   - success: Block called after the operation completes successfully.
+    ///   - failure: Block called when the operation fails.
+    @objc func toggleNotificationSettings(_ isNotificationsEnabled: Bool,
+                                          success: @escaping () -> Void,
+                                          failure: @escaping (Error?) -> Void) {
+
+        remote.updateNotificationSettingsForPost(with: postID, siteID: siteID, receiveNotifications: isNotificationsEnabled) { [weak self] in
+            guard let self = self else {
+                failure(nil)
+                return
+            }
+
+            self.post.receivesCommentNotifications = isNotificationsEnabled
+            ContextManager.sharedInstance().saveContextAndWait(self.context)
+            success()
+
+        } failure: { error in
+            DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
+            failure(error)
+        }
     }
+
 }

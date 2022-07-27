@@ -1,6 +1,13 @@
+# frozen_string_literal: true
+
 # This Matchfile has the shared properties used for all signing types
 
 # Store certs/profiles encrypted in Google Cloud
-storage_mode("google_cloud")
-google_cloud_bucket_name("a8c-fastlane-match")
-google_cloud_keys_file(".configure-files/google_cloud_keys.json")
+storage_mode('google_cloud')
+google_cloud_bucket_name('a8c-fastlane-match')
+
+secrets_dir = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
+
+google_cloud_keys_file(File.join(secrets_dir, 'google_cloud_keys.json'))
+
+api_key_path(File.join(secrets_dir, 'app_store_connect_fastlane_api_key.json'))

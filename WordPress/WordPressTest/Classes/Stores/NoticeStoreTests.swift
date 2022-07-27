@@ -144,6 +144,36 @@ class NoticeStoreTests: XCTestCase {
         XCTAssertNil(store.currentNotice)
     }
 
+    func testLockActionClearsTheNoticeThatIsShown() {
+        let alpha = Notice(title: "Alpha")
+        let bravo = Notice(title: "Bravo")
+        [alpha, bravo].forEach { dispatch(.post($0)) }
+
+        XCTAssertEqual(alpha, store.currentNotice)
+        dispatch(.lock)
+        XCTAssertEqual(nil, store.currentNotice)
+    }
+
+    func testLockUnlockShowsEnqueuedNotices() {
+        dispatch(.lock)
+        let alpha = Notice(title: "Alpha")
+        let bravo = Notice(title: "Bravo")
+        [alpha, bravo].forEach { dispatch(.post($0)) }
+
+        dispatch(.unlock)
+        XCTAssertEqual(alpha, store.currentNotice)
+    }
+
+    func testCanNotDismissNoticesOnLockedStore() {
+        dispatch(.lock)
+        let alpha = Notice(title: "Alpha")
+        let bravo = Notice(title: "Bravo")
+        [alpha, bravo].forEach { dispatch(.post($0)) }
+        dispatch(.dismiss) // You can't dismiss notices in the locked store. Since that would removed notices without showing them to the user.
+        dispatch(.unlock)
+        XCTAssertEqual(alpha, store.currentNotice)
+    }
+
     // MARK: - Helpers
 
     private func dispatch(_ action: NoticeAction) {

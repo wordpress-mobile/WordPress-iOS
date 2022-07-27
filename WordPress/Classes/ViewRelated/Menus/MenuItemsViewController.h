@@ -27,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeItem:(MenuItem *)item;
 
+/// Generates a string used by VoiceOver to announce menu ordering.
+/// @param parent A new parent of the current item.
+/// @param parentChanged If the parent changed. Needed to infer "Top level" when parent is nil.
+/// @param before A menu item that now precedes the current item.
+/// @param after A menu item that now succeeds the current item.
+/// @return An NSString to announce, or nil.
++ (nullable NSString *)generateOrderingChangeVOString:(nullable MenuItem *)parent parentChanged:(BOOL)parentChanged before:(nullable MenuItem *)before after:(nullable MenuItem *)after;
+
 @end
 
 @protocol MenuItemsViewControllerDelegate <NSObject>

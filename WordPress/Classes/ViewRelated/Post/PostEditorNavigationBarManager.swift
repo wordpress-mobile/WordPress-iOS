@@ -1,6 +1,6 @@
 import Gridicons
 
-protocol PostEditorNavigationBarManagerDelegate: class {
+protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
@@ -96,7 +96,7 @@ class PostEditorNavigationBarManager {
 
     /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
     ///
-    private lazy var separatorButtonItem: UIBarButtonItem = {
+    internal lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         return separator
     }()
@@ -188,11 +188,7 @@ extension PostEditorNavigationBarManager {
     private enum Fonts {
         static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static var blogTitle: UIFont {
-            if FeatureFlag.newNavBarAppearance.enabled {
-                return WPStyleGuide.navigationBarStandardFont
-            } else {
-                return semiBold
-            }
+            WPStyleGuide.navigationBarStandardFont
         }
     }
 

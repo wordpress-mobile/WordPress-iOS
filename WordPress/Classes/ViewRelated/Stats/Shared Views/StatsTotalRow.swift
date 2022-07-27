@@ -14,6 +14,7 @@ struct StatsTotalRowData {
     var disclosureURL: URL?
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
+    var isReferrerSpam: Bool
 
     init(name: String,
          data: String,
@@ -27,7 +28,8 @@ struct StatsTotalRowData {
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
          childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
-         statSection: StatSection? = nil) {
+         statSection: StatSection? = nil,
+         isReferrerSpam: Bool = false) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -41,10 +43,19 @@ struct StatsTotalRowData {
         self.disclosureURL = disclosureURL
         self.childRows = childRows
         self.statSection = statSection
+        self.isReferrerSpam = isReferrerSpam
     }
 
     var hasIcon: Bool {
         return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
+    }
+
+    var canMarkReferrerAsSpam: Bool {
+        if let url = disclosureURL {
+            return url.absoluteString.contains(name)
+        } else {
+            return name.contains(".")
+        }
     }
 }
 
@@ -54,6 +65,10 @@ struct StatsTotalRowData {
     @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func showAddInsight()
+}
+
+protocol StatsTotalRowReferrerDelegate: AnyObject {
+    func showReferrerDetails(_ data: StatsTotalRowData)
 }
 
 class StatsTotalRow: UIView, NibLoadable, Accessible {
@@ -92,6 +107,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
+    private weak var referrerDelegate: StatsTotalRowReferrerDelegate?
     private var forDetails = false
     private(set) weak var parentRow: StatsTotalRow?
 
@@ -121,7 +137,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     var expanded: Bool = false {
         didSet {
-            guard hasChildRows else {
+            guard hasChildRows, rowData?.statSection != .periodReferrers else {
                 return
             }
 
@@ -145,10 +161,12 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     func configure(rowData: StatsTotalRowData,
                    delegate: StatsTotalRowDelegate? = nil,
+                   referrerDelegate: StatsTotalRowReferrerDelegate? = nil,
                    forDetails: Bool = false,
                    parentRow: StatsTotalRow? = nil) {
         self.rowData = rowData
         self.delegate = delegate
+        self.referrerDelegate = referrerDelegate
         self.forDetails = forDetails
         self.parentRow = parentRow
 
@@ -249,7 +267,7 @@ private extension StatsTotalRow {
     }
 
     func configureDetailDisclosure() {
-        guard hasChildRows, forDetails else {
+        guard hasChildRows, forDetails, rowData?.statSection != .periodReferrers else {
             return
         }
 
@@ -275,7 +293,6 @@ private extension StatsTotalRow {
     }
 
     func configureIcon() {
-
         guard let rowData = rowData else {
             return
         }
@@ -328,7 +345,6 @@ private extension StatsTotalRow {
     }
 
     func configureDataBar() {
-
         guard let dataBarPercent = rowData?.dataBarPercent else {
             dataBarView.isHidden = true
             return
@@ -360,8 +376,8 @@ private extension StatsTotalRow {
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
-
-        if let statSection = rowData?.statSection {
+        if let statSection = rowData?.statSection,
+               statSection != .insightsAddInsight {
             captureAnalyticsEventsFor(statSection)
         }
 
@@ -370,16 +386,23 @@ private extension StatsTotalRow {
             return
         }
 
+        if rowData?.statSection == .periodReferrers, let data = rowData {
+            if !data.canMarkReferrerAsSpam, !hasChildRows, let url = data.disclosureURL {
+                delegate?.displayWebViewWithURL?(url)
+            } else {
+                referrerDelegate?.showReferrerDetails(data)
+            }
+            return
+        }
+
         if hasChildRows {
-            expanded.toggle()
-            prepareForVoiceOver()
-            delegate?.toggleChildRows?(for: self, didSelectRow: true)
+            toggleExpandedState()
             return
         }
 
         if let disclosureURL = rowData?.disclosureURL {
             if let statSection = rowData?.statSection,
-                statSection == .periodPostsAndPages {
+               statSection == .periodPostsAndPages {
                 guard let postID = rowData?.postID else {
                     DDLogInfo("No postID available to show Post Stats.")
                     return
@@ -397,6 +420,12 @@ private extension StatsTotalRow {
         }
 
         DDLogInfo("Stat row selection action not supported.")
+    }
+
+    func toggleExpandedState() {
+        expanded.toggle()
+        prepareForVoiceOver()
+        delegate?.toggleChildRows?(for: self, didSelectRow: true)
     }
 
     func captureAnalyticsEventsFor(_ statSection: StatSection) {
@@ -432,6 +461,10 @@ private extension StatSection {
             return .statsItemTappedVideoTapped
         case .insightsAddInsight:
             return .statsItemTappedInsightsAddStat
+        case .postStatsMonthsYears:
+            return .statsItemTappedPostStatsMonthsYears
+        case .postStatsRecentWeeks:
+            return .statsItemTappedPostStatsRecentWeeks
         default:
             return nil
         }

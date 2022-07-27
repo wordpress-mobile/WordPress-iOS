@@ -26,9 +26,9 @@ class WindowManager: NSObject {
     /// Shows the initial UI for the App to be shown right after launch.  This method will present the sign-in flow if the user is not
     /// authenticated, or the actuall App UI if the user is already authenticated.
     ///
-    func showUI() {
+    public func showUI(for blog: Blog? = nil) {
         if AccountHelper.isLoggedIn {
-            showAppUI()
+            showAppUI(for: blog)
         } else {
             showSignInUI()
         }
@@ -45,20 +45,25 @@ class WindowManager: NSObject {
         showSignInUI()
     }
 
-    func dismissFullscreenSignIn(completion: Completion? = nil) {
+    func dismissFullscreenSignIn(blogToShow: Blog? = nil, completion: Completion? = nil) {
         guard isShowingFullscreenSignIn == true && AccountHelper.isLoggedIn == true else {
             return
         }
 
-        showAppUI(completion: completion)
+        showAppUI(for: blogToShow, completion: completion)
     }
 
     /// Shows the UI for authenticated users.
     ///
-    private func showAppUI(completion: Completion? = nil) {
+    func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
-
         show(WPTabBarController.sharedInstance(), completion: completion)
+
+        guard let blog = blog else {
+            return
+        }
+
+        WPTabBarController.sharedInstance()?.showBlogDetails(for: blog)
     }
 
     /// Shows the initial UI for unauthenticated users.
@@ -77,7 +82,7 @@ class WindowManager: NSObject {
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
     ///
-    private func show(_ viewController: UIViewController, completion: Completion?) {
+    func show(_ viewController: UIViewController, completion: Completion?) {
         // When the App is launched, the root VC will be `nil`.
         // When this is the case we'll simply show the VC without any type of animation.
         guard window.rootViewController != nil else {

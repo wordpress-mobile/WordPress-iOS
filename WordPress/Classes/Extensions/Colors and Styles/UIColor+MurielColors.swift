@@ -172,6 +172,16 @@ extension UIColor {
         return UIColor(light: .systemGray6, dark: .systemGray5)
     }
 
+    // MARK: - Search Fields
+
+    static var searchFieldPlaceholderText: UIColor {
+        return .secondaryLabel
+    }
+
+    static var searchFieldIcons: UIColor {
+        return .secondaryLabel
+    }
+
     // MARK: - Table Views
 
     static var divider: UIColor {
@@ -252,6 +262,20 @@ extension UIColor {
 
     static var authButtonViewBackground: UIColor {
         return UIColor(light: .white, dark: .black)
+    }
+
+    // MARK: - Quick Action Buttons
+
+    static var quickActionButtonBackground: UIColor {
+        .clear
+    }
+
+    static var quickActionButtonBorder: UIColor {
+        .systemGray3
+    }
+
+    static var quickActionSelectedBackground: UIColor {
+        UIColor(light: .black, dark: .white).withAlphaComponent(0.17)
     }
 
     // MARK: - Others

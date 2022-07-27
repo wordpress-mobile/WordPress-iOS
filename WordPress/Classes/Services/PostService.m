@@ -19,8 +19,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @interface PostService ()
 
-@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
-
 @end
 
 @implementation PostService
@@ -55,6 +53,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.postFormat = blog.settings.defaultPostFormat;
     post.postType = Post.typeDefaultIdentifier;
 
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    post.authorID = author.userID;
+    post.author = author.displayName;
+
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
     NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
 
@@ -73,6 +75,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
+
+    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
+    page.authorID = author.userID;
+    page.author = author.displayName;
 
     [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
     NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
@@ -122,9 +128,15 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                           }
                           if (remotePost) {
                               AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              
                               if (!post) {
-                                  post = [self createPostForBlog:blog];
+                                  if ([remotePost.type isEqualToString:PostServiceTypePage]) {
+                                      post = [self createPageForBlog:blog];
+                                  } else {
+                                      post = [self createPostForBlog:blog];
+                                  }
                               }
+                              
                               [self updatePost:post withRemotePost:remotePost];
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
@@ -676,28 +688,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
-- (void)getLikesForPostID:(NSNumber *)postID
-                   siteID:(NSNumber *)siteID
-                  success:(void (^)(NSArray<RemoteUser *> *))success
-                  failure:(void (^)(NSError * _Nullable))failure
-{
-    NSParameterAssert(postID);
-    NSParameterAssert(siteID);
-
-    PostServiceRemoteREST *remote = [self.postServiceRemoteFactory restRemoteForSiteID:siteID
-                                                                               context:self.managedObjectContext];
-    if (remote) {
-        [remote getLikesForPostID:postID
-                          success:success
-                          failure:failure];
-    } else {
-        NSError *error = [NSError errorWithDomain:PostServiceErrorDomain
-                                             code:0
-                                         userInfo:@{ NSLocalizedDescriptionKey : @"Unable to create a REST remote for posts." }];
-        failure(error);
-    }
-}
-
 #pragma mark - Helpers
 
 - (void)initializeDraft:(AbstractPost *)post {
@@ -897,9 +887,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
                 disabledPublicizeConnections[keyringConnectionID] = keyringConnectionData;
             }
         }
-        postPost.geolocation = geolocation;
-        postPost.latitudeID = latitudeID;
-        postPost.longitudeID = longitudeID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -924,6 +911,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
+    remotePost.authorID = post.authorID;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 
@@ -971,51 +959,14 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 }
 
 - (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:3];
-    Coordinate *c = post.geolocation;
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
 
-    /*
-     This might look more complicated than it should be, but it needs to be that way.
-
-     Depending of the existence of geolocation and ID values, we need to add/update/delete the custom fields:
-     - geolocation  &&  ID: update
-     - geolocation  && !ID: add
-     - !geolocation &&  ID: delete
-     - !geolocation && !ID: noop
-     */
-    if (post.latitudeID || c) {
-        NSMutableDictionary *latitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.latitudeID) {
-            latitudeDictionary[@"id"] = [post.latitudeID numericValue];
-        }
-        if (c) {
-            latitudeDictionary[@"key"] = @"geo_latitude";
-            latitudeDictionary[@"value"] = @(c.latitude);
-        }
-        [metadata addObject:latitudeDictionary];
-    }
-    if (post.longitudeID || c) {
-        NSMutableDictionary *longitudeDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.latitudeID) {
-            longitudeDictionary[@"id"] = [post.longitudeID numericValue];
-        }
-        if (c) {
-            longitudeDictionary[@"key"] = @"geo_longitude";
-            longitudeDictionary[@"value"] = @(c.longitude);
-        }
-        [metadata addObject:longitudeDictionary];
-    }
-    if (post.publicID || c) {
-        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.publicID) {
-            publicDictionary[@"id"] = [post.publicID numericValue];
-        }
-        if (c) {
-            publicDictionary[@"key"] = @"geo_public";
-            publicDictionary[@"value"] = @1;
-        }
+    if (post.publicID) {
+        NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
+        publicDictionary[@"id"] = [post.publicID numericValue];
         [metadata addObject:publicDictionary];
     }
+
     if (post.publicizeMessageID || post.publicizeMessage.length) {
         NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         if (post.publicizeMessageID) {
@@ -1025,6 +976,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
         [metadata addObject:publicizeMessageDictionary];
     }
+
     for (NSNumber *keyringConnectionId in post.disabledPublicizeConnections.allKeys) {
         NSMutableDictionary *disabledConnectionsDictionary = [NSMutableDictionary dictionaryWithCapacity: 3];
         // We need to compose back the key
@@ -1033,6 +985,14 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         [disabledConnectionsDictionary addEntriesFromDictionary:post.disabledPublicizeConnections[keyringConnectionId]];
         [metadata addObject:disabledConnectionsDictionary];
     }
+
+    if (post.bloggingPromptID) {
+        NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        promptDictionary[@"key"] = @"_jetpack_blogging_prompt_key";
+        promptDictionary[@"value"] = post.bloggingPromptID;
+        [metadata addObject:promptDictionary];
+    }
+
     return metadata;
 }
 

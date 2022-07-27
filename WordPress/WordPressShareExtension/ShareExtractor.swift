@@ -21,7 +21,7 @@ struct ExtractedShare {
 
         if let url = url {
             rawLink = url.absoluteString.stringWithAnchoredLinks()
-            let attributionText = NSLocalizedString("Read on",
+            let attributionText = AppLocalizedString("Read on",
                                                     comment: "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation.")
             readOnText = "<br>— \(attributionText) \(rawLink)"
         }
@@ -276,7 +276,7 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func saveToSharedContainer(image: UIImage) -> URL? {
-        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
+        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize)?.JPEGEncoded(),
             let fullPath = tempPath(for: "jpg") else {
                 return nil
         }
@@ -308,7 +308,7 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func copyToSharedContainer(url: URL) -> URL? {
-        guard let newPath = tempPath(for: url.lastPathComponent) else {
+        guard let newPath = tempPath(for: url.pathExtension) else {
             return nil
         }
 

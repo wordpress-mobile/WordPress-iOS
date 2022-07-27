@@ -1,1 +1,1 @@
-social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design
+блогер,написание статей,ведение блога,веб,создатель,онлайн,магазин,бизнес,создавать,творить,писать

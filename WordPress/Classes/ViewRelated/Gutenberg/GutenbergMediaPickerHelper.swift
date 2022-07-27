@@ -1,5 +1,8 @@
 import Foundation
 import CoreServices
+import UIKit
+import Photos
+import WordPressShared
 import WPMediaPicker
 import Gutenberg
 
@@ -31,18 +34,6 @@ class GutenbergMediaPickerHelper: NSObject {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-    fileprivate lazy var mediaPickerOptions: WPMediaPickerOptions = {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.image]
-        options.allowCaptureOfMedia = false
-        options.showSearchBar = true
-        options.badgedUTTypes = [String(kUTTypeGIF)]
-        options.allowMultipleSelection = false
-        options.preferredStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
-        return options
-    }()
-
     var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
 
     init(context: UIViewController, post: AbstractPost) {
@@ -58,7 +49,8 @@ class GutenbergMediaPickerHelper: NSObject {
 
         didPickMediaCallback = callback
 
-        let picker = WPNavigationMediaPickerViewController()
+        let mediaPickerOptions = WPMediaPickerOptions.withDefaults(filter: filter, allowMultipleSelection: allowMultipleSelection)
+        let picker = WPNavigationMediaPickerViewController(options: mediaPickerOptions)
         navigationPicker = picker
         switch dataSourceType {
         case .device:
@@ -72,10 +64,15 @@ class GutenbergMediaPickerHelper: NSObject {
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
-        mediaPickerOptions.filter = filter
-        mediaPickerOptions.allowMultipleSelection = allowMultipleSelection
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
+        picker.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
+
+        if #available(iOS 14.0, *),
+           FeatureFlag.mediaPickerPermissionsNotice.enabled {
+            picker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
+        }
+
         picker.previewActionTitle = NSLocalizedString("Edit %@", comment: "Button that displays the media editor to the user")
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
@@ -83,7 +80,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     private lazy var cameraPicker: WPMediaPickerViewController = {
         let cameraPicker = WPMediaPickerViewController()
-        cameraPicker.options = mediaPickerOptions
+        cameraPicker.options = WPMediaPickerOptions.withDefaults()
         cameraPicker.mediaPickerDelegate = self
         cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         return cameraPicker
@@ -109,15 +106,78 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 }
 
+// MARK: - User messages for video limits allowances
+//
+extension GutenbergMediaPickerHelper: VideoLimitsAlertPresenter {}
+
+// MARK: - Picker Delegate
+//
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        invokeMediaPickerCallback(asset: assets)
-        picker.dismiss(animated: true, completion: nil)
+        if picker == cameraPicker,
+           let asset = assets.first,
+           !post.blog.canUploadAsset(asset) {
+                presentVideoLimitExceededAfterCapture(on: self.context)
+        } else {
+            invokeMediaPickerCallback(asset: assets)
+            picker.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    open func mediaPickerController(_ picker: WPMediaPickerViewController, handleError error: Error) -> Bool {
+        let alert = WPMediaPickerAlertHelper.buildAlertControllerWithError(error)
+        context.present(alert, animated: true)
+        return true
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        mediaLibraryDataSource.searchCancelled()
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
+    }
+
+    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
+        guard #available(iOS 14.0, *),
+              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+              picker !== cameraPicker else {
+            return false
+        }
+
+        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
+    }
+
+    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
+        guard #available(iOS 14.0, *) else {
+            return .zero
+        }
+
+        let header = DeviceMediaPermissionsHeader()
+        header.translatesAutoresizingMaskIntoConstraints = false
+
+        return header.referenceSizeInView(picker.view)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
+        guard #available(iOS 14.0, *),
+              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+            return
+        }
+
+        headerView.presenter = picker
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        picker !== cameraPicker && !post.blog.canUploadAsset(asset)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker !== cameraPicker,
+            !post.blog.canUploadAsset(asset) {
+
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+        return true
     }
 
     fileprivate func invokeMediaPickerCallback(asset: [WPMediaAsset]?) {
@@ -187,4 +247,27 @@ extension GutenbergMediaPickerHelper {
                     picker.actionBar?.isHidden = false
             })
         }
+}
+
+fileprivate extension WPMediaPickerOptions {
+    static func withDefaults(
+        showMostRecentFirst: Bool = true,
+        filter: WPMediaType = [.image],
+        allowCaptureOfMedia: Bool = false,
+        showSearchBar: Bool = true,
+        badgedUTTypes: Set<String> = [String(kUTTypeGIF)],
+        allowMultipleSelection: Bool = false,
+        preferredStatusBarStyle: UIStatusBarStyle = WPStyleGuide.preferredStatusBarStyle
+    ) -> WPMediaPickerOptions {
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = showMostRecentFirst
+        options.filter = filter
+        options.allowCaptureOfMedia = allowCaptureOfMedia
+        options.showSearchBar = showSearchBar
+        options.badgedUTTypes = badgedUTTypes
+        options.allowMultipleSelection = allowMultipleSelection
+        options.preferredStatusBarStyle = preferredStatusBarStyle
+
+        return options
+    }
 }

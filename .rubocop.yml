@@ -1,0 +1,32 @@
+AllCops:
+  Exclude:
+    - DerivedData/**/*
+    - Pods/**/*
+    - vendor/**/*
+  NewCops: enable
+
+Metrics/BlockLength:
+  # "xfiles" is a standin for `Fast-`, `Pod-`, and `Rake-file`
+  Exclude: &xfiles
+    - fastlane/Fastfile
+    - fastlane/lanes/*.rb
+    - Podfile
+    - Rakefile
+
+Metrics/MethodLength:
+  Max: 30
+  Exclude: *xfiles
+
+Layout/LineLength:
+  Max: 180
+  Exclude: *xfiles
+
+Layout/EmptyLines:
+  Exclude: *xfiles
+
+Style/AsciiComments:
+  Exclude: *xfiles
+
+Naming/FileName:
+  Exclude:
+    - fastlane/Matchfile

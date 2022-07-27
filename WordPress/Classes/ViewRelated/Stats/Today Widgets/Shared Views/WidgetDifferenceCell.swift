@@ -77,7 +77,7 @@ private extension WidgetDifferenceCell {
     enum Constants {
         static let noDataLabel = "-"
         static let cornerRadius: CGFloat = 4.0
-        static let today = NSLocalizedString("Today", comment: "Label for most recent stat row.")
+        static let today = AppLocalizedString("Today", comment: "Label for most recent stat row.")
         static let positiveColor: UIColor = .success
         static let negativeColor: UIColor = .error
         static let neutralColor: UIColor = .neutral(.shade40)

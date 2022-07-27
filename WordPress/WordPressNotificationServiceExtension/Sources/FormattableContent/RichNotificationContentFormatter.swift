@@ -24,6 +24,9 @@ class RichNotificationContentFormatter {
     /// The attributed-text representation of the notification subject, suitable for Long Look presentation
     var attributedSubject: NSAttributedString?
 
+    /// The URL of the first non-Emoji media object for notification
+    var mediaURL: URL?
+
     /// Creates a notification content formatter.
     ///
     /// - Parameters:
@@ -88,6 +91,14 @@ private extension RichNotificationContentFormatter {
 
         self.body = formattedBody.string
         self.attributedBody = formattedBody
+
+        // Grab the first media attachment that is not an Emoji so it can be displayed as a
+        // push notification media attachment 
+        if let notificationTextContent = formattableContent as? NotificationTextContent {
+            self.mediaURL = notificationTextContent.media.first(where: {
+                !($0.mediaURL?.isEmojiURL() ?? false)
+            })?.mediaURL
+        }
     }
 
     /// Attempts to format the attributed subject of the notification content.
@@ -144,5 +155,12 @@ private extension RichNotificationContentFormatter {
         }
 
         return newString
+    }
+}
+
+// MARK: - Emoji checker
+private extension URL {
+    func isEmojiURL() -> Bool {
+        return self.absoluteString.contains("i/emoji")
     }
 }

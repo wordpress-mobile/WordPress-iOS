@@ -21,7 +21,7 @@ class ShareTagsPickerViewController: UIViewController {
     /// Apply Bar Button
     ///
     fileprivate lazy var applyButton: UIBarButtonItem = {
-        let applyTitle = NSLocalizedString("Apply", comment: "Apply action on the app extension tags picker screen. Saves the selected tags for the post.")
+        let applyTitle = AppLocalizedString("Apply", comment: "Apply action on the app extension tags picker screen. Saves the selected tags for the post.")
         let button = UIBarButtonItem(title: applyTitle, style: .plain, target: self, action: #selector(applyWasPressed))
         button.accessibilityIdentifier = "Apply Button"
         return button
@@ -30,7 +30,7 @@ class ShareTagsPickerViewController: UIViewController {
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension tags picker screen.")
+        let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action on the app extension tags picker screen.")
         let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
         button.accessibilityIdentifier = "Cancel Button"
         return button
@@ -384,7 +384,7 @@ private class LoadingDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LoadingDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.Share.configureLoadingTagCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading tags")
+        cell.textLabel?.text = AppLocalizedString("Loading...", comment: "Loading tags")
         cell.selectionStyle = .none
         return cell
     }
@@ -408,7 +408,7 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.Share.configureLoadingTagCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
+        cell.textLabel?.text = AppLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
         return cell
     }
 }

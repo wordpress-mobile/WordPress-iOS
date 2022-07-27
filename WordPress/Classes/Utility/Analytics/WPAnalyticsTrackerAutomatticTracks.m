@@ -47,6 +47,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     if (self) {
         _contextManager = [TracksContextManager new];
         _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
+        _tracksService.eventNamePrefix = AppConstants.eventNamePrefix;
     }
     return self;
 }
@@ -78,17 +79,37 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 }
 
 - (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
-    if (properties == nil) {
-        DDLogInfo(@"🔵 Tracked: %@", event);
-    } else {
-        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
+
+        /// If the Dashboard is enabled, we add this property for all events
+        /// about what is the default tab assigned
+        /// This value can be: `site_menu`, `dashboard` or `nonexistent`
+        NSMutableDictionary *propertiesWithTabExperiment = properties != nil ? properties.mutableCopy : @{}.mutableCopy;
+        propertiesWithTabExperiment[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
+
+        NSArray<NSString *> *propertyKeys = [[propertiesWithTabExperiment allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, propertiesWithTabExperiment[key]];
         }] componentsJoinedByString:@", "];
         DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
-    }
 
-    [self.tracksService trackEventName:event withCustomProperties:properties];
+        [self.tracksService trackEventName:event withCustomProperties:propertiesWithTabExperiment];
+
+    } else {
+
+        if (properties == nil) {
+            DDLogInfo(@"🔵 Tracked: %@", event);
+        } else {
+            NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+            NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
+                return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
+            }] componentsJoinedByString:@", "];
+            DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
+        }
+
+        [self.tracksService trackEventName:event withCustomProperties:properties];
+
+    }
 }
 
 - (void)beginSession
@@ -679,9 +700,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewLoaded:
             eventName = @"enhanced_site_creation_site_design_preview_loaded";
             break;
-        case     WPAnalyticsStatEnhancedSiteCreationSiteDesignThumbnailModeButtonTapped:
-            eventName = @"enhanced_site_creation_site_design_thumbnail_mode_button_tapped";
-            break;
         case WPAnalyticsStatEnhancedSiteCreationSiteDesignPreviewModeButtonTapped:
             eventName = @"enhanced_site_creation_site_design_preview_mode_button_tapped";
             break;
@@ -786,6 +804,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatInstallJetpackWebviewFailed:
             eventName = @"connect_jetpack_failed";
+            break;
+        case WPAnalyticsStatLandingEditorShown:
+            eventName = @"landing_editor_shown";
             break;
         case WPAnalyticsStatLayoutPickerPreviewErrorShown:
             eventName = @"layout_picker_preview_error_shown";
@@ -990,7 +1011,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"my_site_tab_accessed";
             break;
         case WPAnalyticsStatNotificationsCommentApproved:
-            eventName = @"notifications_approved";
+            eventName = @"notifications_comment_approved";
             break;
         case WPAnalyticsStatNotificationsCommentFlaggedAsSpam:
             eventName = @"notifications_flagged_as_spam";
@@ -1744,6 +1765,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsItemTappedInsightsAddStat:
             eventName = @"stats_add_insight_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedPostStatsMonthsYears:
+            eventName = @"stats_posts_and_pages_months_years_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedPostStatsRecentWeeks:
+            eventName = @"stats_posts_and_pages_recent_weeks_item_tapped";
             break;
         case WPAnalyticsStatStatsItemTappedInsightsCustomizeDismiss:
             eventName = @"stats_customize_insights_dismiss_item_tapped";

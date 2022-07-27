@@ -1,6 +1,381 @@
+20.5
+-----
+
+
+20.4
+-----
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
+
+20.3
+-----
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
+
+20.2
+-----
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+
+20.1
+-----
+* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
+* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
+* [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
+* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
+* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+* [*] People Management: Fixed a crash that can occur when loading the People view. [#18907]
+
+20.0
+-----
+* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
+* [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
+* [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
+* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
+* [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
+* [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
+* [*] [internal] Quick Start: Fixed a couple of layout issues with the Quick Start notices when rotating the device. [#18758]
+
+19.9
+-----
+* [*] Site Settings: we fixed an issue that prevented the site title to be updated when it changed in Site Settings [#18543]
+* [*] Media Picker: Fixed an issue where the empty state view was being displayed incorrectly. [#18471]
+* [*] Quick Start: We are now showing a different set of Quick Start tasks for existing sites and new sites. The existing sites checklist includes new tours such as: "Check your notifications" and "Upload photos or videos".  [#18395, #18412, #18443, #18471]
+* [*] Site Creation: we fixed an issue where the navigation buttons were not scaling when large fonts were selected on the device [#18559]
+* [**] Block Editor: Cover Block: Improve color contrast between background and text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4808]
+* [***] Block Editor: Add drag & drop blocks feature [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4832]
+* [*] Block Editor: Gallery block: Fix broken "Link To" settings and add "Image Size" settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4841]
+* [*] Block Editor: Unsupported Block Editor: Prevent WordPress.com tour banner from displaying. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4820]
+* [*] Widgets: we fixed an issue where text appeared flipped in rtl languages [#18567]
+* [*] Stats: we fixed a crash that occurred sometimes in Stats [#18613]
+* [*] Posts list: we fixed an issue where the create button was not shown on iPad in split screen [#18609]
+
+19.8
+-----
+* [**] Self hosted sites are not restricted by video length during media uploads [https://github.com/wordpress-mobile/WordPress-iOS/pull/18414]
+* [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
+* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
+* [*] Quick Start: Updated the Reader tour. The tour now highlights the Discover tab and guides users to follow topics via the Settings screen. [#18450]
+* [*] [internal] Quick Start: Deleted the Edit your homepage tour. [#18469]
+* [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
+* [**] Follow Conversation flow now enables in-app notifications by default. They were updated to be opt-out rather than opt-in. [#18449]
+* [*] Block Editor: Latest Posts block: Add featured image settings [https://github.com/WordPress/gutenberg/pull/39257]
+* [*] Block Editor: Prevent incorrect notices displaying when switching between HTML-Visual mode quickly [https://github.com/WordPress/gutenberg/pull/40415]
+* [*] Block Editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/WordPress/gutenberg/pull/35326]
+* [*] Block Editor: Prevent gaps shown around floating toolbar when using external keyboard [https://github.com/WordPress/gutenberg/pull/40266]
+* [**] We'll now ask users logging in which area of the app they'd like to focus on to build towards a more personalized experience. [#18385]
+
+19.7
+-----
+* [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
+* [*] Notifications list: remove comment Trash swipe action. [#18349]
+* [*] Web previews now abide by safe areas when a toolbar is shown [#18127]
+* [*] Site creation: Adds a new screen asking the user the intent of the site [#18367]
+* [**] Block Editor: Quote block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/40133]
+* [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]
+* [*] Block Editor: Remove banner error notification on upload failure [https://github.com/WordPress/gutenberg/pull/39694]
+* [*] My Site: display site name in My Site screen nav title [#18373]
+* [*] [internal] Site creation: Adds a new screen asking the user the name of the site [#18280]
+
+19.6
+-----
+* [*] Enhances the exit animation of notices. [#18182]
+* [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
+* [***] My Site: your My Site screen now has two tabs, "Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
+* [*] [internal] Site creation: Adds a new screen asking the user the intent of the site [#18270]
+
+19.5
+-----
+* [*] Improves the error message shown when trying to create a new site with non-English characters in the domain name [https://github.com/wordpress-mobile/WordPress-iOS/pull/17985]
+* [*] Quick Start: updated the design for the Quick Start cell on My Site [#18095]
+* [*] Reader: Fixed a bug where comment replies are misplaced after its parent comment is moderated [#18094]
+* [*] Bug fix: Allow keyboard to be dismissed when the password field is focused during WP.com account creation.
+* [*] iPad: Fixed a bug where the current displayed section wasn't selected on the menu [#18118]
+* [**] Comment Notifications: updated UI and functionality to match My Site Comments. [#18141]
+* [*] Block Editor: Add GIF badge for animated GIFs uploaded to Image blocks [https://github.com/WordPress/gutenberg/pull/38996]
+* [*] Block Editor: Small refinement to media upload errors, including centering and tweaking copy. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4597]
+* [*] Block Editor: Fix issue with list's starting index and the order [https://github.com/WordPress/gutenberg/pull/39354]
+* [*] Quick Start: Fixed a bug where a user creating a new site is displayed a quick start tour containing data from their presviously active site.
+
+19.4
+-----
+* [*] Site Creation: Fixed layout of domain input field for RTL languages. [#18006]
+* [*] [internal] The FAB (blue button to create posts/stories/pages) creation/life cycle was changed [#18026]
+* [*] Stats: we fixed a variety of performance issues in the Insight screen. [#17926, #17936, #18017]
+* [*] Stats: we re-organized the default view in Insights, presenting more interesting data at a glance [#18072]
+* [*] Push notifications will now display rich media when long pressed. [#18048]
+* [*] Weekly Roundup: We made some further changes to try and ensure that Weekly Roundup notifications are showing up for everybody who's enabled them [#18029]
+* [*] Block editor: Autocorrected Headings no longer apply bold formatting if they weren't already bold. [#17844]
+* [***] Block editor: Support for multiple color palettes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4588]
+* [**] User profiles: Fixed issue where the app wasn't displaying any of the device photos which the user had granted the app access to.
+
+19.3
+-----
+* [*] Site previews: Reduced visual flickering when previewing sites and templates. [#17861]
+* [*] Stats: Scroll to new Insights card when added. [#17894]
+* [*] Add "Copy Link" functionality to Posts List and Pages List [#17911]
+* [*] [Jetpack-only] Enables the ability to use and create WordPress.com sites, and enables the Reader tab. [#17914, #17948]
+* [*] Block editor: Additional error messages for media upload failures. [#17971]
+* [**] Adds animated Gif support in notifications and comments [#17981]
+
+19.2
+-----
+* [*] Site creation: Fixed bug where sites created within the app were not given the correct time zone, leading to post scheduling issues. [#17821]
+* [*] Block editor: Replacing the media for an image set as featured prompts to update the featured image [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3930]
+* [***] Block editor: Font size and line-height support for text-based blocks used in block-based themes [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4519]
+* [**] Some of the screens of the app has a new, fresh and more modern visual, including the initial one: My Site. [#17812]
+* [**] Notifications: added a button to mark all notifications in the selected filter as read. [#17840]
+* [**] People: you can now manage Email Followers on the People section! [#17854]
+* [*] Stats: fix navigation between Stats tab. [#17856]
+* [*] Quick Start: Fixed a bug where a user logging in via a self-hosted site not connected to Jetpack would see Quick Start when selecting "No thanks" on the Quick Start prompt. [#17855]
+* [**] Threaded comments: comments can now be moderated via a drop-down menu on each comment. [#17888]
+* [*] Stats: Users can now add a new Insights card from the navigation bar. [#17867]
+* [*] Site creation: The checkbox that appears when choosing a design no longer flickers when toggled. [#17868]
+
+19.1
+-----
+* [*] Signup: Fixed bug where username selection screen could be pushed twice. [#17624]
+* [**] Reader post details Comments snippet: added ability to manage conversation subscription and notifications. [#17749]
+* [**] Accessibility: VoiceOver and Dynamic Type improvements on Activity Log and Schedule Post calendars [#17756, #17761, #17780]
+* [*] Weekly Roundup: Fix a crash which was preventing weekly roundup notifications from appearing [#17765]
+* [*] Self-hosted login: Improved error messages. [#17724]
+* [*] Share Sheet from Photos: Fix an issue where certain filenames would not upload or render in Post [#16773]
+* [*] Block editor: Fixed an issue where video thumbnails could show when selecting images, and vice versa. [#17670]
+* [**] Media: If a user has only enabled limited device media access, we now show a prompt to allow the user to change their selection. [#17795]
+* [**] Block editor: Fix content justification attribute in Buttons block [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4451]
+* [*] Block editor: Hide help button from Unsupported Block Editor. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4352]
+* [*] Block editor: Add contrast checker to text-based blocks [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4357]
+* [*] Block editor: Fix missing translations of color settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4479]
+* [*] Block editor: Highlight text: fix applying formatting for non-selected text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4471]
+* [***] Self-hosted sites: Fixed a crash when saving media and no Internet connection was available. [#17759]
+* [*] Publicize: Fixed an issue where a successful login was not automatically detected when connecting a Facebook account to Publicize. [#17803]
+
+19.0
+-----
+* [**] Video uploads: video upload is now limited to 5 minutes per video on free plans. [#17689]
+* [*] Block editor: Give multi-line block names central alignment in inserter [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4343]
+* [**] Block editor: Fix missing translations by refactoring the editor initialization code [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4332]
+* [**] Block editor: Add Jetpack and Layout Grid translations [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4359]
+* [**] Block editor: Fix text formatting mode lost after backspace is used [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4423]
+* [*] Block editor: Add missing translations of unsupported block editor modal [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4410]
+* [**] Time zone suggester: we have a new time zone selection screen that suggests the time zone based on the device, and improves search. [#17699]
+* [*] Added the "Share WordPress with a friend" row back to the Me screen. [#17748]
+* [***] Updated default app icon. [#17793]
+
+18.9
+-----
+* [***] Reader Comments: Updated comment threads with a new design and some new capabilities. [#17659]
+* [**] Block editor: Fix issue where editor doesn't auto-scroll so you can see what is being typed. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4299]
+* [*] Block editor: Preformatted block: Fix an issue where the background color is not showing up for standard themes. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4292]
+* [**] Block editor: Update Gallery Block to default to the new format and auto-convert old galleries to the new format. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4315]
+* [***] Block editor: Highlight text: Enables color customization for specific text within a Paragraph block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4175]
+* [**] Reader post details: a Comments snippet is now displayed after the post content. [#17650]
+
+18.8
+-----
+* [*] Added a new About screen, with links to rate the app, share it with others, visit our Twitter profile, view our other apps, and more. [https://github.com/orgs/wordpress-mobile/projects/107]
+* [*] Editor: Show a compact notice when switching between HTML or Visual mode. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17521]
+* [*] Onboarding Improvements: Need a little help after login? We're here for you. We've made a few changes to the login flow that will make it easier for you to start managing your site or create a new one. [#17564]
+* [***] Fixed crash where uploading image when offline crashes iOS app. [#17488]
+* [***] Fixed crash that was sometimes triggered when deleting media. [#17559]
+* [***] Fixes a crasher that was sometimes triggered when seeing the details for like notifications. [#17529]
+* [**] Block editor: Add clipboard link suggestion to image block and button block. [https://github.com/WordPress/gutenberg/pull/35972]
+* [*] Block editor: Embed block: Include link in block settings. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4189]
+* [**] Block editor: Fix tab titles translation of inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4248]
+* [**] Block editor: Gallery block: When a gallery block is added, the media options are auto opened for v2 of the Gallery block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4277]
+* [*] Block editor: Media & Text block: Fix an issue where the text font size would be bigger than expected in some cases. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4252]
+
+18.7
+-----
+* [*] Comment Reply: updated UI. [#17443, #17445]
+* [***] Two-step Authentication notifications now require an unlocked device to approve or deny them.
+* [***] Site Comments: Updated comment details with a fresh new look and capability to display rich contents. [#17466]
+* [**] Block editor: Image block: Add ability to quickly link images to Media Files and Attachment Pages [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3971]
+* [**] Block editor: Fixed a crash that could occur when copying lists from Microsoft Word. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4174]
+* [***] Fixed an issue where trying to upload an image while offline crashes the app. [#17488]
+
+18.6
+-----
+* [**] Comments: Users can now follow conversation via notifications, in addition to emails. [#17363]
+* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
+* [*] Reader post comments: fixed an issue that prevented all comments from displaying. [#17373]
+* [**] Stats: added Reader Discover nudge for sites with low traffic in order to increase it. [#17349, #17352, #17354, #17377]
+* [**] Block editor: Search block - Text and background color support [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4127]
+* [*] Block editor: Fix Embed Block loading glitch with resolver resolution approach [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4146]
+* [*] Block editor: Fixed an issue where the Help screens may not respect an iOS device's notch. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4110]
+* [**] Block editor: Block inserter indicates newly available block types [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4047]
+* [*] Block editor: Add support for the Mark HTML tag [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4162]
+* [*] Stats Insights: HTML tags no longer display in post titles. [#17380]
+
+18.5
+-----
+* [**] Block editor: Embed block: Include Jetpack embed variants. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4008]
+* [*] Fixed a minor visual glitch on the pre-publishing nudge bottom sheet. [https://github.com/wordpress-mobile/WordPress-iOS/pull/17300]
+* [*] Improved support for larger text sizes when choosing a homepage layout or page layout. [#17325]
+* [*] Site Comments: fixed an issue that caused the lists to not refresh. [#17303]
+* [*] Block editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4072]
+* [*] Block editor: Embed block: Fix URL not editable after dismissing the edit URL bottom sheet with empty value [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4094]
+* [**] Block editor: Embed block: Detect when an embeddable URL is pasted into an empty paragraph. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4048]
+* [**] Block editor: Pullquote block - Added support for text and background color customization [https://github.com/WordPress/gutenberg/pull/34451]
+* [**] Block editor: Preformatted block - Added support for text and background color customization [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4071]
+* [**] Stats: added Publicize and Blogging Reminders nudges for sites with low traffic in order to increase it. [#17142, #17261, #17294, #17312, #17323]
+* [**] Fixed an issue that made it impossible to log in when emails had an apostrophe. [#17334]
+
+18.4
+-----
+* [*] Improves our user images download logic to avoid synchronization issues. [#17197]
+* [*] Fixed an issue where images point to local URLs in the editor when saving a post with ongoing uploads. [#17157]
+* [**] Embed block: Add the top 5 specific embed blocks to the Block inserter list. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3995]
+* [*] Embed block: Fix URL update when edited after setting a bad URL of a provider. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4002]
+* [**] Users can now contact support from inside the block editor screen. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3975]
+* [**] Block editor: Help menu with guides about how to work with blocks [#17265]
+
+18.3
+-----
+* [*] Fixed a bug on Reader that prevented Saved posts to be removed
+* [*] Share Extension: Allow creation of Pages in addition to Posts. [#16084]
+* [*] Updated the wording for the "Posts" and "Pages" entries in My Site screen [https://github.com/wordpress-mobile/WordPress-iOS/pull/17156]
+* [**] Fixed a bug that prevented sharing images and videos out of your site's media library. [#17164]
+* [*] Fixed an issue that caused `Follow conversation by email` to not appear on some post's comments. [#17159]
+* [**] Block editor: Embed block: Enable WordPress embed preview [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3853]
+* [**] Block editor: Embed block: Add error bottom sheet with retry and convert to link actions. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3921]
+* [**] Block editor: Embed block: Implemented the No Preview UI when an embed is successful, but we're unable to show an inline preview [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3927]
+* [*] Block editor: Embed block: Add device's locale to preview content [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3788]
+* [*] Block editor: Column block: Translate column width's control labels [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3952]
+* [**] Block editor: Embed block: Enable embed preview for Instagram and Vimeo providers. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3918]
+
+18.2
+-----
+* [internal] Fixed an issue where source and platform tags were not added to a Zendesk ticket if the account has no blogs. [#17084]
+* [*] Set the post formats to have 'Standard' first and then alphabetized the remaining items. [#17074]
+* [*] Fixed wording of theme customization screen's menu bar by using "Activate" on inactive themes. [#17060]
+* [*] Added pull-to-refresh to My Site. [#17089]
+* [***] Weekly Roundup: users will receive a weekly notification that presents a summary of the activity on their most used sites [#17066, #17116]
+* [**] Site Comments: when editing a Comment, the author's name, email address, and web address can now be changed. [#17111]
+* [**] Block editor: Enable embed preview for a list of providers (for now only YouTube and Twitter) [https://github.com/WordPress/gutenberg/pull/34446]
+* [***] Block editor: Add Inserter Block Search [https://github.com/WordPress/gutenberg/pull/33237]
+
+18.1
+-----
+* [*] Reader: Fixes an issue where the top of an article could be cropped after rotating a device. [#17041]
+* [*] Posts Settings: Removed deprecated Location feature. [#17052]
+* [**] Added a time selection feature to Blogging Reminders: users can now choose at what time they will receive the reminders [#17024, #17033]
+* [**] Block editor: Embed block: Add "Resize for smaller devices" setting. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3753]
+* [**] Account Settings: added the ability to close user account.
+* [*] Users can now share WordPress app with friends. Accessible from Me and About screen. [#16995]
+
+18.0
+-----
+* [*] Fixed a bug that would make it impossible to scroll the plugins the first time the plugin section was opened.
+* [*] Resolved an issue where authentication tokens weren't be regenerated when disabled on the server. [#16920]
+* [*] Updated the header text sizes to better support large texts on Choose a Domain and Choose a Design flows. [#16923]
+* [internal] Made a change to how Comment content is displayed. Should be no visible changes, but could cause regressions. [#16933]
+* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969, #16980]
+* [internal] Updated GoogleSignIn to 6.0.1 through WordPressAuthenticator. Should be no visible changes, but could cause regression in Google sign in flow. [#16974]
+* [internal] Converted Comment model properties to Swift. Should be no functional changes, but could cause regressions. [#16969]
+* [*] Posts: Ampersands are correctly decoded in publishing notices instead of showing as HTML entites. [#16972]
+* [***] Adjusted the image size of Theme Images for more optimal download speeds. [#16914]
+* [*] Comments and Notifications list are now displayed with a unified design. [#16985]
+* [*] Block editor: Add a "featured" banner and ability to set or remove an image as featured. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3449]
+
+17.9
+-----
+* [internal] Redirect Terms and service to open the page in an external web view [#16907]
+* [internal] Converted Comment model methods to Swift. Should be no functional changes, but could cause regressions. [#16898, #16905, #16908, #16913]
+* [*] Enables Support for Global Style Colors with Full Site Editing Themes [#16823]
+* [***] Block editor: New Block: Embed block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3727]
+
+17.8
+-----
+* [*] Authors and Contributors can now view a site's Comments via My Site > Comments. [#16783]
+* [*] [Jetpack-only] Fix bugs when tapping to notifications
+* [*] Fixed some refresh issues with the site follow buttons in the reader. [#16819]
+* [*] Block editor: Update loading and failed screens for web version of the editor [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3573]
+* [*] Block editor: Handle floating keyboard case - Fix issue with the block selector on iPad. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3687]
+* [**] Block editor: Added color/background customization for text blocks. [https://github.com/WordPress/gutenberg/pull/33250]
+
+17.7
+-----
+* [***] Added blogging reminders. Choose which days you'd like to be reminded, and we'll send you a notification prompting you to post on your site
+* [** Does not apply to Jetpack app] Self hosted sites that do not use Jetpack can now manage (install, uninstall, activate, and deactivate) their plugins [#16675]
+* [*] Upgraded the Zendesk SDK to version 5.3.0
+* [*] You can now subscribe to conversations by email from Reader lists and articles. [#16599]
+* [*] Block editor: Tablet view fixes for inserter button. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3602]
+* [*] Block editor: Tweaks to the badge component's styling, including change of background color and reduced padding. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3642]
+* [***] Block editor: New block Layout grid. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3513]
+* [*] Fixed an issue where the SignUp flow could not be dismissed sometimes. [#16824]
+
+17.6
+-----
+* [**] Reader Post details: now shows a summary of Likes for the post. Tapping it displays the full list of Likes. [#16628]
+* [*] Fix notice overlapping the ActionSheet that displays the Site Icon controls. [#16579]
+* [*] Fix login error for WordPress.org sites to show inline. [#16614]
+* [*] Disables the ability to open the editor for Post Pages [#16369]
+* [*] Fixed an issue that could cause a crash when moderating Comments. [#16645]
+* [*] Fix notice overlapping the ActionSheet that displays the QuickStart Removal. [#16609]
+* [*] Site Pages: when setting a parent, placeholder text is now displayed for pages with blank titles. [#16661]
+* [***] Block Editor: Audio block now available on WP.com sites on the free plan. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3523]
+* [**] You can now create a Site Icon for your site using an emoji. [#16670]
+* [*] Fix notice overlapping the ActionSheet that displays the More Actions in the Editor. [#16658]
+* [*] The quick action buttons will be hidden when iOS is using a accessibility font sizes. [#16701]
+* [*] Block Editor: Improve unsupported block message for reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3621]
+* [**] Block Editor: Fix incorrect block insertion point after blurring the post title field. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3640]
+* [*] Fixed a crash when sharing photos to WordPress [#16737]
+
+17.5
+-----
+* [*] Fixed a crash when rendering the Noticons font in rich notification. [#16525]
+* [**] Block Editor: Audio block: Add Insert from URL functionality. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3031]
+* [***] Block Editor: Slash command to insert new blocks. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3250]
+* [**] Like Notifications: now displays all users who liked a post or comment. [#15662]
+* [*] Fixed a bug that was causing some fonts to become enormous when large text was enabled.
+* [*] Fixed scrolling and item selection in the Plugins directory. [#16087]
+* [*] Improved large text support in the blog details header in My Sites. [#16521]
+* [***] Block Editor: New Block: Reusable block. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3490]
+* [***] Block Editor: Add reusable blocks to the block inserter menu. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3054]
+* [*] Fixed a bug where the web version of the editor did not load when using an account created before December 2018. [#16586]
+
+17.4
+-----
+* [**] A new author can be chosen for Posts and Pages on multi-author sites. [#16281]
+* [*] Fixed the Follow Sites Quick Start Tour so that Reader Search is highlighted. [#16391]
+* [*] Enabled approving login authentication requests via push notification while the app is in the foreground. [#16075]
+* [**] Added pull-to-refresh to the My Site screen when a user has no sites. [#16241]
+* [***] Fixed a bug that was causing uploaded videos to not be viewable in other platforms. [#16548]
+
+17.3
+-----
+* [**] Fix issue where deleting a post and selecting undo would sometimes convert the content to the classic editor. [#16342]
+* [**] Fix issue where restoring a post left the restored post in the published list even though it has been converted to a draft. [#16358]
+* [**] Fix issue where trashing a post converted it to Classic content. [#16367]
+* [**] Fix issue where users could not leave the username selection screen due to styling issues. [#16380]
+* [*] Comments can be filtered to show the most recent unreplied comments from other users. [#16215]
+* [*] Fixed the background color of search fields. [#16365]
+* [*] Fixed the navigation bar color in dark mode. [#16348]
+* [*] Fix translation issues for templates fetched on the site creation design selection screen. [#16404]
+* [*] Fix translation issues for templates fetched on the page creation design selection screen. [#16404]
+* [*] Fix translation issue for the Choose button on the template preview in the site creation flow. [#16404]
+* [***]  Block Editor: New Block: Search Block [#https://github.com/wordpress-mobile/gutenberg-mobile/pull/3210]
+* [**]  Block Editor: The media upload options of the Image, Video and Gallery block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/2700]
+* [**]  Block Editor: The media upload options of the File and Audio block automatically opens when the respective block is inserted. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3399]
+* [*]  Block Editor: Remove visual feedback from non-interactive bottom-sheet cell sections [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3404]
+* [*]  Block Editor: Fixed an issue that was causing the featured image badge to be shown on images in an incorrect manner. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3494]
+
+
 17.2
 -----
 
+* [**] Added transform block capability [https://github.com/wordpress-mobile/gutenberg-mobile/pull/3321]
 * [*] Fixed an issue where some author display names weren't visible for self-hosted sites. [#16297]
 * [***] Updated custom app icons. [#16261]
 * [**] Removed Site Switcher in the Editor
@@ -17,7 +392,7 @@
 * [**] Block Editor: Added Contact Info block to sites on WPcom or with Jetpack version >= 8.5.
 * [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] We updated the login prologue with brand new content and graphics. [#16159, #16177, #16185, #16187, #16200, #16217, #16219, #16221, #16222]
-* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207] 
+* [**] We updated the app's color scheme with a brighter new blue used throughout. [#16213, #16207]
 * [**] Updated the app icon to match the new color scheme within the app. [#16220]
 * [*] Fixed an issue where some webview navigation bar controls weren't visible. [#16257]
 
@@ -30,7 +405,7 @@
 * [*] Added a thumbnail device mode selector in the page layout, and use a default setting based on the current device. [#16019]
 * [**] Comments can now be filtered by status (All, Pending, Approved, Trashed, or Spam). [#15955, #16110]
 * [*] Notifications: Enabled the new view milestone notifications [#16144]
-* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750] 
+* [***] We updated the app's design, with fresh new headers throughout and a new site switcher in My Site. [#15750]
 
 16.9
 -----
@@ -49,7 +424,7 @@
 -----
 
 * [**] Stories: Fixed an issue which could remove content from a post when a new Story block was edited. [#16059]
- 
+
 16.8
 -----
 * [**] Prevent deleting published homepages which would have the effect of breaking a site. [#15797]

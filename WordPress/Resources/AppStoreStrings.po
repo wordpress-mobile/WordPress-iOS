@@ -13,9 +13,14 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 
+#. translators: The application name in the Apple App Store. Please keep the brand name ('WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
+msgctxt "app_store_name"
+msgid "WordPress – Website Builder"
+msgstr ""
+
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
-msgid "Build a website or blog"
+msgid "Design a site, build a blog"
 msgstr ""
 
 #. translators: Multi-paragraph text used to display in the Apple App Store.
@@ -37,20 +42,20 @@ msgstr ""
 #. translators: Keywords used in the App Store search engine to find the app.
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
+msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v17.1-whats-new"
+msgctxt "v20.3-whats-new"
 msgid ""
-"What’s new in this release?\n"
+"We’ve added some changes in the block editor to make your publishing experience even better.\n"
 "\n"
-"A new visual look! We redesigned the login experience, with a welcome carousel of new content and graphics that promote the app’s features and benefits. You’ll also notice a new color palette, with an updated app icon to match.\n"
+"- No more copying and pasting alt text—when you add an item in the media library to an Image block, the item’s alt text is carried over with it.\n"
+"- You can insert media from a URL in Video blocks.\n"
+"- If a block contains unexpected or invalid content, you can use the block recovery option to display the content properly—without re-adding it all from scratch.\n"
 "\n"
-"We made accessibility improvements in the block editor for people who use a VoiceOver screen reader. These updates improve your experience with the Columns block.\n"
+"Post comments are a bit user friendlier, too. When you hit the @ symbol to mention another user in your comment, the post or comment author comes first in the list of suggested users. Sweet.\n"
 "\n"
-"To help you manage comment activity on your site, there’s now an “Unreplied” filter so you can view all of your unreplied comments under one tab.\n"
-"\n"
-"We also made other enhancements, including updates to the page layout picker experience.\n"
+"Finally, we fixed a problem with the editor’s media picker where search queries would stick around even after closing and reopening the window. We also squashed a bug that made the app crash when adding multiple items to a Story post.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

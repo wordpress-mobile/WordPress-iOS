@@ -1,11 +1,17 @@
 import XCTest
 @testable import WordPress
 
-final class MarkAsSpamActionTests: XCTestCase {
+final class MarkAsSpamActionTests: CoreDataTestCase {
     private class TestableMarkAsSpam: MarkAsSpam {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -16,24 +22,22 @@ final class MarkAsSpamActionTests: XCTestCase {
     }
 
     private var action: MarkAsSpam?
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
-        action = TestableMarkAsSpam(on: Constants.initialStatus)
+        utility = NotificationUtility(coreDataStack: contextManager)
+        action = TestableMarkAsSpam(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {
@@ -44,12 +48,12 @@ final class MarkAsSpamActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, MarkAsSpam.title)
     }
 
-    func testExecuteCallsSpam() {
+    func testExecuteCallsSpam() throws {
         action?.on = false
 
         var executionCompleted = false
 
-        let context = ActionContext(block: utility.mockCommentContent(), content: "content") { (request, success) in
+        let context = ActionContext(block: try utility.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 

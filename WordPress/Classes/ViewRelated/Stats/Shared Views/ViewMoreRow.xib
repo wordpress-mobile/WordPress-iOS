@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,7 +41,7 @@
                         <constraint firstItem="Umw-QX-aI2" firstAttribute="leading" secondItem="N97-9D-WNI" secondAttribute="leading" constant="16" id="wMp-ZA-nkO"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3F-KZ-xRt" userLabel="View More Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3F-KZ-xRt" userLabel="View More Button">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
@@ -49,6 +49,7 @@
                     </connections>
                 </button>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="N3F-KZ-xRt" firstAttribute="leading" secondItem="N97-9D-WNI" secondAttribute="leading" id="0nP-FU-mOy"/>
@@ -61,8 +62,8 @@
                 <constraint firstItem="N97-9D-WNI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wVz-9r-Pr4"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="disclosureImageView" destination="gbG-Q7-nUb" id="stz-jY-mOy"/>
                 <outlet property="viewMoreLabel" destination="Umw-QX-aI2" id="ZdF-R6-GQb"/>
             </connections>
             <point key="canvasLocation" x="-476" y="-27.886056971514247"/>

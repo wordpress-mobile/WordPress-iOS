@@ -3,21 +3,26 @@
 @class Blog;
 @class BlogDetailHeaderView;
 @class CreateButtonCoordinator;
+@class IntrinsicTableView;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
+    BlogDetailsSectionCategoryQuickAction,
+    BlogDetailsSectionCategoryReminders,
     BlogDetailsSectionCategoryDomainCredit,
     BlogDetailsSectionCategoryQuickStart,
+    BlogDetailsSectionCategoryHome,
     BlogDetailsSectionCategoryGeneral,
     BlogDetailsSectionCategoryJetpack,
     BlogDetailsSectionCategoryPublish,
     BlogDetailsSectionCategoryPersonalize,
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
-    BlogDetailsSectionCategoryRemoveSite
+    BlogDetailsSectionCategoryRemoveSite,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionReminders,
     BlogDetailsSubsectionDomainCredit,
     BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
@@ -31,7 +36,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionComments,
     BlogDetailsSubsectionSharing,
     BlogDetailsSubsectionPeople,
-    BlogDetailsSubsectionPlugins
+    BlogDetailsSubsectionPlugins,
+    BlogDetailsSubsectionHome,
 };
 
 
@@ -54,7 +60,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementSharing = 8,
     QuickStartTourElementConnections = 9,
     QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderSearch = 12,
+    QuickStartTourElementReaderDiscoverSettings = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
     QuickStartTourElementSiteIcon = 15,
@@ -63,7 +69,12 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementStats = 18,
     QuickStartTourElementPlans = 19,
     QuickStartTourElementSiteTitle = 20,
-    QuickStartTourElementEditHomepage = 21,
+    QuickStartTourElementSiteMenu = 21,
+    QuickStartTourElementNotifications = 22,
+    QuickStartTourElementSetupQuickStart = 23,
+    QuickStartTourElementUpdateQuickStart = 24,
+    QuickStartTourElementMediaScreen = 25,
+    QuickStartTourElementMediaUpload = 26,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
@@ -127,6 +138,10 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 @protocol ScenePresenter;
 
+@protocol BlogDetailsPresentationDelegate
+- (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
+@end
+
 @interface BlogDetailsViewController : UIViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
     
 }
@@ -135,8 +150,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong) id<ScenePresenter> _Nonnull meScenePresenter;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
-@property (nonatomic, strong, readonly) id<BlogDetailHeader> _Nonnull headerView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
+@property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
@@ -144,14 +159,13 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)configureTableViewData;
 - (void)scrollToElement:(QuickStartTourElement)element;
 
-- (void)switchToBlog:(Blog *)blog;
+- (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
 - (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
 - (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
-- (void)refreshSiteIcon;
-- (void)toggleSpotlightForSiteTitle;
-- (void)toggleSpotlightOnHeaderView;
-
+- (void)updateTableView:(nullable void(^)(void))completion;
+- (void)preloadMetadata;
+- (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
 @end

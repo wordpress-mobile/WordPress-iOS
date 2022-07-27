@@ -7,18 +7,28 @@ import UIKit
 /// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
-class TopTotalsCell: UITableViewCell, NibLoadable {
+class TopTotalsCell: StatsBaseCell, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var outerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    private var topAccessoryView: UIView? = nil {
+        didSet {
+            oldValue?.removeFromSuperview()
+
+            if let topAccessoryView = topAccessoryView {
+                outerStackView.insertArrangedSubview(topAccessoryView, at: 0)
+                topAccessoryView.layoutMargins = subtitleStackView.layoutMargins
+                outerStackView.setCustomSpacing(Metrics.topAccessoryViewSpacing, after: topAccessoryView)
+            }
+        }
+    }
 
     private var forDetails = false
     private var limitRowsDisplayed = true
@@ -27,6 +37,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsReferrerDelegate: SiteStatsReferrerDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -36,20 +47,26 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     func configure(itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
+                   statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   siteStatsReferrerDelegate: SiteStatsReferrerDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
+                   topAccessoryView: UIView? = nil,
                    limitRowsDisplayed: Bool = true,
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
+        self.statSection = statSection
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.siteStatsReferrerDelegate = siteStatsReferrerDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
+        self.topAccessoryView = topAccessoryView
         self.limitRowsDisplayed = limitRowsDisplayed
         self.forDetails = forDetails
 
@@ -59,6 +76,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                     forType: siteStatsPeriodDelegate != nil ? .period : .insights,
                     limitRowsDisplayed: limitRowsDisplayed,
                     rowDelegate: self,
+                    referrerDelegate: self,
                     viewMoreDelegate: self)
 
             initChildRows()
@@ -87,6 +105,10 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
         removeRowsFromStackView(rowsStackView)
     }
+
+    private enum Metrics {
+        static let topAccessoryViewSpacing: CGFloat = 32.0
+    }
 }
 
 // MARK: - Private Extension
@@ -108,16 +130,23 @@ private extension TopTotalsCell {
     ///
     func setSubtitleVisibility() {
         subtitleStackView.layoutIfNeeded()
-        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
             bottomSeparatorLine.isHidden = true
-            rowsStackViewTopConstraint.constant = subtitlesProvided ? subtitleHeight : 0
+
+            updateSubtitleConstraints(showSubtitles: subtitlesProvided)
             return
         }
 
-        let showSubtitles = !dataRows.isEmpty && subtitlesProvided
-        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
+        updateSubtitleConstraints(showSubtitles: !dataRows.isEmpty && subtitlesProvided)
+    }
+
+    private func updateSubtitleConstraints(showSubtitles: Bool) {
+        if showSubtitles {
+            subtitleStackView.isHidden = false
+        } else {
+            subtitleStackView.isHidden = true
+        }
     }
 
     // MARK: - Child Row Handling
@@ -308,7 +337,14 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     func showAddInsight() {
         siteStatsInsightsDelegate?.showAddInsight?()
     }
+}
 
+// MARK: - StatsTotalRowReferrerDelegate
+
+extension TopTotalsCell: StatsTotalRowReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        siteStatsReferrerDelegate?.showReferrerDetails(data)
+    }
 }
 
 // MARK: - ViewMoreRowDelegate

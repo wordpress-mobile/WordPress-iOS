@@ -5,7 +5,7 @@ import AutomatticTracks
 import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator
-import AutomatticTracks
+import AutomatticAbout
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -18,13 +18,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    let backgroundTasksCoordinator = BackgroundTasksCoordinator(tasks: [
+        WeeklyRoundupBackgroundTask()
+    ], eventHandler: WordPressBackgroundTaskEventHandler())
+
     @objc
     lazy var windowManager: WindowManager = {
         guard let window = window else {
             fatalError("The App cannot run without a window.")
         }
 
-        return WindowManager(window: window)
+        return AppDependency.windowManager(window: window)
     }()
 
     var analytics: WPAppAnalytics?
@@ -65,6 +69,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     private let loggingStack = WPLoggingStack()
+
+    private lazy var tracksLogger = TracksLogger()
 
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
@@ -157,9 +163,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
-        // Let the app finish any uploads that are in progress
         let app = UIApplication.shared
+
+        // Let the app finish any uploads that are in progress
         if let task = bgTask, bgTask != .invalid {
+            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task.rawValue)")
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
@@ -169,19 +177,22 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // the task actually finishes at around the same time.
             DispatchQueue.main.async { [weak self] in
                 if let task = self?.bgTask, task != .invalid {
+                    DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
                     app.endBackgroundTask(task)
                     self?.bgTask = .invalid
                 }
             }
         })
+
+        if let bgTask = bgTask {
+            DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
-
-        ABTest.refreshIfNeeded()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -253,6 +264,17 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // Note that this method only appears to be called for iPhone devices, not iPad.
+    // This allows individual view controllers to cancel rotation if they need to.
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let vc = window?.topmostPresentedViewController,
+           vc is OrientationLimited {
+            return vc.supportedInterfaceOrientations
+        }
+
+        return application.supportedInterfaceOrientations(for: window)
+    }
+
     // MARK: - Setup
 
     func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
@@ -261,6 +283,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppCenterSDK()
         configureAppRatingUtility()
+
+        TracksLogging.delegate = tracksLogger
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -296,6 +320,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
+        AccountService.loadDefaultAccountCookies()
+
         windowManager.showUI()
         setupNoticePresenter()
     }
@@ -322,7 +348,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupBackgroundRefresh(_ application: UIApplication) {
-        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+        backgroundTasksCoordinator.scheduleTasks { result in
+            if case .failure(let error) = result {
+                DDLogError("Error scheduling background tasks: \(error)")
+            }
+        }
     }
 
     // MARK: - Helpers
@@ -402,7 +432,7 @@ extension WordPressAppDelegate {
 
     @objc func configureAppCenterSDK() {
         #if APPCENTER_ENABLED
-        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId(), services: [Distribute.self])
+        AppCenter.start(withAppSecret: ApiCredentials.appCenterAppId, services: [Distribute.self])
         #endif
     }
 
@@ -464,6 +494,10 @@ extension WordPressAppDelegate {
             let url = activity.webpageURL else {
                 FailureNavigationAction().failAndBounce(activity.webpageURL)
                 return
+        }
+
+        if QRLoginCoordinator.didHandle(url: url) {
+            return
         }
 
         trackDeepLink(for: url) { url in
@@ -614,10 +648,12 @@ extension WordPressAppDelegate {
 
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
 
-        let detailedVersionNumber = Bundle(for: type(of: self)).detailedVersionNumber() ?? unknown
+        let bundle = Bundle.main
+        let detailedVersionNumber = bundle.detailedVersionNumber() ?? unknown
+        let appName = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String ?? unknown
 
         DDLogInfo("===========================================================================")
-        DDLogInfo("Launching WordPress for iOS \(detailedVersionNumber)...")
+        DDLogInfo("Launching \(appName) for iOS \(detailedVersionNumber)...")
         DDLogInfo("Crash count: \(crashCount)")
 
         #if DEBUG
@@ -677,7 +713,6 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         WPSharedSetLoggingLevel(level)
-        TracksSetLoggingLevel(level)
         WPAuthenticatorSetLoggingLevel(level)
     }
 }
@@ -711,6 +746,7 @@ extension WordPressAppDelegate {
             setupShareExtensionToken()
             configureNotificationExtension()
             startObservingAppleIDCredentialRevoked()
+            AccountService.loadDefaultAccountCookies()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
@@ -807,8 +843,10 @@ extension WordPressAppDelegate {
 
         WPStyleGuide.configureTabBarAppearance()
         WPStyleGuide.configureNavigationAppearance()
+        WPStyleGuide.configureTableViewAppearance()
         WPStyleGuide.configureDefaultTint()
         WPStyleGuide.configureLightNavigationBarAppearance()
+        WPStyleGuide.configureToolbarAppearance()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UISwitch.appearance().onTintColor = .primary

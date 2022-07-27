@@ -354,14 +354,17 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)followTagNamed:(NSString *)topicName withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)followTagNamed:(NSString *)topicName
+           withSuccess:(void (^)(void))success
+               failure:(void (^)(NSError *error))failure
+                source:(NSString *)source
 {
     topicName = [[topicName lowercaseString] trim];
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            NSDictionary *properties = @{@"tag":topicName};
+            NSDictionary *properties = @{@"tag":topicName, @"source":source};
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self selectTopicWithID:topicID];
             if (success) {
@@ -473,14 +476,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure
 {
     NSError *error;
     ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.managedObjectContext existingObjectWithID:siteTopic.objectID error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         if (failure) {
-            failure(error);
+            failure(true, error);
         }
         return;
     }
@@ -509,19 +514,29 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [self refreshPostsForFollowedTopic];
         
         if (success) {
-            success();
+            success(newFollowValue);
         }
     };
 
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Revert changes on failure
+        BOOL alreadyFollowing = newFollowValue && error.domain == ReaderSiteServiceErrorDomain && error.code == ReaderSiteServiceErrorAlreadyFollowingSite;
+        BOOL alreadyUnsubscribed = !newFollowValue && [error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] isEqual:@"are_not_subscribed"];
+        BOOL successWithoutChanges = alreadyFollowing || alreadyUnsubscribed;
+            
+        if (successWithoutChanges) {
+            successBlock();
+            return;
+        }
+     
+        // Revert changes on failure, unless the error is that we're already following
+        // a site.
         topic.following = oldFollowValue;
         [postService setFollowing:oldFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
         if (failure) {
-            failure(error);
+            failure(newFollowValue, error);
         }
     };
 

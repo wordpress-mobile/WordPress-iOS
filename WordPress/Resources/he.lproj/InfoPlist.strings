@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
-NSLocationWhenInUseUsageDescription = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
-NSCameraUsageDescription = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
-NSPhotoLibraryUsageDescription = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
-NSMicrophoneUsageDescription = "כדי שלסרטוני הווידאו שלך יהיה קול.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>עליך לאפשר גישה למיקרופון כדי להקליט סאונד בקובצי ווידאו.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>להוסיף תמונות או סרטוני וידאו לפוסטים.</string>
+  </dict>
+</plist>

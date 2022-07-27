@@ -1,11 +1,17 @@
 import XCTest
 @testable import WordPress
 
-final class EditCommentActionTests: XCTestCase {
+final class EditCommentActionTests: CoreDataTestCase {
     private class TestableEditComment: EditComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
+
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -19,30 +25,28 @@ final class EditCommentActionTests: XCTestCase {
     }
 
     private var action: EditComment?
-    private let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
-        action = TestableEditComment(on: Constants.initialStatus)
+        utility = NotificationUtility(coreDataStack: contextManager)
+        action = TestableEditComment(on: Constants.initialStatus, coreDataStack: contextManager)
     }
 
     override func tearDown() {
         action = nil
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testActionTitleIsExpected() {
         XCTAssertEqual(action?.actionTitle, EditComment.title)
     }
 
-    func testExecuteCallsEdit() {
-        action?.execute(context: utility.mockCommentContext())
+    func testExecuteCallsEdit() throws {
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()

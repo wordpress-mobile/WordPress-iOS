@@ -134,24 +134,21 @@ class CollectionViewContainerCell: UITableViewCell {
             oldValue?.removeFromView()
 
             guard let noResultsView = noResultsView else {
-                    return
+                return
             }
 
-            let containerView = UIView(frame: collectionView.frame)
-            containerView.translatesAutoresizingMaskIntoConstraints = false
-
             noResultsView.view.backgroundColor = .clear
-            noResultsView.view.frame = containerView.frame
+            noResultsView.view.frame = collectionView.frame
             noResultsView.view.frame.origin.y = 0
+            noResultsView.view.translatesAutoresizingMaskIntoConstraints = false
 
-            containerView.addSubview(noResultsView.view)
-            addSubview(containerView)
+            addSubview(noResultsView.view)
 
             NSLayoutConstraint.activate([
-                containerView.topAnchor.constraint(equalTo: collectionView.topAnchor),
-                containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor),
-                containerView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
-                containerView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
+                noResultsView.view.topAnchor.constraint(equalTo: collectionView.topAnchor),
+                noResultsView.view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor),
+                noResultsView.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+                noResultsView.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
                 ])
         }
     }
@@ -210,12 +207,15 @@ class CollectionViewContainerCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
 
-        self.addSubview(collectionView)
+        contentView.addSubview(collectionView)
 
         collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: Constants.labelVerticalSpacing).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+
+        contentView.clipsToBounds = false
+        collectionView.clipsToBounds = false
     }
 
     override func prepareForReuse() {

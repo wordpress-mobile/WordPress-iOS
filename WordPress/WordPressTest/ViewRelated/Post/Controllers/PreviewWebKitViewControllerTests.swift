@@ -1,40 +1,31 @@
 import XCTest
 @testable import WordPress
 
-class PreviewWebKitViewControllerTests: XCTestCase {
+class PreviewWebKitViewControllerTests: CoreDataTestCase {
 
     private var rootWindow: UIWindow!
-    private var context: NSManagedObjectContext!
     private var navController = UINavigationController()
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
-
         rootWindow = UIWindow(frame: UIScreen.main.bounds)
         rootWindow.isHidden = false
         rootWindow.rootViewController = navController
     }
 
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
-    }
-
     func testMissingPermalink() {
-        let post = PostBuilder(context).drafted().build()
+        let post = PostBuilder(mainContext).drafted().build()
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_missing_permalink")
         XCTAssertEqual(vc.url!.absoluteString, "about:blank", "Should load blank page when no permalink is available")
     }
 
     func testDraftToolbarItems() {
 
-        let post = PostBuilder(context).drafted().build()
+        let post = PostBuilder(mainContext).drafted().build()
         post.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_draft_toolbar")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertTrue(items.contains(vc.publishButton), "Preview toolbar for draft should contain publish button.")
@@ -47,10 +38,10 @@ class PreviewWebKitViewControllerTests: XCTestCase {
 
     func testPublishedToolbarItems() {
 
-        let post = PostBuilder(context).published().build()
+        let post = PostBuilder(mainContext).published().build()
         post.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: post, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_published_toolbar")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertTrue(items.contains(vc.shareButton), "Preview toolbar for post should contain share button.")
@@ -62,10 +53,10 @@ class PreviewWebKitViewControllerTests: XCTestCase {
 
     func testSitePageToolbarItems() {
 
-        let page = PageBuilder(context).build()
+        let page = PageBuilder(mainContext).build()
         page.permaLink = "http://example.com/"
 
-        let vc = PreviewWebKitViewController(post: page, previewURL: nil)
+        let vc = PreviewWebKitViewController(post: page, previewURL: nil, source: "test_site_page")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
         XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")

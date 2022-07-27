@@ -1,5 +1,9 @@
 import UIKit
 
+protocol ReaderDetailToolbarDelegate: AnyObject {
+    func didTapLikeButton(isLiked: Bool)
+}
+
 class ReaderDetailToolbar: UIView, NibLoadable {
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var saveForLaterButton: UIButton!
@@ -21,6 +25,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     /// If we should hide the comments button
     var shouldHideComments = false
+
+    weak var delegate: ReaderDetailToolbarDelegate? = nil
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,8 +50,9 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.post = post
         self.viewController = viewController
 
-        likeCountObserver = post.observe(\.likeCount, options: .new) { [weak self] _, _ in
+        likeCountObserver = post.observe(\.likeCount, options: .new) { [weak self] updatedPost, _ in
             self?.configureLikeActionButton(true)
+            self?.delegate?.didTapLikeButton(isLiked: updatedPost.isLiked)
         }
 
         commentCountObserver = post.observe(\.commentCount, options: .new) { [weak self] _, _ in
@@ -91,7 +98,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        ReaderCommentAction().execute(post: post, origin: viewController)
+        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
     }
 
     @IBAction func didTapLike(_ sender: Any) {

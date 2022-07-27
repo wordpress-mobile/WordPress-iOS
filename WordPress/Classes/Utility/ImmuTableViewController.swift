@@ -3,7 +3,7 @@ import WordPressShared
 
 typealias ImmuTableRowControllerGenerator = (ImmuTableRow) -> UIViewController
 
-protocol ImmuTablePresenter: class {
+protocol ImmuTablePresenter: AnyObject {
     func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
     func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
@@ -49,7 +49,7 @@ protocol ImmuTableController {
 /// a "controller" class that handles all the logic, and updates the view
 /// controller, like you would update a view.
 final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
-    fileprivate lazy var handler: ImmuTableViewHandler = {
+    private(set) lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
@@ -58,6 +58,15 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     let controller: ImmuTableController
 
     // MARK: - Table View Controller
+
+    init(controller: ImmuTableController, style: UITableView.Style) {
+        self.controller = controller
+        super.init(style: style)
+
+        title = controller.title
+        registerRows(controller.immuTableRows)
+        controller.refreshModel()
+    }
 
     init(controller: ImmuTableController) {
         self.controller = controller

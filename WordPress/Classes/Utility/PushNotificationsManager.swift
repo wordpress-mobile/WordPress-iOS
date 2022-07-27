@@ -287,6 +287,8 @@ extension PushNotificationsManager {
         ///
         if applicationState != .background || userInteraction {
             authenticationManager.handleAuthenticationNotification(userInfo)
+        } else {
+            DDLogInfo("Skipping handling authentication notification due to app being in background or user not interacting with it.")
         }
 
         completionHandler?(.newData)
@@ -391,6 +393,7 @@ extension PushNotificationsManager {
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
         static let local = "qs-local-notification"
+        static let bloggingPrompts = "blogging-prompts-notification"
     }
 
     enum Tracking {
@@ -425,9 +428,11 @@ extension PushNotificationsManager {
         }
         WPTabBarController.sharedInstance()?.showMySitesTab()
 
-        if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey) {
+        if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey),
+            let quickStartType = userInfo.string(forKey: QuickStartTracking.quickStartTypeKey) {
             WPAnalytics.track(.quickStartNotificationTapped,
-                              withProperties: [QuickStartTracking.taskNameKey: taskName])
+                              withProperties: [QuickStartTracking.taskNameKey: taskName,
+                                               WPAnalytics.WPAppAnalyticsKeyQuickStartSiteType: quickStartType])
         }
 
         completionHandler?(.newData)
@@ -435,7 +440,7 @@ extension PushNotificationsManager {
         return true
     }
 
-    func postNotification(for tour: QuickStartTour) {
+    func postNotification(for tour: QuickStartTour, quickStartType: QuickStartType) {
         deletePendingLocalNotifications()
 
         let content = UNMutableNotificationContent()
@@ -457,7 +462,8 @@ extension PushNotificationsManager {
         UNUserNotificationCenter.current().add(request)
 
         WPAnalytics.track(.quickStartNotificationStarted,
-                          withProperties: [QuickStartTracking.taskNameKey: tour.analyticsKey])
+                          withProperties: [QuickStartTracking.taskNameKey: tour.analyticsKey,
+                                           WPAnalytics.WPAppAnalyticsKeyQuickStartSiteType: quickStartType.key])
     }
 
     @objc func deletePendingLocalNotifications() {
@@ -471,6 +477,7 @@ extension PushNotificationsManager {
 
     private enum QuickStartTracking {
         static let taskNameKey = "task_name"
+        static let quickStartTypeKey = "site_type"
     }
 }
 

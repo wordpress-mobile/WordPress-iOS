@@ -24,8 +24,9 @@ class StoriesIntroViewController: WhatIsNewViewController {
 
     init(continueTapped: @escaping () -> Void, openURL: @escaping (URL) -> Void) {
         let titles = WhatIsNewViewTitles(header: Constants.headerTitle,
-                                       version: "",
-                                       continueButtonTitle: Constants.continueButtonTitle)
+                                         version: "",
+                                         continueButtonTitle: Constants.continueButtonTitle,
+                                         disclaimerTitle: "")
 
         let storyQueryItems = [URLQueryItem.WPStory.fullscreen, URLQueryItem.WPStory.playOnLoad]
 
@@ -52,7 +53,7 @@ class StoriesIntroViewController: WhatIsNewViewController {
         ])
 
         super.init(whatIsNewViewFactory: {
-            return WhatIsNewView(viewTitles: titles, dataSource: dataSource, showsBackButton: true)
+            return WhatIsNewView(viewTitles: titles, dataSource: dataSource, appearance: .standard, showsBackButton: true)
         }, onContinue: {
             StoriesIntroViewController.trackContinue()
             continueTapped()

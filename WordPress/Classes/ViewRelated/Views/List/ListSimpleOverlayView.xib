@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB" customClass="ListSimpleOverlayView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="333" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="66p-Uq-QJR">
+                    <rect key="frame" x="16" y="0.0" width="231" height="80"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5U-hO-1f3">
+                    <rect key="frame" x="247" y="0.0" width="70" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="LbQ-6g-4eh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                    <state key="normal" title="Button"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="trailingMargin" secondItem="p5U-hO-1f3" secondAttribute="trailing" id="4Xm-rt-6Vy"/>
+                <constraint firstItem="66p-Uq-QJR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="B5R-yZ-bMh"/>
+                <constraint firstAttribute="bottom" secondItem="66p-Uq-QJR" secondAttribute="bottom" id="Lx0-9P-lEJ"/>
+                <constraint firstItem="p5U-hO-1f3" firstAttribute="leading" secondItem="66p-Uq-QJR" secondAttribute="trailing" id="M3s-2f-4t2"/>
+                <constraint firstItem="p5U-hO-1f3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eqD-8K-Pu9"/>
+                <constraint firstAttribute="bottom" secondItem="p5U-hO-1f3" secondAttribute="bottom" id="f77-Xm-RQC"/>
+                <constraint firstItem="p5U-hO-1f3" firstAttribute="width" relation="lessThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.33" id="fZ4-OZ-lHr"/>
+                <constraint firstItem="66p-Uq-QJR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="x5I-qe-kKZ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="actionButton" destination="p5U-hO-1f3" id="p4F-gb-5Cm"/>
+                <outlet property="textLabel" destination="66p-Uq-QJR" id="CUJ-yS-km6"/>
+            </connections>
+            <point key="canvasLocation" x="-42.753623188405797" y="-148.66071428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

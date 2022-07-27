@@ -218,10 +218,7 @@ class UnifiedProloguePageViewController: UIViewController {
     }
 
     private func embedSwiftUIView<Content: View>(_ view: Content) -> UIView {
-        let controller = UIHostingController(rootView: view)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        controller.view.backgroundColor = .clear
-        return controller.view
+        UIView.embedSwiftUIView(view)
     }
 
     private func makeContentView() -> UIView {

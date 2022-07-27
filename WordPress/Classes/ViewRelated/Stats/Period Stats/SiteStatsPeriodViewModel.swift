@@ -11,7 +11,9 @@ class SiteStatsPeriodViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: StatsPeriodStore
+    private var selectedDate: Date
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit {
         didSet {
@@ -29,22 +31,32 @@ class SiteStatsPeriodViewModel: Observable {
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         didSet {
             if oldValue == nil {
-                currentEntryIndex = (mostRecentChartData?.summaryData.endIndex ?? 0) - 1
+                guard let mostRecentChartData = mostRecentChartData else {
+                    return
+                }
+
+                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate <= selectedDate })
+                    ?? max(mostRecentChartData.summaryData.count - 1, 0)
             }
         }
     }
 
     private var currentEntryIndex: Int = 0
 
+    private let calendar: Calendar = .current
+
     // MARK: - Constructor
 
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
-         periodDelegate: SiteStatsPeriodDelegate) {
+         periodDelegate: SiteStatsPeriodDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.periodDelegate = periodDelegate
+        self.referrerDelegate = referrerDelegate
         self.store = store
-        self.lastRequestedDate = selectedDate
+        self.selectedDate = selectedDate
+        self.lastRequestedDate = Date()
         self.lastRequestedPeriod = selectedPeriod
 
         changeReceipt = store.onChange { [weak self] in
@@ -80,11 +92,11 @@ class SiteStatsPeriodViewModel: Observable {
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
             return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
@@ -209,7 +221,7 @@ class SiteStatsPeriodViewModel: Observable {
             mostRecentChartData = nil
         }
 
-        lastRequestedDate = date
+        selectedDate = date
         lastRequestedPeriod = period
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
     }
@@ -239,7 +251,17 @@ class SiteStatsPeriodViewModel: Observable {
         } else {
             currentEntryIndex -= 1
         }
-        return chartDate(for: currentEntryIndex)
+
+        guard let nextDate = chartDate(for: currentEntryIndex) else {
+            // The date doesn't exist in the chart data... we need to manually calculate it and request
+            // a refresh.
+            let increment = forward ? 1 : -1
+            let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
+            refreshPeriodOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
+            return nextDate
+        }
+
+        return nextDate
     }
 }
 
@@ -266,7 +288,7 @@ private extension SiteStatsPeriodViewModel {
             mostRecentChartData = chartData
         }
 
-        let periodDate = summaryData.last?.periodStartDate
+        let periodDate = summaryData.indices.contains(currentEntryIndex) ? summaryData[currentEntryIndex].periodStartDate : nil
         let period = periodSummary?.period
 
         let viewsData = intervalData(summaryType: .views)
@@ -323,12 +345,17 @@ private extension SiteStatsPeriodViewModel {
             barChartStyling.append(contentsOf: chart.barChartStyling)
 
             indexToHighlight = chartData.summaryData.lastIndex(where: {
-                lastRequestedDate.normalizedDate() >= $0.periodStartDate.normalizedDate()
+                $0.periodStartDate.normalizedDate() <= selectedDate.normalizedDate()
             })
         }
 
-        let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
-                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
+        let row = OverviewRow(
+            tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
+            chartData: barChartData,
+            chartStyling: barChartStyling,
+            period: lastRequestedPeriod,
+            statsBarChartViewDelegate: statsBarChartViewDelegate,
+            chartHighlightIndex: indexToHighlight)
         tableRows.append(row)
 
         return tableRows
@@ -416,7 +443,8 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
-                                                 siteStatsPeriodDelegate: periodDelegate))
+                                                 siteStatsPeriodDelegate: periodDelegate,
+                                                 siteStatsReferrerDelegate: referrerDelegate))
 
         return tableRows
     }
@@ -444,7 +472,8 @@ private extension SiteStatsPeriodViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
@@ -577,7 +606,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title,
+        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title.stringByDecodingXMLCharacters(),
                                                                                                data: "",
                                                                                                showDisclosure: true,
                                                                                                disclosureURL: $0.postURL,

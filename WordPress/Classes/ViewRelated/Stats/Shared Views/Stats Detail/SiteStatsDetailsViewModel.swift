@@ -14,6 +14,7 @@ class SiteStatsDetailsViewModel: Observable {
 
     private var statSection: StatSection?
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
+    private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsReceipt: Receipt?
@@ -31,8 +32,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     // MARK: - Init
 
-    init(detailsDelegate: SiteStatsDetailsDelegate) {
+    init(detailsDelegate: SiteStatsDetailsDelegate,
+         referrerDelegate: SiteStatsReferrerDelegate) {
         self.detailsDelegate = detailsDelegate
+        self.referrerDelegate = referrerDelegate
     }
 
     // MARK: - Data Fetching
@@ -169,7 +172,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                            selectedIndex: selectedIndex))
                 let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
                 if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights, statSection: .insightsFollowersWordPress))
                 } else {
                     rows.append(contentsOf: tabbedRowsFrom(dataRows))
                 }
@@ -187,7 +190,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                            selectedIndex: selectedIndex))
                 let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
                 if dataRows.isEmpty {
-                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights))
+                    rows.append(StatsErrorRow(rowStatus: .success, statType: .insights, statSection: .insightsCommentsAuthors))
                 } else {
                     rows.append(contentsOf: tabbedRowsFrom(dataRows))
                 }
@@ -399,7 +402,6 @@ class SiteStatsDetailsViewModel: Observable {
 
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
-
 }
 
 // MARK: - Private Extension
@@ -739,7 +741,8 @@ private extension SiteStatsDetailsViewModel {
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
-                                     statSection: .periodReferrers)
+                                     statSection: .periodReferrers,
+                                     isReferrerSpam: referrer.isSpam)
         }
 
         return referrers.map { rowDataFromReferrer(referrer: $0) }
@@ -777,7 +780,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func publishedRowData() -> [StatsTotalRowData] {
-        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
+        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title.stringByDecodingXMLCharacters(),
                                                                                      data: "",
                                                                                      showDisclosure: true,
                                                                                      disclosureURL: $0.postURL,
@@ -963,6 +966,7 @@ private extension SiteStatsDetailsViewModel {
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
         return DetailExpandableRow(rowData: rowData,
                                    detailsDelegate: detailsDelegate,
+                                   referrerDelegate: referrerDelegate,
                                    hideIndentedSeparator: hideIndentedSeparator,
                                    hideFullSeparator: hideFullSeparator,
                                    expanded: expanded)

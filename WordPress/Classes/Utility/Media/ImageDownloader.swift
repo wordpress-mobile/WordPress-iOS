@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // MARK: - ImageDownloadTask protocol
 
@@ -42,7 +42,6 @@ class ImageDownloader {
     @discardableResult
     func downloadImage(at url: URL, completion: @escaping (UIImage?, Error?) -> Void) -> ImageDownloaderTask {
         var request = URLRequest(url: url)
-        request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
         return downloadImage(for: request, completion: completion)
@@ -75,14 +74,41 @@ class ImageDownloader {
         return task
     }
 
-    private func makeGIF(with data: Data, request: URLRequest) -> RCTAnimatedImage? {
+    private func makeGIF(with data: Data, request: URLRequest) -> AnimatedImageWrapper? {
         guard let url = request.url, url.pathExtension.lowercased() == "gif" else {
             return nil
         }
-        return RCTAnimatedImage(data: data, scale: 1)
+
+        return AnimatedImageWrapper(gifData: data)
     }
 }
 
+// MARK: - AnimatedImageWrapper
+
+/// This is a wrapper around `RCTAnimatedImage` that allows including extra information
+/// to better render the gifs in text views.
+///
+/// This class uses the RCTAnimatedImage to verify the image is a valid gif which is why I'm still
+/// using that here.
+class AnimatedImageWrapper: UIImage {
+    var gifData: Data? = nil
+    var targetSize: CGSize? = nil
+
+    private static let playbackStrategy: GIFPlaybackStrategy = LargeGIFPlaybackStrategy()
+
+    convenience init?(gifData: Data) {
+        self.init(data: gifData, scale: 1)
+
+        // Don't store the gifdata if they're too large
+        // We still allow the the RCTAnimatedImage to be rendered since it will still render
+        // the first frame, but not eat up data
+        guard gifData.count < Self.playbackStrategy.maxSize else {
+            return
+        }
+
+        self.gifData = gifData
+    }
+}
 
 // MARK: - Error Types
 //

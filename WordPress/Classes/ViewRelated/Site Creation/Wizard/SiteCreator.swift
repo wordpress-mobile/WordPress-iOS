@@ -1,5 +1,6 @@
 
 import Foundation
+import WordPressKit
 
 extension DomainSuggestion {
     var subdomain: String {
@@ -16,7 +17,6 @@ extension DomainSuggestion {
 enum SiteCreationRequestAssemblyError: Error {
     case invalidSegmentIdentifier
     case invalidVerticalIdentifier
-    case invalidDomain
 }
 
 // MARK: - SiteCreator
@@ -27,7 +27,7 @@ final class SiteCreator {
     // MARK: Properties
     var segment: SiteSegment?
     var design: RemoteSiteDesign?
-    var vertical: SiteVertical?
+    var vertical: SiteIntentVertical?
     var information: SiteInformation?
     var address: DomainSuggestion?
 
@@ -35,33 +35,39 @@ final class SiteCreator {
     ///
     /// - Returns: an Encodable object
     ///
-    func build() throws -> SiteCreationRequest {
-        guard FeatureFlag.siteCreationHomePagePicker.enabled || segment?.identifier != nil else {
-            throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
-        }
-
-        let verticalIdentifier = vertical?.identifier.description
-
-        guard let domainSuggestion = address else {
-            throw SiteCreationRequestAssemblyError.invalidDomain
-        }
-        let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
-
-        var siteDesign: String? = nil
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            siteDesign = design?.slug ?? "default"
-        }
+    func build() -> SiteCreationRequest {
 
         let request = SiteCreationRequest(
             segmentIdentifier: segment?.identifier,
-            siteDesign: siteDesign,
-            verticalIdentifier: verticalIdentifier,
-            title: information?.title ?? NSLocalizedString("Site Title", comment: "Site info. Title"),
+            siteDesign: design?.slug ?? Strings.defaultDesignSlug,
+            verticalIdentifier: vertical?.slug,
+            title: information?.title ?? "",
             tagline: information?.tagLine ?? "",
-            siteURLString: siteName,
-            isPublic: true
+            siteURLString: siteURLString,
+            isPublic: true,
+            siteCreationFlow: address == nil ? Strings.siteCreationFlowForNoAddress : nil,
+            findAvailableURL: address == nil
         )
-
         return request
+    }
+
+    var hasSiteTitle: Bool {
+        information?.title != nil
+    }
+
+    /// Returns the domain suggestion if there's one,
+    /// - otherwise a site name if there's one,
+    /// - otherwise an empty string.
+    private var siteURLString: String {
+
+        guard let domainSuggestion = address else {
+            return information?.title ?? ""
+        }
+        return domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
+    }
+
+    private enum Strings {
+        static let defaultDesignSlug = "default"
+        static let siteCreationFlowForNoAddress = "with-design-picker"
     }
 }

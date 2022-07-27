@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
-NSLocationWhenInUseUsageDescription = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
-NSCameraUsageDescription = "För att ta bilder eller videor som kan användas i dina inlägg.";
-NSPhotoLibraryUsageDescription = "För att lägga till bilder eller videor i dina inlägg.";
-NSMicrophoneUsageDescription = "För att dina videor ska ha ljud.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>För att ta bilder eller spela in videoklipp som kan användas i dina inlägg.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Aktivera mikrofonåtkomst för att spela in ljud i dina videoklipp.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>För att lägga till bilder eller videoklipp i dina inlägg.</string>
+  </dict>
+</plist>

@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress akan menambahkan lokasi Anda pada setiap tulisan di dalam situs dengan fitur geotagging yang Anda aktifkan.";
-NSLocationWhenInUseUsageDescription = "WordPress akan menambahkan lokasi Anda pada setiap tulisan di dalam situs dengan fitur geotagging yang Anda aktifkan.";
-NSCameraUsageDescription = "Untuk mengambil foto atau video agar dapat digunakan di pos Anda.";
-NSPhotoLibraryUsageDescription = "Untuk menambahkan foto atau video ke pos Anda.";
-NSMicrophoneUsageDescription = "Agar video Anda dapat bersuara.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Untuk mengambil foto atau video agar dapat digunakan di artikel Anda.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress ingin menambahkan lokasi Anda di artikel pada situs dengan geotagging yang telah Anda aktifkan.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress ingin menambahkan lokasi Anda di artikel pada situs dengan geotagging yang telah Anda aktifkan.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Izinkan akses mikrofon untuk merekam suara di video Anda.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Untuk menambahkan foto atau video ke artikel Anda.</string>
+  </dict>
+</plist>

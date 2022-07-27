@@ -168,6 +168,6 @@ private class ReaderTopicsTableView: UITableView {
     }
 }
 
-protocol ReaderTopicsTableCardCellDelegate: class {
+protocol ReaderTopicsTableCardCellDelegate: AnyObject {
     func didSelect(topic: ReaderAbstractTopic)
 }

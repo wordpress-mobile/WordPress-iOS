@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="353" id="KGk-i7-Jjw" customClass="CommentContentTableViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="353"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="353"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNJ-fg-sKO" userLabel="Highlighted Bar View">
+                        <rect key="frame" x="0.0" y="0.0" width="5" height="353"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="5" id="zU4-st-LVq"/>
+                        </constraints>
+                    </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
+                        <rect key="frame" x="16" y="0.0" width="288" height="353"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="f2E-yC-BJS" userLabel="Header View">
+                                <rect key="frame" x="0.0" y="0.0" width="288" height="119"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="9QY-3I-cxv" userLabel="Avatar Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="18" width="38" height="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="9QY-3I-cxv" secondAttribute="height" multiplier="1:1" id="3HU-89-TeJ"/>
+                                            <constraint firstAttribute="width" constant="38" id="Apb-Vu-nw6"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="CzL-pe-Tnr" userLabel="Name Stack View">
+                                        <rect key="frame" x="48" y="18" width="208" height="31"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="po6-3F-ppN" userLabel="Name Container View">
+                                                <rect key="frame" x="0.0" y="0.0" width="208" height="14.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="761" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpE-B7-6wr" userLabel="Name Label">
+                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="14.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Badge" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDo-cU-sWp" userLabel="Badge Label" customClass="BadgeLabel" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="174.5" y="-2" width="33.5" height="13.5"/>
+                                                        <color key="backgroundColor" name="Blue50"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                        <color key="textColor" name="White"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="horizontalPadding">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="verticalPadding">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="HpE-B7-6wr" firstAttribute="top" secondItem="po6-3F-ppN" secondAttribute="top" id="1mu-S2-Bod"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hDo-cU-sWp" secondAttribute="trailing" id="Kgn-8h-iRl"/>
+                                                    <constraint firstItem="HpE-B7-6wr" firstAttribute="leading" secondItem="po6-3F-ppN" secondAttribute="leading" id="a9I-ZO-CNF"/>
+                                                    <constraint firstAttribute="bottom" secondItem="HpE-B7-6wr" secondAttribute="bottom" id="d2g-ej-XWq"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HpE-B7-6wr" secondAttribute="trailing" id="p0y-Cp-XXb"/>
+                                                    <constraint firstItem="hDo-cU-sWp" firstAttribute="firstBaseline" secondItem="HpE-B7-6wr" secondAttribute="firstBaseline" constant="-3" id="pzL-bf-kIJ"/>
+                                                    <constraint firstItem="hDo-cU-sWp" firstAttribute="leading" secondItem="HpE-B7-6wr" secondAttribute="trailing" constant="5" id="zBO-4n-va3"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-Xy-q8c" userLabel="Date Label">
+                                                <rect key="frame" x="0.0" y="16.5" width="208" height="14.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1G8-cc-t5d" userLabel="Accessory Button">
+                                        <rect key="frame" x="256" y="15" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="1G8-cc-t5d" secondAttribute="height" multiplier="1:1" id="1CB-OD-6k3"/>
+                                            <constraint firstAttribute="height" constant="44" id="L5a-rf-l5V"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="tintColor" systemColor="secondaryLabelColor"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="square.and.arrow.up" catalog="system" symbolScale="large" renderingMode="template"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="large">
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            </preferredSymbolConfiguration>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="bottom" constant="15" id="FLO-bi-cgb"/>
+                                    <constraint firstItem="CzL-pe-Tnr" firstAttribute="top" secondItem="9QY-3I-cxv" secondAttribute="top" id="Fs5-LK-eAC"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="R3L-jf-zLP"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9QY-3I-cxv" secondAttribute="bottom" priority="750" constant="15" id="S4y-cM-fX9"/>
+                                    <constraint firstItem="9QY-3I-cxv" firstAttribute="top" secondItem="f2E-yC-BJS" secondAttribute="top" constant="18" id="VRu-Tu-EzK"/>
+                                    <constraint firstItem="1G8-cc-t5d" firstAttribute="centerY" secondItem="9QY-3I-cxv" secondAttribute="centerY" id="iiu-dq-fba"/>
+                                    <constraint firstItem="1G8-cc-t5d" firstAttribute="leading" secondItem="CzL-pe-Tnr" secondAttribute="trailing" id="kMf-Ux-GI7"/>
+                                    <constraint firstItem="9QY-3I-cxv" firstAttribute="leading" secondItem="f2E-yC-BJS" secondAttribute="leading" id="mzW-Rh-t4b"/>
+                                    <constraint firstItem="CzL-pe-Tnr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="f2E-yC-BJS" secondAttribute="top" constant="18" id="pAn-nJ-PTk"/>
+                                    <constraint firstItem="CzL-pe-Tnr" firstAttribute="leading" secondItem="9QY-3I-cxv" secondAttribute="trailing" constant="10" id="shs-JU-Qg8"/>
+                                    <constraint firstAttribute="trailing" secondItem="1G8-cc-t5d" secondAttribute="trailing" constant="-12" id="xTt-ug-Tgu"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="M0y-BK-TEh" userLabel="Content Container View">
+                                <rect key="frame" x="0.0" y="119" width="288" height="0.0"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="t5W-a4-bo7"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QT8-DO-J30" userLabel="Reaction Stack View">
+                                <rect key="frame" x="0.0" y="119" width="288" height="234"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="761" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VoI-YI-Qgc" userLabel="Reply Button">
+                                        <rect key="frame" x="0.0" y="97" width="174.5" height="40"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="tintColor" systemColor="secondaryLabelColor"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
+                                        <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
+                                        <state key="normal" title="Reply">
+                                            <color key="titleColor" systemColor="secondaryLabelColor"/>
+                                            <imageReference key="image" image="icon-reader-comment-reply" symbolScale="default" renderingMode="template"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="default">
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            </preferredSymbolConfiguration>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="762" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2J-8b-R5F" userLabel="Like Button">
+                                        <rect key="frame" x="179.5" y="96.5" width="53.5" height="41"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="tintColor" systemColor="secondaryLabelColor"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="15" maxY="15"/>
+                                        <inset key="titleEdgeInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
+                                        <state key="normal" title="Like">
+                                            <color key="titleColor" systemColor="secondaryLabelColor"/>
+                                            <imageReference key="image" image="star" catalog="system" symbolScale="medium" renderingMode="template"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small">
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            </preferredSymbolConfiguration>
+                                        </state>
+                                    </button>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8GH-U7-J7H" userLabel="Spacer View">
+                                        <rect key="frame" x="238" y="92" width="50" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" placeholder="YES" id="4wt-Z8-Xp5"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LK0-LA-c0R" userLabel="Moderation Bar View">
+                                <rect key="frame" x="0.0" y="353" width="288" height="93"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Z-LV-01Y" customClass="CommentModerationBar" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="10" width="288" height="83"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="qRm-Qi-IXu"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="T1Z-LV-01Y" secondAttribute="trailing" id="5pw-Ri-Jfp"/>
+                                    <constraint firstItem="T1Z-LV-01Y" firstAttribute="top" secondItem="LK0-LA-c0R" secondAttribute="top" constant="10" id="YQw-pq-YQg"/>
+                                    <constraint firstItem="T1Z-LV-01Y" firstAttribute="leading" secondItem="LK0-LA-c0R" secondAttribute="leading" id="h1E-6A-mIn"/>
+                                    <constraint firstAttribute="bottom" secondItem="T1Z-LV-01Y" secondAttribute="bottom" id="vnN-EZ-EwQ"/>
+                                    <constraint firstAttribute="height" constant="93" placeholder="YES" id="wqW-2g-tUS"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="hcN-S7-sLG" secondAttribute="trailing" constant="16" id="2zy-oR-X5O"/>
+                    <constraint firstItem="mNJ-fg-sKO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="II8-F0-CBs"/>
+                    <constraint firstItem="mNJ-fg-sKO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eId-Od-5wj"/>
+                    <constraint firstItem="hcN-S7-sLG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="esQ-oB-yxJ"/>
+                    <constraint firstAttribute="bottom" secondItem="mNJ-fg-sKO" secondAttribute="bottom" id="izD-cW-YFx"/>
+                    <constraint firstAttribute="bottom" secondItem="hcN-S7-sLG" secondAttribute="bottom" id="jAu-U3-I4N"/>
+                    <constraint firstItem="hcN-S7-sLG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="uFL-PF-ffo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="accessoryButton" destination="1G8-cc-t5d" id="kLS-Ag-hAG"/>
+                <outlet property="avatarImageView" destination="9QY-3I-cxv" id="lbp-Hv-zRm"/>
+                <outlet property="badgeLabel" destination="hDo-cU-sWp" id="gVe-4c-TlR"/>
+                <outlet property="containerStackBottomConstraint" destination="jAu-U3-I4N" id="1Hk-Cp-fR5"/>
+                <outlet property="containerStackLeadingConstraint" destination="uFL-PF-ffo" id="6Ah-H9-d0b"/>
+                <outlet property="containerStackTrailingConstraint" destination="2zy-oR-X5O" id="dDR-lB-Nvs"/>
+                <outlet property="containerStackView" destination="hcN-S7-sLG" id="k9D-6a-BmR"/>
+                <outlet property="contentContainerHeightConstraint" destination="t5W-a4-bo7" id="2ox-vW-Kuh"/>
+                <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
+                <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
+                <outlet property="highlightBarView" destination="mNJ-fg-sKO" id="fjf-gA-HoE"/>
+                <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
+                <outlet property="moderationBar" destination="T1Z-LV-01Y" id="YUL-ft-QkO"/>
+                <outlet property="moderationBarView" destination="LK0-LA-c0R" id="5mo-la-sEw"/>
+                <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
+                <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="313.72767857142856"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="gravatar" width="85" height="85"/>
+        <image name="icon-reader-comment-reply" width="13" height="12"/>
+        <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <image name="star" catalog="system" width="128" height="116"/>
+        <namedColor name="Blue50">
+            <color red="0.023529411764705882" green="0.45882352941176469" blue="0.7686274509803922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

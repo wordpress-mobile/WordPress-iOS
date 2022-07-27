@@ -63,7 +63,16 @@ class PluginViewModel: Observable {
     private let store: PluginStore
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
-        self.state = .plugin(plugin)
+
+        var updatedPlugin = plugin
+
+        // Self hosted non-Jetpack plugins may not have the directory entry set
+        // attempt to find one for this plugin
+        if updatedPlugin.directoryEntry == nil {
+            updatedPlugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+        }
+
+        self.state = .plugin(updatedPlugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
@@ -71,9 +80,13 @@ class PluginViewModel: Observable {
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
-            guard let plugin = store.getPlugin(id: plugin.id, site: site) else {
+            guard var plugin = store.getPlugin(id: plugin.id, site: site) else {
                 self?.dismiss?()
                 return
+            }
+
+            if plugin.directoryEntry == nil {
+                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
             }
 
             self?.state = .plugin(plugin)
@@ -82,7 +95,12 @@ class PluginViewModel: Observable {
 
     convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         let state: State
-        if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
+        if var plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
+            // Self hosted non-Jetpack plugins may not have the directory entry set
+            if plugin.directoryEntry == nil {
+                plugin.directoryEntry = directoryEntry
+            }
+
             state = .plugin(plugin)
         } else {
             state = .directoryEntry(directoryEntry)
@@ -92,7 +110,11 @@ class PluginViewModel: Observable {
 
     convenience init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         let state: State
-        if let plugin = store.getPlugin(slug: slug, site: site) {
+        if var plugin = store.getPlugin(slug: slug, site: site) {
+            if plugin.directoryEntry == nil {
+                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+            }
+
             state = .plugin(plugin)
         } else {
             state = .loading
@@ -115,7 +137,11 @@ class PluginViewModel: Observable {
                 return
             }
 
-            if let plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
+            if var plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
+                if plugin.directoryEntry == nil {
+                    plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+                }
+
                 self?.state = .plugin(plugin)
             } else {
                 self?.state = .directoryEntry(entry)
@@ -508,7 +534,12 @@ class PluginViewModel: Observable {
     }
 
     private func presentDomainRegistration(for directoryEntry: PluginDirectoryEntry) {
-        let controller = RegisterDomainSuggestionsViewController.instance(site: site, domainPurchasedCallback: { [weak self] domain in
+        guard let blog = BlogService.blog(with: site) else {
+            DDLogError("Error obtaining the blog from the jetpack site ref.")
+            return
+        }
+
+        let controller = RegisterDomainSuggestionsViewController.instance(site: blog, domainPurchasedCallback: { [weak self] domain in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
@@ -524,7 +555,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentBrowser(`for` url: URL) {
-        let controller = WebViewControllerFactory.controller(url: url)
+        let controller = WebViewControllerFactory.controller(url: url, source: "plugins")
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

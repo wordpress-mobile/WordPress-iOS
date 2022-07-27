@@ -17,6 +17,12 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     // MARK: - Initialization
 
     init(site: JetpackSiteRef, activity: Activity, isAwaitingCredentials: Bool) {
+
+        let highlightedSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+        let warningFormat = NSLocalizedString("%1$@ to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured. %1$@ is a placeholder for the string 'Enter your server credentials'.")
+        let warningString = String(format: warningFormat, highlightedSubstring)
+        let warningButtonTitle = HighlightedText(substring: highlightedSubstring, string: warningString)
+
         let restoreOptionsConfiguration = JetpackRestoreOptionsConfiguration(
             title: NSLocalizedString("Restore", comment: "Title for the Jetpack Restore Site Screen"),
             iconImage: UIImage.gridicon(.history),
@@ -24,7 +30,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
             messageDescription: NSLocalizedString("%1$@ is the selected point for your restore.", comment: "Description for the restore action. $1$@ is a placeholder for the selected date."),
             generalSectionHeaderText: NSLocalizedString("Choose the items to restore", comment: "Restorable items: general section title"),
             buttonTitle: NSLocalizedString("Restore to this point", comment: "Button title for restore site action"),
-            warningButtonTitle: isAwaitingCredentials ? NSLocalizedString("Enter your server credentials to enable one click site restores from backups.", comment: "Error message displayed when restoring a site fails due to credentials not being configured.") : nil,
+            warningButtonTitle: isAwaitingCredentials ? warningButtonTitle : nil,
             isRestoreTypesConfigurable: !isAwaitingCredentials
         )
 
@@ -56,7 +62,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
     }
 
     override func detailActionButtonTapped() {
-        guard let jetpackSettingsURL = URL(string: "https://wordpress.com/settings/jetpack/\(site.siteID)") else {
+        guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: site.siteID) else {
 
             let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
 
@@ -65,8 +71,7 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
             return
         }
 
-        let webVC = WebViewControllerFactory.controller(url: jetpackSettingsURL)
-        let navigationVC = UINavigationController(rootViewController: webVC)
+        let navigationVC = UINavigationController(rootViewController: controller)
 
         present(navigationVC, animated: true)
     }

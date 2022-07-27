@@ -117,8 +117,8 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleFollowingForPost:(ReaderPost *)post
-                       success:(void (^)(void))success
-                       failure:(void (^)(NSError *error))failure;
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure;
 
 /**
  Toggle the saved for later status of the specified post.
@@ -236,5 +236,15 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success;
+
+
+/**
+ Get a cached site's ReaderPost with the specified ID.
+ 
+ @param postID ID of the post.
+ @param siteID ID of th site the post belongs to.
+ @return the matching ReaderPost.
+ */
+- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID;
 
 @end

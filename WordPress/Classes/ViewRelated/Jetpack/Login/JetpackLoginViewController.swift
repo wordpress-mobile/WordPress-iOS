@@ -202,7 +202,7 @@ class JetpackLoginViewController: UIViewController {
             return
         }
 
-        let webviewViewController = WebViewControllerFactory.controller(url: url)
+        let webviewViewController = WebViewControllerFactory.controller(url: url, source: "jetpack_login")
         let navigationViewController = UINavigationController(rootViewController: webviewViewController)
         present(navigationViewController, animated: true, completion: nil)
     }

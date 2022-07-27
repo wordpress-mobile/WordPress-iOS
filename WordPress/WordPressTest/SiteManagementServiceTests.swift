@@ -2,8 +2,7 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceTests: XCTestCase {
-    var contextManager: TestContextManager!
+class SiteManagementServiceTests: CoreDataTestCase {
     var mockRemoteService: MockSiteManagementServiceRemote!
     var siteManagementService: SiteManagementServiceTester!
 
@@ -57,14 +56,8 @@ class SiteManagementServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         siteManagementService = SiteManagementServiceTester(managedObjectContext: contextManager.mainContext)
         mockRemoteService = siteManagementService.mockRemoteService
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func insertBlog(_ context: NSManagedObjectContext) -> Blog {

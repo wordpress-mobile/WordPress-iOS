@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import UIKit
 import WebKit
+import WordPressShared
 
 protocol WebKitAuthenticatable {
     var authenticator: RequestAuthenticator? { get }
@@ -27,6 +28,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     @objc let webView: WKWebView
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
+    let analyticsSource: String?
 
     @objc lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage.gridicon(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
@@ -86,24 +88,24 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
+    private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
-    private var useLightStyle: Bool {
-        navigationController is LightNavigationController || FeatureFlag.newNavBarAppearance.enabled
-    }
-
     private var barButtonTintColor: UIColor {
-        useLightStyle ? .listIcon : UIColor(light: .white, dark: .neutral(.shade70))
+        .listIcon
     }
 
     private var navBarTitleColor: UIColor {
-        useLightStyle ? .text : UIColor(light: .white, dark: .neutral(.shade70))
+        .text
     }
 
 
     private struct WebViewErrors {
         static let frameLoadInterrupted = 102
     }
+
+    /// Precautionary variable that's in place to make sure the web view doesn't run into an endless loop of reloads if it encounters an error.
+    private var hasAttemptedAuthRecovery = false
 
     @objc init(configuration: WebViewControllerConfiguration) {
         let config = WKWebViewConfiguration()
@@ -121,13 +123,15 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         linkBehavior = configuration.linkBehavior
         opensNewInSafari = configuration.opensNewInSafari
         onClose = configuration.onClose
+        analyticsSource = configuration.analyticsSource
+
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
     }
 
-    fileprivate init(url: URL, parent: WebKitViewController) {
-        webView = WKWebView(frame: .zero, configuration: parent.webView.configuration)
+    fileprivate init(url: URL, parent: WebKitViewController, configuration: WKWebViewConfiguration, source: String? = nil) {
+        webView = WKWebView(frame: .zero, configuration: configuration)
         self.url = url
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
@@ -137,6 +141,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationDelegate = parent.navigationDelegate
         linkBehavior = parent.linkBehavior
         opensNewInSafari = parent.opensNewInSafari
+        analyticsSource = source
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         startObservingWebView()
@@ -183,7 +188,16 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        view.pinSubviewAtCenter(stackView)
+        // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
+        let safeArea = self.view.safeAreaLayoutGuide
+
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+
+        // this constraint saved as a varible so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
+        let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        stackViewBottomAnchor = stackViewBottom
+        NSLayoutConstraint.activate([stackViewBottom])
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
@@ -198,12 +212,16 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         webView.uiDelegate = self
 
         loadWebViewRequest()
+
+        track(.webKitViewDisplayed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopWaitingForConnectionRestored()
         ReachabilityUtils.dismissNoInternetConnectionNotice()
+
+        track(.webKitViewDismissed)
     }
 
     @objc func loadWebViewRequest() {
@@ -243,7 +261,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         setupCloseButton()
         styleNavBar()
-        styleNavBarButtons()
     }
 
     private func setupRefreshButton() {
@@ -262,7 +279,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
 
         titleView.titleLabel.textColor = navBarTitleColor
-        titleView.subtitleLabel.textColor = useLightStyle ? .neutral(.shade30) : .neutral(.shade5)
+        titleView.subtitleLabel.textColor = .neutral(.shade30)
 
         if let title = customTitle {
             self.title = title
@@ -277,26 +294,13 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         }
         navigationBar.barStyle = .default
 
-        if !useLightStyle {
-            navigationBar.titleTextAttributes = [.foregroundColor: UIColor.neutral(.shade70)]
-        } else {
-            // Remove serif title bar formatting
-            navigationBar.standardAppearance.titleTextAttributes = [:]
-        }
+        // Remove serif title bar formatting
+        navigationBar.standardAppearance.titleTextAttributes = [:]
 
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
 
         fixBarButtonsColorForBoldText(on: navigationBar)
-    }
-
-    private func styleNavBarButtons() {
-        guard !useLightStyle else {
-            return
-        }
-
-        navigationItem.leftBarButtonItems?.forEach(styleBarButton)
-        navigationItem.rightBarButtonItems?.forEach(styleBarButton)
     }
 
     // MARK: ToolBar setup
@@ -305,6 +309,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationController?.isToolbarHidden = secureInteraction
 
         guard !secureInteraction else {
+            // if not a secure interaction/view, no toolbar is displayed, so deactivate constraint pinning stack view to safe area
+            stackViewBottomAnchor?.isActive = false
             return
         }
 
@@ -333,7 +339,17 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         guard let toolBar = navigationController?.toolbar else {
             return
         }
-        toolBar.barTintColor = UIColor(light: .white, dark: .appBarBackground)
+
+        let appearance = UIToolbarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor(light: .white, dark: .appBarBackground)
+
+        toolBar.standardAppearance = appearance
+
+        if #available(iOS 15.0, *) {
+            toolBar.scrollEdgeAppearance = appearance
+        }
+
         fixBarButtonsColorForBoldText(on: toolBar)
     }
 
@@ -343,9 +359,19 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     /// Sets the width of the web preview
     /// - Parameter width: The width value to set the webView to
-    func setWidth(_ width: CGFloat?) {
+    /// - Parameter viewWidth: The view width the webView must fit within, used to manage view transitions, e.g. orientation change
+    func setWidth(_ width: CGFloat?, viewWidth: CGFloat? = nil) {
         if let width = width {
-            widthConstraint?.constant = min(width, view.superview?.frame.width ?? width)
+            let horizontalViewBound: CGFloat
+            if let viewWidth = viewWidth {
+                horizontalViewBound = viewWidth
+            } else if let superViewWidth = view.superview?.frame.width {
+                horizontalViewBound = superViewWidth
+            } else {
+                horizontalViewBound = width
+            }
+
+            widthConstraint?.constant = min(width, horizontalViewBound)
             widthConstraint?.priority = UILayoutPriority.defaultHigh
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow
@@ -392,7 +418,6 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }
 
     // MARK: User Actions
-
     @objc func close() {
         dismiss(animated: true, completion: onClose)
     }
@@ -412,19 +437,22 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             }
         }
         present(activityViewController, animated: true)
-
+        track(.webKitViewShareTapped)
     }
 
     @objc func refresh() {
         webView.reload()
+        track(.webKitViewReloadTapped)
     }
 
     @objc func goBack() {
         webView.goBack()
+        track(.webKitViewNavigatedBack)
     }
 
     @objc func goForward() {
         webView.goForward()
+        track(.webKitViewNavigatedForward)
     }
 
     @objc func openInSafari() {
@@ -432,6 +460,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             return
         }
         UIApplication.shared.open(url)
+        track(.webKitViewOpenInSafariTapped)
     }
 
     ///location is used to present a document menu in tap location on iOS 13
@@ -477,6 +506,14 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationItem.titleView?.accessibilityValue = titleView.titleLabel.text
         navigationItem.titleView?.accessibilityTraits = .updatesFrequently
     }
+
+    private func track(_ event: WPAnalyticsEvent) {
+        let properties: [AnyHashable: Any] = [
+            "source": analyticsSource ?? "unknown"
+        ]
+
+        WPAnalytics.track(event, properties: properties)
+    }
 }
 
 extension WebKitViewController: WKNavigationDelegate {
@@ -511,6 +548,27 @@ extension WebKitViewController: WKNavigationDelegate {
 
         decisionHandler(policy)
     }
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        guard navigationResponse.isForMainFrame, let authenticator = authenticator, !hasAttemptedAuthRecovery else {
+            decisionHandler(.allow)
+            return
+        }
+
+        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+        authenticator.decideActionFor(response: navigationResponse.response, cookieJar: cookieStore) { [unowned self] action in
+            switch action {
+            case .reload:
+                decisionHandler(.cancel)
+
+                /// We've cleared the stored cookies so let's try again.
+                self.hasAttemptedAuthRecovery = true
+                self.loadWebViewRequest()
+            case .allow:
+                decisionHandler(.allow)
+            }
+        }
+    }
 }
 
 extension WebKitViewController: WKUIDelegate {
@@ -521,9 +579,10 @@ extension WebKitViewController: WKUIDelegate {
             if opensNewInSafari {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                let controller = WebKitViewController(url: url, parent: self)
+                let controller = WebKitViewController(url: url, parent: self, configuration: configuration, source: analyticsSource)
                 let navController = UINavigationController(rootViewController: controller)
                 present(navController, animated: true)
+                return controller.webView
             }
         }
         return nil
@@ -546,7 +605,7 @@ extension WebKitViewController: WKUIDelegate {
             ReachabilityUtils.showNoInternetConnectionNotice()
             reloadWhenConnectionRestored()
         } else {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
+            DDLogError("WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
 }

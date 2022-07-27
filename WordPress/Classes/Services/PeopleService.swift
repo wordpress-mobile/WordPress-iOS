@@ -68,6 +68,28 @@ struct PeopleService {
         })
     }
 
+    /// Loads a page of Email Followers associated to the current blog, starting at the specified offset.
+    ///
+    /// - Parameters:
+    ///     - offset: Number of records to skip.
+    ///     - count: Number of records to retrieve. By default set to 20.
+    ///     - success: Closure to be executed on success with the number of followers retrieved and a bool indicating if more are available.
+    ///     - failure: Closure to be executed on failure.
+    ///
+    func loadEmailFollowersPage(_ offset: Int = 0,
+                                count: Int = 20,
+                                success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void),
+                                failure: ((Error) -> Void)? = nil) {
+        let page = (offset / count) + 1
+        remote.getEmailFollowers(siteID, page: page, max: count, success: { followers, hasMore in
+            self.mergePeople(followers)
+            success(followers.count, hasMore)
+        }, failure: { error in
+            DDLogError(String(describing: error))
+            failure?(error)
+        })
+    }
+
     /// Loads a page of Viewers associated to the current blog, starting at the specified offset.
     ///
     /// - Parameters:
@@ -179,6 +201,30 @@ struct PeopleService {
         })
 
         // Pre-emptively nuke the entity
+        context.delete(managedPerson)
+    }
+
+    /// Deletes a given EmailFollower.
+    ///
+    /// - Parameters:
+    ///     - person: The email follower that should be deleted
+    ///     - success: Closure to be executed in case of success.
+    ///     - failure: Closure to be executed on error
+    ///
+    func deleteEmailFollower(_ person: EmailFollower, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(person) else {
+            return
+        }
+
+        remote.deleteEmailFollower(siteID, userID: person.ID, success: {
+            success?()
+        }, failure: { error in
+            DDLogError("Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
+
+            self.createManagedPerson(person)
+            failure?(error)
+        })
+
         context.delete(managedPerson)
     }
 

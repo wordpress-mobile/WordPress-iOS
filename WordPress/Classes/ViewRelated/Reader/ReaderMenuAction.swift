@@ -10,16 +10,21 @@ final class ReaderMenuAction {
                  readerTopic: ReaderAbstractTopic? = nil,
                  anchor: UIView,
                  vc: UIViewController,
-                 source: ReaderPostMenuSource) {
+                 source: ReaderPostMenuSource,
+                 followCommentsService: FollowCommentsService
+    ) {
         let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
         let siteTopic: ReaderSiteTopic? = post.isFollowing ? service.findSiteTopic(withSiteID: post.siteID) : nil
 
-        ReaderShowMenuAction(loggedIn: isLoggedIn).execute(with: post,
-                                                           context: context,
-                                                           siteTopic: siteTopic,
-                                                           readerTopic: readerTopic,
-                                                           anchor: anchor,
-                                                           vc: vc,
-                                                           source: source)
+        ReaderShowMenuAction(loggedIn: isLoggedIn).execute(
+            with: post,
+            context: context,
+            siteTopic: siteTopic,
+            readerTopic: readerTopic,
+            anchor: anchor,
+            vc: vc,
+            source: source,
+            followCommentsService: followCommentsService
+        )
     }
 }

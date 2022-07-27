@@ -23,15 +23,6 @@ class PluginDirectoryViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
-    }
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -82,7 +73,6 @@ class PluginDirectoryViewController: UITableViewController {
         let resultsController = PluginListViewController(site: viewModel.site, query: .feed(type: .search(term: "")))
 
         let controller = UISearchController(searchResultsController: resultsController)
-        controller.obscuresBackgroundDuringPresentation = false
         controller.obscuresBackgroundDuringPresentation = false
         controller.searchResultsUpdater = self
         controller.delegate = self
@@ -225,10 +215,23 @@ extension PluginDirectoryViewController: PluginListPresenter {
 
         if let listType = listType {
             let properties = ["type": listType]
-            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: site.siteID as NSNumber)
+            let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
+
+            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: siteID)
         }
 
         let listVC = PluginListViewController(site: site, query: query)
         navigationController?.pushViewController(listVC, animated: true)
+    }
+}
+
+extension BlogDetailsViewController {
+
+    @objc func makePluginDirectoryViewController(blog: Blog) -> PluginDirectoryViewController? {
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+        return PluginDirectoryViewController(site: site)
     }
 }

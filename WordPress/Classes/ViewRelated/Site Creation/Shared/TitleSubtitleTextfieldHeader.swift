@@ -47,12 +47,19 @@ final class SearchTextField: UITextField {
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         let iconX = bounds.width - Constants.iconInset - Constants.iconDimension
         let iconY = (bounds.height - Constants.iconDimension) / 2
-        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: bounds.height)
+        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: Constants.iconDimension)
     }
 
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
         let originalClearButtonRect = super.clearButtonRect(forBounds: bounds)
-        return originalClearButtonRect.offsetBy(dx: Constants.clearButtonInset, dy: 0)
+
+        var offsetX = Constants.clearButtonInset
+
+        if effectiveUserInterfaceLayoutDirection == .rightToLeft {
+            offsetX = -offsetX
+        }
+
+        return originalClearButtonRect.offsetBy(dx: offsetX, dy: 0)
     }
 
     // MARK: Private behavior
@@ -78,7 +85,7 @@ final class SearchTextField: UITextField {
 
     private lazy var searchIconImageView: UIImageView = {
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = UIImage.gridicon(.search, size: iconSize).imageWithTintColor(.listIcon)?.imageFlippedForRightToLeftLayoutDirection()
+        let loupeIcon = UIImage.gridicon(.search, size: iconSize).imageWithTintColor(.listIcon)
         return UIImageView(image: loupeIcon)
     }()
 
@@ -105,21 +112,9 @@ final class SearchTextField: UITextField {
     }
 
     private func setIconImage(view: UIView) {
-        if traitCollection.layoutDirection == .rightToLeft {
-            rightView = view
-            rightViewMode = .always
-        } else {
-            leftView = view
-            leftViewMode = .always
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 13, *) {
-            setIconImage(view: searchIconImageView)
-        }
+        // Since the RTL layout is already handled elsewhere updating leftView is enough here
+        leftView = view
+        leftViewMode = .always
     }
 }
 

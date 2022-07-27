@@ -3,6 +3,7 @@ import Gridicons
 import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
+import WordPressFlux
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -897,7 +898,7 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Actions
 
-    @objc func publishPost(_ apost: AbstractPost) {
+    @objc func publishPost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
         let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
@@ -911,6 +912,7 @@ class AbstractPostListViewController: UIViewController,
             WPAnalytics.track(.postListPublishAction, withProperties: self.propertiesForAnalytics())
 
             PostCoordinator.shared.publish(apost)
+            completion?()
         }
 
         present(alertController, animated: true)
@@ -927,7 +929,7 @@ class AbstractPostListViewController: UIViewController,
 
         let post = apost.hasRevision() ? apost.revision! : apost
 
-        let controller = PreviewWebKitViewController(post: post)
+        let controller = PreviewWebKitViewController(post: post, source: "posts_pages_view_post")
         controller.trackOpenEvent()
         // NOTE: We'll set the title to match the title of the View action button.
         // If the button title changes we should also update the title here.
@@ -1002,6 +1004,12 @@ class AbstractPostListViewController: UIViewController,
             recentlyTrashedPostObjectIDs.remove(at: index)
         }
 
+        if filterSettings.currentPostListFilter().filterType != .draft {
+            // Needed or else the post will remain in the published list.
+            updateAndPerformFetchRequest()
+            tableView.reloadData()
+        }
+
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         postService.restore(apost, success: { [weak self] in
@@ -1052,6 +1060,16 @@ class AbstractPostListViewController: UIViewController,
 
             strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
         }
+    }
+
+    @objc func copyPostLink(_ apost: AbstractPost) {
+        let pasteboard = UIPasteboard.general
+        guard let link = apost.permaLink else { return }
+        pasteboard.string = link as String
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+        let notice = Notice(title: noticeTitle, feedbackType: .success)
+        ActionDispatcher.dispatch(NoticeAction.dismiss) // Dismiss any old notices
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
@@ -1175,6 +1193,8 @@ extension AbstractPostListViewController: NetworkStatusDelegate {
         automaticallySyncIfAppropriate()
     }
 }
+
+extension AbstractPostListViewController: EditorAnalyticsProperties { }
 
 // MARK: - NoResultsViewControllerDelegate
 

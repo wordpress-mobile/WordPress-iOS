@@ -1,7 +1,7 @@
 import UIKit
 
 // MARK: - WizardNavigation
-final class WizardNavigation: GutenbergLightNavigationController {
+final class WizardNavigation: UINavigationController {
     private let steps: [WizardStep]
     private let pointer: WizardNavigationPointer
 
@@ -41,10 +41,7 @@ final class WizardNavigation: GutenbergLightNavigationController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if FeatureFlag.siteCreationHomePagePicker.enabled {
-            return .default
-        }
-        return super.preferredStatusBarStyle
+        return .default
     }
 
     private func configureSteps() {

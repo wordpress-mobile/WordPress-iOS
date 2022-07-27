@@ -32,6 +32,7 @@ struct GutenbergNetworkRequest {
 
     private func dotComPath(with dotComID: NSNumber) -> String {
         return path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
+                   .replacingOccurrences(of: "/oembed/1.0/", with: "/oembed/1.0/sites/\(dotComID)/")
     }
 
     // MARK: - Self-Hosed
@@ -51,9 +52,22 @@ struct GutenbergNetworkRequest {
                     case .success(let response):
                         completion(.success(response))
                     case .failure(let error):
+                        if handleEmbedError(path: path, error: error, completion: completion) {
+                            return
+                        }
                         completion(.failure(error as NSError))
                 }
             }
+    }
+
+    private func handleEmbedError(path: String, error: Error, completion: @escaping CompletionHandler) -> Bool {
+        if path.starts(with: "/oembed/1.0/") {
+            if let error = error as? AFError, error.responseCode == 404 {
+                completion(.failure(URLError(URLError.Code(rawValue: 404)) as NSError))
+                return true
+            }
+        }
+        return false
     }
 
     private var selfHostedPath: String {

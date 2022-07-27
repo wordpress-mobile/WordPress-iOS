@@ -1,11 +1,16 @@
 import XCTest
 @testable import WordPress
 
-final class ReplyToCommentActionTests: XCTestCase {
+final class ReplyToCommentActionTests: CoreDataTestCase {
     private class TestableReplyToComment: ReplyToComment {
-        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        let service: MockNotificationActionsService
         override var actionsService: NotificationActionsService? {
             return service
+        }
+
+        init(on: Bool, coreDataStack: CoreDataStack) {
+            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            super.init(on: on)
         }
     }
 
@@ -18,24 +23,22 @@ final class ReplyToCommentActionTests: XCTestCase {
     }
 
     private var action: ReplyToComment?
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     private struct Constants {
         static let initialStatus: Bool = false
     }
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
-        action = TestableReplyToComment(on: Constants.initialStatus)
+        utility = NotificationUtility(coreDataStack: contextManager)
+        action = TestableReplyToComment(on: Constants.initialStatus, coreDataStack: contextManager)
         makeNetworkAvailable()
     }
 
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
     func testStatusPassedInInitialiserIsPreserved() {
@@ -46,8 +49,8 @@ final class ReplyToCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.actionTitle, ReplyToComment.title)
     }
 
-    func testExecuteCallsReply() {
-        action?.execute(context: utility.mockCommentContext())
+    func testExecuteCallsReply() throws {
+        action?.execute(context: try utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()

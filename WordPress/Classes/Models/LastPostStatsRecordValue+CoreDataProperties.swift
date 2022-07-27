@@ -15,5 +15,6 @@ extension LastPostStatsRecordValue {
     @NSManaged public var urlString: String?
     @NSManaged public var viewsCount: Int64
     @NSManaged public var postID: Int64
+    @NSManaged public var featuredImageUrlString: String?
 
 }

@@ -1,0 +1,9 @@
+使用 iOS 版 Jetpack，將功能強大的安全性和效能工具納入囊中。
+
+發生錯誤時可隨時隨地還原網站。 掃瞄威脅，一鍵解決。 監控網站活動，查看哪些人在什麼時間變更了哪些內容。 查看統計資料，瞭解今天的讀者來自哪些新國家。
+
+此應用程式也支援你所期望的 WordPress 功能。 窩在沙發上信手創作幾行俳句； 趁著午休時間拍照並上傳； 回應你的最新留言。
+
+只要啟用 Jetpack 並擁有與 WordPress.com 連結的帳號，iOS 版 Jetpack 即可支援 WorPress 網站。
+
+請檢閱加州使用者的隱私權聲明：https://automattic.com/privacy/#california-consumer-privacy-act-ccpa。

@@ -37,7 +37,7 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Private Helpers
     fileprivate func setupNavigationItem() {
-        title = NSLocalizedString("About", comment: "About this app (information page title)")
+        title = .navigationTitleText
 
         // Don't show 'About' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
@@ -53,7 +53,7 @@ open class AboutViewController: UITableViewController {
         imageView.contentMode       = .top
 
         // Let's add a bottom padding!
-        imageView.frame.size.height += iconBottomPadding
+        imageView.frame.size.height += Constants.iconBottomPadding
 
         // Finally, setup the TableView
         tableView.tableHeaderView   = imageView
@@ -61,6 +61,10 @@ open class AboutViewController: UITableViewController {
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+
+        if isRecommendAppSectionEnabled {
+            tableView.register(SingleButtonTableViewCell.defaultNib, forCellReuseIdentifier: .buttonReuseIdentifier)
+        }
     }
 
     fileprivate func setupDismissButtonIfNeeded() {
@@ -93,12 +97,30 @@ open class AboutViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
-        if cell == nil {
-            cell = WPTableViewCell(style: .value1, reuseIdentifier: reuseIdentifier)
+        let row = rows[indexPath.section][indexPath.row]
+        var cell = tableView.dequeueReusableCell(withIdentifier: row.reuseIdentifier)
+
+        if let buttonRow = row as? ButtonRow {
+            // if we encounter a `buttonStyle` Row while feature flag is off, it's likely there's an implementation error.
+            guard isRecommendAppSectionEnabled,
+                  let buttonCell = cell as? SingleButtonTableViewCell else {
+                return .init()
+            }
+
+            buttonCell.title = buttonRow.title
+            buttonCell.iconImage = buttonRow.iconImage
+            buttonCell.tintColor = buttonRow.tintColor
+            buttonCell.isLoading = buttonRow.isLoading
+
+            return buttonCell
         }
 
-        let row = rows[indexPath.section][indexPath.row]
+        // keep the original implementation intact for now, to minimize impact.
+        // let's clean this up once the `recommendAppToOthers` feature flag is removed.
+
+        if cell == nil {
+            cell = WPTableViewCell(style: .value1, reuseIdentifier: row.reuseIdentifier)
+        }
 
         cell!.textLabel?.text       = row.title
         cell!.detailTextLabel?.text = row.details ?? String()
@@ -127,14 +149,15 @@ open class AboutViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectSelectedRowWithAnimation(true)
+        // some handlers may need to query selected index path in the handler closure, so let's defer the deselect.
+        defer {
+            tableView.deselectSelectedRowWithAnimation(true)
+        }
 
         if let handler = rows[indexPath.section][indexPath.row].handler {
             handler()
         }
     }
-
-
 
     // MARK: - Private Helpers
     fileprivate func displayWebView(_ urlString: String) {
@@ -147,10 +170,10 @@ open class AboutViewController: UITableViewController {
         }
 
         if let title = title {
-            present(webViewController: WebViewControllerFactory.controller(url: url, title: title))
+            present(webViewController: WebViewControllerFactory.controller(url: url, title: title, source: "about"))
         }
         else {
-            present(webViewController: WebViewControllerFactory.controller(url: url))
+            present(webViewController: WebViewControllerFactory.controller(url: url, source: "about"))
         }
     }
 
@@ -174,11 +197,27 @@ open class AboutViewController: UITableViewController {
         UIApplication.shared.open(twitterURL)
     }
 
+    private func displayShareApp() {
+        guard let selectedIndexPath = tableView.indexPathForSelectedRow,
+              let selectedCell = tableView.cellForRow(at: selectedIndexPath),
+              let sharePresenter = sharePresenter,
+              !sharePresenter.isLoading,
+              isRecommendAppSectionEnabled else {
+            return
+        }
+
+        sharePresenter.present(for: .wordpress, in: self, source: .about, sourceView: selectedCell)
+    }
+
     // MARK: - Nested Row Class
     fileprivate class Row {
         let title: String
         let details: String?
         let handler: (() -> Void)?
+
+        var reuseIdentifier: String {
+            .defaultReuseIdentifier
+        }
 
         init(title: String, details: String?, handler: (() -> Void)?) {
             self.title      = title
@@ -187,20 +226,29 @@ open class AboutViewController: UITableViewController {
         }
     }
 
+    // Row model for the SingleButtonTableViewCell.
+    private class ButtonRow: Row {
+        let isLoading: Bool
+        let iconImage: UIImage?
+        let tintColor: UIColor
 
+        override var reuseIdentifier: String {
+            .buttonReuseIdentifier
+        }
 
-    // MARK: - Private Constants
-    fileprivate let reuseIdentifier = "reuseIdentifierValue1"
-    fileprivate let iconBottomPadding   = CGFloat(30)
-    fileprivate let footerBottomPadding = CGFloat(12)
-
-
+        init(title: String, iconImage: UIImage?, tintColor: UIColor, isLoading: Bool, handler: (() -> Void)?) {
+            self.iconImage = iconImage
+            self.tintColor = tintColor
+            self.isLoading = isLoading
+            super.init(title: title, details: nil, handler: handler)
+        }
+    }
 
     // MARK: - Private Properties
+
     fileprivate lazy var footerTitleText: String = {
         let year = Calendar.current.component(.year, from: Date())
-        let localizedTitleText = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
-        return String(format: localizedTitleText, year)
+        return String(format: .footerTitleTextFormat, year)
     }()
 
     fileprivate lazy var versionString: String = {
@@ -217,49 +265,123 @@ open class AboutViewController: UITableViewController {
         #endif
     }()
 
+    private lazy var sharePresenter: ShareAppContentPresenter? = {
+        guard isRecommendAppSectionEnabled else {
+            return nil
+        }
+
+        let account = AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()
+        let presenter = ShareAppContentPresenter(account: account)
+        presenter.delegate = self
+
+        return presenter
+    }()
+
+    /// Convenience property to determine whether the recomend app section should be displayed or not.
+    private var isRecommendAppSectionEnabled: Bool {
+        return !AppConfiguration.isJetpack
+    }
+
     fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: AppConstants.productBlogURL)?.host ?? String()
+        var sections = [[Row]]()
 
-        let acknowledgementsString = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+        // construct the first row section
+        sections.append([
+            Row(title: .versionRowText,
+                details: versionString,
+                handler: nil),
 
-        return [
-            [
-                Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
-                    details: versionString,
-                    handler: nil),
+            Row(title: .termsOfServiceRowText,
+                details: nil,
+                handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.appendingLocale()) }),
 
-                Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
-                    details: nil,
-                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.appendingLocale()) }),
+            Row(title: .privacyPolicyRowText,
+                details: nil,
+                handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
+        ])
 
-                Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
-                    details: nil,
-                    handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
-            ],
-            [
-                Row(title: NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
-                    details: AppConstants.productTwitterHandle,
-                    handler: { self.displayTwitterAccount() }),
+        // append the share app section in the middle section.
+        if isRecommendAppSectionEnabled,
+           let presenter = sharePresenter {
+            sections.append([
+                ButtonRow(title: ButtonRowConstants.buttonTitle,
+                          iconImage: ButtonRowConstants.buttonIconImage,
+                          tintColor: ButtonRowConstants.buttonTintColor,
+                          isLoading: presenter.isLoading,
+                          handler: { self.displayShareApp() })
+            ])
+        }
 
-                Row(title: NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
-                    details: appsBlogHostname,
-                    handler: { self.displayWebView(AppConstants.productBlogURL) }),
+        // construct the last row section
+        sections.append([
+            Row(title: .twitterRowText,
+                details: AppConstants.productTwitterHandle,
+                handler: { self.displayTwitterAccount() }),
 
-                Row(title: NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
-                    details: nil,
-                    handler: { self.displayRatingPrompt() }),
+            Row(title: .blogRowText,
+                details: appsBlogHostname,
+                handler: { self.displayWebView(AppConstants.productBlogURL) }),
 
-                Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
-                    details: nil,
-                    handler: { self.displayWebView(WPGithubMainURL) }),
+            Row(title: .rateUsRowText,
+                details: nil,
+                handler: { self.displayRatingPrompt() }),
 
-                Row(title: acknowledgementsString,
-                    details: nil,
-                    handler: {
-                        let url = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
-                        self.displayWebView(url, title: acknowledgementsString)
-                }),
-            ]
-        ]
+            Row(title: .sourceCodeRowText,
+                details: nil,
+                handler: { self.displayWebView(WPGithubMainURL) }),
+
+            Row(title: .acknowledgementsRowText,
+                details: nil,
+                handler: { self.displayWebView(Constants.acknowledgementsURL, title: .acknowledgementsRowText) }),
+        ])
+
+        return sections
+    }
+}
+
+// MARK: ShareAppContentPresenterDelegate
+
+extension AboutViewController: ShareAppContentPresenterDelegate {
+    func didUpdateLoadingState(_ loading: Bool) {
+        // playing really safe here. ensure that the feature flag is on.
+        guard isRecommendAppSectionEnabled else {
+            return
+        }
+
+        tableView.reloadSections([Constants.shareButtonCellSection], with: .fade)
+    }
+}
+
+// MARK: Constants
+
+private extension String {
+    // view controller
+    static let navigationTitleText = NSLocalizedString("About", comment: "About this app (information page title)")
+    static let navigationDismissButtonText = NSLocalizedString("Close", comment: "Dismiss the current view")
+
+    // reuse identifiers
+    static let defaultReuseIdentifier = "reuseIdentifierValue1"
+    static let buttonReuseIdentifier = SingleButtonTableViewCell.defaultReuseID
+
+    // table view strings
+    static let versionRowText = NSLocalizedString("Version", comment: "Displays the version of the App")
+    static let termsOfServiceRowText = NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web")
+    static let privacyPolicyRowText = NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web")
+    static let twitterRowText = NSLocalizedString("Twitter", comment: "Launches the Twitter App")
+    static let blogRowText = NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog")
+    static let sourceCodeRowText = NSLocalizedString("Source Code", comment: "Opens the Github Repository Web")
+    static let rateUsRowText = NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store")
+    static let acknowledgementsRowText = NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use")
+    static let footerTitleTextFormat = NSLocalizedString("© %ld Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+}
+
+private extension AboutViewController {
+    typealias ButtonRowConstants = ShareAppContentPresenter.RowConstants
+
+    struct Constants {
+        static let iconBottomPadding: CGFloat = 30.0
+        static let acknowledgementsURL: URL? = Bundle.main.url(forResource: "acknowledgements", withExtension: "html")
+        static let shareButtonCellSection: Int = 1
     }
 }

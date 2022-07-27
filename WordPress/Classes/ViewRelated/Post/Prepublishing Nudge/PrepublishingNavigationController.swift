@@ -5,25 +5,13 @@ protocol PrepublishingDismissible {
 }
 
 class PrepublishingNavigationController: LightNavigationController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Set the height for iPad
-        if UIDevice.isPad() {
-            preferredContentSize = Constants.iPadPreferredContentSize
-        }
-    }
-
     // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
     override public var preferredContentSize: CGSize {
         set {
             viewControllers.last?.preferredContentSize = newValue
+            super.preferredContentSize = newValue
         }
         get {
-            if UIDevice.isPad() {
-                return Constants.iPadPreferredContentSize
-            }
-
             guard let visibleViewController = viewControllers.last else {
                 return .zero
             }

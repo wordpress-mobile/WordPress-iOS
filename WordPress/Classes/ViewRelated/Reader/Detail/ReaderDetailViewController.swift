@@ -2,7 +2,7 @@ import UIKit
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
-protocol ReaderDetailView: class {
+protocol ReaderDetailView: AnyObject {
     func render(_ post: ReaderPost)
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
@@ -10,6 +10,26 @@ protocol ReaderDetailView: class {
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
+
+    /// Shows likes view containing avatars of users that liked the post.
+    /// The number of avatars displayed is limited to `ReaderDetailView.maxAvatarDisplayed` plus the current user's avatar.
+    /// Note that the current user's avatar is displayed through a different method.
+    ///
+    /// - Seealso: `updateSelfLike(with avatarURLString: String?)`
+    /// - Parameters:
+    ///   - avatarURLStrings: A list of URL strings for the liking users' avatars.
+    ///   - totalLikes: The total number of likes for this post.
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int)
+
+    /// Updates the likes view to append an additional avatar for the current user, indicating that the post is liked by current user.
+    /// - Parameter avatarURLString: The URL string for the current user's avatar. Optional.
+    func updateSelfLike(with avatarURLString: String?)
+
+    /// Updates comments table to display the post's comments.
+    /// - Parameters:
+    ///   - comments: Comments to be displayed.
+    ///   - totalComments: The total number of comments for this post.
+    func updateComments(_ comments: [Comment], totalComments: Int)
 }
 
 class ReaderDetailViewController: UIViewController, ReaderDetailView {
@@ -23,14 +43,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
 
+    /// The table view that displays Comments
+    @IBOutlet weak var commentsTableView: IntrinsicTableView!
+    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+
     /// The table view that displays Related Posts
-    @IBOutlet weak var tableView: IntrinsicTableView!
+    @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
     /// Wrapper for the toolbar
     @IBOutlet weak var toolbarContainerView: UIView!
+
+    /// Wrapper for the Likes summary view
+    @IBOutlet weak var likesContainerView: UIView!
 
     /// The loading view, which contains all the ghost views
     @IBOutlet weak var loadingView: UIView!
@@ -50,6 +77,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Bottom toolbar
     private let toolbar: ReaderDetailToolbar = .loadFromNib()
 
+    /// Likes summary view
+     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
+
     /// A view that fills the bottom portion outside of the safe area
     @IBOutlet weak var toolbarSafeAreaView: UIView!
 
@@ -58,6 +88,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// An observer of the content size of the webview
     private var scrollObserver: NSKeyValueObservation?
+
+    private var featureHighlightStore = FeatureHighlightStore()
+    private var lastToggleAnchorVisibility = false
+    private var didShowTooltip = false {
+        didSet {
+            featureHighlightStore.followConversationTooltipCounter += 1
+        }
+    }
 
     /// The coordinator, responsible for the logic
     var coordinator: ReaderDetailCoordinator?
@@ -112,6 +150,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Used to disable ineffective buttons when a Related post fails to load.
     var enableRightBarButtons = true
 
+    /// Track whether we've automatically navigated to the comments view or not.
+    /// This may happen if we initialize our coordinator with a postURL that
+    /// has a comment anchor fragment.
+    private var hasAutomaticallyTriggeredCommentAction = false
+
+    private var tooltipPresenter: TooltipPresenter?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -125,30 +170,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNoResultsViewController()
         observeWebViewHeight()
         configureNotifications()
+        configureCommentsTable()
 
         coordinator?.start()
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
+
+        // When comments are moderated or edited from the Comments view, update the Comments snippet here.
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureFeaturedImage()
-
-        featuredImage.configure(scrollView: scrollView,
-                                navigationBar: navigationController?.navigationBar)
-
-        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
-
-        guard !featuredImage.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImage.load { [unowned self] in
-            self.hideLoading()
-        }
+        setupFeaturedImage()
+        updateFollowButtonState()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -202,6 +238,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         header.configure(for: post)
+        fetchLikes()
+        fetchComments()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -220,14 +258,87 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.load { [weak self] in
             self?.hideLoading()
         }
+
+        navigateToCommentIfNecessary()
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
-        tableView.reloadData()
-        tableView.invalidateIntrinsicContentSize()
+        relatedPostsTableView.reloadData()
+        relatedPostsTableView.invalidateIntrinsicContentSize()
+    }
+
+    private func tooltipTargetPoint() -> CGPoint {
+        setupFeaturedImage()
+        updateFollowButtonState()
+        guard let followButtonMidPoint = commentsTableViewDelegate.followButtonMidPoint() else {
+            return .zero
+        }
+
+        return CGPoint(
+            x: commentsTableView.frame.minX + followButtonMidPoint.x,
+            y: commentsTableView.frame.minY + followButtonMidPoint.y
+        )
+    }
+
+    private func configureTooltipPresenter(anchorAction: (() -> Void)?) {
+        let tooltip = Tooltip()
+
+        tooltip.title = Strings.tooltipTitle
+        tooltip.message = Strings.tooltipMessage
+        tooltip.primaryButtonTitle = Strings.tooltipButtonTitle
+
+        tooltipPresenter = TooltipPresenter(
+            containerView: scrollView,
+            tooltip: tooltip,
+            target: .point(tooltipTargetPoint),
+            shouldShowSpotlightView: true,
+            primaryTooltipAction: { [weak self] in
+                self?.featureHighlightStore.didDismissTooltip = true
+                WPAnalytics.trackReader(.readerFollowConversationTooltipTapped)
+            }
+        )
+        tooltipPresenter?.tooltipVerticalPosition = .above
+
+        if let anchorAction = anchorAction {
+            tooltipPresenter?.attachAnchor(
+                withTitle: Strings.tooltipAnchorTitle,
+                onView: view,
+                anchorAction: anchorAction
+            )
+        }
+
+        scrollView.delegate = self
+
+        let isCommentsTableViewVisible = isVisibleInScrollView(commentsTableView)
+        if isCommentsTableViewVisible {
+            tooltipPresenter?.showTooltip()
+            didShowTooltip = true
+            scrollView.layoutIfNeeded()
+        }
+
+        tooltipPresenter?.toggleAnchorVisibility(!isCommentsTableViewVisible)
+    }
+
+    private func scrollToTooltip() {
+        scrollView.setContentOffset(CGPoint(x: 0, y: tooltipTargetPoint().y - scrollView.frame.height/2), animated: true)
+        scrollView.layoutIfNeeded()
+    }
+
+    private func navigateToCommentIfNecessary() {
+        if let post = post,
+           let commentID = coordinator?.commentID,
+           !hasAutomaticallyTriggeredCommentAction {
+            hasAutomaticallyTriggeredCommentAction = true
+
+            ReaderCommentAction().execute(post: post,
+                                          origin: self,
+                                          promptToAddComment: false,
+                                          navigateToCommentID: commentID,
+                                          source: .postDetails)
+        }
     }
 
     /// Show ghost cells indicating the content is loading
@@ -297,6 +408,101 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.refreshFollowButton()
     }
 
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int) {
+        // always configure likes summary view first regardless of totalLikes, since it can affected by self likes.
+        likesSummary.configure(with: avatarURLStrings, totalLikes: totalLikes)
+
+        guard totalLikes > 0 else {
+            hideLikesView()
+            return
+        }
+
+        if likesSummary.superview == nil {
+            configureLikesSummary()
+        }
+
+        scrollView.layoutIfNeeded()
+
+        // Delay configuration due to the sideeffect in fresh install.
+        // The position calculation is wrong for the first time this VC is opened
+        // regardless of the post. It never happens after that. Although the timing
+        // of this call is accurate, the calculation returns wrong result on that case.
+        // This manually delays the configuration and hacks the issue.
+        // We can remove this once the culprit is out.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.shouldConfigureTooltipPresenter() {
+                self.configureTooltipPresenter { [weak self] in
+                    self?.scrollToTooltip()
+                    WPAnalytics.trackReader(.readerFollowConversationAnchorTapped)
+                }
+            }
+        }
+    }
+
+    private func shouldConfigureTooltipPresenter() -> Bool {
+        FeatureFlag.featureHighlightTooltip.enabled
+        && featureHighlightStore.shouldShowTooltip
+        && (post?.canSubscribeComments ?? false)
+        && (!(post?.isSubscribedComments ?? false))
+    }
+
+    func updateSelfLike(with avatarURLString: String?) {
+        // only animate changes when the view is visible.
+        let shouldAnimate = isVisibleInScrollView(likesSummary)
+        guard let someURLString = avatarURLString else {
+            likesSummary.removeSelfAvatar(animated: shouldAnimate)
+            if likesSummary.totalLikesForDisplay == 0 {
+                hideLikesView()
+            }
+            return
+        }
+
+        if likesSummary.superview == nil {
+            configureLikesSummary()
+        }
+
+        likesSummary.addSelfAvatar(with: someURLString, animated: shouldAnimate)
+    }
+
+    func updateComments(_ comments: [Comment], totalComments: Int) {
+        guard let post = post else {
+            DDLogError("Missing post when updating Reader post detail comments.")
+            return
+        }
+
+        // Moderated comments could still be cached, so filter out non-approved comments.
+        let approvedStatus = Comment.descriptionFor(.approved)
+        let approvedComments = comments.filter({ $0.status == approvedStatus})
+
+        // Set the delegate here so the table isn't shown until fetching is complete.
+        commentsTableView.delegate = commentsTableViewDelegate
+        commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableViewDelegate.followButtonTappedClosure = { [weak self] in
+            guard let tooltipPresenter = self?.tooltipPresenter else {
+                return
+            }
+
+            self?.featureHighlightStore.didDismissTooltip = true
+            tooltipPresenter.dismissTooltip()
+        }
+
+        commentsTableViewDelegate.updateWith(post: post,
+                                             comments: approvedComments,
+                                             totalComments: totalComments,
+                                             presentingViewController: self,
+                                             buttonDelegate: self)
+
+        commentsTableView.reloadData()
+    }
+
+    func updateFollowButtonState() {
+        guard let post = post else {
+            return
+        }
+
+        commentsTableViewDelegate.updateFollowButtonState(post: post)
+    }
+
     deinit {
         scrollObserver?.invalidate()
         NotificationCenter.default.removeObserver(self)
@@ -346,6 +552,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
+    private func setupFeaturedImage() {
+        configureFeaturedImage()
+
+        featuredImage.configure(scrollView: scrollView,
+                                navigationBar: navigationController?.navigationBar)
+
+        featuredImage.applyTransparentNavigationBarAppearance(to: navigationController?.navigationBar)
+
+        guard !featuredImage.isLoaded else {
+            return
+        }
+
+        // Load the image
+        featuredImage.load { [unowned self] in
+            self.hideLoading()
+        }
+    }
+
     private func configureFeaturedImage() {
         guard featuredImage.superview == nil else {
             return
@@ -376,20 +600,66 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         headerContainerView.heightAnchor.constraint(equalTo: header.heightAnchor).isActive = true
     }
 
-    private func configureRelatedPosts() {
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
+    private func fetchLikes() {
+        guard let post = post else {
+            return
+        }
 
-        tableView.register(ReaderRelatedPostsCell.defaultNib,
+        coordinator?.fetchLikes(for: post)
+    }
+
+    private func configureLikesSummary() {
+        likesSummary.delegate = coordinator
+        likesContainerView.addSubview(likesSummary)
+        likesContainerView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            likesSummary.topAnchor.constraint(equalTo: likesContainerView.topAnchor),
+            likesSummary.bottomAnchor.constraint(equalTo: likesContainerView.bottomAnchor),
+            likesSummary.leadingAnchor.constraint(equalTo: likesContainerView.leadingAnchor),
+            likesSummary.trailingAnchor.constraint(lessThanOrEqualTo: likesContainerView.trailingAnchor)
+        ])
+    }
+
+    private func hideLikesView() {
+        // Because other components are constrained to the likesContainerView, simply hiding it leaves a gap.
+        likesSummary.removeFromSuperview()
+        likesContainerView.frame.size.height = 0
+        view.setNeedsDisplay()
+    }
+
+    @objc private func fetchComments() {
+        guard let post = post else {
+            return
+        }
+
+        coordinator?.fetchComments(for: post)
+    }
+
+    private func configureCommentsTable() {
+        commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
+                                   forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
+        commentsTableView.register(CommentContentTableViewCell.defaultNib,
+                                   forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
+                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+    }
+
+    private func configureRelatedPosts() {
+        relatedPostsTableView.isScrollEnabled = false
+        relatedPostsTableView.separatorStyle = .none
+
+        relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
-        tableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
+        relatedPostsTableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
 
-        tableView.dataSource = self
-        tableView.delegate = self
+        relatedPostsTableView.dataSource = self
+        relatedPostsTableView.delegate = self
     }
 
     private func configureToolbar() {
+        toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -785,6 +1055,17 @@ private extension ReaderDetailViewController {
 
         return UIBarButtonItem(customView: button)
     }
+
+    /// Checks if the view is visible in the viewport.
+    func isVisibleInScrollView(_ view: UIView) -> Bool {
+        guard view.superview != nil, !view.isHidden else {
+            return false
+        }
+
+        let scrollViewFrame = CGRect(origin: scrollView.contentOffset, size: scrollView.frame.size)
+        let convertedViewFrame = scrollView.convert(view.bounds, from: view)
+        return scrollViewFrame.intersects(convertedViewFrame)
+    }
 }
 
 // MARK: - NoResultsViewControllerDelegate
@@ -819,7 +1100,6 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 
 // MARK: - Strings
 extension ReaderDetailViewController {
-
     private struct Strings {
         static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
         static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
@@ -828,9 +1108,56 @@ extension ReaderDetailViewController {
         static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
         static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
         static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
+        static let tooltipTitle = NSLocalizedString("Follow the conversation", comment: "Title of follow conversations tooltip.")
+        static let tooltipMessage = NSLocalizedString(
+            "Get notified when new comments are added to this post.",
+            comment: "Message for the follow conversations tooltip."
+        )
+        static let tooltipButtonTitle = NSLocalizedString("Got it", comment: "Button title for the follow conversations tooltip.")
+        static let tooltipAnchorTitle = NSLocalizedString("New", comment: "Title for the tooltip anchor.")
     }
 }
 
 // MARK: - DefinesVariableStatusBarStyle
 // Allows this VC to control the statusbar style dynamically
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+// MARK: - BorderedButtonTableViewCellDelegate
+// For the `View All Comments` button.
+extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
+    func buttonTapped() {
+        guard let post = post else {
+            return
+        }
+
+        ReaderCommentAction().execute(post: post,
+                                      origin: self,
+                                      promptToAddComment: commentsTableViewDelegate.totalComments == 0,
+                                      source: .postDetailsComments)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension ReaderDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard didShowTooltip else {
+            if isVisibleInScrollView(commentsTableView) {
+                tooltipPresenter?.showTooltip()
+                didShowTooltip = true
+            }
+            return
+        }
+
+        guard let tooltip = tooltipPresenter?.tooltip else {
+            return
+        }
+
+        let currentToggleVisibility = isVisibleInScrollView(tooltip)
+
+        if lastToggleAnchorVisibility != currentToggleVisibility {
+            tooltipPresenter?.toggleAnchorVisibility(!currentToggleVisibility)
+        }
+
+        lastToggleAnchorVisibility = currentToggleVisibility
+    }
+}

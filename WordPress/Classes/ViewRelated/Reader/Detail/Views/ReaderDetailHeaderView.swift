@@ -5,7 +5,7 @@ protocol ReaderDetailHeaderViewDelegate {
     func didTapBlogName()
     func didTapMenuButton(_ sender: UIView)
     func didTapHeaderAvatar()
-    func didTapFollowButton()
+    func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
 }
 
@@ -19,6 +19,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBOutlet weak var titleBottomPaddingView: UIView!
     @IBOutlet weak var byLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var authorSeparatorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var iPadFollowButton: UIButton!
@@ -78,8 +79,11 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     @IBAction func didTapFollowButton(_ sender: Any) {
         followButton.isSelected = !followButton.isSelected
         iPadFollowButton.isSelected = !followButton.isSelected
+        followButton.isUserInteractionEnabled = false
 
-        delegate?.didTapFollowButton()
+        delegate?.didTapFollowButton() { [weak self] in
+            self?.followButton.isUserInteractionEnabled = true
+        }
     }
 
     @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
@@ -165,12 +169,27 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
     }
 
     private func configureAuthorLabel() {
+        guard
+            let displayName = post?.authorDisplayName,
+            !displayName.isEmpty
+        else {
+            authorLabel.isHidden = true
+            authorSeparatorLabel.isHidden = true
+            byLabel.isHidden = true
+            return
+        }
+
         authorLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-        authorLabel.text = post?.authorDisplayName
+        authorLabel.text = displayName
+
+        authorLabel.isHidden = false
+        authorSeparatorLabel.isHidden = false
+        byLabel.isHidden = false
+
     }
 
     private func configureDateLabel() {
-        dateLabel.text = post?.dateForDisplay()?.mediumString()
+        dateLabel.text = post?.dateForDisplay()?.toMediumString()
     }
 
     private func configureFollowButton() {
@@ -240,7 +259,7 @@ class ReaderDetailHeaderView: UIStackView, NibLoadable {
                 return nil
         }
 
-        guard let postedOn = post.dateCreated?.mediumString() else {
+        guard let postedOn = post.dateCreated?.toMediumString() else {
             let format = NSLocalizedString("Posted in %@, at %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name")
             return String(format: format, postedIn, postedAtURL, postedBy)
         }

@@ -52,6 +52,9 @@ class ReaderManageScenePresenter: ScenePresenter {
         let navigationController = makeNavigationController()
         presentedViewController = navigationController
         viewController.present(navigationController, animated: true, completion: nil)
+
+        QuickStartTourGuide.shared.visited(.readerDiscoverSettings)
+        WPAnalytics.track(.readerManageViewDisplayed)
     }
 }
 
@@ -64,6 +67,7 @@ private extension ReaderManageScenePresenter {
         let tabbedViewController = TabbedViewController(items: tabbedItems, onDismiss: {
             self.delegate?.didDismiss(presenter: self)
             NotificationCenter.default.post(name: .readerManageControllerWasDismissed, object: self)
+            WPAnalytics.track(.readerManageViewDismissed)
         })
         tabbedViewController.title =  NSLocalizedString("Manage", comment: "Title for the Reader Manage screen.")
         if let section = selectedSection, let firstSelection = sections.firstIndex(of: section) {

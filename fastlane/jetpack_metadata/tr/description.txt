@@ -1,0 +1,9 @@
+iOS için Jetpack ile güçlü güvenlik ve performans araçları her an elinizin altında olsun.
+
+Bir şeyler ters giderse sitenizi herhangi bir yerden geri yükleyin. Tehditleri tarayın ve bir dokunuşla çözün. Kimin neyi ne zaman değiştirdiğini görmek için site etkinliğini takip edin. Bugünün ziyaretçilerinin hangi yeni ülkelerden geldiğini görmek için istatistiklerinizi kontrol edin.
+
+Uygulama aynı zamanda beklediğiniz WordPress özelliklerini de destekler. Koltuğunuzdan doğaçlama bir haiku hazırlayın. Öğlen tatilinizde bir fotoğraf çekin ve yayınlayın. Gelen en son yorumlara yanıt verin.
+
+iOS için Jetpack, Jetpack'in etkin olduğu ve WordPress.com'a bağlı bir hesabın bulunduğu WordPress sitelerini destekler.
+
+Kaliforniya'daki Kullanıcılar Gizlilik Bildirimi'ni https://automattic.com/privacy/#california-consumer-privacy-act-ccpa adresinden görüntüleyebilirler.

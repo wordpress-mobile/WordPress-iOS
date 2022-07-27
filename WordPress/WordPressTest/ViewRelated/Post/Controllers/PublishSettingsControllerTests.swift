@@ -1,26 +1,12 @@
 import XCTest
 @testable import WordPress
 
-class PublishSettingsViewControllerTests: XCTestCase {
-
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        contextManager.mainContext.reset()
-        contextManager = nil
-        context = nil
-    }
+class PublishSettingsViewControllerTests: CoreDataTestCase {
 
     func testViewModelDateScheduled() {
         let testDate = Date().addingTimeInterval(5000)
 
-        let post = PostBuilder(context).with(dateCreated: testDate).drafted().withRemote().build()
+        let post = PostBuilder(mainContext).with(dateCreated: testDate).drafted().withRemote().build()
 
         var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertEqual(viewModel.date, testDate, "Date should exist in view model")
@@ -43,7 +29,7 @@ class PublishSettingsViewControllerTests: XCTestCase {
     func testViewModelDateImmediately() {
         let testDate = Date()
 
-        let post = PostBuilder(context).drafted().withRemote().build()
+        let post = PostBuilder(mainContext).drafted().withRemote().build()
 
         var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertNil(viewModel.date, "Date should not exist in view model")
@@ -66,7 +52,7 @@ class PublishSettingsViewControllerTests: XCTestCase {
     func testViewModelDatePublished() {
         let testDate = Date()
 
-        let post = PostBuilder(context).with(dateCreated: testDate).published().withRemote().build()
+        let post = PostBuilder(mainContext).with(dateCreated: testDate).published().withRemote().build()
 
         var viewModel = PublishSettingsViewModel(post: post)
         XCTAssertEqual(viewModel.date, testDate, "Date should exist in view model")
@@ -93,7 +79,7 @@ class PublishSettingsViewControllerTests: XCTestCase {
 
         let testDate = Date(timeIntervalSinceReferenceDate: 0)
 
-        let post = PostBuilder(context).with(dateCreated: testDate).drafted().withRemote().build()
+        let post = PostBuilder(mainContext).with(dateCreated: testDate).drafted().withRemote().build()
 
         // Set our blog's time zone slightly offset from UTC
         let newValue = OffsetTimeZone(offset: Float(timeZoneOffset))
@@ -101,7 +87,7 @@ class PublishSettingsViewControllerTests: XCTestCase {
         // Need to use options here instead of blog.settings because BlogService uses those instead of the properties. No idea why.
         post.blog.options = ["timezone": ["value": newValue.timezoneString], "gmt_offset": ["value": newValue.gmtOffset as NSNumber? ]]
 
-        let viewModel = PublishSettingsViewModel(post: post, context: self.context)
+        let viewModel = PublishSettingsViewModel(post: post, context: self.mainContext)
 
         // Create a date formatter that converts to the original UTC date
         let adjustedFormatter = viewModel.dateTimeFormatter.copy() as! DateFormatter

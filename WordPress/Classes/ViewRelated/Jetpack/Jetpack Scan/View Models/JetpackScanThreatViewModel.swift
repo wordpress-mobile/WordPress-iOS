@@ -9,6 +9,7 @@ struct JetpackScanThreatViewModel {
     let title: String
     let description: String?
     let isFixing: Bool
+    private let hasValidCredentials: Bool?
 
     // Threat Details
     let detailIconImage: UIImage?
@@ -26,8 +27,10 @@ struct JetpackScanThreatViewModel {
 
     // Threat Detail Action
     let fixActionTitle: String?
+    let fixActionEnabled: Bool
     let ignoreActionTitle: String?
     let ignoreActionMessage: String
+    let warningActionTitle: HighlightedText?
 
     // Threat Detail Success
     let fixSuccessTitle: String
@@ -70,8 +73,9 @@ struct JetpackScanThreatViewModel {
         return threat.context?.attributedString(with: contextConfig)
     }()
 
-    init(threat: JetpackScanThreat) {
+    init(threat: JetpackScanThreat, hasValidCredentials: Bool? = nil) {
         self.threat = threat
+        self.hasValidCredentials = hasValidCredentials
 
         let status = threat.status
 
@@ -97,8 +101,10 @@ struct JetpackScanThreatViewModel {
 
         // Threat Details Action
         fixActionTitle = Self.fixActionTitle(for: threat)
+        fixActionEnabled = hasValidCredentials ?? false
         ignoreActionTitle = Self.ignoreActionTitle(for: threat)
         ignoreActionMessage = Strings.details.actions.messages.ignore
+        warningActionTitle = Self.warningActionTitle(for: threat, hasValidCredentials: hasValidCredentials)
 
         // Threat Detail Success
         fixSuccessTitle = Strings.details.success.fix
@@ -270,6 +276,22 @@ struct JetpackScanThreatViewModel {
         return Strings.details.actions.titles.ignore
     }
 
+    private static func warningActionTitle(for threat: JetpackScanThreat, hasValidCredentials: Bool?) -> HighlightedText? {
+        guard fixActionTitle(for: threat) != nil,
+              let hasValidCredentials = hasValidCredentials,
+              !hasValidCredentials else {
+            return nil
+        }
+
+        let warningString = String(format: Strings.details.actions.titles.enterServerCredentialsFormat,
+                                   Strings.details.actions.titles.enterServerCredentialsSubstring)
+
+        let warningActionTitle = HighlightedText(substring: Strings.details.actions.titles.enterServerCredentialsSubstring,
+                                                 string: warningString)
+
+        return warningActionTitle
+    }
+
     private struct Strings {
 
         struct details {
@@ -309,6 +331,8 @@ struct JetpackScanThreatViewModel {
                 struct titles {
                     static let ignore = NSLocalizedString("Ignore threat", comment: "Title for button that will ignore the threat")
                     static let fixable = NSLocalizedString("Fix threat", comment: "Title for button that will fix the threat")
+                    static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
+                    static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix this threat.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
                 }
 
                 struct messages {

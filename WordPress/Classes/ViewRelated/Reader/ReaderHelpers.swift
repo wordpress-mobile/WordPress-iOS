@@ -49,6 +49,8 @@ struct ReaderPostMenuButtonTitles {
     static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
     static let markSeen = NSLocalizedString("Mark as seen", comment: "An option to mark a post as seen.")
     static let markUnseen = NSLocalizedString("Mark as unseen", comment: "An option to mark a post as unseen.")
+    static let followConversation = NSLocalizedString("Follow conversation", comment: "Verb. Button title. Follow the comments on a post.")
+    static let unFollowConversation = NSLocalizedString("Unfollow conversation", comment: "Verb. Button title. The user is following the comments on a post.")
 }
 
 /// A collection of helper methods used by the Reader.
@@ -337,23 +339,56 @@ struct ReaderPostMenuButtonTitles {
         dispatchNotice(notice)
     }
 
-    class func dispatchToggleFollowSiteMessage(post: ReaderPost, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, following: post.isFollowing, success: success)
+    class func dispatchToggleFollowSiteMessage(post: ReaderPost, follow: Bool, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: post.blogNameForDisplay(), siteID: post.siteID, follow: follow, success: success)
     }
 
-    class func dispatchToggleFollowSiteMessage(topic: ReaderSiteTopic, success: Bool) {
-        dispatchToggleFollowSiteMessage(siteTitle: topic.title, siteID: topic.siteID, following: topic.following, success: success)
+    class func dispatchToggleFollowSiteMessage(site: ReaderSiteTopic, follow: Bool, success: Bool) {
+        dispatchToggleFollowSiteMessage(siteTitle: site.title, siteID: site.siteID, follow: follow, success: success)
     }
 
-    private class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, following: Bool, success: Bool) {
+    class func dispatchToggleSubscribeCommentMessage(subscribing: Bool, success: Bool, actionHandler: ((Bool) -> Void)?) {
+        let title: String
+        let message: String?
+        let actionTitle: String?
+        if success {
+            title = subscribing ? NoticeMessages.commentFollowSuccess : NoticeMessages.commentUnfollowSuccess
+            message = subscribing ? NoticeMessages.commentFollowSuccessMessage : nil
+            actionTitle = subscribing ? NoticeMessages.commentFollowActionTitle : nil
+        } else {
+            title = subscribing ? NoticeMessages.commentFollowFail : NoticeMessages.commentUnfollowFail
+            message = nil
+            actionTitle = nil
+        }
+        dispatchNotice(
+            Notice(
+                title: title,
+                message: message,
+                actionTitle: actionTitle,
+                actionHandler: actionHandler
+            )
+        )
+    }
+
+    class func dispatchToggleCommentNotificationMessage(subscribing: Bool, success: Bool) {
+        let action: ReaderHelpers.PostSubscriptionAction = subscribing ? .enableNotification : .disableNotification
+        dispatchNotice(Notice(title: noticeTitle(forAction: action, success: success)))
+    }
+
+    class func dispatchToggleSubscribeCommentErrorMessage(subscribing: Bool) {
+        let title = subscribing ? NoticeMessages.commentFollowError : NoticeMessages.commentUnfollowError
+        dispatchNotice(Notice(title: title))
+    }
+
+    class func dispatchToggleFollowSiteMessage(siteTitle: String, siteID: NSNumber, follow: Bool, success: Bool) {
         var notice: Notice
 
         if success {
-            notice = following ?
-                followedSiteNotice(siteTitle: siteTitle, siteID: siteID) :
-                Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
+            notice = follow
+                ? followedSiteNotice(siteTitle: siteTitle, siteID: siteID)
+                : Notice(title: NoticeMessages.unfollowSuccess, message: siteTitle)
         } else {
-            notice = Notice(title: following ? NoticeMessages.unfollowFail : NoticeMessages.followFail)
+            notice = Notice(title: follow ? NoticeMessages.followFail : NoticeMessages.unfollowFail)
         }
 
         dispatchNotice(notice)
@@ -380,6 +415,28 @@ struct ReaderPostMenuButtonTitles {
 
         dispatchNotice(notice)
     }
+
+    /// Enumerates the kind of actions available in relation to post subscriptions.
+    /// TODO: Add `followConversation` and `unfollowConversation` once the "Follow Conversation" feature flag is removed.
+    enum PostSubscriptionAction: Int {
+        case enableNotification
+        case disableNotification
+    }
+
+    class func noticeTitle(forAction action: PostSubscriptionAction, success: Bool) -> String {
+        switch (action, success) {
+        case (.enableNotification, true):
+            return NSLocalizedString("In-app notifications enabled", comment: "The app successfully enabled notifications for the subscription")
+        case (.enableNotification, false):
+            return NSLocalizedString("Could not enable notifications", comment: "The app failed to enable notifications for the subscription")
+        case (.disableNotification, true):
+            return NSLocalizedString("In-app notifications disabled", comment: "The app successfully disabled notifications for the subscription")
+        case (.disableNotification, false):
+            return NSLocalizedString("Could not disable notifications", comment: "The app failed to disable notifications for the subscription")
+        }
+    }
+
+
 
     private class func dispatchNotice(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -415,6 +472,14 @@ struct ReaderPostMenuButtonTitles {
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
         static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
+        static let commentFollowSuccess = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
+        static let commentFollowSuccessMessage = NSLocalizedString("You'll get notifications in the app", comment: "The app successfully subscribed to the comments for the post")
+        static let commentFollowActionTitle = NSLocalizedString("Undo", comment: "Revert enabling notification after successfully subcribing to the comments for the post.")
+        static let commentUnfollowSuccess = NSLocalizedString("Successfully unfollowed conversation", comment: "The app successfully unsubscribed from the comments for the post")
+        static let commentFollowFail = NSLocalizedString("Unable to follow conversation", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowFail = NSLocalizedString("Failed to unfollow conversation", comment: "The app failed to unsubscribe from the comments for the post")
+        static let commentFollowError = NSLocalizedString("Could not subscribe to comments", comment: "The app failed to subscribe to the comments for the post")
+        static let commentUnfollowError = NSLocalizedString("Could not unsubscribe from comments", comment: "The app failed to unsubscribe from the comments for the post")
     }
 }
 

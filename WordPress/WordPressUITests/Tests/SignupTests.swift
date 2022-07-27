@@ -1,21 +1,20 @@
+import UITestsFoundation
 import XCTest
 
 class SignupTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
-
-        LoginFlow.logoutIfNeeded()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        removeApp()
     }
 
-    func testEmailSignup() {
-        let mySiteScreen = WelcomeScreen().selectSignup()
+    func testEmailSignup() throws {
+        let mySiteScreen = try WelcomeScreen().selectSignup()
             .selectEmailSignup()
             .proceedWith(email: WPUITestCredentials.signupEmail)
             .openMagicSignupLink()
@@ -24,6 +23,6 @@ class SignupTests: XCTestCase {
             .continueWithSignup()
             .dismissNotificationAlertIfNeeded()
 
-        XCTAssert(mySiteScreen.isLoaded())
+        XCTAssert(mySiteScreen.isLoaded)
     }
 }

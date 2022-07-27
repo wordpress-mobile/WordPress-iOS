@@ -11,4 +11,14 @@
     return [[NSStringFromClass(self) componentsSeparatedByString:@"."] lastObject];
 }
 
+- (void)debounce:(SEL)selector afterDelay:(NSTimeInterval)timeInterval
+{
+  __weak __typeof(self) weakSelf = self;
+  [NSObject cancelPreviousPerformRequestsWithTarget:weakSelf
+                                           selector:selector
+                                             object:nil];
+  [weakSelf performSelector:selector
+                 withObject:nil
+                 afterDelay:timeInterval];
+}
 @end

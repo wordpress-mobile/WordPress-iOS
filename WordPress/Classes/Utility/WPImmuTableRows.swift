@@ -12,22 +12,32 @@ struct NavigationItemRow: ImmuTableRow {
     let action: ImmuTableAction?
     let accessoryType: UITableViewCell.AccessoryType
     let accessibilityIdentifer: String?
+    let loading: Bool
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
         self.title = title
         self.detail = detail
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
         self.accessibilityIdentifer = accessibilityIdentifier
+        self.loading = loading
     }
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = detail
-        cell.accessoryType = accessoryType
         cell.imageView?.image = icon
         cell.accessibilityIdentifier = accessibilityIdentifer
+
+        if loading {
+            let indicator: UIActivityIndicatorView
+            indicator = UIActivityIndicatorView(style: .medium)
+            indicator.startAnimating()
+            cell.accessoryView = indicator
+        } else {
+            cell.accessoryType = accessoryType
+        }
 
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -70,17 +80,24 @@ struct EditableTextRow: ImmuTableRow {
     let value: String
     let accessoryImage: UIImage?
     let action: ImmuTableAction?
+    let fieldName: String?
 
-    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?) {
+    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?, fieldName: String? = nil) {
         self.title = title
         self.value = value
         self.accessoryImage = accessoryImage
         self.action = action
+        self.fieldName = fieldName
     }
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityValue = value
+        if cell.isUserInteractionEnabled {
+            cell.accessibilityHint = NSLocalizedString("Tap to edit", comment: "Accessibility hint prompting the user to tap a table row to edit its value.")
+        }
         cell.accessoryType = .disclosureIndicator
         if accessoryImage != nil {
             cell.accessoryView = UIImageView(image: accessoryImage)
@@ -117,6 +134,9 @@ struct TextRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = value
+        cell.accessibilityLabel = title
+        cell.accessibilityValue = value
+
         cell.selectionStyle = .none
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -124,18 +144,31 @@ struct TextRow: ImmuTableRow {
 }
 
 struct CheckmarkRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+    static let cell = ImmuTableCell.class(WPTableViewCellSubtitle.self)
 
     let title: String
+    let subtitle: String?
     let checked: Bool
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = title
+        cell.accessibilityHint = subtitle
+
         cell.textLabel?.text = title
+        cell.detailTextLabel?.text = subtitle
         cell.selectionStyle = .none
         cell.accessoryType = (checked) ? .checkmark : .none
 
         WPStyleGuide.configureTableViewCell(cell)
+    }
+
+    init(title: String, subtitle: String? = nil, checked: Bool, action: ImmuTableAction?) {
+        self.title = title
+        self.subtitle = subtitle
+        self.checked = checked
+        self.action = action
     }
 
 }
@@ -200,6 +233,37 @@ struct LinkWithValueRow: ImmuTableRow {
         cell.detailTextLabel?.text = value
 
         WPStyleGuide.configureTableViewActionCell(cell)
+    }
+}
+
+/// Create a row that navigates to a new ViewController.
+/// Uses the WordPress branded blue and is left aligned.
+///
+struct BrandedNavigationRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellIndicator.self)
+
+    let title: String
+    let showIndicator: Bool
+    let action: ImmuTableAction?
+    let accessibilityIdentifier: String?
+
+    init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
+        self.title = title
+        self.showIndicator = showIndicator
+        self.action = action
+        self.accessibilityIdentifier = accessibilityIdentifier
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? WPTableViewCellIndicator else {
+            return
+        }
+        cell.textLabel?.text = title
+        WPStyleGuide.configureTableViewCell(cell)
+        cell.textLabel?.textColor = .primary
+        cell.showIndicator = showIndicator
+        cell.accessibilityTraits = .button
+        cell.accessibilityIdentifier = accessibilityIdentifier
     }
 }
 

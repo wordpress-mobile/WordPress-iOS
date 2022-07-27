@@ -31,6 +31,8 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
         self.title = NSLocalizedString("Scan", comment: "Title of the view")
 
+        extendedLayoutIncludesOpaqueBars = true
+
         configureTableView()
         coordinator.viewDidLoad()
 
@@ -68,6 +70,10 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         tableView.reloadData()
     }
 
+    func toggleHistoryButton(_ isEnabled: Bool) {
+        navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+    }
+
     func showLoading() {
         let model = NoResultsViewController.Model(title: NoResultsText.loading.title,
                                                   accessoryView: NoResultsViewController.loadingAccessoryView())
@@ -75,35 +81,56 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
     }
 
     func showGenericError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.error.title,
-                                                   subtitle: NoResultsText.error.subtitle,
-                                                   buttonText: NoResultsText.contactSupportButtonText)
-
+        let model = NoResultsViewController.Model(title: NoResultsText.error.title,
+                                                  subtitle: NoResultsText.error.subtitle,
+                                                  buttonText: NoResultsText.contactSupportButtonText)
         updateNoResults(model)
     }
 
     func showNoConnectionError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.noConnection.title,
-                                                   subtitle: NoResultsText.noConnection.subtitle,
-                                                   buttonText: NoResultsText.tryAgainButtonText)
-
+        let model = NoResultsViewController.Model(title: NoResultsText.noConnection.title,
+                                                  subtitle: NoResultsText.noConnection.subtitle,
+                                                  buttonText: NoResultsText.tryAgainButtonText)
         updateNoResults(model)
     }
 
     func showScanStartError() {
-        let model =  NoResultsViewController.Model(title: NoResultsText.scanStartError.title,
-                                                   subtitle: NoResultsText.scanStartError.subtitle,
-                                                   buttonText: NoResultsText.contactSupportButtonText)
+        let model = NoResultsViewController.Model(title: NoResultsText.scanStartError.title,
+                                                  subtitle: NoResultsText.scanStartError.subtitle,
+                                                  buttonText: NoResultsText.contactSupportButtonText)
+        updateNoResults(model)
+    }
 
+    func showMultisiteNotSupportedError() {
+        let model = NoResultsViewController.Model(title: NoResultsText.multisiteError.title,
+                                                  subtitle: NoResultsText.multisiteError.subtitle,
+                                                  imageName: NoResultsText.multisiteError.imageName)
+        updateNoResults(model)
+        refreshControl.endRefreshing()
+    }
+
+    func vaultPressActiveOnSite() {
+        let model = NoResultsViewController.Model(title: NoResultsText.vaultPressError.title,
+                                                  subtitle: NoResultsText.vaultPressError.subtitle,
+                                                  buttonText: NoResultsText.vaultPressError.buttonLabel,
+                                                  imageName: NoResultsText.multisiteError.imageName)
         updateNoResults(model)
 
+        noResultsViewController?.actionButtonHandler = { [weak self] in
+            let dashboardURL = URL(string: "https://dashboard.vaultpress.com/")!
+            let webViewController = WebViewControllerFactory.controller(url: dashboardURL, source: "jetpack_backup")
+            let webViewNavigationController = UINavigationController(rootViewController: webViewController)
+            self?.present(webViewNavigationController, animated: true)
+        }
+
+        refreshControl.endRefreshing()
     }
 
     func presentAlert(_ alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentNotice(with title: String, message: String) {
+    func presentNotice(with title: String, message: String?) {
         displayNotice(title: title, message: message)
     }
 
@@ -123,6 +150,18 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         let model = JetpackScanThreatViewModel(threat: threat)
         let notice = Notice(title: model.ignoreErrorTitle)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func showJetpackSettings(with siteID: Int) {
+        guard let controller = JetpackWebViewControllerFactory.settingsController(siteID: siteID) else {
+
+            let title = NSLocalizedString("Unable to visit Jetpack settings for site", comment: "Message displayed when visiting the Jetpack settings page fails.")
+            displayNotice(title: title)
+            return
+        }
+
+        let navigationVC = UINavigationController(rootViewController: controller)
+        present(navigationVC, animated: true)
     }
 
     // MARK: - Actions
@@ -268,7 +307,9 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             return
         }
 
-        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog, threat: threat)
+        let threatDetailsVC = JetpackScanThreatDetailsViewController(blog: blog,
+                                                                     threat: threat,
+                                                                     hasValidCredentials: coordinator.hasValidCredentials)
         threatDetailsVC.delegate = self
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
 
@@ -283,9 +324,8 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
             showNoResults(noResultsViewModel)
         } else {
             noResultsViewController?.view.isHidden = true
+            tableView.reloadData()
         }
-
-        tableView.reloadData()
     }
 
     private func showNoResults(_ viewModel: NoResultsViewController.Model) {
@@ -324,6 +364,19 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
         struct scanStartError {
             static let title = NSLocalizedString("Something went wrong", comment: "Title for the error view when the scan start has failed")
             static let subtitle = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Error message shown when the scan start has failed.")
+        }
+
+        struct multisiteError {
+            static let title = NSLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
+            static let subtitle = NSLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
+            static let imageName = "jetpack-scan-state-error"
+        }
+
+        struct vaultPressError {
+            static let title = NSLocalizedString("Your site has VaultPress", comment: "Title for label when the user has VaultPress enabled.")
+            static let subtitle = NSLocalizedString("Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below.", comment: "Description for label when the user has a site with VaultPress.")
+            static let buttonLabel = NSLocalizedString("Visit Dashboard", comment: "Text of a button that links to the VaultPress dashboard.")
+            static let imageName = "jetpack-scan-state-error"
         }
 
         struct error {

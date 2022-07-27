@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress voudrai ajouter votre position aux articles des sites pour lesquels vous avez activé la géolocalisation.";
-NSLocationWhenInUseUsageDescription = "WordPress voudrai ajouter votre position aux articles des sites pour lesquels vous avez activé la géolocalisation.";
-NSCameraUsageDescription = "Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.";
-NSPhotoLibraryUsageDescription = "Pour ajouter des photos ou des vidéos à vos articles.";
-NSMicrophoneUsageDescription = "Permet à vos vidéos d'intégrer du son.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Pour prendre des photos ou réaliser des vidéos à utiliser dans vos articles.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress souhaiterait ajouter votre emplacement aux articles sur les sites pour lesquels vous avez activé la géolocalisation.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress souhaiterait ajouter votre emplacement aux articles sur les sites pour lesquels vous avez activé la géolocalisation.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Autoriser l’accès au micro pour enregistrer le son dans vos vidéos.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Pour ajouter des photos ou des vidéos à vos articles.</string>
+  </dict>
+</plist>

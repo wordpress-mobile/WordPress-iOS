@@ -5,10 +5,12 @@ import WordPressKit
 struct SiteAddressServiceResult {
     let hasExactMatch: Bool
     let domainSuggestions: [DomainSuggestion]
+    let invalidQuery: Bool
 
-    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = []) {
+    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = [], invalidQuery: Bool = false) {
         self.hasExactMatch = hasExactMatch
         self.domainSuggestions = domainSuggestions
+        self.invalidQuery = invalidQuery
     }
 }
 
@@ -45,7 +47,7 @@ private extension DomainSuggestion {
 
 // MARK: - DomainsServiceAdapter
 
-final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
+@objc final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: Properties
 
@@ -64,7 +66,7 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: LocalCoreDataService
 
-    override convenience init(managedObjectContext context: NSManagedObjectContext) {
+    @objc override convenience init(managedObjectContext context: NSManagedObjectContext) {
 
         let api: WordPressComRestApi
         if let wpcomApi =  (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi {
@@ -83,11 +85,22 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
         super.init(managedObjectContext: context)
     }
 
+    @objc func refreshDomains(siteID: Int, completion: @escaping (Bool) -> Void) {
+        domainsService.refreshDomains(siteID: siteID) { result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
+    }
+
     // MARK: SiteAddressService
 
     func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
 
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             segmentID: segmentID,
                                             quantity: domainRequestQuantity,
                                             success: { domainSuggestions in
@@ -104,20 +117,24 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
     }
 
     func addresses(for query: String, completion: @escaping SiteAddressServiceCompletion) {
-        domainsService.getDomainSuggestions(base: query,
+        domainsService.getDomainSuggestions(query: query,
                                             quantity: domainRequestQuantity,
                                             domainSuggestionType: .wordPressDotComAndDotBlogSubdomains,
                                             success: { domainSuggestions in
-                                                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
-                                            },
+            completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
+        },
                                             failure: { error in
-                                                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                                                    completion(Result.success(SiteAddressServiceResult()))
-                                                    return
-                                                }
+            if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
+                completion(Result.success(SiteAddressServiceResult()))
+                return
+            }
+            if (error as NSError).code == WordPressComRestApiError.invalidQuery.rawValue {
+                completion(Result.success(SiteAddressServiceResult(invalidQuery: true)))
+                return
+            }
 
-                                                completion(Result.failure(error))
-                                            })
+            completion(Result.failure(error))
+        })
     }
 
     private func sortSuggestions(for query: String, suggestions: [DomainSuggestion]) -> SiteAddressServiceResult {

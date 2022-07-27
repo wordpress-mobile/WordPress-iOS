@@ -2,15 +2,15 @@ import SwiftUI
 
 struct GroupedViewData {
 
-    let widgetTitle: LocalizedStringKey
+    let widgetTitle: LocalizedString
     let siteName: String
-    let upperLeftTitle: LocalizedStringKey
+    let upperLeftTitle: LocalizedString
     let upperLeftValue: Int
-    let upperRightTitle: LocalizedStringKey
+    let upperRightTitle: LocalizedString
     let upperRightValue: Int
-    let lowerLeftTitle: LocalizedStringKey
+    let lowerLeftTitle: LocalizedString
     let lowerLeftValue: Int
-    let lowerRightTitle: LocalizedStringKey
+    let lowerRightTitle: LocalizedString
     let lowerRightValue: Int
 
     let statsURL: URL?

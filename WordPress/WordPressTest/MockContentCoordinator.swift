@@ -15,7 +15,7 @@ class MockContentCoordinator: ContentCoordinator {
     var commentsWasDisplayed = false
     var commentPostID: NSNumber?
     var commentSiteID: NSNumber?
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
         commentsWasDisplayed = true
         commentPostID = postID
         commentSiteID = siteID
@@ -44,7 +44,7 @@ class MockContentCoordinator: ContentCoordinator {
         streamSiteID = siteID
     }
 
-    func displayWebViewWithURL(_ url: URL) {
+    func displayWebViewWithURL(_ url: URL, source: String) {
 
     }
 

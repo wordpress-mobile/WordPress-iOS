@@ -1,17 +1,7 @@
 import XCTest
 @testable import WordPress
 
-class DomainCreditEligibilityTests: XCTestCase {
-    private var manager: TestContextManager!
-    private var mainContext: NSManagedObjectContext {
-        return manager.mainContext
-    }
-
-    override func setUp() {
-        super.setUp()
-        manager = TestContextManager()
-    }
-
+class DomainCreditEligibilityTests: CoreDataTestCase {
     func testDomainCreditEligibilityOnBlogWithCustomDomain() {
         let blog = ModelTestHelper.insertSelfHostedBlog(context: mainContext)
         blog.hasDomainCredit = true

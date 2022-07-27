@@ -6,7 +6,7 @@ protocol ReaderContentViewController: UIViewController {
 // MARK: - DefinesVariableStatusBarStyle Support
 extension WPTabBarController {
     override open var preferredStatusBarStyle: UIStatusBarStyle {
-        return FeatureFlag.newNavBarAppearance.enabled ? .default : .lightContent
+        .default
     }
 
     override open var childForStatusBarStyle: UIViewController? {
@@ -41,7 +41,9 @@ extension WPTabBarController {
     private func makeReaderContentViewController(with content: ReaderContent) -> ReaderContentViewController {
 
         if content.topicType == .discover, let topic = content.topic {
-            return ReaderCardsStreamViewController.controller(topic: topic)
+            let controller = ReaderCardsStreamViewController.controller(topic: topic)
+            controller.shouldShowCommentSpotlight = readerTabViewModel.shouldShowCommentSpotlight
+            return controller
         } else if let topic = content.topic {
             return ReaderStreamViewController.controllerWithTopic(topic)
         } else {
@@ -81,6 +83,10 @@ extension WPTabBarController {
             return
         }
         readerNavigationController.pushViewController(controller, animated: true)
+    }
+
+    func resetReaderDiscoverNudgeFlow() {
+        readerTabViewModel.shouldShowCommentSpotlight = false
     }
 
     /// methods to select one of the default Reader tabs

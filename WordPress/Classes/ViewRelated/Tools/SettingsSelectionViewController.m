@@ -41,7 +41,7 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
-    return [self initWithStyle:UITableViewStyleGrouped andDictionary:dictionary];
+    return [self initWithStyle:UITableViewStyleInsetGrouped andDictionary:dictionary];
 }
 
 - (instancetype)initWithStyle:(UITableViewStyle)style andDictionary:(NSDictionary *)dictionary

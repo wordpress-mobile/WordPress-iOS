@@ -30,7 +30,8 @@ struct ActivityContentRouter: ContentRouter {
             }
             let postID = commentRange.postID as NSNumber
             let siteID = commentRange.siteID as NSNumber
-            try? coordinator.displayCommentsWithPostId(postID, siteID: siteID)
+            let commentID = commentRange.commentID as NSNumber
+            try? coordinator.displayCommentsWithPostId(postID, siteID: siteID, commentID: commentID, source: .activityLogDetail)
         case .plugin:
             guard let pluginRange = range as? ActivityPluginRange else {
                 fallthrough
@@ -39,7 +40,7 @@ struct ActivityContentRouter: ContentRouter {
             let pluginSlug = pluginRange.pluginSlug
             try? coordinator.displayPlugin(withSlug: pluginSlug, on: siteSlug)
         default:
-            coordinator.displayWebViewWithURL(url)
+            coordinator.displayWebViewWithURL(url, source: "activity_detail_route")
         }
     }
 

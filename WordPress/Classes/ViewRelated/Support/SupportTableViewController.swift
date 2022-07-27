@@ -98,6 +98,7 @@ private extension SupportTableViewController {
                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,
                                                                action: #selector(SupportTableViewController.dismissPressed(_:)))
+            navigationItem.leftBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }
 
@@ -123,15 +124,16 @@ private extension SupportTableViewController {
 
         // Help Section
         var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
 
         if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected()))
+                                                   action: supportEmailSelected(),
+                                                   accessibilityIdentifier: "set-contact-email-button"))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
@@ -146,7 +148,7 @@ private extension SupportTableViewController {
         let switchRow = SwitchRow(title: LocalizedText.extraDebug,
                                   value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
                                   onChange: extraDebugToggled())
-        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected())
+        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
 
         let informationSection = ImmuTableSection(
             headerText: nil,
@@ -168,32 +170,27 @@ private extension SupportTableViewController {
     // MARK: - Row Handlers
 
     func helpCenterSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
-                guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                    return
-                }
-                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, with: self.sourceTag)
-            } else {
-                guard let url = Constants.appSupportURL else {
-                    return
-                }
-                UIApplication.shared.open(url)
+            guard let url = Constants.appSupportURL else {
+                return
             }
+            WPAnalytics.track(.supportHelpCenterViewed)
+            UIApplication.shared.open(url)
         }
     }
 
     func contactUsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [weak self] row in
+            guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
                     if identityUpdated {
-                        reloadViewModel()
+                        self?.reloadViewModel()
                     }
                 }
             } else {
@@ -206,16 +203,17 @@ private extension SupportTableViewController {
     }
 
     func myTicketsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [weak self] row in
+            guard let self = self else { return }
             ZendeskUtils.pushNotificationRead()
             self.tableView.deselectSelectedRowWithAnimation(true)
 
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { identityUpdated in
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
                 if identityUpdated {
-                    reloadViewModel()
+                    self?.reloadViewModel()
                 }
             }
         }
@@ -284,11 +282,13 @@ private extension SupportTableViewController {
         let title: String
         let showIndicator: Bool
         let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
 
-        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false) {
+        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
             self.title = title
             self.showIndicator = showIndicator
             self.action = action
+            self.accessibilityIdentifier = accessibilityIdentifier
         }
 
         func configureCell(_ cell: UITableViewCell) {
@@ -298,6 +298,7 @@ private extension SupportTableViewController {
             cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
+            cell.accessibilityIdentifier = accessibilityIdentifier
         }
     }
 
@@ -308,6 +309,7 @@ private extension SupportTableViewController {
         let value: String
         let accessibilityHint: String
         let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
@@ -316,6 +318,7 @@ private extension SupportTableViewController {
             cell.textLabel?.textColor = .primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
+            cell.accessibilityIdentifier = accessibilityIdentifier
         }
     }
 
@@ -353,7 +356,7 @@ private extension SupportTableViewController {
     // MARK: - Constants
 
     struct Constants {
-        static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
+        static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }

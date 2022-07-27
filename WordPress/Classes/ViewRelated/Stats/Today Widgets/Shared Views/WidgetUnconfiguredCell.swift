@@ -69,12 +69,12 @@ private extension WidgetUnconfiguredCell {
     }
 
     enum LocalizedText {
-        static let configureToday = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
-        static let configureAllTime = NSLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
-        static let configureThisWeek = NSLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
-        static let openWordPress = NSLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
-        static let loadingFailed = NSLocalizedString("Couldn't load data", comment: "Message displayed when a Stats widget failed to load data.")
-        static let retry = NSLocalizedString("Retry", comment: "Stats widgets label to reload the widget.")
+        static let configureToday = AppLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
+        static let configureAllTime = AppLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
+        static let configureThisWeek = AppLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
+        static let openWordPress = AppLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let loadingFailed = AppLocalizedString("Couldn't load data", comment: "Message displayed when a Stats widget failed to load data.")
+        static let retry = AppLocalizedString("Retry", comment: "Stats widgets label to reload the widget.")
     }
 
 }

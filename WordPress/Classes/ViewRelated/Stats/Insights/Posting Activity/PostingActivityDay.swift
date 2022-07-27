@@ -1,6 +1,6 @@
 import UIKit
 
-protocol PostingActivityDayDelegate: class {
+protocol PostingActivityDayDelegate: AnyObject {
     func daySelected(_ day: PostingActivityDay)
 }
 

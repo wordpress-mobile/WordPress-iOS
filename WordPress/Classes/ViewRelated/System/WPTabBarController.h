@@ -5,15 +5,11 @@ extern NSString * const WPNewPostURLParamTagsKey;
 extern NSString * const WPTabBarCurrentlySelectedScreenSites;
 extern NSString * const WPTabBarCurrentlySelectedScreenReader;
 extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
-
-typedef NS_ENUM(NSUInteger, WPTabType) {
-    WPTabMySites,
-    WPTabReader,
-    WPTabNotifications
-};
+extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 @class AbstractPost;
 @class Blog;
+@class BloggingPromptCoordinator;
 @class BlogListViewController;
 @class MeViewController;
 @class MySitesCoordinator;
@@ -29,6 +25,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
+@property (nonatomic, strong, readonly) BloggingPromptCoordinator *bloggingPromptCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong) id<ScenePresenter> whatIsNewScenePresenter;
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;

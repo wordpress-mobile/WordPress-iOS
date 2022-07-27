@@ -15,7 +15,7 @@ class PrivacySettingsViewController: UITableViewController {
     }
 
     required convenience init() {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
     }
 
     override func viewDidLoad() {
@@ -158,13 +158,16 @@ class PrivacySettingsViewController: UITableViewController {
         guard let url = URL(string: urlString) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "privacy_settings")
         let navigation = UINavigationController(rootViewController: webViewController)
         present(navigation, animated: true)
     }
 
     func crashReportingChanged(_ enabled: Bool) {
         UserSettings.userHasOptedOutOfCrashLogging = !enabled
+
+        WPAnalytics.track(.privacySettingsReportCrashesToggled, properties: ["enabled": enabled])
+
         WordPressAppDelegate.crashLogging?.setNeedsDataRefresh()
     }
 }

@@ -1,7 +1,6 @@
 #import "CommentService.h"
 #import "AccountService.h"
 #import "Blog.h"
-#import "Comment.h"
 #import "ContextManager.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
@@ -99,7 +98,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Create comment
 - (Comment *)createCommentForBlog:(Blog *)blog
 {
-    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:blog.managedObjectContext];
+    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class])
+                                                     inManagedObjectContext:blog.managedObjectContext];
+    comment.dateCreated = [NSDate new];
     comment.blog = blog;
     return comment;
 }
@@ -111,7 +112,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     reply.postID = comment.postID;
     reply.post = comment.post;
     reply.parentID = comment.commentID;
-    reply.status = CommentStatusApproved;
+    reply.status = [Comment descriptionFor:CommentStatusTypeApproved];
     return reply;
 }
 
@@ -119,7 +120,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (Comment *)restoreReplyForComment:(Comment *)comment
 {
     NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Comment class])];
-    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@", CommentStatusDraft, comment.commentID];
+    NSString *draft = [Comment descriptionFor:CommentStatusTypeDraft];
+    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@",
+                               draft,
+                               comment.commentID];
     existingReply.fetchLimit = 1;
 
     NSError *error;
@@ -133,8 +137,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         reply = [self createReplyForComment:comment];
     }
 
-    reply.status = CommentStatusDraft;
-
+    reply.status = draft;
     return reply;
 }
 
@@ -152,6 +155,15 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
+    [self syncCommentsForBlog:blog withStatus:status filterUnreplied:NO success:success failure:failure];
+}
+
+- (void)syncCommentsForBlog:(Blog *)blog
+                 withStatus:(CommentStatusFilter)status
+            filterUnreplied:(BOOL)filterUnreplied
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
@@ -160,37 +172,50 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         }
         return;
     }
-    
+
     // If the comment status is not specified, default to all.
     CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
     NSDictionary *options = @{ @"status": [NSNumber numberWithInt:commentStatus] };
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    
+
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
         [self.managedObjectContext performBlock:^{
             Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-            
+
             if (!blogInContext) {
                 return;
             }
-            
-            [self mergeComments:comments
+            NSArray *fetchedComments = comments;
+            if (filterUnreplied) {
+                NSString *author = @"";
+                if (blog.account) {
+                    // See if there is a linked Jetpack user that we should use.
+                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithLinkedID:blog.account.userID];
+                    author = (blogAuthor) ? blogAuthor.email : blogInContext.account.email;
+                } else {
+                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithId:blogInContext.userID];
+                    author = (blogAuthor) ? blogAuthor.email : author;
+                }
+                fetchedComments = [self filterUnrepliedComments:comments forAuthor:author];
+            }
+
+            [self mergeComments:fetchedComments
                         forBlog:blog
                   purgeExisting:YES
               completionHandler:^{
                 [[self class] stopSyncingCommentsForBlog:blogID];
-                
+
                 [self.managedObjectContext performBlock:^{
                     blogInContext.lastCommentsSync = [NSDate date];
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                         if (success) {
                             // Note:
                             // We'll assume that if the requested page size couldn't be filled, there are no
-                            // more comments left to retrieve.
-                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                            // more comments left to retrieve.  However, for unreplied comments, we only fetch the first page (for now).
+                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
                             success(hasMore);
                         }
                     }];
@@ -205,6 +230,56 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }];
         }
     }];
+}
+
+- (NSArray *)filterUnrepliedComments:(NSArray *)comments forAuthor:(NSString *)author {
+    NSMutableArray *marr = [comments mutableCopy];
+
+    NSMutableArray *foundIDs = [NSMutableArray array];
+    NSMutableArray *discardables = [NSMutableArray array];
+
+    // get ids of comments that user has replied to.
+    for (RemoteComment *comment in marr) {
+        if (![comment.authorEmail isEqualToString:author] || !comment.parentID) {
+            continue;
+        }
+        [foundIDs addObject:comment.parentID];
+        [discardables addObject:comment];
+    }
+    // Discard the replies, they aren't needed.
+    [marr removeObjectsInArray:discardables];
+    [discardables removeAllObjects];
+
+    // Get the parents, grandparents etc. and discard those too.
+    while ([foundIDs count] > 0) {
+        NSArray *needles = [foundIDs copy];
+        [foundIDs removeAllObjects];
+        for (RemoteComment *comment in marr) {
+            if ([needles containsObject:comment.commentID]) {
+                if (comment.parentID) {
+                    [foundIDs addObject:comment.parentID];
+                }
+                [discardables addObject:comment];
+            }
+        }
+        // Discard the matches, and keep looking if items were found.
+        [marr removeObjectsInArray:discardables];
+        [discardables removeAllObjects];
+    }
+
+    // remove any remaining child comments.
+    // remove any remaining root comments made by the user.
+    for (RemoteComment *comment in marr) {
+        if (comment.parentID.intValue != 0) {
+            [discardables addObject:comment];
+        } else if ([comment.authorEmail isEqualToString:author]) {
+            [discardables addObject:comment];
+        }
+    }
+    [marr removeObjectsInArray:discardables];
+
+    // these are the most recent unreplied comments from other users.
+    return [NSArray arrayWithArray:marr];
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
@@ -238,13 +313,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    
+
     // If the comment status is not specified, default to all.
     CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
     options[@"status"] = [NSNumber numberWithInt:commentStatus];
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    
+
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
         Comment *oldestComment = [self oldestCommentForBlog:blog];
         if (oldestComment.dateCreated) {
@@ -255,7 +330,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    
+
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
@@ -272,7 +347,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 }
             }];
         }];
-        
+
     } failure:^(NSError *error) {
         [[self class] stopSyncingCommentsForBlog:blogID];
         if (failure) {
@@ -283,12 +358,101 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
+- (void)loadCommentWithID:(NSNumber *)commentID
+                  forBlog:(Blog *)blog
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *))failure {
+
+    NSManagedObjectID *blogID = blog.objectID;
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+
+    [remote getCommentWithID:commentID
+                     success:^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            if (!blog) {
+                return;
+            }
+
+            Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+            if (!comment) {
+                comment = [self createCommentForBlog:blog];
+            }
+
+            [self updateComment:comment withRemoteComment:remoteComment];
+
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success(comment);
+                    });
+                }
+            }];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error loading comment for blog: %@", error);
+        [self.managedObjectContext performBlock:^{
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
+    }];
+}
+
+- (void)loadCommentWithID:(NSNumber *)commentID
+                  forPost:(ReaderPost *)post
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *))failure {
+
+    NSManagedObjectID *postID = post.objectID;
+    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
+
+    [service getCommentWithID:commentID
+                      success:^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            ReaderPost *post = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postID error:nil];
+            if (!post) {
+                return;
+            }
+
+            Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+
+            if (!comment) {
+                comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+                comment.dateCreated = [NSDate new];
+            }
+
+            comment.post = post;
+            [self updateComment:comment withRemoteComment:remoteComment];
+
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success(comment);
+                    });
+                }
+            }];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error loading comment for post: %@", error);
+        [self.managedObjectContext performBlock:^{
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
+    }];
+}
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
-    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id<CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
 
     NSManagedObjectID *commentObjectID = comment.objectID;
@@ -305,7 +469,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         }];
     };
 
-    if (comment.commentID) {
+    if (comment.commentID != 0) {
         [remote updateComment:remoteComment
                       success:successBlock
                       failure:failure];
@@ -322,7 +486,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:CommentStatusApproved
+               withStatus:CommentStatusTypeApproved
                   success:success
                   failure:failure];
 }
@@ -333,7 +497,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                  failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:CommentStatusPending
+               withStatus:CommentStatusTypePending
                   success:success
                   failure:failure];
 }
@@ -343,17 +507,42 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
+
+    // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    if (!comment.deleteWillBePermanent) {
+        [self moderateComment:comment
+                   withStatus:CommentStatusTypeSpam
+                      success:success
+                      failure:failure];
+
+        return;
+    }
+
     NSManagedObjectID *commentID = comment.objectID;
+
     [self moderateComment:comment
-               withStatus:CommentStatusSpam
+               withStatus:CommentStatusTypeSpam
                   success:^{
-                      Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-                      [self.managedObjectContext deleteObject:commentInContext];
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                      if (success) {
-                          success();
-                      }
-                  } failure:failure];
+        Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
+        [self.managedObjectContext deleteObject:commentInContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+    } failure: failure];
+
+
+}
+
+// Trash comment
+- (void)trashComment:(Comment *)comment
+                 success:(void (^)(void))success
+                 failure:(void (^)(NSError *error))failure
+{
+    [self moderateComment:comment
+               withStatus:CommentStatusTypeUnapproved
+                  success:success
+                  failure:failure];
 }
 
 // Delete comment
@@ -361,33 +550,98 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
               success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
-    NSNumber *commentID = comment.commentID;
-    if (commentID) {
-        RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
-        id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
-        [remote trashComment:remoteComment success:success failure:failure];
+    // If this comment is local only, just delete. No need to query the endpoint or do any other work.
+    if (comment.commentID == 0) {
+        [self.managedObjectContext deleteObject:comment];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+        return;
     }
-    [self.managedObjectContext deleteObject:comment];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
 
+    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+
+    // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    if (!comment.deleteWillBePermanent) {
+        [remote trashComment:remoteComment success:success failure:failure];
+        return;
+    }
+
+    // For the best user experience we want to optimistically delete the comment.
+    // However, if there is an error we need to restore it.
+    NSManagedObjectID *blogObjID = comment.blog.objectID;
+    NSManagedObjectContext *context = self.managedObjectContext;
+
+    [context deleteObject:comment];
+    [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+        [remote trashComment:remoteComment success:success failure:^(NSError *error) {
+            // Failure.  Restore the comment.
+            Blog *blog = (Blog *)[context objectWithID:blogObjID];
+            if (!blog) {
+                if (failure) {
+                    failure(error);
+                }
+                return;
+            }
+
+            Comment *comment = [self createCommentForBlog:blog];
+            [self updateComment:comment withRemoteComment:remoteComment];
+            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                if (failure) {
+                    failure(error);
+                }
+            }];
+        }];
+    }];
+}
 
 #pragma mark - Post-centric methods
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count, BOOL hasMore))success
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:page
+                         topLevelComments:WPTopLevelHierarchicalCommentsPerPage
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                       topLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    [self syncHierarchicalCommentsForPost:post
+                                     page:1
+                         topLevelComments:number
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                       topLevelComments:(NSUInteger)number
+                                success:(void (^)(BOOL hasMore, NSNumber *totalComments))success
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
     NSNumber *siteID = post.siteID;
     NSNumber *postID = post.postID;
+
+    NSUInteger commentsPerPage = number ?: WPTopLevelHierarchicalCommentsPerPage;
+    NSUInteger pageNumber = page ?: 1;
+
     [self.managedObjectContext performBlock:^{
         CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
         [service syncHierarchicalCommentsForPost:postID
-                                            page:page
-                                          number:WPTopLevelHierarchicalCommentsPerPage
-                                         success:^(NSArray *comments) {
+                                            page:pageNumber
+                                          number:commentsPerPage
+                                         success:^(NSArray *comments, NSNumber *totalComments) {
                                              [self.managedObjectContext performBlock:^{
                                                  NSError *error;
                                                  ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
@@ -418,7 +672,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                          }
 
                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                             success([comments count], hasMore);
+                                                             success(hasMore, totalComments);
                                                          });
                                                      }];
                                                  }];
@@ -437,7 +691,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
 {
-    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
+    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = 0"]];
     CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
     return (NSInteger)page;
 }
@@ -476,7 +730,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
-    
+
     // This fixes an issue where the comment may not appear for some posts after a successful posting
     // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
     comment.post = post;
@@ -530,7 +784,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
-    
+
     // This fixes an issue where the comment may not appear for some posts after a successful posting
     // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
     comment.post = post;
@@ -649,12 +903,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
     [remote moderateCommentWithID:commentID
-                           status:CommentStatusSpam
+                           status:[Comment descriptionFor:CommentStatusTypeSpam]
                           success:success
                           failure:failure];
 }
 
-// Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     success:(void (^)(void))success
@@ -673,23 +926,23 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // toggle the like status and change the like count and save it
     comment.isLiked = !comment.isLiked;
-    comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
+    comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     __weak __typeof(self) weakSelf = self;
-    NSManagedObjectID *commentID = comment.objectID;
+    NSManagedObjectID *commentObjectID = comment.objectID;
 
     // This block will reverse the like/unlike action
     void (^failureBlock)(NSError *) = ^(NSError *error) {
-        Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
+        Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
         if (!comment) {
             return;
         }
         DDLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
 
         comment.isLiked = !comment.isLiked;
-        comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
+        comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
 
         [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
 
@@ -698,24 +951,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         }
     };
 
+    NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
+
     if (comment.isLiked) {
-        [self likeCommentWithID:comment.commentID siteID:siteID success:success failure:failureBlock];
+        [self likeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
     }
     else {
-        [self unlikeCommentWithID:comment.commentID siteID:siteID success:success failure:failureBlock];
+        [self unlikeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
     }
-}
-
-- (void)getLikesForCommentID:(NSNumber *)commentID
-                      siteID:(NSNumber *)siteID
-                     success:(void (^)(NSArray<RemoteUser *> *))success
-                     failure:(void (^)(NSError * _Nullable))failure
-{
-    NSParameterAssert(commentID);
-    NSParameterAssert(siteID);
-
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
-    [remote getLikesForCommentID:commentID success:success failure:failure];
 }
 
 
@@ -738,24 +981,28 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 
+
+
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
-             withStatus:(NSString *)status
+             withStatus:(CommentStatusType)status
                 success:(void (^)(void))success
                 failure:(void (^)(NSError *error))failure
 {
+    NSString *currentStatus = [Comment descriptionFor:status];
     NSString *prevStatus = comment.status;
-    if ([prevStatus isEqualToString:status]) {
+
+    if ([prevStatus isEqualToString:currentStatus]) {
         if (success) {
             success();
         }
         return;
     }
 
-    comment.status = status;
+    comment.status = currentStatus;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
@@ -763,7 +1010,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         if (success) {
                             success();
                         }
-                    } failure:^(NSError *error) {                        
+                    } failure:^(NSError *error) {
+                        DDLogError(@"Error moderating comment: %@", error);
                         [self.managedObjectContext performBlock:^{
                             // Note: The comment might have been deleted at this point
                             Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
@@ -801,7 +1049,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         if (existingComments.count > 0) {
             for (Comment *comment in existingComments) {
                 // Don't delete unpublished comments
-                if (![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                if (![commentsToKeep containsObject:comment] && comment.commentID != 0) {
                     DDLogInfo(@"Deleting Comment: %@", comment);
                     [self.managedObjectContext deleteObject:comment];
                 }
@@ -830,7 +1078,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSMutableArray *ancestors = [currentAncestors mutableCopy];
 
     // Calculate hierarchy and depth.
-    if (parentID) {
+    if (parentID.intValue != 0) {
         if ([ancestors containsObject:parentID]) {
             NSUInteger index = [ancestors indexOfObject:parentID] + 1;
             NSArray *subarray = [ancestors subarrayWithRange:NSMakeRange(0, index)];
@@ -889,25 +1137,26 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     comment.author = [account username];
+    comment.authorID = [account.userID intValue];
     comment.content = content;
     comment.dateCreated = [NSDate date];
-    comment.parentID = parentID;
-    comment.postID = postID;
+    comment.parentID = [parentID intValue];
+    comment.postID = [postID intValue];
     comment.postTitle = post.postTitle;
-    comment.status = CommentStatusDraft;
+    comment.status = [Comment descriptionFor:CommentStatusTypeDraft];
     comment.post = post;
 
-    // Increment the post's comment count. 
+    // Increment the post's comment count.
     post.commentCount = @([post.commentCount integerValue] + 1);
 
     // Find its parent comment (if it exists)
     Comment *parentComment;
-    if (parentID) {
+    if (parentID.intValue != 0) {
         parentComment = [self findCommentWithID:parentID fromPost:post];
     }
 
     // Update depth and hierarchy
-    [self setHierarchAndDepthOnComment:comment withParentComment:parentComment];
+    [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
 
     [self.managedObjectContext obtainPermanentIDsForObjects:@[comment] error:&error];
     if (error) {
@@ -918,12 +1167,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return comment;
 }
 
-- (void)setHierarchAndDepthOnComment:(Comment *)comment withParentComment:(Comment *)parentComment
+- (void)setHierarchyAndDepthOnComment:(Comment *)comment withParentComment:(Comment *)parentComment
 {
     // Update depth and hierarchy
-    NSNumber *commentID = comment.commentID;
-    if (!commentID) {
-        // A new comment will have a nil commentID.  If nil is used when formatting the hierarchy,
+    NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
+
+    if (commentID != 0) {
+        // A new comment will have a 0 commentID. If 0 is used when formatting the hierarchy,
         // the comment will preceed any other comment in its level of the hierarchy.
         // Instead we'll pass a number so large as to ensure the comment will appear last in a list.
         commentID = @9999999;
@@ -931,10 +1181,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     if (parentComment) {
         comment.hierarchy = [NSString stringWithFormat:@"%@.%@", parentComment.hierarchy, [self formattedHierarchyElement:commentID]];
-        comment.depth = @([parentComment.depth integerValue] + 1);
+        comment.depth = parentComment.depth + 1;
     } else {
         comment.hierarchy = [self formattedHierarchyElement:commentID];
-        comment.depth = @(0);
+        comment.depth = 0;
     }
 
     [self.managedObjectContext performBlock:^{
@@ -947,12 +1197,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [self updateComment:comment withRemoteComment:remoteComment];
     // Find its parent comment (if it exists)
     Comment *parentComment;
-    if (comment.parentID) {
-        parentComment = [self findCommentWithID:comment.parentID fromPost:(ReaderPost *)comment.post];
+    if (comment.parentID != 0) {
+        NSNumber *parentID = [NSNumber numberWithInt:comment.parentID];
+        parentComment = [self findCommentWithID:parentID fromPost:(ReaderPost *)comment.post];
     }
 
     // Update depth and hierarchy
-    [self setHierarchAndDepthOnComment:comment withParentComment:parentComment];
+    [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
@@ -963,6 +1214,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return;
     }
 
+    NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
     NSMutableArray *ancestors = [NSMutableArray array];
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     NSString *entityName = NSStringFromClass([Comment class]);
@@ -978,9 +1230,20 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         [self updateComment:comment withRemoteComment:remoteComment];
 
         // Calculate hierarchy and depth.
-        ancestors = [self ancestorsForCommentWithParentID:comment.parentID andCurrentAncestors:ancestors];
-        comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:comment.commentID];
-        comment.depth = @([ancestors count]);
+        ancestors = [self ancestorsForCommentWithParentID:[NSNumber numberWithInt:comment.parentID] andCurrentAncestors:ancestors];
+        comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:[NSNumber numberWithInt:comment.commentID]];
+
+        // Comments are shown on the thread when (1) it is approved, and (2) its ancestors are approved.
+        // Having the comments sorted hierarchically ascending ensures that each comment's predecessors will be visited first.
+        // Therefore, we only need to check if the comment and its direct parent are approved.
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/18081
+        BOOL hasValidParent = comment.parentID > 0 && [visibleCommentIds containsObject:@(comment.parentID)];
+        if ([comment isApproved] && ([comment isTopLevelComment] || hasValidParent)) {
+            [visibleCommentIds addObject:@(comment.commentID)];
+        }
+        comment.visibleOnReader = [visibleCommentIds containsObject:@(comment.commentID)];
+
+        comment.depth = ancestors.count;
         comment.post = post;
         comment.content = [self sanitizeCommentContent:comment.content isPrivateSite:post.isPrivate];
         [commentsToKeep addObject:comment];
@@ -1021,7 +1284,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // Retrieve the starting and ending comments for the specified page.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND parentID = NULL", post];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND parentID = 0", post];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
     fetchRequest.sortDescriptors = @[sortDescriptor];
     [fetchRequest setFetchLimit:WPTopLevelHierarchicalCommentsPerPage];
@@ -1034,6 +1297,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         DDLogError(@"Error fetching top level comments for page %i : %@", page, error);
     }
     return fetchedObjects;
+}
+
+- (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
+    NSInteger count = MIN(comments.count, number);
+    return [comments subarrayWithRange:NSMakeRange(0, count)];
 }
 
 - (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
@@ -1073,52 +1343,72 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
-    comment.commentID = remoteComment.commentID;
+    comment.commentID = [remoteComment.commentID intValue];
+    comment.authorID = [remoteComment.authorID intValue];
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
     comment.authorAvatarURL = remoteComment.authorAvatarURL;
+    comment.author_ip = remoteComment.authorIP;
     comment.content = remoteComment.content;
+    comment.rawContent = remoteComment.rawContent;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
-    comment.parentID = remoteComment.parentID;
-    comment.postID = remoteComment.postID;
+    comment.parentID = [remoteComment.parentID intValue];
+    comment.postID = [remoteComment.postID intValue];
     comment.postTitle = remoteComment.postTitle;
     comment.status = remoteComment.status;
     comment.type = remoteComment.type;
     comment.isLiked = remoteComment.isLiked;
-    comment.likeCount = remoteComment.likeCount;
+    comment.likeCount = [remoteComment.likeCount intValue];
+    comment.canModerate = remoteComment.canModerate;
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:comment.postID inBlog:comment.blog];
+        comment.post = [postService findPostWithID:[NSNumber numberWithInt:comment.postID] inBlog:comment.blog];
     }
 }
 
 - (RemoteComment *)remoteCommentWithComment:(Comment *)comment
 {
     RemoteComment *remoteComment = [RemoteComment new];
-    remoteComment.commentID = comment.commentID;
+    remoteComment.commentID = [NSNumber numberWithInt:comment.commentID];
+    remoteComment.authorID = [NSNumber numberWithInt:comment.authorID];
     remoteComment.author = comment.author;
     remoteComment.authorEmail = comment.author_email;
     remoteComment.authorUrl = comment.author_url;
     remoteComment.authorAvatarURL = comment.authorAvatarURL;
+    remoteComment.authorIP = comment.author_ip;
     remoteComment.content = comment.content;
     remoteComment.date = comment.dateCreated;
     remoteComment.link = comment.link;
-    remoteComment.parentID = comment.parentID;
-    remoteComment.postID = comment.postID;
+    remoteComment.parentID = [NSNumber numberWithInt:comment.parentID];
+    remoteComment.postID = [NSNumber numberWithInt:comment.postID];
     remoteComment.postTitle = comment.postTitle;
     remoteComment.status = comment.status;
     remoteComment.type = comment.type;
     remoteComment.isLiked = comment.isLiked;
-    remoteComment.likeCount = comment.likeCount;
+    remoteComment.likeCount = [NSNumber numberWithInt:comment.likeCount];
+    remoteComment.canModerate = comment.canModerate;
     return remoteComment;
 }
 
 
 #pragma mark - Remotes
+
+- (id<CommentServiceRemote>)remoteForComment:(Comment *)comment
+{
+    // If the comment is fetched through the Reader API, the blog will always be nil.
+    // Try to find the Blog locally first, as it should exist if the user has a role on the site.
+    if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
+        ReaderPost *readerPost = (ReaderPost *)comment.post;
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        return [self remoteForBlog:[blogService blogByHostname:readerPost.blogURL]];
+    }
+
+    return [self remoteForBlog:comment.blog];
+}
 
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
 {

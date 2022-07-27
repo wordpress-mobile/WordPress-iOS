@@ -15,7 +15,7 @@ class ExtensionNotificationManager {
     static func scheduleSuccessNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date(), postStatus: String) {
         let userInfo = makeUserInfoDict(postUploadOpID: postUploadOpID, postID: postID, blogID: blogID)
         let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount, postStatus: postStatus)
-        let body = notificationDate.mediumString()
+        let body = notificationDate.toMediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categorySuccessIdentifier, userInfo: userInfo)
     }
 
@@ -30,7 +30,7 @@ class ExtensionNotificationManager {
     static func scheduleFailureNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date(), postStatus: String) {
         let userInfo = makeUserInfoDict(postUploadOpID: postUploadOpID, postID: postID, blogID: blogID)
         let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount, postStatus: postStatus)
-        let body = notificationDate.mediumString()
+        let body = notificationDate.toMediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categoryFailureIdentifier, userInfo: userInfo)
     }
 

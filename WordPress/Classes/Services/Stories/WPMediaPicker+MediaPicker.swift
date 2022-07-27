@@ -31,6 +31,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         super.init(options: options)
         self.delegate = delegate
         self.mediaPicker.mediaPickerDelegate = delegate
+        self.mediaPicker.registerClass(forReusableCellOverlayViews: DisabledVideoOverlay.self)
     }
 
     required init?(coder: NSCoder) {
@@ -49,7 +50,9 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
 
         let tabBar = PortraitTabBarController()
 
-        let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate, presenter: tabBar)
+        let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate,
+                                                      presenter: tabBar,
+                                                      blog: blog)
         let options = WPMediaPickerOptions()
         options.allowCaptureOfMedia = false
 
@@ -57,6 +60,10 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         photoPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         photoPicker.tabBarItem = UITabBarItem(title: Constants.photosTabBarTitle, image: Constants.photosTabBarIcon, tag: 0)
 
+        if #available(iOS 14.0, *),
+           FeatureFlag.mediaPickerPermissionsNotice.enabled {
+            photoPicker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
+        }
 
         let mediaPicker = WPMediaPickerForKanvas(options: options, delegate: mediaPickerDelegate)
         mediaPicker.startOnGroupSelector = false
@@ -78,12 +85,15 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     private weak var kanvasDelegate: KanvasMediaPickerViewControllerDelegate?
     private weak var presenter: UIViewController?
-
+    private let blog: Blog
     private var cancellables = Set<AnyCancellable>()
 
-    init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate, presenter: UIViewController) {
+    init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate,
+         presenter: UIViewController,
+         blog: Blog) {
         self.kanvasDelegate = kanvasDelegate
         self.presenter = presenter
+        self.blog = blog
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
@@ -161,7 +171,53 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
             self?.kanvasDelegate?.didPick(media: media)
         }).store(in: &cancellables)
     }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        picker != self && !blog.canUploadAsset(asset)
+    }
+
+    func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
+        guard #available(iOS 14.0, *),
+              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+              picker.dataSource is WPPHAssetDataSource else {
+            return false
+        }
+
+        return PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited
+    }
+
+    func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
+        guard #available(iOS 14.0, *) else {
+            return .zero
+        }
+
+        let header = DeviceMediaPermissionsHeader()
+        header.translatesAutoresizingMaskIntoConstraints = false
+
+        return header.referenceSizeInView(picker.view)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
+        guard #available(iOS 14.0, *),
+              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+            return
+        }
+
+        headerView.presenter = picker
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if picker != self, !blog.canUploadAsset(asset) {
+            presentVideoLimitExceededFromPicker(on: picker)
+            return false
+        }
+        return true
+    }
 }
+
+// MARK: - User messages for video limits allowances
+
+extension MediaPickerDelegate: VideoLimitsAlertPresenter {}
 
 // MARK: Media Export extensions
 
@@ -230,9 +286,14 @@ extension WPMediaAsset {
     }
 
     /// Produces a Publisher containing a URL of saved video and any errors which occurred.
+    ///
+    /// - Parameters:
+    ///     - skipTransformCheck: Skips the transform check.
+    ///
     /// - Returns: Publisher containing the URL to a saved video and any errors which occurred.
-    func videoURLPublisher() -> AnyPublisher<URL, Error> {
-        return videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
+    ///
+    func videoURLPublisher(skipTransformCheck: Bool = false) -> AnyPublisher<URL, Error> {
+        videoAssetPublisher().tryMap { asset -> AnyPublisher<URL, Error> in
             let filename = UUID().uuidString
             let url = try StoryEditor.mediaCacheDirectory().appendingPathComponent(filename)
             let urlAsset = asset as? AVURLAsset
@@ -240,7 +301,13 @@ extension WPMediaAsset {
             // Portrait video is exported so that it is rotated for use in Kanvas.
             // Once the Metal renderer is fixed to properly rotate this media, this can be removed.
             let trackTransform = asset.tracks(withMediaType: .video).first?.preferredTransform
-            if let assetURL = urlAsset?.url, trackTransform == CGAffineTransform.identity {
+
+            // DRM: I moved this logic into a variable because it seems to be completely out of place in this method
+            // and it was causing some issues when sharing videos that needed to be downloaded.  I added a parameter
+            // with a default value that will make sure this check is executed for any old code.
+            let transformCheck = skipTransformCheck || trackTransform == CGAffineTransform.identity
+
+            if let assetURL = urlAsset?.url, transformCheck {
                 let exportURL = url.appendingPathExtension(assetURL.pathExtension)
                 if urlAsset?.url.scheme != "file" {
                     // Download any file which isn't local and move it to the proper location.
@@ -325,7 +392,7 @@ extension WPMediaAsset {
     /// Produces a Publisher  `AVAsset` from a `WPMediaAsset` object.
     /// - Returns: Publisher with an AVAsset and any errors which occur during export.
     func videoAssetPublisher() -> AnyPublisher<AVAsset, Error> {
-        return Future<AVAsset, Error> { [weak self] promise in
+        Future<AVAsset, Error> { [weak self] promise in
             self?.videoAsset(completionHandler: { asset, error in
                 guard let asset = asset else {
                     if let error = error {

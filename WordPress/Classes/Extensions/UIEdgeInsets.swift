@@ -12,9 +12,14 @@ extension UIEdgeInsets {
     func flippedForRightToLeftLayoutDirection() -> UIEdgeInsets {
         return UIEdgeInsets(top: top, left: right, bottom: bottom, right: left)
     }
+
+    init(allEdges: CGFloat) {
+        self.init(top: allEdges, left: allEdges, bottom: allEdges, right: allEdges)
+    }
 }
 
 extension UIButton {
+
     @objc func flipInsetsForRightToLeftLayoutDirection() {
         guard userInterfaceLayoutDirection() == .rightToLeft else {
             return
@@ -23,6 +28,32 @@ extension UIButton {
         imageEdgeInsets = imageEdgeInsets.flippedForRightToLeftLayoutDirection()
         titleEdgeInsets = titleEdgeInsets.flippedForRightToLeftLayoutDirection()
     }
+
+    func verticallyAlignImageAndText(padding: CGFloat = 5) {
+        guard let imageView = imageView,
+              let titleLabel = titleLabel else {
+                  return
+              }
+
+        let imageSize = imageView.frame.size
+        let titleSize = titleLabel.frame.size
+        let totalHeight = imageSize.height + titleSize.height + padding
+
+        imageEdgeInsets = UIEdgeInsets(
+            top: -(totalHeight - imageSize.height),
+            left: 0,
+            bottom: 0,
+            right: -titleSize.width
+        )
+
+        titleEdgeInsets = UIEdgeInsets(
+            top: 0,
+            left: -imageSize.width,
+            bottom: -(totalHeight - titleSize.height),
+            right: 0
+        )
+    }
+
 }
 
 // Hack: Since UIEdgeInsets is a struct in ObjC, you can't have methods on it.

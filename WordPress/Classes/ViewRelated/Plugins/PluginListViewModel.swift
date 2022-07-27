@@ -1,7 +1,7 @@
 import WordPressKit
 import WordPressFlux
 
-protocol PluginPresenter: class {
+protocol PluginPresenter: AnyObject {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)
     func present(directoryEntry: PluginDirectoryEntry)
 }

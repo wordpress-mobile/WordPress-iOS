@@ -582,6 +582,12 @@
         return YES;
     }
 
+    if ((self.authorID != original.authorID)
+        && (![self.authorID isEqual:original.authorID]))
+    {
+        return YES;
+    }
+
     return NO;
 }
 

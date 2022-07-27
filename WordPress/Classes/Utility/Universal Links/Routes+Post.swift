@@ -2,11 +2,13 @@ import Foundation
 
 struct NewPostRoute: Route {
     let path = "/post"
+    let section: DeepLinkSection? = .editor
     let action: NavigationAction = NewPostNavigationAction()
 }
 
 struct NewPostForSiteRoute: Route {
     let path = "/post/:domain"
+    let section: DeepLinkSection? = .editor
     let action: NavigationAction = NewPostNavigationAction()
 }
 

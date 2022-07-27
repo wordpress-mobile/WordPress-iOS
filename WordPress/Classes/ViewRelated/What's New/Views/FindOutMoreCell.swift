@@ -1,5 +1,5 @@
 
-class FindOutMoreCell: UITableViewCell {
+class FindOutMoreCell: UITableViewCell, Reusable {
 
     private lazy var findOutMoreButton: UIButton = {
         let button = UIButton()

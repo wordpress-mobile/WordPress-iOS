@@ -1,0 +1,9 @@
+We’ve added some changes in the block editor to make your publishing experience even better.
+
+- No more copying and pasting alt text — when you add an item in the media library to an Image block, the item’s alt text is carried over with it.
+- You can insert media from a URL in Video blocks.
+- If a block contains unexpected or invalid content, you can use the block recovery option to display the content properly — without re-adding it all from scratch.
+
+Post comments are a bit user friendlier, too. When you hit the @ symbol to mention another user in your comment, the post or comment author comes first in the list of suggested users. Sweet.
+
+Finally, we fixed a problem with the editor’s media picker where search queries would stick around even after closing and reopening the window. We also squashed a bug that made the app crash when adding multiple items to a Story post.

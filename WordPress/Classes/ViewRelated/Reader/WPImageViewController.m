@@ -246,6 +246,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self.imageView sizeToFit];
     self.scrollView.contentSize = self.imageView.image.size;
     [self centerImage];
+    
 }
 
 - (void)loadImageFromURL
@@ -568,6 +569,14 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.imageView.isAccessibilityElement = YES;
     self.imageView.accessibilityTraits = UIAccessibilityTraitImage;
+    
+    if (self.media != nil && self.media.title != nil) {
+        self.imageView.accessibilityLabel = [NSString stringWithFormat:NSLocalizedString(@"Fullscreen view of image %@. Double tap to dismiss", @"Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen. Placeholder is the title of the image"), self.media.title];
+    }
+    else {
+        self.imageView.accessibilityLabel = NSLocalizedString(@"Fullscreen view of image. Double tap to dismiss", @"Accessibility label for when image is shown to user in full screen, with instructions on how to dismiss the screen");
+    }
+
 }
 
 - (BOOL)accessibilityPerformEscape

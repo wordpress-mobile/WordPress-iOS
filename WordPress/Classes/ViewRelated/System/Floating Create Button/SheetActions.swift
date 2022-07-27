@@ -55,11 +55,9 @@ struct StoryAction: ActionSheetItem {
     private let action = "create_new_story"
 
     func makeButton() -> ActionSheetButton {
-        let badge = StoryAction.newBadge(title: NSLocalizedString("New", comment: "New button badge on Stories Post button"))
         return ActionSheetButton(title: NSLocalizedString("Story post", comment: "Create new Story button title"),
                                             image: .gridicon(.story),
                                             identifier: "storyButton",
-                                            badge: badge,
                                             action: {
                                                 WPAnalytics.track(.createSheetActionTapped, properties: ["source": source, "action": action])
                                                 handler()

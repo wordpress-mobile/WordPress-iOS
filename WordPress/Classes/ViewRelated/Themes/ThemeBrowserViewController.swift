@@ -43,7 +43,7 @@ public enum ThemeType {
  *  @brief      Publicly exposed theme interaction support
  *  @details    Held as weak reference by owned subviews
  */
-public protocol ThemePresenter: class {
+public protocol ThemePresenter: AnyObject {
     var filterType: ThemeType { get set }
 
     var screenshotWidth: Int { get }
@@ -840,7 +840,7 @@ public protocol ThemePresenter: class {
         _ = themeService.installTheme(theme,
             for: blog,
             success: { [weak self] in
-                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: false)
+                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: !theme.isCurrentTheme())
             }, failure: nil)
     }
 
@@ -857,7 +857,7 @@ public protocol ThemePresenter: class {
         if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
         } else {
-            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: !(theme?.isCurrentTheme() ?? true))
         }
     }
 
@@ -894,7 +894,7 @@ public protocol ThemePresenter: class {
         activateButton = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
         activateButton?.isEnabled = !theme.isCurrentTheme()
 
-        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration, source: "theme_browser")
         webViewController.navigationItem.rightBarButtonItem = activateButton
         let navigation = UINavigationController(rootViewController: webViewController)
         navigation.modalPresentationStyle = modalStyle

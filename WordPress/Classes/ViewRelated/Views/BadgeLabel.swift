@@ -8,6 +8,13 @@ class BadgeLabel: UILabel {
         }
     }
 
+    @IBInspectable var verticalPadding: CGFloat = 0 {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsLayout()
+        }
+    }
+
     // MARK: Initialization
 
     override init(frame: CGRect) {
@@ -30,13 +37,14 @@ class BadgeLabel: UILabel {
     // MARK: Padding
 
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets.init(top: 0, left: horizontalPadding, bottom: 0, right: horizontalPadding)
+        let insets = UIEdgeInsets.init(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
         super.drawText(in: rect.inset(by: insets))
     }
 
     override var intrinsicContentSize: CGSize {
         var paddedSize = super.intrinsicContentSize
         paddedSize.width += 2 * horizontalPadding
+        paddedSize.height += 2 * verticalPadding
         return paddedSize
     }
 

@@ -27,59 +27,60 @@ import Foundation
     static func defaultProperties(comment: Comment) -> [AnyHashable: Any] {
         return [
             Constants.context: trackingContext(),
-            WPAppAnalyticsKeyPostID: comment.postID.intValue,
-            WPAppAnalyticsKeyCommentID: comment.commentID.intValue
+            WPAppAnalyticsKeyPostID: comment.postID,
+            WPAppAnalyticsKeyCommentID: comment.commentID
         ]
     }
 
     @objc static func trackCommentViewed(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentViewed, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentViewed)
     }
 
     @objc static func trackCommentEditorOpened(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentEditorOpened, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentEditorOpened)
     }
 
     @objc static func trackCommentEdited(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentEdited, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentEdited)
     }
 
     @objc static func trackCommentApproved(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentApproved, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentApproved)
     }
 
     @objc static func trackCommentUnApproved(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentUnApproved, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentUnApproved)
     }
 
     @objc static func trackCommentTrashed(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentTrashed, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentTrashed)
     }
 
     @objc static func trackCommentSpammed(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentSpammed, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentSpammed)
     }
 
     @objc static func trackCommentLiked(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentLiked, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentLiked)
     }
 
     @objc static func trackCommentUnLiked(comment: Comment) {
-        let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentUnliked, properties: properties, blog: comment.blog)
+        trackCommentEvent(comment: comment, event: .commentUnliked)
     }
 
     @objc static func trackCommentRepliedTo(comment: Comment) {
+        trackCommentEvent(comment: comment, event: .commentRepliedTo)
+    }
+
+    private static func trackCommentEvent(comment: Comment, event: WPAnalyticsEvent) {
         let properties = defaultProperties(comment: comment)
-        WPAnalytics.track(.commentRepliedTo, properties: properties, blog: comment.blog)
+
+        guard let blog = comment.blog else {
+            WPAnalytics.track(event, properties: properties)
+            return
+        }
+
+        WPAnalytics.track(event, properties: properties, blog: blog)
     }
 
     static func trackCommentEditorOpened(block: FormattableCommentContent) {

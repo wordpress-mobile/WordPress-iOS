@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>org.wordpress.bgtask.weeklyroundup</string>
+		<string>org.wordpress.bgtask.weeklyroundup.processing</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -34,6 +39,17 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Blue</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>blue-icon-app-60x60</string>
+					<string>blue-icon-app-76x76</string>
+					<string>blue-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
 			<key>Blue Classic</key>
@@ -171,6 +187,17 @@
 					<string>spectrum-icon-app-60x60</string>
 					<string>spectrum-icon-app-76x76</string>
 					<string>spectrum-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum &apos;22</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-&apos;22-icon-app-60x60</string>
+					<string>spectrum-&apos;22-icon-app-76x76</string>
+					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -379,6 +406,17 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
+			<key>Spectrum &apos;22</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-&apos;22-icon-app-60x60</string>
+					<string>spectrum-&apos;22-icon-app-76x76</string>
+					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
 			<key>Spectrum Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -448,7 +486,7 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>GOOGLE_LOGIN_SCHEME_ID</string>
+				<string>com.googleusercontent.apps.108380595987-ujhrhknecrqli756i72gkcs4aaia6nhb</string>
 			</array>
 		</dict>
 	</array>
@@ -484,10 +522,23 @@
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enable microphone access to record sound in your videos.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To add photos or videos to your posts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add photos or videos to your posts.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>org.wordpress.me</string>
+		<string>org.wordpress.me.appsettings</string>
+		<string>org.wordpress.me.notificationsettings</string>
+		<string>org.wordpress.me.support</string>
+		<string>org.wordpress.mysites</string>
+		<string>org.wordpress.mysites.details</string>
+		<string>org.wordpress.notifications</string>
+		<string>org.wordpress.reader</string>
+	</array>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
@@ -503,6 +554,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -524,16 +576,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>org.wordpress.me</string>
-		<string>org.wordpress.me.appsettings</string>
-		<string>org.wordpress.me.notificationsettings</string>
-		<string>org.wordpress.me.support</string>
-		<string>org.wordpress.mysites</string>
-		<string>org.wordpress.mysites.details</string>
-		<string>org.wordpress.notifications</string>
-		<string>org.wordpress.reader</string>
-	</array>
 </dict>
 </plist>

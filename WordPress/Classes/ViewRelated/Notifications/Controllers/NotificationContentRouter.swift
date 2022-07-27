@@ -16,7 +16,7 @@ struct NotificationContentRouter {
         do {
             try displayContent(of: range, with: url)
         } catch {
-            coordinator.displayWebViewWithURL(url)
+            coordinator.displayWebViewWithURL(url, source: "notifications")
         }
     }
 
@@ -31,7 +31,7 @@ struct NotificationContentRouter {
         do {
             try displayNotificationSource()
         } catch {
-            coordinator.displayWebViewWithURL(fallbackURL)
+            coordinator.displayWebViewWithURL(fallbackURL, source: "notifications")
         }
     }
 
@@ -52,9 +52,19 @@ struct NotificationContentRouter {
         case .post:
             try coordinator.displayReaderWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
         case .comment:
-            fallthrough
+            // Focus on the primary comment, and default to the reply ID if its set
+            let commentID = notification.metaCommentID ?? notification.metaReplyID
+            try coordinator.displayCommentsWithPostId(notification.metaPostID,
+                                                      siteID: notification.metaSiteID,
+                                                      commentID: commentID,
+                                                      source: .commentNotification)
         case .commentLike:
-            try coordinator.displayCommentsWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
+            // Focus on the primary comment, and default to the reply ID if its set
+            let commentID = notification.metaCommentID ?? notification.metaReplyID
+            try coordinator.displayCommentsWithPostId(notification.metaPostID,
+                                                      siteID: notification.metaSiteID,
+                                                      commentID: commentID,
+                                                      source: .commentLikeNotification)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }
@@ -71,7 +81,12 @@ struct NotificationContentRouter {
         case .post:
             try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
         case .comment:
-            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
+            // Focus on the comment reply if it's set over the primary comment ID
+            let commentID = notification.metaReplyID ?? notification.metaCommentID
+            try coordinator.displayCommentsWithPostId(range.postID,
+                                                      siteID: range.siteID,
+                                                      commentID: commentID,
+                                                      source: .commentNotification)
         case .stats:
             /// Backup notifications are configured as "stat" notifications
             /// For now this is just a workaround to fix the routing

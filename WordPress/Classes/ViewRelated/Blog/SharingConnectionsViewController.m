@@ -33,7 +33,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (instancetype)initWithBlog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    self = [self initWithStyle:UITableViewStyleGrouped];
+    self = [self initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
         _publicizeService = publicizeService;

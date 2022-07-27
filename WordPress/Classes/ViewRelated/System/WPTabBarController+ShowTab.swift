@@ -1,5 +1,9 @@
 extension WPTabBarController {
 
+    func showBlogDetails(for blog: Blog) {
+        mySitesCoordinator.showBlogDetails(for: blog)
+    }
+
     @objc func showPageEditor(forBlog: Blog? = nil) {
         showPageEditor(blog: forBlog)
     }
@@ -55,7 +59,7 @@ extension WPTabBarController {
                 UserDefaults.standard.storiesIntroWasAcknowledged = true
                 self?.showStoryEditor()
             }, openURL: { [weak self] url in
-                let webViewController = WebViewControllerFactory.controller(url: url)
+                let webViewController = WebViewControllerFactory.controller(url: url, source: "show_story_example")
                 let navController = UINavigationController(rootViewController: webViewController)
                 self?.presentedViewController?.present(navController, animated: true)
             })
@@ -70,18 +74,9 @@ extension WPTabBarController {
             WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyBlogID: blogID, WPAppAnalyticsKeyEditorSource: "stories", WPAppAnalyticsKeyPostType: "post"])
 
             do {
-                let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in }, uploaded: { [weak self] result in
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        self?.dismiss(animated: true, completion: nil)
-                        DDLogError("Failed to create story: \(error)")
-                    }
-                })
-
+                let controller = try StoryEditor.editor(blog: blog, context: ContextManager.shared.mainContext, updated: {_ in })
                 present(controller, animated: true, completion: nil)
-            } catch let error {
+            } catch {
                 assertionFailure("Story editor should not fail since this button is hidden on iPads.")
             }
         }

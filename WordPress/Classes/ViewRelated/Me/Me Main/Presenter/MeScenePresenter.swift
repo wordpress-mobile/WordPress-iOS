@@ -38,7 +38,7 @@ private extension MeScenePresenter {
     }
 
     func makeMeViewController() -> MeViewController {
-        return MeViewController()
+        return MeViewController(style: .insetGrouped)
     }
 
     func makeNavigationController() -> UINavigationController {

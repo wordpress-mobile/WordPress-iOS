@@ -44,7 +44,7 @@ extension WPStyleGuide {
         }
 
         static func configureViewAsSeparator(_ separatorView: UIView) {
-            separatorView.backgroundColor = separatorColor
+            separatorView.backgroundColor = FeatureFlag.statsNewAppearance.enabled ? .clear : separatorColor
             separatorView.constraints.first(where: { $0.firstAttribute == .height })?.isActive = false
             separatorView.heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
         }
@@ -71,6 +71,10 @@ extension WPStyleGuide {
         static func configureLabelAsSubtitle(_ label: UILabel) {
             label.textColor = secondaryTextColor
             label.font = subTitleFont
+        }
+
+        static func configureLabelAsLink(_ label: UILabel) {
+            label.textColor = actionTextColor
         }
 
         static func configureLabelItemDetail(_ label: UILabel) {
@@ -167,7 +171,8 @@ extension WPStyleGuide {
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
                                           forTabbedCard: Bool = false,
-                                          forOverviewCard: Bool = false) {
+                                          forOverviewCard: Bool = false,
+                                          forNewInsightsCard: Bool = false) {
             WPStyleGuide.configureFilterTabBar(filterTabBar)
 
             // For FilterTabBar on TabbedTotalsCell
@@ -182,6 +187,15 @@ extension WPStyleGuide {
                 filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = defaultFilterTintColor
                 filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
+            }
+
+            // For FilterTabBar on StatsInsights
+            if forNewInsightsCard {
+                filterTabBar.tabSizingStyle = .fitting
+                filterTabBar.tintColor = UIColor.text
+                filterTabBar.selectedTitleColor = UIColor.text
+                filterTabBar.backgroundColor = .listForeground
+                filterTabBar.deselectedTabColor = UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
             }
         }
 
@@ -199,6 +213,7 @@ extension WPStyleGuide {
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        static let insightsCountFont = UIFont.preferredFont(forTextStyle: .title1).bold()
 
         static let tableBackgroundColor = UIColor.listBackground
         static let cellBackgroundColor = UIColor.listForeground
@@ -225,6 +240,7 @@ extension WPStyleGuide {
 
         static let positiveColor = UIColor.success
         static let negativeColor = UIColor.error
+        static let neutralColor = UIColor.muriel(color: MurielColor(name: .blue))
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
@@ -260,6 +276,13 @@ extension WPStyleGuide {
             let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
             let columnWidth = trunc(width / numberOfColumns)
             return columnWidth
+        }
+
+        // MARK: - Referrer Details
+        struct ReferrerDetails {
+            static let standardCellSpacing: CGFloat = 16
+            static let headerCellVerticalPadding: CGFloat = 7
+            static let standardCellVerticalPadding: CGFloat = 11
         }
     }
 

@@ -24,6 +24,7 @@ class ActionSheetViewController: UIViewController {
         static let buttonSpacing: CGFloat = 8
         static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
+        static let maximumWidth: CGFloat = 600
 
         enum Header {
             static let spacing: CGFloat = 16
@@ -45,10 +46,15 @@ class ActionSheetViewController: UIViewController {
         }
     }
 
+    let headerView: UIView?
     let buttons: [ActionSheetButton]
     let headerTitle: String
+    private weak var scrollView: UIScrollView?
+    private var scrollViewHeightConstraint: NSLayoutConstraint?
+    private var scrollViewTopConstraint: NSLayoutConstraint?
 
-    init(headerTitle: String, buttons: [ActionSheetButton]) {
+    init(headerView: UIView? = nil, headerTitle: String, buttons: [ActionSheetButton]) {
+        self.headerView = headerView
         self.headerTitle = headerTitle
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
@@ -58,7 +64,7 @@ class ActionSheetViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var gripButton: UIButton = {
+    private lazy var gripButton: UIButton = {
         let button = GripButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
@@ -85,49 +91,60 @@ class ActionSheetViewController: UIViewController {
         headerLabel.font = WPStyleGuide.fontForTextStyle(.headline)
         headerLabel.text = headerTitle
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.adjustsFontForContentSizeCategory = true
 
         let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
             return button(buttonInfo)
         })
 
-        NSLayoutConstraint.activate([
-            gripButton.heightAnchor.constraint(equalToConstant: Constants.gripHeight)
-        ])
 
-        let buttonConstraints = buttonViews.map { button in
-            return button.heightAnchor.constraint(equalToConstant: Constants.Button.height)
+        let buttonConstraints = buttonViews.flatMap { button in
+            [
+                button.heightAnchor.constraint(equalToConstant: Constants.Button.height),
+                button.widthAnchor.constraint(equalTo: view.widthAnchor),
+            ]
         }
 
-        NSLayoutConstraint.activate(buttonConstraints)
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews([gripButton, scrollView])
 
-        let stackView = UIStackView(arrangedSubviews: [
-            gripButton,
-            headerLabelView
-        ] + buttonViews)
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        scrollView.addSubview(stackView)
+        scrollView.pinSubviewToAllEdges(stackView)
 
-        stackView.setCustomSpacing(Constants.Header.spacing, after: gripButton)
+        if let headerView = headerView {
+            stackView.addArrangedSubview(headerView)
+        }
+
+        stackView.addArrangedSubviews([headerLabelView] + buttonViews)
         stackView.setCustomSpacing(Constants.Header.spacing, after: headerLabelView)
 
         buttonViews.forEach { button in
             stackView.setCustomSpacing(Constants.buttonSpacing, after: button)
         }
 
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
+        let topConstraint = scrollView.topAnchor.constraint(equalTo: gripButton.bottomAnchor, constant: Constants.Header.spacing)
+        scrollViewTopConstraint = topConstraint
+        let secondaryTopConstraint = scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        secondaryTopConstraint.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            gripButton.heightAnchor.constraint(equalToConstant: Constants.gripHeight),
+            gripButton.widthAnchor.constraint(equalTo: view.widthAnchor),
+            gripButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            gripButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.Stack.insets.top),
+            topConstraint,
+            secondaryTopConstraint,
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ] + buttonConstraints)
 
+        self.scrollView = scrollView
         refreshForTraits()
-
-        view.addSubview(stackView)
-        let stackViewConstraints = [
-            view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Constants.Stack.insets.left),
-            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Constants.Stack.insets.right),
-            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Constants.Stack.insets.top),
-        ]
-
-        let bottomAnchor = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.Stack.insets.bottom)
-        bottomAnchor.priority = .defaultHigh
-
-        NSLayoutConstraint.activate(stackViewConstraints + [bottomAnchor])
+        updateScrollViewHeight()
     }
 
     private func createButton(_ handler: @escaping () -> Void) -> UIButton {
@@ -149,6 +166,7 @@ class ActionSheetViewController: UIViewController {
         button.contentEdgeInsets = Constants.Button.contentInsets
         button.translatesAutoresizingMaskIntoConstraints = false
         button.flipInsetsForRightToLeftLayoutDirection()
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }
 
@@ -193,14 +211,32 @@ class ActionSheetViewController: UIViewController {
         if presentingViewController?.traitCollection.horizontalSizeClass == .regular && presentingViewController?.traitCollection.verticalSizeClass != .compact {
             gripButton.isHidden = true
             additionalSafeAreaInsets = Constants.additionalSafeAreaInsetsRegular
+            scrollViewTopConstraint?.isActive = false
         } else {
             gripButton.isHidden = false
             additionalSafeAreaInsets = .zero
+            scrollViewTopConstraint?.isActive = true
         }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        return preferredContentSize = CGSize(width: Constants.minimumWidth, height: view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height)
+        updateScrollViewHeight()
+        let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let width = min(max(Constants.minimumWidth, compressedSize.width), Constants.maximumWidth)
+        preferredContentSize = CGSize(width: width, height: compressedSize.height)
+    }
+
+    private func updateScrollViewHeight() {
+        guard let scrollView = scrollView else {
+            return
+        }
+        scrollView.layoutIfNeeded()
+        let scrollViewHeight = scrollView.contentSize.height
+        let heightConstraint = scrollViewHeightConstraint ?? scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: scrollViewHeight)
+        heightConstraint.constant = scrollViewHeight
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
+        scrollViewHeightConstraint = heightConstraint
     }
 }

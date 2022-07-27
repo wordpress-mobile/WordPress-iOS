@@ -11,21 +11,23 @@ struct MockAnnouncementsCache: AnnouncementsCache {
     var date: Date?
 
     private let localAnnouncements = [Announcement(appVersionName: "0.0",
-                                           minimumAppVersion: "1.0",
-                                           maximumAppVersion: "3.0",
-                                           appVersionTargets: [],
-                                           detailsUrl: "http://wordpress.org",
-                                           announcementVersion: "1.0",
-                                           isLocalized: false,
-                                           responseLocale: "",
-                                           features: [WordPressKit.Feature(title: "first cached feature",
-                                                                           subtitle: "this is a mock cached feature",
-                                                                           iconUrl: "https://s0.wordpress.com/i/store/mobile/plans-personal.png",
-                                                                           iconBase64: nil),
-                                                      WordPressKit.Feature(title: "second cached feature",
-                                                                           subtitle: "this is a mock cached feature",
-                                                                           iconUrl: "https://s0.wordpress.com/i/store/mobile/plans-personal.png",
-                                                                           iconBase64: nil)])]
+                                                   minimumAppVersion: "1.0",
+                                                   maximumAppVersion: "3.0",
+                                                   appVersionTargets: [],
+                                                   detailsUrl: "http://wordpress.org",
+                                                   announcementVersion: "1.0",
+                                                   isLocalized: false,
+                                                   responseLocale: "",
+                                                   features: [WordPressKit.Feature(title: "first cached feature",
+                                                                                   subtitle: "this is a mock cached feature",
+                                                                                   icons: nil,
+                                                                                   iconUrl: "https://s0.wordpress.com/i/store/mobile/plans-personal.png",
+                                                                                   iconBase64: nil),
+                                                              WordPressKit.Feature(title: "second cached feature",
+                                                                                   subtitle: "this is a mock cached feature",
+                                                                                   icons: nil,
+                                                                                   iconUrl: "https://s0.wordpress.com/i/store/mobile/plans-personal.png",
+                                                                                   iconBase64: nil)])]
 
     init(localCacheIsValid: Bool = true) {
         self.announcements = localCacheIsValid ? localAnnouncements : nil
@@ -47,6 +49,7 @@ class MockAnnouncementsService: AnnouncementServiceRemote {
                                                                                       responseLocale: "",
                                                                                       features: [WordPressKit.Feature(title: "mock feature",
                                                                                                                       subtitle: "this is a mock feature",
+                                                                                                                      icons: nil,
                                                                                                                       iconUrl: "https://s0.wordpress.com/i/store/mobile/plans-personal.png",
                                                                                                                       iconBase64: nil)])])
 

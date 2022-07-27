@@ -364,6 +364,7 @@ extension BaseActivityListViewController: ActivityPresenter {
         let detailVC = ActivityDetailViewController.loadFromStoryboard()
 
         detailVC.site = site
+        detailVC.rewindStatus = store.state.rewindStatus[site]
         detailVC.formattableActivity = activity
         detailVC.presenter = self
 
@@ -371,18 +372,24 @@ extension BaseActivityListViewController: ActivityPresenter {
     }
 
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let rewindStatus = store.state.rewindStatus[site]
 
-        let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+        let title = rewindStatus?.isMultisite() == true ? RewindStatus.Strings.multisiteNotAvailable : nil
 
-        let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
-                                                                   activity: activity,
-                                                                   isAwaitingCredentials: store.isAwaitingCredentials(site: site))
-        restoreOptionsVC.restoreStatusDelegate = self
-        restoreOptionsVC.presentedFrom = configuration.identifier
-        alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
-            self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
-        })
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+
+        if rewindStatus?.state == .active {
+            let restoreTitle = NSLocalizedString("Restore", comment: "Title displayed for restore action.")
+
+            let restoreOptionsVC = JetpackRestoreOptionsViewController(site: site,
+                                                                       activity: activity,
+                                                                       isAwaitingCredentials: store.isAwaitingCredentials(site: site))
+            restoreOptionsVC.restoreStatusDelegate = self
+            restoreOptionsVC.presentedFrom = configuration.identifier
+            alertController.addDefaultActionWithTitle(restoreTitle, handler: { _ in
+                self.present(UINavigationController(rootViewController: restoreOptionsVC), animated: true)
+            })
+        }
 
         let backupTitle = NSLocalizedString("Download backup", comment: "Title displayed for download backup action.")
         let backupOptionsVC = JetpackBackupOptionsViewController(site: site, activity: activity)
@@ -391,6 +398,9 @@ extension BaseActivityListViewController: ActivityPresenter {
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
+        if let backupAction = alertController.actions.last {
+            backupAction.accessibilityIdentifier = "jetpack-download-backup-button"
+        }
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
         alertController.addCancelActionWithTitle(cancelTitle)
@@ -405,7 +415,7 @@ extension BaseActivityListViewController: ActivityPresenter {
     }
 
     func presentRestoreFor(activity: Activity, from: String? = nil) {
-        guard activity.isRewindable, let rewindID = activity.rewindID else {
+        guard activity.isRewindable, activity.rewindID != nil else {
             return
         }
 

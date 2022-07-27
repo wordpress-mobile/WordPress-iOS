@@ -5,8 +5,7 @@ import Aztec
 import WordPressFlux
 import Kanvas
 
-class GutenbergViewController: UIViewController, PostEditor {
-
+class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate {
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
@@ -15,6 +14,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case more
         case switchBlog
         case autoSave
+        case continueFromHomepageEditing
     }
 
     private lazy var stockPhotos: GutenbergStockPhotos = {
@@ -31,7 +31,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergSettings()
     }()
 
-    let ghostView = GutenGhostView()
+    lazy var ghostView: GutenGhostView = {
+        let view = GutenGhostView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private var storyEditor: StoryEditor?
 
@@ -67,6 +71,12 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         get {
             return post.postTitle ?? ""
+        }
+    }
+
+    var entryPoint: PostEditorEntryPoint = .unknown {
+        didSet {
+            editorSession.entryPoint = entryPoint
         }
     }
 
@@ -210,6 +220,7 @@ class GutenbergViewController: UIViewController, PostEditor {
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            featuredImageHelper = GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
             stockPhotos = GutenbergStockPhotos(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
             tenorMediaPicker = GutenbergTenorMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -222,7 +233,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     ///
     var loadAutosaveRevision: Bool
 
-    let navigationBarManager = PostEditorNavigationBarManager()
+    let navigationBarManager: PostEditorNavigationBarManager
 
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
@@ -232,6 +243,10 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+    }()
+
+    lazy var featuredImageHelper: GutenbergFeaturedImageHelper = {
+        return GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
     }()
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
@@ -294,11 +309,17 @@ class GutenbergViewController: UIViewController, PostEditor {
     }()
 
     // MARK: - Initializers
+    required convenience init(post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorCallback, editorSession: PostEditorAnalyticsSession?) {
+        self.init(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor, editorSession: editorSession)
+    }
+
     required init(
         post: AbstractPost,
         loadAutosaveRevision: Bool = false,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
-        editorSession: PostEditorAnalyticsSession? = nil) {
+        replaceEditor: @escaping ReplaceEditorCallback,
+        editorSession: PostEditorAnalyticsSession? = nil,
+        navigationBarManager: PostEditorNavigationBarManager? = nil
+    ) {
 
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
@@ -306,13 +327,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
+        self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         super.init(nibName: nil, bundle: nil)
 
         addObservers(toPost: post)
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
-        navigationBarManager.delegate = self
+        self.navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -359,6 +381,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         // Handles refreshing controls with state context after options screen is dismissed
         storyEditor = nil
         editorContentWasUpdated()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     override func viewLayoutMarginsDidChange() {
@@ -437,7 +463,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         setTitle(post.postTitle ?? "")
         setHTML(content)
 
-        SiteSuggestionService.shared.prefetchSuggestions(for: self.post.blog) { [weak self] in
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
             self?.gutenberg.updateCapabilities()
         }
     }
@@ -456,6 +482,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.toggleHTMLMode()
         mode.toggle()
         editorSession.switch(editor: analyticsEditor)
+        presentEditingModeSwitchedNotice()
+    }
+
+    private func presentEditingModeSwitchedNotice() {
+        let message = mode == .html
+            ? NSLocalizedString("Switched to HTML mode", comment: "Message of the notice shown when toggling the HTML editor mode")
+            : NSLocalizedString("Switched to Visual mode", comment: "Message of the notice shown when toggling the Visual editor mode")
+        gutenberg.showNotice(message)
     }
 
     func requestHTML(for reason: RequestHTMLReason) {
@@ -468,6 +502,11 @@ class GutenbergViewController: UIViewController, PostEditor {
             return
         }
         gutenberg.setFocusOnTitle()
+    }
+
+    func showEditorHelp() {
+        WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
+        gutenberg.showEditorHelp()
     }
 
     private func presentNewPageNoticeIfNeeded() {
@@ -499,6 +538,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
+    func gutenbergDidRequestFeaturedImageId(_ mediaID: NSNumber) {
+        gutenberg.featuredImageIdNativeUpdated(mediaId: Int32(truncating: mediaID))
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -515,10 +558,8 @@ extension GutenbergViewController {
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
-        view.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+        view.pinSubviewToAllEdges(gutenberg.rootView)
+        gutenberg.rootView.pinSubviewToAllEdges(ghostView)
     }
 }
 
@@ -644,6 +685,59 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         mediaInserterHelper.cancelUploadOf(media: media)
     }
 
+    func gutenbergDidRequestToSetFeaturedImage(for mediaID: Int32) {
+        let featuredImageId = post.featuredImage?.mediaID
+
+        let presentAlert = { [weak self] in
+            guard let `self` = self else { return }
+
+            guard featuredImageId as? Int32 != mediaID else {
+                // nothing special to do, trying to set the image that's already set as featured
+                return
+            }
+
+            guard mediaID != GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet else {
+                // user tries to clear the featured image setting
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
+
+            guard featuredImageId != nil else {
+                // current featured image is not set so, go ahead and set it to the provided one
+                self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+                return
+            }
+
+            // ask the user to confirm changing the featured image since there's already one set
+            self.showAlertForReplacingFeaturedImage(mediaID: mediaID)
+        }
+
+        if let viewController = presentedViewController, !viewController.isBeingDismissed {
+            dismiss(animated: false, completion: presentAlert)
+        } else {
+            presentAlert()
+        }
+    }
+
+    func showAlertForReplacingFeaturedImage(mediaID: Int32) {
+        let alertController = UIAlertController(title: NSLocalizedString("Replace current featured image?", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
+                                                preferredStyle: .actionSheet)
+
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+            self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
+        }
+
+        alertController.addAction(replaceAction)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep current", comment: "Button to cancel the replacement of a featured image."))
+
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = view.bounds
+        alertController.popoverPresentationController?.permittedArrowDirections = []
+
+        present(alertController, animated: true, completion: nil)
+    }
+
     struct AnyEncodable: Encodable {
 
         let value: Encodable
@@ -707,13 +801,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .failure(let error):
                 self?.dismiss(animated: true, completion: nil)
                 DDLogError("Failed to update story: \(error)")
-            }
-        }, uploaded: { result in
-            switch result {
-            case .success:
-                break // Posts will be updated when the MediaFilesProcessor receives upload events
-            case .failure(let error):
-                DDLogError("Failed to upload story: \(error)")
             }
         })
 
@@ -810,8 +897,17 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 blogPickerWasPressed()
             case .autoSave:
                 break
+                // Inelegant :(
+            case .continueFromHomepageEditing:
+                continueFromHomepageEditing()
+                break
             }
         }
+    }
+
+    // Not ideal, but seems the least bad of the alternatives
+    @objc func continueFromHomepageEditing() {
+        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {
@@ -830,11 +926,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidMount(unsupportedBlockNames: [String]) {
         if !editorSession.started {
+            let galleryWithImageBlocks = gutenbergEditorSettings()?.galleryWithImageBlocks
+
             // Note that this method is also used to track startup performance
             // It assumes this is being called when the editor has finished loading
             // If you need to refactor this, please ensure that the startup_time_ms property
             // is still reflecting the actual startup time of the editor
-            editorSession.start(unsupportedBlocks: unsupportedBlockNames)
+            editorSession.start(unsupportedBlocks: unsupportedBlockNames, galleryWithImageBlocks: galleryWithImageBlocks)
         }
     }
 
@@ -935,6 +1033,32 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 handleMissingBlockAlertButtonPressed()
         }
     }
+
+    func gutenbergDidRequestPreview() {
+        displayPreview()
+    }
+
+    func gutenbergDidRequestBlockTypeImpressions() -> [String: Int] {
+        return gutenbergSettings.blockTypeImpressions
+    }
+
+    func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
+        gutenbergSettings.blockTypeImpressions = impressions
+    }
+
+    func gutenbergDidRequestContactCustomerSupport() {
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self.topmostPresentedViewController, with: .editorHelp )
+    }
+
+    func gutenbergDidRequestGotoCustomerSupportOptions() {
+        let controller = SupportTableViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        self.topmostPresentedViewController.present(navController, animated: true)
+    }
+
+    func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
+        WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: post.blog)
+    }
 }
 
 // MARK: - Suggestions implementation
@@ -973,7 +1097,7 @@ extension GutenbergViewController {
             }
 
             var didSelectSuggestion = false
-            if case .success = result {
+            if case let .success(text) = result, !text.isEmpty {
                 didSelectSuggestion = true
             }
 
@@ -1026,8 +1150,16 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post.postTitle ?? ""
     }
 
+    func gutenbergFeaturedImageId() -> NSNumber? {
+        return post.featuredImage?.mediaID
+    }
+
     func gutenbergPostType() -> String {
         return post is Page ? "page" : "post"
+    }
+
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
@@ -1045,14 +1177,26 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
         return [
-            .mentions: FeatureFlag.gutenbergMentions.enabled && SuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .xposts: FeatureFlag.gutenbergXposts.enabled && SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
-            .contactInfoBlock: post.blog.supports(.contactInfo) && FeatureFlag.contactInfo.enabled,
+            .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+            .contactInfoBlock: post.blog.supports(.contactInfo),
+            .layoutGridBlock: post.blog.supports(.layoutGrid),
+            .tiledGalleryBlock: post.blog.supports(.tiledGallery),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
-            .audioBlock: !isFreeWPCom, // Disable audio block until it's usable on free sites via "Insert from URL" capability
-            .mediaFilesCollectionBlock: FeatureFlag.stories.enabled && post.blog.supports(.stories) && !UIDevice.isPad()
+            .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
+            .mediaFilesCollectionBlock: post.blog.supports(.stories) && !UIDevice.isPad(),
+            // Only enable reusable block in WP.com sites until the issue
+            // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
+            .reusableBlock: isWPComSite,
+            .shouldUseFastImage: !post.blog.isPrivate(),
+            // Jetpack embeds
+            .facebookEmbed: post.blog.supports(.facebookEmbed),
+            .instagramEmbed: post.blog.supports(.instagramEmbed),
+            .loomEmbed: post.blog.supports(.loomEmbed),
+            .smartframeEmbed: post.blog.supports(.smartframeEmbed)
         ]
     }
 
@@ -1063,7 +1207,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let blog = post.blog
         let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
 
-        return blog.isHostedAtWPcom || (isJetpackSSOEnabled && blog.webEditor == .gutenberg)
+        return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }
 
@@ -1161,7 +1305,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 extension Gutenberg.MediaSource {
     static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
     static let otherApps = Gutenberg.MediaSource(id: "wpios-other-files", label: .otherApps, types: [.image, .video, .audio, .other])
-    static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .allFiles, types: [.any])
+    static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .otherApps, types: [.any])
     static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 
@@ -1193,14 +1337,21 @@ private extension GutenbergViewController {
 extension GutenbergViewController {
 
     // GutenbergBridgeDataSource
-    func gutenbergEditorTheme() -> GutenbergEditorTheme? {
+    func gutenbergEditorSettings() -> GutenbergEditorSettings? {
         return editorSettingsService?.cachedSettings
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] (hasChanges, settings) in
-            guard hasChanges, let `self` = self else { return }
-            self.gutenberg.updateTheme(settings)
+        editorSettingsService?.fetchSettings({ [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let response):
+                if response.hasChanges {
+                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                }
+            case .failure(let err):
+                DDLogError("Error fetching settings: \(err)")
+            }
         })
     }
 }

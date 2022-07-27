@@ -15,7 +15,7 @@ private struct Row: ImmuTableRow {
     var title: String {
         switch type {
         case .topLevel: return NSLocalizedString("Top level", comment: "Cell title for the Top Level option case")
-        case .child: return page?.postTitle ?? ""
+        case .child: return page?.titleForDisplay() ?? ""
         }
     }
 

@@ -11,6 +11,10 @@ import AutomatticTracks
             return true
         }
 
+        if QRLoginCoordinator.didHandle(url: url) {
+            return true
+        }
+
         if UniversalLinkRouter.shared.canHandle(url: url) {
             UniversalLinkRouter.shared.handle(url: url, shouldTrack: true)
             return true
@@ -114,7 +118,7 @@ import AutomatticTracks
             return false
         }
 
-        if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
+        if debugKey == ApiCredentials.debuggingKey, debugType == "force_crash" {
             WordPressAppDelegate.crashLogging?.crash()
         }
 

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackLoginErrorViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="descriptionLabel" destination="Fob-oH-Upm" id="bD0-ba-NEg"/>
+                <outlet property="imageView" destination="31P-iz-jd7" id="Rsp-zK-rfw"/>
+                <outlet property="primaryButton" destination="c2a-kB-DHJ" id="ntt-OQ-adb"/>
+                <outlet property="secondaryButton" destination="C6I-HH-kiP" id="rBg-LT-Meq"/>
+                <outlet property="titleLabel" destination="eJJ-cp-I3F" id="IPu-Ur-DfI"/>
+                <outlet property="view" destination="RDV-rd-NgA" id="k3T-k9-oD4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="RDV-rd-NgA">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="5JF-4N-1bo" userLabel="Description ">
+                    <rect key="frame" x="34" y="218.66666666666663" width="346" height="429"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-error" translatesAutoresizingMaskIntoConstraints="NO" id="31P-iz-jd7" userLabel="Error Image View">
+                            <rect key="frame" x="0.0" y="0.0" width="346" height="116"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJJ-cp-I3F">
+                            <rect key="frame" x="0.0" y="148.00000000000003" width="346" height="23"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fob-oH-Upm" userLabel="Error Description Label">
+                            <rect key="frame" x="0.0" y="203.00000000000003" width="346" height="73.999999999999972"/>
+                            <string key="text">Qui eum est quo et recusandae ut. Hic cupiditate nobis et pariatur quidem dolorum. Doloribus est tempora ipsam eius. Quos ab et aspernatur velit corporis aut rem.</string>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="66u-Sn-miR">
+                            <rect key="frame" x="0.0" y="309" width="346" height="120"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="c2a-kB-DHJ" customClass="FancyButton" customModule="WordPressUI">
+                                    <rect key="frame" x="0.0" y="0.0" width="346" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="aEa-pn-r6v"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                    <state key="normal" title="Primary Action Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="C6I-HH-kiP" customClass="FancyButton" customModule="WordPressUI">
+                                    <rect key="frame" x="0.0" y="70" width="346" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="21I-1c-69H"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                    <state key="normal" title="Secondary Action Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="1C4-c6-mvz"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="7tR-VK-QF9"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="5JF-4N-1bo" firstAttribute="centerY" secondItem="7tR-VK-QF9" secondAttribute="centerY" constant="-20" id="DbZ-rV-cjG"/>
+                <constraint firstAttribute="trailing" secondItem="5JF-4N-1bo" secondAttribute="trailing" priority="750" constant="34" id="dCI-zj-sLO"/>
+                <constraint firstItem="5JF-4N-1bo" firstAttribute="leading" secondItem="RDV-rd-NgA" secondAttribute="leading" priority="750" constant="34" id="njV-yp-P4j"/>
+                <constraint firstItem="5JF-4N-1bo" firstAttribute="centerX" secondItem="RDV-rd-NgA" secondAttribute="centerX" id="uOs-gM-oQH"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="86.383928571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="site-creation-error" width="226" height="116"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

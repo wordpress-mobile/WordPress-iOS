@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -31,16 +31,16 @@
                                         <rect key="frame" x="0.0" y="0.0" width="312" height="0.0"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESK-bT-Bix">
-                                                <rect key="frame" x="0.0" y="-18" width="312" height="36"/>
+                                                <rect key="frame" x="0.0" y="-17.333333333333336" width="312" height="34.666666666666664"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QQ-XY-q2l">
-                                                        <rect key="frame" x="0.0" y="0.0" width="272" height="14.666666666666666"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="272" height="13.333333333333334"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxn-r2-waJ">
-                                                        <rect key="frame" x="0.0" y="22.666666666666664" width="192" height="13.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="21.333333333333336" width="192" height="13.333333333333336"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -172,6 +172,7 @@
                 <outlet property="separator" destination="y9d-AS-bhE" id="jTZ-52-pNX"/>
                 <outlet property="timestampLabel" destination="fEo-hS-PK1" id="Ih0-91-vRW"/>
                 <outlet property="titleLabel" destination="ZUq-Dg-elW" id="Dzt-PV-spZ"/>
+                <outlet property="trailingContentConstraint" destination="U3Z-UB-o0I" id="bo6-AM-2S7"/>
             </connections>
             <point key="canvasLocation" x="135" y="179.72222222222223"/>
         </tableViewCell>

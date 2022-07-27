@@ -121,7 +121,7 @@ private extension RevisionDiffsBrowserViewController {
         }
 
         let revision = revisionState.currentRevision()
-        revisionTitle?.text = revision.revisionDate.mediumString()
+        revisionTitle?.text = revision.revisionDate.toMediumString()
         operationVC?.revision = revision
 
         updateNextPreviousButtons()

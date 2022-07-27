@@ -7,6 +7,7 @@ typedef void (^EditCommentCompletion)(BOOL hasNewContent, NSString *newContent);
 @property (nonatomic,           strong) NSString              *content;
 @property (nonatomic,           assign) BOOL                  interfaceEnabled;
 @property (readonly, nonatomic, weak) IBOutlet UITextView     *textView;
+@property (readonly, nonatomic, weak) IBOutlet UILabel        *placeholderLabel;
 @property (readonly, nonatomic, assign) CGRect keyboardFrame;
 
 + (instancetype)newEditViewController;

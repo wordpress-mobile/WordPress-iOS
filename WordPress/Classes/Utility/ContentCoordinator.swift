@@ -1,11 +1,11 @@
 
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL?) throws
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
-    func displayWebViewWithURL(_ url: URL)
+    func displayWebViewWithURL(_ url: URL, source: String)
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws
@@ -17,7 +17,6 @@ protocol ContentCoordinator {
 /// like Posts, Site streams, Comments, etc...
 ///
 struct DefaultContentCoordinator: ContentCoordinator {
-
     enum DisplayError: Error {
         case missingParameter
         case unsupportedFeature
@@ -41,14 +40,16 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
-        guard let postID = postID, let siteID = siteID else {
-            throw DisplayError.missingParameter
-        }
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
+        guard let postID = postID,
+              let siteID = siteID,
+              let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID, source: source) else {
+                  throw DisplayError.missingParameter
+              }
 
-        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
-        commentsViewController?.allowsPushingPostDetails = true
-        controller?.navigationController?.pushViewController(commentsViewController!, animated: true)
+        commentsViewController.navigateToCommentID = commentID
+        commentsViewController.allowsPushingPostDetails = true
+        controller?.navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
@@ -70,13 +71,18 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     private func setTimePeriodForStatsURLIfPossible(_ url: URL) {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
+
         let matcher = RouteMatcher(routes: UniversalLinkRouter.statsRoutes)
         let matches = matcher.routesMatching(url)
         if let match = matches.first,
            let action = match.action as? StatsRoute,
            let timePeriod = action.timePeriod {
             // Initializing a StatsPeriodType to ensure we have a valid period
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
+            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
         }
     }
 
@@ -128,13 +134,13 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.navigationController?.pushViewController(browseViewController, animated: true)
     }
 
-    func displayWebViewWithURL(_ url: URL) {
+    func displayWebViewWithURL(_ url: URL, source: String) {
         if UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).canHandle(url: url) {
-            UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).handle(url: url, source: controller)
+            UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes).handle(url: url, source: .inApp(presenter: controller))
             return
         }
 
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: source)
         let navController = UINavigationController(rootViewController: webViewController)
         controller?.present(navController, animated: true)
     }

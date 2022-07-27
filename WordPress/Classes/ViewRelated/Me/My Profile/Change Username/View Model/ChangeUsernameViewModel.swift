@@ -10,16 +10,14 @@ class ChangeUsernameViewModel {
     var username: String {
         return settings?.username ?? ""
     }
+
     var displayName: String {
         return settings?.displayName ?? ""
-    }
-    var formattedCreatedDate: String? {
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: accountService.managedObjectContext)
-        return account?.dateCreated.mediumString()
     }
     var isReachable: Bool {
         return reachability?.isReachable() ?? false
     }
+
     var usernameIsValidToBeChanged: Bool {
         return selectedUsername != username && !selectedUsername.isEmpty
     }

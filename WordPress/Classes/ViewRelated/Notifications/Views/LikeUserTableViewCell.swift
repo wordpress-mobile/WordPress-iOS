@@ -24,10 +24,10 @@ class LikeUserTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Methods
 
-    func configure(withUser user: RemoteUser, isLastRow: Bool = false) {
+    func configure(withUser user: LikeUser, isLastRow: Bool = false) {
         nameLabel.text = user.displayName
         usernameLabel.text = String(format: Constants.usernameFormat, user.username)
-        downloadGravatarWithURL(user.avatarURL)
+        downloadGravatarWithURL(user.avatarUrl)
         separatorLeadingConstraint.constant = isLastRow ? 0 : cellStackViewLeadingConstraint.constant
     }
 

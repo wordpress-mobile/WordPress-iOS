@@ -1,10 +1,15 @@
 import Foundation
+import WordPressKit
 
-struct AppConstants {
+@objc class AppConstants: NSObject {
+    static let itunesAppID = "1565481562"
     static let productTwitterHandle = "@jetpack"
     static let productTwitterURL = "https://twitter.com/jetpack"
     static let productBlogURL = "https://jetpack.com/blog"
-    static let ticketSubject = "Jetpack for iOS Support"
+    static let productBlogDisplayURL = "jetpack.com/blog"
+    static let zendeskSourcePlatform = "mobile_-_jp_ios"
+    static let shareAppName: ShareAppName = .jetpack
+    @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
     ///
@@ -19,11 +24,41 @@ struct AppConstants {
     #endif
 }
 
+// MARK: - Tab bar order
+@objc enum WPTab: Int {
+    case mySites
+    case reader
+    case notifications
+}
+
 // MARK: - Localized Strings
 extension AppConstants {
+
+    struct PostSignUpInterstitial {
+        static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
+    }
 
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
     }
 
+    struct Login {
+        static let continueButtonTitle = NSLocalizedString(
+            "Continue With WordPress.com",
+            comment: "Button title. Takes the user to the login with WordPress.com flow."
+        )
+    }
+
+    struct Logout {
+        static let alertTitle = NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
+    }
+
+    struct Zendesk {
+        static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+    }
+
+    struct QuickStart {
+        static let getToKnowTheAppTourTitle = NSLocalizedString("Get to know the Jetpack app",
+                                                                comment: "Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app.")
+    }
 }

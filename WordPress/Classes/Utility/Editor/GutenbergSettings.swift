@@ -13,6 +13,7 @@ class GutenbergSettings {
             return "kShowGutenbergPhase2Dialog-" + url
         }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
+        static let blockTypeImpressions = "kBlockTypeImpressions"
 
         private static func urlStringFrom(_ blog: Blog) -> String {
             return (blog.url ?? "")
@@ -165,6 +166,15 @@ class GutenbergSettings {
         }
         set {
             database.set(newValue, forKey: Key.focalPointPickerTooltipShown)
+        }
+    }
+
+    var blockTypeImpressions: [String: Int] {
+        get {
+            database.object(forKey: Key.blockTypeImpressions) as? [String: Int] ?? [:]
+        }
+        set {
+            database.set(newValue, forKey: Key.blockTypeImpressions)
         }
     }
 

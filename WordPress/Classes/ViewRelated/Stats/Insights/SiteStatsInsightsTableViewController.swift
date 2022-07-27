@@ -1,110 +1,39 @@
 import UIKit
 import WordPressFlux
 
-enum InsightType: Int {
-    case customize
-    case latestPostSummary
-    case allTimeStats
-    case followersTotals
-    case mostPopularTime
-    case tagsAndCategories
-    case annualSiteStats
-    case comments
-    case followers
-    case todaysStats
-    case postingActivity
-    case publicize
-    case allDotComFollowers
-    case allEmailFollowers
-    case allComments
-    case allTagsAndCategories
-    case allAnnual
-
-    // These Insights will be displayed in this order if a site's Insights have not been customized.
-    static let defaultInsights = [InsightType.latestPostSummary,
-                                  .todaysStats,
-                                  .allTimeStats,
-                                  .followersTotals
-    ]
-
-    static let defaultInsightsValues = InsightType.defaultInsights.map { $0.rawValue }
-
-    static func typesForValues(_ values: [Int]) -> [InsightType] {
-        return values.compactMap { InsightType(rawValue: $0) }
-    }
-
-    static func valuesForTypes(_ types: [InsightType]) -> [Int] {
-        return types.compactMap { $0.rawValue }
-    }
-
-    var statSection: StatSection? {
-        switch self {
-        case .latestPostSummary:
-            return .insightsLatestPostSummary
-        case .allTimeStats:
-            return .insightsAllTime
-        case .followersTotals:
-            return .insightsFollowerTotals
-        case .mostPopularTime:
-            return .insightsMostPopularTime
-        case .tagsAndCategories:
-            return .insightsTagsAndCategories
-        case .annualSiteStats:
-            return .insightsAnnualSiteStats
-        case .comments:
-            return .insightsCommentsPosts
-        case .followers:
-            return .insightsFollowersEmail
-        case .todaysStats:
-            return .insightsTodaysStats
-        case .postingActivity:
-            return .insightsPostingActivity
-        case .publicize:
-            return .insightsPublicize
-        default:
-            return nil
-        }
-    }
-
-}
-
-@objc protocol SiteStatsInsightsDelegate {
-    @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func showCreatePost()
-    @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
-    @objc optional func showPostingActivityDetails()
-    @objc optional func tabbedTotalsCellUpdated()
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
-    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc optional func customizeDismissButtonTapped()
-    @objc optional func customizeTryButtonTapped()
-    @objc optional func showAddInsight()
-    @objc optional func addInsightSelected(_ insight: StatSection)
-    @objc optional func addInsightDismissed()
-    @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
-}
-
-class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
+class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
-    // MARK: - Properties
+    weak var bannerView: JetpackBannerView?
+
+    var isGrowAudienceShowing: Bool {
+        return insightsToShow.contains(.growAudience)
+    }
 
     private var insightsChangeReceipt: Receipt?
 
     // Types of Insights to display. The array order dictates the display order.
-    private var insightsToShow = [InsightType]()
-    private let userDefaultsInsightTypesKey = "StatsInsightTypes"
+    private var insightsToShow: [InsightType] {
+        get {
+            SiteStatsInformation.sharedInstance.getCurrentSiteInsights()
+        }
 
-    // Store 'customize' separately as it is not per site.
-    private let userDefaultsHideCustomizeKey = "StatsInsightsHideCustomizeCard"
-    private var hideCustomizeCard = false
+        set {
+            SiteStatsInformation.sharedInstance.saveCurrentSiteInsights(newValue)
+        }
+    }
 
-    // Store Insights settings for all sites.
-    // Used when writing to/reading from User Defaults.
-    // A single site's dictionary contains the InsightType values for that site.
-    private var allSitesInsights = [SiteInsights]()
-    private typealias SiteInsights = [String: [Int]]
+    // Local state for site current view count
+    private var currentViewCount: Int?
+
+    private lazy var pinnedItemStore: SiteStatsPinnedItemStore? = {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return nil
+        }
+        return SiteStatsPinnedItemStore(siteId: siteID)
+    }()
+
+    private let insightsStore = StoreContainer.shared.statsInsights
 
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false
@@ -133,26 +62,52 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        SiteStatsInformation.sharedInstance.upgradeInsights()
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        loadInsightsFromUserDefaults()
+        loadPinnedCards()
         initViewModel()
+        sendScrollEventsToBanner()
         tableView.estimatedRowHeight = 500
+        tableView.rowHeight = UITableView.automaticDimension
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            tableView.cellLayoutMarginsFollowReadableWidth = true
+        }
 
         displayEmptyViewIfNecessary()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        writeInsightsToUserDefaults()
+    func refreshInsights(forceRefresh: Bool = false) {
+        addViewModelListeners()
+        viewModel?.refreshInsights(forceRefresh: forceRefresh)
     }
 
-    func refreshInsights() {
-        addViewModelListeners()
-        viewModel?.refreshInsights()
+    func showAddInsightView(source: String = "table_row") {
+        WPAnalytics.track(.statsItemTappedInsightsAddStat, withProperties: ["source": source])
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        if displayingEmptyView {
+            hideNoResults()
+            addViewModelListeners()
+            refreshInsights()
+        }
+
+        if insightsToShow.contains(.customize) {
+            // The view needs to be updated to remove the Customize card.
+            // However, if it's done here, there is a weird animation before AddInsight is presented.
+            // Instead, set 'viewNeedsUpdating' so the view is updated when 'addInsightDismissed' is called.
+            viewNeedsUpdating = true
+            dismissCustomizeCard()
+        }
+
+        let controller = InsightsManagementViewController(insightsDelegate: self,
+                insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.presentationController?.delegate = self
+        present(navigationController, animated: true, completion: nil)
     }
 
 }
@@ -162,9 +117,16 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
+                                               insightsDelegate: self,
+                                               insightsStore: insightsStore,
+                                               pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
+
+        if FeatureFlag.statsNewInsights.enabled {
+            viewModel?.startFetchingPeriodOverview()
+        }
     }
 
     func addViewModelListeners() {
@@ -173,6 +135,8 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            self?.refreshGrowAudienceCardIfNecessary()
+            self?.displayEmptyViewIfNecessary()
             self?.refreshTableView()
         }
     }
@@ -183,14 +147,20 @@ private extension SiteStatsInsightsTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [InsightCellHeaderRow.self,
+                ViewsVisitorsRow.self,
+                GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
                 TwoColumnStatsRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
+                MostPopularTimeInsightStatsRow.self,
+                TotalInsightStatsRow.self,
+                AddInsightRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
+                StatsGhostGrowAudienceImmutableRow.self,
                 StatsGhostChartImmutableRow.self,
                 StatsGhostTwoColumnImmutableRow.self,
                 StatsGhostTopImmutableRow.self,
@@ -202,7 +172,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func refreshTableView() {
         guard let viewModel = viewModel else {
-                return
+            return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
@@ -211,13 +181,18 @@ private extension SiteStatsInsightsTableViewController {
             displayFailureViewIfNecessary()
         }
 
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
     }
 
     @objc func refreshData() {
-        refreshControl?.beginRefreshing()
+        guard !insightsToShow.isEmpty else {
+            refreshControl.endRefreshing()
+            return
+        }
+
+        refreshControl.beginRefreshing()
         clearExpandedRows()
-        refreshInsights()
+        refreshInsights(forceRefresh: true)
         hideNoResults()
     }
 
@@ -236,96 +211,65 @@ private extension SiteStatsInsightsTableViewController {
         displayEmptyViewIfNecessary()
     }
 
-    // MARK: User Defaults
+    func loadPinnedCards() {
+        let viewsCount = insightsStore.getAllTimeStats()?.viewsCount
+        switch pinnedItemStore?.itemToDisplay(for: viewsCount ?? 0) {
+        case .none:
+            insightsToShow = insightsToShow.filter { $0 != .growAudience && $0 != .customize }
+        case .some(let item):
+            switch item {
+            case let hintType as GrowAudienceCell.HintType where !insightsToShow.contains(.growAudience):
+                insightsToShow = insightsToShow.filter { $0 != .customize }
+                insightsToShow.insert(.growAudience, at: 0)
 
-    func loadInsightsFromUserDefaults() {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            insightsToShow = InsightType.defaultInsights
-            loadCustomizeCardSetting()
-            return
+                // Work around to make sure nudge shown is tracked only once
+                if viewsCount != nil {
+                    trackNudgeShown(for: hintType)
+                }
+            case InsightType.customize where !insightsToShow.contains(.customize):
+                insightsToShow = insightsToShow.filter { $0 != .growAudience }
+            default:
+                break
+            }
         }
-
-        // Get Insights from User Defaults, and extract those for the current site.
-        allSitesInsights = UserDefaults.standard.object(forKey: userDefaultsInsightTypesKey) as? [SiteInsights] ?? []
-        let siteInsights = allSitesInsights.first { $0.keys.first == siteID }
-
-        // If no Insights for the current site, use the default Insights.
-        let insightTypesValues = siteInsights?.values.first ?? InsightType.defaultInsightsValues
-        insightsToShow = InsightType.typesForValues(insightTypesValues)
-
-        // Add the 'customize' card if necessary.
-        loadCustomizeCardSetting()
-    }
-
-    func writeInsightsToUserDefaults() {
-
-        writeCustomizeCardSetting()
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.stringValue else {
-            return
-        }
-
-        // Remove 'customize' from array since it is not per site.
-        removeCustomizeCard()
-
-        let insightTypesValues = InsightType.valuesForTypes(insightsToShow)
-        let currentSiteInsights = [siteID: insightTypesValues]
-
-        // Remove existing dictionary from array, and add the updated one.
-        allSitesInsights = allSitesInsights.filter { $0.keys.first != siteID }
-        allSitesInsights.append(currentSiteInsights)
-
-        UserDefaults.standard.set(allSitesInsights, forKey: userDefaultsInsightTypesKey)
-
-        // Add back 'customize'.
-        addCustomizeCard()
-    }
-
-    func loadCustomizeCardSetting() {
-        hideCustomizeCard = UserDefaults.standard.bool(forKey: userDefaultsHideCustomizeKey)
-        addCustomizeCard()
-    }
-
-    func writeCustomizeCardSetting() {
-        UserDefaults.standard.set(hideCustomizeCard, forKey: userDefaultsHideCustomizeKey)
     }
 
     // MARK: - Customize Card Management
 
     func dismissCustomizeCard() {
-        hideCustomizeCard = true
-        removeCustomizeCard()
+        let item = InsightType.customize
+        insightsToShow = insightsToShow.filter { $0 != item }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
-    func removeCustomizeCard() {
-        insightsToShow = insightsToShow.filter { $0 != .customize }
-    }
+    // MARK: - Grow Audience Card Management
 
-    func addCustomizeCard() {
-        if !hideCustomizeCard && !insightsToShow.contains(.customize) {
-            // Insert customize at the beginning of the array so it is displayed first.
-            insightsToShow.insert(.customize, at: 0)
+    func dismissGrowAudienceCard(_ hintType: GrowAudienceCell.HintType) {
+        guard let item = pinnedItemStore?.currentItem as? GrowAudienceCell.HintType else {
+            return
         }
+
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
+
+        guard item == hintType else {
+            return
+        }
+        pinnedItemStore?.markPinnedItemAsHidden(item)
+        trackNudgeDismissed(for: item)
+    }
+
+    func refreshGrowAudienceCardIfNecessary() {
+        guard let count = insightsStore.getAllTimeStats()?.viewsCount,
+              count != self.currentViewCount else {
+                  return
+              }
+
+        currentViewCount = count
+        loadPinnedCards()
+        updateView()
     }
 
     // MARK: - Insights Management
-
-    func showAddInsightView() {
-
-        if insightsToShow.contains(.customize) {
-            // The view needs to be updated to remove the Customize card.
-            // However, if it's done here, there is a weird animation before AddInsight is presented.
-            // Instead, set 'viewNeedsUpdating' so the view is updated when 'addInsightDismissed' is called.
-            viewNeedsUpdating = true
-            dismissCustomizeCard()
-        }
-
-        let controller = AddInsightTableViewController(insightsDelegate: self,
-                                                       insightsShown: insightsToShow.compactMap { $0.statSection })
-        let navigationController = UINavigationController(rootViewController: controller)
-        present(navigationController, animated: true, completion: nil)
-    }
 
     func moveInsightUp(_ insight: InsightType) {
         guard canMoveInsightUp(insight) else {
@@ -363,7 +307,9 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func canMoveInsightUp(_ insight: InsightType) -> Bool {
-        let minIndex = hideCustomizeCard ? 0 : 1
+        let isShowingPinnedCard = insightsToShow.contains(.customize) || insightsToShow.contains(.growAudience)
+
+        let minIndex = isShowingPinnedCard ? 1 : 0
 
         guard let currentIndex = indexOfInsight(insight),
             (currentIndex - 1) >= minIndex else {
@@ -393,6 +339,13 @@ private extension SiteStatsInsightsTableViewController {
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel Insight management action sheet.")
     }
 
+    // MARK: - Grow Audience Helpers
+
+    func markCurrentNudgeAsCompleted() {
+        viewModel?.markEmptyStatsNudgeAsCompleted()
+        insightsToShow = insightsToShow.filter { $0 != .growAudience }
+        refreshTableView()
+    }
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -400,7 +353,7 @@ private extension SiteStatsInsightsTableViewController {
 extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_insights")
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
     }
@@ -467,6 +420,25 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
+        if FeatureFlag.statsNewInsights.enabled {
+            switch statSection {
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
+                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            default:
+                segueToDetails(statSection: statSection, selectedDate: selectedDate)
+            }
+        } else {
+            segueToDetails(statSection: statSection, selectedDate: selectedDate)
+        }
+    }
+
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func segueToDetails(statSection: StatSection, selectedDate: Date?) {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
@@ -489,6 +461,82 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         showAddInsightView()
     }
 
+    func growAudienceDismissButtonTapped(_ hintType: GrowAudienceCell.HintType) {
+        dismissGrowAudienceCard(hintType)
+        updateView()
+    }
+
+    func growAudienceEnablePostSharingButtonTapped() {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            return
+        }
+
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return
+        }
+
+        let controller: UIViewController = JetpackBannerWrapperViewController(childVC: sharingVC)
+        let navigationController = UINavigationController(rootViewController: controller)
+
+        present(navigationController, animated: true)
+
+        applyTableUpdates()
+
+        trackNudgeEvent(.statsPublicizeNudgeTapped)
+    }
+
+    func growAudienceBloggingRemindersButtonTapped() {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
+            return
+        }
+
+        BloggingRemindersFlow.present(from: self,
+                                      for: blog,
+                                      source: .statsInsights,
+                                      delegate: self)
+
+        applyTableUpdates()
+
+        trackNudgeEvent(.statsBloggingRemindersNudgeTapped)
+    }
+
+    func growAudienceReaderDiscoverButtonTapped() {
+        guard let vc = viewModel?.followTopicsViewController else {
+            return
+        }
+        vc.spotlightIsShown = true
+        vc.readerDiscoverFlowDelegate = self
+        vc.didSaveInterests = { [weak self] interests in
+            guard let self = self else {
+                return
+            }
+            self.dismiss(animated: true)
+            guard !interests.isEmpty else {
+                return
+            }
+
+            self.navigationController?.popToRootViewController(animated: false)
+            WPTabBarController.sharedInstance().showReaderTab()
+            if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
+               let vc = nc.topViewController as? ReaderTabViewController {
+                vc.presentDiscoverTab()
+            }
+        }
+
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .formSheet
+        present(nc, animated: true) { [weak self] in
+            let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
+            self?.displayNotice(title: text)
+        }
+
+        trackNudgeEvent(.statsReaderDiscoverNudgeTapped)
+    }
+
     func showAddInsight() {
         showAddInsightView()
     }
@@ -501,7 +549,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
         insightsToShow.append(insightType)
+        refreshInsights(forceRefresh: true)
         updateView()
+        scrollToNewCard()
     }
 
     func addInsightDismissed() {
@@ -511,6 +561,18 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         updateView()
         viewNeedsUpdating = false
+    }
+
+    func scrollToNewCard() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            guard let self = self else { return }
+            let lastSection = max(self.tableView.numberOfSections - 1, 0)
+
+            // newly added card will be penultimate row, above the 'Add Stats Card' row
+            let newCardRow = max(self.tableView.numberOfRows(inSection: lastSection) - 2, 0)
+
+            self.tableView.scrollToRow(at: IndexPath(row: newCardRow, section: lastSection), at: .middle, animated: true)
+        }
     }
 
     func manageInsightSelected(_ insight: StatSection, fromButton: UIButton) {
@@ -547,22 +609,69 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
+}
 
+// MARK: - StatsInsightsManagementDelegate
+
+extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate {
+    func userUpdatedActiveInsights(_ insights: [StatSection]) {
+        let insightTypes = insights.compactMap({ $0.insightType })
+
+        guard insightTypes.count == insights.count else {
+            return
+        }
+
+        insightsToShow = insightTypes
+        refreshInsights(forceRefresh: true)
+        updateView()
+    }
+}
+
+// MARK: - Presentation delegate
+
+extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let navigationController = presentationController.presentedViewController as? UINavigationController,
+        let controller = navigationController.topViewController as? InsightsManagementViewController else {
+            return
+        }
+
+        controller.handleDismissViaGesture(from: self)
+    }
+}
+
+// MARK: - SharingViewControllerDelegate
+
+extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
+    func didChangePublicizeServices() {
+        markCurrentNudgeAsCompleted()
+        trackNudgeEvent(.statsPublicizeNudgeCompleted)
+    }
+}
+
+// MARK: - BloggingRemindersFlowDelegate
+
+extension SiteStatsInsightsTableViewController: BloggingRemindersFlowDelegate {
+    func didSetUpBloggingReminders() {
+        markCurrentNudgeAsCompleted()
+        trackNudgeEvent(.statsBloggingRemindersNudgeCompleted)
+    }
+}
+
+// MARK: - ReaderDiscoverFlowDelegate
+
+extension SiteStatsInsightsTableViewController: ReaderDiscoverFlowDelegate {
+    func didCompleteReaderDiscoverFlow() {
+        markCurrentNudgeAsCompleted()
+        trackNudgeEvent(.statsReaderDiscoverNudgeCompleted)
+    }
 }
 
 // MARK: - No Results Handling
 
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        guard !displayingEmptyView else {
-            WPAnalytics.track(.statsItemTappedInsightsAddStat)
-            showAddInsightView()
-            return
-        }
-
-        hideNoResults()
-        addViewModelListeners()
-        refreshInsights()
+        showAddInsightView()
     }
 }
 
@@ -608,5 +717,52 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         static let noInsightsTitle = NSLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
         static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Add insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
         static let manageInsightsButtonTitle = NSLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
+    }
+}
+
+// MARK: - Tracks Support
+
+private extension SiteStatsInsightsTableViewController {
+
+    func trackNudgeEvent(_ event: WPAnalyticsEvent) {
+        if let blogId = SiteStatsInformation.sharedInstance.siteID,
+           let blog = Blog.lookup(withID: blogId, in: mainContext) {
+            WPAnalytics.track(event, properties: [:], blog: blog)
+        } else {
+            WPAnalytics.track(event)
+        }
+    }
+
+    func trackNudgeShown(for hintType: GrowAudienceCell.HintType) {
+        switch hintType {
+        case .social:
+            trackNudgeEvent(.statsPublicizeNudgeShown)
+        case .bloggingReminders:
+            trackNudgeEvent(.statsBloggingRemindersNudgeShown)
+        case .readerDiscover:
+            trackNudgeEvent(.statsReaderDiscoverNudgeShown)
+        }
+    }
+
+    func trackNudgeDismissed(for hintType: GrowAudienceCell.HintType) {
+        switch hintType {
+        case .social:
+            trackNudgeEvent(.statsPublicizeNudgeDismissed)
+        case .bloggingReminders:
+            trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
+        case .readerDiscover:
+            trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
+        }
+    }
+}
+
+// MARK: Jetpack powered banner
+
+private extension SiteStatsInsightsTableViewController {
+
+    func sendScrollEventsToBanner() {
+        if let bannerView = bannerView {
+            analyticsTracker.addTranslationObserver(bannerView)
+        }
     }
 }

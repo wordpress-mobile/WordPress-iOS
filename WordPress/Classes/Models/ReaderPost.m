@@ -47,6 +47,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic comments;
 @dynamic tags;
 @dynamic topic;
+@dynamic card;
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
@@ -55,6 +56,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @dynamic isSavedForLater;
 @dynamic isSeen;
 @dynamic isSeenSupported;
+@dynamic isSubscribedComments;
+@dynamic canSubscribeComments;
+@dynamic receivesCommentNotifications;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
@@ -90,11 +94,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                              inManagedObjectContext:managedObjectContext];
     }
 
+    post.authorID = remotePost.authorID;
     post.author = remotePost.author;
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.authorDisplayName = remotePost.authorDisplayName;
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
+    post.organizationID = remotePost.organizationID;
     post.siteIconURL = remotePost.siteIconURL;
     post.blogName = remotePost.blogName;
     post.blogDescription = remotePost.blogDescription;
@@ -123,6 +129,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.sortDate = remotePost.sortDate;
     post.isSeen = remotePost.isSeen;
     post.isSeenSupported = remotePost.isSeenSupported;
+    post.isSubscribedComments = remotePost.isSubscribedComments;
+    post.canSubscribeComments = remotePost.canSubscribeComments;
+    post.receivesCommentNotifications = remotePost.receivesCommentNotifications;
 
     if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on
@@ -499,6 +508,17 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         return (NSDictionary *)jsonObj;
     }
     return nil;
+}
+
+- (void) didSave {
+    [super didSave];
+
+    // A ReaderCard can have either a post, or a list of topics, but not both.
+    // Since this card has a post, we can confidently set `topics` to NULL.
+    if ([self respondsToSelector:@selector(card)] && self.card.count > 0) {
+        self.card.allObjects[0].topics = NULL;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }
 }
 
 @end

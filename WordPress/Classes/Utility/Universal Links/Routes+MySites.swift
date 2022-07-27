@@ -12,6 +12,10 @@ enum MySitesRoute {
 }
 
 extension MySitesRoute: Route {
+    var section: DeepLinkSection? {
+        return .mySite
+    }
+
     var action: NavigationAction {
         return self
     }

@@ -1,4 +1,4 @@
-# Pull Request Guidelines 
+# Pull Request Guidelines
 
 ## Branch Naming
 
@@ -6,9 +6,9 @@ Please read [Feature Branches](https://make.wordpress.org/mobile/handbook/genera
 
 ## Commits
 
-As you commit code to these branches, don’t tag the issue number in the individual commit messages as it pollutes the pull request and makes it messier, just attach the issue number to the final pull request. Before you submit your final pull request, make sure all your branches are up to date with `develop`.
+As you commit code to these branches, don’t tag the issue number in the individual commit messages as it pollutes the pull request and makes it messier, just attach the issue number to the final pull request. Before you submit your final pull request, make sure all your branches are up to date with `trunk`.
 
-When you are ready, please, spend time crafting a good Pull Request, since it will have a huge impact on the work of reviewers, release managers and testers. 
+When you are ready, please, spend time crafting a good Pull Request, since it will have a huge impact on the work of reviewers, release managers and testers.
 
 ## Anatomy of a Good Pull Request
 

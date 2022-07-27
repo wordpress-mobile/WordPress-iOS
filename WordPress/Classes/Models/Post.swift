@@ -60,7 +60,7 @@ class Post: AbstractPost {
             return
         }
 
-        buildContentPreview()
+        storedContentPreviewForDisplay = ""
     }
 
     // MARK: - Content Preview
@@ -251,16 +251,6 @@ class Post: AbstractPost {
                 return true
             }
 
-            if let coord1 = geolocation?.coordinate,
-                let coord2 = originalPost.geolocation?.coordinate, coord1.latitude != coord2.latitude || coord1.longitude != coord2.longitude {
-
-                return true
-            }
-
-            if (geolocation == nil && originalPost.geolocation != nil) || (geolocation != nil && originalPost.geolocation == nil) {
-                return true
-            }
-
             if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
                 return true
             }
@@ -322,8 +312,6 @@ class Post: AbstractPost {
                 hash(for: tags ?? ""),
                 hash(for: postFormat ?? ""),
                 hash(for: stringifiedCategories),
-                hash(for: geolocation?.latitude ?? 0),
-                hash(for: geolocation?.longitude ?? 0),
                 hash(for: isStickyPost ? 1 : 0)]
     }
 }

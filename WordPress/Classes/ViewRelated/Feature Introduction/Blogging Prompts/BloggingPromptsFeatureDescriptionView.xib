@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BloggingPromptsFeatureDescriptionView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="327"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8JU-nl-SWR" userLabel="Prompt Card">
+                    <rect key="frame" x="52" y="0.0" width="310.5" height="200.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" notEnabled="YES"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" id="BfW-eb-ZtV"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gW-xt-yLe" userLabel="Description">
+                    <rect key="frame" x="16" y="224.5" width="382" height="36"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Note: You can learn more and set up reminders at any time in My Site &gt; Settings &gt; Blogging Reminders." textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9E-X2-t3c" userLabel="Note">
+                    <rect key="frame" x="16" y="284.5" width="382" height="42.5"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" notEnabled="YES"/>
+                        <bool key="isElement" value="NO"/>
+                    </accessibility>
+                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ART-X9-BCw" userLabel="Note Accessibility Label">
+                    <rect key="frame" x="16" y="284.5" width="382" height="42.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="z9E-X2-t3c" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="1K2-WJ-vdn"/>
+                <constraint firstItem="8JU-nl-SWR" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.75" id="4C5-B7-SUy"/>
+                <constraint firstItem="ART-X9-BCw" firstAttribute="leading" secondItem="z9E-X2-t3c" secondAttribute="leading" id="8Qb-0Z-rT5"/>
+                <constraint firstItem="8JU-nl-SWR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="95d-85-VYs"/>
+                <constraint firstAttribute="bottom" secondItem="z9E-X2-t3c" secondAttribute="bottom" id="IUZ-vA-5QN"/>
+                <constraint firstItem="1gW-xt-yLe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="WJ4-xD-ctR"/>
+                <constraint firstItem="ART-X9-BCw" firstAttribute="trailing" secondItem="z9E-X2-t3c" secondAttribute="trailing" id="lKl-p8-5Ty"/>
+                <constraint firstItem="8JU-nl-SWR" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="sjz-gT-pc8"/>
+                <constraint firstAttribute="trailing" secondItem="1gW-xt-yLe" secondAttribute="trailing" constant="16" id="srn-mJ-gKe"/>
+                <constraint firstAttribute="trailing" secondItem="z9E-X2-t3c" secondAttribute="trailing" constant="16" id="vmH-4q-pbI"/>
+                <constraint firstItem="ART-X9-BCw" firstAttribute="bottom" secondItem="z9E-X2-t3c" secondAttribute="bottom" id="wAs-7B-QAX"/>
+                <constraint firstItem="z9E-X2-t3c" firstAttribute="top" secondItem="1gW-xt-yLe" secondAttribute="bottom" constant="24" id="wED-RV-9Lf"/>
+                <constraint firstItem="ART-X9-BCw" firstAttribute="top" secondItem="z9E-X2-t3c" secondAttribute="top" id="xiL-2a-FCO"/>
+                <constraint firstItem="1gW-xt-yLe" firstAttribute="top" secondItem="8JU-nl-SWR" secondAttribute="bottom" constant="24" id="yAr-WH-wmx"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="1gW-xt-yLe" id="rot-qA-zIV"/>
+                <outlet property="noteAccessibilityLabel" destination="ART-X9-BCw" id="cbu-ST-2Qk"/>
+                <outlet property="noteTextView" destination="z9E-X2-t3c" id="GcN-mv-lZH"/>
+                <outlet property="promptCardView" destination="8JU-nl-SWR" id="tY3-0q-Bn3"/>
+            </connections>
+            <point key="canvasLocation" x="-5.7971014492753632" y="63.28125"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

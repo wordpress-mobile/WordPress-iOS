@@ -4,7 +4,10 @@ import MobileCoreServices
 final class CameraCaptureCoordinator {
     private var capturePresenter: WPMediaCapturePresenter?
 
+    private weak var origin: UIViewController?
+
     func presentMediaCapture(origin: UIViewController, blog: Blog) {
+        self.origin = origin
         capturePresenter = WPMediaCapturePresenter(presenting: origin)
         capturePresenter!.completionBlock = { [weak self] mediaInfo in
             if let mediaInfo = mediaInfo as NSDictionary? {
@@ -16,14 +19,18 @@ final class CameraCaptureCoordinator {
         capturePresenter!.presentCapture()
     }
 
-    private func processMediaCaptured(_ mediaInfo: NSDictionary, blog: Blog) {
+    private func processMediaCaptured(_ mediaInfo: NSDictionary, blog: Blog, origin: UIViewController? = nil) {
         let completionBlock: WPMediaAddedBlock = { media, error in
             if error != nil || media == nil {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
                 return
             }
-            guard let media = media as? PHAsset else {
-                    return
+            guard let media = media as? PHAsset,
+                  blog.canUploadAsset(media) else {
+                        if let origin = origin ?? self.origin {
+                            self.presentVideoLimitExceededAfterCapture(on: origin)
+                        }
+                        return
             }
 
             let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
@@ -47,3 +54,6 @@ final class CameraCaptureCoordinator {
         }
     }
 }
+
+/// User messages for video limits allowances
+extension CameraCaptureCoordinator: VideoLimitsAlertPresenter {}

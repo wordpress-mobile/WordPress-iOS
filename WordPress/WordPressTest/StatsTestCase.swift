@@ -3,21 +3,7 @@ import CoreData
 @testable import WordPress
 
 // A thin wrapper round XCTestCase for Stats test to avoid repeating boilerplate.
-class StatsTestCase: XCTestCase {
-
-    fileprivate var manager: TestContextManager!
-
-    override func setUp() {
-        manager = TestContextManager()
-    }
-
-    var mainContext: NSManagedObjectContext {
-        return manager.mainContext
-    }
-
-    override func tearDown() {
-        mainContext.reset()
-    }
+class StatsTestCase: CoreDataTestCase {
 
     @discardableResult func createStatsRecord(in context: NSManagedObjectContext,
                                               type: StatsRecordType,

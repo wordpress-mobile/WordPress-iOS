@@ -4,6 +4,8 @@ import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import UIKit
+import Combine
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -24,9 +26,13 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
+    var shouldShowCommentSpotlight: Bool = false
+
     var tableView: UITableView! {
         return tableViewController.tableView
     }
+
+    var jetpackBannerView: JetpackBannerView?
 
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
 
@@ -95,6 +101,7 @@ import WordPressFlux
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     /// Content management
     let content = ReaderTableContent()
@@ -167,19 +174,22 @@ import WordPressFlux
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
-        willSet {
-            if contentType == .saved {
-                postCellActions?.clearRemovedPosts()
-            }
-        }
         didSet {
-            if contentType == .saved {
+            if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
             }
             postCellActions?.visibleConfirmation = contentType != .saved
         }
     }
+
+    /// Used for the `source` property in Stats.
+    /// Indicates where the view was shown from.
+    enum StatSource: String {
+        case reader
+        case notif_like_list_user_profile
+    }
+    var statSource: StatSource = .reader
 
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     let sharingController = PostSharingController()
@@ -312,7 +322,7 @@ import WordPressFlux
         refreshImageRequestAuthToken()
 
         configureCloseButtonIfNeeded()
-        setupTableView()
+        setupStackView()
         setupFooterView()
         setupContentHandler()
         setupResultsStatusView()
@@ -358,6 +368,14 @@ import WordPressFlux
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        if contentType == .saved {
+            postCellActions?.clearRemovedPosts()
+        }
+
+        if shouldShowCommentSpotlight {
+            resetReaderDiscoverNudgeFlow()
+        }
 
         dismissNoNetworkAlert()
 
@@ -470,26 +488,41 @@ import WordPressFlux
 
     // MARK: - Setup
 
-    private func setupTableView() {
+    private func setupStackView() {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        setupTableView(stackView: stackView)
+        setupJetpackBanner(stackView: stackView)
+
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+    }
+
+    private func setupJetpackBanner(stackView: UIStackView) {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        let bannerView = JetpackBannerView()
+        jetpackBannerView = bannerView
+        addTranslationObserver(bannerView)
+        stackView.addArrangedSubview(bannerView)
+        bannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
+    }
+
+    private func setupTableView(stackView: UIStackView) {
         configureRefreshControl()
-        add(tableViewController)
-        layoutTableView()
+
+        stackView.addArrangedSubview(tableViewController.view)
+        tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
+        tableView.delegate = self
         setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-    }
-
-    private func layoutTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
     }
 
     private func setupContentHandler() {
@@ -535,6 +568,7 @@ import WordPressFlux
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         headerWidthConstraint.priority = UILayoutPriority(999)
+        centerConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             centerConstraint,
@@ -718,14 +752,17 @@ import WordPressFlux
             assertionFailure("A reader topic is required")
             return nil
         }
+
         let title = topic.title
         var key: String = "list"
+
         if ReaderHelpers.isTopicTag(topic) {
             key = "tag"
         } else if ReaderHelpers.isTopicSite(topic) {
             key = "site"
         }
-        return [key: title]
+
+        return [key: title, "source": statSource.rawValue]
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -866,7 +903,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.shared!.connectionAvailable
+        return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
 
 
@@ -1270,11 +1307,11 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forSite: topic, success: {
-            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: true)
+        service.toggleFollowing(forSite: topic, success: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)
-        }, failure: { (error: Error?) in
-            ReaderHelpers.dispatchToggleFollowSiteMessage(topic: topic, success: false)
+        }, failure: { (follow, error) in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
             completion?(false)
         })
     }
@@ -1285,13 +1322,14 @@ import WordPressFlux
 
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
-    func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader, completion: @escaping () -> Void) {
         toggleFollowingForTopic(readerTopic) { [weak self] success in
             if success {
                 self?.syncHelper?.syncContent()
             }
 
             self?.updateStreamHeaderIfNeeded()
+            completion()
         }
 
         updateStreamHeaderIfNeeded()
@@ -1486,6 +1524,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
+
+        if let topic = readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           indexPath.row == 0,
+           shouldShowCommentSpotlight {
+            cell.spotlightIsShown = true
+        } else {
+            cell.spotlightIsShown = false
+        }
+
         return cell
     }
 
@@ -1523,6 +1571,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             post.rendered = true
             WPAppAnalytics.track(.trainTracksRender, withProperties: railcar)
         }
+    }
+
+    func reloadReaderDiscoverNudgeFlow(at indexPath: IndexPath) {
+        resetReaderDiscoverNudgeFlow()
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    private func resetReaderDiscoverNudgeFlow() {
+        shouldShowCommentSpotlight = false
+        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1940,5 +1998,13 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     func didSelect(topic: String) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+
+extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }

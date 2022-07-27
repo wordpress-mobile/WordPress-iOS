@@ -30,6 +30,13 @@ import Foundation
         return blogService.blogCountSelfHosted() == 0 && blogService.hasAnyJetpackBlogs() == false
     }
 
+    static var hasBlogs: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return blogService.blogCountForAllAccounts() > 0
+    }
+
     @objc static var noWordPressDotComAccount: Bool {
         return !AccountHelper.isDotcomAvailable()
     }
@@ -61,9 +68,23 @@ import Foundation
     }
 
     static func logOutDefaultWordPressComAccount() {
+        // Unschedule any scheduled blogging reminders
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
+
+        // Unschedule any scheduled blogging reminders for the account's blogs.
+        // We don't just clear all reminders, in case the user has self-hosted
+        // sites added to the app.
+        if let account = service.defaultWordPressComAccount(),
+           let blogs = account.blogs,
+           let scheduler = try? ReminderScheduleCoordinator() {
+            blogs.forEach { scheduler.unschedule(for: $0) }
+        }
+
         service.removeDefaultWordPressComAccount()
+
+        // Delete saved dashboard states
+        BlogDashboardState.resetAllStates()
 
         // Delete local notification on logout
         PushNotificationsManager.shared.deletePendingLocalNotifications()
@@ -75,8 +96,6 @@ import Foundation
         StatsDataHelper.clearWidgetsData()
 
         // Delete donated user activities (e.g., for Siri Shortcuts)
-        if #available(iOS 12.0, *) {
-            NSUserActivity.deleteAllSavedUserActivities {}
-        }
+        NSUserActivity.deleteAllSavedUserActivities {}
     }
 }

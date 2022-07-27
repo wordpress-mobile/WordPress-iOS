@@ -1,2 +1,1 @@
-red,social,notas,jetpack,fotos,escribir,geotagging,media,blog,wordpress,web,blogging,diseño
-
+bloguero,escritura,bloguear,web,creador,online,tienda,negocio,construir,crear,escribir,blogs

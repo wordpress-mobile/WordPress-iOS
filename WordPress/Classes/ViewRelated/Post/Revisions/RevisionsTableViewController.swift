@@ -199,7 +199,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         let author = getAuthor(for: revision.postAuthorId)
 
         cell.title = revision.revisionDate.shortTimeString()
-        cell.subtitle = author?.username ?? revision.revisionDate.mediumString()
+        cell.subtitle = author?.username ?? revision.revisionDate.toMediumString()
         cell.totalAdd = revision.diff?.totalAdditions.intValue
         cell.totalDel = revision.diff?.totalDeletions.intValue
         cell.avatarURL = author?.avatarURL

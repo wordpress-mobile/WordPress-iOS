@@ -4,7 +4,6 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPError.h"
-#import "Comment.h"
 #import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
@@ -15,6 +14,8 @@
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
+
+@class Comment;
 
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
@@ -123,7 +124,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
 
     [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
@@ -296,7 +297,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         dispatch_group_leave(syncGroup);
     }];
 
-
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
@@ -345,6 +345,22 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 updateOnSuccess(settings);
             } failure:failure];
         }
+    }];
+}
+
+- (void)syncAuthorsForBlog:(Blog *)blog
+                    success:(void (^)(void))success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+
+    [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+        [self updateMultiAuthor:users forBlog:blogObjectID];
+        success();
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        failure(error);
     }];
 }
 
@@ -598,6 +614,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
+    [self unscheduleBloggingRemindersFor:blog];
+
     WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
@@ -618,7 +636,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    BOOL filterJetpackSites = [AppConfiguration isJetpack];
+    BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
     
     [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
 
@@ -659,6 +677,9 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     if ([toDelete count] > 0) {
         for (Blog *blog in account.blogs) {
             if ([toDelete containsObject:blog.dotComID]) {
+                [self unscheduleBloggingRemindersFor:blog];
+                // Consider switching this to a call to removeBlog in the future
+                // to consolidate behaviour @frosty
                 [self.managedObjectContext deleteObject:blog];
             }
         }
@@ -668,6 +689,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
         [self updateBlogWithRemoteBlog:remoteBlog account:account];
+        [self updatePromptSettingsFor:remoteBlog context:self.managedObjectContext];
     }
 
     /*
@@ -717,6 +739,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     blog.url = remoteBlog.url;
     blog.dotComID = remoteBlog.blogID;
+    blog.organizationID = remoteBlog.organizationID;
     blog.isHostedAtWPcom = !remoteBlog.jetpack;
     blog.icon = remoteBlog.icon;
     blog.capabilities = remoteBlog.capabilities;
@@ -904,7 +927,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
             return;
         }
         
-        [self blogAuthorsFor:blog with:users];
+        [self updateBlogAuthorsFor:blog with:users];
         
         blog.isMultiAuthor = users.count > 1;
         /// Search for a matching user ID
@@ -945,6 +968,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                                                                error:&error];
                 if (blog) {
                     [self updateBlog:blog withRemoteBlog:blogs.firstObject];
+                    [self updatePromptSettingsFor:blogs.firstObject context:self.managedObjectContext];
 
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                 }

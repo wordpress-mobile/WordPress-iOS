@@ -1,11 +1,11 @@
 import UIKit
 import Gridicons
 
-protocol PrepublishingHeaderViewDelegate: class {
+protocol PrepublishingHeaderViewDelegate: AnyObject {
     func closeButtonTapped()
 }
 
-class PrepublishingHeaderView: UIView, NibLoadable {
+class PrepublishingHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     @IBOutlet weak var blogImageView: UIImageView!
     @IBOutlet weak var publishingToLabel: UILabel!
@@ -39,11 +39,23 @@ class PrepublishingHeaderView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        configureBackgroundView()
         configureBackButton()
         configurePublishingToLabel()
         configureBlogTitleLabel()
         configureBlogImage()
         configureSeparator()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        self.delegate = nil
+    }
+
+    private func configureBackgroundView() {
+        backgroundView = UIView()
+        backgroundView?.backgroundColor = .basicBackground
     }
 
     private func configureBackButton() {

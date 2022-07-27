@@ -2,11 +2,12 @@ import UIKit
 import WordPressShared
 
 class PeopleCell: WPTableViewCell {
-    @IBOutlet var avatarImageView: CircularImageView!
-    @IBOutlet var displayNameLabel: UILabel!
-    @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var roleBadge: PeopleRoleBadgeLabel!
-    @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
+    @IBOutlet private weak var avatarImageView: CircularImageView!
+    @IBOutlet private weak var displayNameLabel: UILabel!
+    @IBOutlet private weak var usernameLabel: UILabel!
+    @IBOutlet private weak var roleBadge: PeopleRoleBadgeLabel!
+    @IBOutlet private weak var superAdminRoleBadge: PeopleRoleBadgeLabel!
+    @IBOutlet private weak var badgeStackView: UIStackView!
 
     override func awakeFromNib() {
         WPStyleGuide.configureLabel(displayNameLabel, textStyle: .callout)
@@ -18,6 +19,7 @@ class PeopleCell: WPTableViewCell {
         displayNameLabel.text = viewModel.displayName
         displayNameLabel.textColor = viewModel.usernameColor
         usernameLabel.text = viewModel.usernameText
+        usernameLabel.isHidden = viewModel.usernameHidden
         roleBadge.borderColor = viewModel.roleBorderColor
         roleBadge.backgroundColor = viewModel.roleBackgroundColor
         roleBadge.textColor = viewModel.roleTextColor
@@ -27,6 +29,7 @@ class PeopleCell: WPTableViewCell {
         superAdminRoleBadge.isHidden = viewModel.superAdminHidden
         superAdminRoleBadge.borderColor = viewModel.superAdminBorderColor
         superAdminRoleBadge.backgroundColor = viewModel.superAdminBackgroundColor
+        badgeStackView.isHidden = viewModel.roleHidden && viewModel.superAdminHidden
     }
 
     @objc func setAvatarURL(_ avatarURL: URL?) {

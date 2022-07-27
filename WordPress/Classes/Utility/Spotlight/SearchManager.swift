@@ -452,7 +452,7 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().showMySitesTab()
         closePreviewIfNeeded(for: apost)
 
-        let controller = PreviewWebKitViewController(post: apost)
+        let controller = PreviewWebKitViewController(post: apost, source: "spotlight_preview_post")
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
         if WPTabBarController.sharedInstance()?.traitCollection.userInterfaceIdiom == .pad {

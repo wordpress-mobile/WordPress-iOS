@@ -2,11 +2,11 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 
 @interface BlogTimeZoneTests : XCTestCase
-    @property (nonatomic, strong) TestContextManager *testContextManager;
-    @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
+@property (nonatomic, strong) Blog *blog;
 @end
 
 @implementation BlogTimeZoneTests
@@ -15,23 +15,21 @@
 {
     [super setUp];
 
-    self.testContextManager = [[TestContextManager alloc] init];
+    self.coreDataStack = [[ContextManagerMock alloc] init];
 
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext: self.testContextManager.mainContext];
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext: self.coreDataStack.mainContext];
     WPAccount *account = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
-    self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
+    self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.coreDataStack.mainContext];
     self.blog.account = account;
-    self.blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.testContextManager.mainContext];
+    self.blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.coreDataStack.mainContext];
 }
 
 - (void)tearDown
 {
-    [ContextManager overrideSharedInstance:nil];
+    [self cleanUpNSUserDefaultValues];
 
     self.blog = nil;
-    self.testContextManager = nil;
-
-    [self cleanUpNSUserDefaultValues];
+    self.coreDataStack = nil;
 
     [super tearDown];
 }

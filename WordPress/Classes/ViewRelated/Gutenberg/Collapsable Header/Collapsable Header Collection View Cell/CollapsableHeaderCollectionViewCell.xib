@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,36 +26,45 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apQ-T8-du2">
-                        <rect key="frame" x="119" y="15" width="26" height="26"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <integer key="value" value="13"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </view>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-n7-XEA">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laj-HC-L8x" userLabel="Checkmark Container View">
                         <rect key="frame" x="116" y="12" width="32" height="32"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apQ-T8-du2" userLabel="Checkmark Background View">
+                                <rect key="frame" x="3" y="3" width="26" height="26"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="13"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-n7-XEA">
+                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                            </imageView>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="hx0-n7-XEA" secondAttribute="height" multiplier="1:1" id="R5g-G9-uHa"/>
-                            <constraint firstAttribute="width" constant="32" id="qbg-FC-btk"/>
+                            <constraint firstItem="apQ-T8-du2" firstAttribute="bottom" secondItem="laj-HC-L8x" secondAttribute="bottom" constant="-3" id="4Oq-Oa-L56"/>
+                            <constraint firstItem="hx0-n7-XEA" firstAttribute="bottom" secondItem="laj-HC-L8x" secondAttribute="bottom" id="JwU-VE-hjG"/>
+                            <constraint firstItem="hx0-n7-XEA" firstAttribute="top" secondItem="laj-HC-L8x" secondAttribute="top" id="PJZ-WW-yRk"/>
+                            <constraint firstItem="apQ-T8-du2" firstAttribute="top" secondItem="laj-HC-L8x" secondAttribute="top" constant="3" id="SmU-ok-LgJ"/>
+                            <constraint firstItem="hx0-n7-XEA" firstAttribute="trailing" secondItem="laj-HC-L8x" secondAttribute="trailing" id="UeB-xi-zOK"/>
+                            <constraint firstAttribute="width" constant="32" id="ZRH-5B-0Ih"/>
+                            <constraint firstItem="apQ-T8-du2" firstAttribute="leading" secondItem="laj-HC-L8x" secondAttribute="leading" constant="3" id="ait-Ub-BdE"/>
+                            <constraint firstAttribute="width" secondItem="laj-HC-L8x" secondAttribute="height" multiplier="1:1" id="ijt-QC-a3J"/>
+                            <constraint firstItem="hx0-n7-XEA" firstAttribute="leading" secondItem="laj-HC-L8x" secondAttribute="leading" id="sJy-Qb-k7g"/>
+                            <constraint firstItem="apQ-T8-du2" firstAttribute="trailing" secondItem="laj-HC-L8x" secondAttribute="trailing" constant="-3" id="vg8-26-oiL"/>
                         </constraints>
-                    </imageView>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstItem="laj-HC-L8x" firstAttribute="top" secondItem="XpQ-DC-DLe" secondAttribute="top" constant="12" id="2MK-HP-5J7"/>
                 <constraint firstItem="XpQ-DC-DLe" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="8aK-Nu-g20"/>
                 <constraint firstAttribute="trailing" secondItem="XpQ-DC-DLe" secondAttribute="trailing" id="BrN-ay-15v"/>
-                <constraint firstItem="apQ-T8-du2" firstAttribute="top" secondItem="hx0-n7-XEA" secondAttribute="top" constant="3" id="DMO-Ur-E0k"/>
+                <constraint firstItem="laj-HC-L8x" firstAttribute="trailing" secondItem="XpQ-DC-DLe" secondAttribute="trailing" constant="-12" id="FUz-7V-mZ2"/>
                 <constraint firstItem="XpQ-DC-DLe" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Hly-4U-lPA"/>
-                <constraint firstAttribute="trailing" secondItem="hx0-n7-XEA" secondAttribute="trailing" constant="12" id="OJx-TX-oHu"/>
-                <constraint firstItem="apQ-T8-du2" firstAttribute="bottom" secondItem="hx0-n7-XEA" secondAttribute="bottom" constant="-3" id="Od3-sV-Hqg"/>
-                <constraint firstItem="apQ-T8-du2" firstAttribute="leading" secondItem="hx0-n7-XEA" secondAttribute="leading" constant="3" id="Q9C-cP-3Ez"/>
                 <constraint firstAttribute="bottom" secondItem="XpQ-DC-DLe" secondAttribute="bottom" id="juf-rq-F1x"/>
-                <constraint firstItem="apQ-T8-du2" firstAttribute="trailing" secondItem="hx0-n7-XEA" secondAttribute="trailing" constant="-3" id="nxN-Kr-1fY"/>
-                <constraint firstItem="hx0-n7-XEA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="oc5-Cd-UNM"/>
             </constraints>
             <size key="customSize" width="191" height="244"/>
             <userDefinedRuntimeAttributes>
@@ -64,7 +73,7 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="checkmarkBackground" destination="apQ-T8-du2" id="FaX-4x-APs"/>
+                <outlet property="checkmarkContainerView" destination="laj-HC-L8x" id="i9b-po-WdU"/>
                 <outlet property="checkmarkImageView" destination="hx0-n7-XEA" id="Yst-6N-Qcg"/>
                 <outlet property="imageView" destination="XpQ-DC-DLe" id="j69-db-QW7"/>
             </connections>

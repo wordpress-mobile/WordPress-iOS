@@ -3,21 +3,18 @@ import XCTest
 
 @testable import WordPress
 
-class PostTests: XCTestCase {
-
-    fileprivate var contextManager: TestContextManager!
-    fileprivate var context: NSManagedObjectContext!
+class PostTests: CoreDataTestCase {
 
     fileprivate func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
     }
 
     fileprivate func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
     }
 
     fileprivate func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: context) as! PostCategory
+        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
     }
 
     fileprivate func newTestPostCategory(_ name: String) -> PostCategory {
@@ -25,19 +22,6 @@ class PostTests: XCTestCase {
         category.categoryName = name
 
         return category
-    }
-
-    override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        context.rollback()
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
     }
 
     func testThatNoCategoriesReturnEmptyStringWhenCallingCategoriesText() {
@@ -210,6 +194,38 @@ class PostTests: XCTestCase {
         XCTAssertEqual(post.postFormat, secondaryPostFormat.key)
     }
 
+    func testPostFormatSorting() throws {
+        let postFormats = [
+            "b": "B",
+            "c": "C",
+            "q": "Q",
+            "z": "Z",
+            "standard": "Standard",
+            "a": "A",
+            "d": "D",
+        ]
+
+        let expectedPostFormats = [
+            ("standard", "Standard"),
+            ("a", "A"),
+            ("b", "B"),
+            ("c", "C"),
+            ("d", "D"),
+            ("q", "Q"),
+            ("z", "Z")
+        ]
+
+        let blog = BlogBuilder(mainContext)
+            .with(postFormats: postFormats)
+            .build()
+
+        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats as? [String])
+        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames as? [String])
+
+        XCTAssertEqual(expectedPostFormats.map { $0.0 }, sortedPostFormats)
+        XCTAssertEqual(expectedPostFormats.map { $0.1 }, sortedPostFormatNames)
+    }
+
     func testThatHasCategoriesWorks() {
         let post = newTestPost()
 
@@ -291,11 +307,11 @@ class PostTests: XCTestCase {
 
         revision.status = .pending
         let pendingStatusDisplay = "\(Post.title(for: .pending))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), pendingStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", pendingStatusDisplay, local))
 
         revision.status = .publishPrivate
         let publishPrivateStatusDisplay = "\(Post.title(for: .publishPrivate))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), publishPrivateStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", publishPrivateStatusDisplay, local))
 
         revision.status = .publish
         XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
@@ -308,7 +324,7 @@ class PostTests: XCTestCase {
 
         revision.status = .deleted
         let deletedStatusDisplay = "\(Post.title(for: .deleted))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), deletedStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", deletedStatusDisplay, local))
     }
 
     func testThatHasLocalChangesWorks() {
@@ -413,10 +429,9 @@ class PostTests: XCTestCase {
         post.wp_slug = "lorem-ipsum"
         post.publicID = "90210"
         post.tags = "lorem,ipsum,test"
-        post.geolocation = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 52.520833, longitude: 13.409444))
         post.isStickyPost = true
 
-        let correctHash = "36d7cd8138748d779453d30e8f758592b40b61af464921133c9db12cd71cf0ca"
+        let correctHash = "4889b28f7061f11ea295583a34decf42b3cba7191912b3d2ed0472362495b0d2"
 
         XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
 
@@ -493,7 +508,7 @@ class PostTests: XCTestCase {
     /// When removing the featured image hasLocalChanges returns true
     func testLocalChangesWhenfeaturedImageIsRemoved() {
         let post = newTestPost()
-        post.featuredImage = Media.makeMedia(in: context)
+        post.featuredImage = Media.makeMedia(in: mainContext)
         let revision = post.createRevision()
         revision.featuredImage = nil
 
@@ -504,7 +519,7 @@ class PostTests: XCTestCase {
     func testLocalChangesWhenfeaturedImageIsAdded() {
         let post = newTestPost()
         let revision = post.createRevision()
-        revision.featuredImage = Media.makeMedia(in: context)
+        revision.featuredImage = Media.makeMedia(in: mainContext)
 
         XCTAssertTrue(revision.hasLocalChanges())
     }
@@ -512,10 +527,30 @@ class PostTests: XCTestCase {
     /// When keeping the featured image hasLocalChanges returns false
     func testLocalChangesWhenFeaturedImageIsTheSame() {
         let post = newTestPost()
-        let media = Media.makeMedia(in: context)
+        let media = Media.makeMedia(in: mainContext)
         post.featuredImage = media
         let revision = post.createRevision()
         revision.featuredImage = media
+
+        XCTAssertFalse(revision.hasLocalChanges())
+    }
+
+    /// When changing an authorID hasLocalChanges returns true
+    func testLocalChangesWhenAuthorIsChanged() {
+        let post = newTestPost()
+        post.authorID = 1
+        let revision = post.createRevision()
+        revision.authorID = 2
+
+        XCTAssertTrue(revision.hasLocalChanges())
+    }
+
+    /// When setting the same authorID hasLocalChanges returns false
+    func testLocalChangesWhenAuthorIsTheSame() {
+        let post = newTestPost()
+        post.authorID = 1
+        let revision = post.createRevision()
+        revision.authorID = 1
 
         XCTAssertFalse(revision.hasLocalChanges())
     }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Që të bëjë foto ose video për t’u përdorur te postimet tuaja.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress-i do të donte të shtonte vendndodhjen tuaj në postime te sajte ku keni aktivizuar gjeoetiketimet.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress-i do të donte të shtonte vendndodhjen tuaj në postime te sajte ku keni aktivizuar gjeoetiketimet.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Aktivizoni përdorim mikrofoni për të incizuar zë në videot tuaja.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Që të shtohen foto ose video te postimet tuaja.</string>
+  </dict>
+</plist>

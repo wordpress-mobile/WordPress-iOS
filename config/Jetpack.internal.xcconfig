@@ -1,0 +1,3 @@
+#include "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release-internal.xcconfig"
+
+BUILD_SCHEME=Jetpack

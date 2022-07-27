@@ -1,4 +1,5 @@
 import AVKit
+import Combine
 import UIKit
 import Gridicons
 import SVProgressHUD
@@ -7,6 +8,13 @@ import WordPressShared
 /// Displays an image preview and metadata for a single Media asset.
 ///
 class MediaItemViewController: UITableViewController {
+
+    class DownloadDelegate: NSObject, AVAssetDownloadDelegate {
+
+    }
+
+    let delegate = DownloadDelegate()
+
     @objc let media: Media
 
     fileprivate var viewModel: ImmuTable!
@@ -114,7 +122,7 @@ class MediaItemViewController: UITableViewController {
         default: break
         }
 
-        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.mediumString() ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.toMediumString() ?? ""))
 
         return rows
     }
@@ -217,7 +225,7 @@ class MediaItemViewController: UITableViewController {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
 
-        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog)
+        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog, source: "media_item")
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = media.title ?? ""
@@ -238,21 +246,35 @@ class MediaItemViewController: UITableViewController {
 
     // MARK: - Actions
 
+    private var shareVideoCancellable: AnyCancellable? = nil
+
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        if let remoteURLStr = media.remoteURL, let url = URL(string: remoteURLStr) {
-            let activityController = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                activityController.modalPresentationStyle = .popover
-                activityController.popoverPresentationController?.barButtonItem = sender
-                activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
-                    if completed {
-                        WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+        switch media.mediaType {
+        case .image:
+            media.image(with: .zero) { [weak self] image, error in
+                guard let image = image else {
+                    if let error = error {
+                        DDLogError("Error when attempting to share image: \(error)")
                     }
+                    return
                 }
-                present(activityController, animated: true)
-        } else {
-            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
-            present(alertController, animated: true)
+
+                self?.share(media: image, sender: sender)
+            }
+        case .audio, .video:
+            shareVideoCancellable = media.videoURLPublisher(skipTransformCheck: true).sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    DDLogError("Error when attempting to share video: \(error)")
+                }
+
+                self?.shareVideoCancellable = nil
+            } receiveValue: { [weak self] url in
+                DispatchQueue.main.async { [weak self] in
+                    self?.share(media: url, sender: sender)
+                }
+            }
+        default:
+            break
         }
     }
 
@@ -369,6 +391,34 @@ class MediaItemViewController: UITableViewController {
         controller.onValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    // MARK: - Sharing Logic
+
+    private func mediaURL() -> URL? {
+        guard let remoteURL = media.remoteURL,
+           let url = URL(string: remoteURL) else {
+            return nil
+        }
+
+        return url
+    }
+
+    private func share(media: Any, sender: UIBarButtonItem) {
+        share([media], sender: sender)
+    }
+
+    private func share(_ activityItems: [Any], sender: UIBarButtonItem) {
+        let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        activityController.modalPresentationStyle = .popover
+        activityController.popoverPresentationController?.barButtonItem = sender
+        activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
+            if completed {
+                WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+            }
+        }
+
+        present(activityController, animated: true)
     }
 }
 

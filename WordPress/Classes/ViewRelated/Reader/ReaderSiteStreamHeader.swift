@@ -130,7 +130,11 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     // MARK: - Actions
 
     @IBAction func didTapFollowButton(_ sender: UIButton) {
-        delegate?.handleFollowActionForHeader(self)
+        followButton.isUserInteractionEnabled = false
+
+        delegate?.handleFollowActionForHeader(self) { [weak self] in
+            self?.followButton.isUserInteractionEnabled = true
+        }
     }
 
     // MARK: - Private: Helpers

@@ -7,6 +7,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var primaryButton: FancyButton!
     @IBOutlet weak var secondaryButton: FancyButton!
+    @IBOutlet weak var warningButton: MultilineButton!
     @IBOutlet weak var progressView: UIProgressView!
 
     private var model: JetpackScanStatusViewModel?
@@ -28,6 +29,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
         configurePrimaryButton(model)
         configureSecondaryButton(model)
+        configureWarningButton(model)
         configureProgressView(model)
     }
 
@@ -38,6 +40,7 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         }
 
         primaryButton.setTitle(primaryTitle, for: .normal)
+        primaryButton.isEnabled = model.primaryButtonEnabled
         primaryButton.isHidden = false
     }
 
@@ -49,6 +52,24 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
 
         secondaryButton.setTitle(secondaryTitle, for: .normal)
         secondaryButton.isHidden = false
+    }
+
+    private func configureWarningButton(_ model: JetpackScanStatusViewModel) {
+        guard let warningButtonTitle = model.warningButtonTitle else {
+            warningButton.isHidden = true
+            return
+        }
+
+        let attributedTitle = WPStyleGuide.Jetpack.highlightString(warningButtonTitle.substring,
+                                                                   inString: warningButtonTitle.string)
+
+        warningButton.setAttributedTitle(attributedTitle, for: .normal)
+        warningButton.setImage(.gridicon(.plusSmall), for: .normal)
+        warningButton.setTitleColor(.text, for: .normal)
+        warningButton.titleLabel?.numberOfLines = 0
+        warningButton.titleLabel?.lineBreakMode = .byWordWrapping
+
+        warningButton.isHidden = false
     }
 
     private func configureProgressView(_ model: JetpackScanStatusViewModel) {
@@ -76,6 +97,14 @@ class JetpackScanStatusCell: UITableViewCell, NibReusable {
         }
 
         viewModel.secondaryButtonTapped(sender)
+    }
+
+    @IBAction func warningButtonTapped(_ sender: Any) {
+        guard let viewModel = model else {
+            return
+        }
+
+        viewModel.warningButtonTapped(sender)
     }
 
     // MARK: - Private: View Configuration

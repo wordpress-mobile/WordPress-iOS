@@ -1,5 +1,9 @@
 import UIKit
 
+protocol ReaderDiscoverFlowDelegate: AnyObject {
+    func didCompleteReaderDiscoverFlow()
+}
+
 struct ReaderSelectInterestsConfiguration {
     let title: String
     let subtitle: String?
@@ -31,13 +35,29 @@ class ReaderSelectInterestsViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonContainerView: UIView!
     @IBOutlet weak var nextButton: FancyButton!
-    @IBOutlet weak var contentContainerView: UIView!
+    @IBOutlet weak var contentContainerView: UIStackView!
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingView: UIStackView!
 
     @IBOutlet weak var bottomSpaceHeightConstraint: NSLayoutConstraint!
+
+    // MARK: - Views
+
+    private let spotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
+    var spotlightIsShown: Bool = false {
+        didSet {
+            spotlightView.isHidden = !spotlightIsShown
+        }
+    }
 
     // MARK: - Data
     private lazy var dataSource: ReaderInterestsDataSource = {
@@ -52,7 +72,9 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private let configuration: ReaderSelectInterestsConfiguration
 
-    var didSaveInterests: (() -> Void)? = nil
+    var didSaveInterests: (([RemoteReaderInterest]) -> Void)? = nil
+
+    weak var readerDiscoverFlowDelegate: ReaderDiscoverFlowDelegate?
 
     // MARK: - Init
     init(configuration: ReaderSelectInterestsConfiguration, topics: [ReaderTagTopic] = []) {
@@ -93,6 +115,14 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        view.addSubview(spotlightView)
+        view.bringSubviewToFront(spotlightView)
+
+        NSLayoutConstraint.activate([
+            collectionView.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
+            collectionView.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor)
+        ])
 
         WPAnalytics.trackReader(.selectInterestsShown)
     }
@@ -189,9 +219,9 @@ class ReaderSelectInterestsViewController: UIViewController {
         if let buttonTitle = configuration.buttonTitle {
             nextButton.setTitle(buttonTitle.enabled, for: .normal)
             nextButton.setTitle(buttonTitle.disabled, for: .disabled)
-            nextButton.isHidden = false
+            buttonContainerView.isHidden = false
         } else {
-            nextButton.isHidden = true
+            buttonContainerView.isHidden = true
         }
 
         loadingLabel.text = configuration.loading
@@ -216,7 +246,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     @objc private func saveSelectedInterests() {
         guard !dataSource.selectedInterests.isEmpty else {
-            self.didSaveInterests?()
+            self.didSaveInterests?([])
             return
         }
 
@@ -235,7 +265,8 @@ class ReaderSelectInterestsViewController: UIViewController {
 
             self?.trackEvents(with: selectedInterests)
             self?.stopLoading()
-            self?.didSaveInterests?()
+            self?.didSaveInterests?(selectedInterests)
+            self?.readerDiscoverFlowDelegate?.didCompleteReaderDiscoverFlow()
         }
     }
 
@@ -308,6 +339,14 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if spotlightIsShown {
+            spotlightIsShown = false
+        }
+
+        // End reader quick start tour if user selects a topic.
+        QuickStartTourGuide.shared.visited(.readerDiscoverSettings)
+
         dataSource.interest(for: indexPath.row).toggleSelected()
         updateNextButtonState()
 

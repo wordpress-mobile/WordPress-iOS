@@ -1,7 +1,6 @@
 import SVProgressHUD
 import WordPressAuthenticator
 
-
 class SignupUsernameTableViewController: UITableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?
     open var displayName: String?
@@ -10,6 +9,10 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     private var service: AccountSettingsService?
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
+
+    var analyticsSource: String {
+        return "signup_epilogue"
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,6 +23,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        trackViewLoaded()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
@@ -45,6 +50,8 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SVProgressHUD.dismiss()
+
+        trackViewDismissed()
     }
 
     func registerNibs() {
@@ -86,12 +93,30 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
         return description
     }
 
+    // MARK: - Tracking
+    func trackViewLoaded() {
+        WPAnalytics.track(.changeUsernameDisplayed, properties: ["source": analyticsSource])
+    }
+
+    func trackViewDismissed() {
+        WPAnalytics.track(.changeUsernameDismissed, properties: ["source": analyticsSource])
+    }
+
+    private var searchCount: Int = 0
+    func trackSearchPerformed() {
+        searchCount += 1
+
+        WPAnalytics.track(.changeUsernameSearchPerformed, properties: ["search_count": searchCount, "source": analyticsSource])
+    }
+
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
         guard searchTerm.count > 0 else {
             return
         }
+
+        trackSearchPerformed()
 
         suggestUsernames(for: searchTerm) { [weak self] suggestions in
             self?.suggestions = suggestions
@@ -188,6 +213,7 @@ extension SignupUsernameTableViewController {
         cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
+        cell.textField.leftViewImage = UIImage(named: "icon-post-search-highlight")
 
         return cell
     }
@@ -197,8 +223,13 @@ extension SignupUsernameTableViewController {
 
         cell.textLabel?.text = username
         cell.textLabel?.textColor = .neutral(.shade70)
+
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .byCharWrapping
+
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
+
         if checked {
             cell.accessoryType = .checkmark
         }
@@ -221,7 +252,7 @@ extension SignupUsernameTableViewController {
             return
         }
 
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
+        showLoader()
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
@@ -229,9 +260,25 @@ extension SignupUsernameTableViewController {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false
-            SVProgressHUD.dismiss()
+            self?.hideLoader()
             addSuggestions(newSuggestions)
         }
+    }
+}
+
+// MARK: - Loader
+
+extension SignupUsernameTableViewController {
+    func showLoader() {
+        searchCell?.showLoader()
+    }
+
+    func hideLoader() {
+        searchCell?.hideLoader()
+    }
+
+    private var searchCell: SearchTableViewCell? {
+        tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell
     }
 }
 

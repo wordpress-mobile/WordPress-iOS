@@ -86,6 +86,7 @@ class MediaVideoExporter: MediaExporter {
             onError(exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable))
             return Progress.discreteCompletedProgress()
         }
+
         guard let session = AVAssetExportSession(asset: asset, presetName: options.exportPreset) else {
             onError(exporterErrorWith(error: VideoExportError.failedToInitializeVideoExportSession))
             return Progress.discreteCompletedProgress()
@@ -139,6 +140,7 @@ class MediaVideoExporter: MediaExporter {
         let observer = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
             progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
         })
+
         session.exportAsynchronously {
             observer.stop()
             guard session.status == .completed else {

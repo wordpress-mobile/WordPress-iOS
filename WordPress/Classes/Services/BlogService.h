@@ -123,6 +123,17 @@ extern NSString *const WPBlogUpdatedNotification;
                     failure:(void (^)(NSError *error))failure;
 
 /**
+ *  Sync authors from the server
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is successful
+ *  @param failure a block that in invoked when the sync fails.
+ */
+- (void)syncAuthorsForBlog:(Blog *)blog
+                    success:(void (^)(void))success
+                    failure:(void (^)(NSError *error))failure;
+
+/**
  *  Update blog settings to the server
  *
  *  @param blog    the blog to update

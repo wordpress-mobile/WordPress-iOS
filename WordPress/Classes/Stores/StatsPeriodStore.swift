@@ -172,14 +172,21 @@ struct PeriodStoreState {
     var postStatsFetchingStatuses = [Int: StoreFetchingStatus]()
 }
 
+protocol StatsPeriodStoreDelegate: AnyObject {
+    func didChangeSpamState(for referrerDomain: String, isSpam: Bool)
+    func changingSpamStateForReferrerDomainFailed(oldValue: Bool)
+}
+
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
     private typealias PostDetailOperation = StatsPostDetailAsyncOperation
 
-    private var statsServiceRemote: StatsServiceRemoteV2?
+    var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+
+    weak var delegate: StatsPeriodStoreDelegate?
 
     init() {
         super.init(initialState: PeriodStoreState())
@@ -1087,17 +1094,33 @@ private extension StatsPeriodStore {
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
-        state.summaryStatus = status
-        state.summaryLikesStatus = status
-        state.topPostsAndPagesStatus = status
-        state.topReferrersStatus = status
-        state.topPublishedStatus = status
-        state.topClicksStatus = status
-        state.topAuthorsStatus = status
-        state.topSearchTermsStatus = status
-        state.topCountriesStatus = status
-        state.topVideosStatus = status
-        state.topFileDownloadsStatus = status
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            transaction { state in
+                state.summaryStatus = status
+                state.summaryLikesStatus = status
+                state.topPostsAndPagesStatus = status
+                state.topReferrersStatus = status
+                state.topPublishedStatus = status
+                state.topClicksStatus = status
+                state.topAuthorsStatus = status
+                state.topSearchTermsStatus = status
+                state.topCountriesStatus = status
+                state.topVideosStatus = status
+                state.topFileDownloadsStatus = status
+            }
+        } else {
+            state.summaryStatus = status
+            state.summaryLikesStatus = status
+            state.topPostsAndPagesStatus = status
+            state.topReferrersStatus = status
+            state.topPublishedStatus = status
+            state.topClicksStatus = status
+            state.topAuthorsStatus = status
+            state.topSearchTermsStatus = status
+            state.topCountriesStatus = status
+            state.topVideosStatus = status
+            state.topFileDownloadsStatus = status
+        }
     }
 
     func shouldFetchPostsAndPages() -> Bool {
@@ -1203,6 +1226,10 @@ extension StatsPeriodStore {
 
     var summaryStatus: StoreFetchingStatus {
         return state.summaryStatus
+    }
+
+    var summaryLikesStatus: StoreFetchingStatus {
+        return state.summaryLikesStatus
     }
 
     var isFetchingSummary: Bool {
@@ -1343,6 +1370,28 @@ extension StatsPeriodStore {
         }
         return status
     }
+
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
+        for (index, referrer) in (state.topReferrers?.referrers ?? []).enumerated() {
+            guard (referrer.children.isEmpty && referrer.url?.host == referrerDomain) ||
+                    referrer.children.first?.url?.host == referrerDomain else {
+                continue
+            }
+
+            toggleSpamState(for: referrerDomain,
+                            currentValue: currentValue,
+                            referrerIndex: index,
+                            hasChildren: !referrer.children.isEmpty) { [weak self] in
+                switch $0 {
+                case .success:
+                    self?.delegate?.didChangeSpamState(for: referrerDomain, isSpam: !currentValue)
+                case .failure:
+                    self?.delegate?.changingSpamStateForReferrerDomainFailed(oldValue: currentValue)
+                }
+            }
+            break
+        }
+    }
 }
 
 // MARK: - Widget Data
@@ -1391,5 +1440,36 @@ private extension PeriodStoreState {
                 return false
         }
         return true
+    }
+}
+
+// MARK: - Toggle referrer spam state helper
+
+private extension StatsPeriodStore {
+    func toggleSpamState(for referrerDomain: String,
+                         currentValue: Bool,
+                         referrerIndex: Int,
+                         hasChildren: Bool,
+                         completion: @escaping (Result<Void, Error>) -> Void) {
+        statsServiceRemote?.toggleSpamState(for: referrerDomain, currentValue: currentValue, success: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.state.topReferrers?.referrers[referrerIndex].isSpam.toggle()
+            DDLogInfo("Stats Period: Referrer \(referrerDomain) isSpam set to \(self.state.topReferrers?.referrers[referrerIndex].isSpam ?? false)")
+
+            guard hasChildren else {
+                completion(.success(()))
+                return
+            }
+            for (childIndex, _) in (self.state.topReferrers?.referrers[referrerIndex].children ?? []).enumerated() {
+                self.state.topReferrers?.referrers[referrerIndex].children[childIndex].isSpam.toggle()
+            }
+
+            completion(.success(()))
+        }, failure: { error in
+            DDLogInfo("Stats Period: Couldn't toggle spam state for referrer \(referrerDomain), reason: \(error.localizedDescription)")
+            completion(.failure(error))
+        })
     }
 }

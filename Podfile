@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
 # For security reasons, please always keep the wordpress-mobile source first and the CDN second.
 # For more info, see https://github.com/wordpress-mobile/cocoapods-specs#source-order-and-security-considerations
 install! 'cocoapods', warn_for_multiple_pod_sources: false
 source 'https://github.com/wordpress-mobile/cocoapods-specs.git'
 source 'https://cdn.cocoapods.org/'
 
-unless ['BUNDLE_BIN_PATH', 'BUNDLE_GEMFILE'].any? { |k| ENV.key?(k) }
-  raise 'Please run CocoaPods via `bundle exec`'
-end
+raise 'Please run CocoaPods via `bundle exec`' unless %w[BUNDLE_BIN_PATH BUNDLE_GEMFILE].any? { |k| ENV.key?(k) }
 
 inhibit_all_warnings!
 use_frameworks!
@@ -20,367 +20,349 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-    pod 'WordPressShared', '~> 1.16.0'
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
-    #pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
-    #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+  pod 'WordPressShared', '~> 1.18.0'
+  # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
+  # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
+  # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
+  # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
 
 def aztec
-    ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
-    ## When using a commit number (during development) you should provide the same commit number for both pods.
-    ##
-    #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
-    #pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
-    pod 'WordPress-Editor-iOS', '~> 1.19.4'
+  ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
+  ## When using a commit number (during development) you should provide the same commit number for both pods.
+  ##
+  # pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
+  # pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
+  # pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
+  # pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
+  pod 'WordPress-Editor-iOS', '~> 1.19.8'
 end
 
 def wordpress_ui
-    pod 'WordPressUI', '~> 1.9.0'
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
-    #pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
-    #pod 'WordPressUI', :path => '../WordPressUI-iOS'
+  pod 'WordPressUI', '~> 1.12.5'
+  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
+  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
+  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
+  # pod 'WordPressUI', :path => '../WordPressUI-iOS'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.31.0-beta3'
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-    # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-    # pod 'WordPressKit', :path => '../WordPressKit-iOS'
+  pod 'WordPressKit', '~> 4.56.0'
+  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
+  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
+  # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.6'
-  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
-  #pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
-  #pod 'Kanvas', :path => '../Kanvas-iOS'
+  pod 'Kanvas', '~> 1.4.3'
+  # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
+  # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
+  # pod 'Kanvas', :path => '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
-    wordpress_shared
-    pod 'CocoaLumberjack', '~> 3.0'
-    pod 'NSObject-SafeExpectations', '~> 0.0.4'
+  wordpress_shared
+  pod 'CocoaLumberjack', '~> 3.0'
+  pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
 def shared_with_networking_pods
-    pod 'Alamofire', '4.8.0'
-    pod 'Reachability', '3.2'
+  pod 'Alamofire', '4.8.0'
+  pod 'Reachability', '3.2'
 
-    wordpress_kit
+  wordpress_kit
 end
 
 def shared_test_pods
-    pod 'OHHTTPStubs/Swift', '~> 9.1.0'
-    pod 'OCMock', '3.4.3'
+  pod 'OHHTTPStubs/Swift', '~> 9.1.0'
+  pod 'OCMock', '~> 3.4.3'
 end
 
 def shared_with_extension_pods
-    pod 'Gridicons', '~> 1.1.0'
-    pod 'ZIPFoundation', '~> 0.9.8'
-    pod 'Down', '~> 0.6.6'
+  pod 'Gridicons', '~> 1.1.0'
+  pod 'ZIPFoundation', '~> 0.9.8'
+  pod 'Down', '~> 0.6.6'
 end
 
 def gutenberg(options)
-    options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
-    options[:submodules] = true
-    local_gutenberg = ENV['LOCAL_GUTENBERG']
-    if local_gutenberg
-      options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
-    end
-    pod 'Gutenberg', options
-    pod 'RNTAztecView', options
+  options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
+  options[:submodules] = true
+  local_gutenberg = ENV.fetch('LOCAL_GUTENBERG', nil)
+  if local_gutenberg
+    options = { path: local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
+  end
+  pod 'Gutenberg', options
+  pod 'RNTAztecView', options
 
-    gutenberg_dependencies options
+  gutenberg_dependencies options
 end
 
 def gutenberg_dependencies(options)
-    dependencies = [
-        'FBReactNativeSpec',
-        'FBLazyVector',
-        'React',
-        'ReactCommon',
-        'RCTRequired',
-        'RCTTypeSafety',
-        'React-Core',
-        'React-CoreModules',
-        'React-RCTActionSheet',
-        'React-RCTAnimation',
-        'React-RCTBlob',
-        'React-RCTImage',
-        'React-RCTLinking',
-        'React-RCTNetwork',
-        'React-RCTSettings',
-        'React-RCTText',
-        'React-RCTVibration',
-        'React-cxxreact',
-        'React-jsinspector',
-        'React-jsi',
-        'React-jsiexecutor',
-        'Yoga',
-        'Folly',
-        'glog',
-        'react-native-keyboard-aware-scroll-view',
-        'react-native-safe-area',
-        'react-native-safe-area-context',
-        'react-native-video',
-        'RNSVG',
-        'ReactNativeDarkMode',
-        'react-native-slider',
-        'react-native-linear-gradient',
-        'react-native-get-random-values',
-        'react-native-blur',
-        'RNScreens',
-        'RNReanimated',
-        'RNGestureHandler',
-        'RNCMaskedView'
-    ]
-    if options[:path]
-        podspec_prefix = options[:path]
-    else
-        tag_or_commit = options[:tag] || options[:commit]
-        podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
-    end
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
+  dependencies = %w[
+    FBLazyVector
+    React
+    ReactCommon
+    RCTRequired
+    RCTTypeSafety
+    React-Core
+    React-CoreModules
+    React-RCTActionSheet
+    React-RCTAnimation
+    React-RCTBlob
+    React-RCTImage
+    React-RCTLinking
+    React-RCTNetwork
+    React-RCTSettings
+    React-RCTText
+    React-RCTVibration
+    React-callinvoker
+    React-cxxreact
+    React-jsinspector
+    React-jsi
+    React-jsiexecutor
+    React-logger
+    React-perflogger
+    React-runtimeexecutor
+    boost
+    Yoga
+    RCT-Folly
+    glog
+    react-native-keyboard-aware-scroll-view
+    react-native-safe-area
+    react-native-safe-area-context
+    react-native-video
+    react-native-webview
+    RNSVG
+    react-native-slider
+    BVLinearGradient
+    react-native-get-random-values
+    react-native-blur
+    RNScreens
+    RNReanimated
+    RNGestureHandler
+    RNCMaskedView
+    RNCClipboard
+    RNFastImage
+  ]
+  if options[:path]
+    podspec_prefix = options[:path]
+  else
+    tag_or_commit = options[:tag] || options[:commit]
+    podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
+  end
 
-    for pod_name in dependencies do
-        pod pod_name, :podspec => "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
-    end
+  # FBReactNativeSpec needs special treatment because of react-native-codegen code generation
+  pod 'FBReactNativeSpec', podspec: "#{podspec_prefix}/third-party-podspecs/FBReactNativeSpec/FBReactNativeSpec.podspec.json"
+
+  dependencies.each do |pod_name|
+    pod pod_name, podspec: "#{podspec_prefix}/third-party-podspecs/#{pod_name}.podspec.json"
+  end
 end
 
 abstract_target 'Apps' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
-    shared_with_extension_pods
+  shared_with_all_pods
+  shared_with_networking_pods
+  shared_with_extension_pods
 
-    ## Gutenberg (React Native)
-    ## =====================
-    ##
-    gutenberg :tag => 'v1.51.0'
+  ## Gutenberg (React Native)
+  ## =====================
+  ##
+  gutenberg tag: 'v1.81.0-alpha1'
 
+  ## Third party libraries
+  ## =====================
+  ##
+  pod 'Gifu', '3.2.0'
 
-    ## Third party libraries
-    ## =====================
-    ##
-    pod 'Charts', '~> 3.2.2'
-    pod 'Gifu', '3.2.0'
-    pod 'AppCenter', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'AppCenter/Distribute', '4.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Starscream', '3.0.6'
-    pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSupportSDK', '5.2.0'
-    pod 'AlamofireImage', '3.5.2'
-    pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
-    pod 'FSInteractiveMap', :git => 'https://github.com/wordpress-mobile/FSInteractiveMap.git', :tag => '0.2.0'
-    pod 'JTAppleCalendar', '~> 8.0.2'
-    pod 'AMScrollingNavbar', '5.6.0'
-    pod 'CropViewController', '2.5.3'
+  app_center_version = '~> 4.1'
+  app_center_configurations = %w[Release-Internal Release-Alpha]
+  pod 'AppCenter', app_center_version, configurations: app_center_configurations
+  pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-    ## Automattic libraries
-    ## ====================
-    ##
-    wordpress_kit
-    wordpress_shared
-    kanvas
+  pod 'MRProgress', '0.8.3'
+  pod 'Starscream', '3.0.6'
+  pod 'SVProgressHUD', '2.2.5'
+  pod 'ZendeskSupportSDK', '5.3.0'
+  pod 'AlamofireImage', '3.5.2'
+  pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+  pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
+  pod 'JTAppleCalendar', '~> 8.0.2'
+  pod 'CropViewController', '2.5.3'
 
-    # Production
+  ## Automattic libraries
+  ## ====================
+  ##
+  wordpress_kit
+  wordpress_shared
+  kanvas
 
-    pod 'Automattic-Tracks-iOS', '~> 0.8.4'
-    # While in PR
-    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
-    # Local Development
-    #pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
+  # Production
 
-    pod 'NSURL+IDN', '~> 0.4'
+  pod 'Automattic-Tracks-iOS', '~> 0.11.1'
+  # While in PR
+  # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+  # Local Development
+  # pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
-    pod 'WPMediaPicker', '~> 1.7.2'
-    #pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
-    ## while PR is in review:
-    # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
-    # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
+  pod 'NSURL+IDN', '~> 0.4'
 
-    pod 'Gridicons', '~> 1.1.0'
+  pod 'WPMediaPicker', '~> 1.8.4'
+  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
+  ## while PR is in review:
+  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
+  # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
-    pod 'WordPressAuthenticator', '~> 1.36.0'
-    # While in PR
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/nux-button-shadows'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  pod 'Gridicons', '~> 1.1.0'
 
-    pod 'MediaEditor', '~> 1.2.1'
-    # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-    # pod 'MediaEditor', :path => '../MediaEditor-iOS'
+  pod 'WordPressAuthenticator', '~> 2.0.0'
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+  # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
-    aztec
-    wordpress_ui
+  pod 'MediaEditor', '~> 1.2.1'
+  # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
+  # pod 'MediaEditor', :path => '../MediaEditor-iOS'
 
-    ## WordPress App iOS
-    ## =================
-    ##
-    target 'WordPress' do
-        target 'WordPressTest' do
-            inherit! :search_paths
+  aztec
+  wordpress_ui
 
-            shared_test_pods
-            pod 'Nimble', '~> 7.3.1'
-        end
+  ## WordPress App iOS
+  ## =================
+  ##
+  target 'WordPress' do
+    target 'WordPressTest' do
+      inherit! :search_paths
+
+      shared_test_pods
+      pod 'Nimble', '~> 9.0.0'
     end
+  end
 
-    ## Jetpack App iOS
-    ## ===============
-    ##
-    target 'Jetpack' do
-    end
+  ## Jetpack App iOS
+  ## ===============
+  ##
+  target 'Jetpack'
 end
 
 ## Share Extension
 ## ===============
 ##
 target 'WordPressShareExtension' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_extension_pods
+  shared_with_extension_pods
 
-    aztec
-    shared_with_all_pods
-    shared_with_networking_pods
-    wordpress_ui
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
 end
-
 
 ## DraftAction Extension
 ## =====================
 ##
 target 'WordPressDraftActionExtension' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_extension_pods
+  shared_with_extension_pods
 
-    aztec
-    shared_with_all_pods
-    shared_with_networking_pods
-    wordpress_ui
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
 end
-
 
 ## Today Widget
 ## ============
 ##
 target 'WordPressTodayWidget' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
+  shared_with_all_pods
+  shared_with_networking_pods
 
-    wordpress_ui
+  wordpress_ui
 end
 
 ## All Time Widget
 ## ============
 ##
 target 'WordPressAllTimeWidget' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
+  shared_with_all_pods
+  shared_with_networking_pods
 
-    wordpress_ui
+  wordpress_ui
 end
 
 ## This Week Widget
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
+  shared_with_all_pods
+  shared_with_networking_pods
 
-    wordpress_ui
+  wordpress_ui
 end
 
 ## iOS 14 Today Widget
 ## ============
 ##
 target 'WordPressStatsWidgets' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
+  shared_with_all_pods
+  shared_with_networking_pods
 
-    wordpress_ui
+  wordpress_ui
 end
 
 ## Intents
 ## ============
 ##
 target 'WordPressIntents' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    shared_with_all_pods
-    shared_with_networking_pods
+  shared_with_all_pods
+  shared_with_networking_pods
 
-    wordpress_ui
+  wordpress_ui
 end
-
-## Notification Content Extension
-## ==============================
-##
-target 'WordPressNotificationContentExtension' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
-end
-
-
 
 ## Notification Service Extension
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
-    project 'WordPress/WordPress.xcodeproj'
+  project 'WordPress/WordPress.xcodeproj'
 
-    wordpress_kit
-    wordpress_shared
-    wordpress_ui
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
 end
-
-
-## Mocks
-## ===================
-##
-def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.9'
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :branch => ''
-  # pod 'WordPressMocks', :path => '../WordPressMocks'
-end
-
 
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    wordpress_mocks
+  project 'WordPress/WordPress.xcodeproj'
 end
 
 ## UI Tests
 ## ===================
 ##
 target 'WordPressUITests' do
-    project 'WordPress/WordPress.xcodeproj'
-
-    wordpress_mocks
+  project 'WordPress/WordPress.xcodeproj'
 end
 
 # Static Frameworks:
@@ -391,48 +373,38 @@ end
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = ['WordPressFlux']
 pre_install do |installer|
-    static = []
-    dynamic = []
-    installer.pod_targets.each do |pod|
-
-        # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
-        # linking it resolves this.
-        if pod.name == "Sentry"
-          dynamic << pod
-          next
-        end
-
-        # If this pod is a dependency of one of our shared targets, it must be linked dynamically
-        if pod.target_definitions.any? { |t| shared_targets.include? t.name }
-          dynamic << pod
-          next
-        end
-        static << pod
-		pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
+  static = []
+  dynamic = []
+  installer.pod_targets.each do |pod|
+    # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
+    # linking it resolves this.
+    if pod.name == 'Sentry'
+      dynamic << pod
+      next
     end
-    puts "Installing #{static.count} pods as static frameworks"
-    puts "Installing #{dynamic.count} pods as dynamic frameworks"
+
+    # If this pod is a dependency of one of our shared targets, it must be linked dynamically
+    if pod.target_definitions.any? { |t| shared_targets.include? t.name }
+      dynamic << pod
+      next
+    end
+    static << pod
+    pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
+  end
+  puts "Installing #{static.count} pods as static frameworks"
+  puts "Installing #{dynamic.count} pods as dynamic frameworks"
 end
 
 post_install do |installer|
-    project_root = File.dirname(__FILE__)
+  project_root = File.dirname(__FILE__)
 
-    puts 'Patching RCTShadowView to fix nested group block - it could be removed after upgrade to 0.62'
-    %x(patch "#{project_root}/Pods/React-Core/React/Views/RCTShadowView.m" < "#{project_root}/patches/RN-RCTShadowView.patch")
-    puts 'Patching RCTActionSheet to add possibility to disable action sheet buttons -
-    it could be removed once PR with that functionality will be merged into RN'
-    %x(patch "#{project_root}/Pods/React-RCTActionSheet/RCTActionSheetManager.m" < "#{project_root}/patches/RN-RCTActionSheetManager.patch")
-    puts 'Patching RCTUIImageViewAnimated to fix a problem where images will not load when built using the iOS 14 SDK (Xcode 12) -
-    it can be removed once we upgrade Gutenberg to use RN 0.63 or later'
-    %x(patch "#{project_root}/Pods/React-RCTImage/RCTUIImageViewAnimated.m" < "#{project_root}/patches/RN-RCTUIImageViewAnimated.patch")
+  ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+  require 'commonmarker'
 
-    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
-    require 'commonmarker'
-
-    acknowledgements = 'Acknowledgments'
-    markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-    rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
-    styled_html = "<head>
+  acknowledgements = 'Acknowledgments'
+  markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
+  rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+  styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>
                        body {
@@ -459,24 +431,37 @@ post_install do |installer|
                      #{rendered_html}
                    </body>"
 
-      ## Remove the <h1>, since we've promoted it to <title>
-      styled_html = styled_html.sub("<h1>Acknowledgements</h1>", '')
+  ## Remove the <h1>, since we've promoted it to <title>
+  styled_html = styled_html.sub('<h1>Acknowledgements</h1>', '')
 
-      ## The glog library's license contains a URL that does not wrap in the web view,
-      ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
-      ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
-      styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
+  ## The glog library's license contains a URL that does not wrap in the web view,
+  ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
+  ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
+  styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
 
-    File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
+  File.write("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html", styled_html)
 
-    # Let Pods targets inherit deployment target from the app
-    # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
-    # =====================================
-    #
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |configuration|
-        pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
-        configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
-      end
+  # Let Pods targets inherit deployment target from the app
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/4859
+  # =====================================
+  #
+  installer.pods_project.targets.each do |target|
+    # Exclude RCT-Folly as it requires explicit deployment target https://git.io/JPb73
+    next unless target.name != 'RCT-Folly'
+
+    target.build_configurations.each do |configuration|
+      pod_ios_deployment_target = Gem::Version.new(configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+      configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
     end
+  end
+
+  # Flag Alpha builds for Tracks
+  # ============================
+  #
+  tracks_target = installer.pods_project.targets.find { |target| target.name == 'Automattic-Tracks-iOS' }
+  # This will crash if/when we'll remove Tracks.
+  # That's okay because it is a crash we'll only have to address once.
+  tracks_target.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
+  end
 end

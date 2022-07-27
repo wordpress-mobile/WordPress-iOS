@@ -37,7 +37,18 @@ class PreviewDeviceSelectionViewController: UIViewController {
         }
 
         var viewportScript: String {
-            return String(format: "let parent = document.querySelector('meta[name=viewport]'); parent.setAttribute('content', 'width=%1$d, initial-scale=0');", NSInteger(width))
+            let js = """
+            // remove all existing viewport meta tags - some themes included multiple, which is invalid
+            document.querySelectorAll("meta[name=viewport]").forEach( e => e.remove() );
+            // create our new meta element
+            const viewportMeta = document.createElement("meta");
+            viewportMeta.name = "viewport";
+            viewportMeta.content = "width=%1$d";
+            // insert the correct viewport meta tag
+            document.getElementsByTagName("head")[0].append(viewportMeta);
+            """
+
+            return String(format: js, NSInteger(width))
         }
     }
 

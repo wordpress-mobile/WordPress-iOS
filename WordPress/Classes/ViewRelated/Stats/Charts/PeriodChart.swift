@@ -114,10 +114,10 @@ private final class PeriodChartDataTransformer {
 
         var chartData = [BarChartData]()
 
-        let viewsDataSet = BarChartDataSet(values: viewEntries,
+        let viewsDataSet = BarChartDataSet(entries: viewEntries,
                                            label: NSLocalizedString("Views", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                            valueFormatter: dataSetValueFormatter)
-        let visitorsDataSet = BarChartDataSet(values: visitorEntries,
+        let visitorsDataSet = BarChartDataSet(entries: visitorEntries,
                                               label: NSLocalizedString("Visitors", comment: "Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart."),
                                               valueFormatter: dataSetValueFormatter)
         let viewsDataSets = [ viewsDataSet, visitorsDataSet ]
@@ -178,11 +178,11 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade30), dark: .accent(.shade60)) : nil
+        return count > 0 ? .statsPrimaryHighlight : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? UIColor(light: .accent(.shade60), dark: .accent(.shade30)) : nil
+        return count > 0 ? .statsSecondaryHighlight : nil
     }
 
 }
@@ -198,8 +198,8 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let legendColor: UIColor?                       = .primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = .neutral(.shade5)
-    let xAxisValueFormatter: IAxisValueFormatter
-    let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
+    let xAxisValueFormatter: AxisValueFormatter
+    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }
 
 // MARK: - DefaultPeriodChartStyling
@@ -213,6 +213,6 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = .neutral(.shade5)
-    let xAxisValueFormatter: IAxisValueFormatter
-    let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
+    let xAxisValueFormatter: AxisValueFormatter
+    let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()
 }

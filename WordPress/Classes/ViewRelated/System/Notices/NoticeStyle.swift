@@ -32,6 +32,9 @@ public protocol NoticeStyle {
     var isDismissable: Bool { get }
     var animationStyle: NoticeAnimationStyle { get }
     var dismissGesture: NoticeDismissGesture? { get }
+
+    // Show an arrow (>) after the action button.
+    var showNextArrow: Bool { get }
 }
 
 extension NoticeStyle {
@@ -60,6 +63,7 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let layoutMargins = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
 
     public let isDismissable = true
+    public var showNextArrow = false
 
     public let animationStyle = NoticeAnimationStyle.moveIn
 
@@ -77,7 +81,8 @@ public struct QuickStartNoticeStyle: NoticeStyle {
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
-    public let isDismissable = false
+    public var isDismissable = false
+    public let showNextArrow = false
 
     public let animationStyle = NoticeAnimationStyle.moveIn
 
@@ -100,6 +105,7 @@ public struct ToolTipNoticeStyle: NoticeStyle {
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
     public let isDismissable = false
+    public let showNextArrow = false
 
     public let animationStyle = NoticeAnimationStyle.fade
 

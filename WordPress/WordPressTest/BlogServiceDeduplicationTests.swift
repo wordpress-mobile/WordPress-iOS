@@ -2,26 +2,18 @@ import CoreData
 import XCTest
 @testable import WordPress
 
-class BlogServiceDeduplicationTests: XCTestCase {
-    var contextManager: TestContextManager!
+class BlogServiceDeduplicationTests: CoreDataTestCase {
     var blogService: BlogService!
-    var context: NSManagedObjectContext {
-        return contextManager.mainContext
-    }
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         blogService = BlogService(managedObjectContext: contextManager.mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
-        contextManager = nil
         blogService = nil
     }
 
@@ -136,7 +128,7 @@ class BlogServiceDeduplicationTests: XCTestCase {
 private extension BlogServiceDeduplicationTests {
     func deduplicateAndSave(_ account: WPAccount) {
         blogService.deduplicateBlogs(for: account)
-        contextManager.saveContextAndWait(context)
+        contextManager.saveContextAndWait(mainContext)
     }
 
     func isDeleted(_ object: NSManagedObject) -> Bool {
@@ -151,13 +143,13 @@ private extension BlogServiceDeduplicationTests {
 
     @discardableResult
     func createAccount() -> WPAccount {
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
         return accountService.createOrUpdateAccount(withUsername: "twoface", authToken: "twotoken")
     }
 
     @discardableResult
     func createBlog(id: Int, url: String, account: WPAccount) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
         blog.dotComID = id as NSNumber
         blog.url = url
         blog.xmlrpc = url
@@ -167,7 +159,7 @@ private extension BlogServiceDeduplicationTests {
 
     @discardableResult
     func createDraft(title: String, blog: Blog, id: Int? = nil) -> AbstractPost {
-        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
+        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: mainContext) as! Post
         post.postTitle = title
         post.blog = blog
         post.postID = id.map({ $0 as NSNumber })

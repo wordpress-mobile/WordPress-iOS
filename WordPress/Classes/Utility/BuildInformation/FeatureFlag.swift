@@ -2,20 +2,36 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
+    case bloggingPrompts
     case jetpackDisconnect
     case debugMenu
     case readerCSS
     case homepageSettings
-    case gutenbergMentions
-    case gutenbergXposts
-    case newNavBarAppearance
     case unifiedPrologueCarousel
-    case stories
-    case contactInfo
-    case siteCreationHomePagePicker
     case todayWidget
     case milestoneNotifications
-    case newLikeNotifications
+    case bloggingReminders
+    case siteIconCreator
+    case weeklyRoundup
+    case weeklyRoundupStaticNotification
+    case weeklyRoundupBGProcessingTask
+    case domains
+    case timeZoneSuggester
+    case aboutScreen
+    case mySiteDashboard
+    case mediaPickerPermissionsNotice
+    case notificationCommentDetails
+    case statsPerformanceImprovements
+    case siteIntentQuestion
+    case landInTheEditor
+    case statsNewAppearance
+    case statsNewInsights
+    case siteName
+    case quickStartForExistingUsers
+    case qrLogin
+    case betaSiteDesigns
+    case featureHighlightTooltip
+    case jetpackPowered
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -24,35 +40,75 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         }
 
         switch self {
+        case .bloggingPrompts:
+            return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .readerCSS:
             return false
         case .homepageSettings:
             return true
-        case .gutenbergMentions:
-            return true
-        case .gutenbergXposts:
-            return true
-        case .newNavBarAppearance:
-            return true
         case .unifiedPrologueCarousel:
-            return true
-        case .stories:
-            return true
-        case .contactInfo:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
-        case .siteCreationHomePagePicker:
             return true
         case .todayWidget:
             return true
         case .milestoneNotifications:
             return true
-        case .newLikeNotifications:
+        case .bloggingReminders:
+            return true
+        case .siteIconCreator:
+            return BuildConfiguration.current != .appStore
+        case .weeklyRoundup:
+            return true
+        case .weeklyRoundupStaticNotification:
+            // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
+        case .weeklyRoundupBGProcessingTask:
+            return true
+        case .domains:
+            // Note: when used to control access to the domains feature, you should also check whether
+            // the current AppConfiguration and blog support domains.
+            // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
+            return true
+        case .timeZoneSuggester:
+            return true
+        case .aboutScreen:
+            return true
+        case .mySiteDashboard:
+            return true
+        case .mediaPickerPermissionsNotice:
+            return true
+        case .notificationCommentDetails:
+            return true
+        case .statsPerformanceImprovements:
+            return true
+        case .siteIntentQuestion:
+            return true
+        case .landInTheEditor:
+            return false
+        case .statsNewAppearance:
+            return AppConfiguration.showsStatsRevampV2
+        case .statsNewInsights:
+            return AppConfiguration.showsStatsRevampV2
+        case .siteName:
+            return false
+        case .quickStartForExistingUsers:
+            return true
+        case .qrLogin:
+            return true
+        case .betaSiteDesigns:
+            return false
+        case .featureHighlightTooltip:
+            return true
+        case .jetpackPowered:
+            return true
         }
+    }
+
+    var disabled: Bool {
+        return enabled == false
     }
 
     /// This key must match the server-side one for remote feature flagging
@@ -78,6 +134,8 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     var description: String {
         switch self {
+        case .bloggingPrompts:
+            return "Blogging Prompts"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -86,26 +144,56 @@ extension FeatureFlag {
             return "Ignore Reader CSS Cache"
         case .homepageSettings:
             return "Homepage Settings"
-        case .gutenbergMentions:
-            return "Mentions in Gutenberg"
-        case .gutenbergXposts:
-            return "Xposts in Gutenberg"
-        case .newNavBarAppearance:
-            return "New Navigation Bar Appearance"
         case .unifiedPrologueCarousel:
             return "Unified Prologue Carousel"
-        case .stories:
-            return "Stories"
-        case .contactInfo:
-            return "Contact Info"
-        case .siteCreationHomePagePicker:
-            return "Site Creation: Home Page Picker"
         case .todayWidget:
             return "iOS 14 Today Widget"
         case .milestoneNotifications:
             return "Milestone notifications"
-        case .newLikeNotifications:
-            return "New Like Notifications"
+        case .bloggingReminders:
+            return "Blogging Reminders"
+        case .siteIconCreator:
+            return "Site Icon Creator"
+        case .weeklyRoundup:
+            return "Weekly Roundup"
+        case .weeklyRoundupStaticNotification:
+            return "Weekly Roundup Static Notification"
+        case .weeklyRoundupBGProcessingTask:
+            return "Weekly Roundup BGProcessingTask"
+        case .domains:
+            return "Domain Purchases"
+        case .timeZoneSuggester:
+            return "TimeZone Suggester"
+        case .aboutScreen:
+            return "New Unified About Screen"
+        case .mySiteDashboard:
+            return "My Site Dashboard"
+        case .mediaPickerPermissionsNotice:
+            return "Media Picker Permissions Notice"
+        case .notificationCommentDetails:
+            return "Notification Comment Details"
+        case .statsPerformanceImprovements:
+            return "Stats Performance Improvements"
+        case .siteIntentQuestion:
+            return "Site Intent Question"
+        case .landInTheEditor:
+            return "Land In The Editor"
+        case .statsNewAppearance:
+            return "New Appearance for Stats"
+        case .statsNewInsights:
+            return "New Cards for Stats Insights"
+        case .siteName:
+            return "Site Name"
+        case .quickStartForExistingUsers:
+            return "Quick Start For Existing Users"
+        case .qrLogin:
+            return "QR Code Login"
+        case .betaSiteDesigns:
+            return "Fetch Beta Site Designs"
+        case .featureHighlightTooltip:
+            return "Feature Highlight Tooltip"
+        case .jetpackPowered:
+            return "Jetpack powered banners and badges"
         }
     }
 
@@ -113,9 +201,11 @@ extension FeatureFlag {
         switch self {
         case .debugMenu:
             return false
-        case .newNavBarAppearance:
-            return false
         case .todayWidget:
+            return false
+        case .weeklyRoundup:
+            return false
+        case .weeklyRoundupStaticNotification:
             return false
         default:
             return true

@@ -2,7 +2,7 @@ import Foundation
 
 struct Plugin: Equatable {
     let state: PluginState
-    let directoryEntry: PluginDirectoryEntry?
+    var directoryEntry: PluginDirectoryEntry?
 
     var id: String {
         return state.id

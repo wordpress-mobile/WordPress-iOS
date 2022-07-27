@@ -1,141 +1,95 @@
+import UITestsFoundation
 import XCTest
 
 class LoginTests: XCTestCase {
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         setUpTestSuite()
-
-        LoginFlow.logoutIfNeeded()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        removeApp()
     }
 
     // Unified email login/out
-    // Replaces testEmailPasswordLoginLogout
-    func testWordPressLoginLogout() {
-        let prologueScreen = PrologueScreen().selectContinue()
+    func testWPcomLoginLogout() throws {
+        let prologueScreen = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
             .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
+            .tabBar.goToMeScreen()
             .logoutToPrologue()
 
-        XCTAssert(prologueScreen.isLoaded())
-    }
-
-    // Old email login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testEmailPasswordLoginLogout() {
-        let welcomeScreen = WelcomeScreen().selectLogin()
-            .selectEmailLogin()
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWithPassword()
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
-            .logout()
-
-        XCTAssert(welcomeScreen.isLoaded())
+        XCTAssert(prologueScreen.isLoaded)
     }
 
     /**
      This test opens safari to trigger the mocked magic link redirect
      */
-    func testEmailMagicLinkLogin() {
-        let welcomeScreen = WelcomeScreen().selectLogin()
+    func testEmailMagicLinkLogin() throws {
+        let welcomeScreen = try WelcomeScreen().selectLogin()
             .selectEmailLogin()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
             .openMagicLoginLink()
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
-            .tabBar.gotoMeScreen()
+            .tabBar.goToMeScreen()
             .logout()
 
-        XCTAssert(welcomeScreen.isLoaded())
-    }
-
-    // Unified WordPress.com login/out
-    // Replaces testWpcomUsernamePasswordLogin
-    func testWpcomLogin() {
-        _ = PrologueScreen().selectSiteAddress()
-            .proceedWithWP(siteUrl: "https://wordpress.com")
-            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-
-        XCTAssert(MySiteScreen().isLoaded())
-    }
-
-    // Old WordPress.com login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testWpcomUsernamePasswordLogin() {
-        _ = WelcomeScreen().selectLogin()
-            .selectEmailLogin()
-            .goToSiteAddressLogin()
-            .proceedWith(siteUrl: "WordPress.com")
-            .proceedWith(username: WPUITestCredentials.testWPcomSitePrimaryAddress, password: WPUITestCredentials.testWPcomPassword)
-            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
-            .continueWithSelectedSite()
-            .dismissNotificationAlertIfNeeded()
-
-        XCTAssert(MySiteScreen().isLoaded())
+        XCTAssert(welcomeScreen.isLoaded)
     }
 
     // Unified self hosted login/out
-    // Replaces testSelfHostedUsernamePasswordLoginLogout
-    func testSelfHostedLoginLogout() {
-        _ = PrologueScreen().selectSiteAddress()
+    func testSelfHostedLoginLogout() throws {
+        let prologueScreen = try PrologueScreen()
+
+        try prologueScreen
+            .selectSiteAddress()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelectedSite()
+            .proceedWithSelfHosted(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
             .removeSelfHostedSite()
 
-        XCTAssert(PrologueScreen().isLoaded())
+        XCTAssert(prologueScreen.isLoaded)
     }
 
-    // Old self hosted login/out
-    // TODO: remove when unifiedAuth is permanent.
-    func testSelfHostedUsernamePasswordLoginLogout() {
-        _ = WelcomeScreen().selectLogin()
-            .goToSiteAddressLogin()
-            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
-            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
-            .continueWithSelectedSite()
-            .removeSelfHostedSite()
-
-        XCTAssert(WelcomeScreen().isLoaded())
-    }
-
-    // Unified email login fail
-    // Replaces testUnsuccessfulLogin
-    func testWordPressUnsuccessfulLogin() {
-        _ = PrologueScreen().selectContinue()
+    // Unified WordPress.com email login failure due to incorrect password
+    func testWPcomInvalidPassword() throws {
+        _ = try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
     }
 
-    // Old email login fail
-    // TODO: remove when unifiedAuth is permanent.
-    func testUnsuccessfulLogin() {
-        _ = WelcomeScreen().selectLogin()
-            .selectEmailLogin()
+    // Self-Hosted after WordPress.com login.
+    // Login to a WordPress.com account, open site switcher, then add a self-hosted site.
+    func testAddSelfHostedSiteAfterWPcomLogin() throws {
+        try PrologueScreen().selectContinue()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-            .proceedWithPassword()
-            .tryProceed(password: "invalidPswd")
-            .verifyLoginError()
+            .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSitePrimaryAddress)
+            .continueWithSelectedSite() //returns MySite screen
+
+            // From here, bring up the sites list and choose to add a new self-hosted site.
+            .showSiteSwitcher()
+            .addSelfHostedSite()
+
+            // Then, go through the self-hosted login flow:
+            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWithSelfHostedSiteAddedFromSitesList(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+
+            // Login flow returns MySites modal, which needs to be closed.
+            .closeModal()
+
+            // TODO: rewrite logoutIfNeeded() to handle logging out of a self-hosted site and then WordPress.com account.
+            // Currently, logoutIfNeeded() cannot handle logging out of both self-hosted and WordPress.com during tearDown().
+            // So, we remove the self-hosted site before tearDown() starts.
+            .removeSelfHostedSite()
+
+        XCTAssert(MySiteScreen.isLoaded())
     }
 }

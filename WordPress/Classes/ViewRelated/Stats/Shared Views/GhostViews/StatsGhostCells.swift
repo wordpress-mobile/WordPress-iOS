@@ -21,6 +21,10 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 
     private func setupBorders() {
+        guard FeatureFlag.statsNewAppearance.disabled else {
+            return
+        }
+
         topBorder = addTopBorder(withColor: .divider)
         topBorder?.isGhostableDisabled = true
 
@@ -29,6 +33,7 @@ class StatsGhostBaseCell: UITableViewCell {
     }
 }
 
+class StatsGhostGrowAudienceCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopHeaderCell: StatsGhostBaseCell, NibLoadable {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1200"
+   LastUpgradeVersion = "1310"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -80,8 +80,18 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
-            value = ""
+            value = "WordPressHomeWidgetAllTime"
             isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "_XCWidgetKind"
+            value = "WordPressHomeWidgetThisWeek"
+            isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "_XCWidgetKind"
+            value = "WordPressHomeWidgetToday"
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "_XCWidgetDefaultView"

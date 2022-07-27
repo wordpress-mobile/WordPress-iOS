@@ -84,42 +84,70 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         }
     }
 
-    func getSupportedCountries(success: @escaping ([Country]) -> Void,
+    func getSupportedCountries(success: @escaping ([WPCountry]) -> Void,
                                failure: @escaping (Error) -> Void) {
         guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
-        let country1 = Country()
+        let country1 = WPCountry()
         country1.code = "TR"
         country1.name = "Turkey"
-        let country2 = Country()
+        let country2 = WPCountry()
         country2.code = MockData.countryCode
         country2.name = MockData.countryName
         success([country1, country2])
     }
 
     func getStates(for countryCode: String,
-                   success: @escaping ([State]) -> Void,
+                   success: @escaping ([WPState]) -> Void,
                    failure: @escaping (Error) -> Void) {
         guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
-        let state1 = State()
+        let state1 = WPState()
         state1.code = MockData.stateCode
         state1.name = MockData.stateName
-        let state2 = State()
+        let state2 = WPState()
         state2.code = "AK"
         state2.name = "Alaska"
         success([state1, state2])
     }
 
-    func createShoppingCart(siteID: Int,
-                            domainSuggestion: DomainSuggestion,
-                            privacyProtectionEnabled: Bool,
-                            success: @escaping (CartResponseProtocol) -> Void,
-                            failure: @escaping (Error) -> Void) {
+    func purchaseDomainUsingCredits(
+        siteID: Int,
+        domainSuggestion: DomainSuggestion,
+        domainContactInformation: [String: String],
+        privacyProtectionEnabled: Bool,
+        success: @escaping (String) -> Void,
+        failure: @escaping (Error) -> Void) {
+
+        createTemporaryDomainShoppingCart(siteID: siteID, domainSuggestion: domainSuggestion, privacyProtectionEnabled: privacyProtectionEnabled, success: { cart in
+            self.redeemCartUsingCredits(cart: cart, domainContactInformation: domainContactInformation, success: {
+                success(domainSuggestion.domainName)
+            }, failure: failure)
+        }, failure: failure)
+    }
+
+    func createTemporaryDomainShoppingCart(siteID: Int,
+                                           domainSuggestion: DomainSuggestion,
+                                           privacyProtectionEnabled: Bool,
+                                           success: @escaping (CartResponseProtocol) -> Void,
+                                           failure: @escaping (Error) -> Void) {
+        guard createShoppingCartSuccess else {
+            failure(NSError())
+            return
+        }
+        let response = CartResponseMock()
+        success(response)
+    }
+
+    func createPersistentDomainShoppingCart(siteID: Int,
+                                            domainSuggestion: DomainSuggestion,
+                                            privacyProtectionEnabled: Bool,
+                                            success: @escaping (CartResponseProtocol) -> Void,
+                                            failure: @escaping (Error) -> Void) {
         guard createShoppingCartSuccess else {
             failure(NSError())
             return
@@ -139,10 +167,10 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success()
     }
 
-    func changePrimaryDomain(siteID: Int,
-                             newDomain: String,
-                             success: @escaping () -> Void,
-                             failure: @escaping (Error) -> Void) {
+    func setPrimaryDomain(siteID: Int,
+                          domain: String,
+                          success: @escaping () -> Void,
+                          failure: @escaping (Error) -> Void) {
         guard changePrimaryDomainSuccess else {
             failure(NSError())
             return

@@ -13,11 +13,6 @@ extension NSNotification.Name {
 
 private struct Constants {
     // I18N Strings
-    static let welcomeTitleText = NSLocalizedString(
-        "Welcome to WordPress",
-        comment: "Post Signup Interstitial Title Text"
-    )
-
     static let subTitleText = NSLocalizedString(
         "Whatever you want to create or share, we'll help you do it right here.",
         comment: "Post Signup Interstitial Subtitle Text"
@@ -45,6 +40,7 @@ class PostSignUpInterstitialViewController: UIViewController {
     @IBOutlet weak var createSiteButton: UIButton!
     @IBOutlet weak var addSelfHostedButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
 
     enum DismissAction {
         case none
@@ -66,10 +62,12 @@ class PostSignUpInterstitialViewController: UIViewController {
 
         view.backgroundColor = .listBackground
 
-        configureI18N()
+        // Update the banner image for Jetpack
+        if AppConfiguration.isJetpack, let image = UIImage(named: "wp-illustration-construct-site-jetpack") {
+            imageView.image = image
+        }
 
-        let coordinator = PostSignUpInterstitialCoordinator()
-        coordinator.markAsSeen()
+        configureI18N()
 
         WPAnalytics.track(.welcomeNoSitesInterstitialShown)
     }
@@ -85,19 +83,20 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     // MARK: - IBAction's
     @IBAction func createSite(_ sender: Any) {
-        dismiss?(.createSite)
-
         tracker.track(click: .createNewSite, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
+
+        dismiss?(.createSite)
+
     }
 
     @IBAction func addSelfHosted(_ sender: Any) {
-        dismiss?(.addSelfHosted)
-
         tracker.track(click: .addSelfHostedSite, ifTrackingNotEnabled: {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
         })
+
+        dismiss?(.addSelfHosted)
     }
 
     @IBAction func cancel(_ sender: Any) {
@@ -112,7 +111,7 @@ class PostSignUpInterstitialViewController: UIViewController {
 
     // MARK: - Private
     private func configureI18N() {
-        welcomeLabel.text = Constants.welcomeTitleText
+        welcomeLabel.text = AppConstants.PostSignUpInterstitial.welcomeTitleText
         subTitleLabel.text = Constants.subTitleText
         createSiteButton.setTitle(Constants.createSiteButtonTitleText, for: .normal)
         addSelfHostedButton.setTitle(Constants.addSelfHostedButtonTitleText, for: .normal)
@@ -125,10 +124,7 @@ class PostSignUpInterstitialViewController: UIViewController {
             return false
         }
 
-        let numberOfBlogs = self.numberOfBlogs()
-
-        let coordinator = PostSignUpInterstitialCoordinator()
-        return coordinator.shouldDisplay(numberOfBlogs: numberOfBlogs)
+        return self.numberOfBlogs() == 0
     }
 
     private class func numberOfBlogs() -> Int {

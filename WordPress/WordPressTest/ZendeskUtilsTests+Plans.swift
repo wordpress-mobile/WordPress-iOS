@@ -7,184 +7,148 @@ import ZendeskCoreSDK
 
 class ZendeskUtilsPlans: XCTestCase {
 
-    class MockPlanService: PlanService {
-        var presetPlans = [Int: RemotePlanSimpleDescription]()
+    class MockPlanServiceRemote: PlanServiceRemote {
+        let plans = ["ecommerce", "business_professional", "premium", "personal", "blogger", "free", "add_on_plan"]
+        let addOns = ["jetpack_addon_scan_daily"]
 
-        override func allPlans() -> [Plan] {
-            let context = TestContextManager.sharedInstance().mainContext
-            let freePlan = Plan(context: context)
-            freePlan.supportPriority = 1
-            freePlan.supportName = "free"
-            freePlan.nonLocalizedShortname = "Free"
-            freePlan.shortname = "Free"
+        var planIndex = 0
 
-            let bloggerPlan = Plan(context: context)
-            bloggerPlan.supportPriority = 2
-            bloggerPlan.supportName = "blogger"
-            bloggerPlan.nonLocalizedShortname = "Blogger"
-            bloggerPlan.shortname = "Blogger"
+        override func getZendeskMetadata(siteID: Int, completion: @escaping (Result<ZendeskMetadata, Error>) -> Void) {
 
-            let personalPlan = Plan(context: context)
-            personalPlan.supportPriority = 3
-            personalPlan.supportName = "personal"
-            personalPlan.nonLocalizedShortname = "Personal"
-            personalPlan.shortname = "Personal"
+            let metadata = ZendeskMetadata(plan: plans[planIndex], jetpackAddons: planIndex == 6 ? ["jetpack_addon_scan_daily"] : [])
 
-            let premiumPlan = Plan(context: context)
-            premiumPlan.supportPriority = 4
-            premiumPlan.supportName = "premium"
-            premiumPlan.nonLocalizedShortname = "Premium"
-            premiumPlan.shortname = "Premium"
+            completion(.success(metadata))
 
-            let businessPlan = Plan(context: context)
-            businessPlan.supportPriority = 5
-            businessPlan.supportName = "business_professional"
-            businessPlan.nonLocalizedShortname = "Business"
-            businessPlan.shortname = "Business"
-
-            let ecommercePlan = Plan(context: context)
-            ecommercePlan.supportPriority = 6
-            ecommercePlan.supportName = "ecommerce"
-            ecommercePlan.nonLocalizedShortname = "E-commerce"
-            ecommercePlan.shortname = "E-commerce"
-
-            return [freePlan, bloggerPlan, personalPlan, premiumPlan, businessPlan, ecommercePlan]
-
-        }
-
-        override func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
-                                                                        success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
-                                                                        failure: @escaping (Error?) -> Void) {
-            success(presetPlans)
         }
     }
 
-    var planService: MockPlanService!
-    var contextManager: TestContextManager!
-    var zendeskUtils: ZendeskUtils!
+    var planServiceRemote: MockPlanServiceRemote!
 
     override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-        planService = MockPlanService(managedObjectContext: contextManager.mainContext)
-        zendeskUtils = ZendeskUtils(contextManager: contextManager)
+        planServiceRemote = MockPlanServiceRemote(wordPressComRestApi: MockWordPressComRestApi())
     }
 
     override func tearDown() {
-        planService = nil
-        super.tearDown()
+        planServiceRemote = nil
     }
 
     func testEcommercePlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "E-commerce")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "eCommerce"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Business"),
-                                   3: RemotePlanSimpleDescription(planID: 3, name: "Premium"),
-                                   4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
-                                   5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
-                                   6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 0
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "ecommerce")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "ecommerce"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
     func testBusinessPlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "Business")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "Free"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Business"),
-                                   3: RemotePlanSimpleDescription(planID: 3, name: "Premium"),
-                                   4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
-                                   5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
-                                   6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 1
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "business_professional")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "business_professional"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
     func testPremiumPlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "Premium")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "Free"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Free"),
-                                   3: RemotePlanSimpleDescription(planID: 3, name: "Premium"),
-                                   4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
-                                   5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
-                                   6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 2
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "premium")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "premium"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
     func testPresonalPlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "Personal")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "Free"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Free"),
-                                   3: RemotePlanSimpleDescription(planID: 3, name: "Free"),
-                                   4: RemotePlanSimpleDescription(planID: 4, name: "Personal"),
-                                   5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
-                                   6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 3
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "personal")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "personal"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
     func testBloggerPlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "Blogger")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "Free"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Free"),
-                                   3: RemotePlanSimpleDescription(planID: 3, name: "Free"),
-                                   4: RemotePlanSimpleDescription(planID: 4, name: "Free"),
-                                   5: RemotePlanSimpleDescription(planID: 5, name: "Blogger"),
-                                   6: RemotePlanSimpleDescription(planID: 6, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 4
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "blogger")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "blogger"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
     func testFreePlanSelected() throws {
         // Given
-        createTestBlog(withPlanSlug: "Free")
-        planService.presetPlans = [1: RemotePlanSimpleDescription(planID: 1, name: "NewPlan"),
-                                   2: RemotePlanSimpleDescription(planID: 2, name: "Free")]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 5
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "free")
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "free"
+            }))
+
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == []
+            }))
+        }
     }
 
-    func testNoPlanSelected() throws {
+    func testAddOnPlanSelected() {
         // Given
-        planService.presetPlans = [:]
-        zendeskUtils.cacheUnlocalizedSitePlans(planService: planService)
+        planServiceRemote.planIndex = 6
         // When
-        let requestFields = zendeskUtils.createRequest(planService: planService).customFields
-        // Then
-        let field = try XCTUnwrap(requestFields.first { $0.fieldId == 25175963 })
-        XCTAssertEqual(field.value as! String, "")
-    }
+        ZendeskUtils.sharedInstance.createRequest(planServiceRemote: planServiceRemote, siteID: 0) { requestConfiguration in
+            let requestFields = requestConfiguration.customFields
+            // Then
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 25175963 && $0.value as! String == "add_on_plan"
+            }))
 
-    private func createTestBlog(withPlanSlug slug: String) {
-        BlogBuilder(contextManager.mainContext).with(planSlug: slug).build()
+            XCTAssert(requestFields.contains(where: {
+                return $0.fieldId == 360025010672 && $0.value as! [String] == ["jetpack_addon_scan_daily"]
+            }))
+        }
     }
 }

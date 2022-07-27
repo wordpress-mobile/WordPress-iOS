@@ -3,7 +3,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 
-protocol ReaderTopicsChipsDelegate: class {
+protocol ReaderTopicsChipsDelegate: AnyObject {
     func didSelect(topic: String)
     func heightDidChange()
 }
@@ -35,11 +35,14 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var authorAvatarImageView: UIImageView!
     @IBOutlet private weak var headerBlogButton: UIButton!
+    @IBOutlet private weak var labelsStackView: UIStackView!
 
+    @IBOutlet private weak var authorAndBlogNameStackView: UIStackView!
     @IBOutlet private weak var authorNameLabel: UILabel!
     @IBOutlet private weak var arrowImageView: UIImageView!
     @IBOutlet private weak var blogNameLabel: UILabel!
 
+    @IBOutlet private weak var hostAndTimeStackView: UIStackView!
     @IBOutlet private weak var blogHostNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var bylineSeparatorLabel: UILabel!
@@ -63,11 +66,23 @@ protocol ReaderTopicsChipsDelegate: class {
     @IBOutlet private weak var menuButton: UIButton!
     @IBOutlet private weak var reblogActionButton: UIButton!
 
-    // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-
     // Ghost cells placeholders
     @IBOutlet private weak var ghostPlaceholderView: UIView!
+
+    // Spotlight view
+    private let spotlightView: UIView = {
+        let spotlightView = QuickStartSpotlightView()
+        spotlightView.translatesAutoresizingMaskIntoConstraints = false
+        spotlightView.isHidden = true
+        return spotlightView
+    }()
+
+    /// Whether or not to show the spotlight animation to illustrate tapping the icon.
+    var spotlightIsShown: Bool = false {
+        didSet {
+            spotlightView.isHidden = !spotlightIsShown || !shouldShowCommentActionButton
+        }
+    }
 
     @objc open weak var delegate: ReaderPostCellDelegate?
     private weak var contentProvider: ReaderPostContentProvider?
@@ -81,6 +96,7 @@ protocol ReaderTopicsChipsDelegate: class {
     }
 
     weak var topicChipsDelegate: ReaderTopicsChipsDelegate?
+
     var displayTopics: Bool = false
     var isP2Type: Bool = false
 
@@ -150,6 +166,7 @@ protocol ReaderTopicsChipsDelegate: class {
         configureFeaturedImageView()
         setupSummaryLabel()
         setupAttributionView()
+        setupSpotlightView()
         adjustInsetsForTextDirection()
     }
 
@@ -213,6 +230,8 @@ private extension ReaderPostCardCell {
         static let authorAvatarPlaceholderImage: UIImage? = UIImage(named: "gravatar")
         static let rotate270Degrees: CGFloat = CGFloat.pi * 1.5
         static let rotate90Degrees: CGFloat = CGFloat.pi / 2
+        static let spotlightXOffset: CGFloat = 10
+        static let spotlightYOffset: CGFloat = 10
     }
 
     // MARK: - Configuration
@@ -242,6 +261,16 @@ private extension ReaderPostCardCell {
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
+    }
+
+    private func setupSpotlightView() {
+        addSubview(spotlightView)
+        bringSubviewToFront(spotlightView)
+
+        NSLayoutConstraint.activate([
+            commentActionButton.centerXAnchor.constraint(equalTo: spotlightView.centerXAnchor),
+            commentActionButton.centerYAnchor.constraint(equalTo: spotlightView.centerYAnchor, constant: Constants.spotlightYOffset)
+        ])
     }
 
     func adjustInsetsForTextDirection() {
@@ -340,7 +369,7 @@ private extension ReaderPostCardCell {
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
         let host = MediaHost(with: contentProvider, failure: { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            DDLogError("ReaderPostCardCell MediaHost error: \(error.localizedDescription)")
         })
 
         mediaRequestAuthenticator.authenticatedRequest(
@@ -381,7 +410,7 @@ private extension ReaderPostCardCell {
             configureArrowImage()
         }
 
-        blogNameLabel.text = contentProvider.blogNameForDisplay()
+        blogNameLabel.text = blogName()
         blogHostNameLabel.text = contentProvider.siteHostNameForDisplay()
 
         let dateString: String = datePublished()
@@ -910,7 +939,7 @@ private extension ReaderPostCardCell {
     }
 
     func blogName() -> String {
-        return contentProvider?.blogNameForDisplay() ?? ""
+        return contentProvider?.blogNameForDisplay?() ?? ""
     }
 
     func postAuthor() -> String {
@@ -926,7 +955,7 @@ private extension ReaderPostCardCell {
     }
 
     func datePublished() -> String {
-        return contentProvider?.dateForDisplay()?.mediumString() ?? ""
+        return contentProvider?.dateForDisplay()?.toMediumString() ?? ""
     }
 }
 
@@ -966,7 +995,14 @@ extension ReaderPostCardCell: GhostableView {
         menuButton.layer.opacity = 0
         commentActionButton.setTitle("", for: .normal)
         likeActionButton.setTitle("", for: .normal)
-        headerStackView.heightAnchor.constraint(equalTo: avatarImageView.heightAnchor, multiplier: 1.3).isActive = true
+        authorAndBlogNameStackView.spacing = 0
+        headerBlogButton.isHidden = true
+        labelsStackView.distribution = .fillEqually
+        labelsStackView.spacing = 8
+        hostAndTimeStackView.alignment = .fill
+        bylineLabel.text = nil
+        bylineLabel.widthAnchor.constraint(equalTo: hostAndTimeStackView.widthAnchor, multiplier: 0.33).isActive = true
+        bylineLabel.isGhostableDisabled = true
         featuredImageView.layer.borderWidth = 0
         ghostPlaceholderView.isHidden = false
     }

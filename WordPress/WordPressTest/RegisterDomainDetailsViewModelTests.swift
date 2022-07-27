@@ -1,6 +1,22 @@
 @testable import WordPress
 import XCTest
 
+extension FullyQuotedDomainSuggestion {
+    init(json: [String: AnyObject]) throws {
+        guard let domain = json["domain_name"] as? String else {
+             throw DomainsServiceRemote.ResponseError.decodingFailed
+        }
+
+        let domainName = domain
+        let productID = json["product_id"] as? Int ?? nil
+        let supportsPrivacy = json["supports_privacy"] as? Bool ?? nil
+        let costString = json["cost"] as? String ?? ""
+        let saleCostString: String? = nil
+
+        self.init(domainName: domainName, productID: productID, supportsPrivacy: supportsPrivacy, costString: costString, saleCostString: saleCostString)
+    }
+}
+
 extension JetpackSiteRef {
     static func mock(siteID: Int = 9001, username: String = "test") -> JetpackSiteRef {
         let payload: NSString = """
@@ -10,6 +26,8 @@ extension JetpackSiteRef {
             "homeURL": "url",
             "hasBackup": true,
             "hasPaidPlan": true,
+            "isSelfHostedWithoutJetpack": false,
+            "xmlRPC": null,
         }
         """ as NSString
 
@@ -33,10 +51,10 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
-        let site = JetpackSiteRef.mock(siteID: 9001, username: "test")
+        let domainSuggestion = try! FullyQuotedDomainSuggestion(json: ["domain_name": "" as AnyObject])
+        let siteID = 9001
 
-        viewModel = RegisterDomainDetailsViewModel(site: site, domain: domainSuggestion) { _ in return }
+        viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domainSuggestion) { _ in return }
         viewModel.onChange = { [weak self] (change: Change) in
             self?.changeArray.append(change)
         }

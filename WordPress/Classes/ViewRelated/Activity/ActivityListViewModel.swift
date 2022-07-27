@@ -1,6 +1,6 @@
 import WordPressFlux
 
-protocol ActivityPresenter: class {
+protocol ActivityPresenter: AnyObject {
     func presentDetailsFor(activity: FormattableActivity)
     func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton)
     func presentRestoreFor(activity: Activity, from: String?)

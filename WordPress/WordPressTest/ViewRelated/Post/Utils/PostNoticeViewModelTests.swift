@@ -6,7 +6,7 @@ import Nimble
 
 private typealias FailureActionTitles = PostNoticeViewModel.FailureActionTitles
 
-class PostNoticeViewModelTests: XCTestCase {
+class PostNoticeViewModelTests: CoreDataTestCase {
     private struct Scenario {
         let name: String
         let post: AbstractPost
@@ -45,7 +45,6 @@ class PostNoticeViewModelTests: XCTestCase {
         }
     }
 
-    private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
     // MARK: - Test Setup
@@ -53,13 +52,12 @@ class PostNoticeViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         context = nil
-        contextManager = nil
 
         super.tearDown()
     }
@@ -249,8 +247,7 @@ class PostNoticeViewModelTests: XCTestCase {
 
     func testFailedPublishedUploadedDraftPostsPublishButtonWillMarkForAutoUpload() {
         // Given
-        let context = ContextManager.shared.mainContext
-        let post = PostBuilder(context)
+        let post = PostBuilder(contextManager.mainContext)
             .drafted()
             .with(title: "I've been drafted!")
             .withRemote()

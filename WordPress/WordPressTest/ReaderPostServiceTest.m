@@ -6,7 +6,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 @import WordPressKit;
 
 @interface ReaderPostService()
@@ -34,12 +34,13 @@
 }
 
 - (void)testDeletePostsWithoutATopic {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    id<CoreDataStack> coreDataStack = [ContextManagerMock new];
+    NSManagedObjectContext *context = [coreDataStack mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    [[ContextManager sharedInstance] saveContext:context];
+    [coreDataStack saveContext:context];
 
     [service deletePostsWithNoTopic];
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");

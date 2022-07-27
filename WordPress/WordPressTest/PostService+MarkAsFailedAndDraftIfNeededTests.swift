@@ -5,23 +5,10 @@ import Nimble
 @testable import WordPress
 
 /// Test cases for PostService.markAsFailedAndDraftIfNeeded()
-class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
-
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-        context = TestContextManager().mainContext
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
-    }
+class PostServiceMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
 
     func testMarkAPostAsFailedAndKeepItsStatus() {
-        let post = PostBuilder(context)
+        let post = PostBuilder(mainContext)
             .with(status: .pending)
             .withRemote()
             .build()
@@ -34,8 +21,8 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     }
 
     func testMarkAPostAsFailedKeepShouldAttemptAutoUpload() {
-        let blog = BlogBuilder(context).withAnAccount().build()
-        let post = PostBuilder(context, blog: blog)
+        let blog = BlogBuilder(mainContext).withAnAccount().build()
+        let post = PostBuilder(mainContext, blog: blog)
             .with(status: .pending)
             .confirmedAutoUpload()
             .build()
@@ -47,7 +34,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     }
 
     func testMarksALocalPageAsFailedAndResetsItToDraft() {
-        let page = PageBuilder(context)
+        let page = PageBuilder(mainContext)
             .with(status: .publish)
             .with(remoteStatus: .pushing)
             .with(dateModified: Date(timeIntervalSince1970: 0))
@@ -62,7 +49,7 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: XCTestCase {
     }
 
     func testMarkingExistingPagesAsFailedWillNotRevertTheStatusToDraft() {
-        let page = PageBuilder(context)
+        let page = PageBuilder(mainContext)
             .with(status: .scheduled)
             .with(remoteStatus: .pushing)
             .withRemote()

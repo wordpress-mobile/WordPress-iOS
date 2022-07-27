@@ -2,7 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import WordPressFlux
-
+import UIKit
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
@@ -86,6 +86,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return controller
     }
 
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
+        let controller = PageListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.pages)
+    }
+
     // MARK: - UIViewControllerRestoration
 
     class func viewController(withRestorationIdentifierPath identifierComponents: [String],
@@ -135,7 +143,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         super.updateAndPerformFetchRequest()
 
-        title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
+        title = NSLocalizedString("Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
 
@@ -391,10 +399,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageSectionHeaderHeight
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constant.Size.pageCellWithTagEstimatedRowHeight
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
@@ -416,14 +420,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
         if page.isSiteHomepage {
-            let guide = QuickStartTourGuide.shared
-            if guide.isCurrentElement(.editHomepage) {
-                QuickStartTourGuide.shared.visited(.editHomepage)
-            } else {
-                QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), silentlyForBlog: blog)
-            }
-
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else if page.isSitePostsPage {
+            showSitePostPageUneditableNotice()
+            return
         } else {
             QuickStartTourGuide.shared.endCurrentTour()
             tableView.reloadData()
@@ -434,6 +434,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         editPage(page)
+    }
+
+    private func showSitePostPageUneditableNotice() {
+        let sitePostPageUneditableNotice =  NSLocalizedString("The content of your latest posts page is automatically generated and cannot be edited.", comment: "Message informing the user that posts page cannot be edited")
+        let notice = Notice(title: sitePostPageUneditableNotice, feedbackType: .warning)
+        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -447,12 +453,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
-
-        if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
-            cell.accessoryView = QuickStartSpotlightView()
-        } else {
-            cell.accessoryView = nil
-        }
 
         return cell
     }
@@ -536,6 +536,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Open Editor
         let editorViewController = EditPageViewController(page: newPage)
         present(editorViewController, animated: false)
+    }
+
+    fileprivate func copyLink(_ page: Page) {
+        let pasteboard = UIPasteboard.general
+        guard let link = page.permaLink else { return }
+        pasteboard.string = link as String
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+        let notice = Notice(title: noticeTitle, feedbackType: .success)
+        ActionDispatcher.dispatch(NoticeAction.dismiss) // Dismiss any old notices
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     fileprivate func retryPage(_ apost: AbstractPost) {
@@ -676,6 +686,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 }
             }
 
+            addCopyLinkAction(to: alertController, for: page)
+
             if !isHomepage {
                 alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -721,6 +733,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 })
             }
 
+            addCopyLinkAction(to: alertController, for: page)
+
             alertController.addActionWithTitle(trashButtonTitle, style: .destructive, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
@@ -744,23 +758,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func deletePost(_ apost: AbstractPost) {
-        completeQuickStartStepIfNeeded(apost)
         super.deletePost(apost)
     }
 
-    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
-        guard let page = page as? Page else { return }
-        guard page.isSiteHomepage else { return }
-
-        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
-            QuickStartTourGuide.shared.visited(.editHomepage)
-        } else {
-            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
-        }
-    }
-
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
-        if page.status == .trash {
+        guard let page = page as? Page else { return }
+
+        if page.status == .trash || page.isSitePostsPage {
             return
         }
 
@@ -783,6 +787,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 self?.copyPage(page)
             }
         })
+    }
+
+    private func addCopyLinkAction(to controller: UIAlertController, for page: AbstractPost) {
+        let buttonTitle = NSLocalizedString("Copy Link", comment: "Label for page copy link. Tapping copy the url of page")
+        controller.addActionWithTitle(buttonTitle, style: .default) { [weak self] _ in
+            if let page = self?.pageForObjectID(page.objectID) {
+                self?.copyLink(page)
+            }
+        }
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
@@ -869,6 +882,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.addActionWithTitle(setHomepageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
+                WPAnalytics.track(.postListSetHomePageAction)
                 self?.homepageSettingsService?.setHomepageType(.page,
                                                                homePageID: pageID, success: {
                                                                 self?.refreshAndReload()
@@ -901,6 +915,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.addActionWithTitle(setPostsPageButtonTitle, style: .default, handler: { [weak self] _ in
             if let pageID = page.postID?.intValue {
                 self?.beginRefreshingManually()
+                WPAnalytics.track(.postListSetAsPostsPageAction)
                 self?.homepageSettingsService?.setHomepageType(.page,
                                                                withPostsPageID: pageID, success: {
                                                                 self?.refreshAndReload()

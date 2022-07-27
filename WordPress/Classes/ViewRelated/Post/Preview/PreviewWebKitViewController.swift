@@ -1,5 +1,6 @@
 import Gridicons
 import WebKit
+import WordPressShared
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {
@@ -13,7 +14,11 @@ class PreviewWebKitViewController: WebKitViewController {
     private var selectedDevice: PreviewDeviceSelectionViewController.PreviewDevice = .default {
         didSet {
             if selectedDevice != oldValue {
-                webView.reload()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webView.alpha = 0
+                }, completion: { _ in
+                    self.webView.reload()
+                })
             }
             showLabel(device: selectedDevice)
         }
@@ -47,7 +52,7 @@ class PreviewWebKitViewController: WebKitViewController {
     /// - Parameters:
     ///   - post: The post to use for generating the preview URL and authenticating to the blog. **NOTE**: `previewURL` will be used as the URL instead, when available.
     ///   - previewURL: The URL to display in the preview web view.
-    init(post: AbstractPost, previewURL: URL? = nil) {
+    init(post: AbstractPost, previewURL: URL? = nil, source: String) {
 
         self.post = post
 
@@ -67,6 +72,7 @@ class PreviewWebKitViewController: WebKitViewController {
         configuration.linkBehavior = isPage ? .hostOnly(url) : .urlOnly(url)
         configuration.opensNewInSafari = true
         configuration.authenticate(blog: post.blog)
+        configuration.analyticsSource = source
         super.init(configuration: configuration)
     }
 
@@ -91,11 +97,18 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     override func viewDidLoad() {
+        webView.alpha = 0
+
         super.viewDidLoad()
         if webView.url?.absoluteString == Constants.blankURL?.absoluteString {
             showNoResults(withTitle: Constants.noPreviewTitle)
         }
         setupDeviceLabel()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setWidth(selectedDevice.width, viewWidth: size.width)
     }
 
     // MARK: Toolbar Items
@@ -190,6 +203,12 @@ class PreviewWebKitViewController: WebKitViewController {
         popoverContentController.selectedOption = selectedDevice
         popoverContentController.onDeviceChange = { [weak self] option in
             self?.selectedDevice = option
+
+            let properties: [AnyHashable: Any] = [
+                "source": self?.analyticsSource ?? "unknown",
+                "option": option.rawValue
+            ]
+            WPAnalytics.track(.previewWebKitViewDeviceChanged, properties: properties)
         }
 
         popoverContentController.modalPresentationStyle = .popover
@@ -278,5 +297,11 @@ extension PreviewWebKitViewController {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         setWidth(selectedDevice.width)
         webView.evaluateJavaScript(selectedDevice.viewportScript, completionHandler: nil)
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        UIView.animate(withDuration: 0.2) {
+            self.webView.alpha = 1
+        }
     }
 }

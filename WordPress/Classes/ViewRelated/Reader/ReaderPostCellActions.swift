@@ -3,6 +3,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
+    private var followCommentsService: FollowCommentsService?
 
     var imageRequestAuthToken: String? = nil
     var isLoggedIn: Bool = false
@@ -37,7 +38,16 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
-        ReaderCommentAction().execute(post: post, origin: origin)
+
+        if let controller = origin as? ReaderStreamViewController,
+           let indexPath = controller.tableView.indexPath(for: cell),
+           let topic = controller.readerTopic,
+           ReaderHelpers.topicIsDiscover(topic),
+           controller.shouldShowCommentSpotlight {
+            controller.reloadReaderDiscoverNudgeFlow(at: indexPath)
+        }
+
+        ReaderCommentAction().execute(post: post, origin: origin, source: .postCard)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
@@ -79,11 +89,23 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost, let origin = origin else {
+        guard let post = provider as? ReaderPost,
+              let origin = origin,
+              let followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin, source: ReaderPostMenuSource.card)
+        self.followCommentsService = followCommentsService
+
+        ReaderMenuAction(logged: isLoggedIn).execute(
+            post: post,
+            context: context,
+            readerTopic: topic,
+            anchor: sender,
+            vc: origin,
+            source: ReaderPostMenuSource.card,
+            followCommentsService: followCommentsService
+        )
         WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
@@ -108,13 +130,11 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private func toggleFollowingForPost(_ post: ReaderPost) {
         ReaderFollowAction().execute(with: post,
                                      context: context,
-                                     completion: {
-                                        if post.isFollowing {
-                                            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
-                                        }
-                                     }, failure: { _ in
-                                        ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
-                                     })
+                                     completion: { follow in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
+        }, failure: { follow, _ in
+            ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
+        })
     }
 
     func toggleSavedForLater(for post: ReaderPost) {

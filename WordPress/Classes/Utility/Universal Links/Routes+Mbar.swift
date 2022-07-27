@@ -19,14 +19,20 @@ import Alamofire
 ///   * /mbar/?redirect_to=https%3A%2F%2Fwordpress.com%2Fpost%2Fsomesite.wordpress.com
 ///
 public struct MbarRoute: Route {
-    static let redirectURLParameter = "redirect_to"
-    static let loginURLPath = "wp-login.php"
+    private static let redirectURLParameter = "redirect_to"
+    private static let campaignURLParameter = "login_reason"
+    private static let unknownCampaignValue = "unknown"
+    private static let loginURLPath = "wp-login.php"
 
     let path = "/mbar"
+
+    let section: DeepLinkSection? = nil
 
     var action: NavigationAction {
         return self
     }
+
+    let shouldTrack: Bool = false
 
     private func redirectURL(from url: String) -> URL? {
         guard let components = URLComponents(string: url) else {
@@ -36,7 +42,7 @@ public struct MbarRoute: Route {
         return redirectURL(from: components)
     }
 
-    private func redirectURL(from components: URLComponents) -> URL? {
+    private func redirectURL(from components: URLComponents, followRedirects: Bool = true) -> URL? {
         guard let redirectURL = components.queryItems?.first(where: { $0.name == MbarRoute.redirectURLParameter })?.value?.removingPercentEncoding else {
             return nil
         }
@@ -44,11 +50,22 @@ public struct MbarRoute: Route {
         let url = URL(string: redirectURL)
 
         // If this is a wp-login link, handle _its_ redirect_to parameter
-        if url?.lastPathComponent == MbarRoute.loginURLPath {
+        if followRedirects && url?.lastPathComponent == MbarRoute.loginURLPath {
             return self.redirectURL(from: redirectURL)
         }
 
         return url
+    }
+
+    private func campaign(from url: String) -> String {
+        guard let components = URLComponents(string: url),
+              let url = redirectURL(from: components, followRedirects: false),
+              let redirectComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let campaignValue = redirectComponents.queryItems?.first(where: { $0.name == MbarRoute.campaignURLParameter })?.value?.removingPercentEncoding else {
+            return MbarRoute.unknownCampaignValue
+        }
+
+        return campaignValue
     }
 }
 
@@ -74,6 +91,6 @@ extension MbarRoute: NavigationAction {
                 }
             }
 
-        router.handle(url: redirectUrl, shouldTrack: true, source: source)
+        router.handle(url: redirectUrl, shouldTrack: true, source: .email(campaign: campaign(from: url)))
     }
 }

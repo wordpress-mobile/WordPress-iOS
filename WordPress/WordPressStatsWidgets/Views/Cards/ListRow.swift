@@ -48,12 +48,12 @@ struct ListRow: View {
         return percentValue < 0 ? Constants.negativeColor : Constants.positiveColor
     }
 
-    private var differenceLabelText: LocalizedStringKey {
+    private var differenceLabelText: LocalizedString {
         guard !isToday else {
             return LocalizableStrings.todayWidgetTitle
         }
 
-        return LocalizedStringKey(dateFormatter.string(from: date))
+        return dateFormatter.string(from: date)
     }
 
     var body: some View {
@@ -80,7 +80,6 @@ struct ListRow: View {
         .frame(height: rowHeight)
         .offset(x: 0, y: Constants.verticalCenteringOffset) // each row isn't _quite_ centered vertically
                                                             // and we're not entirely sure why yet, but this fixes it
-        .flipsForRightToLeftLayoutDirection(true)
     }
 }
 

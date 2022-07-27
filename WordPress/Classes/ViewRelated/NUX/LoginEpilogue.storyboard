@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17503.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FBE-8U-liw">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17502"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,18 +17,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qDW-L0-z8a">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                                 <connections>
                                     <segue destination="UFO-Sm-cpW" kind="embed" id="rhb-gY-oAu"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LF6-fg-TWa">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <rect key="frame" x="0.0" y="563" width="375" height="104"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7v-Xt-6uK">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TIz-aA-WwG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="104"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                         <blurEffect style="regular"/>
@@ -59,7 +59,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="8TV-5o-H50"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Done">
+                                <state key="normal" title="Create a new site">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <state key="selected" backgroundImage="beveled-blue-button-down"/>
@@ -67,10 +67,10 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="dismissEpilogue" destination="FBE-8U-liw" eventType="touchUpInside" id="BG7-Nv-R8k"/>
+                                    <action selector="createANewSite" destination="FBE-8U-liw" eventType="touchUpInside" id="pVd-x6-7g4"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -78,13 +78,13 @@
                         <constraints>
                             <constraint firstItem="51h-er-sEL" firstAttribute="leading" secondItem="qDW-L0-z8a" secondAttribute="leading" constant="20" id="0rB-nq-HUv"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="trailing" secondItem="NNF-sA-UQ4" secondAttribute="trailing" id="980-CW-Iwa"/>
-                            <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="20" id="M0r-84-tJ6"/>
+                            <constraint firstItem="51h-er-sEL" firstAttribute="top" secondItem="LF6-fg-TWa" secondAttribute="top" constant="40" id="M0r-84-tJ6"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="leading" secondItem="LF6-fg-TWa" secondAttribute="leading" id="ME9-0u-Vx1"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="trailing" secondItem="qDW-L0-z8a" secondAttribute="trailing" id="au1-yD-v4h"/>
                             <constraint firstItem="LF6-fg-TWa" firstAttribute="bottom" secondItem="CSv-1Z-yIA" secondAttribute="bottom" id="ePC-QY-FqS"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="trailing" secondItem="51h-er-sEL" secondAttribute="trailing" constant="20" id="gKl-WT-Qzi"/>
                             <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="51h-er-sEL" secondAttribute="bottom" constant="20" id="jN3-1W-Vzo"/>
-                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" id="mVQ-Dg-W4g"/>
+                            <constraint firstItem="NNF-sA-UQ4" firstAttribute="bottom" secondItem="qDW-L0-z8a" secondAttribute="bottom" constant="104" id="mVQ-Dg-W4g"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="leading" secondItem="NNF-sA-UQ4" secondAttribute="leading" id="pOP-pd-DMR"/>
                             <constraint firstItem="qDW-L0-z8a" firstAttribute="top" secondItem="NNF-sA-UQ4" secondAttribute="top" id="yLi-rM-L1b"/>
                         </constraints>
@@ -94,7 +94,8 @@
                     <connections>
                         <outlet property="blurEffectView" destination="E7v-Xt-6uK" id="RIm-YT-MPx"/>
                         <outlet property="buttonPanel" destination="LF6-fg-TWa" id="XBZ-Df-emN"/>
-                        <outlet property="doneButton" destination="51h-er-sEL" id="JUE-a3-f8p"/>
+                        <outlet property="createANewSiteButton" destination="51h-er-sEL" id="703-qw-kKG"/>
+                        <outlet property="tableViewBottomContraint" destination="mVQ-Dg-W4g" id="IbU-ct-ltZ"/>
                         <outlet property="tableViewLeadingConstraint" destination="pOP-pd-DMR" id="Oat-2L-Iay"/>
                         <outlet property="tableViewTrailingConstraint" destination="au1-yD-v4h" id="jYm-53-dls"/>
                         <outlet property="topLine" destination="aTr-q6-PbK" id="IR4-UV-gef"/>
@@ -110,13 +111,13 @@
             <objects>
                 <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="58" id="jbC-9p-MD0" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="58"/>
+                                <rect key="frame" x="0.0" y="44.5" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jbC-9p-MD0" id="WSD-zl-Z4K">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
@@ -129,13 +130,13 @@
                                                 <constraint firstAttribute="width" constant="40" id="jXu-be-bSL"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHR-j2-pY2">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHR-j2-pY2">
                                             <rect key="frame" x="70" y="10" width="285" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="siteurl.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w2L-7L-x21">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="siteurl.wordpress.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w2L-7L-x21">
                                             <rect key="frame" x="70" y="32" width="285" height="16"/>
                                             <accessibility key="accessibilityConfiguration" identifier="siteUrl"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>

@@ -1,6 +1,6 @@
 # WordPress for iOS #
 
-[![CircleCI](https://circleci.com/gh/wordpress-mobile/WordPress-iOS.svg?style=svg)](https://circleci.com/gh/wordpress-mobile/WordPress-iOS)
+[![Build status](https://badge.buildkite.com/2f3fbb17bfbb5bba508efd80f1ea8d640db5ca2465a516a457.svg)](https://buildkite.com/automattic/wordpress-ios)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ## Build Instructions
@@ -24,6 +24,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Configure Your WordPress App Development Environment
 
+1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file. Once installed, simply run `rbenv install` in the repo to match the version.
 1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
 1. Once completed, run `rake xcode` to open the project in Xcode.
 

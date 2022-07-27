@@ -102,7 +102,9 @@
 
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
-    
+
+    self.dataSource.shouldHideSelfHostedSites = self.shouldHideSelfHostedSites;
+
     // TableView
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     

@@ -14,13 +14,6 @@ fileprivate enum SuggestionsPosition: Int {
 }
 
 public class FullScreenCommentReplyViewController: EditCommentViewController, SuggestionsTableViewDelegate {
-    private struct Parameters {
-        /// Determines the size of the replyButton
-        static let replyButtonIconSize = CGSize(width: 21, height: 18)
-
-        // Static margin between the suggestions view and the text cursor position
-        static let suggestionViewMargin: CGFloat = 5
-    }
 
     /// The completion block that is called when the view is exiting fullscreen
     /// - Parameter: Bool, whether or not the calling view should trigger a save
@@ -28,38 +21,48 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public var onExitFullscreen: ((Bool, String) -> ())?
 
     /// The save/reply button that is displayed in the rightBarButtonItem position
-    private(set) var replyButton: UIButton!
+    private(set) var replyButton: UIBarButtonItem!
 
     /// Reply Suggestions
     ///
     private var siteID: NSNumber?
+    private var prominentSuggestionsIds: [NSNumber]?
     private var suggestionsTableView: SuggestionsTableView?
+
+    // Static margin between the suggestions view and the text cursor position
+    private let suggestionViewMargin: CGFloat = 5
+
+    public var placeholder = String()
 
     // MARK: - View Methods
     public override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = NSLocalizedString("Comment", comment: "User facing, navigation bar title")
-
-        setupReplyButton()
+        placeholderLabel.text = placeholder
         setupNavigationItems()
-        configureAppearance()
+        configureNavigationAppearance()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshPlaceholder()
+        refreshReplyButton()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        enableRefreshButtonIfNeeded(animated: false)
-
         setupSuggestionsTableViewIfNeeded()
+
+        WPAnalytics.track(.commentFullScreenEntered)
     }
 
     // MARK: - Public Methods
 
     /// Enables the @ mention suggestions while editing
     /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
-    @objc func enableSuggestions(with siteID: NSNumber) {
+    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list.
+    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]?) {
         self.siteID = siteID
+        self.prominentSuggestionsIds = prominentSuggestionsIds
     }
 
     /// Description
@@ -72,7 +75,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         let tableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         tableView.useTransparentHeader = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
+        tableView.prominentSuggestionsIds = prominentSuggestionsIds
         suggestionsTableView = tableView
 
         attachSuggestionsViewIfNeeded()
@@ -83,7 +86,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public override func textViewDidEndEditing(_ textView: UITextView) { }
 
     public override func contentDidChange() {
-        enableRefreshButtonIfNeeded()
+        refreshPlaceholder()
+        refreshReplyButton()
     }
 
     public override func textViewDidChangeSelection(_ textView: UITextView) {
@@ -134,38 +138,23 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     // MARK: - Private: Helpers
 
-    /// Updates the iOS 13 title color
-    private func configureAppearance() {
-        guard let navigationBar = navigationController?.navigationBar else {
-            return
-        }
+    private func configureNavigationAppearance() {
+        // Remove the title
+        title = ""
 
-        navigationBar.standardAppearance.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.text
-        ]
-    }
-
-    /// Creates the `replyButton` to be used as the `rightBarButtonItem`
-    private func setupReplyButton() {
-        replyButton = {
-            let iconSize = Parameters.replyButtonIconSize
-            let replyIcon = UIImage(named: "icon-comment-reply")
-
-            let button = UIButton(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: iconSize))
-            button.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.enabledColor), for: .normal)
-            button.setImage(replyIcon?.imageWithTintColor(WPStyleGuide.Reply.disabledColor), for: .disabled)
-            button.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
-            button.isEnabled = false
-            button.addTarget(self, action: #selector(btnSavePressed), for: .touchUpInside)
-
-            return button
-        }()
+        // Hide the bottom line on the navigation bar
+        let appearance = navigationController?.navigationBar.standardAppearance ?? UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .basicBackground
+        appearance.shadowImage = UIImage()
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
     }
 
     /// Creates the `leftBarButtonItem` and the `rightBarButtonItem`
     private func setupNavigationItems() {
         navigationItem.leftBarButtonItem = ({
-            let image = UIImage.gridicon(.chevronDown).imageWithTintColor(.listIcon)
+            let image = UIImage.gridicon(.chevronDown).imageWithTintColor(.primary)
             let leftItem = UIBarButtonItem(image: image,
                                            style: .plain,
                                            target: self,
@@ -177,44 +166,25 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         })()
 
         navigationItem.rightBarButtonItem = ({
-            let rightItem = UIBarButtonItem(customView: replyButton)
+            let rightItem = UIBarButtonItem(title: NSLocalizedString("Reply", comment: "Reply to a comment."),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(btnSavePressed))
 
-            if let customView = rightItem.customView {
-                let iconSize = Parameters.replyButtonIconSize
-
-                customView.widthAnchor.constraint(equalToConstant: iconSize.width).isActive = true
-                customView.heightAnchor.constraint(equalToConstant: iconSize.height).isActive = true
-            }
-
+            rightItem.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
+            rightItem.isEnabled = false
+            replyButton = rightItem
             return rightItem
         })()
     }
 
     /// Changes the `refreshButton` enabled state
-    /// - Parameter animated: Whether or not the state change should be animated
-    fileprivate func enableRefreshButtonIfNeeded(animated: Bool = true) {
-        let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
-        let isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+    private func refreshReplyButton() {
+        replyButton.isEnabled = !(textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
 
-        if isEnabled == replyButton.isEnabled {
-            return
-        }
-
-        let setEnabled = {
-            self.replyButton.isEnabled = isEnabled
-        }
-
-        if animated == false {
-            setEnabled()
-            return
-        }
-
-        UIView.transition(with: replyButton as UIView,
-                          duration: 0.2,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            setEnabled()
-        })
+    private func refreshPlaceholder() {
+        placeholderLabel.isHidden = !textView.text.isEmpty
     }
 
     /// Triggers the `onExitFullscreen` completion handler
@@ -227,6 +197,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         let updatedText = textView.text ?? ""
 
         completion(shouldSave, updatedText)
+        WPAnalytics.track(.commentFullScreenExited)
     }
 
     var suggestionsTop: NSLayoutConstraint!
@@ -290,7 +261,7 @@ private extension FullScreenCommentReplyViewController {
         }
 
         let caretRect = absoluteTextCursorRect
-        let margin = Parameters.suggestionViewMargin
+        let margin = suggestionViewMargin
         let suggestionsHeight = suggestions.frame.height
 
 
@@ -355,7 +326,11 @@ private extension FullScreenCommentReplyViewController {
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {
-        guard let siteID = self.siteID, let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return false }
+        guard let siteID = siteID,
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                  return false
+              }
+
         return SuggestionService.shared.shouldShowSuggestions(for: blog)
     }
 

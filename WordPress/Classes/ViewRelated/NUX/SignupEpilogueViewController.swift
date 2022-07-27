@@ -42,7 +42,7 @@ class SignupEpilogueViewController: UIViewController {
         view.backgroundColor = .basicBackground
         defaultTableViewMargin = tableViewLeadingConstraint.constant
         configureDoneButton()
-        setTableViewMargins(forWidth: view.frame.width)
+        setTableViewMargins()
 
         WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
     }
@@ -54,12 +54,12 @@ class SignupEpilogueViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        setTableViewMargins(forWidth: size.width)
+        setTableViewMargins()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setTableViewMargins(forWidth: view.frame.width)
+        setTableViewMargins()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -142,23 +142,9 @@ private extension SignupEpilogueViewController {
         doneButton.accessibilityIdentifier = ButtonTitle.accessibilityId
     }
 
-    func setTableViewMargins(forWidth viewWidth: CGFloat) {
-
-        guard traitCollection.horizontalSizeClass == .regular &&
-            traitCollection.verticalSizeClass == .regular else {
-                tableViewLeadingConstraint.constant = defaultTableViewMargin
-                tableViewTrailingConstraint.constant = defaultTableViewMargin
-                return
-        }
-
-        let marginMultiplier = UIDevice.current.orientation.isLandscape ?
-            TableViewMarginMultipliers.ipadLandscape :
-            TableViewMarginMultipliers.ipadPortrait
-
-        let margin = viewWidth * marginMultiplier
-
-        tableViewLeadingConstraint.constant = margin
-        tableViewTrailingConstraint.constant = margin
+    func setTableViewMargins() {
+        tableViewLeadingConstraint.constant = view.getHorizontalMargin(compactMargin: defaultTableViewMargin)
+        tableViewTrailingConstraint.constant = view.getHorizontalMargin(compactMargin: defaultTableViewMargin)
     }
 
     @IBAction func doneButtonPressed() {
@@ -327,11 +313,6 @@ private extension SignupEpilogueViewController {
         }()
 
         return ["source": source]
-    }
-
-    enum TableViewMarginMultipliers {
-        static let ipadPortrait: CGFloat = 0.1667
-        static let ipadLandscape: CGFloat = 0.25
     }
 
     enum ButtonTitle {

@@ -140,19 +140,21 @@ private extension PluginViewController {
 
         noResultsViewController.bindViewModel(viewModel)
 
-        addAsSubviewIfNeeded(noResultsViewController.view)
-        addChildController(noResultsViewController)
+        addAsSubviewIfNeeded(noResultsViewController)
     }
 
-    private func addAsSubviewIfNeeded(_ view: UIView) {
-        if view.superview != tableView {
-            tableView.addSubview(withFadeAnimation: view)
+    private func addAsSubviewIfNeeded(_ noResultsViewController: NoResultsViewController) {
+        if noResultsViewController.view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            addChild(noResultsViewController)
+            noResultsViewController.didMove(toParent: self)
+            noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewToSafeArea(noResultsViewController.view)
         }
     }
 
     private func addChildController(_ controller: UIViewController) {
-        addChild(controller)
-        controller.didMove(toParent: self)
+
     }
 
     private func getNoResultsViewController() -> NoResultsViewController {

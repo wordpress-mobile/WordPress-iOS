@@ -3,9 +3,10 @@ excluded:
   - Pods
   - Scripts
   - vendor
+  - DerivedData
 
 # Rules
-whitelist_rules:
+only_rules:
   # Colons should be next to the identifier when specifying a type.
   - colon
 
@@ -42,8 +43,8 @@ whitelist_rules:
 
 # Rules configuration
 
-control_statement: 
-  severity: error 
+control_statement:
+  severity: error
 
 custom_rules:
 
@@ -76,3 +77,10 @@ custom_rules:
     regex: 'NSLocalizedString\("[^"]*\\\(\S*\)'
     message: "Localized strings must not use interpolated variables. Instead, use `String(format:`"
     severity: error
+
+  swiftui_localization:
+    name: "SwiftUI Localization"
+    regex: 'LocalizedStringKey'
+    message: "Using `LocalizedStringKey` is incompatible with our tooling and doesn't allow you to provide a hint/context comment for translators either. Please use `NSLocalizedString` instead, even with SwiftUI code."
+    severity: error
+    excluded: '.*Widgets/.*'

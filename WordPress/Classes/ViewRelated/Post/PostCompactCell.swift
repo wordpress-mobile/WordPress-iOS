@@ -15,6 +15,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var separator: UIView!
 
+    @IBOutlet weak var trailingContentConstraint: NSLayoutConstraint!
+
+    private var iPadReadableLeadingAnchor: NSLayoutConstraint?
+    private var iPadReadableTrailingAnchor: NSLayoutConstraint?
+
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
     lazy var imageLoader: ImageLoader = {
@@ -30,6 +35,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
             viewModel = PostCardStatusViewModel(post: post)
         }
     }
+
     private var viewModel: PostCardStatusViewModel?
 
     func configure(with post: Post) {
@@ -71,7 +77,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
+        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.headline, fontWeight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
 
         titleLabel.textColor = .text
@@ -94,8 +100,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     private func setupReadableGuideForiPad() {
         guard WPDeviceIdentification.isiPad() else { return }
 
-        innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
-        innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
+        iPadReadableLeadingAnchor = innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor)
+        iPadReadableTrailingAnchor = innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
+
+        iPadReadableLeadingAnchor?.isActive = true
+        iPadReadableTrailingAnchor?.isActive = true
     }
 
     private func configureFeaturedImage() {
@@ -123,6 +132,15 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         }
 
         timestampLabel.text = post.latest().dateStringForDisplay()
+        timestampLabel.isHidden = false
+    }
+
+    private func configureExcerpt() {
+        guard let post = post else {
+            return
+        }
+
+        timestampLabel.text = post.contentPreviewForDisplay()
         timestampLabel.isHidden = false
     }
 
@@ -172,12 +190,13 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         static let imageRadius: CGFloat = 2
         static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
+        static let margin: CGFloat = 16
     }
 }
 
 extension PostCompactCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
-
+        // Do nothing, since this cell doesn't support actions in `InteractivePostViewDelegate`.
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
@@ -202,5 +221,36 @@ extension PostCompactCell: GhostableView {
 
     private enum GhostConstants {
         static let opacity: Float = 0.5
+    }
+}
+
+extension PostCompactCell: NibReusable { }
+
+// MARK: - For display on the Posts Card (Dashboard)
+
+extension PostCompactCell {
+    /// Configure the cell to be displayed in the Posts Card
+    /// No "more" button and show a description, instead of a date
+    func configureForDashboard(with post: Post) {
+        configure(with: post)
+        separator.isHidden = true
+        menuButton.isHidden = true
+        trailingContentConstraint.constant = Constants.margin
+        headerStackView.spacing = Constants.margin
+
+        disableiPadReadableMargin()
+
+        if !post.isScheduled() {
+            configureExcerpt()
+        }
+    }
+
+    func hideSeparator() {
+        separator.isHidden = true
+    }
+
+    func disableiPadReadableMargin() {
+        iPadReadableLeadingAnchor?.isActive = false
+        iPadReadableTrailingAnchor?.isActive = false
     }
 }

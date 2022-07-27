@@ -193,11 +193,38 @@ open class ThemeBrowserCell: UICollectionViewCell {
         activityView.stopAnimating()
     }
 
+    private func imageUrlForWidth(imageUrl: String) -> String {
+        var screenshotUrl = imageUrl
+        // Themes not hosted on WP.com have an incorrect screenshotUrl
+        // it uses a // url (this is used on the web) when the scheme is not known.
+        if !screenshotUrl.hasPrefix("http") && screenshotUrl.hasPrefix("//") {
+            // Since not all sites support https
+            screenshotUrl = String(format: "http:%@", imageUrl)
+        }
+
+        guard var components = URLComponents(string: screenshotUrl) else {
+            return screenshotUrl
+        }
+
+        var queryItems: [URLQueryItem] = components.queryItems ??  []
+
+        if let screenshotWidth = presenter?.screenshotWidth {
+            queryItems.append(URLQueryItem(name: "w", value: "\(screenshotWidth)"))
+        }
+
+        queryItems.append(URLQueryItem(name: "zoom", value: "\(UIScreen.main.scale)"))
+        components.queryItems = queryItems
+
+        guard let urlString = components.url?.absoluteString else {
+            return screenshotUrl
+        }
+
+        return urlString
+    }
+
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
-        let imageUrlForWidth = imageUrl.hasPrefix("http") ? imageUrl + "?w=\(presenter!.screenshotWidth)" :
-            String(format: "http:%@", imageUrl)
-        let screenshotUrl = URL(string: imageUrlForWidth)
+        let imageUrlWithWidth = imageUrlForWidth( imageUrl: imageUrl )
+        let screenshotUrl = URL(string: imageUrlWithWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()

@@ -1,5 +1,17 @@
-NSLocationUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
-NSLocationWhenInUseUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
-NSCameraUsageDescription = "لالتقاط صور أو مقاطع الفيديو لاستخدامها في مقالاتك.";
-NSPhotoLibraryUsageDescription = "لإضافة صور أو مقاطع فيديو إلى مقالاتك.";
-NSMicrophoneUsageDescription = "بالنسبة إلى مقاطع الفيديو المراد إضافة صوت إليها.";
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>ترغب وردبريس في إضافة مكانك إلى مقالاتك على الموقع حيث قمت بتمكين تحديد الموقع الجغرافي.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>ترغب وردبريس في إضافة مكانك إلى مقالاتك على الموقع حيث قمت بتمكين تحديد الموقع الجغرافي.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>قم بتمكين الوصول إلى الميكروفون لتسجيل الصوت في فيديوهاتك.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>لإضافة صور أو مقاطع فيديو إلى مقالاتك.</string>
+  </dict>
+</plist>

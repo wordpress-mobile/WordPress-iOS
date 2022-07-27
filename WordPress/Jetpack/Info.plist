@@ -8,94 +8,6 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIcons~ipad</key>
-	<dict>
-		<key>CFBundlePrimaryIcon</key>
-		<dict>
-			<key>CFBundleIconFiles</key>
-			<array>
-				<string>AppIcon</string>
-			</array>
-			<key>UIPrerenderedIcon</key>
-			<true/>
-		</dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>WordPress Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>wordpress_dark_icon_20pt</string>
-					<string>wordpress_dark_icon_29pt</string>
-					<string>wordpress_dark_icon_76pt</string>
-					<string>wordpress_dark_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Open Source</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>open_source_icon_20pt</string>
-					<string>open_source_icon_29pt</string>
-					<string>open_source_icon_76pt</string>
-					<string>open_source_icon_83.5</string>
-					<string></string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Open Source Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>open_source_dark_icon_20pt</string>
-					<string>open_source_dark_icon_29pt</string>
-					<string>open_source_dark_icon_76pt</string>
-					<string>open_source_dark_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>Hot Pink</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>hot_pink_icon_20pt</string>
-					<string>hot_pink_icon_29pt</string>
-					<string>hot_pink_icon_76pt</string>
-					<string>hot_pink_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Jetpack Green</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>jetpack_green_icon_20pt</string>
-					<string>jetpack_green_icon_29pt</string>
-					<string>jetpack_green_icon_76pt</string>
-					<string>jetpack_green_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Pride</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>pride_icon_20pt</string>
-					<string>pride_icon_29pt</string>
-					<string>pride_icon_76pt</string>
-					<string>pride_icon_83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -107,83 +19,6 @@
 			<key>UIPrerenderedIcon</key>
 			<true/>
 		</dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>WordPress Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>wordpress_dark_icon_20pt</string>
-					<string>wordpress_dark_icon_29pt</string>
-					<string>wordpress_dark_icon_40pt</string>
-					<string>wordpress_dark_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Open Source</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>open_source_icon_20pt</string>
-					<string>open_source_icon_29pt</string>
-					<string>open_source_icon_40pt</string>
-					<string>open_source_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-				<key>WPRequiresBorder</key>
-				<true/>
-			</dict>
-			<key>Open Source Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>open_source_dark_icon_20pt</string>
-					<string>open_source_dark_icon_29pt</string>
-					<string>open_source_dark_icon_40pt</string>
-					<string>open_source_dark_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Hot Pink</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>hot_pink_icon_20pt</string>
-					<string>hot_pink_icon_29pt</string>
-					<string>hot_pink_icon_40pt</string>
-					<string>hot_pink_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Jetpack Green</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>jetpack_green_icon_20pt</string>
-					<string>jetpack_green_icon_29pt</string>
-					<string>jetpack_green_icon_40pt</string>
-					<string>jetpack_green_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Pride</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>pride_icon_20pt</string>
-					<string>pride_icon_29pt</string>
-					<string>pride_icon_40pt</string>
-					<string>pride_icon_60pt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
@@ -194,7 +29,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>${VERSION_SHORT}</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -217,12 +52,12 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>GOOGLE_LOGIN_SCHEME_ID</string>
+				<string>com.googleusercontent.apps.108380595987-qmh1rvuqi418cs6otokppnemo48288c9</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>${VERSION_LONG}</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -253,10 +88,23 @@
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enable microphone access to record sound in your videos.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To add photos or videos to your posts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add photos or videos to your posts.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>org.wordpress.me</string>
+		<string>org.wordpress.me.appsettings</string>
+		<string>org.wordpress.me.notificationsettings</string>
+		<string>org.wordpress.me.support</string>
+		<string>org.wordpress.mysites</string>
+		<string>org.wordpress.mysites.details</string>
+		<string>org.wordpress.notifications</string>
+		<string>org.wordpress.reader</string>
+	</array>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
@@ -267,8 +115,6 @@
 		<string>Pacifico-Regular.ttf</string>
 		<string>Nunito-Bold.ttf</string>
 	</array>
-	<key>UIApplicationShortcutWidget</key>
-	<string>org.wordpress.WordPressTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -293,16 +139,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>org.wordpress.me</string>
-		<string>org.wordpress.me.appsettings</string>
-		<string>org.wordpress.me.notificationsettings</string>
-		<string>org.wordpress.me.support</string>
-		<string>org.wordpress.mysites</string>
-		<string>org.wordpress.mysites.details</string>
-		<string>org.wordpress.notifications</string>
-		<string>org.wordpress.reader</string>
-	</array>
 </dict>
 </plist>

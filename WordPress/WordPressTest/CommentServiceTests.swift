@@ -1,25 +1,25 @@
 import Foundation
 import Nimble
+import XCTest
 
 @testable import WordPress
 
-final class CommentServiceTests: XCTestCase {
+final class CommentServiceTests: CoreDataTestCase {
 
     private var remoteMock: CommentServiceRemoteRESTMock!
     private var service: CommentService!
-    private var context: NSManagedObjectContext!
 
     // MARK: Lifecycle
 
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         remoteMock = CommentServiceRemoteRESTMock()
 
         let remoteFactory = CommentServiceRemoteFactoryMock()
         remoteFactory.restRemote = remoteMock
-        service = CommentService(managedObjectContext: context, commentServiceRemoteFactory: remoteFactory)
+        service = CommentService(managedObjectContext: mainContext, commentServiceRemoteFactory: remoteFactory)
     }
 
     override func tearDown() {
@@ -27,22 +27,21 @@ final class CommentServiceTests: XCTestCase {
 
         service = nil
         remoteMock = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
     }
 
     // MARK: Helpers
 
-    private func createRemoteUser() -> RemoteUser {
-         let remoteUser = RemoteUser()
-         remoteUser.userID = NSNumber(value: 123)
-         remoteUser.primaryBlogID = NSNumber(value: 456)
-         remoteUser.username = "johndoe"
-         remoteUser.displayName = "John Doe"
-         remoteUser.avatarURL = "avatar URL"
+    private func createRemoteLikeUser() -> RemoteLikeUser {
+        let userDict: [String: Any] = [ "ID": NSNumber(value: 123),
+                                        "login": "johndoe",
+                                        "name": "John Doe",
+                                        "site_ID": NSNumber(value: 456),
+                                        "avatar_URL": "avatar URL",
+                                        "date_liked": "2021-02-09 08:34:43"
+        ]
 
-         return remoteUser
-     }
+        return RemoteLikeUser(dictionary: userDict, commentID: NSNumber(value: 1), siteID: NSNumber(value: 2))
+    }
 }
 
 // MARK: - Tests
@@ -55,16 +54,17 @@ extension CommentServiceTests {
         // Arrange
         let commentID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        let expectedUsers = [createRemoteUser()]
-        try! context.save()
+        let expectedUsers = [createRemoteLikeUser()]
+        try! mainContext.save()
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
-        waitUntil(timeout: 2) { done in
-            self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
                 // Assert
                 expect(users).toNot(beNil())
-                expect(users?.count) == 1
+                expect(users.count) == 1
+                expect(likesPerPage) > 0
                 done()
             },
             failure: { _ in
@@ -77,12 +77,12 @@ extension CommentServiceTests {
         // Arrange
         let commentID = NSNumber(value: 1)
         let siteID = NSNumber(value: 2)
-        try! context.save()
+        try! mainContext.save()
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act
-        waitUntil(timeout: 2) { done in
-            self.service.getLikesForCommentID(commentID, siteID: siteID, success: { users in
+        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
+            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
                 fail("this closure should not be called")
             },
             failure: { _ in
@@ -108,12 +108,18 @@ private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {
 
     // related to fetching likes
     var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes: [RemoteUser]? = nil
+    var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
+    var totalLikes: NSNumber = 3
 
-    override func getLikesForCommentID(_ commentID: NSNumber!, success: (([RemoteUser]?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func getLikesForCommentID(_ commentID: NSNumber,
+                                       count: NSNumber,
+                                       before: String?,
+                                       excludeUserIDs: [NSNumber]?,
+                                       success: (([RemoteLikeUser], NSNumber) -> Void)!,
+                                       failure: ((Error?) -> Void)!) {
         DispatchQueue.global().async {
             if self.fetchLikesShouldSucceed {
-                success(self.remoteUsersToReturnOnGetLikes)
+                success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
             } else {
                 failure(nil)
             }

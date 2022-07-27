@@ -1,12 +1,10 @@
 #import "CommentsViewController.h"
-#import "CommentViewController.h"
-#import "Comment.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPStyleGuide.h>
 
-
+@class Comment;
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
 static CGFloat const CommentsActivityFooterHeight               = 50.0;
@@ -16,7 +14,7 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -29,6 +27,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 @property (nonatomic) CommentStatusFilter cachedStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+// Keep track of the index path of the Comment displayed in comment details.
+// Used to advance the displayed Comment when Next is selected on the moderation confirmation snackbar.
+@property (nonatomic, strong) NSIndexPath *displayedCommentIndexPath;
+@property (nonatomic, strong) CommentDetailViewController *commentDetailViewController;
 
 @end
 
@@ -62,6 +65,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self configureRefreshControl];
     [self configureSyncHelper];
     [self configureTableView];
+    [self configureTableViewHeader];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
 }
@@ -69,7 +73,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self refreshPullToRefresh];
     [self refreshNoResultsView];
     [self refreshAndSyncIfNeeded];
 }
@@ -84,6 +88,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
+
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (void)configureLoadMoreSpinner
@@ -126,17 +132,27 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     // Register the cells
-    NSString *nibName = [CommentsTableViewCell classNameWithoutNamespaces];
-    UINib *nibInstance = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsTableViewCell.reuseIdentifier];
+    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
+
+    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
+}
+
+- (void)configureTableViewHeader
+{
+    // Add an extra 10pt space on top of the first header view. Ref: https://git.io/JBQlU
+    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10)];
+    tableHeaderView.backgroundColor = [UIColor systemBackgroundColor];
+    self.tableView.tableHeaderView = tableHeaderView;
 }
 
 - (void)configureTableViewFooter
 {
     // Hide the cellSeparators when the table is empty
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 1)];
 }
 
 - (void)configureTableViewHandler
@@ -153,9 +169,31 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return [self.tableViewHandler tableView:tableView numberOfRowsInSection:section];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return ListTableHeaderView.estimatedRowHeight;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // fetch the section information
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+    if (!sectionInfo) {
+        return nil;
+    }
+
+    ListTableHeaderView *headerView = (ListTableHeaderView *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:ListTableHeaderView.reuseIdentifier];
+    if (!headerView) {
+        headerView = [[ListTableHeaderView alloc] initWithReuseIdentifier:ListTableHeaderView.reuseIdentifier];
+    }
+
+    headerView.title = [Comment descriptionForSectionIdentifier:sectionInfo.name];
+    return headerView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CommentsTableViewCell.estimatedRowHeight;
+    return ListTableViewCell.estimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,13 +203,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsTableViewCell.reuseIdentifier];
-    
-    if (!cell) {
-        cell = [[CommentsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentsTableViewCell.reuseIdentifier];
-    }
-
-    [self configureCell:cell atIndexPath:indexPath];    
+    ListTableViewCell *cell = (ListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:ListTableViewCell.reuseIdentifier
+                                                                                   forIndexPath:indexPath];
+    [self configureListCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -191,30 +225,47 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectSelectedRowWithAnimation:YES];
-    
-    // Failsafe: Make sure that the Comment (still) exists
-    NSArray *sections = self.tableViewHandler.resultsController.sections;
-    if (indexPath.section >= sections.count) {
-        return;
-    }
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
-    if (indexPath.row >= sectionInfo.numberOfObjects) {
-        return;
-    }
-    
-    // At last, push the details
-    Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    CommentViewController *vc   = [CommentViewController new];
-    vc.comment                  = comment;
 
-    [self.navigationController pushViewController:vc animated:YES];
+    if (![self indexPathIsValid:indexPath]) {
+        return;
+    }
+
+    self.displayedCommentIndexPath = indexPath;
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    self.commentDetailViewController = [[CommentDetailViewController alloc] initWithComment:comment
+                                                                               isLastInList:[self isLastRow:indexPath]
+                                                                       managedObjectContext:[ContextManager sharedInstance].mainContext];
+    self.commentDetailViewController.commentDelegate = self;
+    [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     [CommentAnalytics trackCommentViewedWithComment:comment];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0;
+}
+
+- (BOOL)indexPathIsValid:(NSIndexPath *)indexPath
+{
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        return NO;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)isLastRow:(NSIndexPath *)indexPath
+{
+    NSInteger lastSectionIndex = [self.tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [self.tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+    return lastIndexPath == indexPath;
 }
 
 #pragma mark - Comment Actions
@@ -227,6 +278,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    
+    // If the current user cannot moderate comments, don't show the actions.
+    if (!comment.canModerate) {
+        return nil;
+    }
+
     __typeof(self) __weak weakSelf = self;
     NSMutableArray *actions = [NSMutableArray array];
     
@@ -304,6 +361,31 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     }];
 }
 
+// When `Next` is tapped on the comment moderation confirmation snackbar,
+// find the next comment in the list and update comment details with it.
+- (void)showNextComment
+{
+    NSIndexPath *nextIndexPath;
+    BOOL showingLastRowInSection = [self.tableViewHandler.resultsController isLastIndexPathInSection:self.displayedCommentIndexPath];
+
+    if (showingLastRowInSection) {
+        // Move to the first row in the next section.
+        nextIndexPath = [NSIndexPath indexPathForRow:0
+                                           inSection:self.displayedCommentIndexPath.section + 1];
+    } else {
+        // Move to the next row in the current section.
+        nextIndexPath = [NSIndexPath indexPathForRow:self.displayedCommentIndexPath.row + 1
+                                           inSection:self.displayedCommentIndexPath.section];
+    }
+    
+    if (![self indexPathIsValid:nextIndexPath] || !self.commentDetailViewController) {
+        return;
+    }
+    
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
+    [self.commentDetailViewController displayComment:comment isLastInList:[self isLastRow:nextIndexPath]];
+    self.displayedCommentIndexPath = nextIndexPath;
+}
 
 #pragma mark - WPTableViewHandlerDelegate Methods
 
@@ -317,7 +399,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
 
     // CommentService purges Comments that do not belong to the current filter.
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    fetchRequest.predicate = [self predicateForFetchRequest:self.currentStatusFilter];
 
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
@@ -326,7 +408,9 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return fetchRequest;
 }
 
-- (void)configureCell:(nonnull CommentsTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath {
+/// Configures a `ListTableViewCell` instance with a `Comment` object.
+- (void)configureListCell:(nonnull ListTableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath
+{
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [cell configureWithComment:comment];
 }
@@ -348,17 +432,53 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (NSString *)sectionNameKeyPath
 {
-    return @"sectionIdentifier";
+    return @"relativeDateSectionIdentifier";
+}
+
+- (void)configureCell:(nonnull UITableViewCell *)cell atIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    /// No implementation needed here; This method is added to remove protocol conformance warnings.
+    ///
+    /// Note that `WPTableViewHandler` will prioritize `tableView:cellForRowAtIndexPath:` when it is available.
+    /// We're not using the `configureCell` method because the handler only dequeues cell with `DefaultCellIdentifier` for this method.
+}
+
+#pragma mark - Predicate Wrangling
+
+- (void)updateFetchRequestPredicate:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate = [self predicateForFetchRequest:statusFilter];
+    NSFetchedResultsController *resultsController = [[self tableViewHandler] resultsController];
+    [[resultsController fetchRequest] setPredicate:predicate];
+    NSError *error;
+    [resultsController performFetch:&error];
+    [self.tableView reloadData];
+}
+
+- (NSPredicate *)predicateForFetchRequest:(CommentStatusFilter)statusFilter
+{
+    NSPredicate *predicate;
+    if (statusFilter == CommentStatusFilterAll && ![self isUnrepliedFilterSelected:self.filterTabBar]) {
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+    } else {
+        // Exclude any local replies from all filters except all.
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND commentID != nil", self.blog];
+    }
+    return predicate;
 }
 
 #pragma mark - WPContentSyncHelper Methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [self refreshNoResultsView];
+    
     __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
+
+    BOOL filterUnreplied = [self isUnrepliedFilterSelected:self.filterTabBar];
 
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
@@ -368,6 +488,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
+                            filterUnreplied:filterUnreplied
                                     success:^(BOOL hasMore) {
             if (success) {
                 weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
@@ -464,9 +585,37 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)refreshWithStatusFilter:(CommentStatusFilter)statusFilter
 {
+    [self updateFetchRequestPredicate:statusFilter];
     [self saveSelectedFilterToUserDefaults];
     self.currentStatusFilter = statusFilter;
-    [self refreshAndSyncWithInteraction];
+    [self refreshWithAnimationIfNeeded];
+}
+
+- (void)refreshWithAnimationIfNeeded
+{
+    // If the refresh control is already active skip the animation.
+    if (self.tableView.refreshControl.refreshing) {
+        [self refreshAndSyncWithInteraction];
+        return;
+    }
+
+    // If the tableView is scrolled down skip the animation.
+    if (self.tableView.contentOffset.y > 60) {
+        [self.tableView.refreshControl beginRefreshing];
+        [self refreshAndSyncWithInteraction];
+        return;
+    }
+
+    // Just telling the refreshControl to beginRefreshing can look jarring.
+    // Make it nicer by animating the tableView into position before starting
+    // the spinner and syncing.
+    [self.tableView layoutIfNeeded]; // Necessary to ensure a smooth start.
+    [UIView animateWithDuration:0.25 animations:^{
+        self.tableView.contentOffset = CGPointMake(0, -60);
+    } completion:^(BOOL finished) {
+        [self.tableView.refreshControl beginRefreshing];
+        [self refreshAndSyncWithInteraction];
+    }];
 }
 
 - (void)refreshInfiniteScroll
@@ -504,20 +653,28 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         [self.noResultsViewController removeFromView];
         return;
     }
-    
+
     [self.noResultsViewController removeFromView];
     [self configureNoResults:self.noResultsViewController forNoConnection:NO];
-    
     [self addChildViewController:self.noResultsViewController];
-    [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
-    self.noResultsViewController.view.frame = self.tableView.frame;
-
-    // Adjust the NRV placement to accommodate for the filterTabBar.
-    CGRect noResultsFrame = self.noResultsViewController.view.frame;
-    noResultsFrame.origin.y -= self.filterTabBar.frame.size.height;
-    self.noResultsViewController.view.frame = noResultsFrame;
+    [self adjustNoResultViewPlacement];
+    [self.tableView addSubview:self.noResultsViewController.view];
     
     [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+- (void)adjustNoResultViewPlacement
+{
+    // calling this too early results in wrong tableView frame used for initial state.
+    // ensure that either the NRV or the table view is visible. Otherwise, skip the adjustment to prevent misplacements.
+    if (!self.noResultsViewController.view.window && !self.tableView.window) {
+        return;
+    }
+
+    // Adjust the NRV placement to accommodate for the filterTabBar.
+    CGRect noResultsFrame = self.tableView.frame;
+    noResultsFrame.origin.y = 0;
+    self.noResultsViewController.view.frame = noResultsFrame;
 }
 
 - (void)refreshNoConnectionView
@@ -568,13 +725,18 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
        attributedSubtitleConfiguration:nil
                                  image:@"wp-illustration-empty-results"
                          subtitleImage:nil
-                         accessoryView:nil];
+                         accessoryView:[self loadingAccessoryView]];
     
     viewController.delegate = self;
 }
 
 - (NSString *)noResultsTitle
 {
+    if (self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...",
+                                 @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    }
+
     return NSLocalizedString(@"No comments yet", @"Displayed when there are no comments in the Comments views.");
 }
 
@@ -583,11 +745,28 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     return NSLocalizedString(@"Retry", comment: "A prompt to attempt the failed network request again.");
 }
 
+- (UIView *)loadingAccessoryView
+{
+    if (self.syncHelper.isSyncing) {
+        return [NoResultsViewController loadingAccessoryView];
+    }
+
+    return nil;
+}
+
 #pragma mark - NoResultsViewControllerDelegate
 
-- (void)actionButtonPressed {
+- (void)actionButtonPressed
+{
     // The action button is only shown on the No Connection view.
     [self refreshNoConnectionView];
+}
+
+#pragma mark - CommentDetailsDelegate
+
+- (void)nextCommentSelected
+{
+    [self showNextComment];
 }
 
 #pragma mark - State Restoration

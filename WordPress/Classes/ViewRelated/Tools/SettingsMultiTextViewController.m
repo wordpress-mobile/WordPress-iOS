@@ -20,7 +20,7 @@ static CGFloat const SettingsMinHeight = 82.0f;
                         hint:(NSString *)hint
                   isPassword:(BOOL)isPassword
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _text = text;
         _placeholder = placeholder;

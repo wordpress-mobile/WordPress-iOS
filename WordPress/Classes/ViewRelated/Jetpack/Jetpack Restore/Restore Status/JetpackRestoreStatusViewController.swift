@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import WordPressUI
 
-protocol JetpackRestoreStatusViewControllerDelegate: class {
+protocol JetpackRestoreStatusViewControllerDelegate: AnyObject {
     func didFinishViewing(_ controller: JetpackRestoreStatusViewController)
 }
 

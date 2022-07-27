@@ -5,10 +5,7 @@ extension Post {
 
     @NSManaged var commentCount: NSNumber?
     @NSManaged var disabledPublicizeConnections: [NSNumber: [String: String]]?
-    @NSManaged var geolocation: Coordinate?
-    @NSManaged var latitudeID: String?
     @NSManaged var likeCount: NSNumber?
-    @NSManaged var longitudeID: String?
     @NSManaged var postFormat: String?
     @NSManaged var postType: String?
     @NSManaged var publicID: String?
@@ -17,6 +14,10 @@ extension Post {
     @NSManaged var tags: String?
     @NSManaged var categories: Set<PostCategory>?
     @NSManaged var isStickyPost: Bool
+
+
+    // If the post is created as an answer to a Blogging Prompt, the promptID is stored here.
+    @NSManaged var bloggingPromptID: String?
 
     // These were added manually, since the code generator for Swift is not generating them.
     //

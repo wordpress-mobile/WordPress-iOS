@@ -10,7 +10,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     func testRetrieveAReaderPostWhenSiteAndPostAreGiven() {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.set(postID: 1, siteID: 2, isFeed: true)
 
         coordinator.start()
@@ -25,7 +25,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
     func testRetrieveAReaderPostWhenURLIsGiven() {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.postURL = URL(string: "https://wpmobilep2.wordpress.com/post/")
 
         coordinator.start()
@@ -40,7 +40,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         serviceMock.returnPost = post
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.set(postID: 1, siteID: 2, isFeed: false)
 
         coordinator.start()
@@ -54,7 +54,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         serviceMock.forceError = true
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.set(postID: 1, siteID: 2, isFeed: false)
 
         coordinator.start()
@@ -68,7 +68,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         serviceMock.forceError = true
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.postURL = URL(string: "https://wordpress.com/")
 
         coordinator.start()
@@ -83,7 +83,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         serviceMock.forceError = true
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.postURL = URL(string: "https://wordpress.com/")
         coordinator.postLoadFailureBlock = {
             didCallPostLoadFailureBlock = true
@@ -101,7 +101,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
 
         coordinator.start()
@@ -116,7 +116,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
 
         coordinator.start()
@@ -132,7 +132,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
         coordinator.post = post
 
         coordinator.share(fromView: button)
@@ -151,7 +151,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
         let navigationControllerMock = UINavigationControllerMock()
         viewMock.navigationController = navigationControllerMock
         coordinator.post = post
@@ -169,7 +169,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
         let navigationControllerMock = UINavigationControllerMock()
         viewMock.navigationController = navigationControllerMock
         coordinator.post = post
@@ -185,7 +185,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
 
         coordinator.handle(URL(string: "https://wordpress.com/image.png")!)
@@ -199,7 +199,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
         let navigationControllerMock = UINavigationControllerMock()
         viewMock.navigationController = navigationControllerMock
@@ -215,7 +215,7 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
 
         coordinator.handle(URL(string: "https://wordpress.com")!)
@@ -230,14 +230,26 @@ class ReaderDetailCoordinatorTests: XCTestCase {
         let post: ReaderPost = ReaderPostBuilder().build()
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(service: serviceMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.post = post
 
         coordinator.handle(URL(string: "https://wordpress.com#hash")!)
 
         expect(viewMock.didCallScrollToWith).to(equal("hash"))
     }
+
+    func testExtractCommentIDFromPostURL() {
+        let postURL = URL(string: "https://example.wordpress.com/2014/07/24/post-title/#comment-10")
+        let serviceMock = ReaderPostServiceMock()
+        let viewMock = ReaderDetailViewMock()
+        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
+        coordinator.postURL = postURL
+
+        expect(coordinator.commentID).to(equal(10))
+    }
 }
+
+// MARK: - Private Helpers
 
 private class ReaderPostServiceMock: ReaderPostService {
     var didCallFetchPostWithPostID: UInt?
@@ -318,6 +330,12 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
     }
 
     func updateHeader() { }
+
+    func updateLikes(with avatarURLStrings: [String], totalLikes: Int) { }
+
+    func updateSelfLike(with avatarURLString: String?) { }
+
+    func updateComments(_ comments: [Comment], totalComments: Int) { }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
 

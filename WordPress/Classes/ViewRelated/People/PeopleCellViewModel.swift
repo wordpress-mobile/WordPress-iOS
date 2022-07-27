@@ -20,6 +20,10 @@ struct PeopleCellViewModel {
         return "@" + username
     }
 
+    var usernameHidden: Bool {
+        return username.isEmpty
+    }
+
     var usernameColor: UIColor {
         return .text
     }

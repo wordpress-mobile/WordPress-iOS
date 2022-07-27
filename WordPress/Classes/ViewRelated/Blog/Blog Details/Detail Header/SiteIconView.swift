@@ -4,7 +4,7 @@ class SiteIconView: UIView {
         static let imageSize: CGFloat = 64
         static let borderRadius: CGFloat = 4
         static let imageRadius: CGFloat = 2
-        static let spotlightOffset: CGFloat = -8
+        static let spotlightOffset: CGFloat = 8
     }
 
     /// Whether or not to show the spotlight animation to illustrate tapping the icon.
@@ -92,8 +92,8 @@ class SiteIconView: UIView {
         addSubview(spotlightView)
 
         NSLayoutConstraint.activate([
-            trailingAnchor.constraint(equalTo: spotlightView.trailingAnchor, constant: Constants.spotlightOffset),
-            bottomAnchor.constraint(equalTo: spotlightView.bottomAnchor, constant: Constants.spotlightOffset)
+            leadingAnchor.constraint(equalTo: spotlightView.leadingAnchor, constant: Constants.spotlightOffset),
+            topAnchor.constraint(equalTo: spotlightView.topAnchor, constant: Constants.spotlightOffset)
         ])
 
         pinSubviewToAllEdges(button)

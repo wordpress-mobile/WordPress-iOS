@@ -4,6 +4,11 @@ extension UIFont {
         return withSymbolicTraits(.traitItalic)
     }
 
+    /// Returns a UIFont instance with the bold trait applied.
+    func bold() -> UIFont {
+        return withWeight(.bold)
+    }
+
     /// Returns a UIFont instance with the semibold trait applied.
     func semibold() -> UIFont {
         return withWeight(.semibold)

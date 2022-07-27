@@ -3,6 +3,189 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 145
+
+@geriux 2022-07-08
+
+- `Media`: added `remoteLargeURL` attribute. (optional, no default, `String`)
+- `Media`: added `remoteMediumURL` attribute. (optional, no default, `String`)
+
+## WordPress 144
+
+ @salimbraksa 2022-07-07
+
+ - `UserSuggestion`: added `userID` attribute. (optional, no default, `Int 64`)
+
+## WordPress 143
+
+@wargcm 2022-06-01 (@scoutharris 2022-05-24)
+
+- `Post`: added `bloggingPromptID` attribute. (optional, no default, `String`)
+
+## WordPress 142
+
+@dvdchr 2022-05-31
+
+- Updated `BloggingPrompt`:
+    - `displayAvatarURLs` now uses `NSSecureUnarchiveFromData` as `Transformer`.
+
+## WordPress 141
+
+@wargcm 2022-05-23
+
+- Created a new entity `BloggingPromptSettings` with:
+    - `isPotentialBloggingSite` (required, default `NO`, `Boolean`)
+    - `promptCardEnabled` (required, default `YES`, `Boolean`)
+    - `promptRemindersEnabled` (required, default `NO`, `Boolean`)
+    - `reminderTime` (required, default empty string, `String`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `reminderDays` one-to-one mapping to `BloggingPromptSettingsReminderDays`
+- Created a new entity `BloggingPromptSettingsReminderDays` with:
+    - `monday` (required, default `NO`, `Boolean`)
+    - `tuesday` (required, default `NO`, `Boolean`)
+    - `wednesday` (required, default `NO`, `Boolean`)
+    - `thursday` (required, default `NO`, `Boolean`)
+    - `friday` (required, default `NO`, `Boolean`)
+    - `saturday` (required, default `NO`, `Boolean`)
+    - `sunday` (required, default `NO`, `Boolean`)
+    - `settings` one-to-one mapping to `BloggingPromptSettings`
+
+## WordPress 140
+
+@dvdchr 2022-05-13
+
+- Created a new entity `BloggingPrompt` with:
+    - `promptID` (required, default `0`, `Int 32`)
+    - `siteID` (required, default `0`, `Int 32`)
+    - `text` (required, default empty string, `String`)
+    - `title` (required, default empty string, `String`)
+    - `content` (required, default empty string, `String`)
+    - `attribution` (required, default empty string, `String`)
+    - `date` (optional, no default, `Date`)
+    - `answered` (required, default `NO`, `Boolean`)
+    - `answerCount` (required, default `0`, `Int 32`)
+    - `displayAvatarURLs` (optional, no default, `Transformable` with type `[URL]`)
+
+## WordPress 138
+
+@dvdchr 2022-03-07
+
+- `Comment`: added `visibleOnReader` attribute. (required, default `true`, `Boolean`)
+
+## WordPress 137
+
+@dvdchr 2021-11-26
+
+- `Comment`: added `authorID` attribute. (optional, default `0`, `Int 32`)
+
+## WordPress 134
+
+@dvdchr 2021-10-14
+
+- `ReaderPost`: added `receivesCommentNotifications` attribute. (required, default `false`, `Boolean`)
+
+## WordPress 132
+
+@momo-ozawa 2021-08-19
+
+- `Post`: deleted `geolocation` attribute
+- `Post`: deleted `latitudeID` attribute
+- `Post`: deleted `longitudeID` attribute
+
+## WordPress 131
+
+@scoutharris 2021-08-04
+
+- `Comment`: set `author_ip` default value to empty string
+
+## WordPress 130
+
+@scoutharris 2021-08-03
+
+- `Comment`: set attribute default values
+  - `author`: empty string
+  - `author_email`: empty string
+  - `author_url`: empty string
+  - `authorAvatarURL`: empty string
+  - `commentID`: 0
+  - `content`: empty string
+  - `hierarchy`: empty string
+  - `isLiked`: `NO`
+  - `link`: empty string
+  - `parentID`: 0
+  - `postID`: 0
+  - `postTitle`: empty string
+  - `status`: empty string
+  - `type`: `comment`
+
+## WordPress 129
+
+@scoutharris 2021-07-29
+
+- `Comment`: set `rawContent` attribute as optional. Self-hosted does not have this property.
+
+## WordPress 128
+
+@scoutharris 2021-07-27
+
+- `Comment`: added `rawContent` attribute. (required, default empty string, `String`)
+
+## WordPress 127
+
+@chipsnyder 2021-07-1
+
+- `BlockEditorSettings`: added the attribute
+    - `rawStyles` (optional, no default, `String`)
+    - `rawFeatures` (optional, no default, `String`)
+    
+- `BlockEditorSettingElement`: added the attribute
+    - `order` (required, 0, `Int`)
+
+## WordPress 126
+
+@scoutharris 2021-06-28
+
+- `Comment`: added  `canModerate` attribute. (required, default `false`, `Boolean`)
+
+## WordPress 125
+
+@aerych 2021-06-04
+
+- `ReaderPost`: added  `canSubscribeComments` attribute. (required, default `false`, `Boolean`)
+- `ReaderPost`: added  `isSubscribedComments` attribute. (required, default `false`, `Boolean`)
+
+## WordPress 124
+
+@scoutharris 2021-05-07
+
+- `LikeUser`: added  `dateFetched` attribute.
+
+## WordPress 123
+
+@scoutharris 2021-04-28
+
+- Added new attributes to `LikeUser`:
+  - `likedSiteID`
+  - `likedPostID`
+  - `likedCommentID`
+- Corrected spelling of  `dateLikedString`  
+
+## WordPress 122
+
+@scoutharris 2021-04-23
+
+- Added new entities:
+- `LikeUser`
+- `LikeUserPreferredBlog`
+- Created one-to-one relationship between `LikeUser` and `LikeUserPreferredBlog`
+
+## WordPress 121
+
+@twstokes 2021-04-21
+
+- `BlogAuthor`: added the attribute
+    - `deletedFromBlog` (required, default `NO`, `Boolean`)
+
 ## WordPress 120
 
 @chipsnyder 2021-04-12

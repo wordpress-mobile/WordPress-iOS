@@ -1,6 +1,6 @@
 import Foundation
 
-@objc protocol InteractivePostViewDelegate {
+protocol InteractivePostViewDelegate: AnyObject {
     func edit(_ post: AbstractPost)
     func view(_ post: AbstractPost)
     func stats(for post: AbstractPost)
@@ -12,4 +12,5 @@ import Foundation
     func retry(_ post: AbstractPost)
     func cancelAutoUpload(_ post: AbstractPost)
     func share(_ post: AbstractPost, fromView view: UIView)
+    func copyLink(_ post: AbstractPost)
 }

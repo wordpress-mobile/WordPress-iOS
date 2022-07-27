@@ -1,0 +1,50 @@
+# This script is run via Buildkite's scheduled jobs feature.
+#
+# It's meant to rebuild various CI caches on a periodic async basis, so as
+# not to waste time on every CI job updating the cache.
+
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/bash-cache#2.2.0
+    - automattic/git-s3-cache#v1.1.3:
+        bucket: "a8c-repo-mirrors"
+        repo: "wordpress-mobile/wordpress-ios/"
+  # Common environment values to use with the `env` key.
+  - &common_env
+    IMAGE_ID: xcode-13.4.1
+
+steps:
+
+  #################
+  # Build the CocoaPods Base Cache
+  #
+  # This prevents the base cache from infinite growth caused by storing every
+  # version of every pod we've ever used.
+  #################
+  - label: ":cocoapods: Rebuild CocoaPods cache"
+    command: |
+      echo "--- :rubygems: Setting up Gems"
+      # See https://github.com/Automattic/bash-cache-buildkite-plugin/issues/16
+      gem install bundler
+
+      install_gems
+
+      echo "--- :cocoapods: Rebuilding Pod Cache"
+      cache_cocoapods_specs_repos
+    env: *common_env
+    plugins: *common_plugins
+
+  #################
+  # Build the Git Repo cache
+  #
+  # Because this repo is so large, we periodically create a Git Mirror and copy it to S3,
+  # from where it can be fetched by agents more quickly than from GitHub, and so that
+  # agents then have less new commits to `git pull` by using that cache as starting point
+  #################
+  - label: ":git: Rebuild git cache"
+    command: "cache_repo a8c-repo-mirrors"
+    plugins: *common_plugins
+    agents:
+      queue: "default"

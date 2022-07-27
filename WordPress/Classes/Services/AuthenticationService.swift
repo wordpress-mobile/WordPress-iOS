@@ -89,6 +89,7 @@ class AuthenticationService {
             atomicSite: false) { hasCookie in
 
                 guard !hasCookie else {
+                    // The stored cookie can be stale but we'll try to use it and refresh it if the request fails. 
                     success()
                     return
                 }

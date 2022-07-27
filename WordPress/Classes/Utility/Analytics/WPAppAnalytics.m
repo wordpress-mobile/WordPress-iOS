@@ -4,7 +4,6 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"
-#import "ApiCredentials.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
@@ -28,6 +27,7 @@ NSString * const WPAppAnalyticsKeyFollowAction                      = @"follow_a
 NSString * const WPAppAnalyticsKeySource                            = @"source";
 NSString * const WPAppAnalyticsKeyPostType                          = @"post_type";
 NSString * const WPAppAnalyticsKeyTapSource                         = @"tap_source";
+NSString * const WPAppAnalyticsKeyTabSource                         = @"tab_source";
 NSString * const WPAppAnalyticsKeyReplyingTo                        = @"replying_to";
 NSString * const WPAppAnalyticsKeySiteType                          = @"site_type";
 
@@ -96,7 +96,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [self initializeOptOutTracking];
 
     BOOL userHasOptedOut = [WPAppAnalytics userHasOptedOut];
-    if (!userHasOptedOut) {
+    BOOL isUITesting = [[NSProcessInfo processInfo].arguments containsObject:@"-ui-testing"];
+    if (!isUITesting && !userHasOptedOut) {
         [self registerTrackers];
         [self beginSession];
     }

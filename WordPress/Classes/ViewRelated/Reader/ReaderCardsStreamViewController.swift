@@ -265,7 +265,7 @@ private extension ReaderCardsStreamViewController {
 
         UIView.animate(withDuration: 0.2, animations: {
             self.selectInterestsViewController.view.alpha = 0
-        }) { [unowned self] _ in
+        }) { _ in
             self.selectInterestsViewController.remove()
             self.selectInterestsViewController.view.alpha = 1
         }
@@ -279,7 +279,7 @@ private extension ReaderCardsStreamViewController {
         selectInterestsViewController.view.frame = self.view.bounds
         self.add(selectInterestsViewController)
 
-        selectInterestsViewController.didSaveInterests = { [unowned self] in
+        selectInterestsViewController.didSaveInterests = { [unowned self] _ in
             self.hideSelectInterestsView()
         }
     }

@@ -173,12 +173,16 @@ class WPRichContentView: UITextView {
 private extension WPRichContentView {
     class func formattedAttributedString(for string: String, style: AttributedStringStyle) -> NSAttributedString {
         let styleString = "<style>" +
-            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(style.textColorHex); }" +
+            "body, table { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #\(style.textColorHex); }" +
             "blockquote { color:#\(style.blockQuoteColorHex); } " +
             "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
             "a { color: #\(style.linkColorHex); text-decoration: none; } " +
             "a:active { color: #\(style.linkColorActiveHex); } " +
+            ".wp-block-table { margin: 0; padding: 0; } " +
+            "table { border-collapse: collapse }" +
+            "td { padding: 0.25em 0.25em 0.75em; min-width: 11em; vertical-align: top; } " +
         "</style>"
+
         let html = styleString + string
 
         // Ensure the noto font family is fully loaded or the font defaults to Times New Roman.

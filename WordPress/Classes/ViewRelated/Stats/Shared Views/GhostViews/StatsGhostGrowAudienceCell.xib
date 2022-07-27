@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ENf-kV-WdW" customClass="StatsGhostGrowAudienceCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="256"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ENf-kV-WdW" id="jCC-TG-PHL">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="256"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wex-fe-ee3">
+                        <rect key="frame" x="16" y="40" width="200" height="16"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="200" id="8bK-jF-CrV"/>
+                            <constraint firstAttribute="height" constant="16" id="amP-Ph-bTe"/>
+                        </constraints>
+                    </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="NRZ-tk-S2r">
+                        <rect key="frame" x="16" y="132" width="250" height="44"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrN-Sa-4uf">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="xVa-vr-sYv"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uod-lr-D1U">
+                                <rect key="frame" x="0.0" y="28" width="250" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="92Z-dx-G3Q"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="250" id="D5T-NL-1O2"/>
+                        </constraints>
+                    </stackView>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hTQ-wK-Kvh">
+                        <rect key="frame" x="16" y="224" width="382" height="16"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6YA-w0-Isv">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="7cY-sR-8xH"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4H-Qd-4cd">
+                                <rect key="frame" x="282" y="0.0" width="100" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Y7G-6x-chX"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="VRh-G6-lnr"/>
+                        </constraints>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Btw-Vm-80L">
+                        <rect key="frame" x="16" y="88" width="175" height="32"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="9gk-ZB-TKA"/>
+                            <constraint firstAttribute="width" constant="175" id="CA4-Er-EzJ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="NRZ-tk-S2r" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="3pq-1F-dzG"/>
+                    <constraint firstItem="hTQ-wK-Kvh" firstAttribute="top" secondItem="NRZ-tk-S2r" secondAttribute="bottom" constant="48" id="4MG-DC-1Nl"/>
+                    <constraint firstAttribute="bottom" secondItem="hTQ-wK-Kvh" secondAttribute="bottom" constant="16" id="4ql-pQ-Cvy"/>
+                    <constraint firstItem="Btw-Vm-80L" firstAttribute="top" secondItem="Wex-fe-ee3" secondAttribute="bottom" constant="32" id="9zf-cv-I1r"/>
+                    <constraint firstItem="hTQ-wK-Kvh" firstAttribute="centerX" secondItem="jCC-TG-PHL" secondAttribute="centerX" id="A04-CH-7Vr"/>
+                    <constraint firstItem="Wex-fe-ee3" firstAttribute="top" secondItem="jCC-TG-PHL" secondAttribute="top" constant="40" id="Qsg-0r-3Ia"/>
+                    <constraint firstItem="NRZ-tk-S2r" firstAttribute="top" secondItem="Btw-Vm-80L" secondAttribute="bottom" constant="12" id="STH-AC-gic"/>
+                    <constraint firstItem="Wex-fe-ee3" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="Zpd-Ss-jHJ"/>
+                    <constraint firstItem="Btw-Vm-80L" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="bCc-yb-cUk"/>
+                    <constraint firstAttribute="trailing" secondItem="hTQ-wK-Kvh" secondAttribute="trailing" constant="16" id="key-Dc-hzl"/>
+                    <constraint firstItem="hTQ-wK-Kvh" firstAttribute="leading" secondItem="jCC-TG-PHL" secondAttribute="leading" constant="16" id="tR1-Kp-M6A"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <point key="canvasLocation" x="139" y="153"/>
+        </tableViewCell>
+    </objects>
+</document>

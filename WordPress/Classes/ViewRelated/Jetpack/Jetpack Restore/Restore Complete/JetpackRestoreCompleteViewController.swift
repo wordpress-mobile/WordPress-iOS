@@ -54,7 +54,7 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
             return
         }
 
-        let webVC = WebViewControllerFactory.controller(url: homeURL)
+        let webVC = WebViewControllerFactory.controller(url: homeURL, source: "jetpack_restore_complete")
         let navigationVC = LightNavigationController(rootViewController: webVC)
 
         self.present(navigationVC, animated: true)

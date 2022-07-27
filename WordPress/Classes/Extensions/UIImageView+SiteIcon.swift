@@ -51,6 +51,8 @@ extension UIImageView {
             return
         }
 
+        logURLOptimization(from: path, to: siteIconURL)
+
         let request = URLRequest(url: siteIconURL)
         downloadSiteIcon(with: request, placeholderImage: placeholderImage)
     }
@@ -92,13 +94,8 @@ extension UIImageView {
             case .failure(let error):
                 if case .requestCancelled = (error as? AFIError) {
                     // Do not log intentionally cancelled requests as errors.
-                } else if case let Alamofire.AFError.responseValidationFailed(reason) = error,
-                          case let Alamofire.AFError.ResponseValidationFailureReason.unacceptableStatusCode(code) = reason,
-                          code == 404 {
-                    // Do not log 404 errors since they are expected for site icons
-                }
-                else {
-                    WordPressAppDelegate.crashLogging?.logError(error)
+                } else {
+                    DDLogError(error.localizedDescription)
                 }
             }
         })
@@ -126,9 +123,11 @@ extension UIImageView {
             return
         }
 
+        logURLOptimization(from: siteIconPath, to: siteIconURL, for: blog)
+
         let host = MediaHost(with: blog) { error in
             // We'll log the error, so we know it's there, but we won't halt execution.
-            WordPressAppDelegate.crashLogging?.logError(error)
+            DDLogError(error.localizedDescription)
         }
 
         let mediaRequestAuthenticator = MediaRequestAuthenticator()
@@ -138,7 +137,7 @@ extension UIImageView {
             onComplete: { [weak self] request in
                 self?.downloadSiteIcon(with: request, placeholderImage: placeholderImage)
         }) { error in
-            WordPressAppDelegate.crashLogging?.logError(error)
+            DDLogError(error.localizedDescription)
         }
     }
 }
@@ -147,7 +146,6 @@ extension UIImageView {
 // MARK: - Private Methods
 //
 private extension UIImageView {
-
     /// Returns the Size Optimized URL for a given Path.
     ///
     func optimizedURL(for path: String) -> URL? {
@@ -245,5 +243,27 @@ extension UIImageView {
 
     func removePlaceholderBorder() {
         layer.borderColor = UIColor.clear.cgColor
+    }
+}
+
+// MARK: - Logging Support
+
+/// This is just a temporary extension to try and narrow down the caused behind this issue: https://sentry.io/share/issue/3da4662c65224346bb3a731c131df13d/
+///
+private extension UIImageView {
+
+    private func logURLOptimization(from original: String, to optimized: URL) {
+        DDLogInfo("URL optimized from \(original) to \(optimized.absoluteString)")
+    }
+
+    private func logURLOptimization(from original: String, to optimized: URL, for blog: Blog) {
+        let blogInfo: String
+        if blog.isAccessibleThroughWPCom() {
+            blogInfo = "dot-com-accessible: \(blog.url ?? "unknown"), id: \(blog.dotComID ?? 0)"
+        } else {
+            blogInfo = "self-hosted with url: \(blog.url ?? "unknown")"
+        }
+
+        DDLogInfo("URL optimized from \(original) to \(optimized.absoluteString) for blog \(blogInfo)")
     }
 }

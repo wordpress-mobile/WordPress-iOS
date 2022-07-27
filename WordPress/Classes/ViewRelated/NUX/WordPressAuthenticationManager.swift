@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAuthenticator
 import Gridicons
+import UIKit
 
 
 // MARK: - WordPressAuthenticationManager
@@ -14,9 +15,18 @@ class WordPressAuthenticationManager: NSObject {
     /// without having to reimplement WordPressAuthenticatorDelegate
     private let authenticationHandler: AuthenticationHandler?
 
-    init(windowManager: WindowManager, authenticationHandler: AuthenticationHandler? = nil) {
+    private let quickStartSettings: QuickStartSettings
+
+    private let recentSiteService: RecentSitesService
+
+    init(windowManager: WindowManager,
+         authenticationHandler: AuthenticationHandler? = nil,
+         quickStartSettings: QuickStartSettings = QuickStartSettings(),
+         recentSiteService: RecentSitesService = RecentSitesService()) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
+        self.quickStartSettings = quickStartSettings
+        self.recentSiteService = recentSiteService
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -26,79 +36,134 @@ class WordPressAuthenticationManager: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
+}
 
+// MARK: - Initialization Methods
+//
+extension WordPressAuthenticationManager {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
     func initializeWordPressAuthenticator() {
+        let displayStrings = WordPressAuthenticatorDisplayStrings(
+            continueWithWPButtonTitle: AppConstants.Login.continueButtonTitle
+        )
 
+        WordPressAuthenticator.initialize(configuration: authenticatorConfiguation(),
+                                          style: authenticatorStyle(),
+                                          unifiedStyle: unifiedStyle(),
+                                          displayStrings: displayStrings)
+    }
+
+    private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = AppConfiguration.allowSignUp && !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
+        let enableSignInWithApple = !(BuildConfiguration.current ~= [.a8cBranchTest, .a8cPrereleaseTesting])
 
-        let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
-                                                                wpcomSecret: ApiCredentials.secret(),
-                                                                wpcomScheme: WPComScheme,
-                                                                wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
-                                                                wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
-                                                                wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
-                                                                googleLoginClientId: ApiCredentials.googleLoginClientId(),
-                                                                googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
-                                                                googleLoginScheme: ApiCredentials.googleLoginSchemeId(),
-                                                                userAgent: WPUserAgent.wordPress(),
-                                                                showLoginOptions: true,
-                                                                enableSignUp: AppConfiguration.allowSignUp,
-                                                                enableSignInWithApple: enableSignInWithApple,
-                                                                enableSignupWithGoogle: AppConfiguration.allowSignUp,
-                                                                enableUnifiedAuth: true,
-                                                                enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
+        return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
+                                                   wpcomSecret: ApiCredentials.secret,
+                                                   wpcomScheme: WPComScheme,
+                                                   wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
+                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
+                                                   wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
+                                                   googleLoginClientId: ApiCredentials.googleLoginClientId,
+                                                   googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
+                                                   googleLoginScheme: ApiCredentials.googleLoginSchemeId,
+                                                   userAgent: WPUserAgent.wordPress(),
+                                                   showLoginOptions: true,
+                                                   enableSignUp: AppConfiguration.allowSignUp,
+                                                   enableSignInWithApple: enableSignInWithApple,
+                                                   enableSignupWithGoogle: AppConfiguration.allowSignUp,
+                                                   enableUnifiedAuth: true,
+                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
+    }
 
-        let prologueVC: UIViewController? =  FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
-        let statusBarStyle: UIStatusBarStyle = FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
+    private func authenticatorStyle() -> WordPressAuthenticatorStyle {
+        let prologueVC: UIViewController? = {
+            guard let viewController = authenticationHandler?.prologueViewController else {
+                return FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+            }
 
-        let style = WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
-                                                primaryNormalBorderColor: nil,
-                                                primaryHighlightBackgroundColor: .primaryButtonDownBackground,
-                                                primaryHighlightBorderColor: nil,
-                                                secondaryNormalBackgroundColor: .authSecondaryButtonBackground,
-                                                secondaryNormalBorderColor: .secondaryButtonBorder,
-                                                secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
-                                                secondaryHighlightBorderColor: .secondaryButtonDownBorder,
-                                                disabledBackgroundColor: .textInverted,
-                                                disabledBorderColor: .neutral(.shade10),
-                                                primaryTitleColor: .white,
-                                                secondaryTitleColor: .text,
-                                                disabledTitleColor: .neutral(.shade20),
-                                                disabledButtonActivityIndicatorColor: .text,
-                                                textButtonColor: .primary,
-                                                textButtonHighlightColor: .primaryDark,
-                                                instructionColor: .text,
-                                                subheadlineColor: .textSubtle,
-                                                placeholderColor: .textPlaceholder,
-                                                viewControllerBackgroundColor: .listBackground,
-                                                textFieldBackgroundColor: .listForeground,
-                                                buttonViewBackgroundColor: .authButtonViewBackground,
-                                                navBarImage: .gridicon(.mySites),
-                                                navBarBadgeColor: .accent(.shade20),
-                                                navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : UIColor(light: .primary, dark: .gray(.shade100)),
-                                                prologueBackgroundColor: .primary,
-                                                prologueTitleColor: .textInverted,
-                                                prologueTopContainerChildViewController: prologueVC,
-                                                statusBarStyle: statusBarStyle)
+            return viewController
+        }()
 
-        let unifiedStyle = WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
-                                                              errorColor: .error,
-                                                              textColor: .text,
-                                                              textSubtleColor: .textSubtle,
-                                                              textButtonColor: .primary,
-                                                              textButtonHighlightColor: .primaryDark,
-                                                              viewControllerBackgroundColor: .basicBackground,
-                                                              navBarBackgroundColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarBackground : .basicBackground,
-                                                              navButtonTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarTint : .primary,
-                                                              navTitleTextColor: FeatureFlag.newNavBarAppearance.enabled ? .appBarText : .text)
+        let statusBarStyle: UIStatusBarStyle = {
+            guard let statusBarStyle = authenticationHandler?.statusBarStyle else {
+                return FeatureFlag.unifiedPrologueCarousel.enabled ? .default : .lightContent
+            }
 
-        WordPressAuthenticator.initialize(configuration: configuration,
-                                          style: style,
-                                          unifiedStyle: unifiedStyle)
+            return statusBarStyle
+        }()
+
+        let buttonViewTopShadowImage: UIImage? = {
+            guard let image = authenticationHandler?.buttonViewTopShadowImage else {
+                return UIImage(named: "darkgrey-shadow")
+            }
+
+            return image
+        }()
+
+        let prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
+        let prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+
+        return WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
+                                           primaryNormalBorderColor: nil,
+                                           primaryHighlightBackgroundColor: .primaryButtonDownBackground,
+                                           primaryHighlightBorderColor: nil,
+                                           secondaryNormalBackgroundColor: .authSecondaryButtonBackground,
+                                           secondaryNormalBorderColor: .secondaryButtonBorder,
+                                           secondaryHighlightBackgroundColor: .secondaryButtonDownBackground,
+                                           secondaryHighlightBorderColor: .secondaryButtonDownBorder,
+                                           disabledBackgroundColor: .textInverted,
+                                           disabledBorderColor: .neutral(.shade10),
+                                           primaryTitleColor: .white,
+                                           secondaryTitleColor: .text,
+                                           disabledTitleColor: .neutral(.shade20),
+                                           disabledButtonActivityIndicatorColor: .text,
+                                           textButtonColor: .primary,
+                                           textButtonHighlightColor: .primaryDark,
+                                           instructionColor: .text,
+                                           subheadlineColor: .textSubtle,
+                                           placeholderColor: .textPlaceholder,
+                                           viewControllerBackgroundColor: .listBackground,
+                                           textFieldBackgroundColor: .listForeground,
+                                           buttonViewBackgroundColor: .authButtonViewBackground,
+                                           buttonViewTopShadowImage: buttonViewTopShadowImage,
+                                           navBarImage: .gridicon(.mySites),
+                                           navBarBadgeColor: .accent(.shade20),
+                                           navBarBackgroundColor: .appBarBackground,
+                                           prologueBackgroundColor: .primary,
+                                           prologueTitleColor: .textInverted,
+                                           prologuePrimaryButtonStyle: prologuePrimaryButtonStyle,
+                                           prologueSecondaryButtonStyle: prologueSecondaryButtonStyle,
+                                           prologueTopContainerChildViewController: prologueVC,
+                                           statusBarStyle: statusBarStyle)
+    }
+
+    private func unifiedStyle() -> WordPressAuthenticatorUnifiedStyle {
+        let prologueButtonsBackgroundColor: UIColor = {
+            guard let color = authenticationHandler?.prologueButtonsBackgroundColor else {
+                return .clear
+            }
+
+            return color
+        }()
+
+
+        /// Uses the same prologueButtonsBackgroundColor but we need to be able to return nil
+        let prologueViewBackgroundColor: UIColor? = authenticationHandler?.prologueButtonsBackgroundColor
+
+        return WordPressAuthenticatorUnifiedStyle(borderColor: .divider,
+                                                  errorColor: .error,
+                                                  textColor: .text,
+                                                  textSubtleColor: .textSubtle,
+                                                  textButtonColor: .primary,
+                                                  textButtonHighlightColor: .primaryDark,
+                                                  viewControllerBackgroundColor: .basicBackground,
+                                                  prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
+                                                  prologueViewBackgroundColor: prologueViewBackgroundColor,
+                                                  navBarBackgroundColor: .appBarBackground,
+                                                  navButtonTextColor: .appBarTint,
+                                                  navTitleTextColor: .appBarText)
     }
 }
 
@@ -257,7 +322,21 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         if let authenticationHandler = authenticationHandler,
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, onDismiss: onDismiss) {
+           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
+           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
+            return
+        }
+
+        // If adding a self-hosted site, skip the Epilogue
+        if let wporg = credentials.wporg,
+           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
             return
         }
 
@@ -266,25 +345,59 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return
         }
 
-        //Present the epilogue view
+        // Present the epilogue view
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
         }
 
-        epilogueViewController.credentials = credentials
-        epilogueViewController.onDismiss = { [weak self] in
-            onDismiss()
+        let onBlogSelected: ((Blog) -> Void) = { [weak self] blog in
+            guard let self = self else {
+                return
+            }
 
-            self?.windowManager.dismissFullscreenSignIn()
+            // If the user just signed in, refresh the A/B assignments
+            ABTest.start()
+
+            self.recentSiteService.touch(blog: blog)
+            self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
         }
 
+        // If the user has only 1 blog, skip the site selector and go right to the next step
+        if numberOfBlogs() == 1, let firstBlog = firstBlog() {
+            onBlogSelected(firstBlog)
+            return
+        }
+
+        epilogueViewController.credentials = credentials
+        epilogueViewController.onBlogSelected = onBlogSelected
+
+        let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
+
+        epilogueViewController.onCreateNewSite = {
+            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+
+            navigationController.present(wizard, animated: true)
+            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+        }
+
+        navigationController.delegate = epilogueViewController
         navigationController.pushViewController(epilogueViewController, animated: true)
+
     }
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
+        if let authenticationHandler = authenticationHandler,
+           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
+            authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+            return
+        }
+
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
             fatalError()
@@ -293,11 +406,18 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.credentials = credentials
         epilogueViewController.socialService = service
         epilogueViewController.onContinue = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if PostSignUpInterstitialViewController.shouldDisplay() {
-                self?.presentPostSignUpInterstitial(in: navigationController)
+                self.presentPostSignUpInterstitial(in: navigationController)
             } else {
-                // Signup is only ever shown in fullscreen
-                self?.windowManager.dismissFullscreenSignIn()
+                if self.windowManager.isShowingFullscreenSignIn {
+                    self.windowManager.dismissFullscreenSignIn()
+                } else {
+                    navigationController.dismiss(animated: true)
+                }
             }
 
             UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
@@ -314,10 +434,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return true
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let numberOfBlogs = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.blogs?.count ?? 0
-
-        return numberOfBlogs > 0
+        return numberOfBlogs() > 0
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
@@ -325,7 +442,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func shouldPresentSignupEpilogue() -> Bool {
         return true
     }
-
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
     /// the new DefaultWordPressComAccount.
@@ -381,12 +497,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Tracks a given Analytics Event.
     ///
     func track(event: WPAnalyticsStat) {
+        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event)
     }
 
     /// Tracks a given Analytics Event, with the specified properties.
     ///
     func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event, withProperties: properties)
     }
 
@@ -394,6 +512,134 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
+    }
+
+    // This is probably not the best place to put this assignment
+    // However, `signed_in` is tracked on WPAuthenticator pod
+    // (which is used by other apps)
+    // Here we capture the event in the case is triggered and assign it
+    // This should be removed once the experiment is done
+    //
+    private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
+        if event == .signedIn || event == .createdAccount {
+            if FeatureFlag.mySiteDashboard.enabled {
+                let isTreatment = BlogDashboardAB.shared.variant == .treatment
+                MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
+            }
+        }
+    }
+}
+
+// MARK: - Blog Count Helpers
+private extension WordPressAuthenticationManager {
+    private func numberOfBlogs() -> Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let numberOfBlogs = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.blogs?.count ?? 0
+
+        return numberOfBlogs
+    }
+
+    private func firstBlog() -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs?.first
+    }
+}
+
+// MARK: - Onboarding Questions Prompt
+private extension WordPressAuthenticationManager {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+        let windowManager = self.windowManager
+
+        let coordinator = OnboardingQuestionsCoordinator()
+        coordinator.navigationController = navigationController
+
+        let viewController = OnboardingQuestionsPromptViewController(with: coordinator)
+
+        coordinator.onDismiss = { selectedOption in
+            self.handleOnboardingQuestionsWillDismiss(option: selectedOption)
+
+            let completion: (() -> Void)? = {
+                let userInfo = ["option": selectedOption]
+                NotificationCenter.default.post(name: .onboardingPromptWasDismissed, object: nil, userInfo: userInfo)
+            }
+
+            if windowManager.isShowingFullscreenSignIn {
+                windowManager.dismissFullscreenSignIn(completion: completion)
+            } else {
+                navigationController.dismiss(animated: true, completion: completion)
+            }
+
+            onDismiss?()
+        }
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+
+    /// To prevent a weird jump from the MySite tab to the reader/notifications tab
+    /// We'll pre-switch to the users selected tab before the login flow dismisses
+    private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
+        if option == .reader {
+            WPTabBarController.sharedInstance().showReaderTab()
+        } else if option == .notifications {
+            WPTabBarController.sharedInstance().showNotificationsTab()
+        }
+    }
+
+
+}
+
+// MARK: - Quick Start Prompt
+private extension WordPressAuthenticationManager {
+
+    typealias QuickStartOnDismissHandler = (Blog, Bool) -> Void
+
+    func presentQuickStartPrompt(for blog: Blog, in navigationController: UINavigationController, onDismiss: QuickStartOnDismissHandler?) {
+        // If the quick start prompt has already been dismissed,
+        // then show the My Site screen for the specified blog
+        guard !quickStartSettings.promptWasDismissed(for: blog) else {
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                navigationController.dismiss(animated: true)
+            }
+
+            return
+        }
+
+        // Otherwise, show the Quick Start prompt
+        let quickstartPrompt = QuickStartPromptViewController(blog: blog)
+        quickstartPrompt.onDismiss = onDismiss
+        navigationController.pushViewController(quickstartPrompt, animated: true)
+    }
+
+    func onDismissQuickStartPromptHandler(type: QuickStartType, onDismiss: @escaping () -> Void) -> QuickStartOnDismissHandler {
+        return { [weak self] blog, _ in
+            guard let self = self else {
+                // If self is nil the user will be stuck on the login and not able to progress
+                // Trigger a fatal so we can track this better in Sentry.
+                // This case should be very rare.
+                fatalError("Could not get a reference to self when selecting the blog on the login epilogue")
+            }
+
+            onDismiss()
+
+            // If the quick start prompt has already been dismissed,
+            // then show the My Site screen for the specified blog
+            guard !self.quickStartSettings.promptWasDismissed(for: blog) else {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+                return
+            }
+
+            // Otherwise, show the My Site screen for the specified blog and after a short delay,
+            // trigger the Quick Start tour
+            self.windowManager.showAppUI(for: blog, completion: {
+                QuickStartTourGuide.shared.setupWithDelay(for: blog, type: type)
+            })
+        }
     }
 }
 

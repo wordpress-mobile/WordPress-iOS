@@ -1,7 +1,7 @@
 import Foundation
 import AutomatticTracks
 
-@objc protocol PostActionSheetDelegate {
+protocol PostActionSheetDelegate: AnyObject {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView)
 }
 
@@ -78,6 +78,10 @@ class PostActionSheet {
                     }
                 case .more:
                     WordPressAppDelegate.crashLogging?.logMessage("Cannot handle unexpected button for post action sheet: \(button). This is a configuration error.", level: .error)
+                case .copyLink:
+                    actionSheetController.addDefaultActionWithTitle(Titles.copyLink) { [weak self] _ in
+                        self?.interactivePostViewDelegate?.copyLink(post)
+                    }
                 }
         }
 
@@ -103,5 +107,6 @@ class PostActionSheet {
         static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
         static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
         static let share = NSLocalizedString("Share", comment: "Share the post.")
+        static let copyLink = NSLocalizedString("Copy Link", comment: "Copy the post url and paste anywhere in phone")
     }
 }

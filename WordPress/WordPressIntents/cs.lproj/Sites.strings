@@ -1,12 +1,19 @@
-"BOl9KQ" = "There are ${count} options matching ‘${site}’.";
-
-"ILcGmf" = "Site";
-
-"cyajMn" = "Site";
-
-"gpCwrM" = "Select Site";
-
-"s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
-
-"tVvJ9c" = "Select Site Intent";
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>BOl9KQ</key>
+    <string>„${site}“ odpovídá ${count} možností.</string>
+    <key>ILcGmf</key>
+    <string>Web</string>
+    <key>cyajMn</key>
+    <string>Web</string>
+    <key>gpCwrM</key>
+    <string>Vybrat web</string>
+    <key>s4dJhx</key>
+    <string>Jen pro potvrzení, chtěli jste „${site}“?</string>
+    <key>tVvJ9c</key>
+    <string>Vyberte záměr webu</string>
+  </dict>
+</plist>

@@ -77,9 +77,10 @@ class MediaURLExporter: MediaExporter {
     ///
     func exportURL(fileURL: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         // Verify the export is permissible
-        if let fileExtension = fileURL.typeIdentifierFileExtension {
+        if let urlExportOptions = urlOptions, let fileExtension = fileURL.typeIdentifierFileExtension {
             // Check the default file types. We want to limit to supported types but mobile is not restricted to only allowed ones.
-            if !MediaImportService.defaultAllowableFileExtensions.contains(fileExtension) {
+            // `allowableFileExtensions` can be empty for self-hosted sites
+            if !MediaImportService.defaultAllowableFileExtensions.contains(fileExtension) && !urlExportOptions.allowableFileExtensions.isEmpty && !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
                 onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
                 return Progress.discreteCompletedProgress()
             }

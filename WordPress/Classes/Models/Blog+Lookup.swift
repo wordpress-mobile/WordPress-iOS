@@ -45,4 +45,17 @@ public extension Blog {
         // assemble the predicate as in `NSPredicate("blogID == %@")`
         try? lookup(withID: id.int64Value, in: context)
     }
+
+    /// Lookup a Blog by WP.ORG Credentials
+    ///
+    /// - Parameters:
+    ///   - username: The username associated with the blog.
+    ///   - xmlrpc: The xmlrpc URL address
+    ///   - context:  An NSManagedObjectContext containing the `Blog` object with the given `blogID`.
+    /// - Returns: The `Blog` object associated with the given `username` and `xmlrpc`, if it exists.
+    static func lookup(username: String, xmlrpc: String, in context: NSManagedObjectContext) -> Blog? {
+        let service = BlogService(managedObjectContext: context)
+
+        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
+    }
 }

@@ -19,18 +19,23 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
+@property (nonatomic, weak) id delegate;
+@property (nonatomic) PublicizeServicesState *publicizeServicesState;
+@property (nonatomic) JetpackModuleHelper *jetpackModuleHelper;
 
 @end
 
 @implementation SharingViewController
 
-- (instancetype)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog delegate:(id)delegate
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    self = [self initWithStyle:UITableViewStyleGrouped];
+    self = [self initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
         _publicizeServices = [NSMutableArray new];
+        _delegate = delegate;
+        _publicizeServicesState = [PublicizeServicesState new];
     }
     return self;
 }
@@ -39,10 +44,30 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
+    self.parentViewController.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
+    
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    
+    if (self.isModal) {
+        self.parentViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(doneButtonTapped)];
+    }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self syncServices];
+    [self.publicizeServicesState addInitialConnections:[self allConnections]];
+
+    self.navigationController.presentationController.delegate = self;
+
+    if ([self.blog supportsPublicize]) {
+        [self syncServices];
+    } else {
+        self.jetpackModuleHelper = [[JetpackModuleHelper alloc] initWithViewController:self moduleName:@"publicize" blog:self.blog];
+
+        [self.jetpackModuleHelper showWithTitle:NSLocalizedString(@"Enable Publicize", "Text shown when the site doesn't have the Publicize module enabled.") subtitle:NSLocalizedString(@"In order to share your published posts to your social media you need to enable the Publicize module.", "Title of button to enable publicize.")];
+
+        self.tableView.dataSource = NULL;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,6 +83,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [ReachabilityUtils dismissNoInternetConnectionNotice];
 }
 
+-(void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
+}
+
 - (void)refreshPublicizers
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
@@ -66,6 +96,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
+- (void)doneButtonTapped
+{
+    [self notifyDelegatePublicizeServicesChangedIfNeeded];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - UITableView Delegate methods
 
@@ -214,6 +249,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#pragma mark - JetpackModuleHelper
+
+- (void)jetpackModuleEnabled
+{
+    self.tableView.dataSource = self;
+    [self syncServices];
+}
 
 #pragma mark - Publicizer management
 
@@ -227,6 +269,25 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
     }
     return [NSArray arrayWithArray:connections];
+}
+
+- (NSArray *)allConnections
+{
+    NSMutableArray *allConnections = [NSMutableArray new];
+    for (PublicizeService *service in self.publicizeServices) {
+        NSArray *connections = [self connectionsForService:service];
+        if (connections.count > 0) {
+            [allConnections addObjectsFromArray:connections];
+        }
+    }
+    return allConnections;
+}
+
+-(void)notifyDelegatePublicizeServicesChangedIfNeeded
+{
+    if ([self.publicizeServicesState hasAddedNewConnectionTo:[self allConnections]]) {
+        [self.delegate didChangePublicizeServices];
+    }
 }
 
 - (NSManagedObjectContext *)managedObjectContext

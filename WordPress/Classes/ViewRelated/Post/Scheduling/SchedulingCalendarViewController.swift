@@ -1,30 +1,9 @@
 import Foundation
 import Gridicons
 
-protocol DateCoordinatorHandler: class {
-    var coordinator: DateCoordinator? { get set }
-}
-
-class DateCoordinator {
-
-    var date: Date?
-    let timeZone: TimeZone
-    let dateFormatter: DateFormatter
-    let dateTimeFormatter: DateFormatter
-    let updated: (Date?) -> Void
-
-    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
-        self.date = date
-        self.timeZone = timeZone
-        self.dateFormatter = dateFormatter
-        self.dateTimeFormatter = dateTimeFormatter
-        self.updated = updated
-    }
-}
-
 // MARK: - Date Picker
-
-class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
+@available(iOS, deprecated: 14.0, message: "Use SchedulingDatePickerViewController, based on UIDatePicker.inline")
+class SchedulingCalendarViewController: UIViewController, CalendarSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
 
     var coordinator: DateCoordinator? = nil
 
@@ -137,6 +116,18 @@ class SchedulingCalendarViewController: UIViewController, DatePickerSheet, DateC
     }
 }
 
+extension SchedulingCalendarViewController {
+    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
+        presentationController.delegate = self
+        return presentationController
+    }
+
+    @objc func adaptivePresentationStyle(for: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return traitCollection.verticalSizeClass == .compact ? .overFullScreen : .none
+    }
+}
+
 // MARK: Accessibility
 
 private extension SchedulingCalendarViewController {
@@ -204,12 +195,11 @@ class TimePickerViewController: UIViewController, DatePickerSheet, DateCoordinat
 }
 
 // MARK: DatePickerSheet Protocol
-protocol DatePickerSheet {
+protocol CalendarSheet {
     func configureStackView(topView: UIView, pickerView: UIView) -> UIView
 }
 
-extension DatePickerSheet {
-
+extension CalendarSheet {
     /// Constructs a view with `topView` on top and `pickerView` on bottom
     /// - Parameter topView: A view to be shown above `pickerView`
     /// - Parameter pickerView: A view to be shown on the bottom
@@ -248,8 +238,7 @@ extension DatePickerSheet {
     }
 }
 
-extension DatePickerSheet where Self: UIViewController {
-
+extension CalendarSheet where Self: UIViewController {
     /// Adds `topView` and `pickerView` to view hierarchy + standard styling for the view controller's view
     /// - Parameter topView: A view to show above `pickerView` (see `ChosenValueRow`)
     /// - Parameter pickerView: A view to show below the top view

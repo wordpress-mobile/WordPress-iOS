@@ -15,7 +15,7 @@ final class ReaderReportPostAction {
             configuration.authenticate(account: account)
         }
 
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_report")
         let navController = UINavigationController(rootViewController: controller)
         origin.present(navController, animated: true)
 

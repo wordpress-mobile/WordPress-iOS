@@ -2,6 +2,7 @@ import Foundation
 
 struct NotificationsRoute: Route {
     let path = "/notifications"
+    let section: DeepLinkSection? = .notifications
     let action: NavigationAction = NotificationsNavigationAction()
 }
 

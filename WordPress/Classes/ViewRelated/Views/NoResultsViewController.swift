@@ -236,7 +236,7 @@ import Reachability
     /// Accepts an optional title, if none is provided, will default to 'Dismiss'
     func showDismissButton(title: String? = nil) {
         navigationItem.hidesBackButton = true
-        let buttonTitle = title ?? NSLocalizedString("Dismiss", comment: "Dismiss button title.")
+        let buttonTitle = title ?? AppLocalizedString("Dismiss", comment: "Dismiss button title.")
 
         let dismissButton = UIBarButtonItem(title: buttonTitle,
                                             style: .done,
@@ -537,7 +537,7 @@ private extension NoResultsViewController {
     // MARK: - Helpers
 
     func accessibilityIdentifier(for string: String) -> String {
-        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
+        let buttonIdFormat = AppLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
         return String(format: buttonIdFormat, string)
     }
 
@@ -562,8 +562,8 @@ private extension NoResultsViewController {
     }
 
     struct NoConnection {
-        static let title: String = NSLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
-        static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
+        static let title: String = AppLocalizedString("Unable to load this content right now.", comment: "Default title shown for no-results when the device is offline.")
+        static let subTitle: String = AppLocalizedString("Check your network connection and try again.", comment: "Default subtitle for no-results when there is no connection")
         static let imageName = "cloud"
     }
 }

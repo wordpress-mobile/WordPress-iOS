@@ -18,7 +18,10 @@ extension WPStyleGuide {
                      .foregroundColor: sectionHeaderTextColor]
         }
 
-        // NoteTableViewCell
+        // ListTableViewCell
+        public static let unreadIndicatorColor = UIColor.primaryLight
+
+        // Notification cells
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.textInverted
         public static let noticonReadColor          = UIColor.listSmallIcon
@@ -30,7 +33,7 @@ extension WPStyleGuide {
 
         public static let noteSeparatorColor        = blockSeparatorColor
 
-        // NoteUndoOverlayView
+        // Notification undo overlay
         public static let noteUndoBackgroundColor   = UIColor.error
         public static let noteUndoTextColor         = UIColor.white
         public static let noteUndoTextFont          = subjectRegularFont

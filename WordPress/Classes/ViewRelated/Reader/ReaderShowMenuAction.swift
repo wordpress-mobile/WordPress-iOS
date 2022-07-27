@@ -1,3 +1,4 @@
+import UIKit
 /// Encapsulates a command to create and handle the extended menu for each post in Reader
 final class ReaderShowMenuAction {
     private let isLoggedIn: Bool
@@ -12,7 +13,9 @@ final class ReaderShowMenuAction {
                  readerTopic: ReaderAbstractTopic? = nil,
                  anchor: UIView,
                  vc: UIViewController,
-                 source: ReaderPostMenuSource) {
+                 source: ReaderPostMenuSource,
+                 followCommentsService: FollowCommentsService
+    ) {
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -62,10 +65,6 @@ final class ReaderShowMenuAction {
                                                     let subscribe = !topic.isSubscribedForPostNotifications
 
                                                     ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, subscribe: subscribe, completion: {
-
-                                                        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
-                                                        WPAnalytics.track(event)
-
                                                         ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: true)
                                                     }, failure: { _ in
                                                         ReaderHelpers.dispatchToggleNotificationMessage(topic: topic, success: false)
@@ -77,17 +76,18 @@ final class ReaderShowMenuAction {
         // Following
         if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
+
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderFollowAction().execute(with: post,
                                                                                  context: context,
-                                                                                 completion: {
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: true)
+                                                                                 completion: { follow in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: true)
                                                                                     (vc as? ReaderStreamViewController)?.updateStreamHeaderIfNeeded()
-                                                                                 }, failure: { _ in
-                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, success: false)
+                                                                                 }, failure: { follow, _ in
+                                                                                    ReaderHelpers.dispatchToggleFollowSiteMessage(post: post, follow: follow, success: false)
                                                                                  })
                                                 }
                                                })
@@ -132,6 +132,27 @@ final class ReaderShowMenuAction {
                                             ReaderShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
         })
 
+        // Comment Subscription (Follow Comments by Email & Notifications)
+        if post.canSubscribeComments {
+            let buttonTitle = post.isSubscribedComments ? ReaderPostMenuButtonTitles.unFollowConversation : ReaderPostMenuButtonTitles.followConversation
+            alertController.addActionWithTitle(
+                buttonTitle,
+                style: .default,
+                handler: { (action: UIAlertAction) in
+                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                        Self.trackToggleCommentSubscription(isSubscribed: post.isSubscribedComments, post: post, sourceViewController: vc)
+
+                        ReaderSubscribeCommentsAction().execute(
+                            with: post,
+                            context: context,
+                            followCommentsService: followCommentsService,
+                            sourceViewController: vc) {
+                            (vc as? ReaderDetailViewController)?.updateFollowButtonState()
+                        }
+                    }
+                })
+        }
+
         if WPDeviceIdentification.isiPad() {
             alertController.modalPresentationStyle = .popover
             vc.present(alertController, animated: true)
@@ -161,4 +182,22 @@ final class ReaderShowMenuAction {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
     }
 
+    private static func trackToggleCommentSubscription(isSubscribed: Bool, post: ReaderPost, sourceViewController: UIViewController) {
+        var properties = [String: Any]()
+        properties[WPAppAnalyticsKeyFollowAction] = isSubscribed ? "followed" : "unfollowed"
+        properties["notifications_enabled"] = isSubscribed
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeySource] = Self.sourceForTrackingEvents(sourceViewController: sourceViewController)
+        WPAnalytics.trackReader(.readerMoreToggleFollowConversation, properties: properties)
+    }
+
+    private static func sourceForTrackingEvents(sourceViewController: UIViewController) -> String {
+        if sourceViewController is ReaderDetailViewController {
+            return "reader_post_details_comments"
+        } else if sourceViewController is ReaderStreamViewController {
+            return "reader"
+        }
+
+        return "unknown"
+    }
 }

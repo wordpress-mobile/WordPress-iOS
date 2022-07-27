@@ -8,7 +8,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     static let nib = UINib(nibName: "\(CollapsableHeaderCollectionViewCell.self)", bundle: Bundle.main)
     static let selectionAnimationSpeed: Double = 0.25
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var checkmarkBackground: UIView!
+    @IBOutlet weak var checkmarkContainerView: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView! {
         didSet {
             checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
@@ -24,6 +24,8 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
             setImage(previewURL)
         }
     }
+
+    var showsCheckMarkWhenSelected = true
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -117,26 +119,26 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
     }
 
     private func checkmarkHidden(_ isHidden: Bool, animated: Bool = false) {
-        guard animated else {
-            checkmarkImageView.isHidden = isHidden
-            checkmarkBackground.isHidden = isHidden
+        guard showsCheckMarkWhenSelected else {
+            checkmarkContainerView.isHidden = true
             return
         }
 
-        checkmarkImageView.isHidden = false
-        checkmarkBackground.isHidden = false
+        guard animated else {
+            checkmarkContainerView.isHidden = isHidden
+            return
+        }
+
+        checkmarkContainerView.isHidden = false
 
         // Set the inverse of the animation destination
-        checkmarkImageView.alpha = isHidden ? 1 : 0
-        checkmarkBackground.alpha = isHidden ? 1 : 0
+        checkmarkContainerView.alpha = isHidden ? 1 : 0
         let targetAlpha: CGFloat = isHidden ? 0 : 1
 
         UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, animations: {
-            self.checkmarkImageView.alpha = targetAlpha
-            self.checkmarkBackground.alpha = targetAlpha
+            self.checkmarkContainerView.alpha = targetAlpha
         }, completion: { (_) in
-            self.checkmarkImageView.isHidden = !self.isSelected
-            self.checkmarkBackground.isHidden = !self.isSelected
+            self.checkmarkContainerView.isHidden = !self.isSelected
         })
     }
 

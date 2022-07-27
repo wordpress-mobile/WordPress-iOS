@@ -1,32 +1,37 @@
+import UITestsFoundation
 import XCTest
 
 class MainNavigationTests: XCTestCase {
     private var mySiteScreen: MySiteScreen!
 
-    override func setUp() {
+    override func setUpWithError() throws {
         setUpTestSuite()
 
-        _ = LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-        mySiteScreen = TabNavComponent()
-         .gotoMySiteScreen()
+        try LoginFlow.login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        mySiteScreen = try TabNavComponent()
+            .goToMySiteScreen()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        LoginFlow.logoutIfNeeded()
-        super.tearDown()
+        removeApp()
     }
 
-    func testTabBarNavigation() {
+    func testTabBarNavigation() throws {
         XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-        _ = mySiteScreen
-            .tabBar.gotoReaderScreen()
+        _ = try mySiteScreen
+            .tabBar.goToReaderScreen()
 
         XCTAssert(ReaderScreen.isLoaded(), "Reader screen isn't loaded.")
 
-        _ = mySiteScreen
-            .tabBar.gotoNotificationsScreen()
+        // We may get a notifications fancy alert when loading the reader for the first time
+        if let alert = try? FancyAlertComponent() {
+            alert.cancelAlert()
+        }
+
+        _ = try mySiteScreen
+            .tabBar.goToNotificationsScreen()
             .dismissNotificationAlertIfNeeded()
 
         XCTContext.runActivity(named: "Confirm Notifications screen and main navigation bar are loaded.") { (activity) in

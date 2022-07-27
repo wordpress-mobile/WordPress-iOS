@@ -28,8 +28,8 @@ private extension WidgetNoConnectionCell {
     }
 
     enum LocalizedText {
-        static let title = NSLocalizedString("No network available", comment: "Displayed in the Stats widgets when there is no network")
-        static let message = NSLocalizedString("Stats will be updated next time you're online", comment: "Displayed in the Stats widgets when there is no network")
+        static let title = AppLocalizedString("No network available", comment: "Displayed in the Stats widgets when there is no network")
+        static let message = AppLocalizedString("Stats will be updated next time you're online", comment: "Displayed in the Stats widgets when there is no network")
     }
 
 }

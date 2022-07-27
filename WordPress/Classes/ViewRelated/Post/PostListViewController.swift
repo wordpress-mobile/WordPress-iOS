@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import Gridicons
+import UIKit
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -96,6 +97,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    /// If set, when the post list appear it will show the tab for this status
+    var initialFilterWithPostStatus: BasePost.Status?
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -106,6 +110,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         controller.restorationClass = self
 
         return controller
+    }
+
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
+        let controller = PostListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.initialFilterWithPostStatus = postStatus
+        sourceController.navigationController?.pushViewController(controller, animated: true)
+
+        QuickStartTourGuide.shared.visited(.blogDetailNavigation)
     }
 
     // MARK: - UIViewControllerRestoration
@@ -153,12 +166,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
+        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureFilterBarTopConstraint()
         updateGhostableTableViewOptions()
 
         configureNavigationButtons()
+
+        configureInitialFilterIfNeeded()
+        listenForAppComingToForeground()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
@@ -170,17 +186,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.createPost()
             }, source: Constants.source)
         ]
-        if Feature.enabled(.stories) && blog.supports(.stories) {
-            actions.append(
-                StoryAction(handler: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
-                }, source: Constants.source)
-            )
+        if blog.supports(.stories) {
+            actions.insert(StoryAction(handler: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
+            }, source: Constants.source), at: 0)
         }
-        return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
+        return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
 
     override func viewDidAppear(_ animated: Bool) {
@@ -199,6 +213,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        toggleCreateButton()
+    }
+
+    /// Shows/hides the create button based on the trait collection horizontal size class
+    @objc
+    private func toggleCreateButton() {
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
@@ -358,6 +378,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    private func configureInitialFilterIfNeeded() {
+        guard let initialFilterWithPostStatus = initialFilterWithPostStatus else {
+            return
+        }
+
+        filterSettings.setFilterWithPostStatus(initialFilterWithPostStatus)
+    }
+
+    /// Listens for the app coming to foreground in order to properly set the create button
+    private func listenForAppComingToForeground() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(toggleCreateButton),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+    }
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -524,7 +559,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate?(self)
+        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
 
@@ -565,6 +600,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .postsList
         present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
@@ -578,7 +614,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        PostListEditorPresenter.handle(post: post, in: self)
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: post)
+        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
     }
 
     private func editDuplicatePost(apost: AbstractPost) {
@@ -667,7 +704,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func publish(_ post: AbstractPost) {
-        publishPost(post)
+        publishPost(post) {
+
+            BloggingRemindersFlow.present(from: self,
+                                          for: post.blog,
+                                          source: .publishFlow,
+                                          alwaysShow: false)
+        }
+    }
+
+    func copyLink(_ post: AbstractPost) {
+        copyPostLink(post)
     }
 
     func trash(_ post: AbstractPost) {
@@ -727,6 +774,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
+
+        WPAnalytics.track(.postListShareAction, properties: propertiesForAnalytics())
 
         let shareController = PostSharingController()
         shareController.sharePost(post, fromView: view, inViewController: self)

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Să faci poze sau videouri pe care să le folosești în articolele tale.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress preferă să-ți adaugi locația în articolele din site-urile în care ai activat etichetarea geografică.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress preferă să-ți adaugi locația în articolele din site-urile în care ai activat etichetarea geografică.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Activează accesul la microfon pentru a înregistra sunetul în videourile tale.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Să adaugi poze sau videouri în articolele tale.</string>
+  </dict>
+</plist>

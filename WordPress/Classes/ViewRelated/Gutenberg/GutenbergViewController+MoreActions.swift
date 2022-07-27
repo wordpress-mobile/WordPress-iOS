@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressFlux
 
 /// This extension handles the "more" actions triggered by the top right
 /// navigation bar button of Gutenberg editor.
@@ -10,6 +11,8 @@ extension GutenbergViewController {
     }
 
     func displayMoreSheet() {
+        // Dismisses and locks the Notices Store from displaying any new notices.
+        ActionDispatcher.dispatch(NoticeAction.lock)
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if mode == .richText, let contentInfo = contentInfo {
@@ -24,6 +27,7 @@ extension GutenbergViewController {
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
                 self.secondaryPublishButtonTapped()
+                ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
 
@@ -37,15 +41,18 @@ extension GutenbergViewController {
 
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
             self?.displayPreview()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
                 self?.displayHistory()
+                ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
 
@@ -54,9 +61,17 @@ extension GutenbergViewController {
 
         alert.addDefaultActionWithTitle(settingsTitle) { [weak self] _ in
             self?.displayPostSettings()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle) { _ in
+            ActionDispatcher.dispatch(NoticeAction.unlock)
+        }
+
+        alert.addDefaultActionWithTitle(MoreSheetAlert.editorHelpTitle) { [weak self] _ in
+            self?.showEditorHelp()
+            ActionDispatcher.dispatch(NoticeAction.unlock)
+        }
 
         if #available(iOS 14.0, *),
             let button = navigationBarManager.moreBarButtonItem.customView {
@@ -109,5 +124,6 @@ extension GutenbergViewController {
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
+        static let editorHelpTitle = NSLocalizedString("Help & Support", comment: "Open editor help options")
     }
 }

@@ -8,29 +8,37 @@ func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewControlle
         return nil
     }
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    return AccountSettingsViewController(service: service)
+    return AccountSettingsViewController(accountSettingsService: service)
 }
 
-func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
-    let controller = AccountSettingsController(service: service)
-    let viewController = ImmuTableViewController(controller: controller)
+func AccountSettingsViewController(accountSettingsService: AccountSettingsService) -> ImmuTableViewController {
+    let controller = AccountSettingsController(accountSettingsService: accountSettingsService)
+    let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
+    viewController.handler.automaticallyDeselectCells = true
     return viewController
 }
 
 private class AccountSettingsController: SettingsController {
+    var trackingKey: String {
+        return "account_settings"
+    }
+
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title")
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self
+            EditableTextRow.self,
+            DestructiveButtonRow.self
         ]
     }
 
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService
+    private let accountSettingsService: AccountSettingsService
+    private let accountService: AccountService
+
     var settings: AccountSettings? {
         didSet {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
@@ -41,9 +49,12 @@ private class AccountSettingsController: SettingsController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
+    private let alertHelper = DestructiveAlertHelper()
 
-    init(service: AccountSettingsService) {
-        self.service = service
+    init(accountSettingsService: AccountSettingsService,
+         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
+        self.accountSettingsService = accountSettingsService
+        self.accountService = accountService
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
@@ -51,15 +62,15 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshModel() {
-        service.refreshSettings()
+        accountSettingsService.refreshSettings()
     }
 
     @objc func loadStatus() {
-        noticeMessage = service.status.errorMessage ?? noticeForAccountSettings(service.settings)
+        noticeMessage = accountSettingsService.status.errorMessage ?? noticeForAccountSettings(accountSettingsService.settings)
     }
 
     @objc func loadSettings() {
-        settings = service.settings
+        settings = accountSettingsService.settings
         // Status is affected by settings changes (for pending email), so let's load that as well
         loadStatus()
     }
@@ -68,7 +79,7 @@ private class AccountSettingsController: SettingsController {
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
-        return mapViewModel(settings, service: service, presenter: presenter)
+        return mapViewModel(settings, service: accountSettingsService, presenter: presenter)
     }
 
 
@@ -84,14 +95,16 @@ private class AccountSettingsController: SettingsController {
         let editableUsername = EditableTextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "",
-            action: presenter.push(changeUsername(with: settings, service: service))
+            action: presenter.push(changeUsername(with: settings, service: service)),
+            fieldName: "username"
         )
 
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailForDisplay ?? "",
             accessoryImage: emailAccessoryImage(),
-            action: presenter.push(editEmailAddress(settings, service: service))
+            action: presenter.push(editEmailAddress(settings, service: service)),
+            fieldName: "email"
         )
 
         var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) } ?? ""
@@ -105,20 +118,28 @@ private class AccountSettingsController: SettingsController {
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: primarySiteName,
-            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
+            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service))),
+            fieldName: "primary_site"
         )
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.push(editWebAddress(service))
+            action: presenter.push(editWebAddress(service)),
+            fieldName: "web_address"
         )
 
         let password = EditableTextRow(
             title: Constants.title,
             value: "",
-            action: presenter.push(changePassword(with: settings, service: service))
+            action: presenter.push(changePassword(with: settings, service: service)),
+            fieldName: "password"
         )
+
+        let closeAccount = DestructiveButtonRow(
+            title: NSLocalizedString("Close Account", comment: "Close account action label"),
+            action: closeAccountAction,
+            accessibilityIdentifier: "closeAccountButtonRow")
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -128,10 +149,13 @@ private class AccountSettingsController: SettingsController {
                     password,
                     primarySite,
                     webAddress
+                ]),
+            ImmuTableSection(
+                rows: [
+                    closeAccount
                 ])
-            ])
+        ])
     }
-
 
     // MARK: - Actions
 
@@ -188,13 +212,10 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
+        guard let account = accountService.defaultWordPressComAccount() else {
             return
         }
-
-        AccountService(managedObjectContext: context).updateUserDetails(for: account, success: { () in
+        accountService.updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()
@@ -213,6 +234,8 @@ private class AccountSettingsController: SettingsController {
             let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID as NSNumber?,
                                                                     successHandler: { (dotComID: NSNumber?) in
                                                                         if let dotComID = dotComID?.intValue {
+                                                                            WPAnalytics.trackSettingsChange(self.trackingKey, fieldName: "primary_site")
+
                                                                             let change = AccountSettingsChange.primarySite(dotComID)
                                                                             service.saveChange(change)
                                                                         }
@@ -226,6 +249,133 @@ private class AccountSettingsController: SettingsController {
             selectorViewController.dismissOnCancellation = true
 
             return selectorViewController
+        }
+    }
+
+    private var closeAccountAction: (ImmuTableRow) -> Void {
+        return { [weak self] _ in
+            guard let self = self else { return }
+            WPAnalytics.track(.accountCloseTapped, properties: ["has_atomic": self.hasAtomicSite])
+
+            switch self.hasAtomicSite {
+            case true:
+                self.showCloseAccountErrorAlert(message: self.localizedErrorMessageForAtomicSites)
+            case false:
+                self.showCloseAccountAlert()
+            }
+        }
+    }
+
+    private var hasAtomicSite: Bool {
+        return accountService.defaultWordPressComAccount()?.hasAtomicSite() ?? false
+    }
+
+    private func showCloseAccountAlert() {
+        guard let value = settings?.username else {
+            return
+        }
+
+        let title = NSLocalizedString("Confirm Close Account", comment: "Close Account alert title")
+        let message = NSLocalizedString("\nTo confirm, please re-enter your username before closing.\n\n",
+                                        comment: "Message of Close Account confirmation alert")
+        let destructiveActionTitle = NSLocalizedString("Permanently Close Account",
+                                                       comment: "Close Account confirmation action title")
+
+        let alert = alertHelper.makeAlertWithConfirmation(title: title, message: message, valueToConfirm: value, destructiveActionTitle: destructiveActionTitle, destructiveAction: closeAccount)
+        alert.presentFromRootViewController()
+    }
+
+    private func closeAccount() {
+        let status = NSLocalizedString("Closing account…", comment: "Overlay message displayed while closing account")
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
+
+        accountSettingsService.closeAccount { [weak self] in
+            guard let self = self else { return }
+            switch $0 {
+            case .success:
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])
+                let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
+                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                AccountHelper.logOutDefaultWordPressComAccount()
+            case .failure(let error):
+                let errorCode = self.errorCode(error) ?? "unknown"
+                WPAnalytics.track(.accountCloseCompleted, properties: ["status": "failure", "error_code": errorCode])
+
+                SVProgressHUD.dismiss()
+                DDLogError("Error closing account: \(error.localizedDescription)")
+                self.showCloseAccountErrorAlert(message: self.generateLocalizedMessage(error))
+            }
+        }
+    }
+
+    private func showCloseAccountErrorAlert(message: String) {
+        let title = NSLocalizedString("Couldn’t close account automatically",
+                                      comment: "Error title displayed when unable to close user account.")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        let contactSupportTitle = NSLocalizedString("Contact Support",
+                                      comment: "Title for a button displayed when unable to close user account due to having atomic site.")
+        alert.addActionWithTitle(contactSupportTitle, style: .default, handler: contactSupportAction)
+        let cancelAction = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alert.addCancelActionWithTitle(cancelAction)
+
+        alert.presentFromRootViewController()
+    }
+
+    private func errorCode(_ error: Error) -> String? {
+        let userInfo = (error as NSError).userInfo
+        let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String
+
+        return errorCode
+    }
+
+    private func generateLocalizedMessage(_ error: Error) -> String {
+        let errorCode = errorCode(error)
+
+        switch errorCode {
+        case "unauthorized":
+            return NSLocalizedString("You're not authorized to close the account.",
+                                     comment: "Error message displayed when unable to close user account due to being unauthorized.")
+        case "atomic-site":
+            return localizedErrorMessageForAtomicSites
+        case "chargebacked-site":
+            return NSLocalizedString("This user account cannot be closed if there are unresolved chargebacks.",
+                                     comment: "Error message displayed when unable to close user account due to unresolved chargebacks.")
+        case "active-subscriptions":
+            return NSLocalizedString("This user account cannot be closed while it has active subscriptions.",
+                                     comment: "Error message displayed when unable to close user account due to having active subscriptions.")
+        case "active-memberships":
+            return NSLocalizedString("This user account cannot be closed while it has active purchases.",
+                                     comment: "Error message displayed when unable to close user account due to having active purchases.")
+        default:
+            return NSLocalizedString("An error occured while closing account.",
+                                     comment: "Default error message displayed when unable to close user account.")
+        }
+    }
+
+    private var localizedErrorMessageForAtomicSites: String {
+        NSLocalizedString("To close this account now, contact our support team.",
+                                 comment: "Error message displayed when unable to close user account due to having active atomic site.")
+    }
+
+    private var contactSupportAction: ((UIAlertAction) -> Void) {
+        return { action in
+            if ZendeskUtils.zendeskEnabled {
+                guard let leafViewController = UIApplication.shared.leafViewController else {
+                    return
+                }
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: leafViewController, with: .closeAccount) { [weak self] identityUpdated in
+                    if identityUpdated {
+                        self?.refreshModel()
+                    }
+                }
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 
@@ -267,5 +417,6 @@ private class AccountSettingsController: SettingsController {
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
         static let usernameChanged = NSLocalizedString("Username changed to %@", comment: "Message displayed in a Notice when the username has changed successfully. The placeholder is the new username.")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 }

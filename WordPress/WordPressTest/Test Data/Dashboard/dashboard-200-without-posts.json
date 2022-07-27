@@ -1,0 +1,14 @@
+{
+    "posts": {
+        "has_published": false,
+        "draft": [],
+        "scheduled": []
+    },
+    "todays_stats": {
+        "views": 0,
+        "visitors": 0,
+        "likes": 0,
+        "comments": 0
+    }
+}
+

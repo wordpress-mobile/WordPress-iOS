@@ -1,9 +1,9 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-import Nimble
 
-class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostCoordinatorFailedPostsFetcherTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     private var fetcher: PostCoordinator.FailedPostsFetcher!
@@ -11,7 +11,6 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         fetcher = PostCoordinator.FailedPostsFetcher(context)
     }
@@ -20,7 +19,6 @@ class PostCoordinatorFailedPostsFetcherTests: XCTestCase {
         super.tearDown()
         fetcher = nil
         context = nil
-        contextManager = nil
     }
 
     func testItReturnsPostsThatCanBeAutoUploadedOrAutoSaved() {
@@ -92,7 +90,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
 private extension PostCoordinator.FailedPostsFetcher {
     func getPostsToRetrySync() -> [AbstractPost] {
         var result = [AbstractPost]()
-        waitUntil(timeout: 5) { done in
+        waitUntil(timeout: DispatchTimeInterval.seconds(5)) { done in
             self.postsAndRetryActions { postsAndActions in
                 result = Array(postsAndActions.filter { $1 != .nothing }.keys)
                 done()

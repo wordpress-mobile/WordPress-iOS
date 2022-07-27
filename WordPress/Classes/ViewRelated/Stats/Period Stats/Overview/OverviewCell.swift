@@ -95,6 +95,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var topSeparatorLine: UIView!
+    @IBOutlet weak var labelsStackView: UIStackView!
     @IBOutlet weak var selectedLabel: UILabel!
     @IBOutlet weak var selectedData: UILabel!
     @IBOutlet weak var differenceLabel: UILabel!
@@ -120,7 +121,12 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil, statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil, barChartHighlightIndex: Int? = nil) {
+    func configure(tabsData: [OverviewTabData],
+                   barChartData: [BarChartDataConvertible] = [],
+                   barChartStyling: [BarChartStyling] = [],
+                   period: StatsPeriodUnit? = nil,
+                   statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil,
+                   barChartHighlightIndex: Int? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -128,10 +134,12 @@ class OverviewCell: UITableViewCell, NibLoadable {
         self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        configureLabelsStackView()
         configureChartView()
         setupFilterBar()
         updateLabels()
     }
+
 }
 
 // MARK: - Private Extension
@@ -144,20 +152,6 @@ private extension OverviewCell {
         Style.configureLabelForOverview(selectedData)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
-        configureFonts()
-    }
-
-    /// This method squelches two Xcode warnings that I encountered:
-    /// 1. Attribute Unavailable: Large Title font text style before iOS 11.0
-    /// 2. Automatically Adjusts Font requires using a Dynamic Type text style
-    /// The second emerged as part of my attempt to resolve the first.
-    ///
-    func configureFonts() {
-
-        let prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
-        selectedData.font = prevailingFont
-
-        selectedData.adjustsFontForContentSizeCategory = true   // iOS 10
     }
 
     func setupFilterBar() {
@@ -179,6 +173,10 @@ private extension OverviewCell {
         filterTabBar.equalWidthFill = .fillProportionally
         filterTabBar.equalWidthSpacing = 12
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            filterTabBar.dividerColor = .clear
+        }
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -196,6 +194,21 @@ private extension OverviewCell {
         selectedData.text = tabData.tabData.abbreviatedString(forHeroNumber: true)
         differenceLabel.text = tabData.differenceLabel
         differenceLabel.textColor = tabData.differenceTextColor
+    }
+
+    func configureLabelsStackView() {
+        // If isAccessibilityCategory, display the labels vertically.
+        // This makes the differenceLabel "wrap" and appear under the selectedLabel.
+
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            labelsStackView.axis = .vertical
+            labelsStackView.alignment = .leading
+            labelsStackView.distribution = .fill
+        } else {
+            labelsStackView.axis = .horizontal
+            labelsStackView.alignment = .firstBaseline
+            labelsStackView.distribution = .equalSpacing
+        }
     }
 
     // MARK: Chart support

@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import Gridicons
 import WordPressAuthenticator
-
+import AutomatticAbout
 
 class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
@@ -120,6 +120,13 @@ class MeViewController: UITableViewController {
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
+        let qrLogin = NavigationItemRow(
+            title: RowTitles.qrLogin,
+            icon: .gridicon(.camera),
+            accessoryType: accessoryType,
+            action: presentQRLogin(),
+            accessibilityIdentifier: "qrLogin")
+
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
             icon: .gridicon(.cog),
@@ -145,35 +152,49 @@ class MeViewController: UITableViewController {
 
         let wordPressComAccount = HeaderTitles.wpAccount
 
-        if loggedIn {
-            return ImmuTable(
-                sections: [
-                    ImmuTableSection(rows: [
-                        myProfile,
-                        accountSettings,
-                        appSettingsRow
-                    ]),
-                    ImmuTableSection(rows: [helpAndSupportIndicator]),
-                    ImmuTableSection(
-                        headerText: wordPressComAccount,
-                        rows: [
-                            logOut
-                    ])
-            ])
-        } else { // Logged out
-            return ImmuTable(
-                sections: [
-                    ImmuTableSection(rows: [
-                        appSettingsRow,
-                    ]),
-                    ImmuTableSection(rows: [helpAndSupportIndicator]),
-                    ImmuTableSection(
-                        headerText: wordPressComAccount,
-                        rows: [
-                            logIn
-                    ])
-            ])
-        }
+        return ImmuTable(sections: [
+            // first section
+            .init(rows: {
+                var rows: [ImmuTableRow] = [appSettingsRow]
+                if loggedIn {
+                    var loggedInRows = [myProfile, accountSettings]
+                    if AppConfiguration.qrLoginEnabled && FeatureFlag.qrLogin.enabled {
+                        loggedInRows.append(qrLogin)
+                    }
+
+                    rows = loggedInRows + rows
+                }
+                return rows
+            }()),
+
+            // middle section
+            .init(rows: {
+                var rows: [ImmuTableRow] = [helpAndSupportIndicator]
+
+                if isRecommendAppRowEnabled {
+                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                                  accessoryType: accessoryType,
+                                                  action: displayShareFlow(),
+                                                  loading: sharePresenter.isLoading))
+                }
+
+                if FeatureFlag.aboutScreen.enabled {
+                    rows.append(NavigationItemRow(title: RowTitles.about,
+                                                  icon: UIImage.gridicon(.mySites),
+                                                  accessoryType: .disclosureIndicator,
+                                                  action: pushAbout(),
+                                                  accessibilityIdentifier: "About"))
+                }
+
+                return rows
+            }()),
+
+            // last section
+            .init(headerText: wordPressComAccount, rows: {
+                return [loggedIn ? logOut : logIn]
+            }())
+        ])
     }
 
     // MARK: - UITableViewDelegate
@@ -227,6 +248,17 @@ class MeViewController: UITableViewController {
         }
     }
 
+    private func presentQRLogin() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            QRLoginCoordinator.present(from: self, origin: .menu)
+        }
+    }
+
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
@@ -239,10 +271,37 @@ class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportTableViewController()
+            let controller = SupportTableViewController(style: .insetGrouped)
             self.navigationController?.pushViewController(controller,
                                                           animated: true,
                                                           rightBarButton: self.navigationItem.rightBarButtonItem)
+        }
+    }
+
+    private func pushAbout() -> ImmuTableAction {
+        return { [unowned self] _ in
+            let configuration = AppAboutScreenConfiguration(sharePresenter: self.sharePresenter)
+            let controller = AutomatticAboutScreen.controller(appInfo: AppAboutScreenConfiguration.appInfo,
+                                                              configuration: configuration,
+                                                              fonts: AppAboutScreenConfiguration.fonts)
+            self.present(controller, animated: true) {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
+        }
+    }
+
+    func displayShareFlow() -> ImmuTableAction {
+        return { [unowned self] row in
+            defer {
+                self.tableView.deselectSelectedRowWithAnimation(true)
+            }
+
+            guard let selectedIndexPath = self.tableView.indexPathForSelectedRow,
+                  let selectedCell = self.tableView.cellForRow(at: selectedIndexPath) else {
+                return
+            }
+
+            self.sharePresenter.present(for: .wordpress, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -392,6 +451,17 @@ class MeViewController: UITableViewController {
     fileprivate func promptForLoginOrSignup() {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
+
+    /// Convenience property to determine whether the recomend app row should be displayed or not.
+        private var isRecommendAppRowEnabled: Bool {
+            !AppConfiguration.isJetpack
+        }
+
+    private lazy var sharePresenter: ShareAppContentPresenter = {
+        let presenter = ShareAppContentPresenter(account: defaultAccount())
+        presenter.delegate = self
+        return presenter
+    }()
 }
 
 // MARK: - SearchableActivity Conformance
@@ -445,9 +515,11 @@ private extension MeViewController {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
+        static let qrLogin = NSLocalizedString("Scan Login Code", comment: "Link to opening the QR login scanner")
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
+        static let about = AppConstants.Settings.aboutTitle
     }
 
     enum HeaderTitles {
@@ -455,7 +527,7 @@ private extension MeViewController {
     }
 
     enum LogoutAlert {
-        static let defaultTitle =  NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
+        static let defaultTitle = AppConstants.Logout.alertTitle
         static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
@@ -471,5 +543,29 @@ private extension MeViewController {
 
     @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
         reloadViewModel()
+    }
+}
+
+// MARK: - ShareAppContentPresenterDelegate
+
+extension MeViewController: ShareAppContentPresenterDelegate {
+    func didUpdateLoadingState(_ loading: Bool) {
+        guard isRecommendAppRowEnabled else {
+             return
+         }
+
+        reloadViewModel()
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension MeViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+              JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView()
     }
 }

@@ -5,7 +5,7 @@ class SiteAssemblyServiceTests: XCTestCase {
 
     private var creationRequest: SiteCreationRequest?
 
-    override func setUp() {
+    override func setUpWithError() throws {
         super.setUp()
 
         let siteCreator = SiteCreator()
@@ -17,9 +17,13 @@ class SiteAssemblyServiceTests: XCTestCase {
             iconColor: "#FF0000",
             mobile: true)
 
-        siteCreator.vertical = SiteVertical(identifier: "678910",
-            title: "A title",
-            isNew: true)
+        siteCreator.vertical = SiteIntentVertical(
+            slug: "slug",
+            localizedTitle: "A title",
+            emoji: "😎",
+            isDefault: true,
+            isCustom: false
+        )
 
         siteCreator.information = SiteInformation(title: "A title", tagLine: "A tagline")
 
@@ -28,9 +32,9 @@ class SiteAssemblyServiceTests: XCTestCase {
             "product_id": 42 as AnyObject,
             "supports_privacy": true as AnyObject,
             ]
-        siteCreator.address = try! DomainSuggestion(json: domainSuggestionPayload)
+        siteCreator.address = try DomainSuggestion(json: domainSuggestionPayload)
 
-        creationRequest = try! siteCreator.build()
+        creationRequest = siteCreator.build()
     }
 
     func testSiteAssemblyService_InitialStatus_IsIdle() {

@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A card with a title and a value stacked vertically
 struct VerticalCard: View {
-    let title: LocalizedStringKey
+    let title: LocalizedString
     let value: Int
     let largeText: Bool
 
@@ -30,7 +30,6 @@ struct VerticalCard: View {
                 .accessibility(label: accessibilityLabel)
 
         }
-        .flipsForRightToLeftLayoutDirection(true)
     }
 }
 

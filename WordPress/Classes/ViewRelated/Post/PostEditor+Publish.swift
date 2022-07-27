@@ -51,7 +51,7 @@ protocol PublishingEditor where Self: UIViewController {
 
 var postPublishedReceipt: Receipt?
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
 
     func publishingDismissed() {
 
@@ -177,8 +177,8 @@ extension PublishingEditor where Self: UIViewController {
         }
 
         if action.isAsync,
-            let postStatus = self.post.original?.status ?? self.post.status,
-            ![.publish, .publishPrivate].contains(postStatus) {
+           let postStatus = self.post.original?.status ?? self.post.status,
+           ![.publish, .publishPrivate].contains(postStatus) {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
@@ -295,6 +295,10 @@ extension PublishingEditor where Self: UIViewController {
             properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
             properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags()
             properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
+
+            if let post = post as? Post, let promptId = post.bloggingPromptID {
+                properties["prompt_id"] = promptId
+            }
         }
 
         WPAppAnalytics.track(stat, withProperties: properties, with: post)
@@ -446,7 +450,7 @@ extension PublishingEditor where Self: UIViewController {
     }
 }
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
@@ -458,7 +462,7 @@ extension PublishingEditor where Self: UIViewController {
 
 // MARK: - Publishing
 
-extension PublishingEditor where Self: UIViewController {
+extension PublishingEditor {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
@@ -511,7 +515,7 @@ extension PublishingEditor where Self: UIViewController {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView()
+        dismissOrPopView(presentBloggingReminders: true)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
@@ -528,17 +532,36 @@ extension PublishingEditor where Self: UIViewController {
         post = originalPost
     }
 
-    func dismissOrPopView(didSave: Bool = true) {
+    func dismissOrPopView(didSave: Bool = true, presentBloggingReminders: Bool = false) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
+            // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
+            // needs to happen in the closure.
             onClose(didSave, false)
-        } else if isModal() {
-            presentingViewController?.dismiss(animated: true, completion: nil)
+        } else if isModal(), let controller = presentingViewController {
+            controller.dismiss(animated: true) {
+                if presentBloggingReminders {
+                    BloggingRemindersFlow.present(from: controller,
+                                                  for: self.post.blog,
+                                                  source: .publishFlow,
+                                                  alwaysShow: false)
+                }
+            }
         } else {
-            _ = navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
+            guard let controller = navigationController?.topViewController else {
+                return
+            }
+
+            if presentBloggingReminders {
+                BloggingRemindersFlow.present(from: controller,
+                                              for: self.post.blog,
+                                              source: .publishFlow,
+                                              alwaysShow: false)
+            }
         }
     }
 

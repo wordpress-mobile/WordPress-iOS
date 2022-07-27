@@ -206,6 +206,19 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
+- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID
+{
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error loading cached post for site: %@", error);
+        return nil;
+    }
+    
+    return results.firstObject;
+}
 
 #pragma mark - Update Methods
 
@@ -324,15 +337,15 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 }
 
 - (void)toggleFollowingForPost:(ReaderPost *)post
-                       success:(void (^)(void))success
-                       failure:(void (^)(NSError *error))failure
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure
 {
     // Get a the post in our own context
     NSError *error;
     ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
     if (error) {
         if (failure) {
-            failure(error);
+            failure(true, error);
         }
         return;
     }
@@ -379,7 +392,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             [self refreshPostsForFollowedTopic];
         }
         if (success) {
-            success();
+            success(follow);
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -395,7 +408,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         [self setFollowing:oldValue forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
 
         if (failure) {
-            failure(error);
+            failure(follow, error);
         }
     };
 

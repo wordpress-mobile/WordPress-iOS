@@ -1,6 +1,6 @@
 import UIKit
 
-protocol SiteStatsTableHeaderDelegate: class {
+protocol SiteStatsTableHeaderDelegate: AnyObject {
     func dateChangedTo(_ newDate: Date?)
 }
 
@@ -8,9 +8,11 @@ protocol SiteStatsTableHeaderDateButtonDelegate: SiteStatsTableHeaderDelegate {
     func didTouchHeaderButton(forward: Bool)
 }
 
-class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
+class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
+
+    static let estimatedHeight: CGFloat = 60
 
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var timezoneLabel: UILabel!
@@ -55,11 +57,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
         return -(expectedPeriodCount - 1)
     }
 
-    // MARK: - Class Methods
-
-    class func headerHeight() -> CGFloat {
-        return SiteStatsInformation.sharedInstance.timeZoneMatchesDevice() ? Heights.default : Heights.withTimezone
-    }
+    private var isRunningGhostAnimation: Bool = false
 
     // MARK: - View
 
@@ -130,24 +128,29 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Access
     }
 
     func animateGhostLayers(_ animate: Bool) {
-        forwardButton.isEnabled = !animate
-        backButton.isEnabled = !animate
-
         if animate {
+            isRunningGhostAnimation = true
             startGhostAnimation(style: GhostCellStyle.muriel)
-            return
+        } else {
+            isRunningGhostAnimation = false
+            stopGhostAnimation()
         }
-        stopGhostAnimation()
+
+        updateButtonStates()
     }
 }
 
 private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
-        contentView.backgroundColor = .listForeground
+        backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(dateLabel)
         Style.configureLabelAsChildRowTitle(timezoneLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
+
+        // Required as the Style separator configure method clears all
+        // separators for the Stats Revamp in Insights.
+        bottomSeparatorLine.backgroundColor = .separator
     }
 
     func displayDate() -> String? {
@@ -251,6 +254,12 @@ private extension SiteStatsTableHeaderView {
     }
 
     func updateButtonStates() {
+        guard !isRunningGhostAnimation else {
+            forwardButton.isEnabled = false
+            backButton.isEnabled = false
+            return
+        }
+
         guard let date = date, let period = period else {
             forwardButton.isEnabled = false
             backButton.isEnabled = false
@@ -286,12 +295,6 @@ private extension SiteStatsTableHeaderView {
         }
     }
 
-    // MARK: - Header Heights
-
-    private struct Heights {
-        static let `default`: CGFloat = 44
-        static let withTimezone: CGFloat = 60
-    }
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {

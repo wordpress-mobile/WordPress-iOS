@@ -175,6 +175,9 @@ struct MediaImageRow: ImmuTableRow {
             setAspectRatioFor(cell)
             loadImageFor(cell)
             cell.isVideo = media.mediaType == .video
+            cell.accessibilityTraits = .button
+            cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
+            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
         }
     }
 
@@ -239,6 +242,9 @@ struct MediaDocumentRow: ImmuTableRow {
         if let cell = cell as? MediaItemDocumentTableViewCell {
             cell.customImageView.tintColor = cell.textLabel?.textColor
             cell.showIconForMedia(media)
+            cell.accessibilityTraits = .button
+            cell.accessibilityLabel = NSLocalizedString("Preview media", comment: "Accessibility label for media item preview for user's viewing an item in their media library")
+            cell.accessibilityHint = NSLocalizedString("Tap to view media in full screen", comment: "Accessibility hint for media item preview for user's viewing an item in their media library")
         }
     }
 }

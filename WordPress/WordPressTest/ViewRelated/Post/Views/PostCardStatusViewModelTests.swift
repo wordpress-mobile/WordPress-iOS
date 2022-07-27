@@ -1,24 +1,16 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
 
-import Nimble
-
 private typealias ButtonGroups = PostCardStatusViewModel.ButtonGroups
 
-class PostCardStatusViewModelTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostCardStatusViewModelTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
-    }
-
-    override func tearDown() {
-        context = nil
-        contextManager = nil
-        super.tearDown()
     }
 
     func testExpectedButtonGroupsForVariousPostAttributeCombinations() {
@@ -27,48 +19,48 @@ class PostCardStatusViewModelTests: XCTestCase {
             (
                 "Draft with remote",
                 PostBuilder(context).drafted().withRemote().build(),
-                ButtonGroups(primary: [.edit, .view, .more], secondary: [.publish, .duplicate, .trash])
+                ButtonGroups(primary: [.edit, .view, .more], secondary: [.publish, .duplicate, .copyLink, .trash])
             ),
             (
                 "Draft that was not uploaded to the server",
                 PostBuilder(context).drafted().with(remoteStatus: .failed).build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .trash])
+                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .copyLink, .trash])
             ),
             (
                 "Draft with remote and confirmed local changes",
                 PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.publish, .duplicate, .trash])
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.publish, .duplicate, .copyLink, .trash])
             ),
             (
                 "Draft with remote and canceled local changes",
                 PostBuilder(context).drafted().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().cancelledAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .trash])
+                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .copyLink, .trash])
             ),
             (
                 "Local published draft with confirmed auto-upload",
                 PostBuilder(context).published().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.duplicate, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.duplicate, .moveToDraft, .copyLink, .trash])
             ),
             (
                 "Local published draft with canceled auto-upload",
                 PostBuilder(context).published().with(remoteStatus: .failed).build(),
-                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .publish, .more], secondary: [.duplicate, .moveToDraft, .copyLink, .trash])
             ),
             (
                 "Published post",
                 PostBuilder(context).published().withRemote().build(),
-                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .view, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .copyLink, .trash])
             ),
             (
                 "Published post with local confirmed changes",
                 PostBuilder(context).published().withRemote().with(remoteStatus: .failed).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .cancelAutoUpload, .more], secondary: [.stats, .share, .duplicate, .moveToDraft, .copyLink, .trash])
             ),
             (
                 "Post with the max number of auto uploades retry reached",
                 PostBuilder(context).with(remoteStatus: .failed)
                     .with(autoUploadAttemptsCount: 3).confirmedAutoUpload().build(),
-                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.publish, .duplicate, .moveToDraft, .trash])
+                ButtonGroups(primary: [.edit, .retry, .more], secondary: [.publish, .duplicate, .moveToDraft, .copyLink, .trash])
             ),
         ]
 
@@ -76,17 +68,13 @@ class PostCardStatusViewModelTests: XCTestCase {
         expectations.forEach { scenario, post, expectedButtonGroups in
             let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
 
-            expect({
-                guard viewModel.buttonGroups == expectedButtonGroups else {
-                    let reason = "The scenario \"\(scenario)\" failed. "
-                        + " Expected buttonGroups to be: \(expectedButtonGroups.prettifiedDescription)."
-                        + " Actual: \(viewModel.buttonGroups.prettifiedDescription)"
-
-                    return .failed(reason: reason)
-                }
-
-                return .succeeded
-            }).to(succeed())
+            guard viewModel.buttonGroups == expectedButtonGroups else {
+                let reason = "The scenario \"\(scenario)\" failed. "
+                    + " Expected buttonGroups to be: \(expectedButtonGroups.prettifiedDescription)."
+                    + " Actual: \(viewModel.buttonGroups.prettifiedDescription)"
+                XCTFail(reason)
+                return
+            }
         }
     }
 

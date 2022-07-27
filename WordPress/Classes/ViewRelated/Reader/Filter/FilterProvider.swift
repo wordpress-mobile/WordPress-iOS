@@ -143,8 +143,7 @@ extension ReaderSiteTopic {
     private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
         let completionBlock: (Result<[ReaderSiteTopic], Error>) -> Void = { result in
             let itemResult = result.map { sites in
-                sites.filter {!$0.isExternal}
-                    .map { topic in
+                sites.map { topic in
                     return TableDataItem(topic: topic, configure: { cell in
                         cell.textLabel?.text = topic.title
                         cell.detailTextLabel?.text = topic.siteURL

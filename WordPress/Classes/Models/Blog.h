@@ -82,6 +82,20 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureStories,
     /// Does the blog support Jetpack contact info block?
     BlogFeatureContactInfo,
+    BlogFeatureBlockEditorSettings,
+    /// Does the blog support the Layout grid block?
+    BlogFeatureLayoutGrid,
+    /// Does the blog support the tiled gallery block?
+    BlogFeatureTiledGallery,
+    /// Does the blog support Facebook embed block?
+    BlogFeatureFacebookEmbed,
+    /// Does the blog support Instagram embed block?
+    BlogFeatureInstagramEmbed,
+    /// Does the blog support Loom embed block?
+    BlogFeatureLoomEmbed,
+    /// Does the blog support Smartframe embed block?
+    BlogFeatureSmartframeEmbed,
+
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -97,6 +111,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
+@property (nonatomic, strong, readwrite, nonnull) NSNumber *organizationID;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;
@@ -141,6 +156,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 @property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *quickStartTypeValue;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
@@ -217,12 +233,12 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
+- (BOOL)isStatsActive;
 - (BOOL)hasMappedDomain;
 
 /**
@@ -277,6 +293,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return YES if there is a credential
  */
 - (BOOL)isBasicAuthCredentialStored;
+
+/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
+/// @param requiredVersion The minimum version to check for
+- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion;
 
 @end
 

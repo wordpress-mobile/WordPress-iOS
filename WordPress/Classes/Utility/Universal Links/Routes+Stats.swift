@@ -31,6 +31,10 @@ enum StatsRoute {
 }
 
 extension StatsRoute: Route {
+    var section: DeepLinkSection? {
+        return .stats
+    }
+
     var action: NavigationAction {
         return self
     }

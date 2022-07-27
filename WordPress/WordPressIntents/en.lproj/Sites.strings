@@ -1,12 +1,17 @@
+/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
 "BOl9KQ" = "There are ${count} options matching ‘${site}’.";
 
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ILcGmf" = "Site";
 
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
 "cyajMn" = "Site";
 
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "gpCwrM" = "Select Site";
 
-"s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
-
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "tVvJ9c" = "Select Site Intent";
 
+/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
+"s4dJhx" = "Just to confirm, you wanted ‘${site}’?";

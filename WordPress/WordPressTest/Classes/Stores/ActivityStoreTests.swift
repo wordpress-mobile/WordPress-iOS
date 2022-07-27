@@ -4,7 +4,7 @@ import XCTest
 @testable import WordPress
 @testable import WordPressKit
 
-class ActivityStoreTests: XCTestCase {
+class ActivityStoreTests: CoreDataTestCase {
     private var dispatcher: ActionDispatcher!
     private var store: ActivityStore!
     private var activityServiceMock: ActivityServiceRemoteMock!
@@ -15,7 +15,7 @@ class ActivityStoreTests: XCTestCase {
 
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
-        backupServiceMock = JetpackBackupServiceMock()
+        backupServiceMock = JetpackBackupServiceMock(managedObjectContext: contextManager.mainContext)
         store = ActivityStore(dispatcher: dispatcher, activityServiceRemote: activityServiceMock, backupService: backupServiceMock)
     }
 
@@ -247,10 +247,6 @@ extension ActivityGroup {
 
 class JetpackBackupServiceMock: JetpackBackupService {
     var didCallGetAllBackupStatusWithSite: JetpackSiteRef?
-
-    init() {
-        super.init(managedObjectContext: TestContextManager.sharedInstance().mainContext)
-    }
 
     override func getAllBackupStatus(for site: JetpackSiteRef, success: @escaping ([JetpackBackup]) -> Void, failure: @escaping (Error) -> Void) {
         didCallGetAllBackupStatusWithSite = site

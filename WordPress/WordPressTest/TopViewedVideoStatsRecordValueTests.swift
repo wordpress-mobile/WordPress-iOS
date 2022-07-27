@@ -1,4 +1,6 @@
+import XCTest
 @testable import WordPress
+
 class TopViewedVideoStatsTests: StatsTestCase {
 
     func testCreation() {

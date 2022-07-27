@@ -94,8 +94,8 @@ struct UnifiedPrologueEditorContentView: View {
 private extension UnifiedPrologueEditorContentView {
 
     enum Appearance {
-        static let topElementTitle: LocalizedStringKey = "Getting Inspired"
-        static let middleElementTitle: LocalizedStringKey = "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next"
+        static let topElementTitle = NSLocalizedString("Getting Inspired", comment: "Example post title used in the login prologue screens.")
+        static let middleElementTitle = NSLocalizedString("I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next", comment: "Example post content used in the login prologue screens.")
         static let middleElementTerminator = "|"
     }
 }

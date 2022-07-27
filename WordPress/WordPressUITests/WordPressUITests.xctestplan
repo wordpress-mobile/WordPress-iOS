@@ -15,18 +15,21 @@
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
       "name" : "WordPress"
-    }
+    },
+    "testRepetitionMode" : "retryOnFailure"
   },
   "testTargets" : [
     {
       "skippedTests" : [
+        "EditorAztecTests",
         "EditorTests\/testPlayground()",
         "LoginTests\/testEmailMagicLinkLogin()",
         "LoginTests\/testEmailPasswordLoginLogout()",
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
-        "SignupTests\/testEmailSignup()"
+        "SignupTests\/testEmailSignup()",
+        "SupportScreenTests\/testSupportScreenLoads()"
       ],
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",

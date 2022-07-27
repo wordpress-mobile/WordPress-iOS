@@ -60,6 +60,8 @@ class PostCoordinator: NSObject {
               defaultFailureNotice: Notice? = nil,
               completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
 
+        notifyNewPostCreated()
+
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
@@ -137,10 +139,22 @@ class PostCoordinator: NSObject {
                 return
             }
 
+            // Ensure that all synced media references are up to date
+            post.media.forEach { media in
+                if media.remoteStatus == .sync {
+                    self.updateReferences(to: media, in: post)
+                }
+            }
+
             let uuid = observeMedia(for: post, completion: completion)
             trackObserver(receipt: uuid, for: post)
 
             return
+        } else {
+            // Ensure that all media references are up to date
+            post.media.forEach { media in
+                self.updateReferences(to: media, in: post)
+            }
         }
 
         completion(.success(post))
@@ -226,6 +240,12 @@ class PostCoordinator: NSObject {
 
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
 
+            if uploadedPost.isScheduled() {
+                self?.notifyNewPostScheduled()
+            } else if uploadedPost.isPublished() {
+                self?.notifyNewPostPublished()
+            }
+
             SearchManager.shared.indexItem(uploadedPost)
 
             let model = PostNoticeViewModel(post: uploadedPost)
@@ -241,30 +261,10 @@ class PostCoordinator: NSObject {
         })
     }
 
-    func upload(assets: [ExportableAsset], to post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> Void) -> [Media?] {
-        guard mediaCoordinator.uploadMedia(for: post) else {
-            change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost)))
-            }
-            return []
-        }
-
-        change(post: post, status: .pushing)
-
-        change(post: post, status: .pushingMedia)
-
-        // Only observe if we're not already
-        guard !isObserving(post: post) else {
-            return []
-        }
-
-        let uuid = observeMedia(for: post, completion: completion)
-        trackObserver(receipt: uuid, for: post)
-
+    func add(assets: [ExportableAsset], to post: AbstractPost) -> [Media?] {
         let media = assets.map { asset in
             return mediaCoordinator.addMedia(from: asset, to: post)
         }
-
         return media
     }
 
@@ -329,6 +329,13 @@ class PostCoordinator: NSObject {
             let remoteURLStr = media.remoteURL else {
             return
         }
+        var imageURL = remoteURLStr
+
+        if let remoteLargeURL = media.remoteLargeURL {
+            imageURL = remoteLargeURL
+        } else if let remoteMediumURL = media.remoteMediumURL {
+            imageURL = remoteMediumURL
+        }
 
         let mediaLink = media.link
         let mediaUploadID = media.uploadID
@@ -344,10 +351,10 @@ class PostCoordinator: NSObject {
         gutenbergProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
-            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
             gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)

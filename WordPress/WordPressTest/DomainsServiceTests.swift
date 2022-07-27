@@ -4,11 +4,10 @@ import OHHTTPStubs
 import WordPressKit
 @testable import WordPress
 
-class DomainsServiceTests: XCTestCase {
+class DomainsServiceTests: CoreDataTestCase {
     let testSiteID = 12345
 
     var remote: DomainsServiceRemote!
-    var context: NSManagedObjectContext!
     var testBlog: Blog!
 
     var domainsEndpoint: String { return "sites/\(testSiteID)/domains" }
@@ -19,15 +18,12 @@ class DomainsServiceTests: XCTestCase {
 
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
-        context = TestContextManager().mainContext
         testBlog = makeTestBlog()
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        context.reset()
         HTTPStubs.removeAllStubs()
     }
 
@@ -41,8 +37,8 @@ class DomainsServiceTests: XCTestCase {
     }
 
     fileprivate func makeTestBlog() -> Blog {
-        let accountService = AccountService(managedObjectContext: context)
-        let blogService = BlogService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
+        let blogService = BlogService(managedObjectContext: mainContext)
         let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
         let blog = blogService.createBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
@@ -58,7 +54,7 @@ class DomainsServiceTests: XCTestCase {
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]
         fetch.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, testBlog)
 
-        if let domains = (try? context.fetch(fetch)) as? [ManagedDomain] {
+        if let domains = (try? mainContext.fetch(fetch)) as? [ManagedDomain] {
             return domains
         } else {
             XCTFail()
@@ -68,10 +64,10 @@ class DomainsServiceTests: XCTestCase {
 
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
-        let service = DomainsService(managedObjectContext: context, remote: remote)
-        service.refreshDomainsForSite(testBlog.dotComID!.intValue, completion: { success in
+        let service = DomainsService(managedObjectContext: mainContext, remote: remote)
+        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
             expect.fulfill()
-        })
+        }
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -115,12 +111,12 @@ class DomainsServiceTests: XCTestCase {
     }
 
     func testDomainServiceUpdatesExistingDomains() {
-        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
+        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: mainContext) as! ManagedDomain
         existingDomain.domainName = "example.com"
         existingDomain.isPrimary = false
         existingDomain.domainType = .wpCom
         existingDomain.blog = testBlog
-        try! context.save()
+        try! mainContext.save()
 
         let domains = findAllDomains()
         XCTAssert(domains.count == 1, "Expecting 1 domain initially")
@@ -141,7 +137,7 @@ class DomainsServiceTests: XCTestCase {
         fetchDomains()
 
         let domains = findAllDomains()
-        XCTAssert(domains.count == 4, "Expecting 4 domains initially")
+        XCTAssert(domains.count == 5, "Expecting 5 domains initially")
 
         stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
@@ -153,5 +149,36 @@ class DomainsServiceTests: XCTestCase {
         let domainNames = updatedDomains.map { $0.domainName }
         XCTAssert(domainNames.contains("example.com"), "Expecting domain 'example.com' to be present")
         XCTAssert(domainNames.contains("example2.com"), "Expecting domain 'example2.com' to be present")
+    }
+
+    func testDomainServiceParsesExpiryAndRenewalProperties() {
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        fetchDomains()
+
+        let updatedDomains = findAllDomains()
+
+        let domain = updatedDomains[4]
+
+        XCTAssertEqual(domain.autoRenewalDate, "October 30, 2016")
+        XCTAssertEqual(domain.autoRenewing, true)
+        XCTAssertEqual(domain.expiryDate, "October 21st, 2021")
+        XCTAssertEqual(domain.expired, true)
+        XCTAssertEqual(domain.expirySoon, true)
+    }
+
+    func testDomainServiceUpdatesDomainIfExpiryPropertiesChange() {
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        fetchDomains()
+
+        let domains = findAllDomains()
+        XCTAssert(domains.count == 5, "Expecting 5 domains initially")
+        XCTAssertEqual(domains[4].expiryDate, "October 21st, 2021")
+
+        stubDomainsResponseWithFile("domain-service-updated-domains.json")
+        fetchDomains()
+
+        let updatedDomains = findAllDomains()
+        XCTAssert(updatedDomains.count == 3, "Expecting 3 domains to be parsed")
+        XCTAssertEqual(updatedDomains[2].expiryDate, "October 21st, 2022")
     }
 }

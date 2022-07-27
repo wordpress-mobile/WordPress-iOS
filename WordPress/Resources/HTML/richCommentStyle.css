@@ -1,0 +1,222 @@
+:root {
+    /* informs WebKit that this template supports both appearance modes. */
+    color-scheme: light dark;
+
+    /* custom variables. */
+    --wordpress-blue-color: rgba(6, 117, 196, 1);
+    --mention-background-color: rgba(2, 103, 255, .1);
+    --monospace-font: ui-monospace, monospace;
+}
+
+/* overrides for dark color scheme. */
+@media(prefers-color-scheme: dark) {
+    :root {
+        --wordpress-blue-color: rgba(57, 156, 227, 1);
+        --mention-background-color: rgba(2, 103, 255, .2);
+    }
+}
+
+/* disable WebKit text inflation algorithm to prevent text size increase on orientation change. */
+html {
+    -webkit-text-size-adjust: none;
+}
+
+/* use Apple's standard style to match the native look. */
+body {
+    font: -apple-system-body;
+    color: -apple-system-label;
+    background-color: -apple-system-background;
+}
+
+/* get rid of the container default margins and paddings. */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* remove the bottom margin of ANY element that's placed last within the <body> tag. */
+body :last-child {
+    margin-bottom: 0;
+}
+
+/* remove the top margin of ANY element that's placed first within the <body> tag. */
+body :first-child {
+    margin-top: 0;
+}
+
+/*
+ prevent ALL elements from exceeding viewport width.
+ individual elements can override this style as needed since it _should_ have higher specificity.
+*/
+* {
+    max-width: 100vw;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+div {
+    margin-bottom: 5pt;
+}
+
+/* remove the default left/right margin for figures, as some elements (tables, images) are often embedded in <figure>. */
+figure {
+    margin: 0
+}
+
+/** LINKS **/
+
+a {
+    color: var(--wordpress-blue-color);
+}
+
+a.mention {
+    text-decoration: none;
+    background-color: var(--mention-background-color);
+    padding: 0 3px;
+    -webkit-border-radius: 3pt;
+}
+
+/** IMAGES **/
+
+.wp-block-image img,
+p > img:not(.emoji) {
+    display: block;
+    margin: 0 auto; /* align center */
+    width: auto;
+    height: auto;
+}
+
+/* apply border radius to all image elements. */
+.wp-block-image img,
+p > img:not(.emoji),
+.tiled-gallery__item > img {
+    -webkit-border-radius: 3pt;
+}
+
+figcaption {
+    font: -apple-system-caption1;
+    color: -apple-system-secondary-label;
+    text-align: center;
+}
+
+/* set custom emoji images to be match current font size, and align it to the text baseline. */
+img.emoji {
+    vertical-align: baseline;
+    max-width: 1rem;
+}
+
+ul.blocks-gallery-grid {
+    list-style-type: none;
+    margin: auto 0;
+    padding: 0;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.blocks-gallery-item {
+    max-width: 50vw;
+}
+
+.blocks-gallery-item img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/** BLOCKQUOTES **/
+
+blockquote {
+    font-size: 1rem;
+    margin: 15pt 0;
+    padding: 10pt;
+    background-color: -apple-system-secondary-background;
+    -webkit-border-radius: 3pt;
+}
+
+blockquote > p:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+blockquote cite {
+    display: block;
+    font: -apple-system-footnote;
+    text-align: right;
+}
+
+blockquote cite::before {
+    content: "— ";
+}
+
+/** CODE SNIPPETS **/
+
+code,
+pre {
+    font-family: var(--monospace-font);
+    font-size: 0.85rem;
+    -webkit-border-radius: 3pt;
+    background-color: -apple-system-secondary-background;
+}
+
+code {
+    padding: 0 3pt;
+}
+
+pre {
+    padding: 10pt;
+    padding-right: 5pt;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/** TABLES **/
+
+table {
+    /* allow tables to span outside the viewport, since it is scrollable. */
+    max-width: initial;
+    overflow-x: scroll;
+    min-width: 100vw;
+    margin: auto 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+table, tr, td {
+    border: 1px solid -apple-system-separator;
+}
+
+td {
+    padding: 6pt;
+    vertical-align: top;
+}
+
+/** VIDEOS **/
+
+video {
+    width: 100vw;
+    height: auto;
+}
+
+/** BLOCK OVERRIDES **/
+
+/* override hardcoded background color to system default. */
+.has-background {
+    background-color: -apple-system-background !important;
+}
+
+/* forcefully remove gaps from custom vertical spacers. */
+.wp-block-spacer {
+    height: 0px !important;
+}
+
+/*
+ forcefully assign default text color.
+ some contents apply inline text color styling which may lead to low contrast.
+ */
+p, em, strong, b {
+    color: -apple-system-label !important;
+}

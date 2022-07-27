@@ -5,83 +5,109 @@ import CoreData
 @testable import WordPress
 
 class ContextManagerTests: XCTestCase {
-    var contextManager: TestContextManager!
+    let storeURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("ContextManagerTests.sqlite")
 
-    override func setUp() {
-        super.setUp()
-
-        contextManager = TestContextManager()
+    override func setUpWithError() throws {
+        if FileManager.default.fileExistsAtURL(storeURL) {
+            try FileManager.default.removeItem(at: storeURL)
+        }
     }
 
-    override func tearDown() {
-        super.tearDown()
-        contextManager.mainContext.reset()
+    func testIterativeMigration130ToLatest() throws {
+        var objectID: NSManagedObjectID? = .none
 
-        // Note: We'll force TestContextManager override reset, since, for (unknown reasons) the TestContextManager
-        // might be retained more than expected, and it may break other core data based tests.
-        ContextManager.overrideSharedInstance(nil)
+        // At the time of writing we are at app version 19.9 and model version 140.
+        // At app version 19.0 we were at model version 137.
+        // Iterating back 10 version is more than plenty to cover a real world scenario.
+        try prepareForMigration(withModelName: "WordPress 130") { context in
+            // Add an object to the DB from a model that looks different between the intial and the
+            // latest scheme version, so that we fully exercise the migration.
+            let originalObject = NSEntityDescription.insertNewObject(
+                forEntityName: "Comment",
+                into: context
+            )
+            try context.obtainPermanentIDs(for: [originalObject])
+            try context.save()
+
+            XCTAssertFalse(originalObject.objectID.isTemporaryID, "Should be a permanent object")
+            objectID = originalObject.objectID
+
+            try XCTAssertThrowsError(
+                WPException.objcTry({
+                    originalObject.value(forKey: "authorID")
+                }),
+                "Blog.organizationID doesn't exist in WordPress 130 but we were able to fetch it"
+            )
+        }
+
+        // Migrate to the latest version
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+
+        let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
+        XCTAssertNotNil(object, "Object should exist in new PSC")
+        XCTAssertNoThrow(
+            object.value(forKey: "authorID"),
+            "Blog.organizationID exists in latest model version, but we were unable to fetch it"
+        )
     }
 
-    func testIterativeMigration() {
-        let model19Name = "WordPress 19"
+    // The `_` at the start of the method makes it so that the XCTest runner will not pick it up as
+    // a test to run.
+    //
+    // It's not practical to run this test every time because it walks through 100+ migrations and
+    // takes 90 seconds (Intel MacBook Pro 2019)!
+    //
+    // We're keeping the code here just in case we'll ever need to test the full migration flow.
+    func _testIterativeMigration19ToLatest() throws {
+        var objectID: NSManagedObjectID? = nil
 
-        // Instantiate a Model 19 Stack
-        startupCoredataStack(model19Name)
+        try prepareForMigration(withModelName: "WordPress 19") { context in
+            // Insert a Theme Entity
+            let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: context)
+            try context.obtainPermanentIDs(for: [objectOriginal])
+            try context.save()
 
-        let mocOriginal = contextManager.mainContext
-        let psc = contextManager.persistentStoreCoordinator
+            XCTAssertFalse(objectOriginal.objectID.isTemporaryID, "Should be a permanent object")
+            objectID = objectOriginal.objectID
 
-        // Insert a Theme Entity
-        let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: mocOriginal)
-        try! mocOriginal.obtainPermanentIDs(for: [objectOriginal])
-        try! mocOriginal.save()
-
-        let objectID = objectOriginal.objectID
-        XCTAssertFalse(objectID.isTemporaryID, "Should be a permanent object")
+            try XCTAssertThrowsError(
+                WPException.objcTry({
+                    objectOriginal.value(forKey: "author")
+                }),
+                "Theme.author doesn't exist in WordPress 19 but we were able to fetch it"
+            )
+        }
 
         // Migrate to the latest
-        let persistentStore = psc.persistentStores.first!
-        try! psc.remove(persistentStore)
-
-        let standardPSC = contextManager.standardPSC
-
-        XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
-
-        // Verify if the Theme Entity is there
-        let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
-        mocSecond.persistentStoreCoordinator = standardPSC
-        let object = try! mocSecond.existingObject(with: objectID)
-
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
+        XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
     }
 
-    func testMigrate24to25AvatarURLtoBasePost() {
+    func testMigrate24to25AvatarURLtoBasePost() throws {
         let model24Name = "WordPress 24"
         let model25Name = "WordPress 25"
 
-        // Instantiate a Model 24 Stack
-        startupCoredataStack(model24Name)
-
-        let mainContext = contextManager.mainContext
-        _ = contextManager.persistentStoreCoordinator
-
-        let account = newAccountInContext(context: mainContext)
-        let blog = newBlogInAccount(account: account)
-
         let authorAvatarURL = "http://lorempixum.com/"
 
-        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: mainContext) as! Post
-        post.blog = blog
-        post.authorAvatarURL = authorAvatarURL
+        try prepareForMigration(withModelName: model24Name) { context in
+            let account = newAccountInContext(context: context)
+            let blog = newBlogInAccount(account: account)
 
-        let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: mainContext) as! ReaderPost
-        readerPost.authorAvatarURL = authorAvatarURL
+            let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
+            post.blog = blog
+            post.authorAvatarURL = authorAvatarURL
 
-        try! mainContext.save()
+            let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: context) as! ReaderPost
+            readerPost.authorAvatarURL = authorAvatarURL
+
+            try context.save()
+        }
 
         // Initialize 24 > 25 Migration
-        let secondContext = performCoredataMigration(model25Name)
+        let contextManager = ContextManager(modelName: model25Name, store: storeURL)
+        let secondContext = contextManager.mainContext
 
         // Test the existence of Post object after migration
         let allPostsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Post")
@@ -115,78 +141,6 @@ class ContextManagerTests: XCTestCase {
         }
     }
 
-    // MARK: - Helper Methods
-
-    fileprivate func startupCoredataStack(_ modelName: String) {
-        let modelURL = urlForModelName(modelName)!
-        let model = NSManagedObjectModel(contentsOf: modelURL)!
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-
-        let storeUrl = contextManager.storeURL
-        removeStoresBasedOnStoreURL(storeUrl)
-        do {
-            _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl, options: nil)
-        } catch let error as NSError {
-            XCTAssertNil(error, "Store should exist")
-        }
-
-        let mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
-        mainContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        contextManager.managedObjectModel = model
-        contextManager.mainContext = mainContext
-        contextManager.persistentStoreCoordinator = persistentStoreCoordinator
-    }
-
-    fileprivate func performCoredataMigration(_ newModelName: String) -> NSManagedObjectContext {
-        let psc = contextManager.persistentStoreCoordinator
-        _ = contextManager.mainContext
-
-        let persistentStore = psc.persistentStores.first!
-        try! psc.remove(persistentStore)
-
-        let newModelURL = urlForModelName(newModelName)!
-        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL)!
-        let standardPSC = contextManager.standardPSC
-
-        XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
-
-        let secondContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
-        secondContext.persistentStoreCoordinator = standardPSC
-        return secondContext
-    }
-
-    fileprivate func urlForModelName(_ name: String) -> URL? {
-        let bundle = Bundle.main
-        var url = bundle.url(forResource: name, withExtension: "mom")
-
-        if url == nil {
-            let momdPaths = bundle.urls(forResourcesWithExtension: "momd", subdirectory: nil)!
-            for momdPath in momdPaths {
-                url = bundle.url(forResource: name, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
-            }
-        }
-
-        return url
-    }
-
-    fileprivate func removeStoresBasedOnStoreURL(_ storeURL: URL) {
-        if storeURL.lastPathComponent.isEmpty {
-            return
-        }
-
-        let fileManager = FileManager.default
-        let directoryUrl = storeURL.deletingLastPathComponent
-        let files = try! fileManager.contentsOfDirectory(at: directoryUrl(), includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsSubdirectoryDescendants)
-        for file in files {
-            let range = file.lastPathComponent.range(of: storeURL.lastPathComponent)
-            if range?.lowerBound != range?.upperBound {
-                try! fileManager.removeItem(at: file)
-            }
-        }
-    }
-
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
@@ -202,5 +156,39 @@ class ContextManagerTests: XCTestCase {
         blog.url = "http://test.blog/"
         blog.account = account
         return blog
+    }
+
+    /// Insert data into `storeURL` using the context object provided by this function.
+    ///
+    /// This function ensures created Core Data stack is cleaned up properly, so that the database file
+    /// is ready to be used by `ContextManager` to perform migration.
+    private func prepareForMigration(withModelName modelName: String, block: (NSManagedObjectContext) throws -> Void) throws {
+        let model = try XCTUnwrap(NSManagedObjectModel(contentsOf: XCTUnwrap(urlForModelName(modelName))))
+        let container = NSPersistentContainer(name: "WordPress", managedObjectModel: model)
+        let storeDesc = NSPersistentStoreDescription(url: storeURL)
+        storeDesc.type = NSSQLiteStoreType
+        container.persistentStoreDescriptions = [storeDesc]
+        container.loadPersistentStores { _, error in
+            XCTAssertNil(error)
+        }
+
+        try block(container.viewContext)
+
+        let store = try XCTUnwrap(container.persistentStoreCoordinator.persistentStores.first)
+        try container.persistentStoreCoordinator.remove(store)
+    }
+
+    fileprivate func urlForModelName(_ name: String) -> URL? {
+        let bundle = Bundle.main
+        var url = bundle.url(forResource: name, withExtension: "mom")
+
+        if url == nil {
+            let momdPaths = bundle.urls(forResourcesWithExtension: "momd", subdirectory: nil)!
+            for momdPath in momdPaths {
+                url = bundle.url(forResource: name, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
+            }
+        }
+
+        return url
     }
 }

@@ -7,7 +7,7 @@ import WordPressShared
 
 ///
 ///
-protocol NotificationsNavigationDataSource: class {
+protocol NotificationsNavigationDataSource: AnyObject {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceding note: Notification) -> Notification?
 }
@@ -15,7 +15,8 @@ protocol NotificationsNavigationDataSource: class {
 
 // MARK: - Renders a given Notification entity, onscreen
 //
-class NotificationDetailsViewController: UIViewController {
+class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
+
     // MARK: - Properties
 
     let formatter = FormattableContentFormatter()
@@ -84,7 +85,11 @@ class NotificationDetailsViewController: UIViewController {
     ///
     weak var dataSource: NotificationsNavigationDataSource?
 
-    /// Notification to-be-displayed
+    /// Used to present CommentDetailViewController when previous/next notification is a Comment.
+    ///
+    weak var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator?
+
+    /// Notification being displayed
     ///
     var note: Notification! {
         didSet {
@@ -99,12 +104,18 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
-    /// Wether a confetti animation was presented on this notification or not
+    /// Whether a confetti animation was presented on this notification or not
     ///
     private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
         return DefaultContentCoordinator(controller: self, context: mainContext)
+    }()
+
+    /// Service to access the currently authenticated user
+    ///
+    lazy var accountService: AccountService = {
+        return AccountService(managedObjectContext: mainContext)
     }()
 
     lazy var router: NotificationContentRouter = {
@@ -189,6 +200,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         refreshNavigationBar()
+        adjustLayoutConstraintsIfNeeded()
     }
 
     private func makeRouter() -> NotificationContentRouter {
@@ -423,20 +435,15 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        if FeatureFlag.newLikeNotifications.enabled {
-            tableView.register(LikeUserTableViewCell.defaultNib,
-                               forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-        }
+        tableView.register(LikeUserTableViewCell.defaultNib,
+                           forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
     /// This method may be called several times, especially upon previous/next button click
     /// since notification kind may change.
     func setupTableDelegates() {
-        guard FeatureFlag.newLikeNotifications.enabled else {
-            return
-        }
-
         if note.kind == .like || note.kind == .commentLike,
            let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
             tableView.delegate = likesListController
@@ -456,7 +463,7 @@ extension NotificationDetailsViewController {
         let previousReply = NotificationReplyStore.shared.loadReply(for: note.notificationId)
         let replyTextView = ReplyTextView(width: view.frame.width)
 
-        replyTextView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
+        replyTextView.placeholder = NSLocalizedString("Write a reply", comment: "Placeholder text for inline compose view")
         replyTextView.text = previousReply
         replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
@@ -474,8 +481,17 @@ extension NotificationDetailsViewController {
     }
 
     func setupSuggestionsView() {
-        guard let siteID = note.metaSiteID else { return }
+        guard let siteID = note.metaSiteID else {
+            return
+        }
+
         suggestionsTableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
+        suggestionsTableView?.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
+            fromPostAuthorId: nil,
+            commentAuthorId: note.metaCommentAuthorID,
+            defaultAccountId: accountService.defaultWordPressComAccount()?.userID
+        )
+
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -520,7 +536,7 @@ extension NotificationDetailsViewController {
     }
 
     var shouldAttachReplyView: Bool {
-        // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
+        // Attach the Reply component only if the notification has a comment, and it can be replied to.
         //
         guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
             return false
@@ -775,6 +791,11 @@ private extension NotificationDetailsViewController {
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
 
+        // Add comment author's name to Reply placeholder.
+        let placeholderFormat = NSLocalizedString("Reply to %1$@",
+                                                  comment: "Placeholder text for replying to a comment. %1$@ is a placeholder for the comment author's name.")
+        replyTextView.placeholder = String(format: placeholderFormat, cell.name ?? String())
+
         // Setup: Callbacks
         cell.onUserClick = { [weak self] in
             guard let homeURL = userBlock.metaLinksHome else {
@@ -982,12 +1003,15 @@ private extension NotificationDetailsViewController {
         }
     }
 
-    func displayUserProfile(_ user: RemoteUser, from indexPath: IndexPath) {
+    func displayUserProfile(_ user: LikeUser, from indexPath: IndexPath) {
         let userProfileVC = UserProfileSheetViewController(user: user)
+        userProfileVC.blogUrlPreviewedSource = "notif_like_list_user_profile"
         let bottomSheet = BottomSheetViewController(childViewController: userProfileVC)
 
         let sourceView = tableView.cellForRow(at: indexPath) ?? view
         bottomSheet.show(from: self, sourceView: sourceView)
+
+        WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_notification_list"])
     }
 
 }
@@ -1278,7 +1302,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         }
 
         suggestionsTableView.hideSuggestions()
-        controller.enableSuggestions(with: siteID)
+        controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds)
     }
 }
 
@@ -1343,9 +1367,8 @@ extension NotificationDetailsViewController {
             return
         }
 
-        onSelectedNoteChange?(previous)
-        note = previous
-        showConfettiIfNeeded()
+        WPAnalytics.track(.notificationsPreviousTapped)
+        refreshView(with: previous)
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1353,9 +1376,39 @@ extension NotificationDetailsViewController {
             return
         }
 
-        onSelectedNoteChange?(next)
-        note = next
+        WPAnalytics.track(.notificationsNextTapped)
+        refreshView(with: next)
+    }
+
+    private func refreshView(with note: Notification) {
+        onSelectedNoteChange?(note)
+        trackDetailsOpened(for: note)
+
+        if FeatureFlag.notificationCommentDetails.enabled,
+           note.kind == .comment {
+            showCommentDetails(with: note)
+            return
+        }
+
+        hideNoResults()
+        self.note = note
         showConfettiIfNeeded()
+    }
+
+    private func showCommentDetails(with note: Notification) {
+        guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
+            DDLogError("Notification Details: failed creating Comment Detail view.")
+            return
+        }
+
+        notificationCommentDetailCoordinator?.onSelectedNoteChange = self.onSelectedNoteChange
+        weak var navigationController = navigationController
+
+        dismiss(animated: true, completion: {
+            commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.popViewController(animated: false)
+            navigationController?.pushViewController(commentDetailViewController, animated: false)
+        })
     }
 
     var shouldEnablePreviousButton: Bool {
@@ -1376,12 +1429,19 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
         displayNotificationSource()
     }
 
-    func didSelectUser(_ user: RemoteUser, at indexPath: IndexPath) {
+    func didSelectUser(_ user: LikeUser, at indexPath: IndexPath) {
         displayUserProfile(user, from: indexPath)
     }
 
-}
+    func showErrorView(title: String, subtitle: String?) {
+        hideNoResults()
+        configureAndDisplayNoResults(on: tableView,
+                                     title: title,
+                                     subtitle: subtitle,
+                                     image: "wp-illustration-notifications")
+    }
 
+}
 
 // MARK: - Private Properties
 //
@@ -1420,5 +1480,14 @@ private extension NotificationDetailsViewController {
 
     enum Assets {
         static let confettiBackground       = "notifications-confetti-background"
+    }
+}
+
+// MARK: - Tracks
+extension NotificationDetailsViewController {
+    /// Tracks notification details opened
+    private func trackDetailsOpened(for note: Notification) {
+        let properties = ["notification_type": note.type ?? "unknown"]
+        WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }
 }

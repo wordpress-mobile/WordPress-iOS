@@ -33,7 +33,7 @@ import Foundation
         self.blog = blog
         self.selectionMode = selectionMode
         self.originalSelection = currentSelection
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder: NSCoder) {

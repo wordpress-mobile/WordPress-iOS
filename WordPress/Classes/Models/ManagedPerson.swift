@@ -30,6 +30,8 @@ class ManagedPerson: NSManagedObject {
             return User(managedPerson: self)
         case PersonKind.viewer.rawValue:
             return Viewer(managedPerson: self)
+        case PersonKind.emailFollower.rawValue:
+            return EmailFollower(managedPerson: self)
         default:
             return Follower(managedPerson: self)
         }
@@ -91,6 +93,21 @@ extension Viewer {
                   lastName: managedPerson.lastName,
                   displayName: managedPerson.displayName,
                   role: RemoteRole.viewer.slug,
+                  siteID: Int(managedPerson.siteID),
+                  linkedUserID: Int(managedPerson.linkedUserID),
+                  avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
+                  isSuperAdmin: managedPerson.isSuperAdmin)
+    }
+}
+
+extension EmailFollower {
+    init(managedPerson: ManagedPerson) {
+        self.init(ID: Int(managedPerson.userID),
+                  username: managedPerson.username,
+                  firstName: managedPerson.firstName,
+                  lastName: managedPerson.lastName,
+                  displayName: managedPerson.displayName,
+                  role: RemoteRole.follower.slug,
                   siteID: Int(managedPerson.siteID),
                   linkedUserID: Int(managedPerson.linkedUserID),
                   avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },

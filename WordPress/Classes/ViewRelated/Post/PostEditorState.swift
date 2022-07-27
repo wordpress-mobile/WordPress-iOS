@@ -13,6 +13,7 @@ public enum PostEditorAction {
     case publishNow
     case update
     case submitForReview
+    case continueFromHomepageEditing
 
     var dismissesEditor: Bool {
         switch self {
@@ -48,6 +49,8 @@ public enum PostEditorAction {
             return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
         case .update:
             return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
+        case .continueFromHomepageEditing:
+            return NSLocalizedString("Continue", comment: "Continue button (used to finish editing the home page during site creation).")
         }
     }
 
@@ -67,6 +70,9 @@ public enum PostEditorAction {
             return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
         case .update:
             return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
+            // Note: when continue is pressed with no changes, it will close without prompt
+        case .continueFromHomepageEditing:
+            return NSLocalizedString("Are you sure you want to update your homepage?", comment: "Title of message shown when user taps continue during homepage editing in site creation.")
         }
     }
 
@@ -80,7 +86,9 @@ public enum PostEditorAction {
             return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
         case .submitForReview:
             return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
-        case .update:
+            // not sure if we want to use "Updating..." or "Publishing..." for home page changes?
+            // Note: when continue is pressed with no changes, it will close without prompt
+        case .update, .continueFromHomepageEditing:
             return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
         }
     }
@@ -91,7 +99,8 @@ public enum PostEditorAction {
             return NSLocalizedString("Error occurred during publishing", comment: "Text displayed in notice while a post is being published.")
         case .schedule:
             return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
-        case .save, .saveAsDraft, .submitForReview, .update:
+            // Note: when continue is pressed with no changes, it will close without prompt
+        case .save, .saveAsDraft, .submitForReview, .update, .continueFromHomepageEditing:
             return NSLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
         }
     }
@@ -100,7 +109,8 @@ public enum PostEditorAction {
         switch self {
         case .save, .saveAsDraft, .update:
             return .save
-        case .publish, .publishNow, .schedule, .submitForReview:
+            // TODO: make a new analytics event(s) for site creation homepage changes
+        case .publish, .publishNow, .schedule, .submitForReview, .continueFromHomepageEditing:
             return .publish
         }
     }
@@ -132,7 +142,8 @@ public enum PostEditorAction {
             return .editorPublishedPost
         case .publishNow:
             return .editorPublishedPost
-        case .update:
+            // TODO: make a new analytics event(s)
+        case .update, .continueFromHomepageEditing:
             return .editorUpdatedPost
         case .submitForReview:
             // TODO: When support is added for submit for review, add a new stat to support it
@@ -141,7 +152,7 @@ public enum PostEditorAction {
     }
 }
 
-public protocol PostEditorStateContextDelegate: class {
+public protocol PostEditorStateContextDelegate: AnyObject {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
@@ -196,7 +207,8 @@ public class PostEditorStateContext {
     }
 
     convenience init(post: AbstractPost,
-                     delegate: PostEditorStateContextDelegate) {
+                     delegate: PostEditorStateContextDelegate,
+                     action: PostEditorAction? = nil) {
         var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
@@ -212,6 +224,10 @@ public class PostEditorStateContext {
                   userCanPublish: userCanPublish,
                   publishDate: post.dateCreated,
                   delegate: delegate)
+
+        if let action = action {
+            self.action = action
+        }
     }
 
     /// The default initializer
@@ -353,6 +369,7 @@ public class PostEditorStateContext {
         return action.publishActionAnalyticsStat
     }
 
+    // TODO: Remove as dead code?
     /// Indicates if the editor should be dismissed when the publish button is tapped
     ///
     var publishActionDismissesEditor: Bool {

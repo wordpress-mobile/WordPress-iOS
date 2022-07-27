@@ -16,7 +16,7 @@ enum InsightAction: Action {
     case receivedTodaysStats(_ todaysStats: StatsTodayInsight?, _ error: Error?)
     case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?, _ error: Error?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
-    case refreshInsights
+    case refreshInsights(forceRefresh: Bool)
 
     // Insights details
     case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?)
@@ -119,8 +119,20 @@ struct InsightStoreState {
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
 
+    fileprivate static let cacheTTL: TimeInterval = 300 // 5 minutes
+
     init() {
         super.init(initialState: InsightStoreState())
+    }
+
+    /// A set containing all the data types associated with the currently visible Insights cards
+    /// which defines the number and type of api calls we need to perform.
+    var currentDataTypes: Set<InsightDataType> {
+        Set(SiteStatsInformation.sharedInstance
+                .getCurrentSiteInsights()  // The current visible cards
+                .reduce(into: [InsightDataType]()) {
+            $0.append(contentsOf: $1.insightsDataForSection)
+        }) // And the respective associated data
     }
 
     override func onDispatch(_ action: Action) {
@@ -150,8 +162,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedPostingActivity(postingActivity, error)
         case .receivedTagsAndCategories(let tagsAndCategories, let error):
             receivedTagsAndCategories(tagsAndCategories, error)
-        case .refreshInsights:
-            refreshInsights()
+        case .refreshInsights(let forceRefresh):
+            refreshInsights(forceRefresh: forceRefresh)
         case .receivedAllDotComFollowers(let allDotComFollowers, let error):
             receivedAllDotComFollowers(allDotComFollowers, error)
         case .receivedAllEmailFollowers(let allEmailFollowers, let error):
@@ -173,7 +185,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: Insights Overview fetching operations finished.")
+            DDLogInfo("Stats: Insights Overview refreshing operations finished.")
         }
     }
 
@@ -201,6 +213,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         _ = state.topTagsAndCategories.flatMap { StatsRecord.record(from: $0, for: blog) }
 
         try? ContextManager.shared.mainContext.save()
+        setLastRefreshDate(Date(), for: siteID)
     }
 
 }
@@ -245,22 +258,132 @@ private extension StatsInsightsStore {
 
     // MARK: - Insights Overview
 
-    func fetchInsights() {
-        setAllFetchingStatus(.loading)
-        fetchLastPostSummary()
+    func fetchInsights(_ newInsightsFeatureFlag: Bool) {
+        guard newInsightsFeatureFlag else {
+            setAllFetchingStatus(.loading)
+            fetchLastPostSummary()
+            return
+        }
+        updateFetchingStatusForVisibleCards(.loading)
+        fetchInsightsCards()
     }
 
-    func fetchOverview() {
+    func fetchInsightsCards() {
         guard let api = statsRemote() else {
             setAllFetchingStatus(.idle)
             return
         }
 
+        currentDataTypes.forEach {
+            fetchInsightsForCard(type: $0, api: api)
+        }
+    }
+
+    func fetchInsightsForCard(type: InsightDataType, api: StatsServiceRemoteV2) {
+        switch type {
+        case .latestPost:
+            api.getInsight { (lastPost: StatsLastPostInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching last posts insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
+                DDLogInfo("Stats: Insights - successfully fetched latest post summary")
+            }
+        case .allTime:
+            api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching all time insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
+                DDLogInfo("Stats: Insights - successfully fetched all time")
+            }
+
+        case .annualAndMostPopular:
+            api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching annual/most popular time: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
+                DDLogInfo("Stats: Insights - successfully fetched annual and most popular")
+            }
+        case .tagsAndCategories:
+            api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching tags and categories insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched tags and categories")
+            }
+
+        case .comments:
+            api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching comment insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
+                DDLogInfo("Stats: Insights - successfully fetched comments")
+            }
+        case .followers:
+            api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching WP.com followers: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
+                DDLogInfo("Stats: Insights - successfully fetched wp.com followers")
+            }
+
+            api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching email followers: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
+                DDLogInfo("Stats: Insights - successfully fetched email followers")
+            }
+        case .today:
+            api.getInsight { (todayInsight: StatsTodayInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching today's insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched today")
+            }
+        case .postingActivity:
+            api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching posting activity insight: \(error.localizedDescription)")
+                }
+
+                self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
+                DDLogInfo("Stats: Insights - successfully fetched posting activity")
+            }
+        case .publicize:
+            api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
+                if let error = error {
+                    DDLogError("Error fetching publicize insights: \(error.localizedDescription)")
+                }
+                self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
+                DDLogInfo("Stats: Insights - successfully fetched publicize")
+            }
+        }
+    }
+
+    // TODO: Stats Revamp - Remove this once we remove the StatsPerformanceImprovements feature flag
+    func fetchOverview() {
+        guard let api = statsRemote() else {
+            setAllFetchingStatus(.idle)
+            return
+        }
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            DDLogInfo("Don't forget to delete this method once the feature flag is removed 😶")
+        }
         api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching all time insights: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
+            DDLogInfo("Stats: Insights - successfully fetched all time")
         }
 
         api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
@@ -268,6 +391,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching WP.com followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
+            DDLogInfo("Stats: Insights - successfully fetched wp.com followers")
         }
 
         api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
@@ -275,6 +399,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching email followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
+            DDLogInfo("Stats: Insights - successfully fetched email followers")
         }
 
         api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
@@ -282,6 +407,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching publicize insights: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
+            DDLogInfo("Stats: Insights - successfully fetched publicize")
         }
 
         api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
@@ -289,6 +415,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching annual/most popular time: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
+            DDLogInfo("Stats: Insights - successfully fetched annual and most popular")
         }
 
         api.getInsight { (todayInsight: StatsTodayInsight?, error) in
@@ -297,6 +424,7 @@ private extension StatsInsightsStore {
             }
 
             self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
+            DDLogInfo("Stats: Insights - successfully fetched today")
         }
 
         api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
@@ -304,6 +432,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching comment insights: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
+            DDLogInfo("Stats: Insights - successfully fetched comments")
         }
 
         api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
@@ -312,6 +441,7 @@ private extension StatsInsightsStore {
             }
 
             self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
+            DDLogInfo("Stats: Insights - successfully fetched tags and categories")
         }
 
         api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
@@ -320,6 +450,7 @@ private extension StatsInsightsStore {
             }
 
             self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
+            DDLogInfo("Stats: Insights - successfully fetched posting activity")
         }
     }
 
@@ -332,18 +463,28 @@ private extension StatsInsightsStore {
 
         transaction { state in
             state.lastPostInsight = StatsRecord.insight(for: blog, type: .lastPostInsight).flatMap { StatsLastPostInsight(statsRecordValues: $0.recordValues) }
+            state.lastPostSummaryStatus = state.lastPostInsight == nil ? .error : .success
             state.allTimeStats = StatsRecord.insight(for: blog, type: .allTimeStatsInsight).flatMap { StatsAllTimesInsight(statsRecordValues: $0.recordValues) }
+            state.allTimeStatus = state.allTimeStats == nil ? .error : .success
             state.annualAndMostPopularTime = StatsRecord.insight(for: blog, type: .annualAndMostPopularTimes).flatMap { StatsAnnualAndMostPopularTimeInsight(statsRecordValues: $0.recordValues) }
+            state.annualAndMostPopularTimeStatus = state.annualAndMostPopularTime != nil ? .error : .success
             state.publicizeFollowers = StatsRecord.insight(for: blog, type: .publicizeConnection).flatMap { StatsPublicizeInsight(statsRecordValues: $0.recordValues) }
+            state.publicizeFollowersStatus = state.publicizeFollowers == nil ? .error : .success
             state.todaysStats = StatsRecord.insight(for: blog, type: .today).flatMap { StatsTodayInsight(statsRecordValues: $0.recordValues) }
+            state.todaysStatsStatus = state.todaysStats == nil ? .error : .success
             state.postingActivity = StatsRecord.insight(for: blog, type: .streakInsight).flatMap { StatsPostingStreakInsight(statsRecordValues: $0.recordValues) }
+            state.postingActivityStatus = state.postingActivity == nil ? .error : .success
             state.topTagsAndCategories = StatsRecord.insight(for: blog, type: .tagsAndCategories).flatMap { StatsTagsAndCategoriesInsight(statsRecordValues: $0.recordValues) }
+            state.tagsAndCategoriesStatus = state.topTagsAndCategories == nil ? .error : .success
             state.topCommentsInsight = StatsRecord.insight(for: blog, type: .commentInsight).flatMap { StatsCommentsInsight(statsRecordValues: $0.recordValues) }
+            state.commentsInsightStatus = state.topCommentsInsight == nil ? .error : .success
 
             let followersInsight = StatsRecord.insight(for: blog, type: .followers)
 
             state.dotComFollowers = followersInsight.flatMap { StatsDotComFollowersInsight(statsRecordValues: $0.recordValues) }
+            state.dotComFollowersStatus = state.dotComFollowers == nil ? .error : .success
             state.emailFollowers = followersInsight.flatMap { StatsEmailFollowersInsight(statsRecordValues: $0.recordValues) }
+            state.emailFollowersStatus = state.emailFollowers == nil ? .error : .success
         }
 
         DDLogInfo("Insights load from cache")
@@ -361,14 +502,25 @@ private extension StatsInsightsStore {
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
-    func refreshInsights() {
+    func refreshInsights(forceRefresh: Bool = false) {
         guard shouldFetchOverview() else {
-            DDLogInfo("Stats Insights Overview refresh triggered while one was in progress.")
+            DDLogInfo("Stats: Insights Overview refresh triggered while one was in progress.")
             return
         }
 
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            guard forceRefresh || hasCacheExpired else {
+                DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
+                return
+            }
+        }
+
+        if forceRefresh {
+            DDLogInfo("Stats: Forcing an Insights refresh.")
+        }
+
         persistToCoreData()
-        fetchInsights()
+        fetchInsights(FeatureFlag.statsPerformanceImprovements.enabled)
     }
 
     func fetchLastPostSummary() {
@@ -383,6 +535,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching last posts insights: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
+            DDLogInfo("Stats: Insights - successfully fetched latest post summary.")
         }
     }
 
@@ -394,14 +547,16 @@ private extension StatsInsightsStore {
         }
 
         api.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
-            if error != nil {
-                DDLogInfo("Insights: Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
+            if let error = error {
+                DDLogError("Insights: Error fetching Post Stats: \(error.localizedDescription)")
             }
-            DDLogInfo("Insights: Finished fetching post stats.")
+            DDLogInfo("Stats: Insights - successfully fetched latest post details.")
 
             DispatchQueue.main.async {
                 self.receivedPostStats(postStats, error)
-                self.fetchOverview()
+                if !FeatureFlag.statsPerformanceImprovements.enabled {
+                    self.fetchOverview()
+                }
             }
         }
     }
@@ -424,7 +579,9 @@ private extension StatsInsightsStore {
         transaction { state in
             state.lastPostSummaryStatus = error != nil ? .error : .success
         }
-        fetchOverview()
+        if !FeatureFlag.statsPerformanceImprovements.enabled {
+            fetchOverview()
+        }
     }
 
     func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?, _ error: Error?) {
@@ -506,6 +663,21 @@ private extension StatsInsightsStore {
             }
             state.tagsAndCategoriesStatus = error != nil ? .error : .success
         }
+    }
+
+    /// Updates the current fetching status on data types associated with visible cards. Other data types status will remain unchanged.
+    /// - Parameter status: the new status to set
+    func updateFetchingStatusForVisibleCards( _ status: StoreFetchingStatus) {
+        state.lastPostSummaryStatus = currentDataTypes.contains(.latestPost) ? status : state.lastPostSummaryStatus
+        state.allTimeStatus = currentDataTypes.contains(.allTime) ? status : state.allTimeStatus
+        state.annualAndMostPopularTimeStatus = currentDataTypes.contains(.annualAndMostPopular) ? status : state.annualAndMostPopularTimeStatus
+        state.dotComFollowersStatus = currentDataTypes.contains(.followers) ? status : state.dotComFollowersStatus
+        state.emailFollowersStatus = currentDataTypes.contains(.followers) ? status : state.emailFollowersStatus
+        state.todaysStatsStatus = currentDataTypes.contains(.today) ? status : state.todaysStatsStatus
+        state.tagsAndCategoriesStatus = currentDataTypes.contains(.tagsAndCategories) ? status : state.tagsAndCategoriesStatus
+        state.publicizeFollowersStatus = currentDataTypes.contains(.publicize) ? status : state.publicizeFollowersStatus
+        state.commentsInsightStatus = currentDataTypes.contains(.comments) ? status : state.commentsInsightStatus
+        state.postingActivityStatus = currentDataTypes.contains(.postingActivity) ? status : state.postingActivityStatus
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
@@ -700,6 +872,42 @@ private extension StatsInsightsStore {
         return !isFetchingAnnual
     }
 
+    // MARK: - Cache expiry
+
+    var hasCacheExpired: Bool {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+              let date = lastRefreshDate(for: siteID) else {
+                  return true
+              }
+
+        let interval = Date().timeIntervalSince(date)
+        let expired = interval > StatsInsightsStore.cacheTTL
+
+        let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
+        DDLogInfo("Stats: Insights cache for site \(siteID) has \(expired ? "" : "not ")expired \(intervalLogMessage).")
+
+        return expired
+    }
+
+    func lastRefreshDate(for siteID: NSNumber) -> Date? {
+        if let date = UserDefaults.standard.object(forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)") as? Date {
+            return date
+        }
+
+        return nil
+    }
+
+    func setLastRefreshDate(_ date: Date, for siteID: NSNumber) {
+        guard FeatureFlag.statsPerformanceImprovements.enabled else {
+            return
+        }
+
+        UserDefaults.standard.set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
+    }
+
+    private enum CacheUserDefaultsKeys {
+        static let lastRefreshDatePrefix: String = "StatsStoreLastRefreshDate-"
+    }
 }
 
 // MARK: - Public Accessors
@@ -730,8 +938,26 @@ extension StatsInsightsStore {
         return state.emailFollowers
     }
 
+    func getTotalFollowerCount() -> Int {
+        let totalDotComFollowers = getDotComFollowers()?.dotComFollowersCount ?? 0
+        let totalEmailFollowers = getEmailFollowers()?.emailFollowersCount ?? 0
+        let totalPublicize = getPublicizeCount()
+
+        return totalDotComFollowers + totalEmailFollowers + totalPublicize
+    }
+
     func getPublicize() -> StatsPublicizeInsight? {
         return state.publicizeFollowers
+    }
+
+    func getPublicizeCount() -> Int {
+        var totalPublicize = 0
+        if let publicize = getPublicize(),
+           !publicize.publicizeServices.isEmpty {
+            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
+        }
+
+        return totalPublicize
     }
 
     func getTopCommentsInsight() -> StatsCommentsInsight? {
@@ -975,114 +1201,12 @@ private extension InsightStoreState {
     }
 
     func widgetUsingCurrentSite() -> Bool {
-        // Only store data if the widget is using the current site
+        // Only store data if the widget is using the current site.
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
             let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
                 return false
         }
         return true
-    }
-}
-
-// MARK: - iOS 14 Widgets Data
-private extension InsightStoreState {
-
-    private func storeHomeWidgetData<T: HomeWidgetData>(widgetType: T.Type, stats: Codable) {
-        guard #available(iOS 14.0, *),
-              let siteID = SiteStatsInformation.sharedInstance.siteID else {
-            return
-        }
-
-        var homeWidgetCache = T.read() ?? initializeHomeWidgetData(type: widgetType)
-        guard let oldData = homeWidgetCache[siteID.intValue] else {
-            DDLogError("StatsWidgets: Failed to find a matching site")
-            return
-        }
-
-        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-            DDLogError("StatsWidgets: the site does not exist anymore")
-            // if for any reason that site does not exist anymore, remove it from the cache.
-            homeWidgetCache.removeValue(forKey: siteID.intValue)
-            T.write(items: homeWidgetCache)
-            return
-        }
-        var widgetKind = ""
-        if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
-
-            widgetKind = WPHomeWidgetTodayKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                                   siteName: blog.title ?? oldData.siteName,
-                                                                   url: blog.url ?? oldData.url,
-                                                                   timeZone: blog.timeZone,
-                                                                   date: Date(),
-                                                                   stats: stats) as? T
-
-
-        } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
-            widgetKind = WPHomeWidgetAllTimeKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
-                                                                     siteName: blog.title ?? oldData.siteName,
-                                                                     url: blog.url ?? oldData.url,
-                                                                     timeZone: blog.timeZone,
-                                                                     date: Date(),
-                                                                     stats: stats) as? T
-        }
-
-        T.write(items: homeWidgetCache)
-        WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-
-
-    }
-
-    private func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
-        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
-            if let blogID = element.dotComID,
-               let url = element.url,
-               let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) {
-                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
-                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZone = blog.timeZone
-                if type == HomeWidgetTodayData.self {
-                    result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone,
-                                                                  date: Date(),
-                                                                  stats: TodayWidgetStats()) as? T
-                } else if type == HomeWidgetAllTimeData.self {
-                    result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                    siteName: title,
-                                                                    url: url,
-                                                                    timeZone: timeZone,
-                                                                    date: Date(),
-                                                                    stats: AllTimeWidgetStats()) as? T
-                }
-            }
-        }
-    }
-}
-
-// refresh iOS 14 widgets at login/logout
-private extension StatsInsightsStore {
-    func observeAccountChangesForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
-
-        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
-                                               object: nil,
-                                               queue: nil) { notification in
-            HomeWidgetTodayData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            HomeWidgetAllTimeData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
-
-        }
     }
 }

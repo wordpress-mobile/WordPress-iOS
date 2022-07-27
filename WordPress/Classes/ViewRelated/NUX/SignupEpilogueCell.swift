@@ -5,7 +5,6 @@ import WordPressAuthenticator
 protocol SignupEpilogueCellDelegate {
     func updated(value: String, forType: EpilogueCellType)
     func changed(value: String, forType: EpilogueCellType)
-    func usernameSelected()
 }
 
 enum EpilogueCellType: Int {
@@ -105,6 +104,8 @@ class SignupEpilogueCell: UITableViewCell {
         configureAccessoryType(for: newCellType)
         configureTextContentTypeIfNeeded(for: newCellType)
         configureAccessibility(for: newCellType)
+        configureEditable(for: newCellType)
+        configureKeyboardReturnKey(for: newCellType)
 
         addBottomBorder(withColor: .divider, leadingMargin: cellLabelLeadingConstraint.constant)
 
@@ -135,15 +136,6 @@ extension SignupEpilogueCell: UITextFieldDelegate {
             let updatedText = textField.text {
             delegate?.updated(value: updatedText, forType: cellType)
         }
-    }
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if let cellType = cellType,
-            cellType == .username {
-            delegate?.usernameSelected()
-            return false
-        }
-        return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -207,6 +199,20 @@ private extension SignupEpilogueCell {
             cellField.textContentType = .username
         case .password:
             cellField.textContentType = .newPassword
+        }
+    }
+
+    func configureEditable(for cellType: EpilogueCellType) {
+        if cellType == .username {
+            cellField.isEnabled = false
+        } else {
+            cellField.isEnabled = true
+        }
+    }
+
+    func configureKeyboardReturnKey(for cellType: EpilogueCellType) {
+        if cellType == .displayName {
+            cellField.enablesReturnKeyAutomatically = true
         }
     }
 

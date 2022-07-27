@@ -163,6 +163,11 @@ extension ReaderTabView {
         }
         controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
+
+        if viewModel.shouldShowCommentSpotlight {
+            let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
+            childController.displayNotice(title: title)
+        }
     }
 
     private func activateConstraints() {
@@ -173,6 +178,21 @@ extension ReaderTabView {
             horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
             horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor)
         ])
+    }
+
+    func applyFilter(for selectedTopic: ReaderAbstractTopic?) {
+        guard let selectedTopic = selectedTopic else {
+            return
+        }
+
+        let selectedIndex = self.tabBar.selectedIndex
+
+        // Remove any filters for selected index, then add new filter to array.
+        self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
+        self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+
+        self.resetFilterButton.isHidden = false
+        self.setFilterButtonTitle(selectedTopic.title)
     }
 }
 
@@ -197,7 +217,6 @@ private extension ReaderTabView {
             resetFilterButton.isHidden = false
             setFilterButtonTitle(existingFilter.topic.title)
         } else {
-            didTapResetFilterButton()
             addContentToContainerView()
         }
 
@@ -224,20 +243,10 @@ private extension ReaderTabView {
     @objc func didTapFilterButton() {
         /// Present from the image view to align to the left hand side
         viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
-
-            guard let selectedTopic = selectedTopic,
-                  let self = self else {
+            guard let self = self else {
                 return
             }
-
-            let selectedIndex = self.tabBar.selectedIndex
-
-            // Remove any filters for selected index, then add new filter to array.
-            self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
-            self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
-
-            self.resetFilterButton.isHidden = false
-            self.setFilterButtonTitle(selectedTopic.title)
+            self.applyFilter(for: selectedTopic)
         }
     }
 

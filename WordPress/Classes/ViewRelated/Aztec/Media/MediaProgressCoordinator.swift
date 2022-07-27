@@ -3,7 +3,7 @@ import Foundation
 /// Media Progress Coordinator Delegate comunicates changes on media progress.
 ///
 @objc
-public protocol MediaProgressCoordinatorDelegate: class {
+public protocol MediaProgressCoordinatorDelegate: AnyObject {
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)

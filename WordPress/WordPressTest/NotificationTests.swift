@@ -6,27 +6,25 @@ import XCTest
 
 /// Notifications Tests
 ///
-class NotificationTests: XCTestCase {
+class NotificationTests: CoreDataTestCase {
 
-    let utility = NotificationUtility()
+    private var utility: NotificationUtility!
 
     override func setUp() {
-        super.setUp()
-        utility.setUp()
+        utility = NotificationUtility(coreDataStack: contextManager)
     }
 
     override func tearDown() {
-        utility.tearDown()
-        super.tearDown()
+        utility = nil
     }
 
-    func testBadgeNotificationHasBadgeFlagSetToTrue() {
-        let note = loadBadgeNotification()
+    func testBadgeNotificationHasBadgeFlagSetToTrue() throws {
+        let note = try loadBadgeNotification()
         XCTAssertTrue(note.isBadge)
     }
 
-    func testBadgeNotificationHasRegularFieldsSet() {
-        let note = loadBadgeNotification()
+    func testBadgeNotificationHasRegularFieldsSet() throws {
+        let note = try loadBadgeNotification()
         XCTAssertNotNil(note.type)
         XCTAssertNotNil(note.noticon)
         XCTAssertNotNil(note.iconURL)
@@ -34,16 +32,16 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(note.timestampAsDate)
     }
 
-    func testBadgeNotificationProperlyLoadsItsSubjectContent() {
-        let note = utility.loadBadgeNotification()
+    func testBadgeNotificationProperlyLoadsItsSubjectContent() throws {
+        let note = try utility.loadBadgeNotification()
 
         XCTAssert(note.subjectContentGroup?.blocks.count == 1)
         XCTAssertNotNil(note.subjectContentGroup?.blocks.first)
         XCTAssertNotNil(note.renderSubject())
     }
 
-    func testBadgeNotificationContainsOneImageContentGroup() {
-        let note = utility.loadBadgeNotification()
+    func testBadgeNotificationContainsOneImageContentGroup() throws {
+        let note = try utility.loadBadgeNotification()
         let group = note.contentGroup(ofKind: .image)
         XCTAssertNotNil(group)
 
@@ -55,13 +53,13 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(media?.mediaURL)
     }
 
-    func testLikeNotificationReturnsTheProperKindValue() {
-        let note = loadLikeNotification()
+    func testLikeNotificationReturnsTheProperKindValue() throws {
+        let note = try loadLikeNotification()
         XCTAssert(note.kind == .like)
     }
 
-    func testLikeNotificationContainsHeaderContent() {
-        let note = loadLikeNotification()
+    func testLikeNotificationContainsHeaderContent() throws {
+        let note = try loadLikeNotification()
         let header = note.headerContentGroup
         XCTAssertNotNil(header)
 
@@ -76,44 +74,44 @@ class NotificationTests: XCTestCase {
     }
 
 
-    func testLikeNotificationContainsUserContentGroupsInTheBody() {
-        let note = utility.loadLikeNotification()
+    func testLikeNotificationContainsUserContentGroupsInTheBody() throws {
+        let note = try utility.loadLikeNotification()
         for group in note.bodyContentGroups {
             XCTAssertTrue(group.kind == .user)
         }
     }
 
-    func testLikeNotificationContainsPostAndSiteID() {
-        let note = loadLikeNotification()
+    func testLikeNotificationContainsPostAndSiteID() throws {
+        let note = try loadLikeNotification()
         XCTAssertNotNil(note.metaSiteID)
         XCTAssertNotNil(note.metaPostID)
     }
 
-    func testFollowerNotificationReturnsTheProperKindValue() {
-        let note = loadFollowerNotification()
+    func testFollowerNotificationReturnsTheProperKindValue() throws {
+        let note = try loadFollowerNotification()
         XCTAssert(note.kind == .follow)
     }
 
-    func testFollowerNotificationHasFollowFlagSetToTrue() {
-        let note = loadFollowerNotification()
+    func testFollowerNotificationHasFollowFlagSetToTrue() throws {
+        let note = try loadFollowerNotification()
         XCTAssertTrue(note.kind == .follow)
     }
 
-    func testFollowerNotificationContainsOneSubjectContent() {
-        let note = loadFollowerNotification()
+    func testFollowerNotificationContainsOneSubjectContent() throws {
+        let note = try loadFollowerNotification()
 
         let content = note.subjectContentGroup?.blocks.first
         XCTAssertNotNil(content)
         XCTAssertNotNil(content?.text)
     }
 
-    func testFollowerNotificationContainsSiteID() {
-        let note = loadFollowerNotification()
+    func testFollowerNotificationContainsSiteID() throws {
+        let note = try loadFollowerNotification()
         XCTAssertNotNil(note.metaSiteID)
     }
 
-    func testFollowerNotificationContainsUserAndFooterGroupsInTheBody() {
-        let note = utility.loadFollowerNotification()
+    func testFollowerNotificationContainsUserAndFooterGroupsInTheBody() throws {
+        let note = try utility.loadFollowerNotification()
 
         // Note: Account for 'View All Followers'
         for group in note.bodyContentGroups {
@@ -121,8 +119,8 @@ class NotificationTests: XCTestCase {
         }
     }
 
-    func testFollowerNotificationContainsFooterContentWithFollowRangeAtTheEnd() {
-        let note = loadFollowerNotification()
+    func testFollowerNotificationContainsFooterContentWithFollowRangeAtTheEnd() throws {
+        let note = try loadFollowerNotification()
 
         let lastGroup = note.bodyContentGroups.last
         XCTAssertNotNil(lastGroup)
@@ -138,25 +136,25 @@ class NotificationTests: XCTestCase {
         XCTAssert(range?.kind == .follow)
     }
 
-    func testCommentNotificationReturnsTheProperKindValue() {
-        let note = loadCommentNotification()
+    func testCommentNotificationReturnsTheProperKindValue() throws {
+        let note = try loadCommentNotification()
         XCTAssert(note.kind == .comment)
     }
 
-    func testCommentNotificationHasCommentFlagSetToTrue() {
-        let note = loadCommentNotification()
+    func testCommentNotificationHasCommentFlagSetToTrue() throws {
+        let note = try loadCommentNotification()
         XCTAssertTrue(note.kind == .comment)
     }
 
-    func testCommentNotificationRendersSubjectWithSnippet() {
-        let note = loadCommentNotification()
+    func testCommentNotificationRendersSubjectWithSnippet() throws {
+        let note = try loadCommentNotification()
 
         XCTAssertNotNil(note.renderSubject())
         XCTAssertNotNil(note.renderSnippet())
     }
 
-    func testCommentNotificationContainsHeaderContent() {
-        let note = loadCommentNotification()
+    func testCommentNotificationContainsHeaderContent() throws {
+        let note = try loadCommentNotification()
 
         let header = note.headerContentGroup
         XCTAssertNotNil(header)
@@ -174,56 +172,56 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(snippetBlock?.text)
     }
 
-    func testCommentNotificationContainsCommentAndSiteID() {
-        let note = loadCommentNotification()
+    func testCommentNotificationContainsCommentAndSiteID() throws {
+        let note = try loadCommentNotification()
         XCTAssertNotNil(note.metaSiteID)
         XCTAssertNotNil(note.metaCommentID)
     }
 
-    func testCommentNotificationProperlyChecksIfItWasRepliedTo() {
-        let note = loadCommentNotification()
+    func testCommentNotificationProperlyChecksIfItWasRepliedTo() throws {
+        let note = try loadCommentNotification()
         XCTAssert(note.isRepliedComment)
     }
 
-    func testCommentNotificationIsUnapproved() {
-        let note = utility.loadUnapprovedCommentNotification()
+    func testCommentNotificationIsUnapproved() throws {
+        let note = try utility.loadUnapprovedCommentNotification()
         XCTAssertTrue(note.isUnapprovedComment)
     }
 
-    func testCommentNotificationIsApproved() {
-        let note = utility.loadCommentNotification()
+    func testCommentNotificationIsApproved() throws {
+        let note = try utility.loadCommentNotification()
         XCTAssertFalse(note.isUnapprovedComment)
     }
 
 
-    func testFooterContentIsIdentifiedAndCreated() {
-        let note = loadCommentNotification()
+    func testFooterContentIsIdentifiedAndCreated() throws {
+        let note = try loadCommentNotification()
         let footerBlock: FooterTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
 
         XCTAssertNotNil(footerBlock)
     }
 
-    func testFindingContentRangeSearchingByURL() {
-        let note = loadBadgeNotification()
+    func testFindingContentRangeSearchingByURL() throws {
+        let note = try loadBadgeNotification()
         let targetURL = URL(string: "http://www.wordpress.com")!
         let range = note.contentRange(with: targetURL)
 
         XCTAssertNotNil(range)
     }
 
-    func testPingbackNotificationIsPingback() {
-        let notification = utility.loadPingbackNotification()
+    func testPingbackNotificationIsPingback() throws {
+        let notification = try utility.loadPingbackNotification()
         XCTAssertTrue(notification.isPingback)
     }
 
-    func testPingbackBodyContainsFooter() {
-        let notification = utility.loadPingbackNotification()
+    func testPingbackBodyContainsFooter() throws {
+        let notification = try utility.loadPingbackNotification()
         let footer = notification.bodyContentGroups.filter { $0.kind == .footer }
         XCTAssertEqual(footer.count, 1)
     }
 
-    func testHeaderAndBodyContentGroups() {
-        let note = utility.loadCommentNotification()
+    func testHeaderAndBodyContentGroups() throws {
+        let note = try utility.loadCommentNotification()
         let headerGroupsCount = note.headerContentGroup != nil ? 1 : 0
         let bodyGroupsCount = note.bodyContentGroups.count
         let totalGroupsCount = headerGroupsCount + bodyGroupsCount
@@ -235,19 +233,19 @@ class NotificationTests: XCTestCase {
 
     // MARK: - Helpers
 
-    func loadBadgeNotification() -> WordPress.Notification {
-        return utility.loadBadgeNotification()
+    func loadBadgeNotification() throws -> WordPress.Notification {
+        return try utility.loadBadgeNotification()
     }
 
-    func loadLikeNotification() -> WordPress.Notification {
-        return utility.loadLikeNotification()
+    func loadLikeNotification() throws -> WordPress.Notification {
+        return try utility.loadLikeNotification()
     }
 
-    func loadFollowerNotification() -> WordPress.Notification {
-        return utility.loadFollowerNotification()
+    func loadFollowerNotification() throws -> WordPress.Notification {
+        return try utility.loadFollowerNotification()
     }
 
-    func loadCommentNotification() -> WordPress.Notification {
-        return utility.loadCommentNotification()
+    func loadCommentNotification() throws -> WordPress.Notification {
+        return try utility.loadCommentNotification()
     }
 }

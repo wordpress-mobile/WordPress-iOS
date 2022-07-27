@@ -1,27 +1,86 @@
 import Foundation
 import WordPressKit
+import AutomatticTracks
+
+extension Variation {
+    var tracksProperty: String {
+        switch self {
+        case .treatment:
+            return "treatment"
+        case .control:
+            return "control"
+        }
+    }
+}
 
 class SiteCreationAnalyticsHelper {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice
 
     private static let siteDesignKey = "template"
     private static let previewModeKey = "preview_mode"
+    private static let verticalSlugKey = "vertical_slug"
+    private static let verticalSearchTerm = "search_term"
+    private static let variationKey = "variation"
+    private static let siteNameKey = "site_name"
+    private static let recommendedKey = "recommended"
+
+    // MARK: - Site Intent
+    static func trackSiteIntentViewed() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionViewed)
+    }
+
+    static func trackSiteIntentSelected(_ vertical: SiteIntentVertical) {
+        let properties = [verticalSlugKey: vertical.slug]
+        let event: WPAnalyticsEvent = vertical.isCustom ?
+            .enhancedSiteCreationIntentQuestionCustomVerticalSelected :
+            .enhancedSiteCreationIntentQuestionVerticalSelected
+
+        WPAnalytics.track(event, properties: properties)
+    }
+
+    static func trackSiteIntentSearchFocused() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSearchFocused)
+    }
+
+    static func trackSiteIntentSkipped() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionSkipped)
+    }
+
+    static func trackSiteIntentCanceled() {
+        WPAnalytics.track(.enhancedSiteCreationIntentQuestionCanceled)
+    }
+
+    // MARK: - Site Name
+    static func trackSiteNameViewed() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameViewed)
+    }
+
+    static func trackSiteNameEntered(_ name: String) {
+        let properties = [siteNameKey: name]
+        WPAnalytics.track(.enhancedSiteCreationSiteNameEntered, properties: properties)
+    }
+
+    static func trackSiteNameSkipped() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameSkipped)
+    }
+
+    static func trackSiteNameCanceled() {
+        WPAnalytics.track(.enhancedSiteCreationSiteNameCanceled)
+    }
 
     // MARK: - Site Design
     static func trackSiteDesignViewed(previewMode: PreviewDevice) {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignViewed, withProperties: commonProperties(previewMode))
     }
 
-    static func trackSiteDesignThumbnailModeButtonTapped(_ previewMode: PreviewDevice) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignThumbnailModeButtonTapped, withProperties: commonProperties(previewMode))
-    }
-
     static func trackSiteDesignSkipped() {
         WPAnalytics.track(.enhancedSiteCreationSiteDesignSkipped)
     }
 
-    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign) {
-        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: commonProperties(siteDesign))
+    static func trackSiteDesignSelected(_ siteDesign: RemoteSiteDesign, sectionType: SiteDesignSectionType) {
+        var properties = commonProperties(siteDesign)
+        properties[recommendedKey] = sectionType == .recommended
+        WPAnalytics.track(.enhancedSiteCreationSiteDesignSelected, withProperties: properties)
     }
 
     // MARK: - Site Design Preview

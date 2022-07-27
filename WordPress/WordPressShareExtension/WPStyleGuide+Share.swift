@@ -41,6 +41,17 @@ extension WPStyleGuide {
             cell.separatorInset = UIEdgeInsets.zero
         }
 
+        static func configurePostTypeCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = .text
+            cell.textLabel?.numberOfLines = 0
+
+            cell.backgroundColor = .listForeground
+            cell.separatorInset = UIEdgeInsets.zero
+            cell.tintColor = .primary
+        }
+
         static func configureLoadingTagCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()

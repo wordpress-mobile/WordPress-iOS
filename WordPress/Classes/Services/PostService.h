@@ -25,6 +25,9 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
 @interface PostService : LocalCoreDataService
 
+// This is public so it can be accessed from Swift extensions.
+@property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
 
@@ -170,19 +173,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
 - (void)restorePost:(AbstractPost *)post
            success:(nullable void (^)(void))success
            failure:(void (^)(NSError * _Nullable error))failure;
-
-/**
- Fetches a list of users that liked the post with the given ID.
- 
- @param postID The ID of the post to fetch likes for
- @param siteID The ID of the site that contains the post
- @param success A success block
- @param failure A failure block
- */
-- (void)getLikesForPostID:(NSNumber *)postID
-                   siteID:(NSNumber *)siteID
-                  success:(void (^)(NSArray<RemoteUser *> *users))success
-                  failure:(void (^)(NSError * _Nullable error))failure;
 
 @end
 

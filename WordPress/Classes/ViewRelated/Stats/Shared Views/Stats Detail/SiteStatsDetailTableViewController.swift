@@ -9,6 +9,7 @@ import WordPressFlux
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
+//TODO - this should eventually be removed as part of Stats Revamp
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
@@ -58,6 +59,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         clearExpandedRows()
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
@@ -101,7 +103,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return nil
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+        guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
 
@@ -128,7 +130,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return 0
         }
 
-        return SiteStatsTableHeaderView.headerHeight()
+        return UITableView.automaticDimension
     }
 
 }
@@ -145,7 +147,8 @@ extension SiteStatsDetailTableViewController: StatsForegroundObservable {
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self,
+                                              referrerDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -276,7 +279,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     }
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_detail")
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
     }
@@ -307,7 +310,14 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
             DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
         })
     }
+}
 
+// MARK: - SiteStatsReferrerDelegate
+
+extension SiteStatsDetailTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        show(ReferrerDetailsTableViewController(data: data), sender: nil)
+    }
 }
 
 // MARK: - NoResultsViewHost

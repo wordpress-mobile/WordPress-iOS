@@ -4,10 +4,16 @@ import CoreData
 enum BlockEditorSettingElementTypes: String {
     case color
     case gradient
+    case experimentalFeatures
 
     var valueKey: String {
         self.rawValue
     }
+}
+
+enum BlockEditorExperimentalFeatureKeys: String {
+    case galleryWithImageBlocks
+    case quoteBlockV2
 }
 
 extension BlockEditorSettingElement {
@@ -33,6 +39,10 @@ extension BlockEditorSettingElement {
     ///
     @NSManaged public var name: String
 
+    /// Stores maintains the order as passed from the API
+    ///
+    @NSManaged public var order: Int
+
     /// Stores a reference back to the parent `BlockEditorSettings`.
     ///
     @NSManaged public var settings: BlockEditorSettings
@@ -48,12 +58,22 @@ extension BlockEditorSettingElement: Identifiable {
         ]
     }
 
-    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, context: NSManagedObjectContext) {
+    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
+        self.init(name: rawObject[ #keyPath(BlockEditorSettingElement.name)],
+                  value: rawObject[type.valueKey],
+                  slug: rawObject[#keyPath(BlockEditorSettingElement.slug)],
+                  type: type,
+                  order: order,
+                  context: context)
+    }
+
+    convenience init(name: String?, value: String?, slug: String?, type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
         self.init(context: context)
 
         self.type = type.rawValue
-        self.value = rawObject[type.valueKey] ?? ""
-        self.slug = rawObject[#keyPath(BlockEditorSettingElement.slug)] ?? ""
-        self.name = rawObject[ #keyPath(BlockEditorSettingElement.name)] ?? ""
+        self.value = value ?? ""
+        self.slug = slug ?? ""
+        self.name = name ?? ""
+        self.order = order
     }
 }

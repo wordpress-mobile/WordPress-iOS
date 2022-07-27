@@ -4,23 +4,10 @@ import Nimble
 
 @testable import WordPress
 
-class PostListViewControllerTests: XCTestCase {
-
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        context = TestContextManager().mainContext
-        super.setUp()
-    }
-
-    override func tearDown() {
-        context = nil
-        TestContextManager.overrideSharedInstance(nil)
-        super.tearDown()
-    }
+class PostListViewControllerTests: CoreDataTestCase {
 
     func testShowsGhostableTableView() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
 
@@ -30,7 +17,7 @@ class PostListViewControllerTests: XCTestCase {
     }
 
     func testHidesGhostableTableView() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
 
@@ -40,7 +27,7 @@ class PostListViewControllerTests: XCTestCase {
     }
 
     func testShowTenMockedItemsInGhostableTableView() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
 
@@ -62,8 +49,8 @@ class PostListViewControllerTests: XCTestCase {
         // This test fails when executed on 00c88b9b
 
         // Given
-        let blog = BlogBuilder(context).build()
-        try! context.save()
+        let blog = BlogBuilder(mainContext).build()
+        try! mainContext.save()
 
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
@@ -76,9 +63,8 @@ class PostListViewControllerTests: XCTestCase {
         // When: Simulate a post being created
         // Then: This should not cause a crash
         expect {
-            _ = PostBuilder(self.context, blog: blog).with(status: .draft).build()
-            try! self.context.save()
-            return nil
+            _ = PostBuilder(self.mainContext, blog: blog).with(status: .draft).build()
+            try! self.mainContext.save()
         }.notTo(raiseException())
     }
 

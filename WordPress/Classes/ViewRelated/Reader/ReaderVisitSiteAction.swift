@@ -13,7 +13,7 @@ final class ReaderVisitSiteAction {
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             configuration.authenticate(account: account)
         }
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let controller = WebViewControllerFactory.controller(configuration: configuration, source: "reader_visit_site")
         let navController = LightNavigationController(rootViewController: controller)
         origin.present(navController, animated: true)
         WPAnalytics.trackReader(.readerArticleVisited)

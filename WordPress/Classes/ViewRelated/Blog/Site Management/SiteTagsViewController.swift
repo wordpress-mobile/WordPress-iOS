@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressShared
 
 final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
@@ -309,6 +310,7 @@ extension SiteTagsViewController {
         newTag.tagDescription = data.subtitle
 
         save(newTag)
+        WPAnalytics.trackSettingsChange("site_tags", fieldName: "add_tag")
     }
 
     private func updateTag(_ tag: PostTag, updatedData: SettingsTitleSubtitleController.Content) {
@@ -323,6 +325,7 @@ extension SiteTagsViewController {
         tag.tagDescription = updatedData.subtitle
 
         save(tag)
+        WPAnalytics.trackSettingsChange("site_tags", fieldName: "edit_tag")
     }
 
     private func existingTagForData(_ data: SettingsTitleSubtitleController.Content) -> PostTag? {

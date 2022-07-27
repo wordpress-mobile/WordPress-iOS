@@ -116,6 +116,17 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         }
     }
 
+    /// Indicates if all actions are disabled.
+    ///
+    @objc var allActionsDisabled: Bool {
+        return !isReplyEnabled &&
+            !isLikeEnabled &&
+            !isApproveEnabled &&
+            !isTrashEnabled &&
+            !isSpamEnabled &&
+            !isEditEnabled
+    }
+
     /// Indicates whether Like is in it's "Selected" state, or not
     ///
     @objc var isLikeOn: Bool {

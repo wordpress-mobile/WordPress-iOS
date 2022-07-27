@@ -1,7 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 
-@objc protocol InlineEditableNameValueCellDelegate: class {
+@objc protocol InlineEditableNameValueCellDelegate: AnyObject {
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
                                                     valueTextFieldDidChange value: String)
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,

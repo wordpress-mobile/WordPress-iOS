@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ReaderDetailFeaturedImageViewDelegate: class {
+protocol ReaderDetailFeaturedImageViewDelegate: AnyObject {
     func didTapFeaturedImage(_ sender: CachedAnimatedImageView)
 }
 
@@ -374,8 +374,10 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         heightConstraint.constant = height
 
         if let scrollView = self.scrollView {
-            scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
-
+            if height > 0 {
+                // Only adjust insets when height is a positive value to avoid clipping.
+                scrollView.contentInset = UIEdgeInsets(top: height, left: 0, bottom: 0, right: 0)
+            }
             if resetContentOffset {
                 scrollView.setContentOffset(CGPoint(x: 0, y: -height), animated: false)
             }

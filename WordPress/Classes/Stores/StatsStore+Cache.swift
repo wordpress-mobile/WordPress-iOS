@@ -14,9 +14,11 @@ extension StatsStoreCacheable {
 extension StatsInsightsStore: StatsStoreCacheable {
     func containsCachedData(for type: InsightType) -> Bool {
         switch type {
+        case .viewsVisitors:
+            return true
         case .latestPostSummary:
             return state.lastPostInsight != nil
-        case .allTimeStats:
+        case .allTimeStats, .growAudience:
             return state.allTimeStats != nil
         case .followersTotals, .followers:
             return state.dotComFollowers != nil &&

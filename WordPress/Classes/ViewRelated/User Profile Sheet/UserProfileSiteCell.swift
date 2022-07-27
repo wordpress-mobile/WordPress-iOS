@@ -19,8 +19,10 @@ class UserProfileSiteCell: UITableViewCell, NibReusable {
 
     // MARK: - Public Methods
 
-    func configure() {
-        downloadIconWithURL(nil)
+    func configure(withBlog blog: LikeUserPreferredBlog) {
+        siteNameLabel.text = blog.blogName
+        siteUrlLabel.text = blog.blogUrl
+        downloadIconWithURL(blog.iconUrl)
     }
 }
 

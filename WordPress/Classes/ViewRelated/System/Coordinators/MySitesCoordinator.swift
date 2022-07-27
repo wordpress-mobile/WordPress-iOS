@@ -10,6 +10,11 @@ class MySitesCoordinator: NSObject {
     let becomeActiveTab: () -> Void
 
     @objc
+    var currentBlog: Blog? {
+        mySiteViewController.blog
+    }
+
+    @objc
     init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
@@ -20,11 +25,7 @@ class MySitesCoordinator: NSObject {
     // MARK: - Root View Controller
 
     private var rootContentViewController: UIViewController {
-        if Feature.enabled(.newNavBarAppearance) {
-            return mySiteViewController
-        } else {
-            return blogListViewController
-        }
+        mySiteViewController
     }
 
     // MARK: - VCs
@@ -43,14 +44,7 @@ class MySitesCoordinator: NSObject {
         splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
-        splitViewController.dimsDetailViewControllerAutomatically = !FeatureFlag.newNavBarAppearance.enabled
         splitViewController.tabBarItem = navigationController.tabBarItem
-
-        if Feature.enabled(.newNavBarAppearance) {
-            splitViewController.wpPrimaryColumnWidth = .default
-        } else {
-            splitViewController.wpPrimaryColumnWidth = .narrow
-        }
 
         return splitViewController
     }()
@@ -59,10 +53,7 @@ class MySitesCoordinator: NSObject {
     lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
-        if Feature.enabled(.newNavBarAppearance) {
-            navigationController.navigationBar.prefersLargeTitles = true
-        }
-
+        navigationController.navigationBar.prefersLargeTitles = true
         navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
@@ -72,14 +63,6 @@ class MySitesCoordinator: NSObject {
         navigationController.tabBarItem.accessibilityLabel = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
         navigationController.tabBarItem.accessibilityIdentifier = "mySitesTabButton"
         navigationController.tabBarItem.title = NSLocalizedString("My Site", comment: "The accessibility value of the my site tab.")
-
-        if !FeatureFlag.newNavBarAppearance.enabled {
-            let context = ContextManager.shared.mainContext
-            let service = BlogService(managedObjectContext: context)
-            if let blogToOpen = service.lastUsedOrFirstBlog() {
-                blogListViewController.selectedBlog = blogToOpen
-            }
-        }
 
         return navigationController
     }()
@@ -106,11 +89,9 @@ class MySitesCoordinator: NSObject {
     private func showSitesList() {
         showRootViewController()
 
-        if Feature.enabled(.newNavBarAppearance) {
-            let navigationController = UINavigationController(rootViewController: blogListViewController)
-            navigationController.modalPresentationStyle = .formSheet
-            mySiteViewController.present(navigationController, animated: true)
-        }
+        let navigationController = UINavigationController(rootViewController: blogListViewController)
+        navigationController.modalPresentationStyle = .formSheet
+        mySiteViewController.present(navigationController, animated: true)
     }
 
     // MARK: - Blog Details
@@ -119,21 +100,16 @@ class MySitesCoordinator: NSObject {
     func showBlogDetails(for blog: Blog) {
         showRootViewController()
 
-        if Feature.enabled(.newNavBarAppearance) {
-            mySiteViewController.blog = blog
-            if mySiteViewController.presentedViewController != nil {
-                mySiteViewController.dismiss(animated: true, completion: nil)
-            }
-        } else {
-            blogListViewController.setSelectedBlog(blog, animated: false)
+        mySiteViewController.blog = blog
+        if mySiteViewController.presentedViewController != nil {
+            mySiteViewController.dismiss(animated: true, completion: nil)
         }
     }
 
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
         showBlogDetails(for: blog)
 
-        if Feature.enabled(.newNavBarAppearance),
-           let mySiteViewController = navigationController.topViewController as? MySiteViewController {
+        if let mySiteViewController = navigationController.topViewController as? MySiteViewController {
             mySiteViewController.showBlogDetailsSubsection(subsection)
         } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
             blogDetailsViewController.showDetailView(for: subsection)
@@ -146,25 +122,19 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .stats)
     }
 
-    func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
+    func showStats(for blog: Blog, timePeriod: StatsPeriodType, date: Date? = nil) {
         showBlogDetails(for: blog)
 
-        if FeatureFlag.newNavBarAppearance.enabled {
-
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
-            mySiteViewController.showDetailView(for: .stats)
-
-        } else if let blogDetailsViewController = navigationController.topViewController as? BlogDetailsViewController {
-            // Setting this user default is a bit of a hack, but it's by far the easiest way to
-            // get the stats view controller displaying the correct period. I spent some time
-            // trying to do it differently, but the existing stats view controller setup is
-            // quite complex and contains many nested child view controllers. As we're planning
-            // to revamp that section in the not too distant future, I opted for this simpler
-            // configuration for now. 2018-07-11 @frosty
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: StatsPeriodType.statsPeriodTypeDefaultsKey)
-
-            blogDetailsViewController.showDetailView(for: .stats)
+        if let date = date {
+            UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
+
+        if let siteID = blog.dotComID?.intValue {
+            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
+        }
+
+        mySiteViewController.showBlogDetailsSubsection(.stats)
     }
 
     func showActivityLog(for blog: Blog) {
@@ -175,13 +145,27 @@ class MySitesCoordinator: NSObject {
 
     func showSiteCreation() {
         showRootViewController()
-        mySiteViewController.launchSiteCreation()
+        mySiteViewController.launchSiteCreation(source: "my_site")
     }
 
     @objc
     func showAddNewSite() {
         showRootViewController()
         mySiteViewController.presentInterfaceForAddingNewSite()
+    }
+
+    // MARK: - Post creation
+
+    func showCreateSheet(for blog: Blog?) {
+        let context = ContextManager.shared.mainContext
+        let service = BlogService(managedObjectContext: context)
+        guard let targetBlog = blog ?? service.lastUsedOrFirstBlog() else {
+            return
+        }
+
+        showBlogDetails(for: targetBlog)
+
+        mySiteViewController.presentCreateSheet()
     }
 
     // MARK: - My Sites

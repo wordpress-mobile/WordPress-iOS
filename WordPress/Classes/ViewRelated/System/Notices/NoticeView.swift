@@ -17,6 +17,10 @@ class NoticeView: UIView {
     private let actionButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
 
+    private lazy var nextArrowImageView: UIImageView = {
+        configureNextArrow()
+    }()
+
     internal let notice: Notice
     internal var dualButtonsStackView: UIStackView?
 
@@ -55,6 +59,8 @@ class NoticeView: UIView {
 
         if notice.actionTitle != nil && notice.cancelTitle != nil {
             configureDualButtons()
+        } else if notice.actionTitle != nil && notice.style.showNextArrow {
+            configureActionButtonWithArrow()
         } else if notice.actionTitle != nil {
             configureActionButton()
         }
@@ -251,6 +257,60 @@ class NoticeView: UIView {
             self?.cancelButtonTapped()
         }
         cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    private func configureActionButtonWithArrow() {
+        guard let actionTitle = notice.actionTitle,
+              notice.style.showNextArrow else {
+                  actionBackgroundView.isHidden = true
+                  return
+              }
+
+        contentStackView.addArrangedSubview(actionBackgroundView)
+        actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        actionBackgroundView.layoutMargins = notice.style.layoutMargins
+        actionBackgroundView.backgroundColor = notice.style.backgroundColor
+
+        NSLayoutConstraint.activate([
+            actionBackgroundView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
+            actionBackgroundView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
+        ])
+
+        actionButton.setTitle(actionTitle, for: .normal)
+        actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        actionButton.setTitleColor(.invertedLink, for: .normal)
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+
+        actionBackgroundView.addSubviews([actionButton, nextArrowImageView])
+
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        nextArrowImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            actionButton.centerYAnchor.constraint(equalTo: actionBackgroundView.centerYAnchor),
+            actionButton.leadingAnchor.constraint(greaterThanOrEqualTo: actionBackgroundView.leadingAnchor)
+        ])
+
+        NSLayoutConstraint.activate([
+            nextArrowImageView.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor),
+            nextArrowImageView.leadingAnchor.constraint(equalTo: actionButton.trailingAnchor, constant: 5),
+            nextArrowImageView.trailingAnchor.constraint(equalTo: actionBackgroundView.trailingAnchor, constant: -16)
+        ])
+    }
+
+    private func configureNextArrow() -> UIImageView {
+        guard let image = UIImage(named: "disclosure-chevron")?.withTintColor(.invertedLink).imageFlippedForRightToLeftLayoutDirection() else {
+            return UIImageView()
+        }
+
+        let arrowImageView = UIImageView(image: image)
+        arrowImageView.backgroundColor = notice.style.backgroundColor
+
+        NSLayoutConstraint.activate([
+            arrowImageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 13.0)
+        ])
+
+        return arrowImageView
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

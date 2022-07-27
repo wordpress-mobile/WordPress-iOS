@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad11_0rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <accessibilityOverrides dynamicTypePreference="11"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingQuestionsPromptViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="notSureButton" destination="KwB-px-6X8" id="Y21-NV-nOb"/>
+                <outlet property="notificationsButton" destination="CDq-op-qjQ" id="HTb-da-7aL"/>
+                <outlet property="postsButton" destination="QSf-1g-Q0C" id="nek-wH-MJ6"/>
+                <outlet property="readButton" destination="Lxf-OI-DPA" id="npH-Bj-sfr"/>
+                <outlet property="skipButton" destination="oqk-b2-4xT" id="jVH-lF-viN"/>
+                <outlet property="stackView" destination="csX-G4-jUX" id="Wmx-aX-O3H"/>
+                <outlet property="statsButton" destination="vZc-Ui-n4c" id="8Un-B2-aod"/>
+                <outlet property="titleLabel" destination="dBQ-Sd-akv" id="ex9-fe-Cx3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5qq-DW-ke8">
+                    <rect key="frame" x="177" y="24" width="480" height="1150"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-VK-fi4">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="1150"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="csX-G4-jUX">
+                                    <rect key="frame" x="20" y="0.0" width="440" height="1150"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="WPd-b7-OmY" userLabel="Spacer View">
+                                            <rect key="frame" x="80" y="0.0" width="280" height="40"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="HdW-le-Jvf"/>
+                                            </constraints>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="What would you like to focus on?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dBQ-Sd-akv">
+                                            <rect key="frame" x="53.5" y="50" width="333.5" height="82"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="vZc-Ui-n4c" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="142" width="400" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="vLw-WE-Hwa"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Checking stats">
+                                                <color key="titleColor" name="AccentColor"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapStats:" destination="-1" eventType="touchUpInside" id="RCG-HK-Bew"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QSf-1g-Q0C" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="207" width="400" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="ajb-Ej-ySY"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Writing blog posts"/>
+                                            <connections>
+                                                <action selector="didTapWriting:" destination="-1" eventType="touchUpInside" id="HTi-5r-U8t"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="wordWrap" preferredBehavioralStyle="mac" translatesAutoresizingMaskIntoConstraints="NO" id="CDq-op-qjQ" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="272" width="400" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="rUc-4S-Bfz"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Staying up to date with notifications">
+                                                <color key="titleColor" name="AccentColor"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapNotifications:" destination="-1" eventType="touchUpInside" id="mnk-tN-bqk"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-OI-DPA" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="337" width="400" height="505"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="IXy-Xc-PPb"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Reading posts from other sites"/>
+                                            <connections>
+                                                <action selector="didTapReader:" destination="-1" eventType="touchUpInside" id="f3O-X6-kBP"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="KwB-px-6X8" customClass="FancyButton" customModule="WordPressUI">
+                                            <rect key="frame" x="20" y="852" width="400" height="55"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="F8y-fV-N8k"/>
+                                            </constraints>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Not sure, show me around."/>
+                                            <connections>
+                                                <action selector="didTapNotSure:" destination="-1" eventType="touchUpInside" id="rgT-w3-vu7"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="prj-v9-v12" userLabel="Spacer View">
+                                            <rect key="frame" x="80" y="917" width="280" height="179"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqk-b2-4xT">
+                                            <rect key="frame" x="205" y="1106" width="30" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="VDE-E0-c6D"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" title="Skip"/>
+                                            <connections>
+                                                <action selector="skip:" destination="-1" eventType="touchUpInside" id="Reh-V6-ZJt"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <viewLayoutGuide key="safeArea" id="BAl-eh-E95"/>
+                                    <constraints>
+                                        <constraint firstItem="Lxf-OI-DPA" firstAttribute="trailing" secondItem="vZc-Ui-n4c" secondAttribute="trailing" id="219-6B-a3L"/>
+                                        <constraint firstItem="Lxf-OI-DPA" firstAttribute="leading" secondItem="vZc-Ui-n4c" secondAttribute="leading" id="2SZ-cu-eV6"/>
+                                        <constraint firstItem="BAl-eh-E95" firstAttribute="trailing" secondItem="CDq-op-qjQ" secondAttribute="trailing" constant="20" id="5Qu-LV-Wbf"/>
+                                        <constraint firstItem="Lxf-OI-DPA" firstAttribute="leading" secondItem="BAl-eh-E95" secondAttribute="leading" constant="20" id="6CM-Tg-Iff"/>
+                                        <constraint firstItem="BAl-eh-E95" firstAttribute="trailing" secondItem="QSf-1g-Q0C" secondAttribute="trailing" constant="20" id="7wI-tw-wep"/>
+                                        <constraint firstItem="vZc-Ui-n4c" firstAttribute="leading" secondItem="BAl-eh-E95" secondAttribute="leading" constant="20" id="AJH-6i-HSQ"/>
+                                        <constraint firstItem="KwB-px-6X8" firstAttribute="leading" secondItem="BAl-eh-E95" secondAttribute="leading" constant="20" id="BTK-ku-FPr"/>
+                                        <constraint firstItem="KwB-px-6X8" firstAttribute="trailing" secondItem="vZc-Ui-n4c" secondAttribute="trailing" id="HhK-JY-opH"/>
+                                        <constraint firstItem="QSf-1g-Q0C" firstAttribute="leading" secondItem="vZc-Ui-n4c" secondAttribute="leading" id="PXu-zq-Lf6"/>
+                                        <constraint firstItem="CDq-op-qjQ" firstAttribute="leading" secondItem="vZc-Ui-n4c" secondAttribute="leading" id="UlZ-ir-I1b"/>
+                                        <constraint firstItem="QSf-1g-Q0C" firstAttribute="leading" secondItem="BAl-eh-E95" secondAttribute="leading" constant="20" id="UpQ-JE-UJZ"/>
+                                        <constraint firstItem="CDq-op-qjQ" firstAttribute="leading" secondItem="BAl-eh-E95" secondAttribute="leading" constant="20" id="f74-bo-G03"/>
+                                        <constraint firstItem="BAl-eh-E95" firstAttribute="trailing" secondItem="vZc-Ui-n4c" secondAttribute="trailing" constant="20" id="g7M-aj-LMI"/>
+                                        <constraint firstItem="BAl-eh-E95" firstAttribute="trailing" secondItem="Lxf-OI-DPA" secondAttribute="trailing" constant="20" id="pvQ-P0-VNT"/>
+                                        <constraint firstItem="QSf-1g-Q0C" firstAttribute="trailing" secondItem="vZc-Ui-n4c" secondAttribute="trailing" id="sKv-PI-NZk"/>
+                                        <constraint firstItem="CDq-op-qjQ" firstAttribute="trailing" secondItem="vZc-Ui-n4c" secondAttribute="trailing" id="tkA-Nx-CJc"/>
+                                        <constraint firstItem="BAl-eh-E95" firstAttribute="trailing" secondItem="KwB-px-6X8" secondAttribute="trailing" constant="20" id="zWA-La-6EA"/>
+                                        <constraint firstItem="KwB-px-6X8" firstAttribute="leading" secondItem="vZc-Ui-n4c" secondAttribute="leading" id="zfb-as-x9z"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="csX-G4-jUX" firstAttribute="top" secondItem="SbK-VK-fi4" secondAttribute="top" id="Gs8-5g-1TY"/>
+                                <constraint firstAttribute="trailing" secondItem="csX-G4-jUX" secondAttribute="trailing" constant="20" id="Krd-03-21K"/>
+                                <constraint firstAttribute="bottom" secondItem="csX-G4-jUX" secondAttribute="bottom" id="THZ-7c-LG3"/>
+                                <constraint firstItem="csX-G4-jUX" firstAttribute="leading" secondItem="SbK-VK-fi4" secondAttribute="leading" constant="20" id="ccf-fU-hKg"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="480" id="Co3-Ui-CIZ"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="top" secondItem="sQ5-Oa-1dH" secondAttribute="top" id="WaL-kg-DZa"/>
+                        <constraint firstItem="sQ5-Oa-1dH" firstAttribute="trailing" secondItem="SbK-VK-fi4" secondAttribute="trailing" id="Yz0-PM-0fE"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="centerY" secondItem="5qq-DW-ke8" secondAttribute="centerY" priority="250" id="h9l-n4-0oy"/>
+                        <constraint firstItem="sQ5-Oa-1dH" firstAttribute="bottom" secondItem="SbK-VK-fi4" secondAttribute="bottom" priority="250" id="mwE-oe-KSc"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="centerX" secondItem="5qq-DW-ke8" secondAttribute="centerX" id="oeu-ZH-S7K"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="leading" secondItem="sQ5-Oa-1dH" secondAttribute="leading" id="s8L-kH-amq"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="height" secondItem="eNH-SE-BnM" secondAttribute="height" id="xuU-wY-Exy"/>
+                        <constraint firstItem="SbK-VK-fi4" firstAttribute="width" secondItem="eNH-SE-BnM" secondAttribute="width" id="zZZ-wq-AZd"/>
+                    </constraints>
+                    <viewLayoutGuide key="contentLayoutGuide" id="sQ5-Oa-1dH"/>
+                    <viewLayoutGuide key="frameLayoutGuide" id="eNH-SE-BnM"/>
+                </scrollView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="9HK-dL-1rG"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="DYZ-nG-GI6"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="750" id="cn4-tK-ms6"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5qq-DW-ke8" secondAttribute="trailing" priority="750" id="dFk-LP-c0X"/>
+                <constraint firstItem="5qq-DW-ke8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" priority="750" id="iaA-Mr-uee"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5qq-DW-ke8" secondAttribute="bottom" id="xkg-Lr-gLu"/>
+            </constraints>
+            <point key="canvasLocation" x="-229" y="53"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

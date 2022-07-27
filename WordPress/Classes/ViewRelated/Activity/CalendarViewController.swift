@@ -1,6 +1,6 @@
 import UIKit
 
-protocol CalendarViewControllerDelegate: class {
+protocol CalendarViewControllerDelegate: AnyObject {
     func didCancel(calendar: CalendarViewController)
     func didSelect(calendar: CalendarViewController, startDate: Date?, endDate: Date?)
 }
@@ -11,6 +11,7 @@ class CalendarViewController: UIViewController {
     private var startDateLabel: UILabel!
     private var separatorDateLabel: UILabel!
     private var endDateLabel: UILabel!
+    private var header: UIStackView!
     private let gradient = GradientView()
 
     private var startDate: Date?
@@ -27,6 +28,17 @@ class CalendarViewController: UIViewController {
     private enum Constants {
         static let headerPadding: CGFloat = 16
         static let endDateLabel = NSLocalizedString("End Date", comment: "Placeholder for the end date in calendar range selection")
+        static let startDateLabel = NSLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
+        static let rangeSummaryAccessibilityLabel = NSLocalizedString(
+            "Selected range: %1$@ to %2$@",
+            comment: "Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is " +
+            "the end date.")
+        static let singleDateRangeSummaryAccessibilityLabel = NSLocalizedString(
+            "Selected range: %1$@ only",
+            comment: "Accessibility label for summary of currently single date. %1$@ is the date")
+        static let noRangeSelectedAccessibilityLabelPlaceholder = NSLocalizedString(
+            "No date range selected",
+            comment: "Accessibility label for no currently selected range.")
     }
 
     /// Creates a full screen year calendar controller
@@ -57,7 +69,7 @@ class CalendarViewController: UIViewController {
         )
 
         // Configure headers and add the calendar to the view
-        let header = startEndDateHeader()
+        configureHeader()
         let stackView = UIStackView(arrangedSubviews: [
                                             header,
                                             calendarCollectionView
@@ -136,13 +148,21 @@ class CalendarViewController: UIViewController {
             endDateLabel.textColor = .textSubtle
             separatorDateLabel.textColor = .textSubtle
         }
+
+        header.accessibilityLabel = accessibilityLabelForRangeSummary(startDate: startDate, endDate: endDate)
     }
 
-    private func startEndDateHeader() -> UIView {
+    private func configureHeader() {
+        header = startEndDateHeader()
+        resetLabels()
+    }
+
+    private func startEndDateHeader() -> UIStackView {
         let header = UIStackView(frame: .zero)
         header.distribution = .fill
 
         let startDate = UILabel()
+        startDate.isAccessibilityElement = false
         startDateLabel = startDate
         startDate.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -156,6 +176,7 @@ class CalendarViewController: UIViewController {
         startDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
         let separator = UILabel()
+        separator.isAccessibilityElement = false
         separatorDateLabel = separator
         separator.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         separator.textAlignment = .center
@@ -163,6 +184,7 @@ class CalendarViewController: UIViewController {
         separator.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.06).isActive = true
 
         let endDate = UILabel()
+        endDate.isAccessibilityElement = false
         endDateLabel = endDate
         endDate.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
         if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -175,7 +197,8 @@ class CalendarViewController: UIViewController {
         header.addArrangedSubview(endDate)
         endDate.widthAnchor.constraint(equalTo: header.widthAnchor, multiplier: 0.47).isActive = true
 
-        resetLabels()
+        header.isAccessibilityElement = true
+        header.accessibilityTraits = [.header, .summaryElement]
 
         return header
     }
@@ -200,7 +223,7 @@ class CalendarViewController: UIViewController {
     }
 
     private func resetLabels() {
-        startDateLabel.text = NSLocalizedString("Start Date", comment: "Placeholder for the start date in calendar range selection")
+        startDateLabel.text = Constants.startDateLabel
 
         separatorDateLabel.text = "-"
 
@@ -209,6 +232,22 @@ class CalendarViewController: UIViewController {
         [startDateLabel, separatorDateLabel, endDateLabel].forEach { label in
             label?.textColor = .textSubtle
             label?.font = WPStyleGuide.fontForTextStyle(.title3)
+        }
+
+        header.accessibilityLabel = accessibilityLabelForRangeSummary(startDate: nil, endDate: nil)
+    }
+
+    private func accessibilityLabelForRangeSummary(startDate: Date?, endDate: Date?) -> String {
+        switch (startDate, endDate) {
+        case (nil, _):
+            return Constants.noRangeSelectedAccessibilityLabelPlaceholder
+        case (.some(let startDate), nil):
+            let startDateString = formatter.string(from: startDate)
+            return String.localizedStringWithFormat(Constants.singleDateRangeSummaryAccessibilityLabel, startDateString)
+        case (.some(let startDate), .some(let endDate)):
+            let startDateString = formatter.string(from: startDate)
+            let endDateString = formatter.string(from: endDate)
+            return String.localizedStringWithFormat(Constants.rangeSummaryAccessibilityLabel, startDateString, endDateString)
         }
     }
 

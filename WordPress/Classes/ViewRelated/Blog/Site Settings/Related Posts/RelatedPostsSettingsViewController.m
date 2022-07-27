@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 - (instancetype)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
     }
@@ -190,6 +190,8 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsEnabledCell.name = NSLocalizedString(@"Show Related Posts", @"Label for configuration switch to enable/disable related posts");
         __weak RelatedPostsSettingsViewController *weakSelf = self;
         _relatedPostsEnabledCell.onChange = ^(BOOL value){
+            [WPAnalytics trackSettingsChange:@"related_posts" fieldName:@"show_related_posts" value:@(value)];
+
             [weakSelf updateRelatedPostsSettings:nil];
         };
     }
@@ -203,6 +205,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsShowHeaderCell.name = NSLocalizedString(@"Show Header", @"Label for configuration switch to show/hide the header for the related posts section");
         __weak RelatedPostsSettingsViewController *weakSelf = self;
         _relatedPostsShowHeaderCell.onChange = ^(BOOL value){
+            [WPAnalytics trackSettingsChange:@"related_posts" fieldName:@"show_related_posts_header" value:@(value)];
             [weakSelf updateRelatedPostsSettings:nil];
         };
     }
@@ -217,6 +220,8 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsShowThumbnailsCell.name = NSLocalizedString(@"Show Images", @"Label for configuration switch to show/hide images thumbnail for the related posts");
         __weak RelatedPostsSettingsViewController *weakSelf = self;
         _relatedPostsShowThumbnailsCell.onChange = ^(BOOL value){
+            [WPAnalytics trackSettingsChange:@"related_posts" fieldName:@"show_related_posts_thumbnail" value:@(value)];
+
             [weakSelf updateRelatedPostsSettings:nil];
         };
     }

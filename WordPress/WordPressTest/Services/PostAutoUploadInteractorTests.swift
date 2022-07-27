@@ -1,22 +1,18 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
-import Nimble
 
-class PostAutoUploadInteractorTests: XCTestCase {
-    private var context: NSManagedObjectContext!
-
+class PostAutoUploadInteractorTests: CoreDataTestCase {
     private var interactor: PostAutoUploadInteractor!
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
         interactor = PostAutoUploadInteractor()
     }
 
     override func tearDown() {
         interactor = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
@@ -154,7 +150,7 @@ private extension PostAutoUploadInteractorTests {
                     confirmedAutoUpload: Bool = false,
                     attemptsCount: Int = 1,
                     blog: Blog? = nil) -> Post {
-        let post = Post(context: context)
+        let post = Post(context: mainContext)
         post.status = status
         post.remoteStatus = remoteStatus
         post.autoUploadAttemptsCount = NSNumber(value: attemptsCount)
@@ -179,7 +175,7 @@ private extension PostAutoUploadInteractorTests {
     func createPage(_ status: BasePost.Status,
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false) -> Page {
-        let page = NSEntityDescription.insertNewObject(forEntityName: Page.entityName(), into: context) as! Page
+        let page = NSEntityDescription.insertNewObject(forEntityName: Page.entityName(), into: mainContext) as! Page
         page.remoteStatus = remoteStatus
 
         if hasRemote {
@@ -190,7 +186,7 @@ private extension PostAutoUploadInteractorTests {
     }
 
     func createBlog(supportsWPComAPI: Bool) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
 
         if supportsWPComAPI {
             blog.supportsWPComAPI()

@@ -8,6 +8,7 @@
 @class SourcePostAttribution;
 @class Comment;
 @class RemoteReaderPost;
+@class ReaderCard;
 
 extern NSString * const ReaderPostStoredCommentIDKey;
 extern NSString * const ReaderPostStoredCommentTextKey;
@@ -50,10 +51,14 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic, strong) ReaderAbstractTopic *topic;
+@property (nonatomic, strong) NSSet<ReaderCard *> *card;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
 @property (nonatomic, strong) SourcePostAttribution *sourceAttribution;
+@property (nonatomic) BOOL isSubscribedComments;
+@property (nonatomic) BOOL canSubscribeComments;
+@property (nonatomic) BOOL receivesCommentNotifications;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;

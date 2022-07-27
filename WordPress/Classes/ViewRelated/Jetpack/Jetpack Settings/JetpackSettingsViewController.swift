@@ -30,7 +30,7 @@ open class JetpackSettingsViewController: UITableViewController {
     // MARK: - Initializer
 
     @objc public convenience init(blog: Blog) {
-        self.init(style: .grouped)
+        self.init(style: .insetGrouped)
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: settings.managedObjectContext!)
     }
@@ -41,6 +41,7 @@ open class JetpackSettingsViewController: UITableViewController {
         super.viewDidLoad()
         WPAnalytics.trackEvent(.jetpackSettingsViewed)
         title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
+        extendedLayoutIncludesOpaqueBars = true
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -187,6 +188,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func jetpackMonitorEnabledValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "monitor_enabled", value: newValue as Any)
             self.settings.jetpackMonitorEnabled = newValue
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
@@ -199,6 +201,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func sendNotificationsByEmailValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "send_notification_by_email", value: newValue as Any)
             self.settings.jetpackMonitorEmailNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
@@ -210,6 +213,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func sendPushNotificationsValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "send_push_notifications", value: newValue as Any)
             self.settings.jetpackMonitorPushNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
@@ -221,6 +225,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func blockMaliciousLoginAttemptsValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "block_malicious_logins", value: newValue as Any)
             self.settings.jetpackBlockMaliciousLoginAttempts = newValue
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
@@ -268,6 +273,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func ssoEnabledChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "wpcom_login_allowed", value: newValue as Any)
             self.settings.jetpackSSOEnabled = newValue
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
@@ -280,6 +286,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func matchAccountsUsingEmailChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "match_accounts_using_email", value: newValue as Any)
             self.settings.jetpackSSOMatchAccountsByEmail = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
@@ -291,6 +298,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     fileprivate func requireTwoStepAuthenticationChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
+            WPAnalytics.trackSettingsChange("jetpack_settings", fieldName: "require_two_step_auth", value: newValue as Any)
             self.settings.jetpackSSORequireTwoStepAuthentication = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
@@ -315,7 +323,7 @@ open class JetpackSettingsViewController: UITableViewController {
         guard let url =  URL(string: JetpackSettingsViewController.learnMoreUrl) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url)
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "jetpack_settings_learn_more")
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

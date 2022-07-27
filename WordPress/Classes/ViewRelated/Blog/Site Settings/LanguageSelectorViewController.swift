@@ -3,7 +3,7 @@ import WordPressShared
 
 /// Defines the methods implemented by the LanguageSelectorViewController delegate
 ///
-protocol LanguageSelectorDelegate: class {
+protocol LanguageSelectorDelegate: AnyObject {
 
     /// Called when the user tapped on a language.
     ///

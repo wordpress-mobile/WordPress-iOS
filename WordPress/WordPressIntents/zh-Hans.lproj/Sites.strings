@@ -1,12 +1,19 @@
-"BOl9KQ" = "There are ${count} options matching ‘${site}’.";
-
-"ILcGmf" = "Site";
-
-"cyajMn" = "Site";
-
-"gpCwrM" = "Select Site";
-
-"s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
-
-"tVvJ9c" = "Select Site Intent";
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--Warning: Auto-generated file, do not edit.-->
+<plist version="1.0">
+  <dict>
+    <key>BOl9KQ</key>
+    <string>有 ${count} 个选项与“${site}”匹配。</string>
+    <key>ILcGmf</key>
+    <string>站点</string>
+    <key>cyajMn</key>
+    <string>站点</string>
+    <key>gpCwrM</key>
+    <string>选择站点</string>
+    <key>s4dJhx</key>
+    <string>再确认一下，您是想要“${site}”吗？</string>
+    <key>tVvJ9c</key>
+    <string>选择“站点意图”</string>
+  </dict>
+</plist>

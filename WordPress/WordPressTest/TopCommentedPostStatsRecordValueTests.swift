@@ -1,3 +1,5 @@
+import XCTest
+
 @testable import WordPress
 
 class TopCommentedPostStatsRecordValueTests: StatsTestCase {

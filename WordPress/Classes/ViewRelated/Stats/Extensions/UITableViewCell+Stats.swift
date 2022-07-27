@@ -14,6 +14,7 @@ extension UITableViewCell {
                  forType statType: StatType,
                  limitRowsDisplayed: Bool = true,
                  rowDelegate: StatsTotalRowDelegate? = nil,
+                 referrerDelegate: StatsTotalRowReferrerDelegate? = nil,
                  viewMoreDelegate: ViewMoreRowDelegate? = nil) {
 
         let numberOfDataRows = dataRows.count
@@ -38,7 +39,7 @@ extension UITableViewCell {
         for index in 0..<numberOfRowsToAdd {
             let dataRow = dataRows[index]
             let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: dataRow, delegate: rowDelegate)
+            row.configure(rowData: dataRow, delegate: rowDelegate, referrerDelegate: referrerDelegate)
 
             // Don't show the separator line on the last row.
             if index == (numberOfRowsToAdd - 1) {

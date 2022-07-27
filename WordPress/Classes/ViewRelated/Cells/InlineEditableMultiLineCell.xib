@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="LfA-no-L5x" customClass="InlineEditableMultiLineCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="364" height="150"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LfA-no-L5x" id="20L-Xf-3Te">
+                <rect key="frame" x="0.0" y="0.0" width="364" height="150"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FkL-aB-20C">
+                        <rect key="frame" x="16" y="11" width="332" height="130"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="130" id="mme-Ba-30V"/>
+                        </constraints>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <connections>
+                            <outlet property="delegate" destination="LfA-no-L5x" id="Uer-HX-Iil"/>
+                        </connections>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="FkL-aB-20C" secondAttribute="bottom" constant="11" id="42s-N9-VoW"/>
+                    <constraint firstItem="FkL-aB-20C" firstAttribute="leading" secondItem="20L-Xf-3Te" secondAttribute="leading" constant="16" id="5SV-Zt-oKA"/>
+                    <constraint firstItem="FkL-aB-20C" firstAttribute="top" secondItem="20L-Xf-3Te" secondAttribute="top" constant="11" id="mgJ-V6-WZA"/>
+                    <constraint firstAttribute="trailing" secondItem="FkL-aB-20C" secondAttribute="trailing" constant="16" id="z8Y-Et-ldW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="textView" destination="FkL-aB-20C" id="GOY-jR-qNE"/>
+                <outlet property="textViewMinHeightConstraint" destination="mme-Ba-30V" id="zh4-cE-ddl"/>
+            </connections>
+            <point key="canvasLocation" x="-131.8840579710145" y="-16.071428571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

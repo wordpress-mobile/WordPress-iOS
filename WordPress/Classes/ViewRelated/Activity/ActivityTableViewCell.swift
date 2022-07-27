@@ -43,6 +43,7 @@ open class ActivityTableViewCell: WPTableViewCell {
 
         actionButton.setImage(actionGridicon, for: .normal)
         actionButton.tintColor = .listIcon
+        actionButton.accessibilityIdentifier = "activity-cell-action-button"
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {

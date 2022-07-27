@@ -1,0 +1,20 @@
+{
+    "posts": {
+        "has_published": true,
+        "draft": [{
+            "id": 3246,
+            "title": "Foo",
+            "content": "",
+            "featured_image": null,
+            "date": "2022-01-13 00:30:56"
+        }],
+        "scheduled": []
+    },
+    "todays_stats": {
+        "views": 0,
+        "visitors": 0,
+        "likes": 0,
+        "comments": 0
+    }
+}
+
