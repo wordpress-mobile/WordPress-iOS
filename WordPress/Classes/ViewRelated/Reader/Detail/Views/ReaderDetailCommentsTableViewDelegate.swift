@@ -119,7 +119,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         guard section == 0, JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView(bottomPadding: 10)
+        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding)
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -158,5 +158,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }
