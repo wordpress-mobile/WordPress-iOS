@@ -554,16 +554,13 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
+        view.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
-
-        // Explicitly set the tintColor in the editor's window to blue in order to avoid unexpected overrides.
-        let window = UIApplication.shared.delegate?.window
-        window??.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
     }
 }
 
