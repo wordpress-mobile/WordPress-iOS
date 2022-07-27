@@ -8,18 +8,15 @@ class BlogDashboardAB {
         case treatment
     }
 
-    private let accountService: AccountService
-
     public var variant: Variant {
         calculateVariant()
     }
 
-    private init(accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
-        self.accountService = accountService
+    private init() {
     }
 
     private func calculateVariant() -> Variant {
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
         let token: String? = defaultAccount?.authToken
 
         if let token = token {

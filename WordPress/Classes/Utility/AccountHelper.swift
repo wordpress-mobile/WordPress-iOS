@@ -75,7 +75,7 @@ import Foundation
         // Unschedule any scheduled blogging reminders for the account's blogs.
         // We don't just clear all reminders, in case the user has self-hosted
         // sites added to the app.
-        if let account = service.defaultWordPressComAccount(),
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
            let blogs = account.blogs,
            let scheduler = try? ReminderScheduleCoordinator() {
             blogs.forEach { scheduler.unschedule(for: $0) }

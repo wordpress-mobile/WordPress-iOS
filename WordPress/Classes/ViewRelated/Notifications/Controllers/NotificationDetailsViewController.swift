@@ -489,7 +489,7 @@ extension NotificationDetailsViewController {
         suggestionsTableView?.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
             fromPostAuthorId: nil,
             commentAuthorId: note.metaCommentAuthorID,
-            defaultAccountId: accountService.defaultWordPressComAccount()?.userID
+            defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.mainContext)?.userID
         )
 
         suggestionsTableView?.translatesAutoresizingMaskIntoConstraints = false

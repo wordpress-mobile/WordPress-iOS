@@ -541,9 +541,7 @@ private extension WordPressAuthenticationManager {
 
     private func firstBlog() -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs?.first
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.blogs?.first
     }
 }
 

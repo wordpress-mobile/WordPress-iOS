@@ -270,7 +270,7 @@ open class AboutViewController: UITableViewController {
             return nil
         }
 
-        let account = AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
         let presenter = ShareAppContentPresenter(account: account)
         presenter.delegate = self
 

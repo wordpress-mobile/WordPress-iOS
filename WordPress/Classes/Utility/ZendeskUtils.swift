@@ -1037,9 +1037,7 @@ private extension ZendeskUtils {
 
     /// Provides the default PlanServiceRemote to `getZendeskMetadata`
     private static var defaultPlanServiceRemote: PlanServiceRemote? {
-        guard let api = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-                .defaultWordPressComAccount()?
-                .wordPressComRestApi else {
+        guard let api = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.wordPressComRestApi else {
             return nil
         }
         return PlanServiceRemote(wordPressComRestApi: api)
