@@ -408,6 +408,11 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+        presentedViewController?.view.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
+    }
+
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
