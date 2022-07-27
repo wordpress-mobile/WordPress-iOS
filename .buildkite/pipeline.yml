@@ -73,7 +73,8 @@ steps:
   # UI Tests
   #################
   - group: "🔬 UI Tests"
-    env: UI_TESTS_STATUS: "pending"
+    env: 
+      UI_TESTS_STATUS: "pending"
     steps:
       - label: "🔬 UI Tests (iPhone)"
         key: "ui-tests-iphone"
