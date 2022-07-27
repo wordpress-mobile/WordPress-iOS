@@ -114,9 +114,14 @@ steps:
           queue: "default"
 
       - wait: ~
+
       - label: "Testing"
-      - command: "echo wait for notification to be sent"
+        command: "echo wait for notification to be sent"
         depends_on: "slack-notification-iphone"
+        env: *common_env 
+        plugins: *common_plugins
+        agents:
+          queue: "default"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
