@@ -79,16 +79,22 @@ extension XCTestCase {
     public func removeApp(_ appName: String = "WordPress", app: XCUIApplication = XCUIApplication()) {
         app.terminate()
 
-        let home = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        home.icons[appName].firstMatch.press(forDuration: 1)
-        waitAndTap(home.buttons["Remove App"])
-        waitAndTap(home.alerts.buttons["Delete App"])
-        waitAndTap(home.alerts.buttons["Delete"])
+        let appToRemove = Constants.homeApp.icons[appName]
+        if appToRemove.exists {
+            appToRemove.firstMatch.press(forDuration: 1)
+            waitAndTap(Constants.homeApp.buttons["Remove App"])
+            waitAndTap(Constants.homeApp.alerts.buttons["Delete App"])
+            waitAndTap(Constants.homeApp.alerts.buttons["Delete"])
+        }
     }
 
     public func waitAndTap( _ element: XCUIElement) {
         if element.waitForExistence(timeout: 5) {
             element.tap()
         }
+    }
+
+    private enum Constants {
+        static let homeApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }
 }
