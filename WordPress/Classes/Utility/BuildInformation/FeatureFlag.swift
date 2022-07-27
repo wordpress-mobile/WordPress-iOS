@@ -32,6 +32,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case betaSiteDesigns
     case featureHighlightTooltip
     case jetpackPowered
+    case jetpackPoweredBottomSheet
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -104,6 +105,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackPowered:
             return true
+        case .jetpackPoweredBottomSheet:
+            return false
         }
     }
 
@@ -194,6 +197,8 @@ extension FeatureFlag {
             return "Feature Highlight Tooltip"
         case .jetpackPowered:
             return "Jetpack powered banners and badges"
+        case .jetpackPoweredBottomSheet:
+            return "Jetpack powered bottom sheet"
         }
     }
 
