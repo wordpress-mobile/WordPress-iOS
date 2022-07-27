@@ -68,8 +68,6 @@ class JetpackButton: UIButton {
     }
 
     private func configureButton() {
-        // TODO: Remove this when the modal presentation is added
-        isUserInteractionEnabled = false
         setTitle(Appearance.title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor

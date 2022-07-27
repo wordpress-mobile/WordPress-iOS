@@ -321,3 +321,16 @@ extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
         return .none
     }
 }
+
+extension BlogDashboardViewController: DashboardBadgeCellDelegate {
+    func didTapJetpackButton() {
+        let jetpackPoweredViewController = JetpackPoweredViewController()
+        let bottomSheet = BottomSheetViewController(childViewController: jetpackPoweredViewController)
+        let maxWidth = view.bounds.size.width
+        jetpackPoweredViewController.preferredContentSize = CGSize(
+            width: maxWidth,
+            height: JetpackPoweredViewController.height(maxContentWidth: maxWidth)
+        )
+        bottomSheet.show(from: self)
+    }
+}

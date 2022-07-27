@@ -397,8 +397,8 @@ final class Tooltip: UIView {
     }
 }
 
-private extension String {
-    private func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
+extension String {
+    func size(withMaxWidth maxWidth: CGFloat, font: UIFont) -> CGRect {
         let constraintRect = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(
             with: constraintRect,
