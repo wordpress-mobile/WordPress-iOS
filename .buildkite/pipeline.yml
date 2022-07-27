@@ -73,8 +73,6 @@ steps:
   # UI Tests
   #################
   - group: "🔬 UI Tests"
-    env: 
-      UI_TESTS_STATUS: "pending"
     steps:
       - label: "🔬 UI Tests (iPhone)"
         key: "ui-tests-iphone"
@@ -94,18 +92,25 @@ steps:
             echo "$${UI_TESTS_STATUS}"
             UI_TESTS_STATUS="failed"
             echo "$${UI_TESTS_STATUS}"
+            cat <<- YAML | buildkite-agent pipeline upload 
+              steps:
+                - label: "Notify slack about failed step"
+                  command: echo "Notifying slack about the failed step"
+                  notify:
+                    - slack:
+                        channels:
+                          - "#jos-testing-notif"
+                        message: "UI Test Failed! Please investigate.""
+          YAML
           fi
         depends_on: "ui-tests-iphone"
         allow_dependency_failure: true
         env:
           IMAGE_ID: xcode-13.4.1
+          UI_TESTS_STATUS: "pending"
         plugins: *common_plugins
         agents:
           queue: "default"
-        notify:
-          - slack: "#jos-testing-notif"
-            if: build.env("UI_TESTS_STATUS") == "pending"
-            
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
