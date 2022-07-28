@@ -53,7 +53,7 @@ class JetpackOverlayView: UIView {
     }()
 
     @objc private func didTapButton() {
-
+        buttonAction?()
     }
 
     private func setup(buttonAction: (() -> Void)?) {
