@@ -47,13 +47,6 @@ import Gridicons
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
-    private lazy var bannerView: JetpackBannerView = {
-        let bannerView = JetpackBannerView()
-        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
-        return bannerView
-    }()
-
-
     fileprivate let sections: [Section] = [ .posts, .sites ]
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -124,9 +117,6 @@ import Gridicons
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
-        // hide the parent viewController's banner, if it exists
-        // because this viewController has its own.
-        streamController?.jetpackBannerView?.isHidden = true
     }
 
 
@@ -186,17 +176,13 @@ import Gridicons
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        searchBar.inputAccessoryView = bannerView
         hideBannerViewIfNeeded()
     }
 
     /// hides the Jetpack powered banner on iPhone landscape
     private func hideBannerViewIfNeeded() {
-        guard JetpackBrandingVisibility.all.enabled else {
-            return
-        }
         // hide the banner on iPhone landscape
-        bannerView.isHidden = traitCollection.verticalSizeClass == .compact
+        streamController?.jetpackBannerView?.isHidden = traitCollection.verticalSizeClass == .compact
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
