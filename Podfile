@@ -50,7 +50,7 @@ def wordpress_kit
   # pod 'WordPressKit', '~> 4.56.0'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '70264f871621bfda9d825840781f6dddb16485a3'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '70264f871621bfda9d825840781f6dddb16485a3'
   # pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
