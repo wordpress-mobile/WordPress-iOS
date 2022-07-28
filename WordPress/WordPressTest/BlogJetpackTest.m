@@ -76,16 +76,18 @@
 }
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
-    TestContextManager *contextManager = [TestContextManager new];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[contextManager mainContext]];
+    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
+
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
-    [[contextManager mainContext] save:nil];
-    WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:[contextManager mainContext]];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
+    WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
+    saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
-    [[contextManager mainContext] save:nil];
-    defaultAccount =  [WPAccount lookupDefaultWordPressComAccountInContext:[contextManager mainContext]];
+    [self waitForExpectations:@[saveExpectation] timeout:2.0];
+    defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];;
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 
