@@ -91,7 +91,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     __weak __typeof(self) weakSelf = self;
     self.viewModel.searchResultUpdated = ^(id<SuggestionsListViewModelType> viewModel) {
         if (!weakSelf) return;
-        CGFloat sectionHeaderAndFooterHeight = viewModel.sections.count > 1 ? -1 : CGFLOAT_MIN;
+        CGFloat sectionHeaderAndFooterHeight = viewModel.sections.count > 1 ? -1 : 0;
         [weakSelf.tableView setSectionHeaderHeight:sectionHeaderAndFooterHeight];
         [weakSelf.tableView setSectionFooterHeight:sectionHeaderAndFooterHeight];
         [weakSelf.tableView reloadData];
