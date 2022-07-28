@@ -3,6 +3,11 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
+    init(buttonAction: (() -> Void)? = nil) {
+        super.init(frame: .zero)
+        setup(buttonAction: buttonAction)
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -13,10 +18,10 @@ class JetpackBannerView: UIView {
         setup()
     }
 
-    private func setup() {
+    private func setup(buttonAction: (() -> Void)? = nil) {
         backgroundColor = Self.jetpackBannerBackgroundColor
 
-        let jetpackButton = JetpackButton(style: .banner)
+        let jetpackButton = JetpackButton(style: .banner, buttonAction: buttonAction)
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(jetpackButton)
 
