@@ -167,6 +167,7 @@ FeaturedImageViewControllerDelegate>
 
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
+    self.navigationController.view.tintColor = [UIColor blueColor];
     
     [self configureMetaSectionRows];
     [self reloadData];
@@ -749,6 +750,7 @@ FeaturedImageViewControllerDelegate>
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStickyChanged properties:@{@"via": @"settings"}];
         weakSelf.post.isStickyPost = newValue;
     };
+    cell.flipSwitch.onTintColor = [UIColor blueColor];
     return cell;
 }
 
