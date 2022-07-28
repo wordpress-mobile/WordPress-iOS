@@ -39,7 +39,7 @@ steps:
         notify:
           - github_commit_status:
               context: "Jetpack Installable Build"
-
+  
   #################
   # Build the app
   #################
@@ -65,9 +65,9 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
-      # - slack:
-      #     channels:
-      #       - "#jos-testing-notif"
+      - slack:
+          channels:
+            - "#jos-testing-notif"
 
   #################
   # UI Tests
@@ -85,43 +85,9 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
-
-      - label: "Slack notification"
-        key: "slack-notification-iphone"
-        command: |
-          if [ $(buildkite-agent step get "outcome" --step "ui-tests-iphone") == "hard_failed" ]; then
-            echo "$${UI_TESTS_STATUS}"
-            UI_TESTS_STATUS="failed"
-            echo "$${UI_TESTS_STATUS}"
-            cat <<- YAML | buildkite-agent pipeline upload 
-              steps:
-                - label: "Notify slack about failed step"
-                  command: echo "Notifying slack about the failed step"
-                  notify:
-                    - slack:
-                        channels:
-                          - "#jos-testing-notif"
-                        message: "UI Test Failed! Please investigate.""
-            YAML
-          fi
-        depends_on: "ui-tests-iphone"
-        allow_dependency_failure: true
-        env:
-          IMAGE_ID: xcode-13.4.1
-          UI_TESTS_STATUS: "pending"
-        plugins: *common_plugins
-        agents:
-          queue: "default"
-
-      - wait: ~
-
-      - label: "Testing"
-        command: "echo wait for notification to be sent"
-        depends_on: "slack-notification-iphone"
-        env: *common_env 
-        plugins: *common_plugins
-        agents:
-          queue: "default"
+          - slack:
+              channels:
+                - "#jos-testing-notif"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
