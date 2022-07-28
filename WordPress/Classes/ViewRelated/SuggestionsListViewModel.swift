@@ -1,5 +1,5 @@
 import Foundation
-import UIKit
+import CoreData
 
 @objc final class SuggestionsListSection: NSObject {
     @objc var title: String?
@@ -172,7 +172,7 @@ import UIKit
             if !prominent.isEmpty {
                 let section = Section()
                 if shouldShowSectionTitle {
-                    section.title = NSLocalizedString("suggestions.section.prominent", value: "In the conversation", comment: "Section title for prominent suggestions")
+                    section.title = NSLocalizedString("suggestions.section.prominent", value: "In this conversation", comment: "Section title for prominent suggestions")
                 }
                 section.rows = prominent.map { SuggestionViewModel(suggestion: $0) }
                 sections.append(section)
