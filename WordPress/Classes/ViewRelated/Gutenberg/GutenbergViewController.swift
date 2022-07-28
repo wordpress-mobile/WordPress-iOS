@@ -410,7 +410,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         super.present(viewControllerToPresent, animated: flag, completion: completion)
-        presentedViewController?.view.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
+        presentedViewController?.view.tintColor = UIColor.editorPrimary
     }
 
     // MARK: - Functions
@@ -559,7 +559,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
-        view.tintColor = UIColor.muriel(color: MurielColor(name: .blue))
+        view.tintColor = UIColor.editorPrimary
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)

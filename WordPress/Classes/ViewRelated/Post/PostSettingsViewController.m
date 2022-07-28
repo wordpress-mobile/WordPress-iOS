@@ -147,7 +147,7 @@ FeaturedImageViewControllerDelegate>
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
-    self.tableView.tintColor = [UIColor blueColor];
+    self.tableView.tintColor = [UIColor murielEditorPrimary];
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
     
@@ -167,7 +167,7 @@ FeaturedImageViewControllerDelegate>
 
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
-    self.navigationController.view.tintColor = [UIColor blueColor];
+    self.navigationController.view.tintColor = [UIColor murielEditorPrimary];
     
     [self configureMetaSectionRows];
     [self reloadData];
@@ -750,7 +750,7 @@ FeaturedImageViewControllerDelegate>
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStickyChanged properties:@{@"via": @"settings"}];
         weakSelf.post.isStickyPost = newValue;
     };
-    cell.flipSwitch.onTintColor = [UIColor blueColor];
+    cell.flipSwitch.onTintColor = [UIColor murielEditorPrimary];
     return cell;
 }
 
