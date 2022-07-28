@@ -34,5 +34,13 @@ class DashboardBadgeCell: UICollectionViewCell, Reusable {
 }
 
 extension DashboardBadgeCell: BlogDashboardCardConfigurable {
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {}
+    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
+        guard let viewController = viewController else {
+            return
+        }
+
+        jetpackButton.setAction {
+            JetpackBrandingCoordinator.presentOverlay(from: viewController)
+        }
+    }
 }
