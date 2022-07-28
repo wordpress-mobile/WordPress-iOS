@@ -48,12 +48,24 @@ extension SuggestionType {
 
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Ideally, we should be returning `nil` instead of `Self.nonEmptyString`.
-        // But doing that doesn't hide the table section headers and footers.
-        //
-        // N.B: We hide the table section headers and footers by mutating
-        //      `tableView.sectionHeaderHeight` and `tableView.sectionFooterHeight`.
+        // But when this method returns `nil` ( or empty string ), `tableView:heightForHeaderInSection:` method doesn't get called
+        // As a result, the section header is not hidden. Same behavior for section footers.
         guard !viewModel.isLoading else { return Self.nonEmptyString }
         return viewModel.sections[section].title ?? Self.nonEmptyString
+    }
+
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // Show section header if there are more 2 sections or more.
+        return viewModel.sections.count > 1 ? tableView.sectionHeaderHeight : .leastNonzeroMagnitude
+    }
+
+    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel.sections.count > 1 ? nil : Self.nonEmptyString
+    }
+
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Show section footer if there are more 2 sections or more.
+        return viewModel.sections.count > 1 ? tableView.sectionFooterHeight : .leastNonzeroMagnitude
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
