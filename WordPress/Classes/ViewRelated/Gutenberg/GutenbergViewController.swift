@@ -410,8 +410,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         super.present(viewControllerToPresent, animated: flag, completion: completion)
-        presentedViewController?.view.tintColor = UIColor.editorPrimary
-        UISwitch.appearance().onTintColor = UIColor.editorPrimary
+
+        let presentedView = presentedViewController?.view
+        let presentedViewSwitch = UISwitch.appearance()
+        let presentedViewActionSheet = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
+
+        presentedView?.tintColor = UIColor.editorPrimary
+        presentedViewSwitch.onTintColor = UIColor.editorPrimary
+        presentedViewActionSheet.tintColor = UIColor.editorPrimary
     }
 
     // MARK: - Functions
