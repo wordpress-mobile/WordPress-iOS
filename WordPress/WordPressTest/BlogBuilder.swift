@@ -70,11 +70,6 @@ final class BlogBuilder {
         return self
     }
 
-    func with(planSlug slug: String) -> Self {
-        blog.planTitle = slug
-        return self
-    }
-
     func withAnAccount() -> Self {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount

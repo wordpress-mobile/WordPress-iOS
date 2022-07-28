@@ -32,7 +32,7 @@ class ZendeskUtilsPlans: XCTestCase {
         planServiceRemote = nil
     }
 
-    func testEcommercePlanSelected() throws {
+    func testEcommercePlanSelected() {
         // Given
         planServiceRemote.planIndex = 0
         // When
@@ -49,7 +49,7 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    func testBusinessPlanSelected() throws {
+    func testBusinessPlanSelected() {
         // Given
         planServiceRemote.planIndex = 1
         // When
@@ -67,7 +67,7 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    func testPremiumPlanSelected() throws {
+    func testPremiumPlanSelected() {
         // Given
         planServiceRemote.planIndex = 2
         // When
@@ -84,7 +84,7 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    func testPresonalPlanSelected() throws {
+    func testPresonalPlanSelected() {
         // Given
         planServiceRemote.planIndex = 3
         // When
@@ -101,7 +101,7 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    func testBloggerPlanSelected() throws {
+    func testBloggerPlanSelected() {
         // Given
         planServiceRemote.planIndex = 4
         // When
@@ -118,7 +118,7 @@ class ZendeskUtilsPlans: XCTestCase {
         }
     }
 
-    func testFreePlanSelected() throws {
+    func testFreePlanSelected() {
         // Given
         planServiceRemote.planIndex = 5
         // When

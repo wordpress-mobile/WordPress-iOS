@@ -14,6 +14,7 @@ class ChangeUsernameViewModel {
     var displayName: String {
         return settings?.displayName ?? ""
     }
+
     var isReachable: Bool {
         return reachability?.isReachable() ?? false
     }
