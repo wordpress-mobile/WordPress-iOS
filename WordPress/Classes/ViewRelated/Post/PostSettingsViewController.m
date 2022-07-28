@@ -141,13 +141,13 @@ FeaturedImageViewControllerDelegate>
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
+    self.tableView.tintColor = [UIColor murielEditorPrimary];
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
-    self.tableView.tintColor = [UIColor murielEditorPrimary];
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
     
@@ -167,6 +167,7 @@ FeaturedImageViewControllerDelegate>
 
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
+    
     self.navigationController.view.tintColor = [UIColor murielEditorPrimary];
     
     [self configureMetaSectionRows];
