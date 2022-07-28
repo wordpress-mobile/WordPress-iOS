@@ -12,7 +12,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     // MARK: - Properties
 
     private var presentingViewController: UIViewController?
-    private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType = .actionable
+    private var interactionType: BloggingPromptsFeatureIntroduction.InteractionType
 
     private lazy var navigationController: UINavigationController = {
         let vc = BloggingPromptsFeatureIntroduction(interactionType: interactionType)
@@ -24,7 +24,10 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     private var selectedBlog: Blog?
 
     private lazy var accountSites: [Blog]? = {
-        return AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
+        return AccountService(managedObjectContext: ContextManager.shared.mainContext)
+                .defaultWordPressComAccount()?
+                .visibleBlogs
+                .filter { $0.isAccessibleThroughWPCom() }
     }()
 
     private lazy var accountHasMultipleSites: Bool = {
@@ -38,6 +41,16 @@ class BloggingPromptsIntroductionPresenter: NSObject {
     private lazy var bloggingPromptsService: BloggingPromptsService? = {
         return BloggingPromptsService(blog: blogToUse())
     }()
+
+    // MARK: - Init
+
+    init(interactionType: BloggingPromptsFeatureIntroduction.InteractionType = .actionable(blog: nil)) {
+        self.interactionType = interactionType
+        if case .actionable(let blog) = interactionType {
+            selectedBlog = blog
+        }
+        super.init()
+    }
 
     // MARK: - Present Feature Introduction
 
@@ -73,7 +86,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
 private extension BloggingPromptsIntroductionPresenter {
 
     func showSiteSelectorIfNeeded(completion: @escaping () -> Void) {
-        guard accountHasMultipleSites else {
+        guard accountHasMultipleSites, selectedBlog == nil else {
             completion()
             return
         }
@@ -95,6 +108,7 @@ private extension BloggingPromptsIntroductionPresenter {
         selectorViewController.displaysOnlyDefaultAccountSites = true
         selectorViewController.dismissOnCompletion = false
         selectorViewController.dismissOnCancellation = true
+        selectorViewController.shouldHideSelfHostedSites = true
 
         let selectorNavigationController = UINavigationController(rootViewController: selectorViewController)
         self.navigationController.present(selectorNavigationController, animated: true)

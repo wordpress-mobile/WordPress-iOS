@@ -17,6 +17,8 @@ protocol SiteStatsReferrerDelegate: AnyObject {
 class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
+    weak var bannerView: JetpackBannerView?
+
     // MARK: - Properties
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -77,6 +79,7 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
+        sendScrollEventsToBanner()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -318,6 +321,17 @@ extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDele
     func didTouchHeaderButton(forward: Bool) {
         if let intervalDate = viewModel?.updateDate(forward: forward) {
             tableHeaderView?.updateDate(with: intervalDate)
+        }
+    }
+}
+
+// MARK: Jetpack powered banner
+
+private extension SiteStatsPeriodTableViewController {
+
+    func sendScrollEventsToBanner() {
+        if let bannerView = bannerView {
+            analyticsTracker.addTranslationObserver(bannerView)
         }
     }
 }

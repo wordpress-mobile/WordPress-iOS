@@ -110,6 +110,17 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
+            if FeatureFlag.statsNewInsights.enabled {
+                switch self {
+                case .insightsCommentsAuthors:
+                    return InsightsHeaders.topCommenters
+                case .insightsCommentsPosts:
+                    return InsightsHeaders.posts
+                default:
+                    return InsightsHeaders.comments
+                }
+            }
+
             return InsightsHeaders.comments
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return InsightsHeaders.followers
@@ -230,6 +241,8 @@
             return TabTitles.overviewLikes
         case .periodOverviewComments:
             return TabTitles.overviewComments
+        case .insightsPublicize:
+            return TabTitles.publicize
         default:
             return ""
         }
@@ -351,6 +364,21 @@
         }
     }
 
+    var analyticsProperty: String {
+        switch self {
+        case .insightsViewsVisitors:
+            return "views_and_visitors"
+        case .insightsFollowerTotals:
+            return "total_followers"
+        case .insightsLikesTotals:
+            return "total_likes"
+        case .insightsCommentsTotals:
+            return "total_comments"
+        default:
+            return ""
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -388,7 +416,9 @@
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let posts = NSLocalizedString("Posts", comment: "Insights 'Posts' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
+        static let topCommenters = NSLocalizedString("Top Commenters", comment: "Insights 'Top Commenters' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
@@ -448,6 +478,7 @@
         static let commentsPosts = NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
         static let followersWordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let followersEmail = NSLocalizedString("Email", comment: "Label for email followers")
+        static let publicize = NSLocalizedString("Social", comment: "Label for social followers")
         static let overviewViews = NSLocalizedString("Views", comment: "Label for Period Overview views")
         static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
         static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")

@@ -1,7 +1,8 @@
-We’re kicking off version 20 with a fresh new look. The Quick Start card and Next Steps tours now match the new tour designs for existing sites, including a snazzy illustration. High five.
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
 
-You can now insert images from other websites using the “Insert from URL” option in the app. More cat photos, please.
-
-We’ve made some accessibility improvements in the block editor, so your screen reader offers more of the context you need.
-
-Finally, we took a paintbrush to the media cache, spotlight index, and Siri shortcut functions in App Settings. They now match standard and brand colors—no more panic red.

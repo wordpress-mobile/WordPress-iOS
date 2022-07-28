@@ -9,6 +9,12 @@ extension MediaService {
         if media.remoteURL != remoteMedia.url?.absoluteString {
             media.remoteURL = remoteMedia.url?.absoluteString
         }
+        if media.remoteLargeURL != remoteMedia.largeURL?.absoluteString {
+            media.remoteLargeURL = remoteMedia.largeURL?.absoluteString
+        }
+        if media.remoteMediumURL != remoteMedia.mediumURL?.absoluteString {
+            media.remoteMediumURL = remoteMedia.mediumURL?.absoluteString
+        }
         if remoteMedia.date != nil && remoteMedia.date != media.creationDate {
             media.creationDate = remoteMedia.date
         }

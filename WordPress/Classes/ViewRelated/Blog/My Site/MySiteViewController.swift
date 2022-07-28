@@ -128,6 +128,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             updateNavigationTitle(for: newBlog)
             updateSegmentedControl(for: newBlog, switchTabsIfNeeded: true)
             createFABIfNeeded()
+            fetchPrompt(for: newBlog)
         }
 
         get {
@@ -136,7 +137,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private(set) var sitePickerViewController: SitePickerViewController?
-    private(set) var blogDetailsViewController: BlogDetailsViewController?
+    private(set) var blogDetailsViewController: BlogDetailsViewController? {
+        didSet {
+            blogDetailsViewController?.presentationDelegate = self
+        }
+    }
     private(set) var blogDashboardViewController: BlogDashboardViewController?
 
     /// When we display a no results view, we'll do so in a scrollview so that
@@ -154,6 +159,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostSignupNotifications()
         subscribeToModelChanges()
         subscribeToContentSizeCategory()
+        subscribeToPostPublished()
         startObservingQuickStart()
         startObservingOnboardingPrompt()
     }
@@ -191,6 +197,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         setupNavBarAppearance()
 
         createFABIfNeeded()
+        fetchPrompt(for: blog)
     }
 
     override func viewDidLayoutSubviews() {
@@ -249,6 +256,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func subscribeToPostSignupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(launchSiteCreationFromNotification), name: .createSite, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showAddSelfHostedSite), name: .addSelfHosted, object: nil)
+    }
+
+    private func subscribeToPostPublished() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
     }
 
     func updateNavigationTitle(for blog: Blog) {
@@ -716,15 +727,6 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         removeChildFromStackView(blogDetailsViewController)
     }
 
-    /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
-    ///
-    /// - Parameters:
-    ///         - subsection: The specific subsection to show.
-    ///
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
-        blogDetailsViewController?.showDetailView(for: subsection)
-    }
-
     /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
     /// of creating it.
     ///
@@ -797,6 +799,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
+            self.fetchPrompt(for: blog)
         }
 
         return sitePickerViewController
@@ -918,6 +921,25 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         self.blog = blog
     }
 
+    // MARK: - Blogging Prompts
+
+    @objc func handlePostPublished() {
+        fetchPrompt(for: blog)
+    }
+
+    func fetchPrompt(for blog: Blog?) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let blog = blog,
+              blog.isAccessibleThroughWPCom(),
+              let promptsService = BloggingPromptsService(blog: blog) else {
+            return
+        }
+
+        promptsService.fetchTodaysPrompt()
+    }
+
+    // MARK: - Constants
+
     private enum Constants {
         static let segmentedControlXOffset: CGFloat = 20
         static let segmentedControlYOffset: CGFloat = 24
@@ -942,14 +964,6 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
     }
 }
 
-// MARK: - My site detail views
-extension MySiteViewController {
-
-    func showDetailView(for section: BlogDetailsSubsection) {
-        blogDetailsViewController?.showDetailView(for: section)
-    }
-}
-
 // MARK: - UIViewControllerTransitioningDelegate
 //
 extension MySiteViewController: UIViewControllerTransitioningDelegate {
@@ -967,5 +981,30 @@ extension MySiteViewController: UIViewControllerTransitioningDelegate {
 extension MySiteViewController {
     func startAlertTimer() {
         blogDetailsViewController?.startAlertTimer()
+    }
+}
+
+// MARK: - Presentation
+/// Supporting presentation of BlogDetailsSubsection from both BlogDashboard and BlogDetails
+extension MySiteViewController: BlogDetailsPresentationDelegate {
+
+    /// Shows the specified `BlogDetailsSubsection` for a `Blog`.
+    ///
+    /// - Parameters:
+    ///         - subsection: The specific subsection to show.
+    ///
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
+        blogDetailsViewController?.showDetailView(for: subsection)
+    }
+
+    func presentBlogDetailsViewController(_ viewController: UIViewController) {
+        switch currentSection {
+        case .dashboard:
+            blogDashboardViewController?.showDetailViewController(viewController, sender: blogDashboardViewController)
+        case .siteMenu:
+            blogDetailsViewController?.showDetailViewController(viewController, sender: blogDetailsViewController)
+        case .none:
+            return
+        }
     }
 }

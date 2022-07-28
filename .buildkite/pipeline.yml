@@ -2,13 +2,17 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/bash-cache#2.2.0
-    - automattic/git-s3-cache#v1.1.0:
+    - automattic/bash-cache#2.6.0
+    - automattic/git-s3-cache#v1.1.3:
         bucket: "a8c-repo-mirrors"
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-13 # Remember to address all 'FIXIT-13.1' comments when we'll update to new image
+    # Remember to address all "FIXIT-13.1" comments when we'll update to new image.
+    #
+    # `xcode-13.4.1` note: The issue "FIXIT-13.1" addresses is still there in this image.
+    # See: https://buildkite.com/automattic/wordpress-ios/builds/8187#01813c28-1c1d-4a25-95c0-0fdd6f2af399
+    IMAGE_ID: xcode-13.4.1
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -16,23 +20,25 @@ steps:
   #################
   # Create Installable Builds for WP and JP
   #################
-  - label: "🛠 WordPress Installable Build"
-    command: ".buildkite/commands/installable-build-wordpress.sh"
-    env: *common_env
-    plugins: *common_plugins
-    if: "build.pull_request.id != null || build.pull_request.draft"
-    notify:
-      - github_commit_status:
-          context: "WordPress Installable Build"
+  - group: "🛠 Installable Builds"
+    steps:
+      - label: "🛠 WordPress Installable Build"
+        command: ".buildkite/commands/installable-build-wordpress.sh"
+        env: *common_env
+        plugins: *common_plugins
+        if: "build.pull_request.id != null || build.pull_request.draft"
+        notify:
+          - github_commit_status:
+              context: "WordPress Installable Build"
 
-  - label: "🛠 Jetpack Installable Build"
-    command: ".buildkite/commands/installable-build-jetpack.sh"
-    env: *common_env
-    plugins: *common_plugins
-    if: "build.pull_request.id != null || build.pull_request.draft"
-    notify:
-      - github_commit_status:
-          context: "Jetpack Installable Build"
+      - label: "🛠 Jetpack Installable Build"
+        command: ".buildkite/commands/installable-build-jetpack.sh"
+        env: *common_env
+        plugins: *common_plugins
+        if: "build.pull_request.id != null || build.pull_request.draft"
+        notify:
+          - github_commit_status:
+              context: "Jetpack Installable Build"
 
   #################
   # Build the app
@@ -61,40 +67,54 @@ steps:
           context: "Unit Tests"
 
   #################
-  # Lint Translations
-  #################
-  - label: "🧹 Lint Translations"
-    command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-    plugins:
-      - docker#v3.8.0:
-          image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-    agents:
-      queue: "default"
-    notify:
-      - github_commit_status:
-          context: "Lint Translations"
-
-  #################
   # UI Tests
   #################
-  - label: "🔬 UI Tests (iPhone)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPhone)"
+  - group: "🔬 UI Tests"
+    steps:
+      - label: "🔬 UI Tests (iPhone)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests 'iPhone 13' 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPhone)"
 
-  - label: "🔬 UI Tests (iPad)"
-    command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (4th generation)" 15.0
-    depends_on: "build"
-    env: *common_env
-    plugins: *common_plugins
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "UI Tests (iPad)"
+      - label: "🔬 UI Tests (iPad)"
+        command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
+        depends_on: "build"
+        env: *common_env
+        plugins: *common_plugins
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "UI Tests (iPad)"
+
+  #################
+  # Linters
+  #################
+  - group: "Linters"
+    steps:
+      - label: "🧹 Lint Translations"
+        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
+        plugins:
+          - docker#v3.8.0:
+              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
+        agents:
+          queue: "default"
+        notify:
+          - github_commit_status:
+              context: "Lint Translations"
+      # TODO: This ought to be run on a Docker or Ubuntu agent as there's nothing that requires macOS.
+      # It's currently in the stock setup because... it was faster to build a proof of concept for it this way;
+      # I don't know how to pass the `DANGER_GITHUB_API_TOKEN` secret that we need to a Docker agent.
+      #
+      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
+      # That is, it outwardly only mentions RuboCop, not Danger
+      - label: ":rubocop: Lint Ruby Tooling"
+        command: .buildkite/commands/rubocop-via-danger.sh
+        env: *common_env
+        plugins: *common_plugins

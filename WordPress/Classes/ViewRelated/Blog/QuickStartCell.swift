@@ -10,7 +10,7 @@ import UIKit
 
     @objc func configure(blog: Blog, viewController: BlogDetailsViewController) {
         contentView.addSubview(tourStateView)
-        contentView.pinSubviewToAllEdges(tourStateView, insets: Metrics.margins)
+        contentView.pinSubviewToAllEdges(tourStateView, insets: Metrics.margins(for: blog.quickStartType))
 
         selectionStyle = .none
 
@@ -22,6 +22,16 @@ import UIKit
     }
 
     private enum Metrics {
-        static let margins = UIEdgeInsets(top: 0, left: 8, bottom: 8, right: 8)
+        static func margins(for quickStartType: QuickStartType) -> UIEdgeInsets {
+            switch quickStartType {
+            case .undefined:
+                fallthrough
+            case .newSite:
+                return UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            case .existingSite:
+                return UIEdgeInsets(top: 0, left: 8, bottom: 8, right: 8)
+            }
+
+        }
     }
 }

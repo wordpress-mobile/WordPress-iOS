@@ -49,6 +49,7 @@
 "Blog" = "Blog";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -94,6 +95,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -204,6 +206,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -216,6 +219,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Elutasítás";
 
@@ -263,7 +267,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -385,6 +390,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Tovább";
 
@@ -600,6 +606,7 @@
 "Post Format" = "Bejegyzés formátum";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -612,7 +619,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -753,6 +759,7 @@
 "Scheduled for" = "Ütemezve";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Keresőmotorok";
 
@@ -1007,6 +1014,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Megtekintések";

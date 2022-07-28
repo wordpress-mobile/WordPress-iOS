@@ -28,8 +28,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case statsNewInsights
     case siteName
     case quickStartForExistingUsers
+    case qrLogin
     case betaSiteDesigns
     case featureHighlightTooltip
+    case jetpackPowered
+    case jetpackPoweredBottomSheet
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -39,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
 
         switch self {
         case .bloggingPrompts:
-            return false
+            return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -87,16 +90,22 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .landInTheEditor:
             return false
         case .statsNewAppearance:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .statsNewInsights:
-            return false
+            return AppConfiguration.showsStatsRevampV2
         case .siteName:
-            return true
+            return false
         case .quickStartForExistingUsers:
+            return true
+        case .qrLogin:
             return true
         case .betaSiteDesigns:
             return false
         case .featureHighlightTooltip:
+            return true
+        case .jetpackPowered:
+            return true
+        case .jetpackPoweredBottomSheet:
             return false
         }
     }
@@ -180,10 +189,16 @@ extension FeatureFlag {
             return "Site Name"
         case .quickStartForExistingUsers:
             return "Quick Start For Existing Users"
+        case .qrLogin:
+            return "QR Code Login"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
         case .featureHighlightTooltip:
             return "Feature Highlight Tooltip"
+        case .jetpackPowered:
+            return "Jetpack powered banners and badges"
+        case .jetpackPoweredBottomSheet:
+            return "Jetpack powered bottom sheet"
         }
     }
 

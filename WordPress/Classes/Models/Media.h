@@ -42,6 +42,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSNumber *remoteStatusNumber;
 @property (nonatomic, strong, nullable) NSString *remoteThumbnailURL;
 @property (nonatomic, strong, nullable) NSString *remoteURL;
+@property (nonatomic, strong, nullable) NSString *remoteLargeURL;
+@property (nonatomic, strong, nullable) NSString *remoteMediumURL;
 @property (nonatomic, strong, nullable) NSString *shortcode;
 @property (nonatomic, strong, nullable) NSString *title;
 @property (nonatomic, strong, nullable) NSString *videopressGUID;

@@ -117,6 +117,14 @@ import Foundation
     case statsCustomizeInsightsShown
     case statsInsightsManagementSaved
     case statsInsightsManagementDismissed
+    case statsInsightsViewMore
+    case statsInsightsViewsVisitorsToggled
+    case statsInsightsViewsGrowAudienceDismissed
+    case statsInsightsViewsGrowAudienceConfirmed
+    case statsInsightsAnnouncementShown
+    case statsInsightsAnnouncementConfirmed
+    case statsInsightsAnnouncementDismissed
+    case statsInsightsTotalLikesGuideTapped
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -338,7 +346,6 @@ import Foundation
     case enhancedSiteCreationSiteNameSkipped
     case enhancedSiteCreationSiteNameEntered
     case enhancedSiteCreationSiteNameViewed
-    case enhancedSiteCreationSiteNameExperiment
 
     // Quick Start
     case quickStartStarted
@@ -354,11 +361,29 @@ import Foundation
     case onboardingEnableNotificationsSkipped
     case onboardingEnableNotificationsEnableTapped
 
+    // QR Login
+    case qrLoginScannerDisplayed
+    case qrLoginScannerScannedCode
+    case qrLoginScannerDismissed
+
+    case qrLoginCameraPermissionDisplayed
+    case qrLoginCameraPermissionApproved
+    case qrLoginCameraPermissionDenied
+
+    case qrLoginVerifyCodeDisplayed
+    case qrLoginVerifyCodeDismissed
+    case qrLoginVerifyCodeScanAgain
+    case qrLoginVerifyCodeFailed
+    case qrLoginVerifyCodeTokenValidated
+    case qrLoginVerifyCodeApproved
+    case qrLoginVerifyCodeCancelled
+    case qrLoginAuthenticated
     // Blogging Reminders Notification
     case bloggingRemindersNotificationReceived
 
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
+    case promptsBottomSheetHelp
     case promptsIntroductionModalViewed
     case promptsIntroductionModalDismissed
     case promptsIntroductionModalTryItNow
@@ -582,6 +607,22 @@ import Foundation
             return "stats_insights_management_saved"
         case .statsInsightsManagementDismissed:
             return "stats_insights_management_dismissed"
+        case .statsInsightsViewMore:
+            return "stats_insights_view_more"
+        case .statsInsightsViewsVisitorsToggled:
+            return "stats_insights_views_visitors_toggled"
+        case .statsInsightsViewsGrowAudienceDismissed:
+            return "stats_insights_views_grow_audience_dismissed"
+        case .statsInsightsViewsGrowAudienceConfirmed:
+            return "stats_insights_views_grow_audience_confirmed"
+        case .statsInsightsAnnouncementShown:
+            return "stats_insights_announcement_shown"
+        case .statsInsightsAnnouncementConfirmed:
+            return "stats_insights_announcement_confirmed"
+        case .statsInsightsAnnouncementDismissed:
+            return "stats_insights_announcement_dismissed"
+        case .statsInsightsTotalLikesGuideTapped:
+            return "stats_insights_total_likes_guide_tapped"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -962,6 +1003,7 @@ import Foundation
             return "onboarding_enable_notifications_skipped"
         case .onboardingEnableNotificationsEnableTapped:
             return "onboarding_enable_notifications_enable_tapped"
+
         // Site Name
         case .enhancedSiteCreationSiteNameCanceled:
             return "enhanced_site_creation_site_name_canceled"
@@ -971,8 +1013,36 @@ import Foundation
             return "enhanced_site_creation_site_name_entered"
         case .enhancedSiteCreationSiteNameViewed:
             return "enhanced_site_creation_site_name_viewed"
-        case .enhancedSiteCreationSiteNameExperiment:
-            return "enhanced_site_creation_site_name_experiment"
+
+        // QR Login
+        case .qrLoginScannerDisplayed:
+            return "qrlogin_scanner_displayed"
+        case .qrLoginScannerScannedCode:
+            return "qrlogin_scanner_scanned_code"
+        case .qrLoginScannerDismissed:
+            return "qrlogin_scanned_dismissed"
+        case .qrLoginVerifyCodeDisplayed:
+            return "qrlogin_verify_displayed"
+        case .qrLoginVerifyCodeDismissed:
+            return "qrlogin_verify_dismissed"
+        case .qrLoginVerifyCodeFailed:
+            return "qrlogin_verify_failed"
+        case .qrLoginVerifyCodeApproved:
+            return "qrlogin_verify_approved"
+        case .qrLoginVerifyCodeScanAgain:
+            return "qrlogin_verify_scan_again"
+        case .qrLoginVerifyCodeCancelled:
+            return "qrlogin_verify_cancelled"
+        case .qrLoginVerifyCodeTokenValidated:
+            return "qrlogin_verify_token_validated"
+        case .qrLoginAuthenticated:
+            return "qrlogin_authenticated"
+        case .qrLoginCameraPermissionDisplayed:
+            return "qrlogin_camera_permission_displayed"
+        case .qrLoginCameraPermissionApproved:
+            return "qrlogin_camera_permission_approved"
+        case .qrLoginCameraPermissionDenied:
+            return "qrlogin_camera_permission_denied"
 
         // Blogging Reminders Notification
         case .bloggingRemindersNotificationReceived:
@@ -981,6 +1051,8 @@ import Foundation
         // Blogging Prompts
         case .promptsBottomSheetAnswerPrompt:
             return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsBottomSheetHelp:
+            return "my_site_create_sheet_prompt_help_tapped"
         case .promptsIntroductionModalViewed:
             return "blogging_prompts_introduction_modal_viewed"
         case .promptsIntroductionModalDismissed:

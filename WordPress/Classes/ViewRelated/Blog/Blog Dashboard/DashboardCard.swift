@@ -14,6 +14,7 @@ enum DashboardCard: String, CaseIterable {
     case scheduledPosts
     case nextPost = "create_next"
     case createPost = "create_first"
+    case jetpackBadge
 
     // Card placeholder for when loading data
     case ghost
@@ -39,6 +40,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardGhostCardCell.self
         case .failure:
             return DashboardFailureCardCell.self
+        case .jetpackBadge:
+            return DashboardBadgeCell.self
         }
     }
 
@@ -46,22 +49,18 @@ enum DashboardCard: String, CaseIterable {
         switch self {
         case .quickStart:
             return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
-        case .draftPosts:
-            fallthrough
-        case .scheduledPosts:
-            fallthrough
-        case .nextPost:
-            fallthrough
-        case .createPost:
-            fallthrough
-        case .todaysStats:
-            return self.shouldShowRemoteCard(apiResponse: apiResponse)
+        case .draftPosts, .scheduledPosts, .todaysStats:
+            return shouldShowRemoteCard(apiResponse: apiResponse)
+        case .nextPost, .createPost:
+            return !DashboardPromptsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .ghost:
             return blog.dashboardState.isFirstLoad
         case .failure:
             return blog.dashboardState.isFirstLoadFailure
+        case .jetpackBadge:
+            return JetpackBrandingVisibility.all.enabled
         }
     }
 

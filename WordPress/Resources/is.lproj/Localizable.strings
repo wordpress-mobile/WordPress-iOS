@@ -339,6 +339,7 @@
 "Can Not Request Link" = "Gat ekki óskað eftir tengli";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -384,6 +385,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -782,6 +784,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -794,6 +797,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Loka";
 
@@ -864,7 +868,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "Netfang";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1236,6 +1241,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Lesa meira";
 
@@ -1678,7 +1684,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Opna Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Opna Settings";
 
 /* Today widget label to launch WP app */
@@ -1713,7 +1720,8 @@
 "Originally posted on %@" = "Upprunalega birt á %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Annað";
 
 /* Other Notifications Streams Title
@@ -1852,6 +1860,7 @@
 "Posting Activity" = "Færsluvirkni";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -1873,7 +1882,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -2180,6 +2188,7 @@
 "Scheduling..." = "Set á áætlun...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Leita";
 
@@ -2644,7 +2653,7 @@
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Þessa aðgerð er <b>ekki<\/b> hægt að afturkalla. Með því að eyða vefnum hverfur allt efni, þátttakendur, lén og uppfærslur af vefnum.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Þetta forrit þarf heimild til þess að komast í myndavélina og taka nýjar myndir\/myndbönd, vinsamlegast breyttu persónuverndarstillingum ef þú vilt leyfa þetta.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -2793,6 +2802,7 @@
 "Underline" = "Undirstrika";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -2956,6 +2966,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Flettingar";
@@ -3025,6 +3036,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Verður ekki birtur öllum.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";

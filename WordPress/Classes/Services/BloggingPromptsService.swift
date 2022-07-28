@@ -51,22 +51,22 @@ class BloggingPromptsService {
     func fetchPrompts(from startDate: Date? = nil,
                       to endDate: Date? = nil,
                       number: Int = 25,
-                      success: @escaping ([BloggingPrompt]) -> Void,
-                      failure: @escaping (Error?) -> Void) {
+                      success: (([BloggingPrompt]) -> Void)? = nil,
+                      failure: ((Error?) -> Void)? = nil) {
         let fromDate = startDate ?? defaultStartDate
         remote.fetchPrompts(for: siteID, number: number, fromDate: fromDate) { result in
             switch result {
             case .success(let remotePrompts):
                 self.upsert(with: remotePrompts) { innerResult in
                     if case .failure(let error) = innerResult {
-                        failure(error)
+                        failure?(error)
                         return
                     }
 
-                    success(self.loadPrompts(from: fromDate, to: endDate, number: number))
+                    success?(self.loadPrompts(from: fromDate, to: endDate, number: number))
                 }
             case .failure(let error):
-                failure(error)
+                failure?(error)
             }
         }
     }
@@ -76,10 +76,10 @@ class BloggingPromptsService {
     /// - Parameters:
     ///   - success: Closure to be called when the fetch process succeeded.
     ///   - failure: Closure to be called when the fetch process failed.
-    func fetchTodaysPrompt(success: @escaping (BloggingPrompt?) -> Void,
-                           failure: @escaping (Error?) -> Void) {
+    func fetchTodaysPrompt(success: ((BloggingPrompt?) -> Void)? = nil,
+                           failure: ((Error?) -> Void)? = nil) {
         fetchPrompts(from: Date(), number: 1, success: { (prompts) in
-            success(prompts.first)
+            success?(prompts.first)
         }, failure: failure)
     }
 

@@ -1,6 +1,40 @@
+20.5
+-----
+
+
+20.4
+-----
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
+
+20.3
+-----
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
+
+20.2
+-----
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+
 20.1
 -----
+* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
 * [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
+* [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
+* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
+* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+* [*] People Management: Fixed a crash that can occur when loading the People view. [#18907]
 
 20.0
 -----

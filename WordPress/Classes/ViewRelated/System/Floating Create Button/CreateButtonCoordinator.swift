@@ -342,6 +342,14 @@ private extension CreateButtonCoordinator {
             }
         }
 
+        promptsHeaderView.infoButtonHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetHelp)
+            guard let presentedViewController = self?.viewController?.presentedViewController else {
+                return
+            }
+            BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presentedViewController)
+        }
+
         return promptsHeaderView
     }
 

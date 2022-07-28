@@ -71,7 +71,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     private func setTimePeriodForStatsURLIfPossible(_ url: URL) {
-        guard let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
             return
         }
 
@@ -81,6 +81,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
            let action = match.action as? StatsRoute,
            let timePeriod = action.timePeriod {
             // Initializing a StatsPeriodType to ensure we have a valid period
+            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
             UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
         }
     }

@@ -138,6 +138,10 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 @protocol ScenePresenter;
 
+@protocol BlogDetailsPresentationDelegate
+- (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
+@end
+
 @interface BlogDetailsViewController : UIViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
     
 }
@@ -147,6 +151,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
 @property (nonatomic) BOOL shouldScrollToViewSite;
+@property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;
 
 - (id _Nonnull)initWithMeScenePresenter:(id<ScenePresenter> _Nonnull)meScenePresenter;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;

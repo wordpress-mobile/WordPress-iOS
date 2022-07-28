@@ -1,7 +1,9 @@
-Kami meluncurkan versi 20 dengan desain baru yang segar. Sekarang kartu Mulai Cepat dan tur Langkah Selanjutnya sesuai dengan desain tur baru untuk situs-situs yang aktif, juga ditambahkan ilustrasi yang menarik. Tos!
+Kami menambahkan beberapa perubahan di editor blok agar pengalaman publikasi Anda makin baik.
 
-Anda sekarang dapat menyisipkan gambar dari situs web eksternal dengan menggunakan opsi "Sisipkan dari URL" di aplikasi. Ayo perbanyak foto kucing!
+- Salin dan tempel teks alt sudah tidak perlu lagi. Ketika Anda menambahkan item di media pustaka ke blok Gambar, teks alt item tersebut sudah disertakan.
+- Anda dapat memasukkan media dari URL di blok Video.
+- Jika blok mengandung konten yang tidak valid atau tidak terduga, Anda dapat menggunakan pilihan pemulihan blok agar konten ditampilkan dengan benar, tidak perlu menambahkan lagi dari nol.
 
-Kami telah membuat beberapa peningkatan aksesibilitas di editor blok, sehingga pembaca layar Anda menampilkan lebih banyak informasi kontekstual yang Anda butuhkan.
+Komentar pos juga sedikit lebih ramah pengguna. Ketika Anda menekan simbol @ untuk menyebut pengguna lain di komentar, penulis pos atau penulis komentar akan muncul di urutan teratas dalam daftar pengguna yang disarankan. Bagus.
 
-Terakhir, kami membawa kuas ke cache media, indeks sorotan, dan fungsi pintasan Siri di Pengaturan Aplikasi. Mereka sekarang cocok dengan warna standar dan merek—tidak ada lagi warna yang mengganggu.
+Terakhir, kami memperbaiki masalah pada pemilih media editor, yaitu permintaan informasi pencarian yang terus ditampilkan sekalipun jendela telah ditutup dan dibuka kembali. Kami juga membasmi bug yang membuat aplikasi mengalami crash ketika menambahkan beberapa item ke pos Cerita.

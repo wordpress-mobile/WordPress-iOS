@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressUI
+import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
@@ -91,6 +92,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
+        stackView.layoutMargins = Constants.containerMargins
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
 
@@ -111,7 +114,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(promptLabel)
-        view.pinSubviewToAllEdges(promptLabel, insets: .init(top: Constants.spacing, left: 0, bottom: 0, right: 0))
+        view.pinSubviewToAllEdges(promptLabel, insets: UIEdgeInsets(top: Constants.spacing, left: 0, bottom: 0, right: 0))
 
         return view
     }()
@@ -310,6 +313,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        observeManagedObjectsChange()
     }
 
     required init?(coder: NSCoder) {
@@ -336,18 +340,17 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
               let promptsService = BloggingPromptsService(blog: blog),
-              let settings = promptsService.localSettings,
-              settings.isPotentialBloggingSite,
-              settings.promptCardEnabled else {
+              let settings = promptsService.localSettings else {
             return false
         }
 
+        let shouldDisplayCard = settings.promptRemindersEnabled || settings.isPotentialBloggingSite
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
-            return true
+            return shouldDisplayCard
         }
 
-        return !userSkippedPrompt(todaysPrompt, for: blog)
+        return !userSkippedPrompt(todaysPrompt, for: blog) && shouldDisplayCard
     }
 
 }
@@ -398,6 +401,30 @@ private extension DashboardPromptsCardCell {
         }
 
         containerStackView.addArrangedSubview((isAnswered ? answeredStateView : answerButton))
+        presenterViewController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
+    // MARK: - Managed object observer
+
+    func observeManagedObjectsChange() {
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleObjectsChange),
+                name: .NSManagedObjectContextObjectsDidChange,
+                object: ContextManager.shared.mainContext
+        )
+    }
+
+    @objc func handleObjectsChange(_ notification: Foundation.Notification) {
+        guard let prompt = prompt else {
+            return
+        }
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
+        let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
+
+        if updated.contains(prompt) || refreshed.contains(prompt) {
+            refreshStackView()
+        }
     }
 
     // MARK: Prompt Fetching
@@ -451,6 +478,11 @@ private extension DashboardPromptsCardCell {
         WPAnalytics.track(.promptsDashboardCardMenuSkip)
         saveSkippedPromptForSite()
         presenterViewController?.reloadCardsLocally()
+        let notice = Notice(title: Strings.promptSkippedTitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+            self?.clearSkippedPromptForSite()
+            self?.presenterViewController?.reloadCardsLocally()
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func removeMenuTapped() {
@@ -460,7 +492,10 @@ private extension DashboardPromptsCardCell {
 
     func learnMoreTapped() {
         WPAnalytics.track(.promptsDashboardCardMenuLearnMore)
-        presenterViewController?.present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
+        guard let presenterViewController = presenterViewController else {
+            return
+        }
+        BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presenterViewController)
     }
 
     // Fallback context menu implementation for iOS 13.
@@ -497,6 +532,8 @@ private extension DashboardPromptsCardCell {
         static let answerInfoPluralFormat = NSLocalizedString("%1$d answers", comment: "Plural format string for displaying the number of users "
                                                               + "that answered the blogging prompt.")
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
+        static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
+        static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
     }
 
     struct Style {
@@ -511,6 +548,7 @@ private extension DashboardPromptsCardCell {
         static let spacing: CGFloat = 12
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
+        static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
         static let cardIconSize = CGSize(width: 18, height: 18)

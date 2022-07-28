@@ -20,7 +20,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 1.18.0-beta.1'
+  pod 'WordPressShared', '~> 1.18.0'
   # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
   # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
   # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.54.0-beta.1'
+  pod 'WordPressKit', '~> 4.56.0'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  pod 'Kanvas', '~> 1.4.3'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -99,6 +99,11 @@ def gutenberg(options)
 end
 
 def gutenberg_dependencies(options)
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
   dependencies = %w[
     FBLazyVector
     React
@@ -143,6 +148,7 @@ def gutenberg_dependencies(options)
     RNGestureHandler
     RNCMaskedView
     RNCClipboard
+    RNFastImage
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -169,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.78.0-alpha2'
+  gutenberg tag: 'v1.81.0-alpha1'
 
   ## Third party libraries
   ## =====================
@@ -189,7 +195,6 @@ abstract_target 'Apps' do
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries
@@ -244,8 +249,7 @@ abstract_target 'Apps' do
   ## Jetpack App iOS
   ## ===============
   ##
-  target 'Jetpack' do
-  end
+  target 'Jetpack'
 end
 
 ## Share Extension
@@ -347,23 +351,11 @@ target 'WordPressNotificationServiceExtension' do
   wordpress_ui
 end
 
-## Mocks
-## ===================
-##
-def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.15'
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
-  # pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'add-organization-id-to-me-sites'
-  # pod 'WordPressMocks', :path => '../WordPressMocks'
-end
-
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 ## UI Tests
@@ -371,8 +363,6 @@ end
 ##
 target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
-
-  wordpress_mocks
 end
 
 # Static Frameworks:
@@ -467,11 +457,11 @@ post_install do |installer|
 
   # Flag Alpha builds for Tracks
   # ============================
-  installer.pods_project.targets.each do |target|
-    next unless target.name == 'Automattic-Tracks-iOS'
-
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
-    end
+  #
+  tracks_target = installer.pods_project.targets.find { |target| target.name == 'Automattic-Tracks-iOS' }
+  # This will crash if/when we'll remove Tracks.
+  # That's okay because it is a crash we'll only have to address once.
+  tracks_target.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
   end
 end

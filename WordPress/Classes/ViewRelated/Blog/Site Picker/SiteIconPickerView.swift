@@ -9,7 +9,7 @@ struct SiteIconPickerView: View {
     var onDismiss: (() -> Void)? = nil
 
     @SwiftUI.State private var currentIcon: String? = nil
-    @SwiftUI.State private var currentBackgroundColor = UIColor(hex: "#969CA1")
+    @SwiftUI.State private var currentBackgroundColor: UIColor = .init(hexString: "#969CA1") ?? .gray
     @SwiftUI.State private var scrollOffsetColumn: Int? = nil
 
     private var hasMadeSelection: Bool {
@@ -120,7 +120,7 @@ struct SiteIconPickerView: View {
         Group {
             let columnCount = SiteIconPickerView.allEmoji.count / Metrics.emojiRowCount
 
-            ForEach((0..<columnCount)) { index in
+            ForEach(0..<columnCount, id: \.self) { index in
                 let startIndex = index * Metrics.emojiRowCount
                 let endIndex = min(startIndex + Metrics.emojiRowCount, SiteIconPickerView.allEmoji.count)
 
@@ -314,17 +314,17 @@ struct SiteIconPickerView: View {
     }
 
     private static let backgroundColors = [
-        UIColor(hex: "#d1e4dd"),
-        UIColor(hex: "#d1dfe4"),
-        UIColor(hex: "#d1d1e4"),
-        UIColor(hex: "#e4d1d1"),
-        UIColor(hex: "#e4dad1"),
-        UIColor(hex: "#eeeadd"),
-        UIColor(hex: "#ffffff"),
-        UIColor(hex: "#39414d"),
-        UIColor(hex: "#28303d"),
+        UIColor(hexString: "#d1e4dd"),
+        UIColor(hexString: "#d1dfe4"),
+        UIColor(hexString: "#d1d1e4"),
+        UIColor(hexString: "#e4d1d1"),
+        UIColor(hexString: "#e4dad1"),
+        UIColor(hexString: "#eeeadd"),
+        UIColor(hexString: "#ffffff"),
+        UIColor(hexString: "#39414d"),
+        UIColor(hexString: "#28303d"),
         UIColor.black
-    ]
+    ].compactMap { $0 }
 }
 
 private struct EmojiColumnView: View {

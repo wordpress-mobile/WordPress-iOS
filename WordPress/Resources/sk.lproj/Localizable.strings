@@ -566,6 +566,7 @@
 "Can Not Request Link" = "Nieje možné načítať adresu";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -611,6 +612,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -703,7 +705,8 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupov";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Vyberte tému";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -1174,6 +1177,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -1186,6 +1190,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Zrušiť";
 
@@ -1275,7 +1280,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1892,6 +1898,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Zistiť viac";
 
@@ -2277,7 +2284,8 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nový";
 
 /* IP Address or Range Insertion Title */
@@ -2558,7 +2566,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Otvoriť Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
 
 /* Today widget label to launch WP app */
@@ -2602,7 +2611,8 @@
 "Originally posted on %@" = "Pôvodne uverejnené na %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Iné";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -2846,6 +2856,7 @@
 "Posting Activity" = "Aktivita prispievania";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -2878,7 +2889,6 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design.
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
@@ -3300,6 +3310,7 @@
 "Scheduling..." = "Plánovanie...";
 
 /* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Hľadať";
 
@@ -4020,7 +4031,7 @@
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Túto akciu <b> nie je možné <\/b>zrušiť. Odstránením stránky odstránite všetok obsah, užívateľov, domény a aktualizácie zo stránky.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -4297,6 +4308,7 @@
 "Underline" = "Podčiarknuť";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -4548,6 +4560,7 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";
@@ -4679,6 +4692,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Táto adresa nebude zverejnená.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Nastavenia aplikácie WordPress";

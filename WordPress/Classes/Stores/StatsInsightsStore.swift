@@ -941,18 +941,23 @@ extension StatsInsightsStore {
     func getTotalFollowerCount() -> Int {
         let totalDotComFollowers = getDotComFollowers()?.dotComFollowersCount ?? 0
         let totalEmailFollowers = getEmailFollowers()?.emailFollowersCount ?? 0
-
-        var totalPublicize = 0
-        if let publicize = getPublicize(),
-           !publicize.publicizeServices.isEmpty {
-            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
-        }
+        let totalPublicize = getPublicizeCount()
 
         return totalDotComFollowers + totalEmailFollowers + totalPublicize
     }
 
     func getPublicize() -> StatsPublicizeInsight? {
         return state.publicizeFollowers
+    }
+
+    func getPublicizeCount() -> Int {
+        var totalPublicize = 0
+        if let publicize = getPublicize(),
+           !publicize.publicizeServices.isEmpty {
+            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
+        }
+
+        return totalPublicize
     }
 
     func getTopCommentsInsight() -> StatsCommentsInsight? {
@@ -1196,114 +1201,12 @@ private extension InsightStoreState {
     }
 
     func widgetUsingCurrentSite() -> Bool {
-        // Only store data if the widget is using the current site
+        // Only store data if the widget is using the current site.
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
             let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
                 return false
         }
         return true
-    }
-}
-
-// MARK: - iOS 14 Widgets Data
-private extension InsightStoreState {
-
-    private func storeHomeWidgetData<T: HomeWidgetData>(widgetType: T.Type, stats: Codable) {
-        guard #available(iOS 14.0, *),
-              let siteID = SiteStatsInformation.sharedInstance.siteID else {
-            return
-        }
-
-        var homeWidgetCache = T.read() ?? initializeHomeWidgetData(type: widgetType)
-        guard let oldData = homeWidgetCache[siteID.intValue] else {
-            DDLogError("StatsWidgets: Failed to find a matching site")
-            return
-        }
-
-        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-            DDLogError("StatsWidgets: the site does not exist anymore")
-            // if for any reason that site does not exist anymore, remove it from the cache.
-            homeWidgetCache.removeValue(forKey: siteID.intValue)
-            T.write(items: homeWidgetCache)
-            return
-        }
-        var widgetKind = ""
-        if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
-
-            widgetKind = WPHomeWidgetTodayKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                                   siteName: blog.title ?? oldData.siteName,
-                                                                   url: blog.url ?? oldData.url,
-                                                                   timeZone: blog.timeZone,
-                                                                   date: Date(),
-                                                                   stats: stats) as? T
-
-
-        } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
-            widgetKind = WPHomeWidgetAllTimeKind
-
-            homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
-                                                                     siteName: blog.title ?? oldData.siteName,
-                                                                     url: blog.url ?? oldData.url,
-                                                                     timeZone: blog.timeZone,
-                                                                     date: Date(),
-                                                                     stats: stats) as? T
-        }
-
-        T.write(items: homeWidgetCache)
-        WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-
-
-    }
-
-    private func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-
-        return blogService.visibleBlogsForWPComAccounts().reduce(into: [Int: T]()) { result, element in
-            if let blogID = element.dotComID,
-               let url = element.url,
-               let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) {
-                // set the title to the site title, if it's not nil and not empty; otherwise use the site url
-                let title = (element.title ?? url).isEmpty ? url : element.title ?? url
-                let timeZone = blog.timeZone
-                if type == HomeWidgetTodayData.self {
-                    result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone,
-                                                                  date: Date(),
-                                                                  stats: TodayWidgetStats()) as? T
-                } else if type == HomeWidgetAllTimeData.self {
-                    result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                    siteName: title,
-                                                                    url: url,
-                                                                    timeZone: timeZone,
-                                                                    date: Date(),
-                                                                    stats: AllTimeWidgetStats()) as? T
-                }
-            }
-        }
-    }
-}
-
-// refresh iOS 14 widgets at login/logout
-private extension StatsInsightsStore {
-    func observeAccountChangesForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
-
-        NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
-                                               object: nil,
-                                               queue: nil) { notification in
-            HomeWidgetTodayData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-            HomeWidgetAllTimeData.delete()
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
-
-        }
     }
 }

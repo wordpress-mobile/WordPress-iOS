@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QRLoginScanningViewController" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="errorLabel" destination="R3V-Yi-h49" id="cgV-3h-ITM"/>
+                <outlet property="overlayView" destination="P35-nk-5DE" id="ZKm-Wj-tfe"/>
+                <outlet property="scanFocusImageView" destination="3uw-ff-pHi" id="tFs-sG-yb5"/>
+                <outlet property="view" destination="hCm-wc-qEY" id="ewF-2O-dCk"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hCm-wc-qEY">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P35-nk-5DE" userLabel="Overlay View">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Camera Detected" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3V-Yi-h49">
+                            <rect key="frame" x="20" y="399" width="374" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIh-BQ-5W3" userLabel="Close Button">
+                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="64" id="PEh-Hz-xbS"/>
+                                <constraint firstAttribute="height" constant="64" id="iz3-SB-kUt"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="qr-login-close-icon"/>
+                            <connections>
+                                <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="2kK-eK-5ez"/>
+                            </connections>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="qr-scan-focus" translatesAutoresizingMaskIntoConstraints="NO" id="3uw-ff-pHi">
+                            <rect key="frame" x="92" y="294" width="230" height="230"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="3uw-ff-pHi" secondAttribute="height" multiplier="1:1" id="KF4-On-LLx"/>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="248" id="nth-R6-1fS"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="R3V-Yi-h49" firstAttribute="centerX" secondItem="P35-nk-5DE" secondAttribute="centerX" id="2cG-97-fRz"/>
+                        <constraint firstAttribute="trailing" secondItem="R3V-Yi-h49" secondAttribute="trailing" constant="20" id="Cgu-aa-Lmo"/>
+                        <constraint firstItem="3uw-ff-pHi" firstAttribute="centerY" secondItem="P35-nk-5DE" secondAttribute="centerY" id="Q1G-2o-Ade"/>
+                        <constraint firstItem="SIh-BQ-5W3" firstAttribute="top" secondItem="P35-nk-5DE" secondAttribute="top" id="UWJ-f4-sMz"/>
+                        <constraint firstItem="R3V-Yi-h49" firstAttribute="centerY" secondItem="P35-nk-5DE" secondAttribute="centerY" id="W98-z2-umF"/>
+                        <constraint firstItem="3uw-ff-pHi" firstAttribute="centerX" secondItem="P35-nk-5DE" secondAttribute="centerX" id="Wb4-Mq-KAo"/>
+                        <constraint firstItem="R3V-Yi-h49" firstAttribute="leading" secondItem="P35-nk-5DE" secondAttribute="leading" constant="20" id="oqQ-jj-3NA"/>
+                        <constraint firstItem="SIh-BQ-5W3" firstAttribute="leading" secondItem="P35-nk-5DE" secondAttribute="leading" id="zYB-wY-eDV"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="GRm-ae-H7Y"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="P35-nk-5DE" firstAttribute="top" secondItem="GRm-ae-H7Y" secondAttribute="top" id="1du-9G-Kz0"/>
+                <constraint firstItem="P35-nk-5DE" firstAttribute="trailing" secondItem="hCm-wc-qEY" secondAttribute="trailing" id="mE3-K0-qEH"/>
+                <constraint firstItem="P35-nk-5DE" firstAttribute="leading" secondItem="GRm-ae-H7Y" secondAttribute="leading" id="rb0-hd-UfQ"/>
+                <constraint firstItem="GRm-ae-H7Y" firstAttribute="bottom" secondItem="P35-nk-5DE" secondAttribute="bottom" id="wyo-sE-23c"/>
+            </constraints>
+            <point key="canvasLocation" x="47.826086956521742" y="-7.3660714285714279"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="qr-login-close-icon" width="23" height="23"/>
+        <image name="qr-scan-focus" width="230" height="230"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

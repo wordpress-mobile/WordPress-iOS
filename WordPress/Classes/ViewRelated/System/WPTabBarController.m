@@ -12,7 +12,6 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -631,7 +630,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self startWatchingQuickTours];
 
     [self trackTabAccessOnViewDidAppear];
-    [self showBloggingPromptsFeatureIntroduction];
+    [self showStatsRevampV2FeatureIntroduction];
 }
 
 - (void)viewDidLayoutSubviews

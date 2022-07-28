@@ -57,6 +57,7 @@ public class KanvasCustomUI {
             trashColor: Self.brightRed,
             tooltipBackgroundColor: .systemRed,
             closeButtonColor: black25,
+            cameraConfirmationColor: firstPrimary,
             primaryButtonBackgroundColor: Self.brightRed,
             permissionsButtonColor: Self.brightBlue,
             permissionsButtonAcceptedBackgroundColor: UIColor.muriel(color: MurielColor(name: .green, shade: .shade20)),

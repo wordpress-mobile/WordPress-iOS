@@ -1228,6 +1228,10 @@ extension StatsPeriodStore {
         return state.summaryStatus
     }
 
+    var summaryLikesStatus: StoreFetchingStatus {
+        return state.summaryLikesStatus
+    }
+
     var isFetchingSummary: Bool {
         return summaryStatus == .loading
     }

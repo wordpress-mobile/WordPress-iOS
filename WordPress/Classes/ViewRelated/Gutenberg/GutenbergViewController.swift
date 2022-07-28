@@ -31,7 +31,11 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return GutenbergSettings()
     }()
 
-    let ghostView = GutenGhostView()
+    lazy var ghostView: GutenGhostView = {
+        let view = GutenGhostView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private var storyEditor: StoryEditor?
 
@@ -554,10 +558,8 @@ extension GutenbergViewController {
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
-        view.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+        view.pinSubviewToAllEdges(gutenberg.rootView)
+        gutenberg.rootView.pinSubviewToAllEdges(ghostView)
     }
 }
 
@@ -1156,6 +1158,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post is Page ? "page" : "post"
     }
 
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
@@ -1185,6 +1191,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
+            .shouldUseFastImage: !post.blog.isPrivate(),
             // Jetpack embeds
             .facebookEmbed: post.blog.supports(.facebookEmbed),
             .instagramEmbed: post.blog.supports(.instagramEmbed),

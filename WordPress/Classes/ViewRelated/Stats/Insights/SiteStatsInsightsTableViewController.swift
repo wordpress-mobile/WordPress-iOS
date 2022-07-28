@@ -4,6 +4,8 @@ import WordPressFlux
 class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
+    weak var bannerView: JetpackBannerView?
+
     var isGrowAudienceShowing: Bool {
         return insightsToShow.contains(.growAudience)
     }
@@ -67,8 +69,13 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadPinnedCards()
         initViewModel()
+        sendScrollEventsToBanner()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            tableView.cellLayoutMarginsFollowReadableWidth = true
+        }
 
         displayEmptyViewIfNecessary()
     }
@@ -80,6 +87,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
 
     func showAddInsightView(source: String = "table_row") {
         WPAnalytics.track(.statsItemTappedInsightsAddStat, withProperties: ["source": source])
+        tableView.deselectSelectedRowWithAnimation(true)
 
         if displayingEmptyView {
             hideNoResults()
@@ -149,6 +157,7 @@ private extension SiteStatsInsightsTableViewController {
                 TopTotalsInsightStatsRow.self,
                 MostPopularTimeInsightStatsRow.self,
                 TotalInsightStatsRow.self,
+                AddInsightRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostGrowAudienceImmutableRow.self,
@@ -413,7 +422,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         if FeatureFlag.statsNewInsights.enabled {
             switch statSection {
-            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
                 segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
             default:
                 segueToDetails(statSection: statSection, selectedDate: selectedDate)
@@ -464,8 +473,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        let controller: UIViewController = SharingViewController(blog: blog, delegate: self)
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return
+        }
 
+        let controller: UIViewController = JetpackBannerWrapperViewController(childVC: sharingVC)
         let navigationController = UINavigationController(rootViewController: controller)
 
         present(navigationController, animated: true)
@@ -740,6 +752,17 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
         case .readerDiscover:
             trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
+        }
+    }
+}
+
+// MARK: Jetpack powered banner
+
+private extension SiteStatsInsightsTableViewController {
+
+    func sendScrollEventsToBanner() {
+        if let bannerView = bannerView {
+            analyticsTracker.addTranslationObserver(bannerView)
         }
     }
 }

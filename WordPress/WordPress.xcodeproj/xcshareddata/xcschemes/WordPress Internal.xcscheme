@@ -52,16 +52,6 @@
                </Test>
             </SkippedTests>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "931CFFD01EBCB016005E6BB4"
-               BuildableName = "WordPressComStatsiOSTests.xctest"
-               BlueprintName = "WordPressComStatsiOSTests"
-               ReferencedContainer = "container:WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
