@@ -14,15 +14,13 @@
 		},
 		{
 			"name": "iPhone 8",
-			"canvas_size": [1242, 2208],
-			"text_size": [1242, 420],
-			"text_offset": [0, 40],
-			"font_size": "110px",
-			"screenshot_size": [825, 1467],
-			"screenshot_offset": [225, 741],
-			"device_frame": "appstoreres/assets/iphone-8.png",
-			"device_frame_size": [1030, 2048],
-			"device_frame_offset": [126, 452]
+			"canvas_size": [1080, 1920],
+			"text_size": [680, 200],
+			"text_offset": [200, 170],
+			"font_size": "62px",
+			"screenshot_size": [797, 1417],
+			"screenshot_offset": [141.5, 412],
+			"screenshot_mask": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackMask.png"
 		},
 		{
 			"name": "iPad Pro",
@@ -110,15 +108,15 @@
 			"filename": "iPhone 8 Plus-0-Splash.png",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/backgrounds/iphone-8-backgrounds/FancyJetpackSpace.png",
-					"size": [1242,2208],
+					"file": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBanner.png",
+					"size": [1080, 1920],
 					"position": [0,0]
 				},
 				{
 					"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_1.txt",
-					"size": [1042, 420],
-					"position": [100,220],
-					"font-size": 140,
+					"size": [845, 360],
+					"position": [95,312],
+					"font-size": "105px",
 					"alignment": "left",
 					"stylesheet": "appstoreres/assets/jetpack-style.css"
 				}
@@ -126,38 +124,38 @@
 		},
 		{
 			"device": "iPhone 8",
-			"filename": "iPhone 8 Plus-1-MySite.png",
+			"filename": "iPhone 8 Plus-1-SiteCreation.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_2.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone 8 Plus-1-light-MySite.png"
+			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone 8 Plus-1-light-SiteCreation.png"
 		},
 		{
 			"device": "iPhone 8",
-			"filename": "iPhone 8 Plus-2-ActivityLog.png",
+			"filename": "iPhone 8 Plus-2-CreateNew.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_3.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone 8 Plus-2-light-ActivityLog.png"
+			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone 8 Plus-2-light-CreateNew.png"
 		},
 		{
 			"device": "iPhone 8",
-			"filename": "iPhone 8 Plus-3-JetpackScan.png",
+			"filename": "iPhone 8 Plus-3-PageBuilder.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone 8 Plus-3-light-JetpackScan.png"
+			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone 8 Plus-3-light-PageBuilder.png"
 		},
 		{
 			"device": "iPhone 8",
-			"filename": "iPhone 8 Plus-4-JetpackBackup.png",
+			"filename": "iPhone 8 Plus-4-Stats.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone 8 Plus-4-light-JetpackBackup.png"
+			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone 8 Plus-4-light-Stats.png"
 		},
 		{
 			"device": "iPhone 8",
-			"filename": "iPhone 8 Plus-5-Stats.png",
+			"filename": "iPhone 8 Plus-5-Notifications.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone 8 Plus-5-light-Stats.png"
+			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone 8 Plus-5-light-Stats.png" // Change to notifications
 		},
 		{
 			"device": "iPad X",
