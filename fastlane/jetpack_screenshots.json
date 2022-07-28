@@ -5,15 +5,12 @@
 		{
 			"name": "iPhone Xs max",
 			"canvas_size": [1242, 2688],
-			"text_size": [1242, 450],
-			"text_offset": [0, 110],
-			"font_size": "110px",
-			"screenshot_size": [826, 1793],
-			"screenshot_offset": [210, 731],
-			"screenshot_mask": "appstoreres/assets/iphone-x-mask.png",
-			"device_frame": "appstoreres/assets/iphone-x.png",
-			"device_frame_size": [1081, 2031],
-			"device_frame_offset": [80, 610]
+			"text_size": [950, 317],
+			"text_offset": [146, 195],
+			"font_size": "88px",
+			"screenshot_size": [922, 1995],
+			"screenshot_offset": [160, 552],
+			"screenshot_mask": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackMask.png"
 		},
 		{
 			"name": "iPhone 8",
@@ -59,15 +56,15 @@
 			"filename": "iPhone XS Max-0-Splash.png",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/FancyJetpackSpace.png",
+					"file": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBanner.png",
 					"size": [1242,2688],
 					"position": [0,0]
 				},
 				{
 					"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_1.txt",
-					"size": [1042, 420],
-					"position": [100,220],
-					"font-size": 140,
+					"size": [1018, 440],
+					"position": [102,422],
+					"font-size": "126px",
 					"alignment": "left",
 					"stylesheet": "appstoreres/assets/jetpack-style.css"
 				}
@@ -75,38 +72,38 @@
 		},
 		{
 			"device": "iPhone Xs max",
-			"filename": "iPhone XS Max-1-MySite.png",
+			"filename": "iPhone XS Max-1-SiteCreation.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_2.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone XS Max-1-light-MySite.png"
+			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone XS Max-1-light-SiteCreation.png"
 		},
 		{
 			"device": "iPhone Xs max",
-			"filename": "iPhone XS Max-2-ActivityLog.png",
+			"filename": "iPhone XS Max-2-CreateNew.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_3.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone XS Max-2-light-ActivityLog.png"
+			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone XS Max-2-light-CreateNew.png"
 		},
 		{
 			"device": "iPhone Xs max",
-			"filename": "iPhone XS Max-3-JetpackScan.png",
+			"filename": "iPhone XS Max-3-PageBuilder.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone XS Max-3-light-JetpackScan.png"
+			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone XS Max-3-light-PageBuilder.png"
 		},
 		{
 			"device": "iPhone Xs max",
-			"filename": "iPhone XS Max-4-JetpackBackup.png",
+			"filename": "iPhone XS Max-4-Stats.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone XS Max-4-light-JetpackBackup.png"
+			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone XS Max-4-light-Stats.png"
 		},
 		{
 			"device": "iPhone Xs max",
-			"filename": "iPhone XS Max-5-Stats.png",
+			"filename": "iPhone XS Max-5-Notifications.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackSpace.png",
-			"screenshot": "iPhone XS Max-5-light-Stats.png"
+			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
+			"screenshot": "iPhone XS Max-5-light-Stats.png" // Change to notifications
 		},
 		{
 			"device": "iPhone 8",
