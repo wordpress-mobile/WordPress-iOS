@@ -211,5 +211,7 @@ extension DatePickerSheet where Self: UIViewController {
         view.addSubview(stackView)
 
         view.pinSubviewToSafeArea(stackView)
+
+        view.tintColor = UIColor.editorPrimary
     }
 }
