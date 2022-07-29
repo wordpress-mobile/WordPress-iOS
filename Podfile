@@ -454,6 +454,19 @@ post_install do |installer|
     end
   end
 
+  # Fix a code signing issue in Xcode 14 beta.
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
+  # ====================================
+  #
+  # TODO: fix the linting issue if this workaround is still needed in Xcode 14 GM.
+  # rubocop:disable Style/CombinableLoops
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+    end
+  end
+  # rubocop:enable Style/CombinableLoops
+
   # Flag Alpha builds for Tracks
   # ============================
   #
