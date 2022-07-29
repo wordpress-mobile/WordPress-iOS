@@ -12,7 +12,7 @@ common_params:
     #
     # `xcode-13.4.1` note: The issue "FIXIT-13.1" addresses is still there in this image.
     # See: https://buildkite.com/automattic/wordpress-ios/builds/8187#01813c28-1c1d-4a25-95c0-0fdd6f2af399
-    IMAGE_ID: xcode-13.4.1
+    IMAGE_ID: xcode-14
 
 # This is the default pipeline – it will build and test the app
 steps:
