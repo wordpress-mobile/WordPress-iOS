@@ -82,7 +82,7 @@ platform :ios do
         reinstall_app: true,
         erase_simulator: true,
         localize_simulator: true,
-        concurrent_simulators: true,
+        concurrent_simulators: false,
 
         devices: SCREENSHOT_SIMULATORS
       )
@@ -94,10 +94,12 @@ platform :ios do
   # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
   #
   desc 'Generate localised Jetpack screenshots'
-  lane :jetpack_screenshots do
+  lane :jetpack_screenshots do |options|
     screenshots(
       scheme: 'JetpackScreenshotGeneration',
-      output_directory: File.join(Dir.pwd, '/jetpack_screenshots')
+      output_directory: File.join(Dir.pwd, '/jetpack_screenshots'),
+      language: options[:language],
+      skip_clean: options[:skip_clean]
     )
   end
 
