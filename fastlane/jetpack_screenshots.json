@@ -25,27 +25,22 @@
 		{
 			"name": "iPad Pro",
 			"canvas_size": [2732, 2048],
-			"text_size": [2732, 250],
-			"text_offset": [0, 71],
-			"font_size": "110px",
-			"screenshot_size": [1914, 1415],
-			"screenshot_offset": [426, 485],
-			"device_frame": "appstoreres/assets/ipad-2nd-gen.png",
-			"device_frame_size": [2360, 1680],
-			"device_frame_offset": [203, 349]
+			"text_size": [2732, 150],
+			"text_offset": [0, 118],
+			"font_size": "76px",
+			"screenshot_size": [2148, 1610],
+			"screenshot_offset": [292, 337],
+			"screenshot_mask": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackMask.png"
 		},
 		{
 			"name": "iPad X",
 			"canvas_size": [2732, 2048],
-			"text_size": [2732, 250],
-			"text_offset": [0, 70],
-			"font_size": "110px",
-			"screenshot_size": [1918, 1436],
-			"screenshot_offset": [418, 465],
-			"screenshot_mask": "appstoreres/assets/ipad-x-mask.png",
-			"device_frame": "appstoreres/assets/ipad-3rd-gen.png",
-			"device_frame_size": [2150, 1680],
-			"device_frame_offset": [302, 341]
+			"text_size": [2732, 150],
+			"text_offset": [0, 118],
+			"font_size": "76px",
+			"screenshot_size": [2148, 1610],
+			"screenshot_offset": [292, 337],
+			"screenshot_mask": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackMask.png"
 		}
 	],
 	"entries": [
@@ -101,7 +96,7 @@
 			"filename": "iPhone XS Max-5-Notifications.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-6.5in-backgrounds/JetpackBackground.png",
-			"screenshot": "iPhone XS Max-5-light-Stats.png" // Change to notifications
+			"screenshot": "iPhone XS Max-5-light-Notifications.png"
 		},
 		{
 			"device": "iPhone 8",
@@ -155,22 +150,22 @@
 			"filename": "iPhone 8 Plus-5-Notifications.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBackground.png",
-			"screenshot": "iPhone 8 Plus-5-light-Stats.png" // Change to notifications
+			"screenshot": "iPhone 8 Plus-5-light-Notifications.png"
 		},
 		{
 			"device": "iPad X",
 			"filename": "iPad Pro (12.9-inch) (3rd generation)-0-Splash.png",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/FancyJetpackSpace.png",
+					"file": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBanner.png",
 					"size": [2732,2048],
 					"position": [0,0]
 				},
 				{
 					"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_1.txt",
-					"size": [1200, 345],
-					"position": [200,220],
-					"font-size": 140,
+					"size": [918, 390],
+					"position": [231,580],
+					"font-size": "114px",
 					"alignment": "left",
 					"stylesheet": "appstoreres/assets/jetpack-style.css"
 				}
@@ -178,53 +173,53 @@
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-1-MySite.png",
+			"filename": "iPad Pro (12.9-inch) (3rd generation)-1-SiteCreation.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_2.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-light-MySite.png"
+			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-light-SiteCreation.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-2-ActivityLog.png",
+			"filename": "iPad Pro (12.9-inch) (3rd generation)-2-CreateNew.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_3.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-light-ActivityLog.png"
+			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-light-CreateNew.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-3-JetpackScan.png",
+			"filename": "iPad Pro (12.9-inch) (3rd generation)-3-PageBuilder.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-light-JetpackScan.png"
+			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-light-PageBuilder.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-4-JetpackBackup.png",
+			"filename": "iPad Pro (12.9-inch) (3rd generation)-4-Stats.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-4-light-JetpackBackup.png"
+			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-4-light-Stats.png"
 		},
-		{
-			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-5-Stats.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-light-Stats.png"
-		},
+		// {
+		// 	"device": "iPad X",
+		// 	"filename": "iPad Pro (12.9-inch) (3rd generation)-5-Notifications.png",
+		// 	"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+		// 	"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+		// 	"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-light-Notifications.png"
+		// },
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-0-Splash.png",
 			"attachments": [
 				{
-					"file": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/FancyJetpackSpace.png",
+					"file": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBanner.png",
 					"size": [2732,2048],
 					"position": [0,0]
 				},
 				{
 					"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_1.txt",
-					"size": [1200, 345],
-					"position": [200,220],
-					"font-size": 140,
+					"size": [918, 390],
+					"position": [231,580],
+					"font-size": "114px",
 					"alignment": "left",
 					"stylesheet": "appstoreres/assets/jetpack-style.css"
 				}
@@ -232,38 +227,39 @@
 		},
 		{
 			"device": "iPad Pro",
-			"filename": "iPad Pro (12.9-inch) (2nd generation)-1-MySite.png",
+			"filename": "iPad Pro (12.9-inch) (2nd generation)-1-SiteCreation.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_2.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-1-light-MySite.png"
+			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-1-light-SiteCreation.png"
 		},
 		{
 			"device": "iPad Pro",
-			"filename": "iPad Pro (12.9-inch) (2nd generation)-2-ActivityLog.png",
+			"filename": "iPad Pro (12.9-inch) (2nd generation)-2-CreateNew.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_3.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-light-ActivityLog.png"
+			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-2-light-CreateNew.png"
 		},
 		{
 			"device": "iPad Pro",
-			"filename": "iPad Pro (12.9-inch) (2nd generation)-3-JetpackScan.png",
+			"filename": "iPad Pro (12.9-inch) (2nd generation)-3-PageBuilder.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_4.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-light-JetpackScan.png"
+			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-3-light-PageBuilder.png"
 		},
 		{
 			"device": "iPad Pro",
-			"filename": "iPad Pro (12.9-inch) (2nd generation)-4-JetpackBackup.png",
+			"filename": "iPad Pro (12.9-inch) (2nd generation)-4-Stats.png",
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-light-JetpackBackup.png"
-		},
-		{
-			"device": "iPad Pro",
-			"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Stats.png",
-			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackSpace.png",
-			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-light-Stats.png"
+			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-light-Stats.png"
 		}
+		// ,
+		// {
+		// 	"device": "iPad Pro",
+		// 	"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Notifications.png",
+		// 	"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+		// 	"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+		// 	"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-light-Notifications.png"
+		// }
 	]
 }
