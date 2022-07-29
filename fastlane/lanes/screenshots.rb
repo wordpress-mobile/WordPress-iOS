@@ -12,7 +12,7 @@ SCREENSHOT_SIMULATORS = [
   'iPhone Xs Max', # 6.5in - 2688x1242 @ 458 ppi
   'iPhone 8 Plus', # 5.5in - 1920x1080 @ 401 ppi -- !!! FIXME: `canvas_size` in `fastlane/screenshots.json` does not match ([1242, 2208])
   'iPad Pro (12.9-inch) (2nd generation)', # 12.9in - 2732x2048 @ 264 ppi
-  'iPad Pro (12.9-inch) (3rd generation)', # 12.9in - 2732x2048 @ 264 ppi
+  'iPad Pro (12.9-inch) (5th generation)', # 12.9in - 2732x2048 @ 264 ppi
 ].freeze
 
 #################################################
