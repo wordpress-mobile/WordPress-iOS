@@ -505,6 +505,7 @@ import Combine
             return
         }
         let bannerView = JetpackBannerView()
+        hideBannerViewIfNeeded()
         jetpackBannerView = bannerView
         addTranslationObserver(bannerView)
         stackView.addArrangedSubview(bannerView)
@@ -2001,11 +2002,32 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     }
 }
 
+// MARK: - Jetpack banner visibility
+
+extension ReaderStreamViewController {
+
+    private func shouldHideBannerView() -> Bool {
+        /// Hide the banner on iPhone landscape
+        return traitCollection.verticalSizeClass == .compact
+    }
+
+    /// hides the Jetpack powered banner on iPhone landscape
+    private func hideBannerViewIfNeeded() {
+        jetpackBannerView?.isHidden = shouldHideBannerView()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        hideBannerViewIfNeeded()
+    }
+}
+
 // MARK: - Jetpack banner delegate
 
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !shouldHideBannerView() else { return }
         scrollViewPublisher.send(scrollView)
     }
 }

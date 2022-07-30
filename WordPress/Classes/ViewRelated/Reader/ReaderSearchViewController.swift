@@ -173,21 +173,6 @@ import Gridicons
 
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
-        guard JetpackBrandingVisibility.all.enabled else {
-            return
-        }
-        hideBannerViewIfNeeded()
-    }
-
-    /// hides the Jetpack powered banner on iPhone landscape
-    private func hideBannerViewIfNeeded() {
-        // hide the banner on iPhone landscape
-        streamController?.jetpackBannerView?.isHidden = traitCollection.verticalSizeClass == .compact
-    }
-
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        hideBannerViewIfNeeded()
     }
 
     func configureFilterBar() {
