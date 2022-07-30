@@ -135,7 +135,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }()
 
     /// Used by JPScrollViewDelegate to send scroll position
-    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    internal let scrollViewPublisher = PassthroughSubject<JPScrollViewDataDelegate, Never>()
 
     // MARK: - View Lifecycle
 
@@ -2074,6 +2074,6 @@ extension NotificationsViewController: WPScrollableViewController {
 //
 extension NotificationsViewController: JPScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        scrollViewPublisher.send(scrollView)
     }
 }

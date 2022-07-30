@@ -101,7 +101,7 @@ import Combine
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
-    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    internal let scrollViewPublisher = PassthroughSubject<JPScrollViewDataDelegate, Never>()
 
     /// Content management
     let content = ReaderTableContent()
@@ -2004,7 +2004,8 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
 // MARK: - Jetpack banner delegate
 
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        scrollViewPublisher.send(scrollView)
     }
 }

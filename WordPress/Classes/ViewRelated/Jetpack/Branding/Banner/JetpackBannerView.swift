@@ -32,16 +32,26 @@ class JetpackBannerView: UIView {
 // MARK: Responding to scroll events
 extension JetpackBannerView: Subscriber {
 
-    typealias Input = CGFloat
+    typealias Input = JPScrollViewDataDelegate
     typealias Failure = Never
 
     func receive(subscription: Subscription) {
         subscription.request(.unlimited)
     }
 
-    func receive(_ input: CGFloat) -> Subscribers.Demand {
+    func receive(_ input: JPScrollViewDataDelegate) -> Subscribers.Demand {
+        let isHidden: Bool
 
-        let isHidden: Bool = input < 0
+        /// The scrollable content isn't any larger than its frame, so don't hide the banner if the view is bounced.
+        if input.scrollViewContentHeight <= input.scrollViewFrameHeight {
+            isHidden = false
+        /// Don't hide the banner until the view has scrolled down some. Currently the height of the banner itself.
+        } else if input.scrollViewContentOffsetY <= frame.height {
+            isHidden = false
+        /// The banner hides on scrolling down, shows on scrolling up.
+        } else {
+            isHidden = input.translationY < 0
+        }
 
         guard self.isHidden != isHidden else {
             return .unlimited

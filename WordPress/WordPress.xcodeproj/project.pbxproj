@@ -2255,6 +2255,10 @@
 		C352870627FDD35C004E2E51 /* SiteNameStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352870427FDD35C004E2E51 /* SiteNameStep.swift */; };
 		C35D4FF1280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
 		C35D4FF2280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
+		C370F9FE2895920F004A8593 /* JPScrollViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C370F9FD2895920F004A8593 /* JPScrollViewDataDelegate.swift */; };
+		C370F9FF2895920F004A8593 /* JPScrollViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C370F9FD2895920F004A8593 /* JPScrollViewDataDelegate.swift */; };
+		C370FA01289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C370FA00289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift */; };
+		C370FA02289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C370FA00289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift */; };
 		C373D6E728045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6EA280452F6008F8C26 /* SiteIntentDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */; };
@@ -7153,6 +7157,8 @@
 		C3439B5E27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncherTests.swift; sourceTree = "<group>"; };
 		C352870427FDD35C004E2E51 /* SiteNameStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNameStep.swift; sourceTree = "<group>"; };
 		C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationStep.swift; sourceTree = "<group>"; };
+		C370F9FD2895920F004A8593 /* JPScrollViewDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JPScrollViewDataDelegate.swift; sourceTree = "<group>"; };
+		C370FA00289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+JPScrollViewDataDelegate.swift"; sourceTree = "<group>"; };
 		C373D6E628045281008F8C26 /* SiteIntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentData.swift; sourceTree = "<group>"; };
 		C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentDataTests.swift; sourceTree = "<group>"; };
 		C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerWrapperViewController.swift; sourceTree = "<group>"; };
@@ -10119,6 +10125,8 @@
 				B0CD27CE286F8858009500BF /* JetpackBannerView.swift */,
 				C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */,
 				3FAE0651287C8FC500F46508 /* JPScrollViewDelegate.swift */,
+				C370F9FD2895920F004A8593 /* JPScrollViewDataDelegate.swift */,
+				C370FA00289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift */,
 			);
 			path = Banner;
 			sourceTree = "<group>";
@@ -19064,6 +19072,7 @@
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				176BA53B268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
+				C370F9FE2895920F004A8593 /* JPScrollViewDataDelegate.swift in Sources */,
 				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				E11C4B72201096EF00A6619C /* JetpackState.swift in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
@@ -19412,6 +19421,7 @@
 				400A2C832217A985000A8A59 /* TopViewedVideoStatsRecordValue+CoreDataClass.swift in Sources */,
 				DCCDF75E283BF02D00AA347E /* SiteStatsInsightsDetailsViewModel.swift in Sources */,
 				F1C740BF26B18E42005D0809 /* StoreSandboxSecretScreen.swift in Sources */,
+				C370FA01289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				FEA7948D26DD136700CEC520 /* CommentHeaderTableViewCell.swift in Sources */,
 				C3C39B0726F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */,
@@ -20805,6 +20815,7 @@
 				FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */,
 				FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */,
 				FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */,
+				C370FA02289592C8004A8593 /* UIScrollView+JPScrollViewDataDelegate.swift in Sources */,
 				FABB217B2602FC2C00C8785C /* WPAddPostCategoryViewController.m in Sources */,
 				FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */,
 				3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */,
@@ -21026,6 +21037,7 @@
 				FABB222E2602FC2C00C8785C /* WPStyleGuide+Sharing.swift in Sources */,
 				FABB222F2602FC2C00C8785C /* StoryPoster.swift in Sources */,
 				8B074A5127AC3A64003A2EB8 /* BlogDashboardViewModel.swift in Sources */,
+				C370F9FF2895920F004A8593 /* JPScrollViewDataDelegate.swift in Sources */,
 				FEAC916F28001FC4005026E7 /* AvatarTrainView.swift in Sources */,
 				FABB22302602FC2C00C8785C /* Double+Stats.swift in Sources */,
 				FABB22312602FC2C00C8785C /* CircularProgressView.swift in Sources */,

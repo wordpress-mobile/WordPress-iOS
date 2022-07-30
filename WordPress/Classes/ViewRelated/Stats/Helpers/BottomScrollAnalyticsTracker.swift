@@ -5,7 +5,7 @@ import Foundation
 
 final class BottomScrollAnalyticsTracker: NSObject {
 
-    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    let scrollViewPublisher = PassthroughSubject<JPScrollViewDataDelegate, Never>()
 
     private func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
         if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
@@ -39,6 +39,6 @@ extension BottomScrollAnalyticsTracker: JPScrollViewDelegate {
         }
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        scrollViewPublisher.send(scrollView)
     }
 }
