@@ -20,7 +20,8 @@ class JetpackBannerView: UIView {
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(jetpackButton)
 
-        pinSubviewToAllEdges(jetpackButton)
+        pinSubviewToSafeArea(jetpackButton)
+        jetpackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     /// Preferred minimum height to be used for constraints
