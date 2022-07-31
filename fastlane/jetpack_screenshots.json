@@ -199,13 +199,13 @@
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
 			"screenshot": "iPad Pro (12.9-inch) (5th generation)-4-light-Stats.png"
 		},
-		// {
-		// 	"device": "iPad X",
-		// 	"filename": "iPad Pro (12.9-inch) (5th generation)-5-Notifications.png",
-		// 	"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-		// 	"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
-		// 	"screenshot": "iPad Pro (12.9-inch) (5th generation)-5-light-Notifications.png"
-		// },
+		{
+			"device": "iPad X",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-5-Notifications.png",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-5-light-Notifications.png"
+		},
 		{
 			"device": "iPad Pro",
 			"filename": "iPad Pro (12.9-inch) (2nd generation)-0-Splash.png",
@@ -252,14 +252,13 @@
 			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
 			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-4-light-Stats.png"
+		},
+		{
+			"device": "iPad Pro",
+			"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Notifications.png",
+			"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
+			"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
+			"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-light-Notifications.png"
 		}
-		// ,
-		// {
-		// 	"device": "iPad Pro",
-		// 	"filename": "iPad Pro (12.9-inch) (2nd generation)-5-Notifications.png",
-		// 	"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_6.txt",
-		// 	"background": "appstoreres/assets/backgrounds/ipad-2ndgen-backgrounds/JetpackBackground.png",
-		// 	"screenshot": "iPad Pro (12.9-inch) (2nd generation)-5-light-Notifications.png"
-		// }
 	]
 }
