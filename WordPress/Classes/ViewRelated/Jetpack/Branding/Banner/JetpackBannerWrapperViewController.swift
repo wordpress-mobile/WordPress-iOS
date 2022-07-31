@@ -35,24 +35,11 @@ import UIKit
     }
 
     private func configureJetpackBanner(_ stackView: UIStackView) {
-        guard shouldShowBanner() else { return }
-
         let jetpackBannerView = JetpackBannerView()
         stackView.addArrangedSubview(jetpackBannerView)
-        jetpackBannerView.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
 
         if let childVC = childVC as? JPScrollViewDelegate {
             childVC.addTranslationObserver(jetpackBannerView)
         }
-    }
-
-    /// Note: This could be improved to be delegated to the wrapped view.
-    private func shouldShowBanner() -> Bool {
-        /// Presenting as a modal currently isn't supported due to Safe Area overlap
-        guard !isModal() else {
-            return false
-        }
-
-        return JetpackBrandingVisibility.all.enabled
     }
 }
