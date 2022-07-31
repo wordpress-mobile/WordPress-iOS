@@ -11,6 +11,7 @@ public class NotificationsScreen: ScreenObject {
         )
     }
 
+    @discardableResult
     public func openNotification(withText notificationText: String) -> NotificationsScreen {
         app.staticTexts[notificationText].tap()
         return self

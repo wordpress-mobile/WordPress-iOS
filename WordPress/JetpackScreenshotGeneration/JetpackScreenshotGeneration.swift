@@ -71,7 +71,6 @@ class JetpackScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             notificationList
                 .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
-                .replyToNotification()
         }
         notificationList.thenTakeScreenshot(5, named: "Notifications")
     }
