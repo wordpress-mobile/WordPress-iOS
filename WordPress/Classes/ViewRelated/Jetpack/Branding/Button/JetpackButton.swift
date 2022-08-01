@@ -4,8 +4,6 @@ import SwiftUI
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
 class JetpackButton: UIButton {
 
-    private var buttonAction: (() -> Void)?
-
     enum ButtonStyle {
         case badge
         case banner
@@ -20,7 +18,7 @@ class JetpackButton: UIButton {
         return view
     }()
 
-    init(style: ButtonStyle, buttonAction: (() -> Void)? = nil) {
+    init(style: ButtonStyle) {
         self.style = style
         super.init(frame: .zero)
         configureButton()
@@ -28,10 +26,6 @@ class JetpackButton: UIButton {
 
     required init?(coder: NSCoder) {
         fatalError("Storyboard instantiation not supported.")
-    }
-
-    func setAction(buttonAction: @escaping () -> Void) {
-        self.buttonAction = buttonAction
     }
 
     private var buttonBackgroundColor: UIColor {
@@ -73,13 +67,8 @@ class JetpackButton: UIButton {
         }
     }
 
-    @objc private func didTapButton() {
-        buttonAction?()
-    }
-
     private func configureButton() {
         setTitle(Appearance.title, for: .normal)
-        addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
         setTitleColor(buttonTitleColor, for: .normal)
