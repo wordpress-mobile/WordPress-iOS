@@ -97,7 +97,7 @@ extension XCTestCase {
         var retries = 0
         let maxRetries = 10
         if element.waitForIsHittable(timeout: 10) {
-            while element.exists && retries < maxRetries {
+            while element.isHittable && retries < maxRetries {
                 element.tap()
                 retries += 1
             }
