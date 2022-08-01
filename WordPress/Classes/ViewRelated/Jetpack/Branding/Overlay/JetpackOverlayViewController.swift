@@ -4,9 +4,12 @@ class JetpackOverlayViewController: UIViewController {
 
     private var redirectAction: (() -> Void)?
 
-    init(redirectAction: (() -> Void)? = nil) {
-        super.init(nibName: nil, bundle: nil)
+    private var viewFactory: ((() -> Void)?) -> UIView
+
+    init(viewFactory: @escaping ((() -> Void)?) -> UIView, redirectAction: (() -> Void)? = nil) {
         self.redirectAction = redirectAction
+        self.viewFactory = viewFactory
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -14,7 +17,7 @@ class JetpackOverlayViewController: UIViewController {
     }
 
     override func loadView() {
-        view = JetpackOverlayView(buttonAction: redirectAction)
+        view = viewFactory(redirectAction)
     }
 
     private func setPreferredContentSize() {
