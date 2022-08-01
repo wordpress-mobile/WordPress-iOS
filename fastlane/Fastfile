@@ -63,9 +63,12 @@ end
 # Group buildkite logs by action
 ########################################################################
 
+# A module that defines methods to be used as overrides to `Fastlane::Actions`
+# module methods.
 module FastlaneActionLogGroup
   def print_group(action_name)
     return if %w[is_ci].include?(action_name)
+
     puts "~~~ 🚖 #{ENV.fetch('FASTLANE_LANE_NAME', '[root]')} >> #{action_name}"
   end
 
