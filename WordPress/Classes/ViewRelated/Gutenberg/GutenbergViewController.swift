@@ -1158,6 +1158,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post is Page ? "page" : "post"
     }
 
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
@@ -1187,6 +1191,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
+            .shouldUseFastImage: !post.blog.isPrivate(),
             // Jetpack embeds
             .facebookEmbed: post.blog.supports(.facebookEmbed),
             .instagramEmbed: post.blog.supports(.instagramEmbed),

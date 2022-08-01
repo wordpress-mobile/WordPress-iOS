@@ -1,7 +1,9 @@
-Schrijf-inspiratie nodig? Daar zorgen wij voor, met onze gloednieuwe blogideeën. Ontvang elke dag een nieuw idee, schrijf er een bericht over en voor je het weet is schrijven een gewoonte.
+We hebben de blokeditor iets bijgewerkt, zodat het publiceren nog beter verloopt.
 
-Jetpack is toegevoegd aan de chat – vanaf nu zie je de tooltip 'Conversatie volgen' om een bericht te volgen en meldingen te ontvangen over nieuwe opmerkingen.
+- Je hoeft alt. tekst niet meer te kopiëren en plakken. Als je een item in de mediabibliotheek toevoegt aan een afbeeldingblok, wordt de alt. tekst meegenomen.
+- Je kunt media per URL invoegen in videoblokken.
+- Als een blok onverwachte of ongeldige inhoud bevat, kun je de optie voor blokherstel gebruiken om de content correct weer te geven zonder alles van begin af opnieuw te moeten toevoegen.
 
-We hebben wat verbeteringen doorgevoerd aan het selectiescherm waar je je site-ontwerp kunt kiezen tijdens het aanmaken van je site.
+En reacties op berichten zijn nu gebruiksvriendelijker. Als je op het @-teken tikt om een andere gebruiker in je reactie te vermelden, is de eerste persoon bij de voorgestelde gebruikers de auteur van het bericht of de reactie. Handig, toch?
 
-Ten slotte hebben we een probleem verholpen met het scrollen door meldingen wanneer je je telefoon in landschapsmodus gebruikt. Scrol maar door.
+Ten slotte hebben we een probleem met de mediakiezer in de editor verholpen, waarbij je zoekopdrachten zelfs na het sluiten en opnieuw openen van het venster bleven staan. We hebben tevens een bug verholpen waardoor de app crashte als je meerdere items aan een verhaalbericht toevoegde.

@@ -9,103 +9,31 @@ extension SuggestionType {
     }
 }
 
-@objc public extension SuggestionsTableView {
+@objc extension SuggestionsTableView {
 
-    func userSuggestions(for siteID: NSNumber, completion: @escaping ([UserSuggestion]?) -> Void) {
-        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
-        SuggestionService.shared.suggestions(for: blog, completion: completion)
+    // MARK: - API
+
+    /// Returns the a list of prominent suggestions excluding the current user.
+    static func prominentSuggestions(fromPostAuthorId postAuthorId: NSNumber?, commentAuthorId: NSNumber?, defaultAccountId: NSNumber?) -> [NSNumber] {
+        return [postAuthorId, commentAuthorId].compactMap { $0 != defaultAccountId ? $0 : nil }
     }
 
-    func siteSuggestions(for siteID: NSNumber, completion: @escaping ([SiteSuggestion]?) -> Void) {
-        guard let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else { return }
-        SiteSuggestionService.shared.suggestions(for: blog, completion: completion)
-    }
+    // MARK: - Internal
 
-    var suggestionTrigger: String { return suggestionType.trigger }
-
-    func predicate(for searchQuery: String) -> NSPredicate {
-        switch suggestionType {
-        case .mention:
-            return NSPredicate(format: "(displayName contains[c] %@) OR (username contains[c] %@)", searchQuery, searchQuery)
-        case .xpost:
-            return NSPredicate(format: "(title contains[cd] %@) OR (siteURL.absoluteString contains[cd] %@)", searchQuery, searchQuery)
-        }
-    }
-
-    func title(for suggestion: AnyObject) -> String? {
-        let title: String?
-        switch (suggestionType, suggestion) {
-        case (.mention, let suggestion as UserSuggestion):
-            title = suggestion.username
-        case (.xpost, let suggestion as SiteSuggestion):
-            title = suggestion.subdomain
-        default:
-            return nil
-        }
-        return title.map { suggestionType.trigger.appending($0) }
-    }
-
-    func subtitle(for suggestion: AnyObject) -> String? {
-        switch (suggestionType, suggestion) {
-        case (.mention, let suggestion as UserSuggestion):
-            return suggestion.displayName
-        case (.xpost, let suggestion as SiteSuggestion):
-            return suggestion.title
-        default:
-            return nil
-        }
-    }
-
-    private func imageURLForSuggestion(at indexPath: IndexPath) -> URL? {
-        let suggestion = searchResults[indexPath.row]
-
-        switch (suggestionType, suggestion) {
-        case (.mention, let suggestion as UserSuggestion):
-            return suggestion.imageURL
-        case (.xpost, let suggestion as SiteSuggestion):
-            return suggestion.blavatarURL
-        default:
-            return nil
-        }
-    }
-
-    func loadImage(for suggestion: AnyObject, in cell: SuggestionsTableViewCell, at indexPath: IndexPath) {
+    func loadImage(for suggestion: SuggestionViewModel, in cell: SuggestionsTableViewCell, at indexPath: IndexPath, with viewModel: SuggestionsListViewModelType) {
         cell.iconImageView.image = UIImage(named: "gravatar")
-        guard let imageURL = imageURLForSuggestion(at: indexPath) else { return }
+        guard let imageURL = suggestion.imageURL else { return }
         cell.imageDownloadHash = imageURL.hashValue
 
         retrieveIcon(for: imageURL) { image in
-            guard indexPath.row < self.searchResults.count else { return }
-            if let reloadedImageURL = self.imageURLForSuggestion(at: indexPath), reloadedImageURL.hashValue == cell.imageDownloadHash {
+            guard indexPath.row < viewModel.items.count else { return }
+            if let reloadedImageURL = viewModel.items[indexPath.row].imageURL, reloadedImageURL.hashValue == cell.imageDownloadHash {
                 cell.iconImageView.image = image
             }
         }
     }
 
-    func fetchSuggestions(for siteID: NSNumber) {
-        switch self.suggestionType {
-        case .mention:
-            userSuggestions(for: siteID) { userSuggestions in
-                self.suggestions = userSuggestions
-                self.showSuggestions(forWord: self.searchText)
-            }
-        case .xpost:
-            siteSuggestions(for: siteID) { siteSuggestions in
-                self.suggestions = siteSuggestions
-                self.showSuggestions(forWord: self.searchText)
-            }
-        }
-    }
-
-    private func suggestionText(for suggestion: Any) -> String? {
-        switch (suggestionType, suggestion) {
-        case (.mention, let suggestion as UserSuggestion):
-            return suggestion.username
-        case (.xpost, let suggestion as SiteSuggestion):
-            return suggestion.subdomain
-        default: return nil
-        }
-    }
+    // MARK: - Private
 
     private func retrieveIcon(for imageURL: URL?, success: @escaping (UIImage?) -> Void) {
         let imageSize = CGSize(width: SuggestionsTableViewCellIconSize, height: SuggestionsTableViewCellIconSize)
@@ -145,14 +73,5 @@ extension SuggestionsTableView {
             return WPAvatarSource.shared()?.parseURL(imageURL, forAvatarHash: &hash)
         }
         return .unknown
-    }
-}
-
-extension SuggestionsTableView: UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let suggestion = searchResults[indexPath.row]
-        let text = suggestionText(for: suggestion)
-        let currentSearchText = String(searchText.dropFirst())
-        suggestionsDelegate?.suggestionsTableView?(self, didSelectSuggestion: text, forSearchText: currentSearchText)
     }
 }

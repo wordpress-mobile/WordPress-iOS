@@ -398,6 +398,9 @@ extension BaseActivityListViewController: ActivityPresenter {
         alertController.addDefaultActionWithTitle(backupTitle, handler: { _ in
             self.present(UINavigationController(rootViewController: backupOptionsVC), animated: true)
         })
+        if let backupAction = alertController.actions.last {
+            backupAction.accessibilityIdentifier = "jetpack-download-backup-button"
+        }
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Title for cancel action. Dismisses the action sheet.")
         alertController.addCancelActionWithTitle(cancelTitle)

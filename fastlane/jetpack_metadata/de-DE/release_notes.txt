@@ -1,7 +1,9 @@
-Brauchst du ein wenig Inspiration beim Schreiben? Dann sind unsere brandneuen Blog-Vorschläge genau das Richtige für dich. Du bekommst jeden Tag einen neuen Themenvorschlag. Darüber kannst du dann einen Beitrag verfassen und in Kürze deinen eigenen Schreibstil entwickeln.
+Wir haben einige Änderungen am Block-Editor vorgenommen, um dein Erlebnis beim Veröffentlichen weiter zu verbessern.
 
-Jetpack hat jetzt eine Chatfunktion – Das neue Tooltip „Unterhaltung folgen“ fordert dich auf, einem Beitrag zu folgen und Benachrichtigungen zu neuen Kommentaren zu erhalten.
+– Kopieren und Einfügen von Alt-Text gehört nun der Vergangenheit an: Wenn du ein Element in der Mediathek zu einem Bildblock hinzufügst, wird auch der Alt-Text des Elements übertragen.
+– Du kannst Medien von einer URL in Videoblöcke einfügen.
+– Wenn ein Block unerwartete oder ungültige Inhalte enthält, verwende die Wiederherstellungsoption für Blöcke, um die Inhalte richtig anzuzeigen – ohne sie nochmal komplett neu hinzufügen zu müssen.
 
-Wir haben zudem einige Verbesserungen am Auswahlbildschirm vorgenommen, bei dem du während der Website-Erstellung dein Website-Design auswählst.
+Auch die Beitragskommentare sind nun etwas benutzerfreundlicher. Wenn du das @-Symbol verwendest, um einen anderen Benutzer in deinem Kommentar zu erwähnen, wird der Autor des Beitrags oder Kommentars in der Liste der vorgeschlagenen Benutzer als Erstes angezeigt. Das ist doch super.
 
-Und schließlich haben wir einen Fehler beim Scrollen zu Benachrichtigungen im Querformat behoben. Viel Spaß beim Scrollen.
+Zu guter Letzt haben wir ein Problem mit der Medienauswahl des Editors behoben, wodurch Suchanfragen auch nach Schließen und erneutem Öffnen des Fensters nicht verschwanden. Außerdem haben wir einen Fehler beseitigt, wodurch die App abstürzte, wenn mehrere Elemente zu einem Story-Beitrag hinzugefügt wurden.

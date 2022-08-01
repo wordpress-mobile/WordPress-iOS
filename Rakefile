@@ -8,7 +8,7 @@ require 'yaml'
 require 'digest'
 
 SWIFTLINT_VERSION = '0.47.1'
-RUBY_REPO_VERSION = File.read('./.ruby-version').strip
+RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 XCODE_SCHEME = 'WordPress'
 XCODE_CONFIGURATION = 'Debug'
@@ -65,7 +65,7 @@ namespace :dependencies do
 
   namespace :bundle do
     task :check do
-      sh 'bundle check --path=${BUNDLE_PATH:-vendor/bundle} > /dev/null', verbose: false do |ok, _res|
+      sh 'bundle check > /dev/null', verbose: false do |ok, _res|
         next if ok
 
         # bundle check exits with a non zero code if install is needed
@@ -87,7 +87,18 @@ namespace :dependencies do
     task :apply do
       next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
 
-      sh('FASTLANE_SKIP_UPDATE_CHECK=1 FASTLANE_ENV_PRINTER=1 bundle exec fastlane run configure_apply force:true')
+      # The string is indented all the way to the left to avoid padding when printed in the terminal
+      command = %(
+FASTLANE_SKIP_UPDATE_CHECK=1 \
+FASTLANE_HIDE_CHANGELOG=1 \
+FASTLANE_HIDE_PLUGINS_TABLE=1 \
+FASTLANE_ENV_PRINTER=1 \
+FASTLANE_SKIP_ACTION_SUMMARY=1 \
+FASTLANE_HIDE_TIMESTAMP=1 \
+bundle exec fastlane run configure_apply force:true
+      )
+
+      sh(command)
     end
   end
 
@@ -183,11 +194,7 @@ CLOBBER << 'vendor'
 
 desc 'Mocks'
 task :mocks do
-  wordpress_mocks_path = './Pods/WordPressMocks'
-  # If WordPressMocks is referenced by a local path, use that.
-  wordpress_mocks_path = lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path) unless lockfile_hash.dig('EXTERNAL SOURCES', 'WordPressMocks', :path).nil?
-
-  sh "#{wordpress_mocks_path}/scripts/start.sh 8282"
+  sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
 end
 
 desc "Build #{XCODE_SCHEME}"
@@ -273,11 +280,12 @@ namespace :git do
   end
 
   def hook_target(hook)
-    ".git/hooks/#{hook}"
+    hooks_dir = `git rev-parse --git-path hooks`.chomp
+    File.join(hooks_dir, hook)
   end
 
   def hook_source(hook)
-    "../../Scripts/hooks/#{hook}"
+    File.absolute_path(File.join(PROJECT_DIR, 'Scripts', 'hooks', hook))
   end
 
   def hook_backup(hook)

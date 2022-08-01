@@ -66,7 +66,7 @@ struct StatsTotalInsightsData {
 
             let formattedText: String
             if summary.likesCount == Constants.singularLikeCount {
-                formattedText = TextContent.likesTotalGuideTextSingular
+                formattedText = String(format: TextContent.likesTotalGuideTextSingular, summary.title)
             } else {
                 formattedText = String(format: TextContent.likesTotalGuideTextPlural, summary.title, summary.likesCount)
             }

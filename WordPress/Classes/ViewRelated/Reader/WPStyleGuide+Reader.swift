@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 import Gridicons
-import AMScrollingNavbar
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -593,11 +592,5 @@ extension WPStyleGuide {
             static let imageEdgeInsets = UIEdgeInsets(top: 1.0, left: -4.0, bottom: 0.0, right: -4.0)
             static let contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 4.0, bottom: 0.0, right: 0.0)
         }
-    }
-}
-
-extension ScrollingNavigationController {
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return WPStyleGuide.preferredStatusBarStyle
     }
 }

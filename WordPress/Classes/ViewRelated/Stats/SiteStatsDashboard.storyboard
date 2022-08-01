@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -33,35 +33,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-mo-itW" customClass="FilterTabBar" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="44" width="375" height="46"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="u03-Cy-Pus"/>
-                                </constraints>
-                            </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
-                                <rect key="frame" x="0.0" y="90" width="375" height="577"/>
-                                <connections>
-                                    <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
-                                </connections>
-                            </containerView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="n8i-ag-Cgx">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-mo-itW" customClass="FilterTabBar" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="u03-Cy-Pus"/>
+                                        </constraints>
+                                    </view>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
+                                        <rect key="frame" x="0.0" y="46" width="375" height="527"/>
+                                        <connections>
+                                            <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
+                                        </connections>
+                                    </containerView>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zMO-yu-sCx" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="573" width="375" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="AcA-iz-xbe"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ocg-ig-pQt"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="R6d-mo-itW" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="3Vy-SZ-45b"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="IsW-kc-L5Q" secondAttribute="bottom" id="5Dc-js-I5s"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="Cgj-jO-OfC"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="GXb-KG-d0p"/>
-                            <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="iem-bg-Jp2"/>
-                            <constraint firstItem="R6d-mo-itW" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="irM-hU-WLy"/>
+                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="Iam-aK-t75"/>
+                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="Ttf-cl-TLP"/>
+                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="d4T-H4-iZZ"/>
+                            <constraint firstItem="n8i-ag-Cgx" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="o42-zf-Aak"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Stats" id="VZj-LS-owu"/>
                     <connections>
                         <outlet property="filterTabBar" destination="R6d-mo-itW" id="fNF-ni-3g1"/>
+                        <outlet property="jetpackBannerView" destination="zMO-yu-sCx" id="B8D-I1-G7G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ixM-JR-6YX" userLabel="First Responder" sceneMemberID="firstResponder"/>

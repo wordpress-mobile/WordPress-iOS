@@ -5,23 +5,24 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
     SuggestionTypeXpost
 };
 
+@protocol SuggestionsListViewModelType;
 @protocol SuggestionsTableViewDelegate;
 
-@interface SuggestionsTableView : UIView <UITableViewDataSource>
+@interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, nonnull, strong, readonly) id <SuggestionsListViewModelType> viewModel;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
-@property (nonatomic, nullable, strong) NSNumber *siteID;
-@property (nonatomic, assign) SuggestionType suggestionType;
-@property (nonatomic, nonnull, strong) NSMutableArray *searchResults;
-@property (nonatomic, nullable, strong) NSArray *suggestions;
-@property (nonatomic, nonnull, strong) NSString *searchText;
+@property (nonatomic, nullable, strong) NSArray<NSNumber *> *prominentSuggestionsIds;
 @property (nonatomic) BOOL useTransparentHeader;
 @property (nonatomic) BOOL animateWithKeyboard;
 @property (nonatomic) BOOL showLoading;
 
 - (nonnull instancetype)initWithSiteID:(NSNumber *_Nullable)siteID
-                         suggestionType:(SuggestionType)suggestionType
-                               delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
+                        suggestionType:(SuggestionType)suggestionType
+                              delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
+
+- (nonnull instancetype) initWithViewModel:(id <SuggestionsListViewModelType>_Nonnull)viewModel
+                                  delegate:(id <SuggestionsTableViewDelegate>_Nonnull)suggestionsDelegate;
 
 /**
   Enables or disables the SuggestionsTableView component.
@@ -33,11 +34,6 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
  */
 - (void)setUseTransparentHeader:(BOOL)useTransparentHeader;
 
-/**
-  Show suggestions for the given word - returns YES if at least one suggestion is being shown
-*/
-- (BOOL)showSuggestionsForWord:(nonnull NSString *)word;
-
 - (void)hideSuggestions;
 
 /// Tells the number of suggestions available for the current search
@@ -46,6 +42,10 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 /// Select the suggestion at a certain position and triggers the selection delegate
 /// @param position the index to select
 - (void)selectSuggestionAtPosition:(NSInteger)position;
+
+/// Show suggestions for the given word.
+/// @param word Used to find the suggestions that contain this word.
+- (BOOL)showSuggestionsForWord:(nonnull NSString *)string;
 
 @end
 

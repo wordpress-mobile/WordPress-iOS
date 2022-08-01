@@ -1,7 +1,9 @@
-Yazmak için biraz ilhama mı ihtiyacınız var? Yepyeni blog yazma istemleriyle karşınızdayız. Her gün yeni bir bilgi istemi alın, bununla ilgili bir yazı yazın ve kısa sürede yazma alışkanlığı kazanın.
+Yayınlama deneyiminizi daha da iyi hale getirmek için blok düzenleyicide bazı değişiklikler ekledik.
 
-Jetpack sohbet alanına girdi; artık bir gönderiyi takip etmenizi ve yeni yorumlar hakkında bildirim almanızı sağlayan bir "Sohbeti Takip Et" araç ipucunu göreceksiniz.
+- Alternatif metin kopyalayıp yapıştırmaya gerek yok - Ortam kütüphanenizdeki bir öğeyi bir Görsel blokuna eklediğinizde, öğenin alternatif metni de onunla birlikte taşınır.
+- Video bloklarına bir URL'den ortam ekleyebilirsiniz.
+- Bir blok beklenmedik veya geçersiz içerik barındırıyorsa, içeriği sıfırdan yeniden eklemeden düzgün şekilde görüntülemek için blok kurtarma seçeneğini kullanabilirsiniz.
 
-Site Oluşturma sürecinde site tasarımınızı seçtiğiniz seçim ekranında bazı iyileştirmeler yaptık.
+Gönderi yorumları da kullanıcı açısından iyileştirilmiştir. Yorumunuzda başka bir kullanıcıdan bahsetmek için @ sembolüne bastığınızda, gönderi veya yorum yazarı önerilen kullanıcılar listesinde ilk sırada gelir. Çok hoş.
 
-Son olarak, telefonunuz yatay moddayken bildirim kaydırmayı etkileyen bir hatayı ortadan kaldırdık. Artık istediğiniz gibi kaydırın.
+Son olarak, düzenleyicinin ortam seçicisinde, pencereyi kapatıp yeniden açtıktan sonra bile arama sorgularının takılıp kalmasına neden olan bir sorunu düzelttik. Ayrıca, bir Öykü gönderisine birden fazla öğe eklerken uygulamanın kilitlenmesine neden olan hatayı da ortadan kaldırdık.

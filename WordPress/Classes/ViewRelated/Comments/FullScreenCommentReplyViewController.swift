@@ -26,6 +26,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     /// Reply Suggestions
     ///
     private var siteID: NSNumber?
+    private var prominentSuggestionsIds: [NSNumber]?
     private var suggestionsTableView: SuggestionsTableView?
 
     // Static margin between the suggestions view and the text cursor position
@@ -58,8 +59,10 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     /// Enables the @ mention suggestions while editing
     /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
-    @objc func enableSuggestions(with siteID: NSNumber) {
+    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list.
+    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]?) {
         self.siteID = siteID
+        self.prominentSuggestionsIds = prominentSuggestionsIds
     }
 
     /// Description
@@ -72,7 +75,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
         let tableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         tableView.useTransparentHeader = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
+        tableView.prominentSuggestionsIds = prominentSuggestionsIds
         suggestionsTableView = tableView
 
         attachSuggestionsViewIfNeeded()

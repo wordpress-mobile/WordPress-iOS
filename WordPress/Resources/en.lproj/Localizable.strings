@@ -53,9 +53,6 @@
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d unseen posts";
 
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
-
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s transformed to %2$s";
 
@@ -1993,9 +1990,6 @@
 "Copied block" = "Copied block";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copy block";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
 
 /* Copy the post url and paste anywhere in phone
@@ -3617,6 +3611,9 @@
 "Grabbing site URL" = "Grabbing site URL";
 
 /* No comment provided by engineer. */
+"Gradient" = "Gradient";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Gradient Type";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -4040,6 +4037,9 @@
 "Invalid URL, please check if you wrote a valid site address." = "Invalid URL, please check if you wrote a valid site address.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "Invalid URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
 
 /* No comment provided by engineer. */
@@ -4108,6 +4108,9 @@
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installed";
 
+/* No comment provided by engineer. */
+"Jetpack powered" = "Jetpack powered";
+
 /* Description that explains that we are unable to auto fix the threat */
 "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site." = "Jetpack Scan cannot automatically fix this threat. We suggest that you resolve the threat manually: ensure that WordPress, your theme, and all of your plugins are up to date, and remove the offending code, theme, or plugin from your site.";
 
@@ -4153,6 +4156,9 @@
 
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site.";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Jetpack powered";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
@@ -5370,6 +5376,9 @@
 "Oops!" = "Oops!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Opacity";
+
+/* No comment provided by engineer. */
 "OPEN" = "OPEN";
 
 /* No comment provided by engineer. */
@@ -6024,7 +6033,7 @@
 "Private" = "Private";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Problem displaying block";
+"Problem displaying block. \nTap to attempt block recovery." = "Problem displaying block. \nTap to attempt block recovery.";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
@@ -6699,9 +6708,6 @@
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Search WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
 /* Menus search bar placeholder text. */
 "Search..." = "Search...";
@@ -7395,6 +7401,9 @@
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Inactive Cards";
 
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "No inactive cards remaining";
+
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "Cancel";
 
@@ -7706,9 +7715,6 @@
 
 /* Menu item label for linking a testimonial post. */
 "Testimonials" = "Testimonials";
-
-/* No comment provided by engineer. */
-"Text color" = "Text color";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
@@ -8732,6 +8738,12 @@
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Upgrade Focus: VideoPress For Weddings";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Upgrade your plan to upload audio";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Upgrade your plan to use video covers";
 
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */

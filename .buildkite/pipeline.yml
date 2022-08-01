@@ -2,8 +2,8 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/bash-cache#2.2.0
-    - automattic/git-s3-cache#v1.1.0:
+    - automattic/bash-cache#2.6.0
+    - automattic/git-s3-cache#v1.1.3:
         bucket: "a8c-repo-mirrors"
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
@@ -94,16 +94,27 @@ steps:
               context: "UI Tests (iPad)"
 
   #################
-  # Lint Translations
+  # Linters
   #################
-  - label: "🧹 Lint Translations"
-    command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
-    plugins:
-      - docker#v3.8.0:
-          image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
-    agents:
-      queue: "default"
-    notify:
-      - github_commit_status:
-          context: "Lint Translations"
-
+  - group: "Linters"
+    steps:
+      - label: "🧹 Lint Translations"
+        command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
+        plugins:
+          - docker#v3.8.0:
+              image: "public.ecr.aws/automattic/glotpress-validator:1.0.0"
+        agents:
+          queue: "default"
+        notify:
+          - github_commit_status:
+              context: "Lint Translations"
+      # TODO: This ought to be run on a Docker or Ubuntu agent as there's nothing that requires macOS.
+      # It's currently in the stock setup because... it was faster to build a proof of concept for it this way;
+      # I don't know how to pass the `DANGER_GITHUB_API_TOKEN` secret that we need to a Docker agent.
+      #
+      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
+      # That is, it outwardly only mentions RuboCop, not Danger
+      - label: ":rubocop: Lint Ruby Tooling"
+        command: .buildkite/commands/rubocop-via-danger.sh
+        env: *common_env
+        plugins: *common_plugins

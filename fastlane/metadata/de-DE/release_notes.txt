@@ -1,5 +1,9 @@
-WordPress ist in den Chat eingestiegen – du siehst jetzt einen Tooltip „Konversation folgen“, der dich auffordert, einem Beitrag zu folgen und Benachrichtigungen über neue Kommentare zu erhalten.
+Wir haben einige Änderungen am Block-Editor vorgenommen, um dein Erlebnis beim Veröffentlichen weiter zu verbessern.
 
-Wir haben den Auswahlbildschirm verbessert, auf dem du während der Erstellung der Website dein Design auswählst.
+– Kopieren und Einfügen von Alt-Text gehört nun der Vergangenheit an: Wenn du ein Element in der Mediathek zu einem Bildblock hinzufügst, wird auch der Alt-Text des Elements übertragen.
+– Du kannst Medien von einer URL in Videoblöcke einfügen.
+– Wenn ein Block unerwartete oder ungültige Inhalte enthält, verwende die Wiederherstellungsoption für Blöcke, um die Inhalte richtig anzuzeigen – ohne sie nochmal komplett neu hinzufügen zu müssen.
 
-Und schließlich haben wir einen Fehler beseitigt, der das Scrollen der Benachrichtigungen beeinträchtigte, wenn sich dein Handy im Querformat befindet. Scrolle weiter, Freund.
+Auch die Beitragskommentare sind nun etwas benutzerfreundlicher. Wenn du das @-Symbol verwendest, um einen anderen Benutzer in deinem Kommentar zu erwähnen, wird der Autor des Beitrags oder Kommentars in der Liste der vorgeschlagenen Benutzer als Erstes angezeigt. Das ist doch super.
+
+Zu guter Letzt haben wir ein Problem mit der Medienauswahl des Editors behoben, wodurch Suchanfragen auch nach Schließen und erneutem Öffnen des Fensters nicht verschwanden. Außerdem haben wir einen Fehler beseitigt, wodurch die App abstürzte, wenn mehrere Elemente zu einem Story-Beitrag hinzugefügt wurden.

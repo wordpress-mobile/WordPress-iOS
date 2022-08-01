@@ -1,9 +1,11 @@
-
+import Combine
 import Foundation
 
 // MARK: - BottomScrollAnalyticsTracker
 
 final class BottomScrollAnalyticsTracker: NSObject {
+
+    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     private func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
         if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
@@ -18,10 +20,13 @@ final class BottomScrollAnalyticsTracker: NSObject {
     }
 }
 
-// MARK: - UIScrollViewDelegate
+// MARK: - JPScrollViewDelegate
 
-extension BottomScrollAnalyticsTracker: UIScrollViewDelegate {
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+extension BottomScrollAnalyticsTracker: JPScrollViewDelegate {
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
         let targetOffsetY = Int(targetContentOffset.pointee.y)
 
@@ -32,5 +37,8 @@ extension BottomScrollAnalyticsTracker: UIScrollViewDelegate {
         if targetOffsetY >= effectiveScrollViewHeight {
             trackScrollToBottomEvent()
         }
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }

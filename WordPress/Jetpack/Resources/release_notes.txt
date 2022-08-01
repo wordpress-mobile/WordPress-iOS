@@ -1,5 +1,7 @@
-* [***] [Jetpack-only] The Insights view in Stats has been revamped with a cleaner look and a new set of cards to make it easier than ever to see at a glance how your site's performing. [#18945]
-* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
-* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
-* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
 
+If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
+
+The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.
+
+Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.

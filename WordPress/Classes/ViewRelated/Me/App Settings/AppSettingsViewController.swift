@@ -548,3 +548,15 @@ private extension AppSettingsViewController {
             footerText: nil)
     }
 }
+
+// MARK: - Jetpack powered badge
+extension AppSettingsViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+              JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView()
+    }
+}

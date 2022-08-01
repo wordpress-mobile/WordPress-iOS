@@ -1,7 +1,9 @@
-¿Necesitas un poco de inspiración para escribir? Te ofrecemos estímulos para bloguear completamente nuevos. Obtén un estímulo nuevo cada día, escribe una entrada sobre ello y crea un hábito de escritura en poco tiempo.
+Hemos añadido algunos cambios al editor de bloques para hacer que la experiencia de publicación sea aún mejor.
 
-Jetpack ha entrado en el chat. Ahora verás la descripción emergente "Seguir conversación" que te animará a seguir una entrada y recibir notificaciones sobre los comentarios nuevos.
+- Se acabó el copiar y pegar el texto alt—cuando añades un elemento en la biblioteca de medios a un bloque de imagen, el texto alt viaja con él.
+- Puedes insertar medios desde una URL en los bloques de vídeo.
+- Si un bloque contiene contenido inesperado o no válido, puedes usar la opción de recuperación de bloques para mostrar correctamente el contenido—sin tener que volver a añadirlo desde cero.
 
-Hemos hecho mejoras en la pantalla de selección donde puedes escoger el diseño de tu sitio durante el proceso de creación de sitios.
+Los comentarios de las enetradas son también un poco más amigables. Cuando tecleas el símbolo @ para mencionar a otro usuario en tu comentario, el autor de la entrada o del comentario sale el primero en la lista de usuarios sugeridos. Perfecto.
 
-Finalmente, hemos corregido un error que afectaba al desplazamiento de notificaciones cuando el teléfono móvil estaba en modo horizontal. Desplázate hacia abajo, amigo.
+Para finalizar, hemos corregido un problema con el selector de medios del edtior por el que las consultas de búsqueda podrían atascarse incluso antes de cerrar y volver a abrir la ventana. También hemos arreglado un fallo que hacía que la aplicación se bloqueara al añadir varios elementos a una entrada de historia.
