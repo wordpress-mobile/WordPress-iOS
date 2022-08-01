@@ -56,7 +56,7 @@ class JetpackOverlayView: UIView {
         buttonAction?()
     }
 
-    private func setup(buttonAction: (() -> Void)?) {
+    private func setup() {
         backgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(stackView)
@@ -67,8 +67,9 @@ class JetpackOverlayView: UIView {
     }
 
     init(buttonAction: (() -> Void)? = nil) {
+        self.buttonAction = buttonAction
         super.init(frame: .zero)
-        setup(buttonAction: buttonAction)
+        setup()
     }
 
     required init?(coder: NSCoder) {
