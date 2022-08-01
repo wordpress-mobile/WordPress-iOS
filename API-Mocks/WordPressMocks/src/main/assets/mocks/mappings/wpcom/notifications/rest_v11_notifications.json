@@ -336,40 +336,32 @@
           "note_hash": 1391922081
         },
         {
-          "id": 4937360549,
+          "id": 4937363362,
           "type": "comment",
           "read": 1,
           "noticon": "",
-          "timestamp": "{{now offset='-3 hours'}}",
-          "icon": "https://2.gravatar.com/avatar/bf9d10e44237e511d841a9b8076746d5?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G",
-          "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-1",
+          "timestamp": "{{now offset='-2 hours'}}",
+          "icon": "https://1.gravatar.com/avatar/4b7ac5a2b497adbd473313b0701023a4?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G",
+          "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-2",
           "subject": [
             {
-              "text": "João Montes commented on My Top 10 Pastry Recipes",
+              "text": "Reyansh Pawar commented on My Top 10 Pastry Recipes",
               "ranges": [
-                {
-                  "type": "noticon",
-                  "indices": [
-                    0,
-                    0
-                  ],
-                  "value": ""
-                },
                 {
                   "type": "user",
                   "indices": [
                     0,
-                    11
+                    13
                   ],
-                  "url": "http://joaomontes.wordpress.com",
+                  "url": "http://reyanshpawar.wordpress.com",
                   "email": "test@example.com",
-                  "id": 98380521
+                  "id": 98380071
                 },
                 {
                   "type": "post",
                   "indices": [
-                    25,
-                    49
+                    27,
+                    51
                   ],
                   "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/",
                   "site_id": 181977606,
@@ -378,34 +370,34 @@
               ]
             },
             {
-              "text": "Amazing results!\n",
+              "text": "Can you use almond or rice flour instead of the whole wheat to make the peach scone recipe gluten free?\n",
               "ranges": [
                 {
                   "type": "comment",
                   "indices": [
                     0,
-                    17
+                    104
                   ],
-                  "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-1",
+                  "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-2",
                   "site_id": 181977606,
                   "post_id": 56,
-                  "id": 1
+                  "id": 2
                 }
               ]
             }
           ],
           "body": [
             {
-              "text": "João Montes",
+              "text": "Reyansh Pawar",
               "ranges": [
                 {
                   "email": "test@example.com",
-                  "url": "http://joaomontes.wordpress.com",
-                  "id": 98380521,
+                  "url": "http://reyanshpawar.wordpress.com",
+                  "id": 98380071,
                   "type": "user",
                   "indices": [
                     0,
-                    11
+                    13
                   ]
                 }
               ],
@@ -418,22 +410,22 @@
                   ],
                   "height": "256",
                   "width": "256",
-                  "url": "https://2.gravatar.com/avatar/bf9d10e44237e511d841a9b8076746d5?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G"
+                  "url": "https://1.gravatar.com/avatar/4b7ac5a2b497adbd473313b0701023a4?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G"
                 }
               ],
               "meta": {
                 "links": {
                   "email": "test@example.com",
-                  "home": "http://joaomontes.wordpress.com"
+                  "home": "http://reyanshpawar.wordpress.com"
                 },
                 "ids": {
-                  "user": 98380521
+                  "user": 98380071
                 }
               },
               "type": "user"
             },
             {
-              "text": "Amazing results!",
+              "text": "Can you use almond or rice flour instead of the whole wheat to make the peach scone recipe gluten free?",
               "actions": {
                 "spam-comment": false,
                 "trash-comment": false,
@@ -444,66 +436,40 @@
               },
               "meta": {
                 "ids": {
-                  "comment": 1,
-                  "user": 98380521,
+                  "comment": 2,
+                  "user": 98380071,
                   "post": 56,
                   "site": 181977606
                 },
                 "links": {
-                  "comment": "{{request.requestLine.baseUrl}}/rest/v1/comments/1",
-                  "user": "{{request.requestLine.baseUrl}}/rest/v1/users/98380521",
+                  "comment": "{{request.requestLine.baseUrl}}/rest/v1/comments/2",
+                  "user": "{{request.requestLine.baseUrl}}/rest/v1/users/98380071",
                   "post": "{{request.requestLine.baseUrl}}/rest/v1/posts/56",
                   "site": "{{request.requestLine.baseUrl}}/rest/v1/sites/181977606"
                 }
               },
               "type": "comment",
               "nest_level": 0,
-              "edit_comment_link": "https://wordpress.com/comment/weekendbakesblog.wordpress.com/1?action=edit"
-            },
-            {
-              "text": "You replied to this comment.",
-              "ranges": [
-                {
-                  "type": "noticon",
-                  "indices": [
-                    0,
-                    0
-                  ],
-                  "value": ""
-                },
-                {
-                  "type": "comment",
-                  "indices": [
-                    4,
-                    11
-                  ],
-                  "url": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-3",
-                  "site_id": 181977606,
-                  "post_id": 56,
-                  "id": 3
-                }
-              ]
+              "edit_comment_link": "https://wordpress.com/comment/weekendbakesblog.wordpress.com/2?action=edit"
             }
           ],
           "meta": {
             "ids": {
-              "user": 98380521,
-              "comment": 1,
+              "user": 98380071,
+              "comment": 2,
               "post": 56,
-              "site": 181977606,
-              "reply_comment": 3
+              "site": 181977606
             },
             "links": {
-              "user": "{{request.requestLine.baseUrl}}/rest/v1/users/98380521",
-              "comment": "{{request.requestLine.baseUrl}}/rest/v1/comments/1",
+              "user": "{{request.requestLine.baseUrl}}/rest/v1/users/98380071",
+              "comment": "{{request.requestLine.baseUrl}}/rest/v1/comments/2",
               "post": "{{request.requestLine.baseUrl}}/rest/v1/posts/56",
-              "site": "{{request.requestLine.baseUrl}}/rest/v1/sites/181977606",
-              "reply_comment": "{{request.requestLine.baseUrl}}/rest/v1/comments/3"
+              "site": "{{request.requestLine.baseUrl}}/rest/v1/sites/181977606"
             }
           },
           "header": [
             {
-              "text": "appstorescreens",
+              "text": "Pamela Nguyen",
               "ranges": [
                 {
                   "type": "user",
@@ -535,7 +501,7 @@
             }
           ],
           "title": "Comment",
-          "note_hash": 638476488
+          "note_hash": 1287359074
         },
         {
           "id": 4937354640,

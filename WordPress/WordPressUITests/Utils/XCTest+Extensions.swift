@@ -85,7 +85,7 @@ extension XCTestCase {
         app.terminate()
 
         let appToRemove = Constants.homeApp.icons[appName]
-        if appToRemove.waitForIsHittable(timeout: 5) {
+        if appToRemove.exists {
             appToRemove.firstMatch.press(forDuration: 1)
             waitAndTap(Constants.homeApp.buttons["Remove App"])
             waitAndTap(Constants.homeApp.alerts.buttons["Delete App"])
