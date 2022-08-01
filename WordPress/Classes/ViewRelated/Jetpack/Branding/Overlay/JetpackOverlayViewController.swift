@@ -17,14 +17,14 @@ class JetpackOverlayViewController: UIViewController {
         view = JetpackOverlayView(buttonAction: redirectAction)
     }
 
-    private func calculatePreferredContentSize() {
+    private func setPreferredContentSize() {
         let size = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(size)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        calculatePreferredContentSize()
+        setPreferredContentSize()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
