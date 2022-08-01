@@ -232,12 +232,12 @@ platform :ios do
       UI.user_error!("Could not find device type named `#{device_name}` in `xcrun simctl list`") if device_spec.nil?
       device_type_id = device_spec['identifier']
 
-      already_exists = specs['devices'].any? { |runtime, dev_list| dev_list.any? { |dev_spec| dev_spec['deviceTypeIdentifier'] == device_type_id } }
+      already_exists = specs['devices'].any? { |_, dev_list| dev_list.any? { |dev_spec| dev_spec['deviceTypeIdentifier'] == device_type_id } }
       step_name = "Creating simulator for device type #{device_name}"
       if already_exists
         Actions.execute_action(step_name) { UI.message "A simulator for device type #{device_type_id} already exists" }
       else
-        res = sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
+        sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
         # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
       end
     end
