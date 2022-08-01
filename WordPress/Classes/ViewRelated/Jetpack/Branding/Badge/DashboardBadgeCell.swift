@@ -6,8 +6,11 @@ class DashboardBadgeCell: UICollectionViewCell, Reusable {
     private lazy var jetpackButton: JetpackButton = {
         let button = JetpackButton(style: .badge)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         return button
     }()
+
+    private weak var presentingViewController: UIViewController?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,12 +38,13 @@ class DashboardBadgeCell: UICollectionViewCell, Reusable {
 
 extension DashboardBadgeCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
+        presentingViewController = viewController
+    }
+
+    @objc private func jetpackButtonTapped() {
+        guard let viewController = presentingViewController else {
             return
         }
-
-        jetpackButton.setAction {
-            JetpackBrandingCoordinator.presentOverlay(from: viewController)
-        }
+        JetpackBrandingCoordinator.presentOverlay(from: viewController)
     }
 }
