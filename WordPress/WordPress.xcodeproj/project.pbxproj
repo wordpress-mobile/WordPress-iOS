@@ -1606,8 +1606,6 @@
 		8BE6F92D27EE27DB0008BDC7 /* BlogDashboardPostCardGhostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6F92B27EE27DB0008BDC7 /* BlogDashboardPostCardGhostCell.swift */; };
 		8BE6F92E27EE27E10008BDC7 /* BlogDashboardPostCardGhostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BE6F92927EE26D30008BDC7 /* BlogDashboardPostCardGhostCell.xib */; };
 		8BE7C84123466927006EDE70 /* I18n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE7C84023466927006EDE70 /* I18n.swift */; };
-		8BE8545D27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */; };
-		8BE8545E27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */; };
 		8BE9AB8827B6B5A300708E45 /* BlogDashboardPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */; };
 		8BEE845A27B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */; };
 		8BEE846427B1E05B0001A93C /* DashboardCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */; };
@@ -6503,7 +6501,6 @@
 		8BE6F92927EE26D30008BDC7 /* BlogDashboardPostCardGhostCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogDashboardPostCardGhostCell.xib; sourceTree = "<group>"; };
 		8BE6F92B27EE27DB0008BDC7 /* BlogDashboardPostCardGhostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPostCardGhostCell.swift; sourceTree = "<group>"; };
 		8BE7C84023466927006EDE70 /* I18n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18n.swift; sourceTree = "<group>"; };
-		8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardAB.swift; sourceTree = "<group>"; };
 		8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersistenceTests.swift; sourceTree = "<group>"; };
 		8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-drafts-and-scheduled.json"; sourceTree = "<group>"; };
 		8BEE846027B1DE0E0001A93C /* DashboardCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCardModel.swift; sourceTree = "<group>"; };
@@ -12056,7 +12053,6 @@
 			children = (
 				8B15D27328009EBF0076628A /* BlogDashboardAnalytics.swift */,
 				8BC81D6427CFC0DA0057F790 /* BlogDashboardState.swift */,
-				8BE8545C27DBAFED00E4C69A /* BlogDashboardAB.swift */,
 				80EF9285280D272E0064A971 /* DashboardPostsSyncManager.swift */,
 			);
 			path = Helpers;
@@ -19651,7 +19647,6 @@
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
-				8BE8545D27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				FEC26033283FC902003D886A /* WPTabBarController+BloggingPrompt.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
@@ -21706,7 +21701,6 @@
 				80EF9287280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */,
 				FABB24612602FC2C00C8785C /* KeyringAccountHelper.swift in Sources */,
 				FABB24622602FC2C00C8785C /* ManagedAccountSettings+CoreDataProperties.swift in Sources */,
-				8BE8545E27DBAFED00E4C69A /* BlogDashboardAB.swift in Sources */,
 				FABB24632602FC2C00C8785C /* PushAuthenticationService.swift in Sources */,
 				FABB24642602FC2C00C8785C /* AlertView.swift in Sources */,
 				FE003F5D282D61BA006F8D1D /* BloggingPrompt+CoreDataClass.swift in Sources */,
