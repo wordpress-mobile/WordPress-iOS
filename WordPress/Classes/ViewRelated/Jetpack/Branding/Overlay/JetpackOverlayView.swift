@@ -60,8 +60,8 @@ class JetpackOverlayView: UIView {
         backgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(stackView)
-        stackView.setCustomSpacing(Metrics.largeSpacing, after: imageView)
-        stackView.setCustomSpacing(Metrics.largeSpacing, after: descriptionLabel)
+        stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: imageView)
+        stackView.setCustomSpacing(Metrics.descriptionToButtonSpacing, after: descriptionLabel)
         getJetpackButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         configureConstraints()
     }
@@ -82,7 +82,7 @@ class JetpackOverlayView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.edgeMargins.top),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            getJetpackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.getJetpackButtonHeight),
+            getJetpackButton.heightAnchor.constraint(equalToConstant: Metrics.getJetpackButtonHeight),
             getJetpackButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
@@ -93,15 +93,15 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Images {
+        // TODO: this is temporary and will be replaced with the animation
         static let jetpackLogo = "jetpack-install-logo"
     }
 
     enum Metrics {
-        static let stackSpacing: CGFloat = 10
-        static let largeSpacing: CGFloat = 46
-        static let edgeMargins = UIEdgeInsets(top: largeSpacing, left: 20, bottom: 20, right: 20)
+        static let imageToTitleSpacing: CGFloat = 24
+        static let descriptionToButtonSpacing: CGFloat = 40
+        static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
         static let getJetpackButtonHeight: CGFloat = 44
-        static let minimumScaleFactor: CGFloat = 0.6
         static let buttonCornerRadius: CGFloat = 6
     }
 
