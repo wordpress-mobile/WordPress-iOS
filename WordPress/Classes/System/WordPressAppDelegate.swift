@@ -881,6 +881,17 @@ extension WordPressAppDelegate {
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
+
+        // Editor styles
+
+        /// Post Settings
+        UITableView.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).tintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).onTintColor = .editorPrimary
+
+        if #available(iOS 14.0, *) {
+            let editorSettingsDatePicker = UIView.appearance(whenContainedInInstancesOf: [SchedulingDatePickerViewController.self])
+            editorSettingsDatePicker.tintColor = .editorPrimary
+        }
     }
 }
 

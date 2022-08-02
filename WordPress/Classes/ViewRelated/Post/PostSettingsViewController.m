@@ -141,7 +141,6 @@ FeaturedImageViewControllerDelegate>
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
-    self.tableView.tintColor = [UIColor murielEditorPrimary];
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
@@ -751,7 +750,6 @@ FeaturedImageViewControllerDelegate>
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStickyChanged properties:@{@"via": @"settings"}];
         weakSelf.post.isStickyPost = newValue;
     };
-    cell.flipSwitch.onTintColor = [UIColor murielEditorPrimary];
     return cell;
 }
 
