@@ -14,12 +14,12 @@
 		},
 		{
 			"name": "iPhone 8",
-			"canvas_size": [1080, 1920],
-			"text_size": [680, 200],
-			"text_offset": [200, 170],
-			"font_size": "62px",
-			"screenshot_size": [797, 1417],
-			"screenshot_offset": [141.5, 412],
+			"canvas_size": [1242, 2208],
+			"text_size": [780, 230],
+			"text_offset": [230, 195.5],
+			"font_size": "72px",
+			"screenshot_size": [917, 1630],
+			"screenshot_offset": [163, 474],
 			"screenshot_mask": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackMask.png"
 		},
 		{
@@ -104,14 +104,14 @@
 			"attachments": [
 				{
 					"file": "appstoreres/assets/backgrounds/iphone-8-backgrounds/JetpackBanner.png",
-					"size": [1080, 1920],
+					"size": [1242, 2208],
 					"position": [0,0]
 				},
 				{
 					"text": "appstoreres/jetpack_metadata/%s/app_store_screenshot_1.txt",
-					"size": [845, 360],
-					"position": [95,312],
-					"font-size": "105px",
+					"size": [972, 414],
+					"position": [109,359],
+					"font-size": "123px",
 					"alignment": "left",
 					"stylesheet": "appstoreres/assets/jetpack-style.css"
 				}
