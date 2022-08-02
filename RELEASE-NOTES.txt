@@ -1,7 +1,7 @@
 20.5
 -----
-* [*] [Jetpack-only] Block Editor: Makes some small changes to the cursor and highlight colours for consistency. [#19113]
-
+* [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
 
 20.4
 -----
