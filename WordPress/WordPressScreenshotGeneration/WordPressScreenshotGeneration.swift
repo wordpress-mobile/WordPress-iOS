@@ -59,7 +59,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             let ipadScreenshot = try MySiteScreen()
                 .showSiteSwitcher()
-                .switchToSite(withTitle: "weekendbakesblog.wordpress.com")
+                .switchToSite(withTitle: "yourjetpack.blog")
                 .gotoPostsScreen()
                 .showOnly(.drafts)
                 .selectPost(withSlug: "easy-blueberry-muffins")
@@ -107,7 +107,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         if XCUIDevice.isPad {
             notificationList
                 .openNotification(withText: "Reyansh Pawar commented on My Top 10 Pastry Recipes")
-                .replyToNotification()
         }
         notificationList.thenTakeScreenshot(5, named: "Notifications")
     }
