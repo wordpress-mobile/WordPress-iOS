@@ -882,7 +882,7 @@ extension WordPressAppDelegate {
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
 
-        // Editor styles
+        // Post Settings styles
 
         /// Post Settings: Main and subscreens
         UITableView.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).tintColor = .editorPrimary
@@ -901,12 +901,14 @@ extension WordPressAppDelegate {
         /// Post Settings: Categories selection
         UIView.appearance(whenContainedInInstancesOf: [WPAddPostCategoryViewController.self]).tintColor = .editorPrimary
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
+
         /// It's necessary to target PostCategoriesViewController a second time to 'reset'
         /// the UI element's `tintColor` for use in the app's Site Settings screen.
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
 
         /// Post Settings: Featured Image Search
         UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).tintColor = .editorPrimary
+
         /// It's necessary to target WPMediaPickerViewController a second time to 'reset'
         /// the UI element's `tintColor` for use app's main Media screen.
         UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self, WPSplitViewController.self]).tintColor = .primary
