@@ -385,6 +385,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .primary
     }
 
     override func viewLayoutMarginsDidChange() {
@@ -412,12 +413,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         super.present(viewControllerToPresent, animated: flag, completion: completion)
 
         let presentedView = presentedViewController?.view
-        let presentedViewSwitch = UISwitch.appearance()
-        let presentedViewActionSheet = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
-
-        presentedView?.tintColor = UIColor.editorPrimary
-        presentedViewSwitch.onTintColor = UIColor.editorPrimary
-        presentedViewActionSheet.tintColor = UIColor.editorPrimary
+        presentedView?.tintColor = .editorPrimary
     }
 
     // MARK: - Functions
@@ -573,6 +569,9 @@ extension GutenbergViewController {
 
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
+
+        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .editorPrimary
     }
 }
 
