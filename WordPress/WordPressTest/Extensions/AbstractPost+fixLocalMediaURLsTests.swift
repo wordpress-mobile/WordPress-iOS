@@ -60,4 +60,9 @@ class AbstractPostFixLocalMediaURLsTests: CoreDataTestCase {
         expect(post.content)
             .to(equal("<img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"\(documentDirectory.appendingPathComponent("Media/another.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671875/Media/p17\"><img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-wordpress.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722672008/Media/p18\">"))
     }
+
+    func testRetryOnFailure() {
+        print("Testing Retry on Failure")
+        XCTAssertTrue(false)
+    }
 }
