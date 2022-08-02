@@ -562,7 +562,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
-        view.tintColor = UIColor.editorPrimary
+        view.tintColor = .editorPrimary
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
