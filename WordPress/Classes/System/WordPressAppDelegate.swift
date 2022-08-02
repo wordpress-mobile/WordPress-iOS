@@ -901,6 +901,11 @@ extension WordPressAppDelegate {
 
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, UINavigationController.self, WPSplitViewController.self]).tintColor = .primary
 
+        /// Featured Image Search.
+        UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).tintColor = .editorPrimary
+
+        UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self, WPSplitViewController.self]).tintColor = .primary
+
     }
 }
 
