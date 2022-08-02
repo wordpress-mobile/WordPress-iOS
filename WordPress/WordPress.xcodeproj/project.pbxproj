@@ -685,6 +685,10 @@
 		3FD675D925C87A15009AB3C1 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; };
 		3FD675EA25C87A25009AB3C1 /* WordPressHomeWidgetToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F526C522538CF2A0069706C /* WordPressHomeWidgetToday.swift */; };
 		3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD83CBE246C751800381999 /* CoreDataIterativeMigrator.swift */; };
+		3FD9CB7C28998A6100CF76DE /* WordPressToJetpackAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F69FEEE289985AD00496899 /* WordPressToJetpackAnimation.json */; };
+		3FD9CB7D28998A9F00CF76DE /* WordPressToJetpackAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F69FEEE289985AD00496899 /* WordPressToJetpackAnimation.json */; };
+		3FD9CB7E28998ADB00CF76DE /* JetpackOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4370402893207C00475B6E /* JetpackOverlayView.swift */; };
+		3FD9CB7F28998AE200CF76DE /* JetpackOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */; };
 		3FDDFE9627C8178C00606933 /* SiteStatsInformationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDDFE9527C8178C00606933 /* SiteStatsInformationTests.swift */; };
 		3FE20C1525CF165700A15525 /* GroupedViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C1425CF165700A15525 /* GroupedViewData.swift */; };
 		3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE20C3625CF211F00A15525 /* ListViewData.swift */; };
@@ -16694,6 +16698,7 @@
 				17222D8B261DDDF90047B163 /* black-classic-icon-app-60x60@3x.png in Resources */,
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
+				3FD9CB7C28998A6100CF76DE /* WordPressToJetpackAnimation.json in Resources */,
 				989643EE23A0437B0070720A /* WidgetDifferenceCell.xib in Resources */,
 				17222D9E261DDDF90047B163 /* pink-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				1761F17326209AEE000815EF /* open-source-dark-icon-app-60x60@2x.png in Resources */,
@@ -17164,6 +17169,7 @@
 				FABB204D2602FC2C00C8785C /* NoteBlockButtonTableViewCell.xib in Resources */,
 				FABB204F2602FC2C00C8785C /* NoteBlockCommentTableViewCell.xib in Resources */,
 				FABB20502602FC2C00C8785C /* PostCardCell.xib in Resources */,
+				3FD9CB7D28998A9F00CF76DE /* WordPressToJetpackAnimation.json in Resources */,
 				FABB20552602FC2C00C8785C /* ReaderDetailFeaturedImageView.xib in Resources */,
 				FABB20562602FC2C00C8785C /* loader.html in Resources */,
 				FABB20582602FC2C00C8785C /* JetpackRestoreHeaderView.xib in Resources */,
@@ -21284,6 +21290,7 @@
 				FABB22DA2602FC2C00C8785C /* RoundedButton.swift in Sources */,
 				FABB22DB2602FC2C00C8785C /* AboutViewController.swift in Sources */,
 				FABB22DC2602FC2C00C8785C /* MenuLocation.m in Sources */,
+				3FD9CB7E28998ADB00CF76DE /* JetpackOverlayView.swift in Sources */,
 				FABB22DD2602FC2C00C8785C /* RevisionsTableViewCell.swift in Sources */,
 				E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
 				E62CE58F26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */,
@@ -21390,6 +21397,7 @@
 				FABB23322602FC2C00C8785C /* FormatBarItemProviders.swift in Sources */,
 				FABB23332602FC2C00C8785C /* RevisionDiffViewController.swift in Sources */,
 				FABB23342602FC2C00C8785C /* BlogDetailsSectionFooterView.swift in Sources */,
+				3FD9CB7F28998AE200CF76DE /* JetpackOverlayViewController.swift in Sources */,
 				FABB23362602FC2C00C8785C /* TenorGIFCollection.swift in Sources */,
 				FABB23372602FC2C00C8785C /* WebNavigationDelegate.swift in Sources */,
 				FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */,
