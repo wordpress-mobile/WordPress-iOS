@@ -13,7 +13,6 @@ class JetpackOverlayView: UIView {
         return stackView
     }()
 
-    // TODO: This will need to be replaced with the animated images
     private lazy var animationContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
