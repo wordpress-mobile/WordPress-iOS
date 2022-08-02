@@ -256,7 +256,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
 
-        static let publishButtonColor = UIColor.editorPrimary
+        static let publishButtonColor = UIColor.primary
 
         static let blankURL = URL(string: "about:blank")
     }
