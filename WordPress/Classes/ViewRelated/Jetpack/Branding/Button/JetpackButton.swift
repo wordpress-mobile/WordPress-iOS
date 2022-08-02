@@ -68,6 +68,7 @@ class JetpackButton: UIButton {
     }
 
     private func configureButton() {
+        isUserInteractionEnabled = FeatureFlag.jetpackPoweredBottomSheet.enabled
         setTitle(Appearance.title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
