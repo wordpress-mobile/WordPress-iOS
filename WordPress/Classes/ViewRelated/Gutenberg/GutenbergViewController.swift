@@ -374,6 +374,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
         ghostView.startAnimation()
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .editorPrimary
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -571,7 +572,6 @@ extension GutenbergViewController {
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
 
         UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .editorPrimary
     }
 }
 
