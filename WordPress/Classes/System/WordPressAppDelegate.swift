@@ -895,6 +895,9 @@ extension WordPressAppDelegate {
             editorSettingsDatePicker.tintColor = .editorPrimary
         }
 
+        /// Post Settings: Tag selection
+        UIView.appearance(whenContainedInInstancesOf: [PostTagPickerViewController.self]).tintColor = .editorPrimary
+
         /// Post Settings: Categories selection
         UIView.appearance(whenContainedInInstancesOf: [WPAddPostCategoryViewController.self]).tintColor = .editorPrimary
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
