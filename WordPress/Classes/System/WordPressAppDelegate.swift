@@ -887,6 +887,7 @@ extension WordPressAppDelegate {
         /// Post Settings
         UITableView.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).tintColor = .editorPrimary
         UISwitch.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).onTintColor = .editorPrimary
+        UIView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
 
         if #available(iOS 14.0, *) {
             let editorSettingsDatePicker = UIView.appearance(whenContainedInInstancesOf: [SchedulingDatePickerViewController.self])

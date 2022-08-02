@@ -167,8 +167,6 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
     
-    self.navigationController.view.tintColor = [UIColor murielEditorPrimary];
-    
     [self configureMetaSectionRows];
     [self reloadData];
 }
