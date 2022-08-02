@@ -893,6 +893,14 @@ extension WordPressAppDelegate {
             let editorSettingsDatePicker = UIView.appearance(whenContainedInInstancesOf: [SchedulingDatePickerViewController.self])
             editorSettingsDatePicker.tintColor = .editorPrimary
         }
+
+        /// Post Setting Categories
+        UIView.appearance(whenContainedInInstancesOf: [WPAddPostCategoryViewController.self]).tintColor = .editorPrimary
+
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, UINavigationController.self]).tintColor = .editorPrimary
+
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, UINavigationController.self, WPSplitViewController.self]).tintColor = .primary
+
     }
 }
 
