@@ -1,9 +1,7 @@
-Kami menambahkan beberapa perubahan di editor blok agar pengalaman publikasi Anda makin baik.
+Kami melakukan peningkatan performa untuk blok Galeri dan Gambar di Editor Blok. Peningkatan ini akan membuat gambar memerlukan lebih sedikit ruang penyimpanan situs dan menjaga perangkat agar tidak melambat selama pengunggahan media. Kami tahu Anda memerlukan kecepatan.
 
-- Salin dan tempel teks alt sudah tidak perlu lagi. Ketika Anda menambahkan item di media pustaka ke blok Gambar, teks alt item tersebut sudah disertakan.
-- Anda dapat memasukkan media dari URL di blok Video.
-- Jika blok mengandung konten yang tidak valid atau tidak terduga, Anda dapat menggunakan pilihan pemulihan blok agar konten ditampilkan dengan benar, tidak perlu menambahkan lagi dari nol.
+Jika situs Anda menggunakan VideoPress, semua blok Video yang disimpan pada versi situs web akan ditampilkan dengan benar di aplikasi seluler. 
 
-Komentar pos juga sedikit lebih ramah pengguna. Ketika Anda menekan simbol @ untuk menyebut pengguna lain di komentar, penulis pos atau penulis komentar akan muncul di urutan teratas dalam daftar pengguna yang disarankan. Bagus.
+Sekarang penyisip blok di Editor Blok memungkinkan pengaturan jenis blok yang lebih baik dalam koleksi. Kami juga melakukan sedikit penyesuaian spasi pada catatan kaki teks alt di blok Gambar, karena hal-hal mendetail juga penting. 
 
-Terakhir, kami memperbaiki masalah pada pemilih media editor, yaitu permintaan informasi pencarian yang terus ditampilkan sekalipun jendela telah ditutup dan dibuka kembali. Kami juga membasmi bug yang membuat aplikasi mengalami crash ketika menambahkan beberapa item ke pos Cerita.
+Yang terakhir, kami menghapus bug yang mengganggu di proses pembuatan situs. Sekarang, ketika menggulir pilihan desain situs secara horizontal, aplikasi ingat posisi gulir terakhir Anda, bahkan jika Anda menggulir halaman ke atas dan ke bawah.
