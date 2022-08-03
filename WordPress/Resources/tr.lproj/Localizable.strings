@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-29 10:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-03 11:54:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: tr */
@@ -3551,6 +3551,9 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Site URL'sini alma";
+
+/* No comment provided by engineer. */
+"Gradient" = "Degrade";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "Gradyan Türü";
@@ -8573,6 +8576,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Güncelleme odağı: Düğünler için VideoPress";
 
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Ses yüklemek için paketinizi yükseltin";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Video başlıkları kullanmak için paketinizi yükseltin";
+
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Ortam dosyası yükle";
 
@@ -9850,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Site Amacı Seçin";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Jetpack destekli";
 
 /* Later today */
 "later today" = "bugün daha sonra";
