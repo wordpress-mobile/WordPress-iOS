@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 08:54:21+0000 */
+/* Translation-Revision-Date: 2022-07-29 10:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: tr */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d görülmemiş yazı";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s, %2$s olarak dönüştürüldü";
@@ -1963,9 +1960,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "URL'yi panodan kopyalayın, %s";
-
-/* No comment provided by engineer. */
-"Copy block" = "Bloğu kopyala";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Dosya adresini kopyala";
@@ -3967,6 +3961,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "Geçersiz adres, lütfen geçerli bir site adresi girip girmediğinizi kontrol edin.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "Geçersiz URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Geçersiz URL. Ses dosyası bulunamadı.";
 
 /* No comment provided by engineer. */
@@ -4069,7 +4066,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack yüklendi";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "Jetpack destekli";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5287,6 +5284,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Amanın!";
+
+/* No comment provided by engineer. */
+"Opacity" = "Opaklık";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Blok eylemleri menüsünü aç";
@@ -6574,9 +6574,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "WordPressde ara";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Yazı veya site için\nWordPressde arayın";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Arama bloğu etiketi. Mevcut metin";
 
@@ -7567,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Sadece metin";
-
-/* No comment provided by engineer. */
-"Text color" = "Metin rengi";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Bir metin bloku düzenlenirken, metin biçimlendirme kontrolleri klavyenin üzerindeki araç çubuğunda bulunur";

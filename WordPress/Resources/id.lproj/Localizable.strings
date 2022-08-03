@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-19 14:31:50+0000 */
+/* Translation-Revision-Date: 2022-08-02 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: id */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d pos yang belum dilihat";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s diubah menjadi %2$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Salin URL dari papan klip, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Salin blok";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Salin URL file";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3559,6 +3553,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Mendapatkan URL situs";
 
 /* No comment provided by engineer. */
+"Gradient" = "Gradien";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Jenis Gradasi";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3967,6 +3964,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "URL tidak valid, pastikan Anda menuliskan alamat situs yang valid.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "URL tidak valid.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL tidak valid. Berkas audio tidak ditemukan.";
 
 /* No comment provided by engineer. */
@@ -4069,7 +4069,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack sudah diinstal";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "Didukung Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5287,6 +5287,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Maaf!";
+
+/* No comment provided by engineer. */
+"Opacity" = "Keburaman";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Buka Menu Tindakan Blokir";
@@ -6574,9 +6577,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Cari di WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Cari WordPress\nuntuk situs atau tulisan";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Cari label blok. Teks saat ini adalah";
 
@@ -7567,9 +7567,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Hanya Teks";
-
-/* No comment provided by engineer. */
-"Text color" = "Warna teks";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Kontrol pemformatan teks terletak di dalam bilah peralatan yang ada di atas keyboard saat menyunting blok teks";
@@ -8578,6 +8575,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Fokus Upgrade: VideoPress Untuk Pernikahan";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Upgrade paket Anda untuk mengunggah audio";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Upgrade paket Anda untuk menggunakan sampul video";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Unggah Media";
@@ -9856,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Pilih Kegunaan Situs";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Didukung Jetpack";
 
 /* Later today */
 "later today" = "belakangan hari ini";

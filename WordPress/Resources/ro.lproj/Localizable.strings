@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-16 19:39:25+0000 */
+/* Translation-Revision-Date: 2022-07-31 07:55:05+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d articole nevăzute";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s a fost transformat în %2$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Plasează URL-ul din clipbord, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copiază blocul";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copiază URL-ul fișierului";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3559,6 +3553,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Preiau URL-ul site-ului";
 
 /* No comment provided by engineer. */
+"Gradient" = "Gradient";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Tip de gradient";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3952,7 +3949,7 @@ translators: Block name. %s: The localized block name */
 "Introducing Story Posts" = "Prezentăm Articole narațiune";
 
 /* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Adresa de email este invalidă";
+"Invalid Email Address" = "Adresa de email nu este validă";
 
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Adresa site-ului este invalidă";
@@ -3965,6 +3962,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "URL invalid, te rog verifică dacă ai scris o adresă de site validă.";
+
+/* No comment provided by engineer. */
+"Invalid URL." = "URL-ul nu este valid.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL invalid. Nu am găsit fișierul audio.";
@@ -4069,7 +4069,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack a fost instalat";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "Propulsat de Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5289,6 +5289,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops!" = "Hopa!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Opacitate";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "Deschide meniul acțiuni blocuri";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -5719,7 +5722,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post" = "Articol";
 
 /* Title for selecting categories for a post */
-"Post Categories" = "Categorii articol";
+"Post Categories" = "Categorii de articole";
 
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
@@ -6573,9 +6576,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Caută în WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Caută în WordPress\nun site sau un articol";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Etichetă buton Căutare. Textul actual este";
@@ -7567,9 +7567,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Numai text";
-
-/* No comment provided by engineer. */
-"Text color" = "Culoare text";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Când editezi un bloc Text, comenzile pentru formatarea textului se află în bara de unelte poziționată deasupra tastaturii.";
@@ -8578,6 +8575,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Focus actualizare: VideoPress pentru nunți";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Pentru a încărca fișiere audio, actualizează-ți planul";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Pentru a folosi coperte video, actualizează-ți planul";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Încarcă media";
@@ -9856,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Selectează scopul site-ului";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Propulsat de Jetpack";
 
 /* Later today */
 "later today" = "azi, mai târziu";
