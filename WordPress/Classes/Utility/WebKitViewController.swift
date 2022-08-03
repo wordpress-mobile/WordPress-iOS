@@ -70,7 +70,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        button.title = NSLocalizedString("webKit.button.dismiss", value: "Dismiss", comment: "Verb. Dismiss the web view screen.")
         return button
     }()
 
