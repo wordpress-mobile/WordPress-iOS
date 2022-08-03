@@ -1,9 +1,47 @@
-Få kraftfulla säkerhets- och prestandaverktyg i fickan med Jetpack för iOS.
+Jetpack för WordPress
 
-Återställ din webbplats var du än är om något går fel. Skanna efter hot och åtgärda dem med ett tryck. Håll koll på webbplatsaktiviteten för att se vem som har ändrat vad och när. Kolla din statistik för att vilka nya länder dagens besökare kommer från.
+Placera webbpubliceringskraften i din ficka. Jetpack är både ett verktyg för webbplatsskapande och mycket annat.
 
-Appen har även stöd för förväntade WordPress-funktioner. Skapa en spontan haiku i soffan. Ta och publicera ett foto på din lunchrast. Svara på dina senaste kommentarer.
+SKAPA
 
-Jetpack för iOS har stöd för WordPress-webbplatser med Jetpack aktiverat och ett konto anslutet till WordPress.com.
+Ge dina stora idéer ett hem på webben. Jetpack för iOS är ett verktyg för webbplatsbyggande och bloggskapande som drivs av WordPress. Använd det för att skapa din webbplats.
+Välj rätt utseende och känsla från ett brett urval av WordPress-teman och anpassa sedan temat med foton, färger och typsnitt som gör det unikt för dig.
+Den inbyggda snabbstartsguiden vägleder dig genom grunderna för hur du skapar en framgångsrik webbplats. (Vi tillhandahåller inte bara ett webbplatsverktyg – vi är också din partner och din hejaklack)
 
-Visa sekretessmeddelandet för användare i Kalifornien på https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+ANALYSER OCH INSIKTER
+
+Kontrollera din webbplatsstatistik i realtid för att hålla koll på aktiviteten på din webbplats.
+Håll koll på vilka inlägg och sidor som får mest trafik över tid genom att utforska dagliga, veckovisa, månatliga och årliga insikter.
+Använd trafikkartan för att se vilka länder dina besökare kommer ifrån.
+
+NOTISER
+
+Få notiser om kommentarer, gilla-markeringar och nya följare, så att du kan se hur folk reagerar på din webbplats i realtid.
+Svara på nya kommentarer när de publiceras för att hålla konversationen igång och få dina läsare att känna sig sedda.
+
+PUBLICERA
+
+Skapa uppdateringar, berättelser, fotorapporter, tillkännagivanden – allt möjligt – med redigeraren.
+Ge dina inlägg och sidor liv med foton och videoklipp från din kamera och dina album, eller hitta den perfekta bilden med appens inbyggda samling proffsbilder som är fria att använda.
+Spara idéer som utkast och plocka fram dem igen när inspirationen kommer tillbaka, eller schemalägg nya inlägg för framtida publicering för att hålla din webbplats uppdaterad och intressant.
+Lägg till etiketter och kategorier för att hjälpa nya läsare att upptäcka dina inlägg och se hur din läsekrets växer.
+
+SÄKERHETS- OCH PRESTANDAVERKTYG
+
+Återställ din webbplats var du än är om något går fel.
+Skanna efter hot och åtgärda dem med ett tryck.
+Håll koll på webbplatsaktiviteten för att se vem som har ändrat vad och när.
+
+LÄSARE
+
+Jetpack är inte bara ett verktyg för bloggskapande – du kan även använda det för att hålla kontakten med en community av olika författare i WordPress.com-läsaren. Utforska tusentals olika ämnen baserat på etiketter, upptäck nya författare och organisationer och följ bloggar som väcker ditt intresse.
+Håll koll på inlägg som fascinerar dig med funktionen Spara för senare.
+
+DELA
+
+Konfigurera automatisk delning för att meddela dina följare på sociala medier när du publicerar ett nytt inlägg. Korspublicera automatiskt till Facebook, Twitter, med mera.
+Lägg till delningsknappar för sociala medier i dina inlägg, så att dina besökare kan dela dem med sitt nätverk. Låt dina fans bli dina ambassadörer.
+
+Läs mer på https://jetpack.com/mobile
+
+Sekretessmeddelande för användare i Kalifornien: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa

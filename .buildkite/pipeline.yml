@@ -65,6 +65,10 @@ steps:
     notify:
       - github_commit_status:
           context: "Unit Tests"
+      - slack:
+          channels:
+            - "#mobile-apps-tests-notif"
+        if: build.state == "failed"
 
   #################
   # UI Tests
@@ -81,6 +85,10 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
@@ -92,6 +100,10 @@ steps:
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"
+          - slack:
+              channels:
+                - "#mobile-apps-tests-notif"
+            if: build.state == "failed"
 
   #################
   # Linters

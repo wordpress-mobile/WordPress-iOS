@@ -170,12 +170,9 @@
                                             <action selector="warningTapped:" destination="yav-nF-cx7" eventType="touchUpInside" id="XPM-6H-44L"/>
                                         </connections>
                                     </button>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vfz-Oz-LdY">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="48"/>
+                                    <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="vfz-Oz-LdY">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="48" id="W0E-Dq-QSH"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                             </stackView>

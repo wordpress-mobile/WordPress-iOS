@@ -1,0 +1,7 @@
+Vi har gjort några prestandaförbättringar av galleri- och bildblocken i blockredigeraren. Detta kommer att göra att bilder tar upp mindre utrymme på din webbplats och att din enhet inte börjar gå långsammare under mediauppladdningar. Vi vet att hastigheten spelar roll.
+
+Om din webbplats använder VideoPress kommer nu videoblock sparade i webbversionen av webbplatsen att visas korrekt även i mobilappen.
+
+Blockinfogaren i blockredigeraren inkluderar nu möjligheten att organisera blocktyper i samlingar. Vi har också gjort en liten avståndsjustering i bildblockets fotnot för alternativ text, eftersom även detaljerna är viktiga.
+
+Sist men inte minst har vi åtgärdat en irriterande bugg i processen för webbplatsskapande. När du bläddrar igenom webbplatsdesignalternativen kommer appen nu ihåg var du var, även om bläddrar uppåt och nedåt på sidan.
