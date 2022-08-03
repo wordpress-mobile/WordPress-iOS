@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 16:54:07+0000 */
+/* Translation-Revision-Date: 2022-07-28 15:54:26+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d개의 보지 않은 글";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s(%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%2$s(으)로 변형된 %1$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "클립보드에서 URL 복사, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "블록 복사하기";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "파일 URL 복사하기";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3559,6 +3553,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "사이트 URL 확보";
 
 /* No comment provided by engineer. */
+"Gradient" = "기울기";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "그라디언트 유형";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3967,6 +3964,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "잘못된 URL입니다. 올바른 사이트 주소를 입력했는지 확인하세요.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "유효하지 않은 URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
 
 /* No comment provided by engineer. */
@@ -4069,7 +4069,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "젯팩이 설치됨";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "젯팩 제공";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5287,6 +5287,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "이런!";
+
+/* No comment provided by engineer. */
+"Opacity" = "불투명도";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "블록 활동 메뉴 열기";
@@ -6574,9 +6577,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "워드프레스 검색";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "사이트나 게시물을 위한\n워드프레스 검색";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "블록 레이블을 검색합니다. 현재 텍스트는";
 
@@ -7567,9 +7567,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "텍스트만";
-
-/* No comment provided by engineer. */
-"Text color" = "텍스트 색상";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "텍스트 서식 지정 컨트롤은 텍스트 블록을 편집하는 동안 키보드 위에 배치되는 도구 모음 내에 있습니다.";
@@ -8578,6 +8575,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "업그레이드 핵심: 웨딩용 VideoPress";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "오디오를 업로드하려면 요금제를 업그레이드하세요.";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "비디오 커버를 사용하려면 요금제를 업그레이드하세요.";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "미디어 업로드";
@@ -9853,6 +9856,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "사이트 의도 선택";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "젯팩 제공";
 
 /* Later today */
 "later today" = "오늘 중";

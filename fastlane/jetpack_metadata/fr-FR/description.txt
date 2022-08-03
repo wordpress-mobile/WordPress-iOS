@@ -1,9 +1,47 @@
-Bénéficiez d’outils de sécurité et de performance puissants avec Jetpack pour iOS.
+Jetpack pour WordPress
 
-Restaurez votre site où que vous soyez en cas de problème. Détectez les menaces et supprimez-les simplement. Gardez un œil sur l’activité du site pour voir qui a modifié quoi et quand. Consultez vos statistiques pour voir de quels nouveaux pays sont originaires les visiteurs du jour.
+Le pouvoir de la publication Web à portée de main. Jetpack est tellement plus qu’un créateur de site Web !
 
-L’application prend également en charge les fonctionnalités WordPress que vous attendez. Rédigez un haïku spontané depuis votre canapé. Prenez une photo et publiez-la pendant votre pause déjeuner. Répondez à vos derniers commentaires.
+CRÉER
 
-Jetpack pour iOS prend en charge les sites WordPress utilisant Jetpack et un compte connecté à WordPress.com.
+Donnez à vos grandes idées une place sur le Web. Jetpack pour iOS est un créateur de site Web et de blog propulsé par WordPress. Utilisez-le pour créer votre site Web.
+Choisissez la bonne apparence et le bon look parmi une large sélection de thèmes WordPress, puis personnalisez avec des photos, des couleurs et des polices d’écriture pour obtenir un rendu qui vous ressemble.
+Les conseils intégrés Quick Start vous guident dans la configuration des éléments de base afin de guider votre nouveau site Web sur la voie du succès. (Nous ne sommes pas juste un créateur de site Web. Nous sommes votre partenaire et votre équipe de soutien !)
 
-Consultez l’avis de confidentialité pour les utilisateurs californiens à l’adresse https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+STATISTIQUES ET TENDANCES
+
+Consultez les statistiques de votre site Web en temps réel pour suivre son activité.
+Surveillez quelles publications et pages reçoivent le plus de trafic au fil du temps en explorant les tendances journalières, hebdomadaires, mensuelles et annuelles.
+Utilisez la carte du trafic pour voir de quels pays sont originaires vos visiteurs.
+
+NOTIFICATIONS
+
+Recevez des notifications à propos des commentaires, des mention J’aime et des nouveaux abonnés pour que vous puissiez voir les gens réagir à votre site Web en direct.
+Répondez aux nouveaux commentaires dès leur publication pour garder la conversation fluide et connaître vos lecteurs.
+
+PUBLIER
+
+Créez avec l’éditeur des mises à jour, des stories, des annonces de photo-reportages et tout ce que vous désirez !
+Donnez vie à vos publications et à vos pages avec des photos et des vidéos provenant de votre appareil photo et de vos albums, ou bien trouvez l’image parfaite grâce aux photos professionnelles libres d’utilisation dans la collection intégrée à l’application.
+Enregistrez vos idées comme brouillons et repenchez-vous dessus dès que l’inspiration revient, ou planifiez de nouvelles publications pour le futur afin que votre site soit toujours mis à jour et intéressant.
+Ajoutez des mots-clés et des catégories pour permettre aux nouveaux lecteurs de découvrir vos publications, et regardez votre audience se développer.
+
+OUTILS DE SÉCURITÉ ET DE PERFORMANCES
+
+Rétablissez votre site depuis n’importe quelle sauvegarde si quelque chose se passe mal.
+Recherchez des menaces et corrigez-les d’une simple touche.
+Gardez un œil sur l’activité du site pour voir qui a modifié quoi et quand.
+
+LECTEUR
+
+Jetpack est plus qu’un créateur de blog. Utilisez-le pour entrer en relation avec une communauté d’écrivains dans le Lecteur WordPress.com. Explorez des milliers de thèmes par étiquette, découvrez de nouveaux auteurs et de nouvelles organisations, et abonnez-vous à ceux qui suscitent votre intérêt.
+Conservez les publications qui vous fascinent avec la fonctionnalité Enregistrer pour plus tard.
+
+PARTAGER
+
+Configurez le partage automatisé pour prévenir vos abonnés sur les réseaux sociaux lorsque vous publiez un nouvel article de blog. Publiez automatiquement sur Facebook, Twitter, et autres.
+Ajoutez à vos articles de blog des boutons de partage sur les réseaux sociaux afin que vos visiteurs puissent les partager avec leur réseau, et laissez vos fans devenir vos ambassadeurs.
+
+Lire la suite sur https://jetpack.com/mobile
+
+Avis de confidentialité pour les utilisateurs californiens : https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

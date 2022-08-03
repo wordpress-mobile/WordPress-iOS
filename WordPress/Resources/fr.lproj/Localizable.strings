@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 10:54:07+0000 */
+/* Translation-Revision-Date: 2022-07-28 11:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: fr */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d articles non lus";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s a été transformé en %2$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Copiez l’URL à partir du presse-papier, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copier le bloc";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copier l’URL du fichier";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3559,6 +3553,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Saisie de l’URL du site";
 
 /* No comment provided by engineer. */
+"Gradient" = "Dégradé";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Type de dégradé";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -4069,7 +4066,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installé";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "Optimisé par Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5287,6 +5284,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Oups !";
+
+/* No comment provided by engineer. */
+"Opacity" = "Opacité";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Ouvrir le menu d’actions du bloc";
@@ -6574,9 +6574,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Recherche WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Recherche WordPress\nd’un site ou d’un article";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Rechercher une étiquette de bloc. Le texte actuel est";
 
@@ -7567,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Texte seul";
-
-/* No comment provided by engineer. */
-"Text color" = "Couleur du texte";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Les contrôles de mise en forme du texte se trouvent dans la barre d’outils placée au-dessus du clavier lors de l’édition d’un bloc paragraphe";
@@ -8578,6 +8572,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Aspect de la mise à jour : VideoPress pour les mariages";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Mettez votre plan à jour pour importer des fichiers audio";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Mettez votre plan à jour pour utiliser des couvertures vidéo";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Téléverser un média";
@@ -9853,6 +9853,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Sélectionner l’intention du site";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Optimisé par Jetpack";
 
 /* Later today */
 "later today" = "ultérieurement aujourd'hui";

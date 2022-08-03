@@ -343,13 +343,15 @@ class AppSettingsViewController: UITableViewController {
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
             viewController?.onItemSelected = { (section: Any!) -> () in
+                let oldDefaultSection = MySiteSettings().defaultSection
                 guard let section = section as? Int,
-                    let defaultSection = MySiteViewController.Section(rawValue: section) else {
+                      let newDefaultSection = MySiteViewController.Section(rawValue: section),
+                      newDefaultSection != oldDefaultSection else {
                         return
                 }
 
-                WPAnalytics.track(.initialScreenChanged, properties: ["selected": defaultSection.analyticsDescription])
-                MySiteSettings().setDefaultSection(defaultSection)
+                WPAnalytics.track(.initialScreenChanged, properties: ["selected": newDefaultSection.analyticsDescription])
+                MySiteSettings().setDefaultSection(newDefaultSection)
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)

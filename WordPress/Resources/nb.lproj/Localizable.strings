@@ -1385,9 +1385,6 @@ translators: Block name. %s: The localized block name */
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
 
-/* No comment provided by engineer. */
-"Copy block" = "Kopier blokk";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan bli bedre";
 
@@ -4655,9 +4652,6 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Søk WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Søk WordPress\nfor et nettsted eller innlegg";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Søk blokker";

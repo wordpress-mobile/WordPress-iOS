@@ -516,7 +516,11 @@ extension InteractiveNotificationsManager {
             case .answerPrompt:
                 return NSLocalizedString("Answer", comment: "Verb. Opens the editor to answer the blogging prompt.")
             case .dismissPrompt:
-                return NSLocalizedString("Dismiss", comment: "Verb. Dismisses the blogging prompt notification.")
+                return NSLocalizedString(
+                    "bloggingPrompt.pushNotification.customActionDescription.dismiss",
+                    value: "Dismiss",
+                    comment: "Verb. Dismisses the blogging prompt notification."
+                )
             }
         }
 

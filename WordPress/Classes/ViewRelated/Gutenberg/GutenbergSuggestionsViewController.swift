@@ -144,8 +144,8 @@ extension GutenbergSuggestionsViewController: UITextFieldDelegate {
     }
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if suggestionsView.numberOfSuggestions() == 1 {
-            suggestionsView.selectSuggestion(atPosition: 0)
+        if suggestionsView.viewModel.numberOfItems == 1 {
+            suggestionsView.selectSuggestion(at: IndexPath(row: 0, section: 0))
         }
         return true
     }

@@ -1,9 +1,7 @@
-We hebben de blokeditor iets bijgewerkt, zodat het publiceren nog beter verloopt.
+We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
 
-- Je hoeft alt. tekst niet meer te kopiëren en plakken. Als je een item in de mediabibliotheek toevoegt aan een afbeeldingblok, wordt de alt. tekst meegenomen.
-- Je kunt media per URL invoegen in videoblokken.
-- Als een blok onverwachte of ongeldige inhoud bevat, kun je de optie voor blokherstel gebruiken om de content correct weer te geven zonder alles van begin af opnieuw te moeten toevoegen.
+If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
 
-En reacties op berichten zijn nu gebruiksvriendelijker. Als je op het @-teken tikt om een andere gebruiker in je reactie te vermelden, is de eerste persoon bij de voorgestelde gebruikers de auteur van het bericht of de reactie. Handig, toch?
+The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.
 
-Ten slotte hebben we een probleem met de mediakiezer in de editor verholpen, waarbij je zoekopdrachten zelfs na het sluiten en opnieuw openen van het venster bleven staan. We hebben tevens een bug verholpen waardoor de app crashte als je meerdere items aan een verhaalbericht toevoegde.
+Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.
