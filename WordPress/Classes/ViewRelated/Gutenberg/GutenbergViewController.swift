@@ -573,6 +573,7 @@ extension GutenbergViewController {
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
 
+        // Update the tint color of switches within React Native modals, as they require direct mutation
         UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
     }
 }
