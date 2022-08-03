@@ -346,7 +346,7 @@ class AppSettingsViewController: UITableViewController {
                 let oldDefaultSection = MySiteSettings().defaultSection
                 guard let section = section as? Int,
                       let newDefaultSection = MySiteViewController.Section(rawValue: section),
-                        newDefaultSection != oldDefaultSection  else {
+                      newDefaultSection != oldDefaultSection else {
                         return
                 }
 
