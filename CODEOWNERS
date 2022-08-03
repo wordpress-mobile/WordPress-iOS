@@ -1,0 +1,4 @@
+# Adding `mobile-ui-testing-squad` as codeowners for UI tests related folders
+
+/WordPress/UITestsFoundation/ @wordpress-mobile/mobile-ui-testing-squad
+/WordPress/WordPressUITests/ @wordpress-mobile/mobile-ui-testing-squad
