@@ -39,12 +39,16 @@ class JetpackOverlayViewController: UIViewController {
 
 extension JetpackOverlayViewController: DrawerPresentable {
     var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
+        .intrinsicHeight
+    }
+
+    var allowsUserTransition: Bool {
+        false
     }
 }
 
 extension JetpackOverlayViewController: ChildDrawerPositionable {
     var preferredDrawerPosition: DrawerPosition {
-        return .collapsed
+        .collapsed
     }
 }
