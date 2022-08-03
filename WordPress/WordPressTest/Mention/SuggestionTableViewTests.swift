@@ -27,13 +27,13 @@ final class SuggestionTableViewTests: CoreDataTestCase {
     func testUserSuggestionRowSelected() {
         // Given
         let word = "@"
-        let position = 0
+        let indexPath = IndexPath(row: 0, section: 0)
         self.viewModel.suggestionType = .mention
 
         // When
         self.viewModel.reloadData()
         self.view.showSuggestions(forWord: word)
-        self.view.selectSuggestion(atPosition: position)
+        self.view.selectSuggestion(at: indexPath)
 
         // Then
         XCTAssertEqual(delegate.selectedSuggestion, "ghaskayne0")
@@ -44,13 +44,13 @@ final class SuggestionTableViewTests: CoreDataTestCase {
     func testSiteSuggestionRowSelected() {
         // Given
         let word = "+"
-        let position = 0
+        let indexPath = IndexPath(row: 0, section: 0)
         self.viewModel.suggestionType = .xpost
 
         // When
         self.viewModel.reloadData()
         self.view.showSuggestions(forWord: word)
-        self.view.selectSuggestion(atPosition: position)
+        self.view.selectSuggestion(at: indexPath)
 
         // Then
         XCTAssertEqual(delegate.selectedSuggestion, "pen.io")
