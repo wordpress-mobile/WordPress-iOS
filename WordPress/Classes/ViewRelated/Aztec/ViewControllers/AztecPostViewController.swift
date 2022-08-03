@@ -570,7 +570,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func showDeprecationNotice() {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
-            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
+            title: NSLocalizedString(
+                "aztecPost.deprecationNotice.dismiss",
+                value: "Dismiss",
+                comment: "The title of a button to close the classic editor deprecation notice alert dialog."
+            ),
             handler: { alert, _ in
                 alert.dismiss(animated: true, completion: nil)
             }
@@ -3459,7 +3463,11 @@ extension AztecPostViewController {
 
     struct MediaAttachmentActionSheet {
         static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let dismissActionTitle = NSLocalizedString(
+            "aztecPost.mediaAttachmentActionSheet.dismiss",
+            value: "Dismiss",
+            comment: "User action to dismiss media options."
+        )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")

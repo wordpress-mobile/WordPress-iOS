@@ -130,7 +130,7 @@ public class MySiteScreen: ScreenObject {
         return try SiteSettingsScreen()
     }
 
-    func gotoCreateSheet() throws -> ActionSheetComponent {
+    public func goToCreateSheet() throws -> ActionSheetComponent {
         createButtonGetter(app).tap()
         return try ActionSheetComponent()
     }

@@ -5,29 +5,53 @@
     "queryParameters": {
       "locale": {
         "matches": "(.*)"
-      },
-      "context": {
-        "equalTo": "edit"
-      },
-      "force": {
-        "equalTo": "wpcom"
-      },
-      "number": {
-        "equalTo": "100"
-      },
-      "status": {
-        "equalTo": "all"
       }
     }
   },
   "response": {
     "status": 200,
     "jsonBody": {
-      "found": 0,
-      "site_ID": 106707880,
-      "comments": [
-
-      ]
+      "ID": 2,
+      "post": {
+        "ID": 56,
+        "title": "My Top 10 Pastry Recipes",
+        "type": "post",
+        "link": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/posts\/56"
+      },
+      "author": {
+        "ID": 98380071,
+        "login": "",
+        "email": "test@example.com",
+        "name": "Reyansh Pawar",
+        "first_name": "",
+        "last_name": "",
+        "nice_name": "",
+        "URL": "http://reyanshpawar.wordpress.com",
+        "avatar_URL": "https://1.gravatar.com/avatar/4b7ac5a2b497adbd473313b0701023a4?s=256&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D256&r=G",
+        "profile_URL": "https:\/\/en.gravatar.com\/990973e34a3efd5373e44fd270755295",
+        "ip_address": "000.0.000.000"
+      },
+      "date": "{{now}}",
+      "URL": "https://weekendbakesblog.wordpress.com/2020/10/05/my-top-10-pastry-recipes/comment-page-1/#comment-2",
+      "short_URL": "https:\/\/wp.me\/pc82cg-sp%23comment-406",
+      "content": "Can you use almond or rice flour instead of the whole wheat to make the peach scone recipe gluten free?\n",
+      "status": "approved",
+      "parent": false,
+      "type": "comment",
+      "like_count": 4,
+      "i_like": true,
+      "meta": {
+        "links": {
+          "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/comments\/2",
+          "help": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/comments\/2\/help",
+          "site": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606",
+          "post": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/posts\/56",
+          "replies": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/comments\/2\/replies\/",
+          "likes": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/181977606\/comments\/2\/likes\/"
+        }
+      },
+      "can_moderate": true,
+      "i_replied": false
     }
   }
 }

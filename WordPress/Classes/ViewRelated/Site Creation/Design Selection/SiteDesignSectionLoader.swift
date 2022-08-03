@@ -39,7 +39,7 @@ struct SiteDesignSectionLoader {
         )
 
         let request = SiteDesignRequest(
-            withThumbnailSize: SiteDesignCategoryThumbnailSize.category.value,
+            withThumbnailSize: SiteDesignCategoryThumbnailSize.recommended.value,
             withGroups: templateGroups
         )
 

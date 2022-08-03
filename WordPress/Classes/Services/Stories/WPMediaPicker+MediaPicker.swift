@@ -154,8 +154,13 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
                 let title = NSLocalizedString("Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
                 let message = NSLocalizedString("Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
+                let dismissTitle = NSLocalizedString(
+                    "mediaPicker.failedMediaExportAlert.dismissButton",
+                    value: "Dismiss",
+                    comment: "The title of the button to dismiss the alert shown when the picked media cannot be imported into stories."
+                )
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                let dismiss = UIAlertAction(title: dismissTitle, style: .default) { _ in
                     alert.dismiss(animated: true, completion: nil)
                 }
                 alert.addAction(dismiss)

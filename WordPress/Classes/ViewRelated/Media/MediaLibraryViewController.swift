@@ -363,7 +363,13 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. Button title. Tapping dismisses a prmopt."))
+        alertController.addCancelActionWithTitle(
+            NSLocalizedString(
+                "mediaLibrary.retryOptionsAlert.dismissButton",
+                value: "Dismiss",
+                comment: "Verb. Button title. Tapping dismisses a prompt."
+            )
+        )
 
         present(alertController, animated: true)
     }

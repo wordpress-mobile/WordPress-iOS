@@ -560,6 +560,7 @@
 		3F3DD0B326FD176800F5F121 /* PresentationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0B126FD176800F5F121 /* PresentationCard.swift */; };
 		3F3DD0B626FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0B526FD18EB00F5F121 /* Blog+DomainsDashboardView.swift */; };
 		3F3DD0B726FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3DD0B526FD18EB00F5F121 /* Blog+DomainsDashboardView.swift */; };
+		3F411B6F28987E3F002513AE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3F411B6E28987E3F002513AE /* Lottie */; };
 		3F421DF524A3EC2B00CA9B9E /* Spotlightable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F421DF424A3EC2B00CA9B9E /* Spotlightable.swift */; };
 		3F43602F23F31D48001DEE70 /* ScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43602E23F31D48001DEE70 /* ScenePresenter.swift */; };
 		3F43603123F31E09001DEE70 /* MeScenePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43603023F31E09001DEE70 /* MeScenePresenter.swift */; };
@@ -3076,6 +3077,8 @@
 		FA90EFEF262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */; };
 		FA9276AD286C951200C323BB /* FeatureIntroductionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */; };
+		FA9276AF2888557500C323BB /* SiteIntentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276AE2888557500C323BB /* SiteIntentScreen.swift */; };
+		FA9276B12889550E00C323BB /* ChooseLayoutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */; };
 		FA98A24D2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A24E2832A5E9003B9233 /* NewQuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */; };
 		FA98A2502833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */; };
@@ -8014,6 +8017,8 @@
 		FA8E2FE427C6AE4500DA0982 /* QuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA90EFEE262E74210055AB22 /* JetpackWebViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackWebViewControllerFactory.swift; path = Classes/Services/JetpackWebViewControllerFactory.swift; sourceTree = SOURCE_ROOT; };
 		FA9276AC286C951200C323BB /* FeatureIntroductionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIntroductionScreen.swift; sourceTree = "<group>"; };
+		FA9276AE2888557500C323BB /* SiteIntentScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentScreen.swift; sourceTree = "<group>"; };
+		FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLayoutScreen.swift; sourceTree = "<group>"; };
 		FA978DDA26CEB37E009FB14F /* WordPress 132.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 132.xcdatamodel"; sourceTree = "<group>"; };
 		FA98A24C2832A5E9003B9233 /* NewQuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuickStartChecklistView.swift; sourceTree = "<group>"; };
 		FA98A24F2833F1DC003B9233 /* QuickStartChecklistConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistConfigurable.swift; sourceTree = "<group>"; };
@@ -8236,6 +8241,7 @@
 				93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */,
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
+				3F411B6F28987E3F002513AE /* Lottie in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
 				E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */,
@@ -9699,6 +9705,7 @@
 				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
 				CC8498CF2241473400DB490A /* EditorSettingsComponents */,
 				FFD47BDE2474228C00F00660 /* FeaturedImageScreen.swift */,
+				FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -10094,6 +10101,7 @@
 				7EF9F65622F03C9200F79BBF /* SiteSettingsScreen.swift */,
 				F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */,
 				BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */,
+				FA9276AE2888557500C323BB /* SiteIntentScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -15938,6 +15946,7 @@
 				24CE2EB0258D687A0000C297 /* WordPressFlux */,
 				17A8858C2757B97F0071FCA3 /* AutomatticAbout */,
 				3F2B62DB284F4E0B0008CD59 /* Charts */,
+				3F411B6E28987E3F002513AE /* Lottie */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -16442,6 +16451,7 @@
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -19862,6 +19872,7 @@
 				3F2F855D26FAF227000FCDA5 /* LoginCheckMagicLinkScreen.swift in Sources */,
 				EA78189427596B2F00554DFA /* ContactUsScreen.swift in Sources */,
 				3F2F855626FAF227000FCDA5 /* LoginEmailScreen.swift in Sources */,
+				FA9276AF2888557500C323BB /* SiteIntentScreen.swift in Sources */,
 				3FE39A3926F837E1006E2B3A /* ActivityLogScreen.swift in Sources */,
 				FA9276AD286C951200C323BB /* FeatureIntroductionScreen.swift in Sources */,
 				3F2F855B26FAF227000FCDA5 /* LoginPasswordScreen.swift in Sources */,
@@ -19875,6 +19886,7 @@
 				3F2F855526FAF227000FCDA5 /* TagsComponent.swift in Sources */,
 				3F2F855426FAF227000FCDA5 /* AztecEditorScreen.swift in Sources */,
 				3FE39A3326F836D7006E2B3A /* GetStartedScreen.swift in Sources */,
+				FA9276B12889550E00C323BB /* ChooseLayoutScreen.swift in Sources */,
 				3FE39A3426F836E9006E2B3A /* PasswordScreen.swift in Sources */,
 				3F2F855926FAF227000FCDA5 /* CategoriesComponent.swift in Sources */,
 				3FE39A4126F8388E006E2B3A /* TabNavComponent.swift in Sources */,
@@ -26534,6 +26546,14 @@
 				minimumVersion = 0.1.1;
 			};
 		};
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 3.4.0;
+			};
+		};
 		3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Automattic/XCUITestHelpers";
@@ -26586,6 +26606,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */;
 			productName = BuildkiteTestCollector;
+		};
+		3F411B6E28987E3F002513AE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
