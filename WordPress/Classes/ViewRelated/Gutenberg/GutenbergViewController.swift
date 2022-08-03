@@ -415,6 +415,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         super.present(viewControllerToPresent, animated: flag, completion: completion)
 
+        // Update the tint color for React Native modals when presented
         let presentedView = presentedViewController?.view
         presentedView?.tintColor = .editorPrimary
     }
