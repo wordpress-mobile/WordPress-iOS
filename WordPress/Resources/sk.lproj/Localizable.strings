@@ -3320,9 +3320,6 @@
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Prehľadávať WordPress\npre webovú stránku alebo príspevok";
-
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Vyhľadať stránky";
 

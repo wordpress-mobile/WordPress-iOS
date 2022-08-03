@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 08:54:23+0000 */
+/* Translation-Revision-Date: 2022-08-01 18:42:20+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d articoli non letti";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s trasformato in %2$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Copia l'URL dagli appunti, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copia il blocco";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copia URL del file";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3556,6 +3550,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Presa dell'URL del sito";
 
 /* No comment provided by engineer. */
+"Gradient" = "Gradiente";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Tipo di gradiente";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3964,6 +3961,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "URL non valida, verifica di aver scritto un indirizzo valido per il sito.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "URL non valida.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL non valido. File audio non trovato.";
 
 /* No comment provided by engineer. */
@@ -4066,7 +4066,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack installato";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "Con tecnologia Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5064,6 +5064,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Nessun risultato. Prova una ricerca con termini differenti.";
 
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "Nessun articolo salvato";
+
 /* A message title */
 "No sites found" = "Nessun sito trovato";
 
@@ -5281,6 +5284,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Oops!";
+
+/* No comment provided by engineer. */
+"Opacity" = "Opacità";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Apri menu azioni del blocco";
@@ -6568,9 +6574,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Cerca WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Cerca un sito o un post\nsu WordPress";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Cerca etichetta del blocco. Il testo attuale è";
 
@@ -7561,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Solo testo";
-
-/* No comment provided by engineer. */
-"Text color" = "Colore del testo";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "I controlli relativi alla formattazione del testo sono localizzati all'interno della barra degli strumenti posizionata sulla tastiera mentre modifichi un blocco di testo";
@@ -8572,6 +8572,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Punti principali dell'aggiornamento: VideoPress per matrimoni";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Aggiorna il piano per utilizzare cover video";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Carica media";
@@ -9615,6 +9618,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "Il tuo indirizzo WordPress.com gratuito è";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Il tuo ultimo articolo <a href=\"\">%1$@<\/a> ha ricevuto <strong>%2$d<\/strong> mi piace.";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Il tuo ultimo articolo <a href=\"\">%@<\/a> ha ricevuto <strong>un<\/strong> Mi piace.";
 
@@ -9847,6 +9853,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Seleziona lo scopo del sito";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Con tecnologia Jetpack";
 
 /* Later today */
 "later today" = "Più tardi";

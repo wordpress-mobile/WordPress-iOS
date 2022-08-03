@@ -1,9 +1,7 @@
-Wir haben einige Änderungen am Block-Editor vorgenommen, um dein Erlebnis beim Veröffentlichen weiter zu verbessern.
+Wir haben einige Performance-Verbesserungen für die Galerie und Bild-Blöcke im Block-Editor vorgenommen. So brauchen Bilder auf deiner Website weniger Speicherplatz und verlangsamen dein Gerät während Medien-Uploads nicht mehr. Wir mögen Geschwindigkeit.
 
-– Kopieren und Einfügen von Alt-Text gehört nun der Vergangenheit an: Wenn du ein Element in der Mediathek zu einem Bildblock hinzufügst, wird auch der Alt-Text des Elements übertragen.
-– Du kannst Medien von einer URL in Videoblöcke einfügen.
-– Wenn ein Block unerwartete oder ungültige Inhalte enthält, verwende die Wiederherstellungsoption für Blöcke, um die Inhalte richtig anzuzeigen – ohne sie nochmal komplett neu hinzufügen zu müssen.
+Wenn deine Website VideoPress nutzt, können Video-Blöcke, die in der Web-Version deiner Website gespeichert sind, jetzt auch problemlos in der mobilen App angezeigt werden.
 
-Auch die Beitragskommentare sind nun etwas benutzerfreundlicher. Wenn du das @-Symbol verwendest, um einen anderen Benutzer in deinem Kommentar zu erwähnen, wird der Autor des Beitrags oder Kommentars in der Liste der vorgeschlagenen Benutzer als Erstes angezeigt. Das ist doch super.
+Der Block-Inserter im Block-Editor ermöglicht das bessere Organisieren von Block-Typen in Sammlungen. Wir haben außerdem den Abstand der Fußnote des Alt-Texts in Bild-Blöcken angepasst, denn auch die kleinen Dinge sind wichtig.
 
-Zu guter Letzt haben wir ein Problem mit der Medienauswahl des Editors behoben, wodurch Suchanfragen auch nach Schließen und erneutem Öffnen des Fensters nicht verschwanden. Außerdem haben wir einen Fehler beseitigt, wodurch die App abstürzte, wenn mehrere Elemente zu einem Story-Beitrag hinzugefügt wurden.
+Zu guter Letzt konnten wir noch einen lästigen Bug im Website-Erstellungsprozess beseitigen. Wenn du horizontal durch die Designoptionen für Websites scrollst, merkt die App sich jetzt, wo du aufgehört hast, selbst wenn du auf der Seite rauf- und runterscrollst.
