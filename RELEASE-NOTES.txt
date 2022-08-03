@@ -1,6 +1,6 @@
 20.5
 -----
-
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
 
 20.4
 -----

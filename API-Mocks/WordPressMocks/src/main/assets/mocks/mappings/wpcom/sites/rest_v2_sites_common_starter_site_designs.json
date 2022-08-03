@@ -1,0 +1,647 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/wpcom/v2/common-starter-site-designs",
+    "queryParameters": {
+      "preview_width": {
+        "matches": "(.*)"
+      },
+      "scale": {
+        "matches": "(.*)"
+      },
+      "preview_height": {
+        "matches": "(.*)"
+      },
+      "type": {
+        "matches": "(.*)"
+      },
+      "_locale": {
+        "matches": "(.*)"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "designs": [
+        {
+          "slug": "about",
+          "title": "Sparhead About",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "about",
+              "title": "About",
+              "description": "About",
+              "emoji": "👋",
+              "order": 0
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/?language=en",
+          "theme": "spearhead",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobileaboutlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "about2",
+          "title": "Seedlet About",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "about",
+              "title": "About",
+              "description": "About",
+              "emoji": "👋",
+              "order": 0
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/seedlet/mobileaboutlayout2.wordpress.com/?language=en",
+          "theme": "seedlet",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobileaboutlayout2.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobileaboutlayout2.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobileaboutlayout2.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "blog-new",
+          "title": "Sparhead Blog",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/?language=en",
+          "theme": "spearhead",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilebloglayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "blog2",
+          "title": "Seedlet Blog",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilebloglayout2.wordpress.com/?language=en",
+          "theme": "seedlet",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilebloglayout2.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilebloglayout2.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilebloglayout2.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "links",
+          "title": "Seedlet Links",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "links",
+              "title": "Links",
+              "description": "Links",
+              "emoji": "🔗",
+              "order": 1
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelinkslayout.wordpress.com/?language=en",
+          "theme": "seedlet",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelinkslayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelinkslayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelinkslayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "links2",
+          "title": "Spearhead Links",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "links",
+              "title": "Links",
+              "description": "Links",
+              "emoji": "🔗",
+              "order": 1
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelinkslayout2.wordpress.com/?language=en",
+          "theme": "spearhead",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelinkslayout2.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelinkslayout2.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelinkslayout2.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "favorites",
+          "title": "Seedlet Highlights",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "highlights",
+              "title": "Highlights",
+              "description": "Highlights",
+              "emoji": "💛",
+              "order": 4
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilefavoriteslayout.wordpress.com/?language=en",
+          "theme": "seedlet",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilefavoriteslayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilefavoriteslayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilefavoriteslayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "favorites2",
+          "title": "Spearhead Highlights",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "highlights",
+              "title": "Highlights",
+              "description": "Highlights",
+              "emoji": "💛",
+              "order": 4
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilefavoriteslayout2.wordpress.com/?language=en",
+          "theme": "spearhead",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilefavoriteslayout2.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilefavoriteslayout2.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilefavoriteslayout2.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "launch",
+          "title": "Seedlet Splash",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "splash",
+              "title": "Splash",
+              "description": "Splash",
+              "emoji": "🏖️",
+              "order": 3
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelaunchlayout.wordpress.com/?language=en",
+          "theme": "seedlet",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelaunchlayout.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelaunchlayout.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/seedlet/mobilelaunchlayout.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "launch2",
+          "title": "Spearhead Splash",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "splash",
+              "title": "Splash",
+              "description": "Splash",
+              "emoji": "🏖️",
+              "order": 3
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelaunchlayout2.wordpress.com/?language=en",
+          "theme": "spearhead",
+          "group": [
+            "single-page",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelaunchlayout2.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelaunchlayout2.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/spearhead/mobilelaunchlayout2.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "bowen",
+          "title": "Bowen",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/coutoire/bowenstartermobile.wordpress.com/?language=en",
+          "theme": "coutoire",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/coutoire/bowenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/coutoire/bowenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/coutoire/bowenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "alves",
+          "title": "Alves",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "business",
+              "title": "Business",
+              "description": "Business",
+              "emoji": "🤵",
+              "order": 6
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/alves/alvesstartermobile.wordpress.com/?language=en",
+          "theme": "alves",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/alvesstartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/alvesstartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/alvesstartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "barnsbury",
+          "title": "Barnsbury",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "business",
+              "title": "Business",
+              "description": "Business",
+              "emoji": "🤵",
+              "order": 6
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/barnsbury/barnsburystartermobile.wordpress.com/?language=en",
+          "theme": "barnsbury",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/barnsbury/barnsburystartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/barnsbury/barnsburystartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/barnsbury/barnsburystartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "brice",
+          "title": "Brice",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "business",
+              "title": "Business",
+              "description": "Business",
+              "emoji": "🤵",
+              "order": 6
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/mayland/bricestartermobile.wordpress.com/?language=en",
+          "theme": "mayland",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/bricestartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/bricestartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/bricestartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "business",
+          "title": "Leven",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "business",
+              "title": "Business",
+              "description": "Business",
+              "emoji": "🤵",
+              "order": 6
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/leven/levenstartermobile.wordpress.com/?language=en",
+          "theme": "leven",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/leven/levenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/leven/levenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/leven/levenstartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "overton",
+          "title": "Overton",
+          "segment_id": 1,
+          "categories": [
+            {
+              "slug": "business",
+              "title": "Business",
+              "description": "Business",
+              "emoji": "🤵",
+              "order": 6
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/alves/overtonstartermobile.wordpress.com/?language=en",
+          "theme": "alves",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/overtonstartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/overtonstartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/alves/overtonstartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "easley",
+          "title": "Easley",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "professional",
+              "title": "Professional",
+              "description": "Professional",
+              "emoji": "💼",
+              "order": 5
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/maywood/easleystartermobile.wordpress.com/?language=en",
+          "theme": "maywood",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/maywood/easleystartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/maywood/easleystartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/maywood/easleystartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "professional",
+          "title": "Vesta",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "professional",
+              "title": "Professional",
+              "description": "Professional",
+              "emoji": "💼",
+              "order": 5
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/mayland/vestastartermobile.wordpress.com/?language=en",
+          "theme": "mayland",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/vestastartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/vestastartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/mayland/vestastartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "reynolds",
+          "title": "Reynolds",
+          "segment_id": 4,
+          "categories": [
+            {
+              "slug": "professional",
+              "title": "Professional",
+              "description": "Professional",
+              "emoji": "💼",
+              "order": 5
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/rockfield/reynoldsstartermobile.wordpress.com/?language=en",
+          "theme": "rockfield",
+          "group": [
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/rockfield/reynoldsstartermobile.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/rockfield/reynoldsstartermobile.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/rockfield/reynoldsstartermobile.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "quadrat-white",
+          "title": "Quadrat",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/quadrat-white/mobilefoodvertical.wordpress.com/?language=en",
+          "theme": "quadrat-white",
+          "group": [
+            "food",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/quadrat-white/mobilefoodvertical.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/quadrat-white/mobilefoodvertical.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/quadrat-white/mobilefoodvertical.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "remote",
+          "title": "Remote",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/remote/mobilenewsvertical.wordpress.com/?language=en",
+          "theme": "remote",
+          "group": [
+            "news",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/remote/mobilenewsvertical.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/remote/mobilenewsvertical.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/remote/mobilenewsvertical.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "russell",
+          "title": "Russell",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/russell/mobilestarterrussell.wordpress.com/?language=en",
+          "theme": "russell",
+          "group": [
+            "lifestyle",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/russell/mobilestarterrussell.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/russell/mobilestarterrussell.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/russell/mobilestarterrussell.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "geologist-cream",
+          "title": "Geologist",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/geologist-cream/mobilestartergeologist.wordpress.com/?language=en",
+          "theme": "geologist-cream",
+          "group": [
+            "personal",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/geologist-cream/mobilestartergeologist.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/geologist-cream/mobilestartergeologist.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/geologist-cream/mobilestartergeologist.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "stewart",
+          "title": "Stewart",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/stewart/mobilestarterstewart.wordpress.com/?language=en",
+          "theme": "stewart",
+          "group": [
+            "photography",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/stewart/mobilestarterstewart.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/stewart/mobilestarterstewart.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/stewart/mobilestarterstewart.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        },
+        {
+          "slug": "arbutus",
+          "title": "Arbutus",
+          "segment_id": 2,
+          "categories": [
+            {
+              "slug": "blog",
+              "title": "Blog",
+              "description": "Blog",
+              "emoji": "📰",
+              "order": 2
+            }
+          ],
+          "demo_url": "https://public-api.wordpress.com/rest/v1/template/demo/arbutus/mobilestarterarbutus.wordpress.com/?language=en",
+          "theme": "arbutus",
+          "group": [
+            "travel",
+            "stable"
+          ],
+          "preview": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/arbutus/mobilestarterarbutus.wordpress.com/%3Flanguage%3Den?vpw=1200&vph=1560&w=500&h=650",
+          "preview_tablet": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/arbutus/mobilestarterarbutus.wordpress.com/%3Flanguage%3Den?vpw=800&vph=1040&w=500&h=650",
+          "preview_mobile": "https://s0.wp.com/mshots/v1/public-api.wordpress.com/rest/v1/template/demo/arbutus/mobilestarterarbutus.wordpress.com/%3Flanguage%3Den?vpw=400&vph=520&w=500&h=650"
+        }
+      ],
+      "categories": [
+        {
+          "slug": "about",
+          "title": "About",
+          "description": "About",
+          "emoji": "👋",
+          "order": 0
+        },
+        {
+          "slug": "links",
+          "title": "Links",
+          "description": "Links",
+          "emoji": "🔗",
+          "order": 1
+        },
+        {
+          "slug": "blog",
+          "title": "Blog",
+          "description": "Blog",
+          "emoji": "📰",
+          "order": 2
+        },
+        {
+          "slug": "splash",
+          "title": "Splash",
+          "description": "Splash",
+          "emoji": "🏖️",
+          "order": 3
+        },
+        {
+          "slug": "highlights",
+          "title": "Highlights",
+          "description": "Highlights",
+          "emoji": "💛",
+          "order": 4
+        },
+        {
+          "slug": "professional",
+          "title": "Professional",
+          "description": "Professional",
+          "emoji": "💼",
+          "order": 5
+        },
+        {
+          "slug": "business",
+          "title": "Business",
+          "description": "Business",
+          "emoji": "🤵",
+          "order": 6
+        }
+      ]
+    }
+  }
+}
