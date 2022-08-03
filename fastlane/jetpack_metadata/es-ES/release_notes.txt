@@ -1,9 +1,7 @@
-Hemos añadido algunos cambios al editor de bloques para hacer que la experiencia de publicación sea aún mejor.
+Hemos hecho algunas mejoras de rendimiento de los bloques Galería e Imagen en el Editor de bloques. Esto servirá para que las imágenes ocupen menos espacio de almacenamiento en tu sitio y evitará que el dispositivo se ralentice al cargar material multimedia. La velocidad es buena para todos.
 
-- Se acabó el copiar y pegar el texto alt—cuando añades un elemento en la biblioteca de medios a un bloque de imagen, el texto alt viaja con él.
-- Puedes insertar medios desde una URL en los bloques de vídeo.
-- Si un bloque contiene contenido inesperado o no válido, puedes usar la opción de recuperación de bloques para mostrar correctamente el contenido—sin tener que volver a añadirlo desde cero.
+Si tu sitio utiliza VideoPress, los bloques Vídeo guardados en la versión web del sitio ahora también se mostrarán correctamente en la aplicación móvil.
 
-Los comentarios de las enetradas son también un poco más amigables. Cuando tecleas el símbolo @ para mencionar a otro usuario en tu comentario, el autor de la entrada o del comentario sale el primero en la lista de usuarios sugeridos. Perfecto.
+Ahora, el insertador del Editor de bloques permite organizar mejor los tipos de bloques en colecciones. También hemos hecho un pequeño ajuste de espaciado para la nota al pie de página del texto alternativo en los bloques Imagen porque los pequeños detalles también son importantes.
 
-Para finalizar, hemos corregido un problema con el selector de medios del edtior por el que las consultas de búsqueda podrían atascarse incluso antes de cerrar y volver a abrir la ventana. También hemos arreglado un fallo que hacía que la aplicación se bloqueara al añadir varios elementos a una entrada de historia.
+Por último, pero no menos importante, hemos eliminado un molesto error en el proceso de creación de sitios. Cuando te desplazas horizontalmente por las opciones de diseño del sitio, la aplicación recuerda dónde te quedaste, aunque te desplaces hacia arriba y hacia abajo en la página.
