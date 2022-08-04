@@ -1,6 +1,7 @@
 20.5
 -----
 * [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
 * [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
 
 20.4

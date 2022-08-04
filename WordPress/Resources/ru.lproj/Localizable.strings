@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-13 15:54:07+0000 */
+/* Translation-Revision-Date: 2022-07-25 19:05:00+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d непросмотренных записей";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "Блок %1$s преобразован в %2$s";
@@ -1965,9 +1962,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Скопировать URL из буфера обмена, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Копировать блок";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Скопировать URL файла";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3559,6 +3553,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Получение URL сайта";
 
 /* No comment provided by engineer. */
+"Gradient" = "Градиент";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Тип градиента";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3967,6 +3964,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "Недействительный URL-адрес, проверьте правильность адреса сайта.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "Неверный URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Неверный URL. Аудиофайл не найден.";
 
 /* No comment provided by engineer. */
@@ -4069,7 +4069,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack установлен";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "На базе Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5287,6 +5287,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "Ой!";
+
+/* No comment provided by engineer. */
+"Opacity" = "Прозрачность";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Открыть меню действий с блоком";
@@ -6574,9 +6577,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Искать в WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Искать в WordPress\nсайт или запись";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Ярлык блока поиска. Сейчас -";
 
@@ -7567,9 +7567,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Только текст";
-
-/* No comment provided by engineer. */
-"Text color" = "Цвет текста";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Элементы управления форматированием текста расположены на панели инструментов над клавиатурой при редактировании текстового блока";
@@ -8578,6 +8575,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Акцент обновления: VideoPress для свадеб";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Улучшите тарифный план, чтобы загружать аудио";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Улучшите тарифный план, чтобы использовать видеообложки";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Загрузить медиафайлы";
@@ -9856,6 +9859,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Выберите назначение сайта";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "На базе Jetpack";
 
 /* Later today */
 "later today" = "позже сегодня";

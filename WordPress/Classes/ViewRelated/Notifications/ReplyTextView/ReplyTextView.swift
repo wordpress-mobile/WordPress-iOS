@@ -210,7 +210,7 @@ import Gridicons
                 self.btnReplyPressed()
             }
 
-            //Dimiss the fullscreen view, once it has fully closed process the saving if needed
+            // Dismiss the fullscreen view, once it has fully closed process the saving if needed
             presenter.dismiss(animated: true)
         }
 

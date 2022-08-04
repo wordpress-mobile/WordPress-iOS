@@ -77,4 +77,21 @@ class WeeklyRoundupBackgroundTaskTests: XCTestCase {
         XCTAssertEqual(task.notificationScheduler.notificationTitle(siteTitle),
                        String(format: WeeklyRoundupNotificationScheduler.TextContent.dynamicNotificationTitle, unwrappedSiteTitle))
     }
+
+    func testNotificationBodyShouldNotIncludeLikesCommentsWith0Count() {
+        XCTAssertEqual(task.notificationScheduler.notificationBodyWith(views: 44, comments: 0, likes: 0), "Last week you had 44 views.")
+    }
+
+    func testNotificationBodyShouldNotIncludeLikesWith0Count() {
+        XCTAssertEqual(task.notificationScheduler.notificationBodyWith(views: 88, comments: 44, likes: 0), "Last week you had 88 views and 44 comments.")
+    }
+
+    func testNotificationBodyShouldNotIncludeCommentsWith0Count() {
+        XCTAssertEqual(task.notificationScheduler.notificationBodyWith(views: 88, comments: 0, likes: 44), "Last week you had 88 views and 44 likes.")
+    }
+
+    func testNotificationBodyShouldIncludeViewsLikesCommentsWithGreaterThan0Count() {
+        XCTAssertEqual(task.notificationScheduler.notificationBodyWith(views: 88, comments: 44, likes: 22), "Last week you had 88 views, 44 comments and 22 likes.")
+    }
+
 }

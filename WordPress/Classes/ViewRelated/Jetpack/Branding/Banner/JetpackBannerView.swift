@@ -3,6 +3,14 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
+    private var buttonAction: (() -> Void)?
+
+    init(buttonAction: (() -> Void)? = nil) {
+        super.init(frame: .zero)
+        self.buttonAction = buttonAction
+        setup()
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -13,11 +21,16 @@ class JetpackBannerView: UIView {
         setup()
     }
 
+    @objc private func jetpackButtonTapped() {
+        buttonAction?()
+    }
+
     private func setup() {
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
+        jetpackButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         addSubview(jetpackButton)
 
         pinSubviewToAllEdges(jetpackButton)
