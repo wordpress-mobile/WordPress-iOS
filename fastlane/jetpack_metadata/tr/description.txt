@@ -1,0 +1,47 @@
+WordPress için Jetpack
+
+Web yayıncılığının gücü artık cebinizde. Jetpack hem bir web sitesi oluşturma aracı, hem de çok daha fazlasıdır.
+
+OLUŞTURUN
+
+Büyük fikirlerinize web'de bir yer verin. Jetpack for iOS, WordPress tarafından desteklenen bir web sitesi ve blog oluşturma aracıdır. Web sitenizi oluşturmak için kullanın.
+Çok çeşitli WordPress temalarından size uygun görünümü seçin, ardından sizi benzersiz bir şekilde yansıtacak biçimde fotoğraf, renk ve yazı tipleriyle özelleştirin.
+Yerleşik Hızlı Başlangıç ipuçları, yeni web sitenizi başarıya hazırlamak için kurulumla ilgili temel bilgiler konusunda size rehberlik eder. (Biz sadece web sitesi oluşturmuyoruz; ortağınız ve tezahürat ekibiniz olarak da buradayız!)
+
+ANALİZLER ve TEK BAKIŞTA
+
+Sitenizdeki etkinliği takip etmek için web sitenizin istatistiklerini gerçek zamanlı olarak kontrol edin.
+Günlük, haftalık, aylık ve yıllık bilgileri inceleyerek hangi yayınların ve sayfaların zaman içinde en fazla trafik aldığını izleyin.
+Ziyaretçilerinizin hangi ülkelerden geldiğini görmek için trafik haritasını kullanın.
+
+BİLDİRİMLER
+
+Kullanıcıların web sitenizle olan etkileşimini görebilmek için yorumlar, beğeniler ve yeni takipçiler hakkında bildirim alın.
+Sohbeti akıcı tutmak ve okuyucularınızı takdir etmek için yeni yorumları yanıtlayın.
+
+YAYINLA
+
+Düzenleyiciyi kullanarak güncellemeler, öyküler, fotoğraf denemeleri, duyurular ve istediğiniz her şeyi oluşturun.
+Kameranızdaki ve albümlerinizdeki fotoğraf ve videolarla yayınlarınıza ve sayfalarınıza hayat katın veya kullanımı ücretsiz profesyonel fotoğrafçılık uygulama koleksiyonu ile mükemmel görseli bulun.
+Fikirleri taslak olarak kaydedin ve ilham periniz geri döndüğünde onlara tekrar göz atın veya siteniz her zaman güncel ve ilgi çekici olacak şekilde yeni yayınlar planlayın.
+Yeni okuyucuların yayınlarınızı keşfetmesine yardımcı olacak etiketler ve kategoriler ekleyip kitlenizin büyümesini izleyin.
+
+GÜVENLİK VE PERFORMANS ARAÇLARI
+
+Bir şeyler ters giderse sitenizi herhangi bir yerden geri yükleyin.
+Tehditleri tarayın ve bir dokunuşla çözün.
+Kimin neyi ne zaman değiştirdiğini görmek için site etkinliğini takip edin.
+
+OKUYUCU
+
+Jetpack bir blog oluşturma aracından çok daha fazlasıdır — onu WordPress.com Okuyucu'da bir yazar topluluğuyla bağlantı kurmak için de kullanabilirsiniz. Etikete göre binlerce konuyu, yeni yazarları ve organizasyonları keşfedin ve ilginizi çekenleri takip edin.
+Daha sonrası için kaydetme özelliğiyle sizi büyüleyen yayınları kaybetmeyin.
+
+PAYLAŞ
+
+Yeni bir şey yayınladığınızda takipçilerinize sosyal medyadan bildirmek için otomatik paylaşımı ayarlayın. Facebook, Twitter ve daha fazlasına otomatik olarak çapraz gönderi yapın.
+Ziyaretçilerinizin kendi ağlarıyla paylaşabilmeleri ve hayranlarınızın adeta elçileriniz olması için yayınlarınıza sosyal paylaşım düğmeleri ekleyin.
+
+Şu adresten daha fazla bilgi edinin: https://jetpack.com/mobile
+ 
+Kaliforniya'daki kullanıcılar gizlilik bildirimini şu adresten görüntüleyebilirler: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa

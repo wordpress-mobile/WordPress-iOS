@@ -33,7 +33,8 @@ class JetpackBannerView: UIView {
         jetpackButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         addSubview(jetpackButton)
 
-        pinSubviewToAllEdges(jetpackButton)
+        pinSubviewToSafeArea(jetpackButton)
+        jetpackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     /// Preferred minimum height to be used for constraints

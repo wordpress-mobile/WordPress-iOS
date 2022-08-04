@@ -1,0 +1,7 @@
+Blok Düzenleyici'de Galeri ve Görsel blokunun performansıyla ilgili bazı iyileştirmeler yaptık. Bu, görsellerin sitenizde kapladığı depolama alanının azaltılmasına yardımcı olacak ve medya yüklemeleri sırasında cihazınızın yavaşlamasını engelleyecektir. Hıza olan ihtiyacınızı hissediyoruz.
+
+Sitenizde VideoPress kullanılıyorsa, sitenin web sürümüne kaydedilen tüm Video blokları artık mobil uygulamada da düzgün şekilde görüntülenecektir.
+
+Blok Düzenleyicideki blok ekleyici artık blok türlerinin koleksiyonlarda daha iyi organize edilmesini sağlıyor. Küçük şeyler de önemli olduğundan, Görsel bloklarındaki alt metin dipnotunda da küçük bir boşluk ayarı yaptık.
+
+Son olarak, site oluşturma sürecindeki sinir bozucu bir hatayı ortadan kaldırdık. Site tasarımı seçenekleri arasında yatay olarak gezinirken, sayfada yukarı ve aşağı kaydırsanız bile uygulama artık kaldığınız yeri hatırlayacak.

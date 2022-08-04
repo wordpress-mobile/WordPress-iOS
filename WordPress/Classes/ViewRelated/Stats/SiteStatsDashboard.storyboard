@@ -44,17 +44,15 @@
                                         </constraints>
                                     </view>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
-                                        <rect key="frame" x="0.0" y="46" width="375" height="527"/>
+                                        <rect key="frame" x="0.0" y="46" width="375" height="577"/>
                                         <connections>
                                             <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
                                         </connections>
                                     </containerView>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zMO-yu-sCx" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="573" width="375" height="50"/>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="750" id="zMO-yu-sCx" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="623" width="375" height="0.0"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="AcA-iz-xbe"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                             </stackView>
