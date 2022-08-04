@@ -885,9 +885,8 @@ extension WordPressAppDelegate {
         // Post Settings styles
 
         /// Post Settings: Main and subscreens
-        UITableView.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).tintColor = .editorPrimary
         UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
-        UISwitch.appearance(whenContainedInInstancesOf: [PostSettingsViewController.self]).onTintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
 
         /// Post Settings: Date picker
         if #available(iOS 14.0, *) {
