@@ -238,6 +238,7 @@ platform :ios do
         Actions.execute_action(step_name) { UI.message "A simulator for device type #{device_type_id} already exists" }
       else
         sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
+        # To get the UUID of the created Simulator, store the `sh` call above in a variable, e.g. `res = sh(...`, then call:
         # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
       end
     end
