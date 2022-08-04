@@ -186,7 +186,7 @@
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-0-Themes.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-0-Themes.png",
 			"attachments": [
 				{
 					"file": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-1.png",
@@ -209,45 +209,45 @@
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-1-PostEditor.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-1-PostEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_2.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-2.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-1-light-Editor.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-1-light-Editor.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-2-Reader.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-2-Reader.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_3.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-3.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-2-dark-Discover.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-2-dark-Discover.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-3-Stats.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-3-Stats.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_5.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-4.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-3-light-Stats.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-3-light-Stats.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-4-Notifications.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-4-Notifications.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_6.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-5.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-5-dark-Notifications.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-5-dark-Notifications.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-5-Media.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-5-Media.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_7.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-6.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-6-light-Media.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-6-light-Media.png"
 		},
 		{
 			"device": "iPad X",
-			"filename": "iPad Pro (12.9-inch) (3rd generation)-6-DraftEditor.png",
+			"filename": "iPad Pro (12.9-inch) (5th generation)-6-DraftEditor.png",
 			"text": "appstoreres/metadata/%s/app_store_screenshot_8.txt",
 			"background": "appstoreres/assets/backgrounds/ipad-3rdgen-backgrounds/Circles-7.png",
-			"screenshot": "iPad Pro (12.9-inch) (3rd generation)-7-dark-Editor-With-Keyboard.png"
+			"screenshot": "iPad Pro (12.9-inch) (5th generation)-7-dark-Editor-With-Keyboard.png"
 		},
 		{
 			"device": "iPad Pro",
