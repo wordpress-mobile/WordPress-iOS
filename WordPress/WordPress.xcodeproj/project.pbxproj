@@ -554,6 +554,7 @@
 		3F3087C424EDB7040087B548 /* AnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3087C324EDB7040087B548 /* AnnouncementCell.swift */; };
 		3F30E50923FB362700225013 /* WPTabBarController+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F30E50823FB362700225013 /* WPTabBarController+MeNavigation.swift */; };
 		3F338B71289BD3040014ADC5 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 3F338B70289BD3040014ADC5 /* Nimble */; };
+		3F338B73289BD5970014ADC5 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 3F338B72289BD5970014ADC5 /* Nimble */; };
 		3F39C93527A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F39C93627A09927001EC300 /* TracksLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39C93427A09927001EC300 /* TracksLogger.swift */; };
 		3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */ = {isa = PBXBuildFile; productRef = 3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */; };
@@ -8304,6 +8305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA640662670CEFF0064401E /* XCTest.framework in Frameworks */,
+				3F338B73289BD5970014ADC5 /* Nimble in Frameworks */,
 				3FC2C33D26C4CF0A00C6D98F /* XCUITestHelpers in Frameworks */,
 				3F95FF4026C4F385007731D3 /* ScreenObject in Frameworks */,
 			);
@@ -16032,6 +16034,7 @@
 			packageProductDependencies = (
 				3FC2C33C26C4CF0A00C6D98F /* XCUITestHelpers */,
 				3FC2C34226C4E8B700C6D98F /* ScreenObject */,
+				3F338B72289BD5970014ADC5 /* Nimble */,
 			);
 			productName = UITestsFoundation;
 			productReference = 3FA640572670CCD40064401E /* UITestsFoundation.framework */;
@@ -26665,6 +26668,11 @@
 			productName = Charts;
 		};
 		3F338B70289BD3040014ADC5 /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
+		};
+		3F338B72289BD5970014ADC5 /* Nimble */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
