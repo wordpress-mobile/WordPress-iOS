@@ -374,8 +374,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
         ghostView.startAnimation()
-        // `.editorPrimary` should be the tintColor that's used for action sheets when the editor appears.
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .editorPrimary
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -387,8 +385,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Resets the action sheet's tintColor to `.primary` to prevent `.editorPrimary` being set as the tintColor for UI elements outside of the editor.
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .primary
     }
 
     override func viewLayoutMarginsDidChange() {
