@@ -1,2 +1,4 @@
 /WordPress/UITestsFoundation/ @wordpress-mobile/mobile-ui-testing-squad
 /WordPress/WordPressUITests/ @wordpress-mobile/mobile-ui-testing-squad
+/WordPress/WordPressScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
+/WordPress/JetpackScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
