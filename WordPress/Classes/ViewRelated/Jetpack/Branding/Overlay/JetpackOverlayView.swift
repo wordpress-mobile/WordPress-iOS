@@ -1,3 +1,4 @@
+import Lottie
 import UIKit
 
 class JetpackOverlayView: UIView {
@@ -5,18 +6,23 @@ class JetpackOverlayView: UIView {
     private var buttonAction: (() -> Void)?
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel, descriptionLabel, getJetpackButton])
+        let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, getJetpackButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         return stackView
     }()
 
-    // TODO: This will need to be replaced with the animated images
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: Images.jetpackLogo))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    private lazy var animationContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var animationView: AnimationView = {
+        let animationView = AnimationView(name: Animations.wpJetpackLogoAnimation)
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        return animationView
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -60,10 +66,12 @@ class JetpackOverlayView: UIView {
         backgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(stackView)
-        stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: imageView)
+        stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: animationContainerView)
         stackView.setCustomSpacing(Metrics.descriptionToButtonSpacing, after: descriptionLabel)
+        animationContainerView.addSubview(animationView)
         getJetpackButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         configureConstraints()
+        animationView.play()
     }
 
     init(buttonAction: (() -> Void)? = nil) {
@@ -77,6 +85,7 @@ class JetpackOverlayView: UIView {
     }
 
     private func configureConstraints() {
+        animationContainerView.pinSubviewToAllEdges(animationView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.edgeMargins.right),
@@ -93,9 +102,8 @@ class JetpackOverlayView: UIView {
 // MARK: Appearance
 private extension JetpackOverlayView {
 
-    enum Images {
-        // TODO: this is temporary and will be replaced with the animation
-        static let jetpackLogo = "jetpack-install-logo"
+    enum Animations {
+        static let wpJetpackLogoAnimation = "WordPressToJetpackAnimation"
     }
 
     enum Metrics {
