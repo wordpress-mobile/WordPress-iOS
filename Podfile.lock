@@ -103,7 +103,6 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (10.0.0)
   - NSObject-SafeExpectations (0.0.4)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
@@ -554,7 +553,6 @@ DEPENDENCIES:
   - Kanvas (~> 1.4.3)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 10.0.0)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
@@ -639,7 +637,6 @@ SPEC REPOS:
     - libwebp
     - MediaEditor
     - MRProgress
-    - Nimble
     - NSObject-SafeExpectations
     - "NSURL+IDN"
     - OCMock
@@ -813,7 +810,6 @@ SPEC CHECKSUMS:
   libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -884,6 +880,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 5c5bb997faa7a085f8a6c00f8290589af50a10b4
+PODFILE CHECKSUM: 581371cce1ff195bd6f9612e86a0f5e0b9c7a237
 
 COCOAPODS: 1.11.2
