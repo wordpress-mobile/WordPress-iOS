@@ -12,6 +12,10 @@ class UserPersistentStore: UserPersistentRepository {
     }
 
     // MARK: - UserePersistentRepositoryWriter
+    func set(_ value: Any?, forKey defaultName: String) {
+        userDefaults.set(value, forKey: defaultName)
+    }
+
     func set(_ value: Int, forKey defaultName: String) {
         userDefaults.set(value, forKey: defaultName)
     }
@@ -26,6 +30,10 @@ class UserPersistentStore: UserPersistentRepository {
 
     func set(_ value: Bool, forKey defaultName: String) {
         userDefaults.set(value, forKey: defaultName)
+    }
+
+    func set(_ url: URL?, forKey defaultName: String) {
+        userDefaults.set(url, forKey: defaultName)
     }
 }
 

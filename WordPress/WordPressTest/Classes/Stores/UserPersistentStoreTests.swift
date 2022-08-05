@@ -66,4 +66,17 @@ final class UserPersistentStoreTests: XCTestCase {
         userDefaults.removeObject(forKey: keyName)
     }
 
+    func testSetURLUpdatesDefaults() {
+        let keyName = #function
+        let url = URL(string: "https://wordpress.com")!
+        sut?.set(url, forKey: keyName)
+
+        guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
+            XCTFail("Initialization with \(Self.mockSuiteName) failed.")
+            return
+        }
+
+        XCTAssertEqual(userDefaults.url(forKey: keyName), url)
+        userDefaults.removeObject(forKey: keyName)
+    }
 }
