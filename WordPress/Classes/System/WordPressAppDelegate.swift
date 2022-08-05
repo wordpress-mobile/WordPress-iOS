@@ -883,34 +883,15 @@ extension WordPressAppDelegate {
         WPActionBar.appearance().lineColor = .basicBackground
 
         // Post Settings styles
-
-        /// Post Settings: Main and subscreens
         UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
         UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
 
-        /// Post Settings: Date picker
-        if #available(iOS 14.0, *) {
-            let editorSettingsDatePicker = UIView.appearance(whenContainedInInstancesOf: [SchedulingDatePickerViewController.self])
-            editorSettingsDatePicker.tintColor = .editorPrimary
-        }
-
-        /// Post Settings: Tag selection
-        UIView.appearance(whenContainedInInstancesOf: [PostTagPickerViewController.self]).tintColor = .editorPrimary
-
-        /// Post Settings: Categories selection
-        UIView.appearance(whenContainedInInstancesOf: [WPAddPostCategoryViewController.self]).tintColor = .editorPrimary
+        /// Sets the `tintColor` for parent category selection within the Post Settings screen
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
 
-        /// It's necessary to target PostCategoriesViewController a second time to 'reset'
-        /// the UI element's `tintColor` for use in the app's Site Settings screen.
+        /// It's necessary to target `PostCategoriesViewController` a second time to "reset" the UI element's `tintColor` for use in the app's Site Settings screen.
         UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
 
-        /// Post Settings: Featured Image Search
-        UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).tintColor = .editorPrimary
-
-        /// It's necessary to target WPMediaPickerViewController a second time to 'reset'
-        /// the UI element's `tintColor` for use app's main Media screen.
-        UIView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self, WPSplitViewController.self]).tintColor = .primary
     }
 }
 
