@@ -3,7 +3,7 @@ import UIKit
 final class ReferrerDetailsTableViewController: UITableViewController {
     private var data: StatsTotalRowData
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
-    private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self)
+    private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self, referrersDelegate: self)
     private let periodStore = StoreContainer.shared.statsPeriod
 
     init(data: StatsTotalRowData) {
@@ -85,6 +85,14 @@ extension ReferrerDetailsTableViewController: StatsPeriodStoreDelegate {
     }
 }
 
+// MARK: - SiteStatsReferrerDelegate
+extension ReferrerDetailsTableViewController: SiteStatsReferrerDelegate {
+    func showReferrerDetails(_ data: StatsTotalRowData) {
+        let referrerViewController = ReferrerDetailsTableViewController(data: data)
+        navigationController?.pushViewController(referrerViewController, animated: true)
+    }
+}
+
 // MARK: - Private Methods
 private extension ReferrerDetailsTableViewController {
     func setupViews() {
@@ -114,6 +122,7 @@ private extension ReferrerDetailsTableViewController {
     var rows: [ImmuTableRow.Type] {
         [ReferrerDetailsHeaderRow.self,
          ReferrerDetailsRow.self,
-         ReferrerDetailsSpamActionRow.self]
+         ReferrerDetailsSpamActionRow.self,
+         DetailExpandableRow.self]
     }
 }
