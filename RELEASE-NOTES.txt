@@ -2,6 +2,7 @@
 -----
 * [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
 * [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
+* [***] [internal] Block Editor: List block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/42702]
 
 20.4
 -----
