@@ -1,6 +1,6 @@
 class UserPersistentStore: UserPersistentRepository {
     static let standard = UserPersistentStore(defaultsSuiteName: defaultsSuiteName)
-    private static let defaultsSuiteName = "temporary.suite.name"
+    private static let defaultsSuiteName = "temporary.suite.name" // TBD
 
     private let userDefaults: UserDefaults
 
