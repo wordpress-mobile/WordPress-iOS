@@ -17,6 +17,11 @@
     }
 
     @available(swift, obsoleted: 1.0)
+    static func murielEditorPrimary() -> UIColor {
+        return .editorPrimary
+    }
+
+    @available(swift, obsoleted: 1.0)
     static func murielNeutral() -> UIColor {
         return .neutral
     }
