@@ -4,8 +4,11 @@ class UserPersistentStore: UserPersistentRepository {
 
     private let userDefaults: UserDefaults
 
-    init(defaultsSuiteName: String) {
-        userDefaults = UserDefaults(suiteName: defaultsSuiteName)!
+    init?(defaultsSuiteName: String) {
+        guard let suiteDefaults = UserDefaults(suiteName: defaultsSuiteName) else {
+            return nil
+        }
+        userDefaults = suiteDefaults
     }
 
     // MARK: - UserePersistentRepositoryWriter
