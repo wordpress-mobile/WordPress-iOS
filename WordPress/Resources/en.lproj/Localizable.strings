@@ -504,6 +504,9 @@
 /* Label for the Activity Type filter button when there are more than 1 activity type selected */
 "Activity Type (%1$d)" = "Activity Type (%1$d)";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "Dismiss";
+
 /* Accessibility label for add button to add items to the user's media library
    Remove asset from media picker list */
 "Add" = "Add";
@@ -1083,6 +1086,12 @@
 /* Post Stats average views per day header. */
 "Avg. Views Per Day" = "Avg. Views Per Day";
 
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Dismiss";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Dismiss";
+
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -1219,8 +1228,14 @@
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blog's Viewer";
 
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Dismiss";
+
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Blogging Reminders";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dismiss";
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
@@ -2502,23 +2517,16 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Dismiss";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3661,6 +3669,9 @@
 /* This value is used to set the accessibility hint text for viewing the user's notifications. */
 "Guides you through the process of uploading new media." = "Guides you through the process of uploading new media.";
 
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Dismiss";
+
 /* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
 "Header 1" = "Header 1";
 
@@ -4160,6 +4171,15 @@
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack powered";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Get the new Jetpack app";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Stats, Reader, Notifications, and other features are provided by Jetpack.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "Jetpack powered";
+
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
 
@@ -4212,8 +4232,17 @@
    User's Last Name */
 "Last Name" = "Last Name";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "Last week you had %1$@ views and %2$@ comments.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "Last week you had %1$@ views and %2$@ likes.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Last week you had %1$d views, %2$d comments and %3$d likes.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Last week you had %1$@ views, %2$@ comments and %3$@ likes.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "Last week you had %@ views.";
 
 /* Later today */
 "later today" = "later today";
@@ -4668,6 +4697,15 @@
 
 /* Downloadable/Restorable items: Media Uploads */
 "Media Uploads" = "Media Uploads";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Dismiss";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Dismiss";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
 
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Medium";
@@ -5268,6 +5306,9 @@
 
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Notifications Unread";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Dismiss";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Notify me";
@@ -7455,6 +7496,9 @@
 /* Accessibility label for a sticky post in the post list. */
 "Sticky." = "Sticky.";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Dismiss";
+
 /* User action to stop upload. */
 "Stop upload" = "Stop upload";
 
@@ -7503,6 +7547,12 @@
 
 /* Announced by VoiceOver when new domains suggestions are shown in Site Creation. */
 "Suggestions updated" = "Suggestions updated";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "In this conversation";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Site members";
 
 /* User role badge */
 "Super Admin" = "Super Admin";
@@ -9281,6 +9331,9 @@
 
 /* Example Reader feed title */
 "Web News" = "Web News";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Dismiss";
 
 /* Title of a button. A call to action to view more stats for this week */
 "Week" = "Week";
