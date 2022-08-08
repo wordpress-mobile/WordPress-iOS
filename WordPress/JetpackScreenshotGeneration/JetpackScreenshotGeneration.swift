@@ -39,6 +39,11 @@ class JetpackScreenshotGeneration: XCTestCase {
             .showSiteSwitcher()
             .switchToSite(withTitle: "yourjetpack.blog")
 
+        // Open Home
+        if XCUIDevice.isPad {
+            mySite.goToHomeScreen()
+        }
+
         // Get Site Creation screenshot
         let mySitesScreen = try mySite.showSiteSwitcher()
         let siteIntentScreen = try mySitesScreen

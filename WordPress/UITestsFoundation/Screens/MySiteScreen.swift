@@ -15,6 +15,7 @@ private struct ElementStringIDs {
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
     static let switchSiteButton = "SwitchSiteButton"
+    static let dashboardButton = "Home Row"
 }
 
 /// The home-base screen for an individual site. Used in many of our UI tests.
@@ -46,6 +47,10 @@ public class MySiteScreen: ScreenObject {
 
     let switchSiteButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons[ElementStringIDs.switchSiteButton]
+    }
+
+    let homeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.cells[ElementStringIDs.dashboardButton]
     }
 
     static var isVisible: Bool {
@@ -133,6 +138,10 @@ public class MySiteScreen: ScreenObject {
     public func goToCreateSheet() throws -> ActionSheetComponent {
         createButtonGetter(app).tap()
         return try ActionSheetComponent()
+    }
+
+    public func goToHomeScreen() {
+        homeButtonGetter(app).tap()
     }
 
     public static func isLoaded() -> Bool {
