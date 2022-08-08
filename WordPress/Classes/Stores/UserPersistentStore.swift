@@ -36,4 +36,3 @@ class UserPersistentStore: UserPersistentRepository {
         userDefaults.set(url, forKey: defaultName)
     }
 }
-
