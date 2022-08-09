@@ -12,18 +12,56 @@ final class UserPersistentStoreTests: XCTestCase {
         XCTAssertNil(UserPersistentStore(defaultsSuiteName: UserDefaults.globalDomain))
     }
 
+    func testBoolReturnsStandardValueWhenTrueAndSuiteNotSet() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let key = #function
+
+        UserDefaults.standard.set(true, forKey: key)
+        XCTAssert(sut.bool(forKey: key))
+    }
+
+    func testBoolReturnsFalseWhenStandardValueIsTrueAndSuiteSetToFalse() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let key = #function
+
+        UserDefaults.standard.set(true, forKey: key)
+        sut.set(false, forKey: key)
+        XCTAssertFalse(sut.bool(forKey: key))
+    }
+
+    func testBoolReturnsTrueWhenStandardValueIsFalseAndSuiteSetToTrue() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let key = #function
+
+        UserDefaults.standard.set(false, forKey: key)
+        sut.set(true, forKey: key)
+        XCTAssert(sut.bool(forKey: key))
+    }
+
     func testSetIntUpdatesDefaults() {
-        let keyName = #function
-        sut?.set(1987, forKey: keyName)
+        let key = #function
+        sut?.set(1987, forKey: key)
 
         guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
             XCTFail("Initialization with \(Self.mockSuiteName) failed.")
             return
         }
 
-        XCTAssertEqual(userDefaults.integer(forKey: keyName), 1987)
-        userDefaults.removeObject(forKey: keyName)
-        sut?.removeObject(forKey: keyName)
+        XCTAssertEqual(userDefaults.integer(forKey: key), 1987)
+        userDefaults.removeObject(forKey: key)
+        sut?.removeObject(forKey: key)
     }
 
     func testSetIntInvalidatesStandardValue() {
@@ -32,28 +70,28 @@ final class UserPersistentStoreTests: XCTestCase {
             return
         }
 
-        let keyName = #function
+        let key = #function
         let testValue: Int = 991
-        UserDefaults.standard.set(testValue, forKey: keyName)
-        sut.set(testValue, forKey: keyName)
+        UserDefaults.standard.set(testValue, forKey: key)
+        sut.set(testValue, forKey: key)
 
-        XCTAssertEqual(sut.integer(forKey: keyName), testValue)
-        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
-        sut.removeObject(forKey: keyName)
+        XCTAssertEqual(sut.integer(forKey: key), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: key), 0)
+        sut.removeObject(forKey: key)
     }
 
     func testSetFloatUpdatesDefaults() {
-        let keyName = #function
+        let key = #function
         let testValue: Float = 7.2
-        sut?.set(testValue, forKey: keyName)
+        sut?.set(testValue, forKey: key)
 
         guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
             XCTFail("Initialization with \(Self.mockSuiteName) failed.")
             return
         }
 
-        XCTAssertEqual(userDefaults.float(forKey: keyName), testValue)
-        sut?.removeObject(forKey: keyName)
+        XCTAssertEqual(userDefaults.float(forKey: key), testValue)
+        sut?.removeObject(forKey: key)
     }
 
     func testSetFloatInvalidatesStandardValue() {
@@ -62,28 +100,28 @@ final class UserPersistentStoreTests: XCTestCase {
             return
         }
 
-        let keyName = #function
+        let key = #function
         let testValue: Float = 15.23
-        UserDefaults.standard.set(testValue, forKey: keyName)
-        sut.set(testValue, forKey: keyName)
+        UserDefaults.standard.set(testValue, forKey: key)
+        sut.set(testValue, forKey: key)
 
-        XCTAssertEqual(sut.float(forKey: keyName), testValue)
-        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
-        sut.removeObject(forKey: keyName)
+        XCTAssertEqual(sut.float(forKey: key), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: key), 0)
+        sut.removeObject(forKey: key)
     }
 
     func testSetDoubleUpdatesDefaults() {
-        let keyName = #function
+        let key = #function
         let testValue: Double = 18.82732
-        sut?.set(testValue, forKey: keyName)
+        sut?.set(testValue, forKey: key)
 
         guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
             XCTFail("Initialization with \(Self.mockSuiteName) failed.")
             return
         }
 
-        XCTAssertEqual(userDefaults.double(forKey: keyName), testValue)
-        sut?.removeObject(forKey: keyName)
+        XCTAssertEqual(userDefaults.double(forKey: key), testValue)
+        sut?.removeObject(forKey: key)
     }
 
     func testSetDoubleInvalidatesStandardValue() {
@@ -92,27 +130,27 @@ final class UserPersistentStoreTests: XCTestCase {
             return
         }
 
-        let keyName = #function
+        let key = #function
         let testValue: Double = 18.82732
-        UserDefaults.standard.set(testValue, forKey: keyName)
-        sut.set(testValue, forKey: keyName)
+        UserDefaults.standard.set(testValue, forKey: key)
+        sut.set(testValue, forKey: key)
 
-        XCTAssertEqual(sut.double(forKey: keyName), testValue)
-        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
-        sut.removeObject(forKey: keyName)
+        XCTAssertEqual(sut.double(forKey: key), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: key), 0)
+        sut.removeObject(forKey: key)
     }
 
     func testSetBoolUpdatesDefaults() {
-        let keyName = #function
-        sut?.set(true, forKey: keyName)
+        let key = #function
+        sut?.set(true, forKey: key)
 
         guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
             XCTFail("Initialization with \(Self.mockSuiteName) failed.")
             return
         }
 
-        XCTAssert(userDefaults.bool(forKey: keyName))
-        sut?.removeObject(forKey: keyName)
+        XCTAssert(userDefaults.bool(forKey: key))
+        sut?.removeObject(forKey: key)
     }
 
     func testSetBoolInvalidatesStandardValue() {
@@ -121,26 +159,26 @@ final class UserPersistentStoreTests: XCTestCase {
             return
         }
 
-        let keyName = #function
-        UserDefaults.standard.set(true, forKey: keyName)
+        let key = #function
+        UserDefaults.standard.set(true, forKey: key)
 
-        sut.set(true, forKey: keyName)
+        sut.set(true, forKey: key)
 
-        XCTAssert(sut.bool(forKey: keyName))
-        sut.removeObject(forKey: keyName)
+        XCTAssert(sut.bool(forKey: key))
+        sut.removeObject(forKey: key)
     }
 
     func testSetURLUpdatesDefaults() {
-        let keyName = #function
+        let key = #function
         let url = URL(string: "https://wordpress.com")!
-        sut?.set(url, forKey: keyName)
+        sut?.set(url, forKey: key)
 
         guard let userDefaults = UserDefaults(suiteName: Self.mockSuiteName) else {
             XCTFail("Initialization with \(Self.mockSuiteName) failed.")
             return
         }
 
-        XCTAssertEqual(userDefaults.url(forKey: keyName), url)
-        sut?.removeObject(forKey: keyName)
+        XCTAssertEqual(userDefaults.url(forKey: key), url)
+        sut?.removeObject(forKey: key)
     }
 }
