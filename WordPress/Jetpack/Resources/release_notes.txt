@@ -1,7 +1,6 @@
-We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
-
-If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
-
-The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.
-
-Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.
+* [*] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
+* [***] [internal] Block Editor: List block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/42702]
+* [**] Fix for Referrers Card Not Showing Search Engine Details [https://github.com/wordpress-mobile/WordPress-iOS/pull/19158]
+* [*] WeeklyRoundupBackgroundTask - format notification body [https://github.com/wordpress-mobile/WordPress-iOS/pull/19144]

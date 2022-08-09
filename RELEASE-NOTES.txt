@@ -1,3 +1,7 @@
+20.6
+-----
+
+
 20.5
 -----
 * [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
