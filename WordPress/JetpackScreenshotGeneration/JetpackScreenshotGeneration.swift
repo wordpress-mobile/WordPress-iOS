@@ -63,6 +63,11 @@ class JetpackScreenshotGeneration: XCTestCase {
 
         try chooseLayout.closeModal()
 
+        // Open Menu to be able to access stats
+        if XCUIDevice.isPhone {
+            mySite.goToMenu()
+        }
+
         // Get Stats screenshot
         let statsScreen = try mySite.goToStatsScreen()
         statsScreen
