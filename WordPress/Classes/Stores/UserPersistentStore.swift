@@ -1,6 +1,6 @@
 class UserPersistentStore: UserPersistentRepository {
     static let standard = UserPersistentStore(defaultsSuiteName: defaultsSuiteName)
-    private static let defaultsSuiteName = "temporary.suite.name" // TBD
+    private static let defaultsSuiteName = WPAppGroupName // TBD
 
     private let userDefaults: UserDefaults
 
@@ -11,28 +11,86 @@ class UserPersistentStore: UserPersistentRepository {
         userDefaults = suiteDefaults
     }
 
-    // MARK: - UserePersistentRepositoryWriter
-    func set(_ value: Any?, forKey defaultName: String) {
-        userDefaults.set(value, forKey: defaultName)
+    // MARK: - UserPeresistentRepositoryReader
+    func object(forKey key: String) -> Any? {
+        if let object = userDefaults.object(forKey: key) {
+            return object
+        }
+
+        return UserDefaults.standard.object(forKey: key)
     }
 
-    func set(_ value: Int, forKey defaultName: String) {
-        userDefaults.set(value, forKey: defaultName)
+    func string(forKey key: String) -> String? {
+        if let string = userDefaults.string(forKey: key) {
+            return string
+        }
+
+        return UserDefaults.standard.string(forKey: key)
     }
 
-    func set(_ value: Float, forKey defaultName: String) {
-        userDefaults.set(value, forKey: defaultName)
+    func bool(forKey key: String) -> Bool {
+        userDefaults.bool(forKey: key) || UserDefaults.standard.bool(forKey: key)
     }
 
-    func set(_ value: Double, forKey defaultName: String) {
-        userDefaults.set(value, forKey: defaultName)
+    func integer(forKey key: String) -> Int {
+        let suiteValue = userDefaults.integer(forKey: key)
+        if suiteValue != 0 {
+            return suiteValue
+        }
+
+        return UserDefaults.standard.integer(forKey: key)
     }
 
-    func set(_ value: Bool, forKey defaultName: String) {
-        userDefaults.set(value, forKey: defaultName)
+    func float(forKey key: String) -> Float {
+        let suiteValue = userDefaults.float(forKey: key)
+        if suiteValue != 0 {
+            return suiteValue
+        }
+
+        return UserDefaults.standard.float(forKey: key)
     }
 
-    func set(_ url: URL?, forKey defaultName: String) {
-        userDefaults.set(url, forKey: defaultName)
+    func double(forKey key: String) -> Double {
+        let suiteValue = userDefaults.double(forKey: key)
+        if suiteValue != 0 {
+            return suiteValue
+        }
+
+        return UserDefaults.standard.double(forKey: key)
+    }
+
+    // MARK: - UserPersistentRepositoryWriter
+    func set(_ value: Any?, forKey key: String) {
+        userDefaults.set(value, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func set(_ value: Int, forKey key: String) {
+        userDefaults.set(value, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func set(_ value: Float, forKey key: String) {
+        userDefaults.set(value, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func set(_ value: Double, forKey key: String) {
+        userDefaults.set(value, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func set(_ value: Bool, forKey key: String) {
+        userDefaults.set(value, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func set(_ url: URL?, forKey key: String) {
+        userDefaults.set(url, forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    func removeObject(forKey key: String) {
+        userDefaults.removeObject(forKey: key)
     }
 }

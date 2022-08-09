@@ -23,6 +23,23 @@ final class UserPersistentStoreTests: XCTestCase {
 
         XCTAssertEqual(userDefaults.integer(forKey: keyName), 1987)
         userDefaults.removeObject(forKey: keyName)
+        sut?.removeObject(forKey: keyName)
+    }
+
+    func testSetIntInvalidatesStandardValue() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let keyName = #function
+        let testValue: Int = 991
+        UserDefaults.standard.set(testValue, forKey: keyName)
+        sut.set(testValue, forKey: keyName)
+
+        XCTAssertEqual(sut.integer(forKey: keyName), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
+        sut.removeObject(forKey: keyName)
     }
 
     func testSetFloatUpdatesDefaults() {
@@ -36,7 +53,23 @@ final class UserPersistentStoreTests: XCTestCase {
         }
 
         XCTAssertEqual(userDefaults.float(forKey: keyName), testValue)
-        userDefaults.removeObject(forKey: keyName)
+        sut?.removeObject(forKey: keyName)
+    }
+
+    func testSetFloatInvalidatesStandardValue() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let keyName = #function
+        let testValue: Float = 15.23
+        UserDefaults.standard.set(testValue, forKey: keyName)
+        sut.set(testValue, forKey: keyName)
+
+        XCTAssertEqual(sut.float(forKey: keyName), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
+        sut.removeObject(forKey: keyName)
     }
 
     func testSetDoubleUpdatesDefaults() {
@@ -50,7 +83,23 @@ final class UserPersistentStoreTests: XCTestCase {
         }
 
         XCTAssertEqual(userDefaults.double(forKey: keyName), testValue)
-        userDefaults.removeObject(forKey: keyName)
+        sut?.removeObject(forKey: keyName)
+    }
+
+    func testSetDoubleInvalidatesStandardValue() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let keyName = #function
+        let testValue: Double = 18.82732
+        UserDefaults.standard.set(testValue, forKey: keyName)
+        sut.set(testValue, forKey: keyName)
+
+        XCTAssertEqual(sut.double(forKey: keyName), testValue)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: keyName), 0)
+        sut.removeObject(forKey: keyName)
     }
 
     func testSetBoolUpdatesDefaults() {
@@ -63,7 +112,22 @@ final class UserPersistentStoreTests: XCTestCase {
         }
 
         XCTAssert(userDefaults.bool(forKey: keyName))
-        userDefaults.removeObject(forKey: keyName)
+        sut?.removeObject(forKey: keyName)
+    }
+
+    func testSetBoolInvalidatesStandardValue() {
+        guard let sut = sut else {
+            XCTFail("No `sut` found")
+            return
+        }
+
+        let keyName = #function
+        UserDefaults.standard.set(true, forKey: keyName)
+
+        sut.set(true, forKey: keyName)
+
+        XCTAssert(sut.bool(forKey: keyName))
+        sut.removeObject(forKey: keyName)
     }
 
     func testSetURLUpdatesDefaults() {
@@ -77,6 +141,6 @@ final class UserPersistentStoreTests: XCTestCase {
         }
 
         XCTAssertEqual(userDefaults.url(forKey: keyName), url)
-        userDefaults.removeObject(forKey: keyName)
+        sut?.removeObject(forKey: keyName)
     }
 }
