@@ -9,7 +9,7 @@ class JetpackOverlayView: UIView {
         let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, getJetpackButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .leading
         return stackView
     }()
 
@@ -31,7 +31,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         label.numberOfLines = 2
-        label.textAlignment = .center
+        label.textAlignment = .natural
         label.text = TextContent.title
         return label
     }()
@@ -42,7 +42,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textAlignment = .natural
         label.text = TextContent.description
         return label
     }()
