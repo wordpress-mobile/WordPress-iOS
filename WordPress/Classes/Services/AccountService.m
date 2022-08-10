@@ -480,11 +480,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs
 {
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
     for (Blog *blog in blogs) {
         NSAssert(blog.dotComID.unsignedIntegerValue > 0, @"blog should have a wp.com ID");
-        NSAssert([blog.account isEqual:account], @"blog should belong to the default account");
+        NSAssert([blog.account isEqual:defaultAccount], @"blog should belong to the default account");
         // This shouldn't happen, but just in case, let's not crash if
         // something tries to change visibility for a self hosted
         if (blog.dotComID) {
@@ -492,7 +492,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
         blog.visible = visible;
     }
-    AccountServiceRemoteREST *remote = [self remoteForAccount:account];
+    AccountServiceRemoteREST *remote = [self remoteForAccount:defaultAccount];
     [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
         DDLogError(@"Error setting blog visibility: %@", error);
     }];
