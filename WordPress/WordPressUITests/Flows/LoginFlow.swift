@@ -4,11 +4,11 @@ import XCTest
 class LoginFlow {
 
     @discardableResult
-    static func login(email: String, password: String) throws -> MySiteScreen {
+    static func login(email: String, password: String, selectedSiteTitle: String? = nil) throws -> MySiteScreen {
         return try PrologueScreen().selectContinue()
             .proceedWith(email: email)
             .proceedWith(password: password)
-            .continueWithSelectedSite()
+            .continueWithSelectedSite(title: selectedSiteTitle)
             .dismissNotificationAlertIfNeeded()
     }
 
