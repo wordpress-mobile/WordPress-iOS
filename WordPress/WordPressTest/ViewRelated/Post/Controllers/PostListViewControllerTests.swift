@@ -36,7 +36,7 @@ class PostListViewControllerTests: CoreDataTestCase {
         expect(postListViewController.ghostableTableView.numberOfRows(inSection: 0)).to(equal(50))
     }
 
-    func testItCanHandleNewPostUpdatesEvenIfTheGhostViewIsStillVisible() {
+    func testItCanHandleNewPostUpdatesEvenIfTheGhostViewIsStillVisible() throws {
         // This test simulates and proves that the app will no longer crash on these conditions:
         //
         // 1. The app is built using Xcode 11 and running on iOS 13.1
@@ -50,7 +50,7 @@ class PostListViewControllerTests: CoreDataTestCase {
 
         // Given
         let blog = BlogBuilder(mainContext).build()
-        try! mainContext.save()
+        try mainContext.save()
 
         let postListViewController = PostListViewController.controllerWithBlog(blog)
         let _ = postListViewController.view
@@ -62,10 +62,15 @@ class PostListViewControllerTests: CoreDataTestCase {
 
         // When: Simulate a post being created
         // Then: This should not cause a crash
-        expect {
+        //
+        // Note that `XCTAssertNoThrow` catches `NSException`s as well as Swift's `throw`.
+        //
+        // This test originally used Nimble's `raiseException` but that matcher is no longer available in the SPM build.
+        // See https://github.com/Quick/Nimble/blob/e313d9a67ec2e4171d416c61282e49fc3aadc7a4/Sources/Nimble/Matchers/RaisesException.swift#L1
+        XCTAssertNoThrow(try {
             _ = PostBuilder(self.mainContext, blog: blog).with(status: .draft).build()
-            try! self.mainContext.save()
-        }.notTo(raiseException())
+            try self.mainContext.save()
+        }())
     }
 
 }
