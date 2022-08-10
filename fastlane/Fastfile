@@ -107,6 +107,7 @@ before_all do |lane|
 
   # Fixes weird Keychain bugs
   setup_ci
+
   sh 'curl -o /tmp/AppleWWDRCA-G3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer && sudo security import /tmp/AppleWWDRCA-G3.cer -k /Library/Keychains/System.keychain'
 
   # Check that the env files exist
