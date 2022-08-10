@@ -116,15 +116,15 @@ private extension JetpackOverlayView {
 
     enum TextContent {
         static let title = NSLocalizedString("jetpack.branding.overlay.title",
-                                             value: "Jetpack powered",
+                                             value: "WordPress is better with Jetpack",
                                              comment: "Title of the Jetpack powered overlay.")
 
         static let description = NSLocalizedString("jetpack.branding.overlay.description",
-                                                   value: "Stats, Reader, Notifications, and other features are provided by Jetpack.",
+                                                   value: "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.",
                                                    comment: "Description of the Jetpack powered overlay.")
 
         static let buttonTitle = NSLocalizedString("jetpack.branding.overlay.button.title",
-                                                   value: "Get the new Jetpack app",
+                                                   value: "Try the new Jetpack app",
                                                    comment: "Button title of the Jetpack powered overlay.")
     }
 }
