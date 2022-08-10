@@ -1,5 +1,5 @@
 class UserPersistentStore: UserPersistentRepository {
-    static let standard = UserPersistentStore(defaultsSuiteName: defaultsSuiteName)
+    static let standard = UserPersistentStore(defaultsSuiteName: defaultsSuiteName)!
     private static let defaultsSuiteName = WPAppGroupName // TBD
 
     private let userDefaults: UserDefaults
@@ -57,6 +57,24 @@ class UserPersistentStore: UserPersistentRepository {
         }
 
         return UserDefaults.standard.double(forKey: key)
+    }
+
+    func array(forKey key: String) -> [Any]? {
+        let suiteValue = userDefaults.array(forKey: key)
+        if suiteValue != nil {
+            return suiteValue
+        }
+
+        return UserDefaults.standard.array(forKey: key)
+    }
+
+    func dictionary(forKey key: String) -> [String: Any]? {
+        let suiteValue = userDefaults.dictionary(forKey: key)
+        if suiteValue != nil {
+            return suiteValue
+        }
+
+        return UserDefaults.standard.dictionary(forKey: key)
     }
 
     // MARK: - UserPersistentRepositoryWriter
