@@ -3,7 +3,7 @@ import Foundation
 extension AccountService {
 
     func mergeDuplicatesIfNecessary() {
-        guard ((try? WPAccount.lookupNumberOfAccounts(in: managedObjectContext)) ?? 0) > 1 else {
+        guard let count = try? WPAccount.lookupNumberOfAccounts(in: managedObjectContext), count > 1 else {
             return
         }
 
