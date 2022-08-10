@@ -4171,15 +4171,6 @@
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack powered";
 
-/* Button title of the Jetpack powered overlay. */
-"jetpack.branding.overlay.button.title" = "Get the new Jetpack app";
-
-/* Description of the Jetpack powered overlay. */
-"jetpack.branding.overlay.description" = "Stats, Reader, Notifications, and other features are provided by Jetpack.";
-
-/* Title of the Jetpack powered overlay. */
-"jetpack.branding.overlay.title" = "Jetpack powered";
-
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
 
