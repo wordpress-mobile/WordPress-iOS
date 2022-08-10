@@ -103,13 +103,13 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Animations {
-        static let wpJetpackLogoAnimation = "WordPressToJetpackAnimation"
+        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation"
     }
 
     enum Metrics {
         static let imageToTitleSpacing: CGFloat = 24
         static let descriptionToButtonSpacing: CGFloat = 40
-        static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
+        static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 30, right: 20)
         static let getJetpackButtonHeight: CGFloat = 44
         static let buttonCornerRadius: CGFloat = 6
     }
