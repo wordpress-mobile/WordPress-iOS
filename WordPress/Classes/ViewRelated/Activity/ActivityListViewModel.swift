@@ -248,7 +248,11 @@ class ActivityListViewModel: Observable {
             UIApplication.shared.open(downloadURL)
         }
 
-        let dismissTitle = NSLocalizedString("Dismiss", comment: "Dismiss button title")
+        let dismissTitle = NSLocalizedString(
+            "activityList.dismiss.title",
+            value: "Dismiss",
+            comment: "Dismiss button title"
+        )
         downloadPromptView.setupNoButton(title: dismissTitle) { [weak self] button in
             guard let self = self else {
                 return

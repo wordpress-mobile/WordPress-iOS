@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 08:54:22+0000 */
+/* Translation-Revision-Date: 2022-08-02 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_TW */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d 篇還沒看過的文章";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s 已轉換為 %2$s";
@@ -1962,9 +1959,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "從剪貼簿複製 URL，%s";
 
 /* No comment provided by engineer. */
-"Copy block" = "複製區塊";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "複製檔案 URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -3544,6 +3538,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "擷取網站 URL";
 
 /* No comment provided by engineer. */
+"Gradient" = "漸層色彩";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "漸層色彩類型";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3952,6 +3949,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "無效的 URL，請檢查你輸入的網站位址是否有效。";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "無效網址。";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "無效網址。 找不到音訊檔案。";
 
 /* No comment provided by engineer. */
@@ -4054,7 +4054,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "已安裝 Jetpack";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "採用 Jetpack 技術";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -5269,6 +5269,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation meaning `something went wrong`.
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "糟糕！";
+
+/* No comment provided by engineer. */
+"Opacity" = "不透明度";
 
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "開啟區塊操作選單";
@@ -6556,9 +6559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "搜尋 WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "搜尋 WordPress\n網站或文章";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "搜尋區塊標籤。 目前的文字是";
 
@@ -7549,9 +7549,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "只顯示文字";
-
-/* No comment provided by engineer. */
-"Text color" = "文字顏色";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "編輯文字區塊時，文字格式控制項就在鍵盤上方的工具列中";
@@ -8557,6 +8554,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "升級重點：婚禮適用的 VideoPress";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "升級方案即可上傳音訊";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "升級方案即可使用影片封面";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "上傳媒體";
@@ -9832,6 +9835,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "選擇網站用途";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "採用 Jetpack 技術";
 
 /* Later today */
 "later today" = "今日稍晚";

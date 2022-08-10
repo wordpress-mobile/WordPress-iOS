@@ -41,6 +41,7 @@ class PostTagPickerViewController: UIViewController {
         WPStyleGuide.configureTableViewColors(tableView: tableView)
 
         view.backgroundColor = .listBackground
+        view.tintColor = .editorPrimary
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.

@@ -497,14 +497,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Tracks a given Analytics Event.
     ///
     func track(event: WPAnalyticsStat) {
-        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event)
     }
 
     /// Tracks a given Analytics Event, with the specified properties.
     ///
     func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
-        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event, withProperties: properties)
     }
 
@@ -512,21 +510,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
-    }
-
-    // This is probably not the best place to put this assignment
-    // However, `signed_in` is tracked on WPAuthenticator pod
-    // (which is used by other apps)
-    // Here we capture the event in the case is triggered and assign it
-    // This should be removed once the experiment is done
-    //
-    private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
-        if event == .signedIn || event == .createdAccount {
-            if FeatureFlag.mySiteDashboard.enabled {
-                let isTreatment = BlogDashboardAB.shared.variant == .treatment
-                MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
-            }
-        }
     }
 }
 

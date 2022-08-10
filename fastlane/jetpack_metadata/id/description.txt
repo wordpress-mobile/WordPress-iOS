@@ -1,9 +1,47 @@
-Dapatkan alat penunjang keamanan dan performa yang andal dengan Jetpack untuk iOS.
+Jetpack untuk WordPress
 
-Pulihkan situs dari mana saja jika terjadi kesalahan. Pindai ancaman dan atasi dengan sekali ketuk. Pantau aktivitas situs untuk melihat perubahan yang dilakukan, siapa yang melakukannya, dan kapan. Periksa statistik untuk melihat dari negara mana saja pengunjung situs Anda hari ini.
+Memberikan kekuatan publikasi web di saku Anda. Jetpack: bukan sekadar kreator situs.
 
-Aplikasi ini juga mendukung fitur WordPress yang Anda harapkan. Rangkai haiku secara spontan dari sofa Anda. Bidik dan poskan foto saat istirahat makan siang. Tanggapi komentar terbaru.
+BUAT
 
-Jetpack untuk iOS mendukung situs WordPress dengan Jetpack aktif dan akun yang terhubung ke WordPress.com.
+Sediakan wadah untuk ide-ide besar Anda di web. Jetpack untuk iOS adalah penyusun situs dan pembuat blog yang didukung oleh WordPress. Gunakan untuk membuat situs web Anda.
+Pilih tampilan dan suasana yang tepat dari sekian banyak pilihan tema WordPress, lalu sesuaikan dengan foto, warna, dan font sehingga hasilnya khas sentuhan Anda.
+Tips Mulai Cepat bawaan akan memandu Anda melalui dasar-dasar penyiapan agar situs web baru Anda bisa sukses. (Kami bukan hanya kreator situs — kami adalah mitra sekaligus tim penyemangat Anda!)
 
-Lihat Pemberitahuan Privasi untuk Pengguna California di https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+ANALITIK & WAWASAN
+
+Periksa statistik situs Anda secara real time untuk terus melacak aktivitas di situs Anda.
+Lacak pos dan halaman mana yang paling ramai lalu lintasnya dari waktu ke waktu dengan menelusuri wawasan harian, mingguan, bulanan, dan tahunan.
+Gunakan peta lalu lintas untuk melihat dari negara mana pengunjung Anda berasal.
+
+PEMBERITAHUAN
+
+Dapatkan pemberitahuan untuk komentar, suka, dan pengikut baru sehingga Anda bisa melihat orang-orang memberikan tanggapan terhadap situs Anda saat itu juga.
+Balas komentar baru begitu komentar tersebut muncul agar percakapan berjalan mengalir dan Anda bisa mengenali para pembaca Anda.
+
+PUBLIKASIKAN
+
+Buat pembaruan, cerita, pengumuman esai foto, atau apa pun dengan Editor!
+Jadikan pos dan halaman Anda lebih hidup dengan foto dan video dari kamera dan album Anda, atau temukan gambar yang sempurna dengan koleksi dalam aplikasi dari fotografi pro yang gratis untuk digunakan.
+Simpan ide sebagai konsep dan buka lagi saat inspirasi kembali muncul, atau jadwalkan pos baru untuk masa mendatang sehingga situs Anda selalu segar dan interaktif.
+Tambahkan tag dan kategori untuk membantu pembaca baru menemukan pos Anda, dan lihat perkembangan audiens Anda.
+
+PERANGKAT KEAMANAN & PERFORMA
+
+Pulihkan situs dari mana saja jika terjadi kesalahan.
+Pindai ancaman dan atasi dengan sekali ketuk.
+Pantau aktivitas situs untuk melihat perubahan yang dilakukan, siapa yang melakukannya, dan kapan.
+
+PEMBACA
+
+Jetpack lebih dari sekadar pembuat blog — gunakan agar bisa terhubung dengan komunitas penulis di Pembaca WordPress.com. Jelajahi ribuan topik dengan tag, temukan penulis dan organisasi baru, dan ikuti yang menarik minat Anda.
+Pertahankan pos yang memikat dengan fitur Simpan untuk nanti.
+
+BAGIKAN
+
+Setel berbagi otomatis untuk memberi tahu pengikut Anda di media sosial saat Anda memublikasikan pos baru. Kirim pos lintas platform secara otomatis ke Facebook, Twitter, dan sebagainya.
+Tambahkan tombol berbagi ke media sosial pada pos Anda sehingga pengunjung bisa membagikan pos Anda melalui jejaring sosial mereka, dan biarkan para penggemar menjadi ambasador Anda.
+
+Baca selengkpanya di https://jetpack.com/mobile
+
+Pemberitahuan privasi untuk pengguna California: https://automattic.com/privacy/#california-consumer-privacy-act-ccpa

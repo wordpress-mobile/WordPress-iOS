@@ -1,9 +1,7 @@
-Yayınlama deneyiminizi daha da iyi hale getirmek için blok düzenleyicide bazı değişiklikler ekledik.
+Blok Düzenleyici'de Galeri ve Görsel blokunun performansıyla ilgili bazı iyileştirmeler yaptık. Bu, görsellerin sitenizde kapladığı depolama alanının azaltılmasına yardımcı olacak ve medya yüklemeleri sırasında cihazınızın yavaşlamasını engelleyecektir. Hıza olan ihtiyacınızı hissediyoruz.
 
-- Alternatif metin kopyalayıp yapıştırmaya gerek yok - Ortam kütüphanenizdeki bir öğeyi bir Görsel blokuna eklediğinizde, öğenin alternatif metni de onunla birlikte taşınır.
-- Video bloklarına bir URL'den ortam ekleyebilirsiniz.
-- Bir blok beklenmedik veya geçersiz içerik barındırıyorsa, içeriği sıfırdan yeniden eklemeden düzgün şekilde görüntülemek için blok kurtarma seçeneğini kullanabilirsiniz.
+Sitenizde VideoPress kullanılıyorsa, sitenin web sürümüne kaydedilen tüm Video blokları artık mobil uygulamada da düzgün şekilde görüntülenecektir.
 
-Gönderi yorumları da kullanıcı açısından iyileştirilmiştir. Yorumunuzda başka bir kullanıcıdan bahsetmek için @ sembolüne bastığınızda, gönderi veya yorum yazarı önerilen kullanıcılar listesinde ilk sırada gelir. Çok hoş.
+Blok Düzenleyicideki blok ekleyici artık blok türlerinin koleksiyonlarda daha iyi organize edilmesini sağlıyor. Küçük şeyler de önemli olduğundan, Görsel bloklarındaki alt metin dipnotunda da küçük bir boşluk ayarı yaptık.
 
-Son olarak, düzenleyicinin ortam seçicisinde, pencereyi kapatıp yeniden açtıktan sonra bile arama sorgularının takılıp kalmasına neden olan bir sorunu düzelttik. Ayrıca, bir Öykü gönderisine birden fazla öğe eklerken uygulamanın kilitlenmesine neden olan hatayı da ortadan kaldırdık.
+Son olarak, site oluşturma sürecindeki sinir bozucu bir hatayı ortadan kaldırdık. Site tasarımı seçenekleri arasında yatay olarak gezinirken, sayfada yukarı ve aşağı kaydırsanız bile uygulama artık kaldığınız yeri hatırlayacak.

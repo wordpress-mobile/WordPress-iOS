@@ -21,6 +21,7 @@ extension AppStyleGuide {
     static let textSubtle = MurielColor(name: .gray, shade: .shade50)
     static let warning = MurielColor(name: .yellow)
     static let jetpackGreen = MurielColor(name: .jetpackGreen)
+    static let editorPrimary = MurielColor(name: .blue)
 }
 
 // MARK: - Images

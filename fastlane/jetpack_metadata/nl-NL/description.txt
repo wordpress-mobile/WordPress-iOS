@@ -1,9 +1,47 @@
-Krachtige beveiligings- en prestatietools binnen handbereik met Jetpack voor iOS.
+Jetpack for WordPress
 
-Herstel je site overal ter wereld mocht er iets misgaan. Controleer op dreigingen en elimineer deze in een handomdraai. Houd de activiteit op je site in de gaten om te zien welke wijzigingen zijn doorgevoerd door wie en wanneer. Bekijk je statistieken om te zien uit welke landen de bezoekers van vandaag komen.
+Put the power of web publishing in your pocket. Jetpack is a website creator and so much more!
 
-De app ondersteunt ook de WordPress-functies die je mag verwachten. Schrijf een spontane haiku vanaf je bank. Maak een foto tijdens je lunchpauze en upload deze. Reageer op de nieuwste opmerkingen.
+MAKEN
 
-Jetpack voor iOS ondersteunt WordPress-sites waarop Jetpack is ingeschakeld en met een account dat is gekoppeld aan WordPress.com.
+- Geef je grote ideeën een plekje op het web. Jetpack for iOS is a website builder and a blog maker powered by WordPress. Gebruik het om je website te maken.
+- Kies de juiste look en feel uit een brede selectie WordPress-thema's en pas deze aan met foto's, kleuren en lettertypen in jouw unieke stijl.
+- Met de ingebouwde snelle tips loop je snel door de basisprincipes van de installatie en kun je gaan knallen met je nieuwe website. (We zijn niet alleen een websitemaker, maar jouw partner en grootste fan!)
+
+ANALYTICS & INSIGHTS
+
+- Bekijk de statistieken van je website in real-time om de activiteit op je site te volgen.
+- Volg welke berichten en pagina's in de loop van de tijd het meeste verkeer krijgen door dagelijkse, wekelijkse, maandelijkse en jaarlijkse inzichten te analyseren.
+- Gebruik de verkeerskaart om te zien uit welke landen je bezoekers komen.
+
+MELDINGEN
+
+- Ontvang meldingen over opmerkingen, vind-ik-leuks en nieuwe volgers, zodat je kunt zien hoe mensen reageren op je website.
+- Reageer op nieuwe commentaren zodra ze verschijnen om het gesprek vlot te laten verlopen en je lezers te erkennen.
+
+PUBLICEREN
+
+- Maak updates, verhalen, fotoverslagen, aankondigingen en wat je maar wilt!
+- Breng je berichten en pagina's tot leven met foto's en video's uit je camera en albums of vind de perfecte foto in de collectie royaltyvrije professionele foto's in de app.
+- Bewaar ideeën als concepten en kom er later op terug als je meer inspiratie hebt of plan nieuwe berichten voor een later moment, zodat je site altijd actueel en aantrekkelijk is.
+- Voeg tags en categorieën toe om nieuwe lezers naar je berichten te leiden en kijk toe hoe je publiek groeit.
+
+SECURITY & PERFORMANCE TOOLS
+
+Herstel je site overal ter wereld mocht er iets misgaan.
+Controleer op dreigingen en elimineer deze in een handomdraai.
+Houd de activiteit op je site in de gaten om te zien welke wijzigingen zijn doorgevoerd door wie en wanneer.
+
+LEZER
+
+- WordPress is meer dan een blogmaker. Gebruik het om in contact te komen met een community van schrijvers in de WordPress Reader. Verken duizenden onderwerpen per tag, ontdek nieuwe auteurs en organisaties en volg mensen die je interesseren.
+- Bewaar de berichten die je fascineren met de functie Opslaan voor later.
+
+DELEN
+
+- Stel automatische delen in om je volgers op sociale media te laten weten wanneer je een nieuw bericht publiceert. Plaats automatisch dezelfde berichten op Facebook, Twitter en meer.
+- Voeg knoppen voor delen op social media toe aan je berichten zodat je bezoekers ze kunnen delen met hun netwerk. Laat je fans jouw promotie doen.
+
+Learn more at https://jetpack.com/mobile
 
 Bekijk de privacyverklaring voor gebruikers in Californië op https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

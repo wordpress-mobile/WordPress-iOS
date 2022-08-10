@@ -1544,9 +1544,6 @@
 "Copy Link to Comment" = "Copy Link to Comment";
 
 /* No comment provided by engineer. */
-"Copy block" = "Copy block";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -5399,9 +5396,6 @@
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Search WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
 /* title of the button that searches the first domain. */
 "Search for a domain" = "Search for a domain";
