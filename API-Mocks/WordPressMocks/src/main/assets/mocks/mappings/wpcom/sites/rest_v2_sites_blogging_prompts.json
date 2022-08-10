@@ -243,7 +243,7 @@
           "title": "Prompt number 219",
           "content": "<!-- wp:pullquote -->\n<figure class=\"wp-block-pullquote\"><blockquote><p>What's the most money you've ever spent on a meal? Was it worth it?</p></blockquote></figure>\n<!-- /wp:pullquote -->",
           "attribution": "",
-          "date": "2022-08-08",
+          "date": "{{now format='yyyy-MM-dd'}}",
           "answered": false,
           "answered_users_count": 0,
           "answered_users_sample": []
