@@ -51,7 +51,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         }
 
         // Assign the UUID's + Find the old defaultAccount (if any)
-        let defaultUsername: String = UserDefaults.standard.string(forKey: defaultDotcomUsernameKey) ?? String()
+        let defaultUsername: String = UserPersistentStoreFactory.instance().string(forKey: defaultDotcomUsernameKey) ?? String()
         var defaultAccount: NSManagedObject?
 
         for account in accounts {
@@ -92,7 +92,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     // MARK: - Private Helpers
 
     fileprivate func legacyDefaultWordPressAccount(_ context: NSManagedObjectContext) -> NSManagedObject? {
-        let objectURL = UserDefaults.standard.url(forKey: defaultDotcomKey)
+        let objectURL = UserPersistentStoreFactory.instance().url(forKey: defaultDotcomKey)
         if objectURL == nil {
             return nil
         }
@@ -115,7 +115,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     }
 
     fileprivate func defaultWordPressAccount(_ context: NSManagedObjectContext) -> NSManagedObject? {
-        let objectUUID = UserDefaults.standard.string(forKey: defaultDotcomUUIDKey)
+        let objectUUID = UserPersistentStoreFactory.instance().string(forKey: defaultDotcomUUIDKey)
         if objectUUID == nil {
             return nil
         }

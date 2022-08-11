@@ -26,7 +26,7 @@ struct UserSettings {
 
     /// Reset all UserSettings back to their defaults
     static func reset() {
-        UserSettings.Keys.allCases.forEach { UserDefaults.standard.removeObject(forKey: $0.rawValue) }
+        UserSettings.Keys.allCases.forEach { UserPersistentStoreFactory.instance().removeObject(forKey: $0.rawValue) }
     }
 }
 

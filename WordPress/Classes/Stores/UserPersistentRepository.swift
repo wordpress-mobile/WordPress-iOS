@@ -7,6 +7,7 @@ protocol UserPersistentRepositoryReader {
     func double(forKey key: String) -> Double
     func array(forKey key: String) -> [Any]?
     func dictionary(forKey key: String) -> [String: Any]?
+    func url(forKey key: String) -> URL?
 }
 
 protocol UserPersistentRepositoryWriter {
