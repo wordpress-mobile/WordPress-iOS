@@ -67,6 +67,7 @@ class JetpackOverlayView: UIView {
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(stackView)
         stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: animationContainerView)
+        stackView.setCustomSpacing(Metrics.titleToDescriptionSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.descriptionToButtonSpacing, after: descriptionLabel)
         animationContainerView.addSubview(animationView)
         getJetpackButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -103,11 +104,12 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Animations {
-        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation"
+        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_mask"
     }
 
     enum Metrics {
         static let imageToTitleSpacing: CGFloat = 24
+        static let titleToDescriptionSpacing: CGFloat = 20
         static let descriptionToButtonSpacing: CGFloat = 40
         static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 30, right: 20)
         static let getJetpackButtonHeight: CGFloat = 44

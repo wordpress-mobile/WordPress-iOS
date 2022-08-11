@@ -581,6 +581,8 @@
 		3F46AB0025BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		3F4B087328A44356007A0AD3 /* JetpackWordPressLogoAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4B087228A44355007A0AD3 /* JetpackWordPressLogoAnimation.json */; };
 		3F4B087428A44356007A0AD3 /* JetpackWordPressLogoAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4B087228A44355007A0AD3 /* JetpackWordPressLogoAnimation.json */; };
+		3F4B087928A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4B087828A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json */; };
+		3F4B087A28A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4B087828A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json */; };
 		3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */; };
 		3F50945F245537A700C4470B /* ReaderTabViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */; };
 		3F526C4E2538CF2A0069706C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4D2538CF2A0069706C /* WidgetKit.framework */; };
@@ -5586,6 +5588,7 @@
 		3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingCoordinator.swift; sourceTree = "<group>"; };
 		3F46AB0125BF5D6300CE2E98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Sites.intentdefinition; sourceTree = "<group>"; };
 		3F4B087228A44355007A0AD3 /* JetpackWordPressLogoAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackWordPressLogoAnimation.json; sourceTree = "<group>"; };
+		3F4B087828A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackWordPressLogoAnimation_mask.json; sourceTree = "<group>"; };
 		3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStoreTests.swift; sourceTree = "<group>"; };
 		3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModelTests.swift; sourceTree = "<group>"; };
 		3F526C4C2538CF2A0069706C /* WordPressStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9161,6 +9164,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3F4B087828A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json */,
 				3F4B087228A44355007A0AD3 /* JetpackWordPressLogoAnimation.json */,
 				433840C622C2BA5B00CB13F8 /* AppImages.xcassets */,
 				F5A34D0525DF2F7700C9654B /* Fonts */,
@@ -16802,6 +16806,7 @@
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				F5A34D1025DF2F7F00C9654B /* Shrikhand-Regular.ttf in Resources */,
+				3F4B087928A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json in Resources */,
 				9A73CB082350DE4C002EF20C /* StatsGhostSingleRowCell.xib in Resources */,
 				1761F18E26209AEE000815EF /* hot-pink-icon-app-76x76@2x.png in Resources */,
 				C7E5F2562799BD54009BC263 /* cool-blue-icon-app-76x76@2x.png in Resources */,
@@ -17201,6 +17206,7 @@
 				FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */,
 				FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */,
 				FABB206D2602FC2C00C8785C /* NoteBlockUserTableViewCell.xib in Resources */,
+				3F4B087A28A45D7F007A0AD3 /* JetpackWordPressLogoAnimation_mask.json in Resources */,
 				FABB20702602FC2C00C8785C /* ReaderListStreamHeader.xib in Resources */,
 				FABB20722602FC2C00C8785C /* MyProfileHeaderView.xib in Resources */,
 				FABB20742602FC2C00C8785C /* RestorePageTableViewCell.xib in Resources */,
