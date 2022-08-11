@@ -81,63 +81,55 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v20.4-whats-new"
+msgctxt "v20.5-whats-new"
 msgid ""
-"We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.\n"
+"We fixed a bug in the app’s Stats section—when you’re looking at lists of search engines that have sent visitors to your site, you can now see nested results, just like you would in your browser.\n"
 "\n"
-"If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.\n"
+"Hitting the @ key when you’re writing a comment still brings up a list of suggested users you might like to tag, but now those users are split into groups. If you’re responding to a parent comment, the comment’s author appears at the top of the list, right next to the post’s author.\n"
 "\n"
-"The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.\n"
+"Now that the app supports higher-resolution image previews, we bumped up the size of theme screenshots in the site theme picker. No more pixellation, only pixel perfection.\n"
 "\n"
-"Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.\n"
+"We changed some visual elements in the editor from green to blue. It now matches the visuals you’d see in the WordPress app.\n"
+"\n"
+"Finally, no more zeroes in your weekly roundup—if you don’t get any post comments or likes this week, we won’t include that number in your device notifications. Positive vibes only.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-1"
 msgid ""
-"Safer.\n"
-"Faster.\n"
-"More traffic.\n"
+"Create and\n"
+"manage your site\n"
+"on the go\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-2"
-msgid ""
-"Bring your\n"
-"Jetpack with you.\n"
+msgid "Create any type of site in a few taps."
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-3"
-msgid ""
-"Keep tabs on\n"
-"your site activity.\n"
+msgid "Professional designs to help you build."
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-4"
-msgid ""
-"Scan for issues\n"
-"on the go.\n"
+msgid "Professional designs to help you build."
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-5"
-msgid ""
-"Back up your site\n"
-"at any moment.\n"
+msgid "Keep up with your stats from anywhere."
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "screenshot-text-6"
-msgid ""
-"Site stats in your\n"
-"pocket.\n"
+msgid "Stay up to date with instant notifications."
 msgstr ""
 
