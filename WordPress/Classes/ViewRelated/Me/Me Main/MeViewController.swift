@@ -177,13 +177,11 @@ class MeViewController: UITableViewController {
                                               action: displayShareFlow(),
                                               loading: sharePresenter.isLoading))
 
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                }
+                rows.append(NavigationItemRow(title: RowTitles.about,
+                                              icon: UIImage.gridicon(.mySites),
+                                              accessoryType: .disclosureIndicator,
+                                              action: pushAbout(),
+                                              accessibilityIdentifier: "About"))
 
                 return rows
             }()),

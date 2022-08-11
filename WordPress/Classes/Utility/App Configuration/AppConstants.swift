@@ -39,14 +39,7 @@ extension AppConstants {
     }
 
     struct Settings {
-        static let aboutTitle: String = {
-            if FeatureFlag.aboutScreen.enabled {
-                return NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
-            } else {
-                return NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
-            }
-        }()
-
+        static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
     }
 

@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
-    case aboutScreen
     case mySiteDashboard
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
@@ -74,8 +73,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
             return true
         case .timeZoneSuggester:
-            return true
-        case .aboutScreen:
             return true
         case .mySiteDashboard:
             return true
@@ -167,8 +164,6 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
-        case .aboutScreen:
-            return "New Unified About Screen"
         case .mySiteDashboard:
             return "My Site Dashboard"
         case .mediaPickerPermissionsNotice:
