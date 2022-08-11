@@ -9,7 +9,7 @@ class JetpackOverlayView: UIView {
         let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, getJetpackButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .leading
         return stackView
     }()
 
@@ -31,7 +31,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         label.numberOfLines = 2
-        label.textAlignment = .center
+        label.textAlignment = .natural
         label.text = TextContent.title
         return label
     }()
@@ -42,7 +42,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textAlignment = .natural
         label.text = TextContent.description
         return label
     }()
@@ -67,6 +67,7 @@ class JetpackOverlayView: UIView {
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(stackView)
         stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: animationContainerView)
+        stackView.setCustomSpacing(Metrics.titleToDescriptionSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.descriptionToButtonSpacing, after: descriptionLabel)
         animationContainerView.addSubview(animationView)
         getJetpackButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -103,28 +104,29 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Animations {
-        static let wpJetpackLogoAnimation = "WordPressToJetpackAnimation"
+        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_mask"
     }
 
     enum Metrics {
         static let imageToTitleSpacing: CGFloat = 24
+        static let titleToDescriptionSpacing: CGFloat = 20
         static let descriptionToButtonSpacing: CGFloat = 40
-        static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 20, right: 20)
+        static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 30, right: 20)
         static let getJetpackButtonHeight: CGFloat = 44
         static let buttonCornerRadius: CGFloat = 6
     }
 
     enum TextContent {
         static let title = NSLocalizedString("jetpack.branding.overlay.title",
-                                             value: "Jetpack powered",
+                                             value: "WordPress is better with Jetpack",
                                              comment: "Title of the Jetpack powered overlay.")
 
         static let description = NSLocalizedString("jetpack.branding.overlay.description",
-                                                   value: "Stats, Reader, Notifications, and other features are provided by Jetpack.",
+                                                   value: "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.",
                                                    comment: "Description of the Jetpack powered overlay.")
 
         static let buttonTitle = NSLocalizedString("jetpack.branding.overlay.button.title",
-                                                   value: "Get the new Jetpack app",
+                                                   value: "Try the new Jetpack app",
                                                    comment: "Button title of the Jetpack powered overlay.")
     }
 }
