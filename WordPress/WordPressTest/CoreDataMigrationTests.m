@@ -32,42 +32,6 @@
     XCTAssertNotNil(url);
 }
 
-- (void)testMigrate19to21Failure
-{
-    NSURL *model19Url = [self urlForModelName:@"WordPress 19" inDirectory:nil];
-    NSURL *model21Url = [self urlForModelName:@"WordPress 21" inDirectory:nil];
-    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress20.sqlite"];
-    NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model19Url];
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-    
-    NSDictionary *options = @{
-                              NSInferMappingModelAutomaticallyOption            : @(YES),
-                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
-                              };
-    
-    NSError *error = nil;
-    NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                                    configuration:nil
-                                              URL:storeUrl
-                                          options:options
-                                            error:&error];
-    
-    XCTAssertNotNil(ps);
-    //make sure we remove the persistent store to make sure it releases the file.
-    [psc removePersistentStore:ps error:&error];
-    
-    psc = nil;
-    model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model21Url];
-    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-    NSPersistentStore * psFail = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                               configuration:nil
-                                         URL:storeUrl
-                                     options:options
-                                       error:&error];
-    
-    XCTAssertNil(psFail);
-}
-
 - (void)testMigrate19to21Success {
     NSURL *model19Url = [self urlForModelName:@"WordPress 19" inDirectory:nil];
     NSURL *model21Url = [self urlForModelName:@"WordPress 21" inDirectory:nil];

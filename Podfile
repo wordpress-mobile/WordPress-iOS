@@ -242,7 +242,6 @@ abstract_target 'Apps' do
       inherit! :search_paths
 
       shared_test_pods
-      pod 'Nimble', '~> 9.0.0'
     end
   end
 
