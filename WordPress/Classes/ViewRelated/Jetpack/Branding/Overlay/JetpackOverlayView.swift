@@ -131,6 +131,8 @@ class JetpackOverlayView: UIView {
         NSLayoutConstraint.activate([
             dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonPadding),
             dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonPadding),
+            dismissButton.heightAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
+            dismissButton.widthAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
             stackViewTrailingConstraint,
             stackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor),
