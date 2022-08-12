@@ -5,6 +5,29 @@ class JetpackOverlayView: UIView {
 
     private var buttonAction: (() -> Void)?
 
+    private var dismissButtonTintColor: UIColor {
+        UIColor(light: .muriel(color: .gray, .shade5),
+                dark: .muriel(color: .jetpackGreen, .shade90))
+    }
+
+    private var dismissButtonImage: UIImage {
+        let fontForSystemImage = UIFont.systemFont(ofSize: Metrics.dismissButtonSize)
+        let configuration = UIImage.SymbolConfiguration(font: fontForSystemImage)
+
+        // fallback to the gridicon if for any reason the system image fails to render
+        return UIImage(systemName: Graphics.dismissButtonSystemName, withConfiguration: configuration) ??
+        UIImage.gridicon(.crossCircle, size: CGSize(width: Metrics.dismissButtonSize, height: Metrics.dismissButtonSize))
+    }
+
+    private lazy var dismissButton: CustomImageBackgroundButton = {
+        let button = CustomImageBackgroundButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(dismissButtonImage, for: .normal)
+        button.tintColor = dismissButtonTintColor
+        button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
+        return button
+    }()
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [animationContainerView, titleLabel, descriptionLabel, getJetpackButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,9 +85,17 @@ class JetpackOverlayView: UIView {
         buttonAction?()
     }
 
+    @objc private func dismissTapped() {
+        guard let presentingViewController = next as? UIViewController else {
+            return
+        }
+        presentingViewController.dismiss(animated: true)
+    }
+
     private func setup() {
         backgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                   dark: .muriel(color: .jetpackGreen, .shade100))
+        addSubview(dismissButton)
         addSubview(stackView)
         stackView.setCustomSpacing(Metrics.imageToTitleSpacing, after: animationContainerView)
         stackView.setCustomSpacing(Metrics.titleToDescriptionSpacing, after: titleLabel)
@@ -72,6 +103,7 @@ class JetpackOverlayView: UIView {
         animationContainerView.addSubview(animationView)
         getJetpackButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         configureConstraints()
+        dismissButton.setImageBackgroundColor(UIColor(light: .black, dark: .white))
         animationView.play()
     }
 
