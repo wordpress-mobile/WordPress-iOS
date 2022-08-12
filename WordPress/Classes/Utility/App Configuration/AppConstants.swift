@@ -9,6 +9,7 @@ import WordPressAuthenticator
     static let productBlogDisplayURL = "blog.wordpress.com"
     static let zendeskSourcePlatform = "mobile_-_ios"
     static let shareAppName: ShareAppName = .wordpress
+    static let mobileAnnounceAppId = "2"
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants

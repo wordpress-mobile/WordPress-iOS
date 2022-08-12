@@ -9,6 +9,7 @@ import WordPressKit
     static let productBlogDisplayURL = "jetpack.com/blog"
     static let zendeskSourcePlatform = "mobile_-_jp_ios"
     static let shareAppName: ShareAppName = .jetpack
+    static let mobileAnnounceAppId = "6"
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
