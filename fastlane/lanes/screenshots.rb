@@ -65,10 +65,12 @@ platform :ios do
       end
     end
 
+    dark_mode_values = options[:skip_dark_mode] ? [false] : [true, false]
+
     UI.message "--- Generating screenshots for the following languages: #{languages}"
 
     create_missing_simulators_for_screenshots
-    [true, false].each do |dark_mode_enabled|
+    dark_mode_values.each do |dark_mode_enabled|
       capture_ios_screenshots(
         workspace: WORKSPACE_PATH,
         scheme: scheme,
@@ -99,7 +101,8 @@ platform :ios do
       scheme: 'JetpackScreenshotGeneration',
       output_directory: File.join(Dir.pwd, '/jetpack_screenshots'),
       language: options[:language],
-      skip_clean: options[:skip_clean]
+      skip_clean: options[:skip_clean],
+      skip_dark_mode: true
     )
   end
 
