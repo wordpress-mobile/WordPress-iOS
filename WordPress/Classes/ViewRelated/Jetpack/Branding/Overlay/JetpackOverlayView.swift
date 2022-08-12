@@ -43,7 +43,7 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var animationView: AnimationView = {
-        let animationView = AnimationView(name: Animations.wpJetpackLogoAnimation)
+        let animationView = AnimationView(name: Graphics.wpJetpackLogoAnimation)
         animationView.translatesAutoresizingMaskIntoConstraints = false
         return animationView
     }()
