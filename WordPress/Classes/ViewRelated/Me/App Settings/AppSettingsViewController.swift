@@ -257,13 +257,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func pushAbout() -> ImmuTableAction {
-        return { [weak self] row in
-            let controller = AboutViewController(style: .insetGrouped)
-            self?.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
             WPAnalytics.track(.privacySettingsOpened)
@@ -505,16 +498,7 @@ private extension AppSettingsViewController {
             action: openApplicationSettings()
         )
 
-        let aboutRow = NavigationItemRow(
-            title: AppConstants.Settings.aboutTitle,
-            action: pushAbout()
-        )
-
         var rows: [ImmuTableRow] = [settingsRow]
-
-        if FeatureFlag.aboutScreen.enabled == false {
-            rows.append(aboutRow)
-        }
 
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack

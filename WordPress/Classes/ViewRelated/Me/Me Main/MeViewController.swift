@@ -171,21 +171,17 @@ class MeViewController: UITableViewController {
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
-                if isRecommendAppRowEnabled {
-                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
-                                                  accessoryType: accessoryType,
-                                                  action: displayShareFlow(),
-                                                  loading: sharePresenter.isLoading))
-                }
+                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                              icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                              accessoryType: accessoryType,
+                                              action: displayShareFlow(),
+                                              loading: sharePresenter.isLoading))
 
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                }
+                rows.append(NavigationItemRow(title: RowTitles.about,
+                                              icon: UIImage.gridicon(.mySites),
+                                              accessoryType: .disclosureIndicator,
+                                              action: pushAbout(),
+                                              accessibilityIdentifier: "About"))
 
                 return rows
             }()),
@@ -301,7 +297,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: .wordpress, in: self, source: .me, sourceView: selectedCell)
+            self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -455,11 +451,6 @@ class MeViewController: UITableViewController {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
 
-    /// Convenience property to determine whether the recomend app row should be displayed or not.
-        private var isRecommendAppRowEnabled: Bool {
-            !AppConfiguration.isJetpack
-        }
-
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
         presenter.delegate = self
@@ -553,10 +544,6 @@ private extension MeViewController {
 
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
-        guard isRecommendAppRowEnabled else {
-             return
-         }
-
         reloadViewModel()
     }
 }
