@@ -53,7 +53,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
-        label.numberOfLines = 2
+        label.numberOfLines = Metrics.titleLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.title
         return label
@@ -64,7 +64,7 @@ class JetpackOverlayView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
         label.font = .preferredFont(forTextStyle: .body)
-        label.numberOfLines = 0
+        label.numberOfLines = Metrics.descriptionLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.description
         return label
@@ -76,7 +76,7 @@ class JetpackOverlayView: UIView {
         button.setTitle(TextContent.buttonTitle, for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = Metrics.buttonCornerRadius
+        button.layer.cornerRadius = Metrics.tryJetpackButtonCornerRadius
         button.layer.cornerCurve = .continuous
         return button
     }()
@@ -119,33 +119,55 @@ class JetpackOverlayView: UIView {
 
     private func configureConstraints() {
         animationContainerView.pinSubviewToAllEdges(animationView)
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.edgeMargins.right),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor, constant: -Metrics.edgeMargins.bottom),
 
-            getJetpackButton.heightAnchor.constraint(equalToConstant: Metrics.getJetpackButtonHeight),
+
+        let stackViewTrailingConstraint = stackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                                              constant: -Metrics.edgeMargins.right)
+        stackViewTrailingConstraint.priority = Metrics.veryHighPriority
+        let stackViewBottomConstraint = stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeBottomAnchor,
+                                                                          constant: -Metrics.edgeMargins.bottom)
+        stackViewBottomConstraint.priority = Metrics.veryHighPriority
+
+        NSLayoutConstraint.activate([
+            dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonPadding),
+            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonPadding),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
+            stackViewTrailingConstraint,
+            stackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor),
+            stackViewBottomConstraint,
+
+            getJetpackButton.heightAnchor.constraint(equalToConstant: Metrics.tryJetpackButtonHeight),
             getJetpackButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
 }
 
-
 // MARK: Appearance
 private extension JetpackOverlayView {
 
-    enum Animations {
-        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_mask"
+    enum Graphics {
+        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_left"
+        static let dismissButtonSystemName = "xmark.circle.fill"
     }
 
     enum Metrics {
+        // stack view
         static let imageToTitleSpacing: CGFloat = 24
         static let titleToDescriptionSpacing: CGFloat = 20
         static let descriptionToButtonSpacing: CGFloat = 40
-        static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 30, right: 20)
-        static let getJetpackButtonHeight: CGFloat = 44
-        static let buttonCornerRadius: CGFloat = 6
+        static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 20, right: 30)
+        // dismiss button
+        static let dismissButtonPadding: CGFloat = 20
+        static let dismissButtonSize: CGFloat = 30
+        // title label
+        static let titleLabelNumberOfLines = 2
+        // description label
+        static let descriptionLabelNumberOfLines = 0
+        // "Try Jetpack" button
+        static let tryJetpackButtonHeight: CGFloat = 44
+        static let tryJetpackButtonCornerRadius: CGFloat = 6
+        // constraints
+        static let veryHighPriority = UILayoutPriority(rawValue: 999)
     }
 
     enum TextContent {
