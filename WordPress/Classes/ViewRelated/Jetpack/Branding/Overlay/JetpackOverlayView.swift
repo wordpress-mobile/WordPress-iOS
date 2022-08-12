@@ -52,7 +52,8 @@ class JetpackOverlayView: UIView {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
-        label.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
+        label.minimumScaleFactor = Metrics.minimumScaleFactor
+        label.font = Metrics.titleFont
         label.numberOfLines = Metrics.titleLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.title
@@ -63,7 +64,8 @@ class JetpackOverlayView: UIView {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.adjustsFontSizeToFitWidth = true
-        label.font = .preferredFont(forTextStyle: .body)
+        label.minimumScaleFactor = Metrics.minimumScaleFactor
+        label.font = Metrics.descriptionFont
         label.numberOfLines = Metrics.descriptionLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.description
@@ -161,10 +163,26 @@ private extension JetpackOverlayView {
         // dismiss button
         static let dismissButtonPadding: CGFloat = 20
         static let dismissButtonSize: CGFloat = 30
-        // title label
+        // labels
+        static let maximumFontSize: CGFloat = 32
+        static let minimumScaleFactor: CGFloat = 0.6
+
         static let titleLabelNumberOfLines = 2
-        // description label
+
         static let descriptionLabelNumberOfLines = 0
+
+        static var titleFont: UIFont {
+            let weightTrait = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.bold]
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .title1).addingAttributes([.traits: weightTrait])
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontSize))
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontSize)
+        }
+
+        static var descriptionFont: UIFont {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontSize))
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontSize)
+        }
         // "Try Jetpack" button
         static let tryJetpackButtonHeight: CGFloat = 44
         static let tryJetpackButtonCornerRadius: CGFloat = 6
