@@ -1,5 +1,6 @@
 20.6
 -----
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
 
 
 20.5

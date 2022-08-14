@@ -24,7 +24,9 @@ class JetpackScreenshotGeneration: XCTestCase {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
 
-        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail,
+                            password: WPUITestCredentials.testWPcomPassword,
+                            selectedSiteTitle: "yourjetpack.blog")
     }
 
     override func tearDown() {
@@ -36,8 +38,11 @@ class JetpackScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() throws {
 
         let mySite = try MySiteScreen()
-            .showSiteSwitcher()
-            .switchToSite(withTitle: "yourjetpack.blog")
+
+        // Open Home
+        if XCUIDevice.isPad {
+            mySite.goToHomeScreen()
+        }
 
         // Get Site Creation screenshot
         let mySitesScreen = try mySite.showSiteSwitcher()
@@ -57,6 +62,11 @@ class JetpackScreenshotGeneration: XCTestCase {
             .thenTakeScreenshot(3, named: "PageBuilder")
 
         try chooseLayout.closeModal()
+
+        // Open Menu to be able to access stats
+        if XCUIDevice.isPhone {
+            mySite.goToMenu()
+        }
 
         // Get Stats screenshot
         let statsScreen = try mySite.goToStatsScreen()

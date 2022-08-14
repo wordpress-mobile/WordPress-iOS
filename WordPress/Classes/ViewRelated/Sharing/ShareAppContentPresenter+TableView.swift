@@ -2,7 +2,7 @@
 ///
 extension ShareAppContentPresenter {
     struct RowConstants {
-        static let buttonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Label for a button that recommends the app to others")
+        static let buttonTitle = AppConstants.Settings.shareButtonTitle
         static let buttonIconImage: UIImage? = .init(systemName: "square.and.arrow.up")
         static let buttonTintColor: UIColor = .primary
     }

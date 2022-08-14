@@ -142,7 +142,22 @@
         "import_engine": null,
         "is_pending_plan": false,
         "is_wpforteams_site": false,
-        "is_cloud_eligible": false
+        "is_cloud_eligible": false,
+        "blogging_prompts_settings": {
+          "prompts_reminders_opted_in": false,
+          "reminders_days": {
+            "monday": false,
+            "tuesday": false,
+            "wednesday": false,
+            "thursday": false,
+            "friday": false,
+            "saturday": false,
+            "sunday": false
+          },
+          "reminders_time": "10.00",
+          "is_potential_blogging_site": true,
+          "prompts_card_opted_in": true
+        }
       },
       "plan": {
         "product_id": 1,

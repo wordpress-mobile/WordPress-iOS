@@ -89,8 +89,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testDraftFilterIncludesExistingDraftsAndPendingPostsTransitionedToOtherStatuses() {
@@ -111,7 +111,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testPublishedFilterIncludesExistingPrivateAndRemotePublishedPosts() {
@@ -137,8 +137,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testPublishedFilterIncludesExistingPublishedAndPrivatePostsTransitionedToOtherStatuses() {
@@ -159,7 +159,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsOnly() {
@@ -184,8 +184,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsTransitionedToOtherStatuses() {
@@ -200,7 +200,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 }
 
