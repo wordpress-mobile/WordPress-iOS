@@ -1,6 +1,6 @@
-import Foundation
-import XCTest
 import CoreData
+import Nimble
+import XCTest
 
 @testable import WordPress
 
@@ -145,13 +145,11 @@ class ContextManagerTests: XCTestCase {
         let contextManager = ContextManagerMock()
         let derivedContext = contextManager.newDerivedContext()
 
-        let firstUserSaved = self.expectation(description: "First user is saved")
         derivedContext.perform {
             let account = WPAccount(context: derivedContext)
             account.userID = 1
             account.username = "First User"
             contextManager.saveContextAndWait(derivedContext)
-            firstUserSaved.fulfill()
         }
 
         let findFirstUser: () throws -> WPAccount? = {
@@ -159,30 +157,27 @@ class ContextManagerTests: XCTestCase {
             firstUserQuery.predicate = NSPredicate(format: "userID = 1")
             return try contextManager.mainContext.fetch(firstUserQuery).first
         }
-
-        wait(for: [firstUserSaved], timeout: 0.1)
-        try XCTAssertEqual(findFirstUser()?.username, "First User")
+        expect(try findFirstUser()?.username).toEventually(equal("First User"))
 
         // Change first user's user name
         try findFirstUser()?.username = "First User (Updated)"
 
         // Save another user
-        let secondUserSaved = self.expectation(description: "Second user is saved")
-        derivedContext.perform {
-            let account = WPAccount(context: derivedContext)
-            account.userID = 2
-            account.username = "Second account"
-            contextManager.saveContextAndWait(derivedContext)
-            secondUserSaved.fulfill()
+        waitUntil { done in
+            derivedContext.perform {
+                let account = WPAccount(context: derivedContext)
+                account.userID = 2
+                account.username = "Second account"
+                contextManager.saveContextAndWait(derivedContext)
+                done()
+            }
         }
-
-        wait(for: [secondUserSaved], timeout: 0.1)
 
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
         XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
-        try XCTAssertEqual(findFirstUser()?.username, "First User")
+        expect(try findFirstUser()?.username) == "First User"
     }
 
     func testSaveUsingBlock() async {
