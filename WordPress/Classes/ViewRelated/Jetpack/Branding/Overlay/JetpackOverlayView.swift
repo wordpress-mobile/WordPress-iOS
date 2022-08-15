@@ -19,8 +19,8 @@ class JetpackOverlayView: UIView {
         UIImage.gridicon(.crossCircle, size: CGSize(width: Metrics.dismissButtonSize, height: Metrics.dismissButtonSize))
     }
 
-    private lazy var dismissButton: CustomImageBackgroundButton = {
-        let button = CustomImageBackgroundButton()
+    private lazy var dismissButton: CircularImageButton = {
+        let button = CircularImageButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(dismissButtonImage, for: .normal)
         button.tintColor = dismissButtonTintColor
