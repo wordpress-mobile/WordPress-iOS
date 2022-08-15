@@ -231,12 +231,12 @@ open class DeleteSiteViewController: UITableViewController {
                                     self?.updateNavigationStackAfterSiteDeletion()
 
                                     let context = ContextManager.shared.mainContext
-                                    // TODO: This force-unwrap was present before refactoring the Core Data Stack – we should remove it
-                                    // at the first opportunity
-                                    let account = try! WPAccount.lookupDefaultWordPressComAccount(in: context)!
-                                    AccountService(managedObjectContext: context).updateUserDetails(for: account,
-                                                                     success: { () in },
-                                                                     failure: { _ in })
+                                    let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+                                    if let account = account {
+                                        AccountService(managedObjectContext: context).updateUserDetails(for: account,
+                                                                                                        success: {},
+                                                                                                        failure: { _ in })
+                                    }
             },
                                   failure: { error in
                                     DDLogError("Error deleting site: \(error.localizedDescription)")
