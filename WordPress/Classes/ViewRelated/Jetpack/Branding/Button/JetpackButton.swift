@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
-class JetpackButton: UIButton {
+class JetpackButton: CircularImageButton {
 
     enum ButtonStyle {
         case badge
@@ -10,13 +10,6 @@ class JetpackButton: UIButton {
     }
 
     private let style: ButtonStyle
-
-    private lazy var imageBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = imageBackgroundColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
 
     init(style: ButtonStyle) {
         self.style = style
@@ -84,18 +77,7 @@ class JetpackButton: UIButton {
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
         flipInsetsForRightToLeftLayoutDirection()
-
-        // sets the background of the jp logo to white
-        if let imageView = imageView {
-            insertSubview(imageBackgroundView, belowSubview: imageView)
-            imageBackgroundView.clipsToBounds = true
-            NSLayoutConstraint.activate([
-                imageBackgroundView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-                imageBackgroundView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-                imageBackgroundView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
-                imageBackgroundView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
-            ])
-        }
+        setImageBackgroundColor(imageBackgroundColor)
     }
 
     private enum Appearance {
@@ -115,7 +97,6 @@ class JetpackButton: UIButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageBackgroundView.layer.cornerRadius = imageBackgroundView.frame.height / 2
         if style == .badge {
             layer.cornerRadius = frame.height / 2
             layer.cornerCurve = .continuous
