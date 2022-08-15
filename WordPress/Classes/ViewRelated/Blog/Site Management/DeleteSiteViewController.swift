@@ -234,7 +234,7 @@ open class DeleteSiteViewController: UITableViewController {
                                     let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
                                     if let account = account {
                                         AccountService(managedObjectContext: context).updateUserDetails(for: account,
-                                                                                                        success: { () in },
+                                                                                                        success: {},
                                                                                                         failure: { _ in })
                                     }
             },
