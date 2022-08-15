@@ -1,6 +1,6 @@
-import Foundation
-import XCTest
 import CoreData
+import Nimble
+import XCTest
 
 @testable import WordPress
 
@@ -139,6 +139,45 @@ class ContextManagerTests: XCTestCase {
         } catch let error as NSError {
             XCTAssertNil(error, "Setting authorAvatarURL shouldn't throw an error")
         }
+    }
+
+    func testSaveDerivedContextWithChangesInMainContext() throws {
+        let contextManager = ContextManagerMock()
+        let derivedContext = contextManager.newDerivedContext()
+
+        derivedContext.perform {
+            let account = WPAccount(context: derivedContext)
+            account.userID = 1
+            account.username = "First User"
+            contextManager.saveContextAndWait(derivedContext)
+        }
+
+        let findFirstUser: () throws -> WPAccount? = {
+            let firstUserQuery = NSFetchRequest<WPAccount>(entityName: "Account")
+            firstUserQuery.predicate = NSPredicate(format: "userID = 1")
+            return try contextManager.mainContext.fetch(firstUserQuery).first
+        }
+        expect(try findFirstUser()?.username).toEventually(equal("First User"))
+
+        // Change first user's user name
+        try findFirstUser()?.username = "First User (Updated)"
+
+        // Save another user
+        waitUntil { done in
+            derivedContext.perform {
+                let account = WPAccount(context: derivedContext)
+                account.userID = 2
+                account.username = "Second account"
+                contextManager.saveContextAndWait(derivedContext)
+                done()
+            }
+        }
+
+        // Discard the username change that's made above
+        contextManager.mainContext.reset()
+
+        XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
+        expect(try findFirstUser()?.username) == "First User"
     }
 
     func testSaveUsingBlock() async {
