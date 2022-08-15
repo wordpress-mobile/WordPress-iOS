@@ -195,6 +195,26 @@ static ContextManager *_instance;
     }];
 }
 
+- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock
+{
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlockAndWait:^{
+        aBlock(context);
+
+        [self saveContextAndWait:context];
+    }];
+}
+
+- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion
+{
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlock:^{
+        aBlock(context);
+
+        [self saveContext:context andWait:NO withCompletionBlock:completion];
+    }];
+}
+
 
 #pragma mark - Setup
 
