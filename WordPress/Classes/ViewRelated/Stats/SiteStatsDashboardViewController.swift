@@ -112,6 +112,9 @@ class SiteStatsDashboardViewController: UIViewController {
             jetpackBannerView.removeFromSuperview()
             return
         }
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
     }
 
     @objc func manageInsightsButtonTapped() {
