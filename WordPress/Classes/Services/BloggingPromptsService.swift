@@ -286,38 +286,34 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = predicate
 
-        let derivedContext = contextManager.newDerivedContext()
-        derivedContext.perform {
+        Task {
             do {
-                // Update existing prompts
-                var foundExistingIDs = [Int32]()
-                let results = try derivedContext.fetch(fetchRequest)
-                results.forEach { prompt in
-                    guard let remotePrompt = remotePromptsDictionary[prompt.promptID] else {
-                        return
+                try await contextManager.save { derivedContext in
+                    var foundExistingIDs = [Int32]()
+                    let results = try derivedContext.fetch(fetchRequest)
+                    results.forEach { prompt in
+                        guard let remotePrompt = remotePromptsDictionary[prompt.promptID] else {
+                            return
+                        }
+
+                        foundExistingIDs.append(prompt.promptID)
+                        prompt.configure(with: remotePrompt, for: self.siteID.int32Value)
                     }
 
-                    foundExistingIDs.append(prompt.promptID)
-                    prompt.configure(with: remotePrompt, for: self.siteID.int32Value)
-                }
-
-                // Insert new prompts
-                let newPromptIDs = remoteIDs.subtracting(foundExistingIDs)
-                newPromptIDs.forEach { newPromptID in
-                    guard let remotePrompt = remotePromptsDictionary[newPromptID],
-                          let newPrompt = BloggingPrompt.newObject(in: derivedContext) else {
-                        return
-                    }
-                    newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
-                }
-
-                self.contextManager.save(derivedContext) {
-                    DispatchQueue.main.async {
-                        completion(.success(()))
+                    // Insert new prompts
+                    let newPromptIDs = remoteIDs.subtracting(foundExistingIDs)
+                    newPromptIDs.forEach { newPromptID in
+                        guard let remotePrompt = remotePromptsDictionary[newPromptID],
+                              let newPrompt = BloggingPrompt.newObject(in: derivedContext) else {
+                            return
+                        }
+                        newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
                     }
                 }
-
-            } catch let error {
+                DispatchQueue.main.async {
+                    completion(.success(()))
+                }
+            } catch {
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
