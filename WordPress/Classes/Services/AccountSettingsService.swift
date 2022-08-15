@@ -226,8 +226,8 @@ class AccountSettingsService {
     }
 
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccount(withUserID: NSNumber(value: userID)) else {
+
+        guard let account = try? WPAccount.lookup(withUserID: Int64(userID), in: context) else {
             DDLogError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
@@ -258,22 +258,5 @@ class AccountSettingsService {
                 return nil
             }
         }
-    }
-}
-
-struct AccountSettingsHelper {
-    let accountService: AccountService
-
-    init(accountService: AccountService) {
-        self.accountService = accountService
-    }
-
-    func updateTracksOptOutSetting(_ optOut: Bool) {
-        guard let account = accountService.defaultWordPressComAccount() else {
-            return
-        }
-
-        let change = AccountSettingsChange.tracksOptOut(optOut)
-        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
     }
 }

@@ -10,9 +10,8 @@ final class ReaderReportPostAction {
 
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.addsWPComReferrer = true
-        let service = AccountService(managedObjectContext: context)
 
-        if let account = service.defaultWordPressComAccount() {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
             configuration.authenticate(account: account)
         }
 

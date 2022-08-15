@@ -40,6 +40,7 @@ extension AppConstants {
 
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+        static let shareButtonTitle = NSLocalizedString("Share Jetpack with a friend", comment: "Title for a button that recommends the app to others")
     }
 
     struct Login {

@@ -17,9 +17,14 @@ public class LoginEpilogueScreen: ScreenObject {
         )
     }
 
-    public func continueWithSelectedSite() throws -> MySiteScreen {
-        let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
-        firstSite.tap()
+    public func continueWithSelectedSite(title: String? = nil) throws -> MySiteScreen {
+        if let title = title {
+            let selectedSite = loginEpilogueTable.cells[title]
+            selectedSite.tap()
+        } else {
+            let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
+            firstSite.tap()
+        }
 
         try dismissQuickStartPromptIfNeeded()
         try dismissOnboardingQuestionsPromptIfNeeded()

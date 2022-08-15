@@ -5,9 +5,8 @@ extension AccountService {
     /// Loads the default WordPress account's cookies into shared cookie storage.
     ///
     static func loadDefaultAccountCookies() {
-        let service = AccountService(managedObjectContext: ContextManager.shared.mainContext)
         guard
-            let account = service.defaultWordPressComAccount(),
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
             let auth = RequestAuthenticator(account: account),
             let url = URL(string: WPComDomain)
         else {

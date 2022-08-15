@@ -708,8 +708,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)accountIsDefaultAccount
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    return [accountService isDefaultWordPressComAccount:self.account];
+    return [[self account] isDefaultWordPressComAccount];
 }
 
 - (NSNumber *)dotComID

@@ -789,9 +789,8 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             ShareExtensionService.configureShareExtensionToken(authToken)
             ShareExtensionService.configureShareExtensionUsername(account.username)
         }
@@ -809,9 +808,8 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             NotificationSupportService.insertContentExtensionToken(authToken)
             NotificationSupportService.insertContentExtensionUsername(account.username)
 

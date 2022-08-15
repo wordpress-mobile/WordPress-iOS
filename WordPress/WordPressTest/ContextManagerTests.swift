@@ -185,6 +185,73 @@ class ContextManagerTests: XCTestCase {
         try XCTAssertEqual(findFirstUser()?.username, "First User")
     }
 
+    func testSaveUsingBlock() async {
+        let contextManager = ContextManagerMock()
+        let numberOfAccounts: () -> Int = {
+            contextManager.mainContext.countObjects(ofType: WPAccount.self)
+        }
+        XCTAssertEqual(numberOfAccounts(), 0)
+
+        await contextManager.save { context in
+            let account = WPAccount(context: context)
+            account.userID = 1
+            account.username = "First User"
+        }
+        XCTAssertEqual(numberOfAccounts(), 1)
+
+        // In the translated Swift API of `ContextManager`, there are two `save(_: (NSManagedContext) -> Void)`
+        // functions. The only difference between them is, one is async function, the other is not.
+        // When compiling statement `try save { context in doSomething(context) }`, Swift picks which overload to use
+        // based on the context—there is no syntax or keyword to explicitly pick one ourselves.
+        //
+        // From: https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md#overloading-and-overload-resolution
+        // > "In non-async functions, and closures without any await expression, the compiler selects the non-async overload"
+        let sync: () -> Void = {
+            contextManager.save { context in
+                let account = WPAccount(context: context)
+                account.userID = 2
+                account.username = "Second User"
+            }
+        }
+        sync()
+
+        XCTAssertEqual(numberOfAccounts(), 2)
+    }
+
+    func testSaveUsingBlockWithNestedCalls() {
+        let contextManager = ContextManagerMock()
+        let accounts: () -> Set<String> = {
+            let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
+            return Set(all.map { $0.username! })
+        }
+        XCTAssertTrue(accounts().isEmpty)
+
+        let saveOperations = [
+            self.expectation(description: "First User is saved"),
+            self.expectation(description: "Second User is saved"),
+        ]
+
+        contextManager.save {
+            let account = WPAccount(context: $0)
+            account.userID = 1
+            account.username = "First User"
+
+            contextManager.save {
+                let account = WPAccount(context: $0)
+                account.userID = 2
+                account.username = "Second User"
+            }
+            saveOperations[1].fulfill()
+
+            XCTAssertEqual(accounts(), ["Second User"])
+        } completion: {
+            saveOperations[0].fulfill()
+        }
+
+        wait(for: saveOperations, timeout: 0.1)
+        XCTAssertEqual(accounts(), ["First User", "Second User"])
+    }
+
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"

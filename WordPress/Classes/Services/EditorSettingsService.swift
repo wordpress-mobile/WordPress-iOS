@@ -78,7 +78,7 @@ import Foundation
 
 private extension EditorSettingsService {
     var defaultWPComAccount: WPAccount? {
-        return AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()
+        try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
     }
 
     func updateAllSites(with response: [Int: EditorSettings.Mobile]) {

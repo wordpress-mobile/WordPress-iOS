@@ -15,10 +15,7 @@ class ReaderSelectInterestsCoordinator {
 
         self.interestsService = service ?? ReaderTopicService(managedObjectContext: context)
         self.userId = userId ?? {
-            let acctServ = AccountService(managedObjectContext: context)
-            let account = acctServ.defaultWordPressComAccount()
-
-            return account?.userID
+            return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.userID
         }()
     }
 

@@ -85,7 +85,6 @@ private extension CommentService {
     /// - Parameter accountService: The service used to fetch the default `WPAccount`.
     /// - Returns: The current user's dotcom ID if exists, or nil otherwise.
     func getCurrentUserID(accountService: AccountService? = nil) -> NSNumber? {
-        let service = accountService ?? AccountService(managedObjectContext: managedObjectContext)
-        return service.defaultWordPressComAccount()?.userID
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)?.userID
     }
 }
