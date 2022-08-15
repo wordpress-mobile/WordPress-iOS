@@ -1,8 +1,8 @@
 import UIKit
 
 /// Use this UIButton subclass to set a custom background for the button image, different from tintColor and backgroundColor.
-/// If there's not image, it has no effect.
-class CustomImageBackgroundButton: UIButton {
+/// If there's not image, it has no effect. Supports only circular images.
+class CircularImageButton: UIButton {
 
     private lazy var imageBackgroundView: UIView = {
         let view = UIView()

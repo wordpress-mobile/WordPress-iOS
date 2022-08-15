@@ -580,8 +580,8 @@
 		3F44DD58289C379C006334CD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3F44DD57289C379C006334CD /* Lottie */; };
 		3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		3F46AB0025BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
-		3F4D035028A56F9B00F0A4FD /* CustomImageBackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D034F28A56F9B00F0A4FD /* CustomImageBackgroundButton.swift */; };
-		3F4D035128A56F9B00F0A4FD /* CustomImageBackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D034F28A56F9B00F0A4FD /* CustomImageBackgroundButton.swift */; };
+		3F4D035028A56F9B00F0A4FD /* CircularImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D034F28A56F9B00F0A4FD /* CircularImageButton.swift */; };
+		3F4D035128A56F9B00F0A4FD /* CircularImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D034F28A56F9B00F0A4FD /* CircularImageButton.swift */; };
 		3F4D035328A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_left.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4D035228A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_left.json */; };
 		3F4D035428A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_left.json in Resources */ = {isa = PBXBuildFile; fileRef = 3F4D035228A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_left.json */; };
 		3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */; };
@@ -5588,7 +5588,7 @@
 		3F4370402893207C00475B6E /* JetpackOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayView.swift; sourceTree = "<group>"; };
 		3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingCoordinator.swift; sourceTree = "<group>"; };
 		3F46AB0125BF5D6300CE2E98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Sites.intentdefinition; sourceTree = "<group>"; };
-		3F4D034F28A56F9B00F0A4FD /* CustomImageBackgroundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageBackgroundButton.swift; sourceTree = "<group>"; };
+		3F4D034F28A56F9B00F0A4FD /* CircularImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularImageButton.swift; sourceTree = "<group>"; };
 		3F4D035228A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_left.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackWordPressLogoAnimation_left.json; sourceTree = "<group>"; };
 		3F50945A2454ECA000C4470B /* ReaderTabItemsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabItemsStoreTests.swift; sourceTree = "<group>"; };
 		3F50945E245537A700C4470B /* ReaderTabViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModelTests.swift; sourceTree = "<group>"; };
@@ -10184,7 +10184,7 @@
 			isa = PBXGroup;
 			children = (
 				3FFA5ED12876152E00830E28 /* JetpackButton.swift */,
-				3F4D034F28A56F9B00F0A4FD /* CustomImageBackgroundButton.swift */,
+				3F4D034F28A56F9B00F0A4FD /* CircularImageButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -18623,7 +18623,7 @@
 				7E40716223741376003627FA /* GutenbergNetworking.swift in Sources */,
 				3FBB2D2B27FB6CB200C57BBF /* SiteNameViewController.swift in Sources */,
 				17BD4A192101D31B00975AC3 /* NavigationActionHelpers.swift in Sources */,
-				3F4D035028A56F9B00F0A4FD /* CustomImageBackgroundButton.swift in Sources */,
+				3F4D035028A56F9B00F0A4FD /* CircularImageButton.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
 				7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */,
 				1E672D95257663CE00421F13 /* GutenbergAudioUploadProcessor.swift in Sources */,
@@ -21481,7 +21481,7 @@
 				3F435220289B2B2B00CE19ED /* JetpackBrandingCoordinator.swift in Sources */,
 				FABB23632602FC2C00C8785C /* PostListTableViewHandler.swift in Sources */,
 				FABB23642602FC2C00C8785C /* UIAlertController+Helpers.swift in Sources */,
-				3F4D035128A56F9B00F0A4FD /* CustomImageBackgroundButton.swift in Sources */,
+				3F4D035128A56F9B00F0A4FD /* CircularImageButton.swift in Sources */,
 				FABB23652602FC2C00C8785C /* RevisionDiff+CoreData.swift in Sources */,
 				C79C307F26EA970800E88514 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				FABB23662602FC2C00C8785C /* NotificationCommentRange.swift in Sources */,
