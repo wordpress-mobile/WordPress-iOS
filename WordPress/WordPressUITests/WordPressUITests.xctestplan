@@ -11,24 +11,34 @@
   ],
   "defaultOptions" : {
     "codeCoverage" : false,
+    "maximumTestRepetitions" : 100,
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
       "name" : "WordPress"
     },
-    "testRepetitionMode" : "retryOnFailure"
+    "testRepetitionMode" : "untilFailure"
   },
   "testTargets" : [
     {
       "skippedTests" : [
         "EditorAztecTests",
+        "EditorGutenbergTests\/testAddGalleryBlock()",
+        "EditorGutenbergTests\/testBasicPostPublishWithCategoryAndTag()",
+        "EditorGutenbergTests\/testTextPostPublish()",
         "EditorTests\/testPlayground()",
+        "LoginTests",
         "LoginTests\/testEmailMagicLinkLogin()",
         "LoginTests\/testEmailPasswordLoginLogout()",
         "LoginTests\/testSelfHostedUsernamePasswordLoginLogout()",
         "LoginTests\/testUnsuccessfulLogin()",
         "LoginTests\/testWpcomUsernamePasswordLogin()",
+        "MainNavigationTests",
+        "ReaderTests",
+        "SignupTests",
         "SignupTests\/testEmailSignup()",
+        "StatsTests",
+        "SupportScreenTests",
         "SupportScreenTests\/testSupportScreenLoads()"
       ],
       "target" : {
