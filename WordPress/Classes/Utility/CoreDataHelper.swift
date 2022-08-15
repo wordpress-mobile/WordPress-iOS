@@ -193,3 +193,20 @@ extension ContextManager {
         ContextManager.overrideInstance = instance
     }
 }
+
+extension CoreDataStack {
+    func save(_ block: @escaping (NSManagedObjectContext) throws -> Void) async throws {
+        let context = newDerivedContext()
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            context.perform {
+                do {
+                    try block(context)
+                    self.saveContextAndWait(context)
+                    continuation.resume()
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+}
