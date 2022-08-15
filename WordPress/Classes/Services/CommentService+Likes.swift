@@ -94,22 +94,19 @@ private extension CommentService {
             return
         }
 
-        let derivedContext = ContextManager.shared.newDerivedContext()
-
-        derivedContext.perform {
-
-            let likers = remoteLikeUsers.map { remoteUser in
-                LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
-            }
-
-            if purgeExisting {
-                self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext, likesToKeep: likers)
-            }
-
-            ContextManager.shared.save(derivedContext) {
-                DispatchQueue.main.async {
-                    onComplete()
+        Task {
+            await ContextManager.shared.save { derivedContext in
+                let likers = remoteLikeUsers.map { remoteUser in
+                    LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
                 }
+
+                if purgeExisting {
+                    self.deleteExistingUsersFor(commentID: commentID, siteID: siteID, from: derivedContext, likesToKeep: likers)
+                }
+            }
+
+            DispatchQueue.main.async {
+                onComplete()
             }
         }
     }
