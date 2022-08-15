@@ -394,32 +394,24 @@ extension PeopleService {
     ///   - siteID: The ID of the site to which the InviteLinks belong.
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
-    func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        let context = ContextManager.shared.newDerivedContext()
-        context.perform {
-            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
-                DispatchQueue.main.async {
-                    onComplete()
+    func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @MainActor @escaping () -> Void) {
+        Task {
+            await ContextManager.shared.save { context in
+                guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
+                    return
                 }
-                return
-            }
 
-            // Delete Stale Items
-            let inviteKeys = remoteInvites.map { invite -> String in
-                return invite.inviteKey
-            }
-            deleteMissingInviteLinks(keys: inviteKeys, for: siteID, from: context)
+                // Delete Stale Items
+                let inviteKeys = remoteInvites.map { $0.inviteKey }
+                deleteMissingInviteLinks(keys: inviteKeys, for: siteID, from: context)
 
-            // Create or Update items
-            for remoteInvite in remoteInvites {
-                createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
-            }
-
-            ContextManager.shared.save(context) {
-                DispatchQueue.main.async {
-                    onComplete()
+                // Create or Update items
+                for remoteInvite in remoteInvites {
+                    createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
                 }
             }
+
+            await onComplete()
         }
     }
 
@@ -430,27 +422,23 @@ extension PeopleService {
     ///   - siteID: The ID of the site to which the InviteLinks belong.
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
-    func deleteInviteLinks(keys: [String], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        let context = ContextManager.shared.newDerivedContext()
-        context.perform {
-
-            let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
-            request.predicate = NSPredicate(format: "inviteKey IN %@ AND blog.blogID = %@", keys, NSNumber(value: siteID))
-
+    func deleteInviteLinks(keys: [String], for siteID: Int, onComplete: @MainActor @escaping () -> Void) {
+        Task {
             do {
-                let staleInvites = try context.fetch(request)
-                for staleInvite in staleInvites {
-                    context.delete(staleInvite)
+                try await ContextManager.shared.save { context in
+
+                    let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
+                    request.predicate = NSPredicate(format: "inviteKey IN %@ AND blog.blogID = %@", keys, NSNumber(value: siteID))
+
+                    let staleInvites = try context.fetch(request)
+                    for staleInvite in staleInvites {
+                        context.delete(staleInvite)
+                    }
                 }
             } catch {
                 DDLogError("Error fetching stale invite links: \(error)")
             }
-
-            ContextManager.shared.save(context) {
-                DispatchQueue.main.async {
-                    onComplete()
-                }
-            }
+            await onComplete()
         }
     }
 
