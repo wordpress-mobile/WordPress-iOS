@@ -58,9 +58,7 @@ extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewController
     }
 
     private func accountEmail() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
+        guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
             return nil
         }
         return defaultAccount.email

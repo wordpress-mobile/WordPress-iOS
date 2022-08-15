@@ -180,8 +180,7 @@ extension WordPressAuthenticationManager {
     @objc
     class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
         return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
     }
@@ -268,8 +267,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        return accountService.defaultWordPressComAccount() == nil
+        (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)) == nil
     }
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
@@ -453,9 +451,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let service = AccountService(managedObjectContext: context)
 
         let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
-        if service.defaultWordPressComAccount() == nil {
-            service.setDefaultWordPressComAccount(account)
-        }
+        service.setDefaultWordPressComAccount(account)
     }
 
     /// When an Apple account is used during the Auth flow, save the Apple user id to the keychain.
@@ -521,17 +517,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 private extension WordPressAuthenticationManager {
     private func numberOfBlogs() -> Int {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+        let numberOfBlogs = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.blogs?.count ?? 0
 
         return numberOfBlogs
     }
 
     private func firstBlog() -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs?.first
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.blogs?.first
     }
 }
 

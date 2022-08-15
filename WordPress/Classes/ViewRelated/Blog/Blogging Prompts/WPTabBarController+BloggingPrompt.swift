@@ -43,7 +43,7 @@ extension WPTabBarController {
 private extension WPTabBarController {
 
     var accountSites: [Blog]? {
-        AccountService(managedObjectContext: ContextManager.shared.mainContext).defaultWordPressComAccount()?.visibleBlogs
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.visibleBlogs
     }
 
     struct Constants {

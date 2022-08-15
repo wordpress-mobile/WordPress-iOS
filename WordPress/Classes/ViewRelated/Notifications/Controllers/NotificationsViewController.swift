@@ -2025,11 +2025,10 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
     private func showNotificationAlert(_ alertController: FancyAlertViewController) {
         let mainContext = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        guard accountService.defaultWordPressComAccount() != nil else {
+        guard (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil else {
             return
         }
+
         PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
             guard enabled == .notDetermined else {
                 return

@@ -65,8 +65,8 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
     }()
 
     private lazy var restApi: WordPressComRestApi = {
-        let accountService = AccountService(managedObjectContext: context)
-        return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        return account?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
     }()
 
     private lazy var domainService = {

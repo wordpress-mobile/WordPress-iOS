@@ -1071,8 +1071,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     NSDate *hideWPAdminDate = [NSDate dateWithISO8601String:HideWPAdminDate];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
 }
 
