@@ -216,7 +216,8 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, success: nil) { (error) in
+        let isBlogAtomic = media.blog.isAtomic()
+        cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, isBlogAtomic: isBlogAtomic, success: nil) { (error) in
             self.show(error)
         }
     }
