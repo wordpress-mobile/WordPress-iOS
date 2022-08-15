@@ -322,7 +322,7 @@ extension ImageLoader {
     ///   - media: The media object
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - size: The preferred size of the image to load.
-    ///   - isBlogAtomic: Whether the blog associated to the media item is Atomic of not
+    ///   - isBlogAtomic: Whether the blog associated to the media item is Atomic or not
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
