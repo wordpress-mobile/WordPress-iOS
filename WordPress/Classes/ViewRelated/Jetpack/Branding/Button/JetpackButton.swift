@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
-class JetpackButton: CustomImageBackgroundButton {
+class JetpackButton: CircularImageButton {
 
     enum ButtonStyle {
         case badge
