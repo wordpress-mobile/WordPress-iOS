@@ -281,7 +281,8 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.imageView.image = self.image;
     self.isLoadingImage = YES;
     __weak __typeof__(self) weakSelf = self;
-    [self.imageLoader loadImageFromMedia:self.media preferredSize:CGSizeZero placeholder:self.image success:^{
+    BOOL isBlogAtomic = [self.media.blog isAtomic];
+    [self.imageLoader loadImageFromMedia:self.media preferredSize:CGSizeZero placeholder:self.image isBlogAtomic:isBlogAtomic success:^{
         weakSelf.isLoadingImage = NO;
         weakSelf.image = weakSelf.imageView.image;
         [weakSelf updateImageView];

@@ -193,11 +193,13 @@ static CGFloat const FeaturedImageSize = 120.0;
     BOOL hideFeaturedImage = page.featuredImage == nil;
     self.featuredImageView.hidden = hideFeaturedImage;
     self.labelsContainerTrailing.active = !hideFeaturedImage;
+    BOOL isBlogAtomic = [page.featuredImage.blog isAtomic];
     
     if (!hideFeaturedImage) {
         [self.featuredImageLoader loadImageFromMedia:page.featuredImage
                                        preferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
                                          placeholder:nil
+                                        isBlogAtomic:isBlogAtomic
                                              success:nil
                                                error:^(NSError *error) {
                                                    DDLogError(@"Failed to load the media: %@", error);
