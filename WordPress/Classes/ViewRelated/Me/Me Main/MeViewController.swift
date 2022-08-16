@@ -553,6 +553,10 @@ extension MeViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView()
+        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
     }
 }

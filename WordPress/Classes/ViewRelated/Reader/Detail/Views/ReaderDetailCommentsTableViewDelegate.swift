@@ -119,7 +119,9 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         guard section == 0, JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding)
+        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding,
+                                           target: self,
+                                           selector: #selector(jetpackButtonTapped))
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -150,6 +152,13 @@ private extension ReaderDetailCommentsTableViewDelegate {
         cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
         cell.delegate = buttonDelegate
         return cell
+    }
+
+    @objc func jetpackButtonTapped() {
+        guard let presentingViewController = presentingViewController else {
+            return
+        }
+        JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)
     }
 
     struct Constants {

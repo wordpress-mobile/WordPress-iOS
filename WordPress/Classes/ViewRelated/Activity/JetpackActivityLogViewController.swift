@@ -44,6 +44,9 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
     private func configureBanner() {
         containerStackView.addArrangedSubview(jetpackBannerView)
         addTranslationObserver(jetpackBannerView)
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
     }
 }
 

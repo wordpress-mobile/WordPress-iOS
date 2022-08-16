@@ -518,8 +518,7 @@ private extension AppSettingsViewController {
         if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
-            let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
-                                                                          comment: "Opens the What's New / Feature Announcement modal"),
+            let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
                                                  action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
@@ -543,6 +542,12 @@ extension AppSettingsViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView()
+        let jetpackButton = JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+
+        return jetpackButton
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
     }
 }

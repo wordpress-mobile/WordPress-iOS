@@ -9,6 +9,7 @@ import WordPressAuthenticator
     static let productBlogDisplayURL = "blog.wordpress.com"
     static let zendeskSourcePlatform = "mobile_-_ios"
     static let shareAppName: ShareAppName = .wordpress
+    static let mobileAnnounceAppId = "2"
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
@@ -41,6 +42,7 @@ extension AppConstants {
     struct Settings {
         static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
         static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
+        static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
     }
 
     struct Login {

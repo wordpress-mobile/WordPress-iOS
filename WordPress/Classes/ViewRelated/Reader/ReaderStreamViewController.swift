@@ -504,7 +504,9 @@ import Combine
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let bannerView = JetpackBannerView()
+        let bannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
         jetpackBannerView = bannerView
         addTranslationObserver(bannerView)
         stackView.addArrangedSubview(bannerView)

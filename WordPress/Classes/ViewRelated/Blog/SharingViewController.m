@@ -253,10 +253,18 @@ static CGFloat const jetpackBadgePadding = 30;
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == SharingButtons && [SharingViewController jetpackBrandingVisibile]) {
-        return [JetpackButton makeBadgeViewWithTopPadding:jetpackBadgePadding bottomPadding:jetpackBadgePadding];
+        return [JetpackButton makeBadgeViewWithTopPadding:jetpackBadgePadding
+                                            bottomPadding:jetpackBadgePadding
+                                                   target:self
+                                                 selector:@selector(jetpackButtonTapped)];
     }
 
     return nil;
+}
+
+- (void) jetpackButtonTapped
+{
+    // TODO
 }
 
 #pragma mark - JetpackModuleHelper

@@ -1,6 +1,7 @@
 20.6
 -----
 * [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
 * [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
 
 
