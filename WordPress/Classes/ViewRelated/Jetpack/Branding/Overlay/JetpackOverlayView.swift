@@ -43,7 +43,7 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var animationView: AnimationView = {
-        let animationView = AnimationView(name: Graphics.wpJetpackLogoAnimation)
+        let animationView = AnimationView(name: Graphics.wpJetpackLogoAnimationLtr)
         animationView.translatesAutoresizingMaskIntoConstraints = false
         return animationView
     }()
@@ -152,7 +152,8 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Graphics {
-        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_left"
+        static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
+        static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
         static let dismissButtonSystemName = "xmark.circle.fill"
     }
 
