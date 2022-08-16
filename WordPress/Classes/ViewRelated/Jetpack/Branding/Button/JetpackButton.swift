@@ -110,6 +110,7 @@ extension JetpackButton {
     /// Instantiates a view containing a Jetpack powered badge
     /// - Parameter padding: top and bottom padding, defaults to 30 pt
     /// - Returns: the view containing the badge
+    @objc
     static func makeBadgeView(topPadding: CGFloat = 30, bottomPadding: CGFloat = 30) -> UIView {
         let view = UIView()
         let badge = JetpackButton(style: .badge)

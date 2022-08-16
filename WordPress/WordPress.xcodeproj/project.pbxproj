@@ -2273,6 +2273,8 @@
 		C352870627FDD35C004E2E51 /* SiteNameStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C352870427FDD35C004E2E51 /* SiteNameStep.swift */; };
 		C35D4FF1280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
 		C35D4FF2280077F100DB90B5 /* SiteCreationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */; };
+		C3643ACF28AC049D00FC5FD3 /* SharingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3643ACE28AC049D00FC5FD3 /* SharingViewController.swift */; };
+		C3643AD028AC049D00FC5FD3 /* SharingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3643ACE28AC049D00FC5FD3 /* SharingViewController.swift */; };
 		C373D6E728045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6E828045281008F8C26 /* SiteIntentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E628045281008F8C26 /* SiteIntentData.swift */; };
 		C373D6EA280452F6008F8C26 /* SiteIntentDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */; };
@@ -7178,6 +7180,7 @@
 		C3439B5E27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncherTests.swift; sourceTree = "<group>"; };
 		C352870427FDD35C004E2E51 /* SiteNameStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNameStep.swift; sourceTree = "<group>"; };
 		C35D4FF0280077F100DB90B5 /* SiteCreationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationStep.swift; sourceTree = "<group>"; };
+		C3643ACE28AC049D00FC5FD3 /* SharingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingViewController.swift; sourceTree = "<group>"; };
 		C373D6E628045281008F8C26 /* SiteIntentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentData.swift; sourceTree = "<group>"; };
 		C373D6E9280452F6008F8C26 /* SiteIntentDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentDataTests.swift; sourceTree = "<group>"; };
 		C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerWrapperViewController.swift; sourceTree = "<group>"; };
@@ -15101,6 +15104,7 @@
 				E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */,
 				E6431DE31C4E892900FD8D90 /* SharingViewController.h */,
 				E6431DE41C4E892900FD8D90 /* SharingViewController.m */,
+				C3643ACE28AC049D00FC5FD3 /* SharingViewController.swift */,
 				8BBBCE6F2717651200B277AC /* JetpackModuleHelper.swift */,
 				E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */,
 				E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */,
@@ -18963,6 +18967,7 @@
 				E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */,
 				7E4123C320F4097B00DF8486 /* FormattableContentStyles.swift in Sources */,
 				735A9681228E421F00461135 /* StatsBarChartConfiguration.swift in Sources */,
+				C3643ACF28AC049D00FC5FD3 /* SharingViewController.swift in Sources */,
 				2F161B0622CC2DC70066A5C5 /* LoadingStatusView.swift in Sources */,
 				080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */,
 				DCF892C9282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */,
@@ -21853,6 +21858,7 @@
 				FABB24A12602FC2C00C8785C /* UITableViewCell+enableDisable.swift in Sources */,
 				FABB24A22602FC2C00C8785C /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
 				FABB24A32602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.swift in Sources */,
+				C3643AD028AC049D00FC5FD3 /* SharingViewController.swift in Sources */,
 				FABB24A42602FC2C00C8785C /* NotificationContentFactory.swift in Sources */,
 				FABB24A52602FC2C00C8785C /* SiteIconView.swift in Sources */,
 				FABB24A62602FC2C00C8785C /* JetpackRestoreCompleteViewController.swift in Sources */,
