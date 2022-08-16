@@ -3,7 +3,7 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
-    private var buttonAction: (() -> Void)?
+    var buttonAction: (() -> Void)?
 
     init(buttonAction: (() -> Void)? = nil) {
         super.init(frame: .zero)

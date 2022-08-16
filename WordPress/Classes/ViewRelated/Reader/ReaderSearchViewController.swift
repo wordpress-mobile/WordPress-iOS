@@ -51,7 +51,9 @@ import Gridicons
     fileprivate var didBumpStats = false
 
     private lazy var bannerView: JetpackBannerView = {
-        let bannerView = JetpackBannerView()
+        let bannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
         bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
         return bannerView
     }()

@@ -42,7 +42,9 @@ import UIKit
             return
         }
 
-        let jetpackBannerView = JetpackBannerView()
+        let jetpackBannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
         stackView.addArrangedSubview(jetpackBannerView)
 
         if let childVC = childVC as? JPScrollViewDelegate {
