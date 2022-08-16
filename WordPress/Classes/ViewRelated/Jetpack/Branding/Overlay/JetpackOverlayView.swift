@@ -57,6 +57,7 @@ class JetpackOverlayView: UIView {
         label.numberOfLines = Metrics.titleLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.title
+        label.setContentCompressionResistancePriority(Metrics.titleCompressionResistance, for: .vertical)
         return label
     }()
 
@@ -69,6 +70,7 @@ class JetpackOverlayView: UIView {
         label.numberOfLines = Metrics.descriptionLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.description
+        label.setContentCompressionResistancePriority(Metrics.descriptionCompressionResistance, for: .vertical)
         return label
     }()
 
@@ -157,7 +159,7 @@ private extension JetpackOverlayView {
     enum Metrics {
         // stack view
         static let imageToTitleSpacing: CGFloat = 24
-        static let titleToDescriptionSpacing: CGFloat = 20
+        static let titleToDescriptionSpacing: CGFloat = 10
         static let descriptionToButtonSpacing: CGFloat = 40
         static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 20, right: 30)
         // dismiss button
@@ -170,6 +172,9 @@ private extension JetpackOverlayView {
         static let titleLabelNumberOfLines = 2
 
         static let descriptionLabelNumberOfLines = 0
+
+        static let titleCompressionResistance = UILayoutPriority(rawValue: 751)
+        static let descriptionCompressionResistance = UILayoutPriority(rawValue: 749)
 
         static var titleFont: UIFont {
             let weightTrait = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.bold]
