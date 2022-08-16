@@ -20,23 +20,18 @@ protocol UserPersistentRepositoryWriter {
     func removeObject(forKey key: String)
 }
 
-protocol UserPersistentRepository: UserPersistentRepositoryReader, UserPersistentRepositoryWriter {
-    var isOneOffMigrationComplete: Bool { get set }
-    static var isOneOffMigrationCompleteKey: String { get }
-}
-
-extension UserPersistentRepository {
-    static var isOneOffMigrationCompleteKey: String {
-        "defaults_one_off_migration"
-    }
-}
+typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter
 
 extension UserDefaults: UserPersistentRepository {
+    private static var isOneOffMigrationCompleteKey: String {
+        "defaults_one_off_migration"
+    }
+
     var isOneOffMigrationComplete: Bool {
         get {
-            UserDefaults.standard.bool(forKey: Self.isOneOffMigrationCompleteKey)
+            bool(forKey: Self.isOneOffMigrationCompleteKey)
         } set {
-            UserDefaults.standard.set(newValue, forKey: Self.isOneOffMigrationCompleteKey)
+            set(newValue, forKey: Self.isOneOffMigrationCompleteKey)
         }
     }
 }

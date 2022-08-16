@@ -120,13 +120,3 @@ class UserPersistentStore: UserPersistentRepository {
         userDefaults.removeObject(forKey: key)
     }
 }
-
-extension UserPersistentStore {
-    var isOneOffMigrationComplete: Bool {
-        get {
-            userDefaults.bool(forKey: Self.isOneOfMigrationCompleteKey)
-        } set {
-            userDefaults.set(newValue, forKey: Self.isOneOfMigrationCompleteKey)
-        }
-    }
-}

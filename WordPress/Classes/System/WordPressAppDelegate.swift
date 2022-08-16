@@ -152,6 +152,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+
+        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserDefaults.standard.isOneOffMigrationComplete {
+            let dict = UserDefaults.standard.dictionaryRepresentation()
+            for (key, value) in dict {
+                UserPersistentStore.standard.set(value, forKey: key)
+            }
+        }
+
         return true
     }
 
