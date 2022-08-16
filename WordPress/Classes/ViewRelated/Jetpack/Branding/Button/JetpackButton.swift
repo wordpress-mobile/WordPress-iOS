@@ -108,9 +108,15 @@ class JetpackButton: CircularImageButton {
 extension JetpackButton {
 
     /// Instantiates a view containing a Jetpack powered badge
-    /// - Parameter padding: top and bottom padding, defaults to 30 pt
+    /// - Parameter topPadding: top padding, defaults to 30 pt
+    /// - Parameter bottomPadding: bottom padding, defaults to 30 pt
+    /// - Parameter target: optional target for the button action
+    /// - Parameter selector: optional selector for the button action
     /// - Returns: the view containing the badge
-    static func makeBadgeView(topPadding: CGFloat = 30, bottomPadding: CGFloat = 30) -> UIView {
+    static func makeBadgeView(topPadding: CGFloat = 30,
+                              bottomPadding: CGFloat = 30,
+                              target: Any? = nil,
+                              selector: Selector? = nil) -> UIView {
         let view = UIView()
         let badge = JetpackButton(style: .badge)
         badge.translatesAutoresizingMaskIntoConstraints = false
@@ -120,6 +126,9 @@ extension JetpackButton {
             badge.topAnchor.constraint(equalTo: view.topAnchor, constant: topPadding),
             badge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding)
         ])
+        if let target = target, let selector = selector {
+            badge.addTarget(target, action: selector, for: .touchUpInside)
+        }
         return view
     }
 }

@@ -542,6 +542,12 @@ extension AppSettingsViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView()
+        let jetpackButton = JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+
+        return jetpackButton
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
     }
 }
