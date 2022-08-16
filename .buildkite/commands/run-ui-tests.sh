@@ -1,7 +1,8 @@
 #!/bin/bash -eu
 
 DEVICE=$1
-IOS_VERSION=$2
+# Default to the latest iOS, with the option of overriding
+IOS_VERSION=${2:-15.0}
 
 echo "Running UI tests $DEVICE for iOS $IOS_VERSION"
 
