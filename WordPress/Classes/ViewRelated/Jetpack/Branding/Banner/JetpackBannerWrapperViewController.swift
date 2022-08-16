@@ -2,7 +2,8 @@ import Foundation
 import UIKit
 
 @objc class JetpackBannerWrapperViewController: UIViewController {
-    private var childVC: UIViewController?
+    /// The wrapped child view controller.
+    private(set) var childVC: UIViewController?
 
     @objc convenience init(childVC: UIViewController) {
         self.init()
