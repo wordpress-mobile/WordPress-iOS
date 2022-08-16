@@ -19,6 +19,13 @@ class JetpackOverlayView: UIView {
         UIImage.gridicon(.crossCircle, size: CGSize(width: Metrics.dismissButtonSize, height: Metrics.dismissButtonSize))
     }
 
+    /// Sets the animation based on the language orientation
+    private var animation: Animation? {
+        traitCollection.layoutDirection == .leftToRight ?
+        Animation.named(Graphics.wpJetpackLogoAnimationLtr) :
+        Animation.named(Graphics.wpJetpackLogoAnimationRtl)
+    }
+
     private lazy var dismissButton: CircularImageButton = {
         let button = CircularImageButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +50,8 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var animationView: AnimationView = {
-        let animationView = AnimationView(name: Graphics.wpJetpackLogoAnimationLtr)
+        let animationView = AnimationView()
+        animationView.animation = animation
         animationView.translatesAutoresizingMaskIntoConstraints = false
         return animationView
     }()
