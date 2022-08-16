@@ -45,12 +45,12 @@ static CGFloat const jetpackBadgePadding = 30;
 {
     [super viewDidLoad];
 
-    self.parentViewController.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
+    self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
     
     self.extendedLayoutIncludesOpaqueBars = YES;
     
     if (self.isModal) {
-        self.parentViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self
                                                                                                action:@selector(doneButtonTapped)];
     }
