@@ -1512,8 +1512,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        SharingViewController *sharingVC = [[SharingViewController alloc] initWithBlog:self.blog delegate:nil];
-        controller = [[JetpackBannerWrapperViewController alloc] initWithChildVC: sharingVC];
+        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate:nil];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];
