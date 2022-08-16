@@ -94,7 +94,7 @@ private extension PostService {
             return
         }
 
-        ContextManager.shared.save { derivedContext in
+        ContextManager.shared.performAndSave { derivedContext in
             let likers = remoteLikeUsers.map { remoteUser in
                 LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }

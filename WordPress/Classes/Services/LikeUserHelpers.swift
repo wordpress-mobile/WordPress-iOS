@@ -59,7 +59,7 @@ import CoreData
     }
 
     class func purgeStaleLikes() {
-        ContextManager.shared.save {
+        ContextManager.shared.performAndSave {
             purgeStaleLikes(fromContext: $0)
         }
     }
