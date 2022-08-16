@@ -90,7 +90,9 @@ private extension CommentService {
 
         guard let remoteLikeUsers = remoteLikeUsers,
               !remoteLikeUsers.isEmpty else {
-            onComplete()
+            DispatchQueue.main.async {
+                onComplete()
+            }
             return
         }
 
