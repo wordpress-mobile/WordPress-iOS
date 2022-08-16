@@ -19,6 +19,8 @@ import UIKit
         configureJetpackBanner(stackView)
     }
 
+    // MARK: Configuration
+
     private func configureStackView(_ stackView: UIStackView) {
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,6 +38,10 @@ import UIKit
     }
 
     private func configureJetpackBanner(_ stackView: UIStackView) {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+
         let jetpackBannerView = JetpackBannerView()
         stackView.addArrangedSubview(jetpackBannerView)
 
