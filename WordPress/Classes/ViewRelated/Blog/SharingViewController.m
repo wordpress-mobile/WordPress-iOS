@@ -262,11 +262,6 @@ static CGFloat const jetpackBadgePadding = 30;
     return nil;
 }
 
-- (void) jetpackButtonTapped
-{
-    // TODO
-}
-
 #pragma mark - JetpackModuleHelper
 
 - (void)jetpackModuleEnabled
@@ -375,6 +370,13 @@ static CGFloat const jetpackBadgePadding = 30;
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
+}
+
+#pragma mark - Jetpack badge button
+
+- (void) jetpackButtonTapped
+{
+    [self presentJetpackOverlay];
 }
 
 @end

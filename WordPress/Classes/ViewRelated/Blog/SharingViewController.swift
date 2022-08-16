@@ -5,4 +5,9 @@ extension SharingViewController {
     static func jetpackBrandingVisibile() -> Bool {
         return JetpackBrandingVisibility.all.enabled
     }
+
+    @objc
+    func presentJetpackOverlay() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+    }
 }
