@@ -137,6 +137,8 @@
 		08D978581CD2AF7D0054F19A /* MenuItemSourceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */; };
 		08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */; };
 		08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08DF9C431E8475530058678C /* test-image-portrait.jpg */; };
+		08E39B4528A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		08E39B4628A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
 		08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */; };
 		08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */; };
 		08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */; };
@@ -5126,6 +5128,7 @@
 		08D978531CD2AF7D0054F19A /* MenuItemSourceTextBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceTextBar.h; sourceTree = "<group>"; };
 		08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceTextBar.m; sourceTree = "<group>"; };
 		08DF9C431E8475530058678C /* test-image-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-portrait.jpg"; sourceTree = "<group>"; };
+		08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStoreFactory.swift; sourceTree = "<group>"; };
 		08E5CAD31E7B3A4500FAC71B /* WordPress 57.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 57.xcdatamodel"; sourceTree = "<group>"; };
 		08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporter.swift; sourceTree = "<group>"; };
 		08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporterTests.swift; sourceTree = "<group>"; };
@@ -15015,6 +15018,7 @@
 				3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */,
 				08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */,
 				08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */,
+				08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -18945,6 +18949,7 @@
 				F117B120265C53AB00D2CAA9 /* BloggingRemindersScheduler.swift in Sources */,
 				439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */,
 				02D75D9922793EA2003FF09A /* BlogDetailsSectionFooterView.swift in Sources */,
+				08E39B4528A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
 				C81CCD67243AECA200A83E27 /* TenorGIFCollection.swift in Sources */,
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
@@ -21868,6 +21873,7 @@
 				3F3DD0B726FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */,
 				FABB24AF2602FC2C00C8785C /* ReaderSeenAction.swift in Sources */,
 				FABB24B02602FC2C00C8785C /* SchedulingDate+Helpers.swift in Sources */,
+				08E39B4628A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
 				FABB24B12602FC2C00C8785C /* QuickStartChecklistCell.swift in Sources */,
 				FABB24B22602FC2C00C8785C /* PostAutoUploadInteractor.swift in Sources */,
 				FABB24B32602FC2C00C8785C /* SiteStatsDetailsViewModel.swift in Sources */,
