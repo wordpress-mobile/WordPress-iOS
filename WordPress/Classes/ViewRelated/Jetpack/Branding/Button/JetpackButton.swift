@@ -113,6 +113,7 @@ extension JetpackButton {
     /// - Parameter target: optional target for the button action
     /// - Parameter selector: optional selector for the button action
     /// - Returns: the view containing the badge
+    @objc
     static func makeBadgeView(topPadding: CGFloat = 30,
                               bottomPadding: CGFloat = 30,
                               target: Any? = nil,
