@@ -1,18 +1,18 @@
 @objcMembers
-class Keychain {
+class KeychainUtils {
 
-    static let shared = Keychain()
+    static let shared = KeychainUtils()
 
-    private let useSharedKeychain: () -> Bool
+    private let shouldUseSharedKeychain: () -> Bool
     private let keychainUtils: SFHFKeychainUtils.Type
 
     private var keychainGroup: String? {
-        useSharedKeychain() ? WPAppKeychainAccessGroup : nil
+        shouldUseSharedKeychain() ? WPAppKeychainAccessGroup : nil
     }
 
-    init(useSharedKeychain: @escaping @autoclosure () -> Bool = FeatureFlag.sharedLogin.enabled,
+    init(shouldUseSharedKeychain: @escaping @autoclosure () -> Bool = FeatureFlag.sharedLogin.enabled,
          keychainUtils: SFHFKeychainUtils.Type = SFHFKeychainUtils.self) {
-        self.useSharedKeychain = useSharedKeychain
+        self.shouldUseSharedKeychain = shouldUseSharedKeychain
         self.keychainUtils = keychainUtils
     }
 

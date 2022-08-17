@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-class KeychainTests: XCTestCase {
+class KeychainUtilsTests: XCTestCase {
 
     let username = "Username"
     let password = "Password"
@@ -15,7 +15,7 @@ class KeychainTests: XCTestCase {
     }
 
     func testNilAppGroupSavesToSharedGroupWhenFeatureEnabled() {
-        let subject = Keychain(useSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.storeUsername(username, password: password, serviceName: service, updateExisting: true)
 
@@ -24,7 +24,7 @@ class KeychainTests: XCTestCase {
     }
 
     func testNilAppGroupDoesNotSaveToSharedGroupWhenFeatureDisabled() {
-        let subject = Keychain(useSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.storeUsername(username, password: password, serviceName: service, updateExisting: true)
 
@@ -34,7 +34,7 @@ class KeychainTests: XCTestCase {
 
     func testFeatureFlagChanging() {
         var enabled = false
-        let subject = Keychain(useSharedKeychain: enabled, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: enabled, keychainUtils: SFHFKeychainUtilsMock.self)
 
         enabled = true
         try? subject.storeUsername(username, password: password, serviceName: service, updateExisting: true)
@@ -44,7 +44,7 @@ class KeychainTests: XCTestCase {
     }
 
     func testNilAppGroupReadsFromSharedGroupWhenFeatureEnabled() {
-        let subject = Keychain(useSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
         storeUsername(username, password: password, serviceName: service, accessGroup: sharedGroup)
 
         let result = try? subject.getPasswordForUsername(username, serviceName: service)
@@ -53,7 +53,7 @@ class KeychainTests: XCTestCase {
     }
 
     func testNilAppGroupDoesNotReadFromSharedGroupWhenFeatureDisabled() {
-        let subject = Keychain(useSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
         storeUsername(username, password: password, serviceName: service, accessGroup: sharedGroup)
 
         let result = try? subject.getPasswordForUsername(username, serviceName: service)
@@ -64,7 +64,7 @@ class KeychainTests: XCTestCase {
     func testNilAppGroupDeletesFromSharedGroupWhenEnabled() {
         storeUsername(username, password: password, serviceName: service, accessGroup: sharedGroup)
         storeUsername(username, password: password, serviceName: service, accessGroup: nil)
-        let subject = Keychain(useSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.deleteItem(username: username, serviceName: service)
 
@@ -75,7 +75,7 @@ class KeychainTests: XCTestCase {
     func testNilAppGroupDeletesFromNilGroupWhenDisabled() {
         storeUsername(username, password: password, serviceName: service, accessGroup: sharedGroup)
         storeUsername(username, password: password, serviceName: service, accessGroup: nil)
-        let subject = Keychain(useSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.deleteItem(username: username, serviceName: service)
 
@@ -85,7 +85,7 @@ class KeychainTests: XCTestCase {
 
     func testAppGroupIsAPassthroughWhenSaving() {
         let group = "Test"
-        let subject = Keychain(useSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.storeUsername(username, password: password, serviceName: service, accessGroup: group, updateExisting: true)
 
@@ -95,7 +95,7 @@ class KeychainTests: XCTestCase {
 
     func testAppGroupIsAPassthroughWhenReading() {
         let group = "Test"
-        let subject = Keychain(useSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: true, keychainUtils: SFHFKeychainUtilsMock.self)
         storeUsername(username, password: password, serviceName: service, accessGroup: group)
 
         let result = try? subject.getPasswordForUsername(username, serviceName: service, accessGroup: group)
@@ -106,7 +106,7 @@ class KeychainTests: XCTestCase {
     func testAppGroupIsAPassthroughWhenDeleting() {
         let group = "Test"
         storeUsername(username, password: password, serviceName: service, accessGroup: group)
-        let subject = Keychain(useSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
+        let subject = KeychainUtils(shouldUseSharedKeychain: false, keychainUtils: SFHFKeychainUtilsMock.self)
 
         try? subject.deleteItem(username: username, serviceName: service, accessGroup: group)
 
@@ -117,7 +117,7 @@ class KeychainTests: XCTestCase {
 
 // MARK: - Helper functions
 
-private extension KeychainTests {
+private extension KeychainUtilsTests {
 
     func getPassword(username: String, serviceName: String, accessGroup: String?) -> String? {
         let result = (try? SFHFKeychainUtilsMock.getPasswordForUsername(username, andServiceName: serviceName, accessGroup: accessGroup)) ?? ""
