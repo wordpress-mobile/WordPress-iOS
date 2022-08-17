@@ -309,10 +309,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
-        if let authenticationHandler = authenticationHandler {
-            authenticationHandler.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
-            return
-        }
 
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)

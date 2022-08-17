@@ -1,7 +1,6 @@
 import WordPressAuthenticator
 
 protocol AuthenticationHandler {
-    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void)
 
     /// Whether or not the AuthenticationHandler will override or handle the `presentLoginEpilogue` method.
     /// If this returns true, the `AuthenticationHandler.presentLoginEpilogue` method is called
