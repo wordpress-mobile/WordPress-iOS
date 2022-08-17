@@ -98,22 +98,15 @@ extension PageLayoutService {
 
     /// This will use a wipe all and rebuild strategy for managing the stored layouts. They are stored and associated per blog to prevent weird edge cases of downloading one set of layouts then having that bleed to another site (like a self hosted one) which may have a different set of suggested layouts.
     private static func persistToCoreData(_ blogPersistentID: NSManagedObjectID, _ layouts: RemotePageLayouts, _ completion: @escaping (Swift.Result<Void, Error>) -> Void) {
-        Task {
-            do {
-                try await ContextManager.shared.save { context in
-                    guard let blog = context.object(with: blogPersistentID) as? Blog else {
-                        let userInfo = [NSLocalizedFailureReasonErrorKey: "Couldn't find blog to save the fetched results to."]
-                        throw NSError(domain: "PageLayoutService.persistToCoreData", code: 0, userInfo: userInfo)
-                    }
-                    cleanUpStoredLayouts(forBlog: blog, context: context)
-                    try persistCategoriesToCoreData(blog, layouts.categories, context: context)
-                    try persistLayoutsToCoreData(blog, layouts.layouts, context: context)
-                }
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
+        ContextManager.shared.performAndSave({ context in
+            guard let blog = context.object(with: blogPersistentID) as? Blog else {
+                let userInfo = [NSLocalizedFailureReasonErrorKey: "Couldn't find blog to save the fetched results to."]
+                throw NSError(domain: "PageLayoutService.persistToCoreData", code: 0, userInfo: userInfo)
             }
-        }
+            cleanUpStoredLayouts(forBlog: blog, context: context)
+            try persistCategoriesToCoreData(blog, layouts.categories, context: context)
+            try persistLayoutsToCoreData(blog, layouts.layouts, context: context)
+        }, completion: completion)
     }
 
     private static func cleanUpStoredLayouts(forBlog blog: Blog, context: NSManagedObjectContext) {
