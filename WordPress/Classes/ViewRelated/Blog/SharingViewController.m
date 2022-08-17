@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
+static CGFloat const jetpackBadgePadding = 30;
 
 @interface SharingViewController ()
 
@@ -44,12 +45,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [super viewDidLoad];
 
-    self.parentViewController.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
+    self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
     
     self.extendedLayoutIncludesOpaqueBars = YES;
     
     if (self.isModal) {
-        self.parentViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self
                                                                                                action:@selector(doneButtonTapped)];
     }
@@ -249,6 +250,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == SharingButtons && [SharingViewController jetpackBrandingVisibile]) {
+        return [JetpackButton makeBadgeViewWithTopPadding:jetpackBadgePadding
+                                            bottomPadding:jetpackBadgePadding
+                                                   target:self
+                                                 selector:@selector(jetpackButtonTapped)];
+    }
+
+    return nil;
+}
+
 #pragma mark - JetpackModuleHelper
 
 - (void)jetpackModuleEnabled
@@ -357,6 +370,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
+}
+
+#pragma mark - Jetpack badge button
+
+- (void) jetpackButtonTapped
+{
+    [self presentJetpackOverlay];
 }
 
 @end

@@ -32,6 +32,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case featureHighlightTooltip
     case jetpackPowered
     case jetpackPoweredBottomSheet
+    case sharedUserDefaults
     case sharedLogin
 
     /// Returns a boolean indicating if the feature is enabled
@@ -104,6 +105,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackPowered:
             return true
         case .jetpackPoweredBottomSheet:
+            return false
+        case .sharedUserDefaults:
             return false
         case .sharedLogin:
             return false
@@ -197,6 +200,8 @@ extension FeatureFlag {
             return "Jetpack powered banners and badges"
         case .jetpackPoweredBottomSheet:
             return "Jetpack powered bottom sheet"
+        case .sharedUserDefaults:
+            return "Shared User Defaults"
         case .sharedLogin:
             return "Shared Login"
         }

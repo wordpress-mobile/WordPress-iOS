@@ -3,7 +3,7 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
-    private var buttonAction: (() -> Void)?
+    var buttonAction: (() -> Void)?
 
     init(buttonAction: (() -> Void)? = nil) {
         super.init(frame: .zero)
@@ -26,6 +26,8 @@ class JetpackBannerView: UIView {
     }
 
     private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: JetpackBannerView.minimumHeight).isActive = true
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)
@@ -34,7 +36,6 @@ class JetpackBannerView: UIView {
         addSubview(jetpackButton)
 
         pinSubviewToSafeArea(jetpackButton)
-        jetpackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     /// Preferred minimum height to be used for constraints

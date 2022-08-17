@@ -41,14 +41,19 @@ import Gridicons
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
-    fileprivate var siteSearchController = ReaderSiteSearchViewController()
+    fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(childVC: ReaderSiteSearchViewController())
+    fileprivate var siteSearchController: ReaderSiteSearchViewController? {
+        return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
+    }
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
     private lazy var bannerView: JetpackBannerView = {
-        let bannerView = JetpackBannerView()
+        let bannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
         bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
         return bannerView
     }()
@@ -231,25 +236,25 @@ import Gridicons
     }
 
     private func configureSiteSearchViewController() {
-        siteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
+        jpSiteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        addChild(siteSearchController)
+        addChild(jpSiteSearchController)
 
-        view.addSubview(siteSearchController.view)
+        view.addSubview(jpSiteSearchController.view)
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: siteSearchController.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: siteSearchController.view.trailingAnchor),
-            filterBar.bottomAnchor.constraint(equalTo: siteSearchController.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: siteSearchController.view.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: jpSiteSearchController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: jpSiteSearchController.view.trailingAnchor),
+            filterBar.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.bottomAnchor),
             ])
 
-        siteSearchController.didMove(toParent: self)
+        jpSiteSearchController.didMove(toParent: self)
 
         if let topic = restoredSearchTopic {
-            siteSearchController.searchQuery = topic.title
+            siteSearchController?.searchQuery = topic.title
         }
 
-        siteSearchController.view.isHidden = true
+        jpSiteSearchController.view.isHidden = true
     }
 
     // MARK: - Actions
@@ -304,7 +309,7 @@ import Gridicons
     }
 
     private func performSitesSearch(for query: String) {
-        siteSearchController.searchQuery = query
+        siteSearchController?.searchQuery = query
     }
 
 
@@ -318,10 +323,10 @@ import Gridicons
         switch section {
         case .posts:
             streamController?.view.isHidden = false
-            siteSearchController.view.isHidden = true
+            jpSiteSearchController.view.isHidden = true
         case .sites:
             streamController?.view.isHidden = true
-            siteSearchController.view.isHidden = false
+            jpSiteSearchController.view.isHidden = false
         }
     }
 

@@ -2,7 +2,8 @@ import Foundation
 import UIKit
 
 @objc class JetpackBannerWrapperViewController: UIViewController {
-    private var childVC: UIViewController?
+    /// The wrapped child view controller.
+    private(set) var childVC: UIViewController?
 
     @objc convenience init(childVC: UIViewController) {
         self.init()
@@ -17,6 +18,8 @@ import UIKit
         configureChildVC(stackView)
         configureJetpackBanner(stackView)
     }
+
+    // MARK: Configuration
 
     private func configureStackView(_ stackView: UIStackView) {
         stackView.axis = .vertical
@@ -35,7 +38,13 @@ import UIKit
     }
 
     private func configureJetpackBanner(_ stackView: UIStackView) {
-        let jetpackBannerView = JetpackBannerView()
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+
+        let jetpackBannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
         stackView.addArrangedSubview(jetpackBannerView)
 
         if let childVC = childVC as? JPScrollViewDelegate {
