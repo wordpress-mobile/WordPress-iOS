@@ -141,8 +141,8 @@ class JetpackOverlayView: UIView {
         stackViewBottomConstraint.priority = Metrics.veryHighPriority
 
         NSLayoutConstraint.activate([
-            dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonPadding),
-            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonPadding),
+            dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonTrailingPadding),
+            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonTopPadding),
             dismissButton.heightAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             dismissButton.widthAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
@@ -172,7 +172,8 @@ private extension JetpackOverlayView {
         static let descriptionToButtonSpacing: CGFloat = 40
         static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 20, right: 30)
         // dismiss button
-        static let dismissButtonPadding: CGFloat = 20
+        static let dismissButtonTopPadding: CGFloat = 10 // takes into account the gripper
+        static let dismissButtonTrailingPadding: CGFloat = 20
         static let dismissButtonSize: CGFloat = 30
         // labels
         static let maximumFontSize: CGFloat = 32
