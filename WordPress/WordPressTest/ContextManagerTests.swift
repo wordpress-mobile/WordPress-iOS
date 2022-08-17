@@ -156,7 +156,7 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(numberOfAccounts(), 1)
 
         do {
-            try await contextManager.save { context in
+            try await contextManager.performAndSave { context in
                 let account = WPAccount(context: context)
                 account.userID = 100
                 account.username = "Unknown User"

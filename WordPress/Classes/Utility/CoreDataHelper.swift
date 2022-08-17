@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import CoreData
 
 // MARK: - NSManagedObject Default entityName Helper
 //
@@ -195,17 +196,23 @@ extension ContextManager {
 }
 
 extension CoreDataStack {
-    func save(_ block: @escaping (NSManagedObjectContext) throws -> Void) async throws {
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
         let context = newDerivedContext()
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            context.perform {
-                do {
-                    try block(context)
-                    self.saveContextAndWait(context)
-                    continuation.resume()
-                } catch {
-                    continuation.resume(throwing: error)
-                }
+        context.perform {
+            do {
+                let result = try block(context)
+                self.saveContextAndWait(context)
+                completion?(.success(result))
+            } catch {
+                completion?(.failure(error))
+            }
+        }
+    }
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            performAndSave(block) {
+                continuation.resume(with: $0)
             }
         }
     }
