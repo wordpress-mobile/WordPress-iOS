@@ -317,11 +317,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
-        if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
-            return
-        }
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,

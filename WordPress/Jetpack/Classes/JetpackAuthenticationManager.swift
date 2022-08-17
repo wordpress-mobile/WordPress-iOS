@@ -9,28 +9,6 @@ struct JetpackAuthenticationManager: AuthenticationHandler {
     var prologuePrimaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.continueButtonStyle
     var prologueSecondaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.siteAddressButtonStyle
 
-    func willHandlePresentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials) -> Bool {
-        // Don't display the "no sites" epilogue if we allow site creation
-        return !AppConfiguration.allowSiteCreation
-    }
-
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, windowManager: WindowManager, onDismiss: @escaping () -> Void) -> Bool {
-        if AccountHelper.hasBlogs {
-            return false
-        }
-
-        // Exit out of the sign in process, if we don't do this we later can't
-        // display the sign in again
-        windowManager.dismissFullscreenSignIn()
-
-        // Display the no sites view
-        let viewModel = JetpackNoSitesErrorViewModel()
-        let controller = errorViewController(with: viewModel)
-        windowManager.show(controller, completion: nil)
-
-        return true
-    }
-
     func willHandlePresentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) -> Bool {
         // Don't display the "no sites" epilogue if we allow site creation
         return !AppConfiguration.allowSiteCreation
