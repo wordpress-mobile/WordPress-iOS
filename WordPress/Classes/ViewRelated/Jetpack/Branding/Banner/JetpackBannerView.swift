@@ -47,16 +47,15 @@ class JetpackBannerView: UIView {
 // MARK: Responding to scroll events
 extension JetpackBannerView: Subscriber {
 
-    typealias Input = CGFloat
+    typealias Input = Bool
     typealias Failure = Never
 
     func receive(subscription: Subscription) {
         subscription.request(.unlimited)
     }
 
-    func receive(_ input: CGFloat) -> Subscribers.Demand {
-
-        let isHidden: Bool = input < 0
+    func receive(_ input: Bool) -> Subscribers.Demand {
+        let isHidden = input
 
         guard self.isHidden != isHidden else {
             return .unlimited

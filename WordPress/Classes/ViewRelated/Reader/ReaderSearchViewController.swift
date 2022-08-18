@@ -129,9 +129,6 @@ import Gridicons
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
-        // hide the parent viewController's banner, if it exists
-        // because this viewController has its own.
-        streamController?.jetpackBannerView?.isHidden = true
     }
 
 

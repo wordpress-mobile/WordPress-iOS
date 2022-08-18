@@ -3,7 +3,7 @@ import Combine
 
 class JetpackActivityLogViewController: BaseActivityListViewController {
     private let jetpackBannerView = JetpackBannerView()
-    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         let activityListConfiguration = ActivityListConfiguration(
@@ -53,6 +53,6 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
 extension JetpackActivityLogViewController: JPScrollViewDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         super.scrollViewDidScroll(scrollView)
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        processJetpackBannerVisibility(scrollView)
     }
 }
