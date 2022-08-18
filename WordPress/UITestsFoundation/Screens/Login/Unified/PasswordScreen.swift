@@ -37,7 +37,6 @@ public class PasswordScreen: ScreenObject {
         passwordTextField.typeText(password)
         let continueButton = app.buttons["Continue Button"]
         continueButton.tap()
-        XCTAssertEqual(continueButton.waitFor(predicateString: "exists == false"), .completed)
 
         return self
     }
