@@ -130,6 +130,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         
         SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
+        SiteStatsInformation.sharedInstance.supportsFileDownloads = [self.blog supports:BlogFeatureFileDownloadsStats];
         
         [self addStatsViewControllerToView];
         [self initializeStatsWidgetsIfNeeded];
