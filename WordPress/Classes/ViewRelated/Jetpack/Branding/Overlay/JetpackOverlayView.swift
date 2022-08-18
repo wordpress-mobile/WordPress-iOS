@@ -19,6 +19,13 @@ class JetpackOverlayView: UIView {
         UIImage.gridicon(.crossCircle, size: CGSize(width: Metrics.dismissButtonSize, height: Metrics.dismissButtonSize))
     }
 
+    /// Sets the animation based on the language orientation
+    private var animation: Animation? {
+        traitCollection.layoutDirection == .leftToRight ?
+        Animation.named(Graphics.wpJetpackLogoAnimationLtr) :
+        Animation.named(Graphics.wpJetpackLogoAnimationRtl)
+    }
+
     private lazy var dismissButton: CircularImageButton = {
         let button = CircularImageButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +50,8 @@ class JetpackOverlayView: UIView {
     }()
 
     private lazy var animationView: AnimationView = {
-        let animationView = AnimationView(name: Graphics.wpJetpackLogoAnimation)
+        let animationView = AnimationView()
+        animationView.animation = animation
         animationView.translatesAutoresizingMaskIntoConstraints = false
         return animationView
     }()
@@ -57,6 +65,7 @@ class JetpackOverlayView: UIView {
         label.numberOfLines = Metrics.titleLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.title
+        label.setContentCompressionResistancePriority(Metrics.titleCompressionResistance, for: .vertical)
         return label
     }()
 
@@ -69,6 +78,7 @@ class JetpackOverlayView: UIView {
         label.numberOfLines = Metrics.descriptionLabelNumberOfLines
         label.textAlignment = .natural
         label.text = TextContent.description
+        label.setContentCompressionResistancePriority(Metrics.descriptionCompressionResistance, for: .vertical)
         return label
     }()
 
@@ -131,8 +141,8 @@ class JetpackOverlayView: UIView {
         stackViewBottomConstraint.priority = Metrics.veryHighPriority
 
         NSLayoutConstraint.activate([
-            dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonPadding),
-            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonPadding),
+            dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.dismissButtonTrailingPadding),
+            dismissButton.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.dismissButtonTopPadding),
             dismissButton.heightAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             dismissButton.widthAnchor.constraint(equalToConstant: Metrics.dismissButtonSize),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.edgeMargins.left),
@@ -150,18 +160,20 @@ class JetpackOverlayView: UIView {
 private extension JetpackOverlayView {
 
     enum Graphics {
-        static let wpJetpackLogoAnimation = "JetpackWordPressLogoAnimation_left"
+        static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
+        static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
         static let dismissButtonSystemName = "xmark.circle.fill"
     }
 
     enum Metrics {
         // stack view
         static let imageToTitleSpacing: CGFloat = 24
-        static let titleToDescriptionSpacing: CGFloat = 20
+        static let titleToDescriptionSpacing: CGFloat = 10
         static let descriptionToButtonSpacing: CGFloat = 40
         static let edgeMargins = UIEdgeInsets(top: 46, left: 30, bottom: 20, right: 30)
         // dismiss button
-        static let dismissButtonPadding: CGFloat = 20
+        static let dismissButtonTopPadding: CGFloat = 10 // takes into account the gripper
+        static let dismissButtonTrailingPadding: CGFloat = 20
         static let dismissButtonSize: CGFloat = 30
         // labels
         static let maximumFontSize: CGFloat = 32
@@ -170,6 +182,9 @@ private extension JetpackOverlayView {
         static let titleLabelNumberOfLines = 2
 
         static let descriptionLabelNumberOfLines = 0
+
+        static let titleCompressionResistance = UILayoutPriority(rawValue: 751)
+        static let descriptionCompressionResistance = UILayoutPriority(rawValue: 749)
 
         static var titleFont: UIFont {
             let weightTrait = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.bold]
