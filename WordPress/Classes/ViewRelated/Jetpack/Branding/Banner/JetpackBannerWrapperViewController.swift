@@ -38,7 +38,7 @@ import UIKit
     }
 
     private func configureJetpackBanner(_ stackView: UIStackView) {
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard JetpackBrandingVisibility.all.enabled, !isModal() else {
             return
         }
 

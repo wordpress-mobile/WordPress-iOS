@@ -501,6 +501,11 @@ import Combine
     }
 
     private func setupJetpackBanner(stackView: UIStackView) {
+        /// If being presented in a modal, don't show a Jetpack banner
+        if let nav = navigationController, nav.isModal() {
+            return
+        }
+
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
