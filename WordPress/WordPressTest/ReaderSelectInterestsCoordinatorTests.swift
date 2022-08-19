@@ -1,10 +1,10 @@
 import XCTest
 @testable import WordPress
 
-class ReaderSelectInterestsCoordinatorTests: XCTestCase {
+class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
     func testisFollowingInterestsReturnsFalse() {
         let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: false)
+        let service = MockFollowedInterestsService(populateItems: false, coreDataStack: contextManager)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
 
         service.success = true
@@ -22,7 +22,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
 
     func testisFollowingInterestsReturnsTrue() {
         let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: true)
+        let service = MockFollowedInterestsService(populateItems: true, coreDataStack: contextManager)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: 1)
 
         let successExpectation = expectation(description: "Fetching of interests succeeds")
@@ -42,7 +42,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
 
     func testSaveInterestsTriggersSuccess() {
         let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: false)
+        let service = MockFollowedInterestsService(populateItems: false, coreDataStack: contextManager)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: nil)
 
         let successExpectation = expectation(description: "Saving of interests callback returns true")
@@ -58,7 +58,7 @@ class ReaderSelectInterestsCoordinatorTests: XCTestCase {
 
     func testSaveInterestsTriggersFailure() {
         let store = EphemeralKeyValueDatabase()
-        let service = MockFollowedInterestsService(populateItems: false)
+        let service = MockFollowedInterestsService(populateItems: false, coreDataStack: contextManager)
         let coordinator = ReaderSelectInterestsCoordinator(service: service, store: store, userId: nil)
 
         service.success = false
@@ -86,14 +86,13 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
 
     private let failureError = NSError(domain: "org.wordpress.reader-tests", code: 1, userInfo: nil)
 
-    private var testContextManager: CoreDataStack?
-    private var context: NSManagedObjectContext!
+    private var coreDataStack: CoreDataStack
+    private var context: NSManagedObjectContext {
+        coreDataStack.mainContext
+    }
 
-    init(populateItems: Bool) {
-
-        testContextManager = TestContextManager.sharedInstance()
-        context = testContextManager?.mainContext
-
+    init(populateItems: Bool, coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
         self.populateItems = populateItems
     }
 
@@ -122,11 +121,6 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
             fetchFailureExpectation?.fulfill()
 
             failure(failureError)
-            return
-        }
-
-        guard let context = context else {
-            XCTFail("Context is nil")
             return
         }
 

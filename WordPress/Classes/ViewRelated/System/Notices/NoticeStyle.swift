@@ -81,7 +81,7 @@ public struct QuickStartNoticeStyle: NoticeStyle {
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
-    public let isDismissable = false
+    public var isDismissable = false
     public let showNextArrow = false
 
     public let animationStyle = NoticeAnimationStyle.moveIn

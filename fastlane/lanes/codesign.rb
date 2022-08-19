@@ -12,28 +12,33 @@ platform :ios do
   lane :register_new_device do |options|
     device_name = UI.input('Device Name: ') if options[:device_name].nil?
     device_id = UI.input('Device ID: ') if options[:device_id].nil?
+    all_bundle_ids = ALL_BUNDLE_IDENTIFIERS + [JETPACK_APP_IDENTIFIER]
+
     UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
-    ALL_BUNDLE_IDENTIFIERS.each do |identifier|
+    all_bundle_ids.each do |identifier|
       puts "\t#{identifier}"
     end
+
+    team_id = get_required_env('EXT_EXPORT_TEAM_ID')
 
     # Register the user's device
     register_device(
       name: device_name,
       udid: device_id,
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID')
+      team_id: team_id,
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
 
     # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
     add_development_certificates_to_provisioning_profiles(
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      app_identifier: ALL_BUNDLE_IDENTIFIERS
+      team_id: team_id,
+      app_identifier: all_bundle_ids
     )
 
     # Add all devices to the provisioning profiles
     add_all_devices_to_provisioning_profiles(
-      team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      app_identifier: ALL_BUNDLE_IDENTIFIERS
+      team_id: team_id,
+      app_identifier: all_bundle_ids
     )
   end
 

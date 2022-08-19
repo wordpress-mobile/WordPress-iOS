@@ -1,10 +1,11 @@
 import UIKit
 import WordPressFlux
 
-class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
+class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"
 
-    // MARK: - Properties
+    weak var bannerView: JetpackBannerView?
+
     var isGrowAudienceShowing: Bool {
         return insightsToShow.contains(.growAudience)
     }
@@ -64,12 +65,17 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
         SiteStatsInformation.sharedInstance.upgradeInsights()
         clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadPinnedCards()
         initViewModel()
+        sendScrollEventsToBanner()
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = UITableView.automaticDimension
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            tableView.cellLayoutMarginsFollowReadableWidth = true
+        }
 
         displayEmptyViewIfNecessary()
     }
@@ -81,6 +87,7 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
 
     func showAddInsightView(source: String = "table_row") {
         WPAnalytics.track(.statsItemTappedInsightsAddStat, withProperties: ["source": source])
+        tableView.deselectSelectedRowWithAnimation(true)
 
         if displayingEmptyView {
             hideNoResults()
@@ -96,9 +103,10 @@ class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoa
             dismissCustomizeCard()
         }
 
-        let controller = AddInsightTableViewController(insightsDelegate: self,
-                insightsShown: insightsToShow.compactMap { $0.statSection })
+        let controller = InsightsManagementViewController(insightsDelegate: self,
+                insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -115,6 +123,10 @@ private extension SiteStatsInsightsTableViewController {
                                                pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
         viewModel?.fetchInsights()
+
+        if FeatureFlag.statsNewInsights.enabled {
+            viewModel?.startFetchingPeriodOverview()
+        }
     }
 
     func addViewModelListeners() {
@@ -135,6 +147,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [InsightCellHeaderRow.self,
+                ViewsVisitorsRow.self,
                 GrowAudienceRow.self,
                 CustomizeInsightsRow.self,
                 LatestPostSummaryRow.self,
@@ -142,6 +155,9 @@ private extension SiteStatsInsightsTableViewController {
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
+                MostPopularTimeInsightStatsRow.self,
+                TotalInsightStatsRow.self,
+                AddInsightRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostGrowAudienceImmutableRow.self,
@@ -165,16 +181,16 @@ private extension SiteStatsInsightsTableViewController {
             displayFailureViewIfNecessary()
         }
 
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
     }
 
     @objc func refreshData() {
         guard !insightsToShow.isEmpty else {
-            refreshControl?.endRefreshing()
+            refreshControl.endRefreshing()
             return
         }
 
-        refreshControl?.beginRefreshing()
+        refreshControl.beginRefreshing()
         clearExpandedRows()
         refreshInsights(forceRefresh: true)
         hideNoResults()
@@ -404,6 +420,25 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
+        if FeatureFlag.statsNewInsights.enabled {
+            switch statSection {
+            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
+                segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            default:
+                segueToDetails(statSection: statSection, selectedDate: selectedDate)
+            }
+        } else {
+            segueToDetails(statSection: statSection, selectedDate: selectedDate)
+        }
+    }
+
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+        let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func segueToDetails(statSection: StatSection, selectedDate: Date?) {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
@@ -438,8 +473,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        let controller: UIViewController = SharingViewController(blog: blog, delegate: self)
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return
+        }
 
+        let controller: UIViewController = JetpackBannerWrapperViewController(childVC: sharingVC)
         let navigationController = UINavigationController(rootViewController: controller)
 
         present(navigationController, animated: true)
@@ -571,7 +609,35 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
+}
 
+// MARK: - StatsInsightsManagementDelegate
+
+extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate {
+    func userUpdatedActiveInsights(_ insights: [StatSection]) {
+        let insightTypes = insights.compactMap({ $0.insightType })
+
+        guard insightTypes.count == insights.count else {
+            return
+        }
+
+        insightsToShow = insightTypes
+        refreshInsights(forceRefresh: true)
+        updateView()
+    }
+}
+
+// MARK: - Presentation delegate
+
+extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let navigationController = presentationController.presentedViewController as? UINavigationController,
+        let controller = navigationController.topViewController as? InsightsManagementViewController else {
+            return
+        }
+
+        controller.handleDismissViaGesture(from: self)
+    }
 }
 
 // MARK: - SharingViewControllerDelegate
@@ -686,6 +752,17 @@ private extension SiteStatsInsightsTableViewController {
             trackNudgeEvent(.statsBloggingRemindersNudgeDismissed)
         case .readerDiscover:
             trackNudgeEvent(.statsReaderDiscoverNudgeDismissed)
+        }
+    }
+}
+
+// MARK: Jetpack powered banner
+
+private extension SiteStatsInsightsTableViewController {
+
+    func sendScrollEventsToBanner() {
+        if let bannerView = bannerView {
+            analyticsTracker.addTranslationObserver(bannerView)
         }
     }
 }

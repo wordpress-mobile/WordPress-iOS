@@ -39,19 +39,7 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressThisWeekWidget
   WordPressIntents
 ].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
-# rubocop:disable Style/MutableConstant
-#
-# Fastlane `match` manipulates the array of bundle identifiers it's given in a
-# way that expects it to be mutable. We cannot call `.freeze`, or `match` will
-# fail.
-#
-# See:
-#
-# - https://github.com/fastlane/fastlane/issues/11324
-# - https://github.com/fastlane/fastlane/blob/b817148d4967ab6e38b8f1a8b81d1b3e60d6e645/match/lib/match/runner.rb#L84-L86
-# - https://buildkite.com/automattic/wordpress-ios/builds/6240#ad789b9f-b744-4867-8d58-95921c58a3cf/2491-2756
-ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS]
-# rubocop:enable Style/MutableConstant
+ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
 JETPACK_APP_IDENTIFIER = 'com.automattic.jetpack'
 
 # Environment Variables — used by lanes but also potentially actions
@@ -61,16 +49,40 @@ GHHELPER_REPO = 'wordpress-mobile/wordpress-iOS'
 ENV['PROJECT_NAME'] = 'WordPress'
 ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
 ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
-ENV['DOWNLOAD_METADATA'] = './fastlane/download_metadata.swift'
 ENV['PROJECT_ROOT_FOLDER'] = "#{PROJECT_ROOT_FOLDER}/"
 ENV['APP_STORE_STRINGS_FILE_NAME'] = 'AppStoreStrings.po'
 
 # Use this instead of getting values from ENV directly. It will throw an error if the requested value is missing
 def get_required_env(key)
   UI.user_error!("Environment variable '#{key}' is not set. Have you setup #{USER_ENV_FILE_PATH} correctly?") unless ENV.key?(key)
-  ENV[key]
+  ENV.fetch(key, nil)
 end
 
+
+########################################################################
+# Group buildkite logs by action
+########################################################################
+
+# A module that defines methods to be used as overrides to `Fastlane::Actions`
+# module methods.
+module FastlaneActionLogGroup
+  def print_group(action_name)
+    return if %w[is_ci].include?(action_name)
+
+    puts "~~~ :fastlane: #{ENV.fetch('FASTLANE_LANE_NAME', '[root]')} >> #{action_name}"
+  end
+
+  def execute_action(action_name)
+    print_group(action_name)
+    super(action_name)
+  end
+end
+
+if ENV.key?('BUILDKITE')
+  Fastlane::Actions.singleton_class.class_eval do
+    prepend FastlaneActionLogGroup
+  end
+end
 
 ########################################################################
 # Imports domain-specific lanes

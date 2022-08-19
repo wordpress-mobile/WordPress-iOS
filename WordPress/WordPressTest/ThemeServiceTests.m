@@ -1,7 +1,6 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "TestContextManager.h"
 #import "Theme.h"
 #import "ThemeService.h"
 #import "WPAccount.h"
@@ -17,7 +16,7 @@
 #pragma mark - Tests
 
 @interface ThemeServiceTests : XCTestCase
-@property (nonatomic, strong) TestContextManager *manager;
+@property (nonatomic, strong) ContextManagerMock *manager;
 @end
 
 @implementation ThemeServiceTests
@@ -25,7 +24,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.manager = [TestContextManager new];
+    self.manager = [ContextManagerMock new];
 }
 
 - (void)tearDown

@@ -52,7 +52,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
 
         let mediaPickerDelegate = MediaPickerDelegate(kanvasDelegate: delegate,
                                                       presenter: tabBar,
-                                                      shouldDisableLongVideos: !blog.hasPaidPlan)
+                                                      blog: blog)
         let options = WPMediaPickerOptions()
         options.allowCaptureOfMedia = false
 
@@ -85,17 +85,15 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
     private weak var kanvasDelegate: KanvasMediaPickerViewControllerDelegate?
     private weak var presenter: UIViewController?
-
-    private let shouldDisableLongVideos: Bool
-
+    private let blog: Blog
     private var cancellables = Set<AnyCancellable>()
 
     init(kanvasDelegate: KanvasMediaPickerViewControllerDelegate,
          presenter: UIViewController,
-         shouldDisableLongVideos: Bool = false) {
+         blog: Blog) {
         self.kanvasDelegate = kanvasDelegate
         self.presenter = presenter
-        self.shouldDisableLongVideos = shouldDisableLongVideos
+        self.blog = blog
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
@@ -156,8 +154,13 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
 
                 let title = NSLocalizedString("Failed Media Export", comment: "Error title when picked media cannot be imported into stories.")
                 let message = NSLocalizedString("Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Error message when picked media cannot be imported into stories.")
+                let dismissTitle = NSLocalizedString(
+                    "mediaPicker.failedMediaExportAlert.dismissButton",
+                    value: "Dismiss",
+                    comment: "The title of the button to dismiss the alert shown when the picked media cannot be imported into stories."
+                )
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                let dismiss = UIAlertAction(title: "Dismiss", style: .default) { _ in
+                let dismiss = UIAlertAction(title: dismissTitle, style: .default) { _ in
                     alert.dismiss(animated: true, completion: nil)
                 }
                 alert.addAction(dismiss)
@@ -175,7 +178,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        picker != self && asset.exceedsFreeSitesAllowance() && shouldDisableLongVideos
+        picker != self && !blog.canUploadAsset(asset)
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
@@ -209,7 +212,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if picker != self, asset.exceedsFreeSitesAllowance(), shouldDisableLongVideos {
+        if picker != self, !blog.canUploadAsset(asset) {
             presentVideoLimitExceededFromPicker(on: picker)
             return false
         }

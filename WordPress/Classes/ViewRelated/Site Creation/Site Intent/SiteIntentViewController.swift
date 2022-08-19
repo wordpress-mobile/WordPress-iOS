@@ -86,6 +86,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
                                                            style: .done,
                                                            target: self,
                                                            action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "site-intent-cancel-button"
     }
 
     private func configureTable() {
@@ -95,6 +96,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.backgroundColor = .basicBackground
+        tableView.accessibilityIdentifier  = "Site Intent Table"
     }
 
     // MARK: Actions
@@ -189,7 +191,7 @@ extension SiteIntentViewController: UISearchBarDelegate {
 
         availableVerticals = SiteIntentData.allVerticals
         tableView.reloadData()
-        tableView.scrollToView(searchBar.searchTextField, animated: true)
+        tableView.scrollVerticallyToView(searchBar.searchTextField, animated: true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

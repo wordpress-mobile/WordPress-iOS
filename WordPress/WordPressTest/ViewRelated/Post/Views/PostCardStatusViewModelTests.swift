@@ -1,24 +1,16 @@
+import Nimble
+import XCTest
 
 @testable import WordPress
 
-import Nimble
-
 private typealias ButtonGroups = PostCardStatusViewModel.ButtonGroups
 
-class PostCardStatusViewModelTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostCardStatusViewModelTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
-    }
-
-    override func tearDown() {
-        context = nil
-        contextManager = nil
-        super.tearDown()
     }
 
     func testExpectedButtonGroupsForVariousPostAttributeCombinations() {

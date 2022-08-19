@@ -64,7 +64,6 @@ extension WPTabBarController {
     func navigateToReaderSearch() {
         let searchController = ReaderSearchViewController.controller()
         navigateToReader(searchController)
-        QuickStartTourGuide.shared.visited(.readerSearch)
     }
 
     func navigateToReaderSite(_ topic: ReaderSiteTopic) {

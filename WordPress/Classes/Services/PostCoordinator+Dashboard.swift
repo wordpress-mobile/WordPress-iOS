@@ -13,6 +13,10 @@ extension PostCoordinator {
     func notifyNewPostCreated() {
         NotificationCenter.default.post(name: .newPostCreated, object: nil)
     }
+
+    func notifyNewPostPublished() {
+        NotificationCenter.default.post(name: .newPostPublished, object: nil)
+    }
 }
 
 extension NSNotification.Name {
@@ -21,4 +25,7 @@ extension NSNotification.Name {
 
     /// Fired when a draft is saved
     static let newPostCreated = NSNotification.Name("NewPostCreated")
+
+    /// Fired when a post is published
+    static let newPostPublished = NSNotification.Name("NewPostPublished")
 }

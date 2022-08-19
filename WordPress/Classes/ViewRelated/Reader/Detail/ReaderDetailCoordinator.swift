@@ -41,7 +41,7 @@ class ReaderDetailCoordinator {
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
     lazy var authenticator: RequestAuthenticator? = {
-        guard let account = accountService.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
             DDLogInfo("Account not available for Reader authentication")
             return nil
         }
@@ -99,6 +99,8 @@ class ReaderDetailCoordinator {
 
         return URL(string: postURLString)
     }
+
+    private var followCommentsService: FollowCommentsService?
 
     /// The total number of Likes for the post.
     /// Passed to ReaderDetailLikesListController to display in the view title.
@@ -174,7 +176,7 @@ class ReaderDetailCoordinator {
 
                                     // Split off current user's like from the list.
                                     // Likes from self will always be placed in the last position, regardless of the when the post was liked.
-                                    if let userID = self?.accountService.defaultWordPressComAccount()?.userID.int64Value,
+                                    if let userID = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.userID.int64Value,
                                        let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
                                         currentLikeUser = filteredUsers.remove(at: userIndex)
                                     }
@@ -408,17 +410,23 @@ class ReaderDetailCoordinator {
     ///
     private func showMenu(_ anchorView: UIView) {
         guard let post = post,
-            let context = post.managedObjectContext,
-            let viewController = viewController else {
+              let context = post.managedObjectContext,
+              let viewController = viewController,
+              let followCommentsService = FollowCommentsService(post: post) else {
             return
         }
 
-        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(post: post,
-                                                                     context: context,
-                                                                     readerTopic: readerTopic,
-                                                                     anchor: anchorView,
-                                                                     vc: viewController,
-                                                                     source: ReaderPostMenuSource.details)
+        self.followCommentsService = followCommentsService
+
+        ReaderMenuAction(logged: ReaderHelpers.isLoggedIn()).execute(
+            post: post,
+            context: context,
+            readerTopic: readerTopic,
+            anchor: anchorView,
+            vc: viewController,
+            source: ReaderPostMenuSource.details,
+            followCommentsService: followCommentsService
+        )
 
         WPAnalytics.trackReader(.readerArticleDetailMoreTapped)
     }
@@ -718,7 +726,7 @@ extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
 // MARK: - ReaderDetailToolbarDelegate
 extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {
     func didTapLikeButton(isLiked: Bool) {
-        guard let userAvatarURL = accountService.defaultWordPressComAccount()?.avatarURL else {
+        guard let userAvatarURL = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.avatarURL else {
             return
         }
 

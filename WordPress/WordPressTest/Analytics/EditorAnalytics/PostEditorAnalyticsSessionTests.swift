@@ -1,7 +1,8 @@
 import Foundation
+import XCTest
 @testable import WordPress
 
-class PostEditorAnalyticsSessionTests: XCTestCase {
+class PostEditorAnalyticsSessionTests: CoreDataTestCase {
     enum PostContent {
         static let classic = """
         Text <strong>bold</strong> <em>italic</em>
@@ -14,14 +15,7 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
         """
     }
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
-
-
     override func setUp() {
-        contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
         TestAnalyticsTracker.setup()
     }
 
@@ -161,10 +155,10 @@ class PostEditorAnalyticsSessionTests: XCTestCase {
 
 extension PostEditorAnalyticsSessionTests {
     func createPost(title: String? = nil, body: String? = nil, blogID: NSNumber? = nil) -> AbstractPost {
-        let post = AbstractPost(context: context)
+        let post = AbstractPost(context: mainContext)
         post.postTitle = title
         post.content = body
-        post.blog = Blog(context: context)
+        post.blog = Blog(context: mainContext)
         post.blog.dotComID = blogID
         return post
     }

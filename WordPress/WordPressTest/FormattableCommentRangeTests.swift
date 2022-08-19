@@ -1,9 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class NotificationCommentRangeTests: XCTestCase {
-    private let contextManager = TestContextManager()
-
+final class NotificationCommentRangeTests: CoreDataTestCase {
     private var subject: NotificationCommentRange?
 
     private struct Constants {

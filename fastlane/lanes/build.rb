@@ -4,7 +4,19 @@ SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
-APPCENTER_OWNER_TYPE = 'organization'      
+APPCENTER_OWNER_TYPE = 'organization'
+
+# https://buildkite.com/docs/test-analytics/ci-environments
+TEST_ANALYTICS_ENVIRONMENT = %w[
+  BUILDKITE_ANALYTICS_TOKEN
+  BUILDKITE_BUILD_ID
+  BUILDKITE_BUILD_NUMBER
+  BUILDKITE_JOB_ID
+  BUILDKITE_BRANCH
+  BUILDKITE_COMMIT
+  BUILDKITE_MESSAGE
+  BUILDKITE_BUILD_URL
+].freeze
 
 # Lanes related to Building and Testing the code
 #
@@ -62,11 +74,13 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
+    xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if test_plan_path.nil? || !File.exist?((test_plan_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+
+    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -75,7 +89,7 @@ platform :ios do
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
       test_without_building: true,
-      xctestrun: test_plan_path,
+      xctestrun: xctestrun_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true
@@ -245,7 +259,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'WordPress Alpha',
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
@@ -271,7 +285,7 @@ platform :ios do
     post_installable_build_pr_comment(app_name: 'WordPress', build_number: build_number, url_slug: 'WPiOS-One-Offs')
   end
 
-  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to AppCenter
+  # Builds the Jetpack app for an Installable Build ("Jetpack" scheme), and uploads it to App Center
   #
   # @called_by CI
   #
@@ -298,7 +312,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: 'Jetpack Alpha',
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV['INT_EXPORT_TEAM_ID'],
+      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
       export_options: { method: 'enterprise' }
     )
@@ -335,9 +349,9 @@ platform :ios do
   #
   def generate_installable_build_number
     if ENV['BUILDKITE']
-      commit = ENV['BUILDKITE_COMMIT'][0, 7]
-      branch = ENV['BUILDKITE_BRANCH']
-      pr_num = ENV['BUILDKITE_PULL_REQUEST']
+      commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
+      branch = ENV.fetch('BUILDKITE_BRANCH', nil)
+      pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
 
       pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
     else
@@ -350,36 +364,34 @@ platform :ios do
   end
 
   # Posts a comment on the current PR to inform where to download a given Installable Build that was just published to App Center.
-  # 
-  # Use this only after `upload_to_app_center` as been called, as it relies on the `SharedValues::APPCENTER_DOWNLOAD_LINK` lane context being set.
+  #
+  # Use this only after `upload_to_app_center` as been called, as it announces how said App Center build can be installed.
   #
   # @param [String] app_name The display name to use in the comment text to identify which app this Installable Build is about
   # @param [String] build_number The App Center's build number for this build
-  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in AppCenter (e.g. `WPiOS-One-Offs`)
+  # @param [String] url_slug The last component of the `install.appcenter.ms` URL used to install the app. Typically a sluggified version of the app name in App Center (e.g. `WPiOS-One-Offs`)
   #
   # @called_by CI — especially, relies on `BUILDKITE_PULL_REQUEST` being defined
   #
-  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)    
-    download_url = Actions.lane_context[SharedValues::APPCENTER_DOWNLOAD_LINK]
-    UI.message("Successfully built and uploaded installable build `#{build_number}` here: #{download_url}")
+  def post_installable_build_pr_comment(app_name:, build_number:, url_slug:)
+    UI.message("Successfully built and uploaded installable build `#{build_number}` to App Center.")
 
     return if ENV['BUILDKITE_PULL_REQUEST'].nil?
 
     install_url = "https://install.appcenter.ms/orgs/automattic/apps/#{url_slug}/"
-    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{URI::encode(install_url)}&choe=UTF-8"
+    qr_code_url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=#{CGI.escape(install_url)}&choe=UTF-8"
     comment_body = <<~COMMENT_BODY
       You can test the changes in <strong>#{app_name}</strong> from this Pull Request by:<ul>
-        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below</li>
-        <li>Then installing the build number <code>#{build_number}</code> from App Center on your iPhone</li>
+        <li><a href='#{install_url}'>Clicking here</a> or scanning the QR code below to access App Center</li>
+        <li>Then installing the build number <code>#{build_number}</code> on your iPhone</li>
       </ul>
-      <img src='#{qr_code_url}' width='150' height='150' /> 
-      The <code>.ipa</code> file can also be <a href='#{download_url}'>downloaded directly here</a>.<br />
+      <img src='#{qr_code_url}' width='150' height='150' />
       If you need access to App Center, please ask a maintainer to add you.
     COMMENT_BODY
 
     comment_on_pr(
       project: 'wordpress-mobile/wordpress-ios',
-      pr_number: Integer(ENV['BUILDKITE_PULL_REQUEST']),
+      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
       reuse_identifier: "installable-build-link--#{url_slug}",
       body: comment_body
     )
@@ -398,5 +410,27 @@ platform :ios do
       configuration = Xcodeproj::Config.new(config)
       configuration.attributes['VERSION_SHORT']
     end
+  end
+
+  def inject_buildkite_analytics_environment(xctestrun_path:)
+    require 'plist'
+
+    xctestrun = Plist.parse_xml(xctestrun_path)
+    xctestrun['TestConfigurations'].each do |configuration|
+      configuration['TestTargets'].each do |target|
+        TEST_ANALYTICS_ENVIRONMENT.each do |key|
+          value = ENV.fetch(key)
+          next if value.nil?
+
+          target['EnvironmentVariables'][key] = value
+        end
+      end
+    end
+
+    File.write(xctestrun_path, Plist::Emit.dump(xctestrun))
+  end
+
+  def buildkite_ci?
+    ENV.fetch('BUILDKITE', false)
   end
 end

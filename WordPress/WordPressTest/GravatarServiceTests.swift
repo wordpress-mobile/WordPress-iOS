@@ -6,7 +6,7 @@ import WordPressKit
 
 /// GravatarService Unit Tests
 ///
-class GravatarServiceTests: XCTestCase {
+class GravatarServiceTests: CoreDataTestCase {
     class GravatarServiceRemoteMock: GravatarServiceRemote {
         var capturedAccountToken: String = ""
         var capturedAccountEmail: String = ""
@@ -29,18 +29,6 @@ class GravatarServiceTests: XCTestCase {
             gravatarServiceRemoteMock = GravatarServiceRemoteMock()
             return gravatarServiceRemoteMock!
         }
-    }
-
-    private var contextManager: TestContextManager!
-
-    override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testServiceSanitizesEmailAddressCapitals() {
@@ -70,7 +58,7 @@ class GravatarServiceTests: XCTestCase {
         contextManager.saveContextAndWait(mainContext)
 
         accountService.setDefaultWordPressComAccount(defaultAccount)
-        XCTAssertNotNil(accountService.defaultWordPressComAccount())
+        XCTAssertNotNil(try WPAccount.lookupDefaultWordPressComAccount(in: mainContext))
 
         return defaultAccount
     }

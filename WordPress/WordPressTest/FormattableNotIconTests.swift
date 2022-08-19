@@ -2,7 +2,6 @@ import XCTest
 @testable import WordPress
 
 final class FormattableNotIconTests: XCTestCase {
-    private let contextManager = TestContextManager()
 
     private var subject: FormattableNoticonRange?
 

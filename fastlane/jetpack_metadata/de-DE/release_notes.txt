@@ -1,0 +1,7 @@
+Wir haben einige Performance-Verbesserungen für die Galerie und Bild-Blöcke im Block-Editor vorgenommen. So brauchen Bilder auf deiner Website weniger Speicherplatz und verlangsamen dein Gerät während Medien-Uploads nicht mehr. Wir mögen Geschwindigkeit.
+
+Wenn deine Website VideoPress nutzt, können Video-Blöcke, die in der Web-Version deiner Website gespeichert sind, jetzt auch problemlos in der mobilen App angezeigt werden.
+
+Der Block-Inserter im Block-Editor ermöglicht das bessere Organisieren von Block-Typen in Sammlungen. Wir haben außerdem den Abstand der Fußnote des Alt-Texts in Bild-Blöcken angepasst, denn auch die kleinen Dinge sind wichtig.
+
+Zu guter Letzt konnten wir noch einen lästigen Bug im Website-Erstellungsprozess beseitigen. Wenn du horizontal durch die Designoptionen für Websites scrollst, merkt die App sich jetzt, wo du aufgehört hast, selbst wenn du auf der Seite rauf- und runterscrollst.

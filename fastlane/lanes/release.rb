@@ -16,7 +16,7 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true)
+    ios_bump_version_release(skip_deliver: true, skip_glotpress: true)
     new_version = ios_get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
@@ -63,9 +63,15 @@ platform :ios do
     ios_completecodefreeze_prechecks(options)
     generate_strings_file_for_glotpress
 
-    UI.confirm('Ready to push changes to remote and trigger the beta build?') unless ENV['RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM']
-    push_to_git_remote(tags: false)
-    trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    if prompt_for_confirmation(
+      message: 'Ready to push changes to remote and trigger the beta build?',
+      bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
+    )
+      push_to_git_remote(tags: false)
+      trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+    else
+      UI.message('Aborting code freeze completion. See you later.')
+    end
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -78,9 +84,7 @@ platform :ios do
   lane :new_beta_release do |options|
     ios_betabuild_prechecks(options)
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
     version = ios_get_app_version
     trigger_beta_build(branch_to_build: "release/#{version}")
@@ -111,6 +115,8 @@ platform :ios do
   desc 'Performs the final checks and triggers a release build for the hotfix in the current branch'
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
+    git_pull
+
     version = ios_get_app_version
     trigger_release_build(branch_to_build: "release/#{version}")
   end
@@ -129,13 +135,12 @@ platform :ios do
     UI.user_error!('To finalize a hotfix, please use the finalize_hotfix_release lane instead') if ios_current_branch_is_hotfix
 
     ios_finalize_prechecks(options)
+    git_pull
 
     check_all_translations(interactive: true)
 
     download_localized_strings_and_metadata(options)
-    # FIXME: (2021.06.17) This is disabled because we currently have a >256 chars string which GlotPress truncates when exporting  the `.strings` files,
-    #   leading to incorrect key for it and (rightful) linter failure. We need to split that key into 2 smaller copies before we can re-enable this.
-    # ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
+    ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
 
     # Wrap up
@@ -233,4 +238,15 @@ def print_release_notes_reminder
   MSG
 
   message.lines.each { |l| UI.important(l.chomp) }
+end
+
+# Wrapper around Fastlane `UI.confirm` that adds the option to bypass the
+# prompt if a given flag is true
+#
+# @param [String] message The text to pass to `UI.confirm` to show the user
+# @param [Boolean] bypass A flag that allows bypassing the `UI.confirm` prompt, i.e. acting as if the prompt returned `true`
+def prompt_for_confirmation(message:, bypass:)
+  return true if bypass
+
+  UI.confirm(message)
 end

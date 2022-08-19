@@ -9,6 +9,7 @@ import WordPressKit
     static let productBlogDisplayURL = "jetpack.com/blog"
     static let zendeskSourcePlatform = "mobile_-_jp_ios"
     static let shareAppName: ShareAppName = .jetpack
+    static let mobileAnnounceAppId = "6"
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
@@ -40,6 +41,8 @@ extension AppConstants {
 
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+        static let shareButtonTitle = NSLocalizedString("Share Jetpack with a friend", comment: "Title for a button that recommends the app to others")
+        static let whatIsNewTitle = NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
     }
 
     struct Login {
@@ -55,5 +58,10 @@ extension AppConstants {
 
     struct Zendesk {
         static let ticketSubject = NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+    }
+
+    struct QuickStart {
+        static let getToKnowTheAppTourTitle = NSLocalizedString("Get to know the Jetpack app",
+                                                                comment: "Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app.")
     }
 }

@@ -187,11 +187,6 @@ private class MyProfileController: SettingsController {
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
     // and initializing stuff with safer values like userID
     fileprivate func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        // Again, ! isn't cool, but let's keep it for now until we refactor the VC
-        // initialization parameters.
-        return account
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 }

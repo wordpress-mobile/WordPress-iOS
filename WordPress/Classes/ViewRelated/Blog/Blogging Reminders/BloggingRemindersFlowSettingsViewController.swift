@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 protocol BloggingRemindersFlowDelegate: AnyObject {
     func didSetUpBloggingReminders()
@@ -51,7 +52,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return label
     }()
 
-    private let button: UIButton = {
+    private lazy var button: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.addTarget(self, action: #selector(notifyMeButtonTapped), for: .touchUpInside)
@@ -136,77 +137,68 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var trophy: UIView = {
-        let trophy = UIImageView(image: .gridicon(.trophy, size: Metrics.tipsTrophyImageSize))
-        trophy.translatesAutoresizingMaskIntoConstraints = false
-        trophy.tintColor = .secondaryLabel
-        return trophy
+    private lazy var bloggingPromptsTitle: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = TextContent.bloggingPromptsTitle
+        return label
     }()
 
-    private lazy var tipLabel: UILabel = {
-        let tipLabel = UILabel()
-        tipLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipLabel.adjustsFontForContentSizeCategory = true
-        tipLabel.textColor = .secondaryLabel
-        tipLabel.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold)
-        tipLabel.text = TextContent.tipPanelTitle
-        return tipLabel
+    private lazy var bloggingPromptsInfoButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(.gridicon(.helpOutline), for: .normal)
+        button.tintColor = .listSmallIcon
+        button.accessibilityLabel = TextContent.bloggingPromptsInfoButton
+        button.addTarget(self, action: #selector(bloggingPromptsInfoButtonTapped), for: .touchUpInside)
+        return button
     }()
 
-    private lazy var tipDescriptionLabel: UILabel = {
-        let tipDescriptionLabel = UILabel()
-        tipDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        tipDescriptionLabel.adjustsFontForContentSizeCategory = true
-        tipDescriptionLabel.textColor = .secondaryLabel
-        tipDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        tipDescriptionLabel.text = TextContent.tipPanelDescription
-        tipDescriptionLabel.numberOfLines = 0
-        return tipDescriptionLabel
+    private lazy var bloggingPromptsTitleStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [bloggingPromptsTitle, bloggingPromptsInfoButton, makeSpacer()])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = Metrics.BloggingPrompts.titleSpacing
+        stackView.alignment = .center
+        return stackView
     }()
 
-    private lazy var bottomTipPanel: UIView = {
+    private lazy var bloggingPromptsDescription: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.text = TextContent.bloggingPromptsDescription
+        label.textColor = .textSubtle
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private lazy var bloggingPromptsSwitch: UISwitch = {
+        let bloggingPromptsSwitch = UISwitch()
+        bloggingPromptsSwitch.translatesAutoresizingMaskIntoConstraints = false
+        bloggingPromptsSwitch.isOn = promptRemindersEnabled
+        bloggingPromptsSwitch.addTarget(self, action: #selector(bloggingPromptsSwitchChanged), for: .valueChanged)
+        return bloggingPromptsSwitch
+    }()
+
+    private lazy var bloggingPromptsView: UIView = {
         let view = UIView()
-        view.backgroundColor = .quaternaryBackground
-        view.layer.cornerRadius = Metrics.tipPanelCornerRadius
-        view.addSubview(tipStackView)
-
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews([bloggingPromptsTitleStackView, bloggingPromptsDescription, bloggingPromptsSwitch])
+        view.isHidden = !FeatureFlag.bloggingPrompts.enabled
         return view
     }()
 
-    private lazy var tipStackView: UIStackView = {
-        let tipStackView = UIStackView(arrangedSubviews: [trophy, tipLabelsStackView])
-        tipStackView.spacing = Metrics.tipPanelHorizontalStackSpacing
-        tipStackView.translatesAutoresizingMaskIntoConstraints = false
-        tipStackView.axis = .horizontal
-        tipStackView.alignment = .top
-        return tipStackView
-    }()
-
-    private lazy var tipLabelsStackView: UIStackView = {
-        let tipLabelsStackView = UIStackView(arrangedSubviews: [tipLabel, tipDescriptionLabel])
-        tipLabelsStackView.translatesAutoresizingMaskIntoConstraints = false
-        tipLabelsStackView.axis = .vertical
-        tipLabelsStackView.alignment = .leading
-        tipLabelsStackView.addArrangedSubviews([tipLabel, tipDescriptionLabel])
-        return tipLabelsStackView
-    }()
-
-    private lazy var timeSelectionToTipSpacer: UIView = {
-        makeSpacer()
-    }()
-
-    private lazy var tipToConfirmationButtonSpacer: UIView = {
-        makeSpacer()
-    }()
-
-    private lazy var confirmationButtonBottomSpacer: UIView = {
+    private lazy var bloggingPromptsToConfirmationButtonSpacer: UIView = {
         makeSpacer()
     }()
 
     // MARK: - Properties
 
     private let calendar: Calendar
-    private let scheduler: BloggingRemindersScheduler
+    private let scheduler: ReminderScheduleCoordinator
     private let scheduleFormatter = BloggingRemindersScheduleFormatter()
     private var weekdays: [BloggingRemindersScheduler.Weekday] {
         didSet {
@@ -217,6 +209,10 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     /// The weekdays that have been saved / scheduled in a previous blogging reminders configuration.
     ///
     private let previousWeekdays: [BloggingRemindersScheduler.Weekday]
+
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        BloggingPromptsService(blog: blog)
+    }()
 
     // MARK: - Initializers
 
@@ -241,7 +237,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         }()
         self.delegate = delegate
 
-        scheduler = try BloggingRemindersScheduler()
+        scheduler = try ReminderScheduleCoordinator()
 
         switch self.scheduler.schedule(for: blog) {
         case .none:
@@ -305,7 +301,6 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        bottomTipPanel.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
         imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
     }
 
@@ -319,8 +314,17 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
 
     @objc private func notifyMeButtonTapped() {
         tracker.buttonPressed(button: .continue, screen: .dayPicker)
-
         scheduleReminders()
+    }
+
+    @objc private func bloggingPromptsInfoButtonTapped() {
+        WPAnalytics.track(.promptsReminderSettingsHelp)
+
+        present(BloggingPromptsFeatureIntroduction.navigationController(interactionType: .informational), animated: true)
+    }
+
+    @objc private func bloggingPromptsSwitchChanged(_ sender: UISwitch) {
+        WPAnalytics.track(.promptsReminderSettingsIncludeSwitch, properties: ["enabled": String(sender.isOn)])
     }
 
     /// Schedules the reminders and shows a VC that requests PN authorization, if necessary.
@@ -339,34 +343,60 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
             schedule = .none
         }
 
+        // update local prompt settings so that the coordinator uses the right scheduler.
+        let resetPromptSettingsClosure = temporarilyUpdatePromptSettings()
+        let promptSettingsChanged = resetPromptSettingsClosure != nil
+        button.isEnabled = false
+
         scheduler.schedule(schedule, for: blog, time: scheduledTime) { [weak self] result in
             guard let self = self else {
                 return
             }
-
             switch result {
             case .success:
                 self.tracker.scheduled(schedule, time: self.scheduledTime)
 
                 DispatchQueue.main.async { [weak self] in
-                    self?.delegate?.didSetUpBloggingReminders()
-                    self?.pushCompletionViewController()
+                    let completion = {
+                        self?.delegate?.didSetUpBloggingReminders()
+                        self?.pushCompletionViewController()
+                        self?.button.isEnabled = true
+                    }
+
+                    // only sync prompt settings in Blogging Prompts context.
+                    guard promptSettingsChanged else {
+                        completion()
+                        return
+                    }
+
+                    // sync the updated settings to remote.
+                    self?.syncPromptsScheduleIfNeeded {
+                        completion()
+                    }
                 }
+
             case .failure(let error):
                 switch error {
                 case BloggingRemindersScheduler.Error.needsPermissionForPushNotifications where showPushPrompt == true:
                     DispatchQueue.main.async { [weak self] in
                         self?.pushPushPromptViewController()
+                        self?.button.isEnabled = true
                     }
                 default:
                     // The scheduler should normally not fail unless it's because of having no push permissions.
                     // As a simple solution for now, we'll just avoid taking any action if the scheduler did fail.
                     DDLogError("Error scheduling blogging reminders: \(error)")
+                    self.button.isEnabled = true
                     break
                 }
+
+                // When scheduling fails, call the reset closure to reset prompt settings to its previous state.
+                // Note that this closure should only exist in Blogging Prompts context; in Blogging Reminders context, this should be nil.
+                resetPromptSettingsClosure?()
             }
         }
     }
+
 }
 
 // MARK: - Navigation
@@ -415,16 +445,15 @@ private extension BloggingRemindersFlowSettingsViewController {
         return view
     }
 
-    /// Determines if the calendar image and the tip should be displayed, depending on the screen vertical size
+    /// Determines if the calendar image should be displayed, depending on the screen vertical size
     var shouldShowFullUI: Bool {
         (WPDeviceIdentification.isiPhone() && UIScreen.main.bounds.height >= Metrics.minimumHeightForFullUI) ||
             (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait)
     }
 
-    /// Hides/shows the optional UI Elements (dismiss button, calendar icon, tip)
+    /// Hides/shows the optional UI Elements (dismiss button & calendar icon)
     /// - Parameter isVisible: true if we need to show the elements (Full UI), false otherwise
     func showFullUI(_ isVisible: Bool) {
-        bottomTipPanel.isHidden = !isVisible
         imageView.isHidden = !isVisible
     }
 
@@ -480,49 +509,78 @@ private extension BloggingRemindersFlowSettingsViewController {
             daysOuterStackView,
             frequencyView,
             timeSelectionView,
-            timeSelectionToTipSpacer,
-            bottomTipPanel,
-            tipToConfirmationButtonSpacer,
+            bloggingPromptsView,
+            bloggingPromptsToConfirmationButtonSpacer,
             button,
-            confirmationButtonBottomSpacer
         ])
 
         stackView.setCustomSpacing(Metrics.afterTitleLabelSpacing, after: titleLabel)
         stackView.setCustomSpacing(Metrics.afterPromptLabelSpacing, after: promptLabel)
+        stackView.setCustomSpacing(Metrics.afterTimeSelectionViewSpacing, after: timeSelectionView)
+        stackView.setCustomSpacing(.zero, after: bloggingPromptsView)
+        stackView.setCustomSpacing(WPDeviceIdentification.isiPad() ? Metrics.stackSpacing : .zero,
+                                   after: bloggingPromptsToConfirmationButtonSpacer)
     }
 
     func configureConstraints() {
         frequencyView.pinSubviewToAllEdges(frequencyLabel)
         timeSelectionView.pinSubviewToAllEdges(timeSelectionStackView)
-        bottomTipPanel.pinSubviewToAllEdges(tipStackView, insets: Metrics.tipPanelMargins)
 
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        tipDescriptionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         timeSelectionView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         button.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        bloggingPromptsTitle.setContentCompressionResistancePriority(.required, for: .vertical)
+        bloggingPromptsDescription.setContentCompressionResistancePriority(.required, for: .vertical)
+        bloggingPromptsSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor, constant: WPDeviceIdentification.isiPad() ? .zero : -Metrics.edgeMargins.bottom),
+            stackView.bottomAnchor.constraint(equalTo: view.safeBottomAnchor,
+                                              constant: WPDeviceIdentification.isiPad() ? Metrics.ipadBottomMargin : -Metrics.edgeMargins.bottom),
 
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
             button.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             button.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            bottomTipPanel.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             topDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             bottomDivider.heightAnchor.constraint(equalToConstant: .hairlineBorderWidth),
             timeSelectionView.heightAnchor.constraint(equalToConstant: Metrics.buttonHeight),
             timeSelectionView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             frequencyView.heightAnchor.constraint(equalToConstant: Metrics.frequencyLabelHeight),
-            tipLabel.heightAnchor.constraint(equalTo: trophy.heightAnchor),
-            timeSelectionToTipSpacer.heightAnchor.constraint(equalTo: tipToConfirmationButtonSpacer.heightAnchor),
-            timeSelectionToTipSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            tipToConfirmationButtonSpacer.widthAnchor.constraint(equalTo: stackView.widthAnchor)
+        ])
+
+        configureBloggingPromptsConstraints()
+    }
+
+    func configureBloggingPromptsConstraints() {
+        guard FeatureFlag.bloggingPrompts.enabled else {
+            NSLayoutConstraint.activate([
+                bloggingPromptsView.widthAnchor.constraint(equalToConstant: .zero),
+                bloggingPromptsView.heightAnchor.constraint(equalToConstant: .zero),
+            ])
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            bloggingPromptsTitleStackView.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsTitleStackView.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsTitleStackView.topAnchor.constraint(equalTo: bloggingPromptsView.topAnchor),
+            bloggingPromptsDescription.topAnchor.constraint(equalTo: bloggingPromptsTitleStackView.bottomAnchor,
+                                                            constant: Metrics.BloggingPrompts.labelsSpacing),
+            bloggingPromptsDescription.leadingAnchor.constraint(equalTo: bloggingPromptsView.leadingAnchor),
+            bloggingPromptsDescription.bottomAnchor.constraint(equalTo: bloggingPromptsView.bottomAnchor),
+            bloggingPromptsSwitch.leadingAnchor.constraint(greaterThanOrEqualTo: bloggingPromptsDescription.trailingAnchor,
+                                                           constant: Metrics.BloggingPrompts.switchLeading),
+            bloggingPromptsSwitch.trailingAnchor.constraint(equalTo: bloggingPromptsView.trailingAnchor),
+            bloggingPromptsSwitch.centerYAnchor.constraint(equalTo: bloggingPromptsView.centerYAnchor),
+            bloggingPromptsInfoButton.heightAnchor.constraint(equalToConstant: Metrics.BloggingPrompts.infoButtonHeight),
+            bloggingPromptsInfoButton.widthAnchor.constraint(equalTo: bloggingPromptsInfoButton.heightAnchor),
+            bloggingPromptsView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
         ])
     }
 
@@ -602,6 +660,89 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
     }
 }
 
+// MARK: - Blogging Prompts Helpers
+
+private extension BloggingRemindersFlowSettingsViewController {
+
+    var promptRemindersEnabled: Bool {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let settings = bloggingPromptsService?.localSettings else {
+            return false
+        }
+
+        return settings.promptRemindersEnabled
+    }
+
+    /// Temporarily update the local prompt settings with the new one.
+    /// The method returns a closure that will revert the changes made to the settings when executed.
+    ///
+    /// Note that the settings will only be updated when the switch to ON, or when the user turns the switch from ON to OFF.
+    ///
+    /// - Returns: A closure used to reset changes made to the prompt settings. Returns nil if the update condition is not fulfilled.
+    func temporarilyUpdatePromptSettings() -> (() -> Void)? {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
+              let settings = bloggingPromptsService?.localSettings,
+              let context = settings.managedObjectContext else {
+            return nil
+        }
+
+        let previousSettings = RemoteBloggingPromptsSettings(with: settings)
+
+        // update local settings to the selected schedule and time.
+        typealias Weekday = BloggingRemindersScheduler.Weekday
+        let selectedDays = Weekday.allCases.map {
+            weekdays.contains($0)
+        }
+        let days = RemoteBloggingPromptsSettings.ReminderDays(
+                monday: selectedDays[Weekday.monday.rawValue],
+                tuesday: selectedDays[Weekday.tuesday.rawValue],
+                wednesday: selectedDays[Weekday.wednesday.rawValue],
+                thursday: selectedDays[Weekday.thursday.rawValue],
+                friday: selectedDays[Weekday.friday.rawValue],
+                saturday: selectedDays[Weekday.saturday.rawValue],
+                sunday: selectedDays[Weekday.sunday.rawValue]
+        )
+        let timeDateFormatter = DateFormatter()
+        timeDateFormatter.dateFormat = "HH.mm"
+        let reminderTime = timeDateFormatter.string(from: scheduledTime)
+        let newSettings = RemoteBloggingPromptsSettings(
+            promptRemindersEnabled: bloggingPromptsSwitch.isOn,
+            reminderDays: days,
+            reminderTime: reminderTime
+        )
+
+        settings.configure(with: newSettings, siteID: settings.siteID, context: context)
+        ContextManager.shared.saveContextAndWait(context)
+
+        return {
+            settings.configure(with: previousSettings, siteID: settings.siteID, context: context)
+            ContextManager.shared.saveContextAndWait(context)
+        }
+    }
+
+    /// Synchronizes the prompt settings to remote.
+    ///
+    /// - Parameter completion: Closure called when the process completes.
+    func syncPromptsScheduleIfNeeded(_ completion: @escaping () -> Void) {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let service = bloggingPromptsService,
+              let settings = service.localSettings else {
+            completion()
+            return
+        }
+
+        let newSettings = RemoteBloggingPromptsSettings(with: settings)
+        service.updateSettings(settings: newSettings) { updatedSettings in
+            completion()
+        } failure: { error in
+            DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
+            completion()
+        }
+    }
+
+}
+
 // MARK: - Constants
 private enum TextContent {
     static let settingsPrompt = NSLocalizedString("Select the days you want to blog on",
@@ -613,10 +754,9 @@ private enum TextContent {
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
-
-    static let tipPanelTitle = NSLocalizedString("Tip", comment: "Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip.")
-
-    static let tipPanelDescription = NSLocalizedString("Posting regularly can help keep your readers engaged, and attract new visitors to your site.", comment: "Informative tip shown to user in the Blogging Reminders Settings screen.")
+    static let bloggingPromptsTitle = NSLocalizedString("Include prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
+    static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
+    static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
 }
 
 private enum Images {
@@ -625,23 +765,26 @@ private enum Images {
 
 private enum Metrics {
     static let edgeMargins = UIEdgeInsets(top: 46, left: 20, bottom: 56, right: 20)
-    static let tipPanelMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    static let ipadBottomMargin: CGFloat = -20.0
 
     static let stackSpacing: CGFloat = 24.0
     static let innerStackSpacing: CGFloat = 8.0
     static let afterTitleLabelSpacing: CGFloat = 16.0
     static let afterPromptLabelSpacing: CGFloat = 40.0
-    static let tipPanelHorizontalStackSpacing: CGFloat = 12.0
-    static let tipPanelVerticalStackSpacing: CGFloat = 8.0
+    static let afterTimeSelectionViewSpacing: CGFloat = 10.0
 
     static let buttonHeight: CGFloat = 44.0
-    static let tipPanelCornerRadius: CGFloat = 12.0
-    static let tipsTrophyImageSize = CGSize(width: 20, height: 20)
-    static let tipDescriptionHeight: CGFloat = 34.0
     static let frequencyLabelHeight: CGFloat = 30
 
     static let topRowDayCount = 4
 
-    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon and tip.
+    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon.
     static let minimumHeightForFullUI: CGFloat = 812
+
+    enum BloggingPrompts {
+        static let titleSpacing: CGFloat = 5.0
+        static let labelsSpacing: CGFloat = 2.0
+        static let infoButtonHeight: CGFloat = 16.0
+        static let switchLeading: CGFloat = 16.0
+    }
 }

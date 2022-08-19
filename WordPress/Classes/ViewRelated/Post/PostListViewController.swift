@@ -174,6 +174,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configureNavigationButtons()
 
         configureInitialFilterIfNeeded()
+        listenForAppComingToForeground()
 
         createButtonCoordinator.add(to: view, trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor, bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
     }
@@ -193,7 +194,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
             }, source: Constants.source), at: 0)
         }
-        return CreateButtonCoordinator(self, actions: actions, source: Constants.source)
+        return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)
     }()
 
     override func viewDidAppear(_ animated: Bool) {
@@ -212,6 +213,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        toggleCreateButton()
+    }
+
+    /// Shows/hides the create button based on the trait collection horizontal size class
+    @objc
+    private func toggleCreateButton() {
         if traitCollection.horizontalSizeClass == .compact {
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
@@ -379,6 +386,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         filterSettings.setFilterWithPostStatus(initialFilterWithPostStatus)
     }
 
+    /// Listens for the app coming to foreground in order to properly set the create button
+    private func listenForAppComingToForeground() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(toggleCreateButton),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+    }
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -545,7 +559,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate?(self)
+        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
 

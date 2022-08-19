@@ -106,6 +106,11 @@ class PreviewWebKitViewController: WebKitViewController {
         setupDeviceLabel()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setWidth(selectedDevice.width, viewWidth: size.width)
+    }
+
     // MARK: Toolbar Items
 
     override func configureToolbarButtons() {

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:33:39+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -148,6 +148,7 @@
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Y Cyfan";
 
@@ -316,7 +317,7 @@
 "Can Not Request Link" = "Methu gwneud Cais am Ddnolen";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -344,6 +345,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -361,6 +363,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -610,7 +613,8 @@
 "Create Account" = "Creu Cyfrif";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Creu Gwefan";
 
 /* Create WordPress.com site button */
@@ -732,6 +736,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -744,6 +749,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Cau";
 
@@ -814,7 +820,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-bost";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1121,6 +1128,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Dysgu rhagor";
 
@@ -1269,6 +1277,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -1287,7 +1296,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Canolig";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Dewislen";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -1413,7 +1424,7 @@
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "Dim cofnodion yn cyfateb i %@ yn eich iaith.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "Dim confodion yn ddiweddar";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -1431,7 +1442,8 @@
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Dim";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nid nawr";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
@@ -1448,6 +1460,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Hysbysiadau";
 
@@ -1507,6 +1520,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -1521,7 +1535,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Agor E-bost";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Agor y Gosodiadau";
 
 /* Today widget label to launch WP app */
@@ -1556,7 +1571,8 @@
 "Originally posted on %@" = "Wedi ei gofnodi'n wreiddiol ar %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Arall";
 
 /* Other Notifications Streams Title
@@ -1695,6 +1711,7 @@
 "Posting Activity" = "Gweithgaredd Cofnodi";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -1716,9 +1733,8 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Rhagolwg";
 
@@ -2009,7 +2025,7 @@
 "Scheduling..." = "Amserlennu...";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Chwilio";
 
@@ -2054,6 +2070,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Gosodiadau";
@@ -2076,6 +2093,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Rhannu";
 
@@ -2128,7 +2146,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Teitl y Wefan";
@@ -2152,9 +2169,10 @@
 /* Image size option title. */
 "Size" = "Maint";
 
-/* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Hepgor";
 
 /* Label for the slug field. Should be the same as WP core. */
@@ -2437,7 +2455,7 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Bu gwall wrth lwytho'r cynllun";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad at y Camera i gipio cyfryngau newydd, newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -2574,9 +2592,11 @@
 "Underline" = "Tanlinellu";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -2706,8 +2726,7 @@
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Gweld y Cyfan";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Gweld y Wefan";
 
 /* Displays More Rows */
@@ -2728,6 +2747,8 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Golwg";
 
@@ -2753,6 +2774,7 @@
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Ymwelwyr";
 
@@ -2792,6 +2814,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Ni fydd yn cael ei ddangos yn gyhoeddus";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
@@ -2918,6 +2943,12 @@
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "yn \"Diweddaru\"";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Later today */
 "later today" = "yn hwyrach heddiw";

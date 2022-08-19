@@ -68,8 +68,11 @@ class DebugMenuViewController: UITableViewController {
 
     private var toolsRows: [ImmuTableRow] {
         var toolsRows = [
-            ButtonRow(title: Strings.quickStartRow, action: { [weak self] _ in
-                self?.displayBlogPickerForQuickStart()
+            ButtonRow(title: Strings.quickStartForNewSiteRow, action: { [weak self] _ in
+                self?.displayBlogPickerForQuickStart(type: .newSite)
+            }),
+            ButtonRow(title: Strings.quickStartForExistingSiteRow, action: { [weak self] _ in
+                self?.displayBlogPickerForQuickStart(type: .existingSite)
             }),
             ButtonRow(title: Strings.sandboxStoreCookieSecretRow, action: { [weak self] _ in
                 self?.displayStoreSandboxSecretInserter()
@@ -117,14 +120,14 @@ class DebugMenuViewController: UITableViewController {
         return rows
     }
 
-    private func displayBlogPickerForQuickStart() {
+    private func displayBlogPickerForQuickStart(type: QuickStartType) {
         let successHandler: BlogSelectorSuccessHandler = { [weak self] selectedObjectID in
             guard let blog = self?.blogService.managedObjectContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
 
             self?.dismiss(animated: true) { [weak self] in
-                self?.enableQuickStart(for: blog)
+                self?.enableQuickStart(for: blog, type: type)
             }
         }
 
@@ -154,8 +157,8 @@ class DebugMenuViewController: UITableViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
-    private func enableQuickStart(for blog: Blog) {
-        QuickStartTourGuide.shared.setup(for: blog)
+    private func enableQuickStart(for blog: Blog, type: QuickStartType) {
+        QuickStartTourGuide.shared.setup(for: blog, type: type)
     }
 
     // MARK: Reader
@@ -181,7 +184,8 @@ class DebugMenuViewController: UITableViewController {
         static let featureFlags = NSLocalizedString("Feature flags", comment: "Title of the Feature Flags screen used in debug builds of the app")
         static let tools = NSLocalizedString("Tools", comment: "Title of the Tools section of the debug screen used in debug builds of the app")
         static let sandboxStoreCookieSecretRow = NSLocalizedString("Use Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
-        static let quickStartRow = NSLocalizedString("Enable Quick Start for Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
+        static let quickStartForNewSiteRow = NSLocalizedString("Enable Quick Start for New Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
+        static let quickStartForExistingSiteRow = NSLocalizedString("Enable Quick Start for Existing Site", comment: "Title of a row displayed on the debug screen used in debug builds of the app")
         static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
         static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
         static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")

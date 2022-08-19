@@ -31,6 +31,14 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     private var filteredSections: [CategorySection]?
     private var visibleSections: [CategorySection] { filteredSections ?? categorySections }
 
+    /// Dictionary to store horizontal scroll position of sections, keyed by category slug
+    private var sectionHorizontalOffsets: [String: CGFloat] = [:]
+
+    /// Should be overidden if a subclass uses different sized thumbnails.
+    var ghostThumbnailSize: CGSize {
+        return CategorySectionTableViewCell.defaultThumbnailSize
+    }
+
     internal var isLoading: Bool = true {
         didSet {
             if isLoading {
@@ -54,7 +62,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     init(
         analyticsLocation: String,
         mainTitle: String,
-        prompt: String,
+        prompt: String? = nil,
         primaryActionTitle: String,
         secondaryActionTitle: String? = nil,
         defaultActionTitle: String? = nil
@@ -64,6 +72,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.showsVerticalScrollIndicator = false
+
         filterBar = CollapsableHeaderFilterBar()
         super.init(scrollableView: tableView,
                    mainTitle: mainTitle,
@@ -95,10 +104,18 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
 
     override func estimatedContentSize() -> CGSize {
-        let rowCount = CGFloat(max(visibleSections.count, 1))
-        let estimatedRowHeight: CGFloat = CategorySectionTableViewCell.estimatedCellHeight
-        let estimatedHeight = (estimatedRowHeight * rowCount)
-        return CGSize(width: tableView.contentSize.width, height: estimatedHeight)
+        let height = calculateContentHeight()
+        return CGSize(width: tableView.contentSize.width, height: height)
+    }
+
+    private func calculateContentHeight() -> CGFloat {
+        guard !isLoading, visibleSections.count > 0 else {
+            return ghostThumbnailSize.height + CategorySectionTableViewCell.cellVerticalPadding
+        }
+
+        return visibleSections
+            .map { $0.thumbnailSize.height + CategorySectionTableViewCell.cellVerticalPadding }
+            .reduce(0, +)
     }
 
     public func loadingStateChanged(_ isLoading: Bool) {
@@ -108,11 +125,9 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
 }
 
-extension FilterableCategoriesViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource
 
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CategorySectionTableViewCell.estimatedCellHeight
-    }
+extension FilterableCategoriesViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isLoading ? 1 : (visibleSections.count)
@@ -125,11 +140,22 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
         }
         cell.delegate = self
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        cell.section = isLoading ? nil : visibleSections[indexPath.row]
-        cell.isGhostCell = isLoading
+
+        if isLoading {
+            cell.section = nil
+            cell.isGhostCell = true
+            cell.ghostThumbnailSize = ghostThumbnailSize
+            cell.collectionView.allowsSelection = false
+        } else {
+            let section = visibleSections[indexPath.row]
+            cell.section = section
+            cell.isGhostCell = false
+            cell.collectionView.allowsSelection = true
+            cell.horizontalScrollOffset = sectionHorizontalOffsets[section.categorySlug] ?? .zero
+        }
+
         cell.layer.masksToBounds = false
         cell.clipsToBounds = false
-        cell.collectionView.allowsSelection = !isLoading
         if let selectedItem = selectedItem, containsSelectedItem(selectedItem, atIndexPath: indexPath) {
             cell.selectItemAt(selectedItem.item)
         }
@@ -143,6 +169,8 @@ extension FilterableCategoriesViewController: UITableViewDataSource {
         return (sectionSlug == rowSection.categorySlug)
     }
 }
+
+// MARK: - CategorySectionTableViewCellDelegate
 
 extension FilterableCategoriesViewController: CategorySectionTableViewCellDelegate {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String) {
@@ -164,6 +192,14 @@ extension FilterableCategoriesViewController: CategorySectionTableViewCellDelega
         tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
 
+    func saveHorizontalScrollPosition(forCell cell: CategorySectionTableViewCell, xPosition: CGFloat) {
+        guard let cellSection = cell.section else {
+            return
+        }
+
+        sectionHorizontalOffsets[cellSection.categorySlug] = xPosition
+    }
+
     private func deselectCurrentLayout() {
         guard let previousSelection = selectedItem else { return }
 
@@ -174,6 +210,8 @@ extension FilterableCategoriesViewController: CategorySectionTableViewCellDelega
         }
     }
 }
+
+// MARK: - CollapsableHeaderFilterBarDelegate
 
 extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate {
     func numberOfFilters() -> Int {

@@ -1,22 +1,16 @@
 import XCTest
 @testable import WordPress
 
-class BlogTitleTests: XCTestCase {
+class BlogTitleTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
-    override func setUpWithError() throws {
-        contextManager = TestContextManager()
+    override func setUp() {
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = Constants.blogURL
         blog.xmlrpc = Constants.blogURL
-    }
-
-    override func tearDownWithError() throws {
-        blog = nil
     }
 
     func testBlogTitleIsName() throws {

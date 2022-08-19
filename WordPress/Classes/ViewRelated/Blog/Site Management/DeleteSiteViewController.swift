@@ -230,10 +230,13 @@ open class DeleteSiteViewController: UITableViewController {
 
                                     self?.updateNavigationStackAfterSiteDeletion()
 
-                                    let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                                    accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!),
-                                                                     success: { () in },
-                                                                     failure: { _ in })
+                                    let context = ContextManager.shared.mainContext
+                                    let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+                                    if let account = account {
+                                        AccountService(managedObjectContext: context).updateUserDetails(for: account,
+                                                                                                        success: {},
+                                                                                                        failure: { _ in })
+                                    }
             },
                                   failure: { error in
                                     DDLogError("Error deleting site: \(error.localizedDescription)")

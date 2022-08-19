@@ -15,11 +15,11 @@
 
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
+        [WPAnalytics trackQuickStartStat:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped blog: blog];
         [NoticesDispatch unlock];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
+        [WPAnalytics trackQuickStartStat:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped blog: blog];
         [[QuickStartTourGuide shared] removeFrom:blog];
         [NoticesDispatch unlock];
     }];

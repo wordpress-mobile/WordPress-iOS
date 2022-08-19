@@ -1,26 +1,10 @@
 import XCTest
 @testable import WordPress
 
-class MediaTests: XCTestCase {
-
-    fileprivate var contextManager: TestContextManager!
-    fileprivate var context: NSManagedObjectContext!
+class MediaTests: CoreDataTestCase {
 
     fileprivate func newTestMedia() -> Media {
-        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as! Media
-    }
-
-    override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        context.rollback()
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
+        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
     }
 
     func testThatAbsoluteURLsWork() {
@@ -68,7 +52,7 @@ class MediaTests: XCTestCase {
     }
 
     func testMediaHasAssociatedPost() {
-        let post = PostBuilder(context).build()
+        let post = PostBuilder(mainContext).build()
         let media = newTestMedia()
         media.addPostsObject(post)
 

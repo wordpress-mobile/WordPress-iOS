@@ -3,27 +3,12 @@ import XCTest
 import CoreData
 
 
-class ReaderTabViewTests: XCTestCase {
-
-    var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        contextManager = nil
-        context = nil
-        super.tearDown()
-    }
+class ReaderTabViewTests: CoreDataTestCase {
 
     func testRefreshTabBarWithHiddenButtons() {
         // Given
         let store = MockItemsStore()
-        let topic = ReaderAbstractTopic(context: context)
+        let topic = ReaderAbstractTopic(context: mainContext)
 
         let viewModel = ReaderTabViewModel(readerContentFactory: readerContentControllerFactory(_:),
                                            searchNavigationFactory: { },
@@ -46,7 +31,7 @@ class ReaderTabViewTests: XCTestCase {
     func testRefreshTabBarWithNoHiddenButtons() {
         // Given
         let store = MockItemsStore()
-        let topic = ReaderAbstractTopic(context: context)
+        let topic = ReaderAbstractTopic(context: mainContext)
         topic.path = "myPath/read/following"
 
         let viewModel = ReaderTabViewModel(readerContentFactory: readerContentControllerFactory(_:),
@@ -70,7 +55,7 @@ class ReaderTabViewTests: XCTestCase {
     func testSelectIndex() {
         // Given
         let store = MockItemsStore()
-        let topic = ReaderAbstractTopic(context: context)
+        let topic = ReaderAbstractTopic(context: mainContext)
         topic.path = "myPath/read/following"
 
         let viewModel = ReaderTabViewModel(readerContentFactory: readerContentControllerFactory(_:),

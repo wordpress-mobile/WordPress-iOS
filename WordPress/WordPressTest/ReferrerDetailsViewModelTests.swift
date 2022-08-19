@@ -7,11 +7,13 @@ class ReferrerDetailsViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         let childWithNoURL = StatsTotalRowData(name: "Child with no URL", data: "Child data with no URL")
+        let nestedFirstChildRow = StatsTotalRowData(name: "Nested Child 1", data: "Nested Child data 1", disclosureURL: URL(string: "https://www.secondchild.com"))
         let firstChildRow = StatsTotalRowData(name: "Child 1", data: "Child data 1", disclosureURL: URL(string: "https://www.firstchild.com"))
-        let secondChildRow = StatsTotalRowData(name: "Child 2", data: "Child data 2", disclosureURL: URL(string: "https://www.secondchild.com"))
-        let data = StatsTotalRowData(name: "parent", data: "Data", disclosureURL: URL(string: "https://www.parent.com"), childRows: [childWithNoURL, firstChildRow, secondChildRow], isReferrerSpam: true)
+        let secondChildWithNestedChildNoURL = StatsTotalRowData(name: "Child 2 with children no URL", data: "Child data 2 with children no URL", childRows: [nestedFirstChildRow])
+        let thirdChildRow = StatsTotalRowData(name: "Child 3", data: "Child data 3", disclosureURL: URL(string: "https://www.thirdchild.com"))
+        let data = StatsTotalRowData(name: "parent", data: "Data", disclosureURL: URL(string: "https://www.parent.com"), childRows: [childWithNoURL, firstChildRow, secondChildWithNestedChildNoURL, thirdChildRow], isReferrerSpam: true)
         spyDelegate = ViewModelDelegateSpy()
-        sut = ReferrerDetailsViewModel(data: data, delegate: spyDelegate)
+        sut = ReferrerDetailsViewModel(data: data, delegate: spyDelegate, referrersDelegate: nil)
     }
 
     override func tearDownWithError() throws {
@@ -73,13 +75,28 @@ class ReferrerDetailsViewModelTests: XCTestCase {
         XCTAssertEqual(firstRow.data.name, "Child 1")
     }
 
-    func testSecondDetailsRowIsValid() {
-        guard let secondRow = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 2, section: 0)) as? ReferrerDetailsRow else {
+    func testFirstNestedDetailsRowIsValid() {
+        guard let row = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 2, section: 0)) as? DetailExpandableRow else {
             XCTFail("Expected first ReferrerDetailsRow")
             return
         }
-        XCTAssertTrue(secondRow.isLast)
-        XCTAssertEqual(secondRow.data.name, "Child 2")
+
+        XCTAssertFalse(row.expanded)
+        XCTAssertEqual(row.rowData.name, "Child 2 with children no URL")
+
+        guard let childRows = row.rowData.childRows else { XCTFail("Expected child rows"); return }
+        XCTAssertEqual(childRows.count, 1)
+        guard let nestedChildRow = childRows.first else { XCTFail("Expected nested child row"); return }
+        XCTAssertEqual(nestedChildRow.name, "Nested Child 1")
+    }
+
+    func testThirdDetailsRowIsValid() {
+        guard let row = sut.tableViewModel.rowAtIndexPath(IndexPath(row: 3, section: 0)) as? ReferrerDetailsRow else {
+            XCTFail("Expected first ReferrerDetailsRow")
+            return
+        }
+        XCTAssertTrue(row.isLast)
+        XCTAssertEqual(row.data.name, "Child 3")
     }
 
     func testReferrerDetailsRowAction() {

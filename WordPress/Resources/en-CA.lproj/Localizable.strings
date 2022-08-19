@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-03-14 23:56:27+0000 */
+/* Translation-Revision-Date: 2022-04-25 13:47:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -56,7 +56,8 @@
    Plural format string for view title displaying the number of post likes. %1$d is the number of likes. */
 "%1$d Likes" = "%1$d Likes";
 
-/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available. */
+/* Format string for displaying number of completed quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.
+   Format string for displaying the number of completed quickstart tutorials. %1$d is the number completed, %2$d is the total number of tutorials available. */
 "%1$d of %2$d completed" = "%1$d of %2$d completed";
 
 /* Format string for single unseen post count. The %1$d is a placeholder for the count. */
@@ -64,9 +65,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d unseen posts";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s transformed to %2$s";
@@ -136,7 +134,8 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ was reconnected.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
+   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -484,9 +483,6 @@ translators: Block name. %s: The localized block name */
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Add Contents to Post";
 
-/* Add New Stats Card view title */
-"Add New Stats Card" = "Add New Stats Card";
-
 /* No comment provided by engineer. */
 "Add To Beginning" = "Add To Beginning";
 
@@ -635,6 +631,7 @@ translators: Block name. %s: The localized block name */
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "All";
 
@@ -653,9 +650,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "All set!";
-
-/* Title of the congratulation screen that appears when all the tasks are completed */
-"All tasks complete" = "All tasks complete";
 
 /* Insights 'All-Time' header */
 "All-Time" = "All-Time";
@@ -1197,7 +1191,7 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Can't publish an empty post";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -1225,6 +1219,7 @@ translators: Block name. %s: The localized block name */
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1242,6 +1237,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1334,9 +1330,6 @@ translators: Block name. %s: The localized block name */
 "Change username" = "Change username";
 
 /* Description of a Quick Start Tour */
-"Change, add, or remove content from your site's homepage." = "Change, add, or remove content from your site's homepage.";
-
-/* Description of a Quick Start Tour */
 "Change, add, or remove your site's pages." = "Change, add, or remove your site's pages.";
 
 /* No comment provided by engineer. */
@@ -1386,7 +1379,8 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Checking purchases…";
 
-/* Title for the button to progress with the selected site homepage design */
+/* Title for the button to progress with the selected site homepage design
+   Title for the button to progress with the selected site homepage design. */
 "Choose" = "Choose";
 
 /* Title for selecting a new homepage */
@@ -1407,9 +1401,6 @@ translators: Block name. %s: The localized block name */
 /* Label for Publish date picker */
 "Choose a date" = "Choose a date";
 
-/* Title for the screen to pick a design and homepage for a site. */
-"Choose a design" = "Choose a design";
-
 /* Select domain name. Title */
 "Choose a domain" = "Choose a domain";
 
@@ -1419,7 +1410,8 @@ translators: Block name. %s: The localized block name */
 /* A text for title label on Login epilogue screen */
 "Choose a site to open." = "Choose a site to open.";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Choose a theme";
 
 /* Label for Publish time picker */
@@ -1542,14 +1534,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for selecting code style button on the formatting toolbar. */
 "Code" = "Code";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Collapsed, %i completed tasks, toggling expands the list of these tasks" = "Collapsed, %i completed tasks, toggling expands the list of these tasks";
-
 /* Accessibility hint */
 "Collapsed. Tap to expand." = "Collapsed. Tap to expand.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Collapses the list of completed tasks." = "Collapses the list of completed tasks.";
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Collect information";
@@ -1646,9 +1632,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility indication that the current Post List style is currently Compact. */
 "Compact" = "Compact";
 
-/* The table view header title that displays the number of completed tasks */
-"Complete (%i)" = "Complete (%i)";
-
 /* The action is completed */
 "Completed" = "Completed";
 
@@ -1671,13 +1654,7 @@ translators: Block name. %s: The localized block name */
 "Completed: Create your site" = "Completed: create your site";
 
 /* The Quick Start Tour title after the user finished the step. */
-"Completed: Edit your homepage" = "Completed: edit your homepage";
-
-/* The Quick Start Tour title after the user finished the step. */
 "Completed: Explore plans" = "Completed: explore plans";
-
-/* The Quick Start Tour title after the user finished the step. */
-"Completed: Follow other sites" = "Completed: follow other sites";
 
 /* The Quick Start Tour title after the user finished the step. */
 "Completed: Publish a post" = "Completed: publish a post";
@@ -1711,12 +1688,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Confirm your email first";
-
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Congrats on finishing Quick Start  🎉";
-
-/* Subtitle of the congratulation screen that appears when all the tasks are completed */
-"Congratulations on completing your list. A job well done." = "Congratulations on completing your list. A job well done.";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Congratulations on your purchase!";
@@ -1804,7 +1775,8 @@ translators: Block name. %s: The localized block name */
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Continue";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
@@ -1846,9 +1818,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "Copy URL from the clipboard, %s";
-
-/* No comment provided by engineer. */
-"Copy block" = "Copy block";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
@@ -1993,7 +1962,8 @@ translators: Block name. %s: The localized block name */
 "Create Post" = "Create Post";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Create Site";
 
 /* Stories intro continue button title */
@@ -2118,8 +2088,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Customize Gradient" = "Customise Gradient";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to customize their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customize Your Site";
 
 /* No comment provided by engineer. */
@@ -2259,7 +2228,7 @@ translators: Block name. %s: The localized block name */
    Title of section that contains plugins' description */
 "Description" = "Description";
 
-/* Shortened version of the main title to be used in back navigation */
+/* Shortened version of the main title to be used in back navigation. */
 "Design" = "Design";
 
 /* Title for the desktop web preview */
@@ -2316,6 +2285,9 @@ translators: Block name. %s: The localized block name */
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Disconnecting this account means published posts will no longer be automatically shared to %@";
 
+/* The menu item to select during a guided tour. */
+"Discover" = "Discover";
+
 /* Title for button on the no followed sites result screen */
 "Discover Sites" = "Discover Sites";
 
@@ -2337,6 +2309,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -2349,6 +2322,7 @@ translators: Block name. %s: The localized block name */
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Dismiss";
 
@@ -2424,9 +2398,6 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Double tap and hold to edit" = "Double tap and hold to edit";
-
-/* Screen reader hint for button that will move the menu item */
-"Double tap and hold to move this menu item up or down" = "Double tap and hold to move this menu item up or down";
 
 /* No comment provided by engineer. */
 "Double tap to add a block" = "Double tap to add a block";
@@ -2633,9 +2604,6 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Edit video" = "Edit video";
 
-/* Title of a Quick Start Tour */
-"Edit your homepage" = "Edit your homepage";
-
 /* No comment provided by engineer. */
 "Editing reusable blocks is not yet supported on WordPress for Android" = "Editing reusable blocks is not yet supported on WordPress for Android";
 
@@ -2662,7 +2630,8 @@ translators: Block name. %s: The localized block name */
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -2729,17 +2698,11 @@ translators: Block name. %s: The localized block name */
 /* Text shown when the site doesn't have the Publicize module enabled. */
 "Enable Publicize" = "Enable Publicise";
 
-/* Title of a row displayed on the debug screen used in debug builds of the app */
-"Enable Quick Start for Site" = "Enable Quick Start for Site";
-
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Enable Site Stats";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Enable in-app notifications";
-
-/* Hint for the action button that enables notification for new comments */
-"Enable in-app notifications?" = "Enable in-app notifications?";
 
 /* Title for button that will open up the social media Sharing screen. */
 "Enable post sharing" = "Enable post sharing";
@@ -2957,14 +2920,8 @@ translators: Block name. %s: The localized block name */
    Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanded";
 
-/* Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks. */
-"Expanded, %i completed tasks, toggling collapses the list of these tasks" = "Expanded, %i completed tasks, toggling collapses the list of these tasks";
-
 /* Accessibility hint */
 "Expanded. Tap to collapse." = "Expanded. Tap to collapse.";
-
-/* Accessibility hint for the list of completed tasks presented during Quick Start. */
-"Expands the list of completed tasks." = "Expands the list of completed tasks.";
 
 /* Screen reader hint (non-imperative) about what does the site menu selector button do. */
 "Expands to select a different menu" = "Expands to select a different menu";
@@ -3017,13 +2974,7 @@ translators: Block name. %s: The localized block name */
 "Failed marking Notifications as read" = "Failed marking Notifications as read";
 
 /* No comment provided by engineer. */
-"Failed to insert audio file." = "Failed to insert audio file.";
-
-/* No comment provided by engineer. */
 "Failed to insert audio file. Please tap for options." = "Failed to insert audio file. Please tap for options.";
-
-/* No comment provided by engineer. */
-"Failed to insert media." = "Failed to insert media.";
 
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Failed to insert media.\n Please tap for options.";
@@ -3106,9 +3057,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Find out more";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Find sites that speak to you, and follow them to get updates when they publish.";
-
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
@@ -3143,12 +3091,6 @@ translators: Block name. %s: The localized block name */
 /* Button title. Follow the comments on a post. */
 "Follow Conversation" = "Follow Conversation";
 
-/* Verb. Button title. Follow the comments on a post. */
-"Follow conversation by email" = "Follow conversation by email";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Follow other sites";
-
 /* Verb. An option to follow a site. */
 "Follow site" = "Follow site";
 
@@ -3175,9 +3117,6 @@ translators: Block name. %s: The localized block name */
 /* Label for list of followers.
    User role badge */
 "Follower" = "Follower";
-
-/* Insights 'Follower Totals' header */
-"Follower Totals" = "Follower totals";
 
 /* Blog Followers
    Insights 'Followers' header
@@ -3366,8 +3305,7 @@ translators: Block name. %s: The localized block name */
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Great!\n We love to hear from happy users \n😁";
 
-/* Name of the Quick Start list that guides users through a few tasks to customize their new website.
-   Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website. */
+/* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Grow Your Audience" = "Grow Your Audience";
 
 /* This value is used to set the accessibility hint text for choosing a theme for the user's site. */
@@ -3503,8 +3441,7 @@ translators: Block name. %s: The localized block name */
    Title for the dashboard screen. */
 "Home" = "Home";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Homepage";
@@ -3911,6 +3848,7 @@ translators: Block name. %s: The localized block name */
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Learn more";
 
@@ -4265,6 +4203,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -4317,7 +4256,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Mention" = "Mention";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -4483,7 +4424,8 @@ translators: Block name. %s: The localized block name */
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Name";
 
 /* Error to be displayed when a tag is empty */
@@ -4526,7 +4468,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "Never expires";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "New";
 
 /* Blocklist Keyword Insertion Title */
@@ -4611,9 +4554,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No Preview URL available";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "No Saved Posts";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "No Thanks";
@@ -4757,7 +4697,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "No posts found matching %@ in your language.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "No posts have been made recently";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -4812,7 +4752,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Not Connected";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Not Now";
 
 /* Display value for Support email field if there is no user email address. */
@@ -4867,6 +4808,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
 
@@ -4971,6 +4913,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -4994,7 +4937,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Open Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Open Settings";
 
 /* Today widget label to launch WP app */
@@ -5068,7 +5012,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Originally posted on %@" = "Originally posted on %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Other";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -5225,9 +5170,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pick username";
-
-/* Prompt for the screen to pick a design and homepage for a site. */
-"Pick your favorite homepage layout. You can edit and customize it later." = "Pick your favorite homepage layout. You can edit and customize it later.";
 
 /* The item to select during a guided tour. */
 "Plan" = "Plan";
@@ -5484,13 +5426,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A detailed message to users about growing the audience for their site through blogging reminders. */
 "Posting regularly can help build an audience. Reminders help keep you on track." = "Posting regularly can help build an audience. Reminders help keep you on track.";
 
-/* Informative tip shown to user in the Blogging Reminders Settings screen. */
-"Posting regularly can help keep your readers engaged, and attract new visitors to your site." = "Posting regularly can help keep your readers engaged, and attract new visitors to your site.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Posting regularly helps build your audience!";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -5541,9 +5481,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Preview";
 
@@ -5564,9 +5503,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Preview post" = "Preview post";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Preview your new site to see what your visitors will see.";
 
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Previous month";
@@ -5608,9 +5544,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Private";
-
-/* No comment provided by engineer. */
-"Problem displaying block" = "Problem displaying block";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
@@ -6172,7 +6105,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the view */
 "Scan" = "Scan";
 
-/* Button title that triggers a scan */
+/* Button label that prompts the user to scan the log in code again
+   Button title that triggers a scan */
 "Scan Again" = "Scan Again";
 
 /* Title for a notice informing the user their scan has completed */
@@ -6213,7 +6147,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Scrollable block menu opened. Select a block." = "Scrollable block menu opened. Select a block.";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Search";
 
@@ -6225,9 +6159,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Search WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Search WordPress\nfor a site or post";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Search block label. Current text is";
@@ -6301,15 +6232,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Select %@ to discover new themes";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to edit your Homepage." = "Select %@ to edit your Homepage.";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Select %@ to look for sites with similar interests";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to preview" = "Select %@ to preview";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see how your site is performing." = "Select %@ to see how your site is performing.";
@@ -6498,6 +6420,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -6520,6 +6443,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Share";
 
@@ -6607,9 +6531,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility value if login page's password field is displaying the password. */
 "Shown" = "Shown";
 
-/* Description of a Quick Start Tour */
-"Shown in your visitor's browser tab and other places online." = "Shown in your visitor's browser tab and other places online.";
-
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Shown publicly when you comment on blogs.";
 
@@ -6682,10 +6603,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Language Picker View */
 "Site Language" = "Site Language";
 
-/* The segmented control item to select during a guided tour.
-   Title for the site menu view on the My Site screen */
-"Site Menu" = "Site Menu";
-
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
 
@@ -6694,12 +6611,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Site Title";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6749,16 +6666,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Image size option title. */
 "Size" = "Size";
 
-/* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Skip";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Skip All";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Skip Quick Start";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter results";
@@ -6772,7 +6684,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "So far, there are no ignored threats on your site.";
 
-/* Follower Totals label for social media followers */
+/* Follower Totals label for social media followers
+   Label for social followers
+   Title of Stats section that shows social followers. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -7181,9 +7095,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Text Only" = "Text Only";
 
 /* No comment provided by engineer. */
-"Text color" = "Text colour";
-
-/* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block";
 
 /* Button title
@@ -7298,9 +7209,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app.";
-
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "The quick start tour will guide you through building a basic site. Are you sure you want to skip? ";
 
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "The serialization of the request failed.";
@@ -7496,7 +7404,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -7605,9 +7513,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of a Quick Start Tour */
 "Time to finish setting up your site! Our checklist walks you through the next steps." = "Time to finish setting up your site! Our checklist walks you through the next steps.";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Tip";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
 
@@ -7687,7 +7592,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Tools section of the debug screen used in debug builds of the app */
 "Tools" = "Tools";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Top level";
 
 /* Shortened version of the main title to be used in back navigation
@@ -7786,8 +7692,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Try another search term";
 
-/* Customize Insights button title
-   Primary button title on the feature introduction view. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt.
+   Button title to take user to the new Stats Insights screen.
+   Customize Insights button title */
 "Try it now" = "Try it now";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8007,9 +7914,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Underline" = "Underline";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -8022,11 +7931,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Accessibility label for unfollowing a tag */
 "Unfollow %@" = "Unfollow %@";
 
-/* Title for a button that unsubscribes the user from the post. */
-"Unfollow conversation" = "Unfollow conversation";
-
 /* Verb. Button title. The user is following the comments on a post. */
-"Unfollow conversation by email" = "Unfollow conversation by email";
+"Unfollow conversation" = "Unfollow conversation";
 
 /* Verb. An option to unfollow a site. */
 "Unfollow site" = "Unfollow site";
@@ -8217,9 +8123,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Use icon button";
 
-/* Footer text for Invite Links section of the Invite People screen. */
-"Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted peo" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.";
-
 /* No comment provided by engineer. */
 "Use this site" = "Use this site";
 
@@ -8310,8 +8213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label for viewing a post */
 "View Post" = "View Post";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
 
 /* Title for button on the post details page to show all comments when tapped. */
@@ -8349,6 +8251,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Views";
 
@@ -8380,6 +8284,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Visitors";
 
@@ -8788,6 +8693,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Caption displayed in promotional screens shown during the login flow. */
 "With this powerful editor you can post on the go." = "With this powerful editor you can post on the go.";
 
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
+
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "WordPress App Settings";
 
@@ -8966,9 +8874,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";
-
-/* No comment provided by engineer. */
-"You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks." = "You can rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it above or below other blocks.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "You can switch sites at any time.";
@@ -9217,14 +9122,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENT]";
 
-/* Describes that only one user likes a post.  %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d blogger_ likes this." = "_%1$d blogger_ likes this.";
-
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
-
-/* Describes that the current user and one other user like a post. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d blogger_ like this." = "_You and %1$d blogger_ like this.";
 
 /* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
 "_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
@@ -9259,9 +9158,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "connections";
 
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "doesn’t it feel good to cross things off a list?";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "double tap to change unit";
 
@@ -9293,6 +9189,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "in \"Upgrade\"";
+
+/* Footer text for Invite Links section of the Invite People screen. */
+"invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.";
 
 /* Later today */
 "later today" = "later today";

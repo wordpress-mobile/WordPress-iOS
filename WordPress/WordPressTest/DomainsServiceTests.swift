@@ -4,11 +4,10 @@ import OHHTTPStubs
 import WordPressKit
 @testable import WordPress
 
-class DomainsServiceTests: XCTestCase {
+class DomainsServiceTests: CoreDataTestCase {
     let testSiteID = 12345
 
     var remote: DomainsServiceRemote!
-    var context: NSManagedObjectContext!
     var testBlog: Blog!
 
     var domainsEndpoint: String { return "sites/\(testSiteID)/domains" }
@@ -19,15 +18,12 @@ class DomainsServiceTests: XCTestCase {
 
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
-        context = TestContextManager().mainContext
         testBlog = makeTestBlog()
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        context.reset()
         HTTPStubs.removeAllStubs()
     }
 
@@ -41,8 +37,8 @@ class DomainsServiceTests: XCTestCase {
     }
 
     fileprivate func makeTestBlog() -> Blog {
-        let accountService = AccountService(managedObjectContext: context)
-        let blogService = BlogService(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: mainContext)
+        let blogService = BlogService(managedObjectContext: mainContext)
         let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
         let blog = blogService.createBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
@@ -58,7 +54,7 @@ class DomainsServiceTests: XCTestCase {
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]
         fetch.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, testBlog)
 
-        if let domains = (try? context.fetch(fetch)) as? [ManagedDomain] {
+        if let domains = (try? mainContext.fetch(fetch)) as? [ManagedDomain] {
             return domains
         } else {
             XCTFail()
@@ -68,7 +64,7 @@ class DomainsServiceTests: XCTestCase {
 
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
-        let service = DomainsService(managedObjectContext: context, remote: remote)
+        let service = DomainsService(managedObjectContext: mainContext, remote: remote)
         service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
             expect.fulfill()
         }
@@ -115,12 +111,12 @@ class DomainsServiceTests: XCTestCase {
     }
 
     func testDomainServiceUpdatesExistingDomains() {
-        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
+        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: mainContext) as! ManagedDomain
         existingDomain.domainName = "example.com"
         existingDomain.isPrimary = false
         existingDomain.domainType = .wpCom
         existingDomain.blog = testBlog
-        try! context.save()
+        try! mainContext.save()
 
         let domains = findAllDomains()
         XCTAssert(domains.count == 1, "Expecting 1 domain initially")

@@ -1,13 +1,110 @@
+20.6
+-----
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
+* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
+* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
+
+
+20.5
+-----
+* [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
+* [***] [internal] Block Editor: List block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/42702]
+* [**] Fix for Referrers Card Not Showing Search Engine Details [https://github.com/wordpress-mobile/WordPress-iOS/pull/19158]
+* [*] WeeklyRoundupBackgroundTask - format notification body [https://github.com/wordpress-mobile/WordPress-iOS/pull/19144]
+
+20.4
+-----
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
+
+20.3
+-----
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
+
+20.2
+-----
+* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
+* [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
+* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+
+20.1
+-----
+* [*] Notifications: Fixed an issue where the first notification opened in landscape mode was not scrollable. [#18823]
+* [*] Site Creation: Enhances the design selection screen with recommended designs. [#18740]
+* [***] [Jetpack-only] Introducing blogging prompts. Build a writing habit and support creativity with a periodic prompt for inspiration. [#18860]
+* [**] Follow Conversation: A tooltip has been added to highlight the follow conversation feature. [#18848]
+* [*] [internal] Block Editor: Bump react-native-gesture-handler to version 2.3.2. [#18742]
+* [*] People Management: Fixed a crash that can occur when loading the People view. [#18907]
+
+20.0
+-----
+* [*] Quick Start: The "Get to know the WordPress app" card has a fresh new look [#18688, #18747]
+* [*] Block Editor: A11y: Improve text read by screen readers for BottomSheetSelectControl [https://github.com/WordPress/gutenberg/pull/41036]
+* [*] Block Editor: Add 'Insert from URL' option to Image block [https://github.com/WordPress/gutenberg/pull/40334]
+* [*] App Settings: refreshed the UI with updated colors for Media Cache Size controls, Clear Spot Index row button, and Clear Siri Shortcut Suggestions row button. From destructive (red color) to standard and brand colors. [#18636]
+* [*] [internal] Quick Start: Fixed an issue where the Quick Start modal was not displayed after login if the user's default tab is Home. [#18721]
+* [*] Quick Start: The Next Steps modal has a fresh new look [#18711]
+* [*] [internal] Quick Start: Fixed a couple of layout issues with the Quick Start notices when rotating the device. [#18758]
+
+19.9
+-----
+* [*] Site Settings: we fixed an issue that prevented the site title to be updated when it changed in Site Settings [#18543]
+* [*] Media Picker: Fixed an issue where the empty state view was being displayed incorrectly. [#18471]
+* [*] Quick Start: We are now showing a different set of Quick Start tasks for existing sites and new sites. The existing sites checklist includes new tours such as: "Check your notifications" and "Upload photos or videos".  [#18395, #18412, #18443, #18471]
+* [*] Site Creation: we fixed an issue where the navigation buttons were not scaling when large fonts were selected on the device [#18559]
+* [**] Block Editor: Cover Block: Improve color contrast between background and text [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4808]
+* [***] Block Editor: Add drag & drop blocks feature [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4832]
+* [*] Block Editor: Gallery block: Fix broken "Link To" settings and add "Image Size" settings [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4841]
+* [*] Block Editor: Unsupported Block Editor: Prevent WordPress.com tour banner from displaying. [https://github.com/wordpress-mobile/gutenberg-mobile/pull/4820]
+* [*] Widgets: we fixed an issue where text appeared flipped in rtl languages [#18567]
+* [*] Stats: we fixed a crash that occurred sometimes in Stats [#18613]
+* [*] Posts list: we fixed an issue where the create button was not shown on iPad in split screen [#18609]
+
+19.8
+-----
+* [**] Self hosted sites are not restricted by video length during media uploads [https://github.com/wordpress-mobile/WordPress-iOS/pull/18414]
+* [*] [internal] My Site Dashboard: Made some changes to the code architecture of the dashboard. The majority of the changes are related to the posts cards. It should have no visible changes but could cause regressions. Please test it by creating/trashing drafts and scheduled posts and testing that they appear correctly on the dashboard. [#18405]
+* [*] Quick Start: Updated the Stats tour. The tour can now be accessed from either the dashboard or the menu tab. [#18413]
+* [*] Quick Start: Updated the Reader tour. The tour now highlights the Discover tab and guides users to follow topics via the Settings screen. [#18450]
+* [*] [internal] Quick Start: Deleted the Edit your homepage tour. [#18469]
+* [*] [internal] Quick Start: Refactored some code related to the tasks displayed in the Quick Start Card and the Quick Start modal. It should have no visible changes but could cause regressions. [#18395]
+* [**] Follow Conversation flow now enables in-app notifications by default. They were updated to be opt-out rather than opt-in. [#18449]
+* [*] Block Editor: Latest Posts block: Add featured image settings [https://github.com/WordPress/gutenberg/pull/39257]
+* [*] Block Editor: Prevent incorrect notices displaying when switching between HTML-Visual mode quickly [https://github.com/WordPress/gutenberg/pull/40415]
+* [*] Block Editor: Embed block: Fix inline preview cut-off when editing URL [https://github.com/WordPress/gutenberg/pull/35326]
+* [*] Block Editor: Prevent gaps shown around floating toolbar when using external keyboard [https://github.com/WordPress/gutenberg/pull/40266]
+* [**] We'll now ask users logging in which area of the app they'd like to focus on to build towards a more personalized experience. [#18385]
+
 19.7
 -----
 * [*] a11y: VoiceOver has been improved on the Menus view and now announces changes to ordering. [#18155]
-
+* [*] Notifications list: remove comment Trash swipe action. [#18349]
+* [*] Web previews now abide by safe areas when a toolbar is shown [#18127]
+* [*] Site creation: Adds a new screen asking the user the intent of the site [#18367]
+* [**] Block Editor: Quote block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/40133]
+* [**] Block Editor: Update "add block" button's style in default editor view [https://github.com/WordPress/gutenberg/pull/39726]
+* [*] Block Editor: Remove banner error notification on upload failure [https://github.com/WordPress/gutenberg/pull/39694]
+* [*] My Site: display site name in My Site screen nav title [#18373]
+* [*] [internal] Site creation: Adds a new screen asking the user the name of the site [#18280]
 
 19.6
 -----
 * [*] Enhances the exit animation of notices. [#18182]
 * [*] Media Permissions: display error message when using camera to capture photos and media permission not given [https://github.com/wordpress-mobile/WordPress-iOS/pull/18139]
-* [***] My Site: your My Site screen now has two tabs, "Site Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
+* [***] My Site: your My Site screen now has two tabs, "Menu" and "Home". Under "Home", you'll find contextual cards with some highlights of whats going on with your site. Check your drafts or scheduled posts, your today's stats or go directly to another section of the app. [#18240]
 * [*] [internal] Site creation: Adds a new screen asking the user the intent of the site [#18270]
 
 19.5

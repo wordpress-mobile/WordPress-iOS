@@ -56,24 +56,38 @@ import WordPressFlux
         }
     }
 
+    // TODO: when prompt is used, get prompt from cache so it's using the latest.
+    private var prompt: BloggingPrompt?
+
+    private lazy var bloggingPromptsService: BloggingPromptsService? = {
+        return BloggingPromptsService(blog: blog)
+    }()
+
     private weak var noticeContainerView: NoticeContainerView?
     private let actions: [ActionSheetItem]
     private let source: String
+    private let blog: Blog?
 
     /// Returns a newly initialized CreateButtonCoordinator
     /// - Parameters:
     ///   - viewController: The UIViewController from which the menu should be shown.
-    ///   - newPost: A closure to call when the New Post button is tapped.
-    ///   - newPage: A closure to call when the New Page button is tapped.
-    ///   - newStory: A closure to call when the New Story button is tapped. The New Story button is hidden when value is `nil`.
-    init(_ viewController: UIViewController, actions: [ActionSheetItem], source: String) {
+    ///   - actions: A list of actions to display in the menu
+    ///   - source: The source where the create button is being presented from
+    ///   - blog: The current blog in context
+    init(_ viewController: UIViewController, actions: [ActionSheetItem], source: String, blog: Blog? = nil) {
         self.viewController = viewController
         self.actions = actions
         self.source = source
+        self.blog = blog
 
         super.init()
 
         listenForQuickStart()
+
+        // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
+        if actions.count > 1 {
+            fetchBloggingPrompt()
+        }
     }
 
     deinit {
@@ -143,7 +157,7 @@ import WordPressFlux
     }
 
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
-        let actionSheetVC = CreateButtonActionSheet(actions: actions)
+        let actionSheetVC = CreateButtonActionSheet(headerView: createPromptHeaderView(), actions: actions)
         setupPresentation(on: actionSheetVC, for: traitCollection)
         return actionSheetVC
     }
@@ -283,4 +297,60 @@ extension UserDefaults {
             set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
         }
     }
+}
+
+
+// MARK: - Blogging Prompts Methods
+
+private extension CreateButtonCoordinator {
+
+    private func fetchBloggingPrompt() {
+
+        // TODO: check for cached prompt first.
+
+        guard let bloggingPromptsService = bloggingPromptsService else {
+            DDLogError("FAB: failed creating BloggingPromptsService instance.")
+            prompt = nil
+            return
+        }
+
+        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
+            self?.prompt = prompt
+        }, failure: { [weak self] (error) in
+            self?.prompt = nil
+            DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
+        })
+    }
+
+    private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
+        guard FeatureFlag.bloggingPrompts.enabled,
+              let blog = blog,
+              blog.isAccessibleThroughWPCom(),
+              let prompt = prompt else {
+            return nil
+        }
+
+        let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
+
+        promptsHeaderView.answerPromptHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
+            self?.viewController?.dismiss(animated: true) {
+                let editor = EditPostViewController(blog: blog, prompt: prompt)
+                editor.modalPresentationStyle = .fullScreen
+                editor.entryPoint = .bloggingPromptsActionSheetHeader
+                self?.viewController?.present(editor, animated: true)
+            }
+        }
+
+        promptsHeaderView.infoButtonHandler = { [weak self] in
+            WPAnalytics.track(.promptsBottomSheetHelp)
+            guard let presentedViewController = self?.viewController?.presentedViewController else {
+                return
+            }
+            BloggingPromptsIntroductionPresenter(interactionType: .actionable(blog: blog)).present(from: presentedViewController)
+        }
+
+        return promptsHeaderView
+    }
+
 }

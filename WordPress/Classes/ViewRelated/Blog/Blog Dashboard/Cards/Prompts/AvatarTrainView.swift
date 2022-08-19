@@ -8,6 +8,8 @@ final class AvatarTrainView: UIView {
 
     private var avatarURLs: [URL?]
 
+    private var placeholderImage: UIImage
+
     private lazy var avatarStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +27,9 @@ final class AvatarTrainView: UIView {
 
     // MARK: Public Methods
 
-    init(avatarURLs: [URL?]) {
+    init(avatarURLs: [URL?], placeholderImage: UIImage? = nil) {
         self.avatarURLs = avatarURLs
+        self.placeholderImage = placeholderImage ?? Constants.placeholderImage
         super.init(frame: .zero)
 
         setupViews()
@@ -40,8 +43,12 @@ final class AvatarTrainView: UIView {
         // redraw border when user interface style changes.
         if let previousTraitCollection = previousTraitCollection,
             previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
-            avatarStackView.subviews.forEach { configureBorder(for: $0) }
+            configureAvatarBorders()
         }
+    }
+
+    override func layoutSubviews() {
+        configureAvatarBorders()
     }
 
 }
@@ -57,9 +64,8 @@ private extension AvatarTrainView {
     }
 
     func makeAvatarImageView(with avatarURL: URL? = nil) -> UIImageView {
-        let imageView = CircularImageView(image: Constants.placeholderImage)
+        let imageView = CircularImageView(image: placeholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        configureBorder(for: imageView)
 
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: imageHeight),
@@ -67,21 +73,24 @@ private extension AvatarTrainView {
         ])
 
         if let avatarURL = avatarURL {
-            imageView.downloadImage(from: avatarURL, placeholderImage: Constants.placeholderImage)
+            imageView.downloadImage(from: avatarURL, placeholderImage: placeholderImage)
         }
 
         return imageView
     }
 
-    func configureBorder(for view: UIView) {
-        view.layer.borderWidth = Constants.borderWidth
-        view.layer.borderColor = UIColor.listForeground.cgColor
+    func configureAvatarBorders() {
+        avatarStackView.arrangedSubviews.forEach { view in
+            view.layer.masksToBounds = true
+            view.layer.borderWidth = Constants.borderWidth
+            view.layer.borderColor = UIColor.listForeground.cgColor
+        }
     }
 
     // MARK: Constants
 
     struct Constants {
-        static let imageViewSpacing: CGFloat = -4
+        static let imageViewSpacing: CGFloat = -5
         static let avatarDiameter: CGFloat = 20
         static let borderWidth: CGFloat = 2
         static let placeholderImage: UIImage = .gravatarPlaceholderImage

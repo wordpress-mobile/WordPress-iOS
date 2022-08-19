@@ -6,6 +6,7 @@ struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
     @State var blogService = BlogService.withMainContext()
+    @State var domainsList: [Blog.DomainRepresentation] = []
 
     // Property observer
     private func showingDomainRegistrationFlow(to value: Bool) {
@@ -26,12 +27,19 @@ struct DomainsDashboardView: View {
         .buttonStyle(PlainButtonStyle())
         .onTapGesture(perform: { })
         .onAppear {
-            blogService.refreshDomains(for: blog, success: nil, failure: nil)
+            updateDomainsList()
+
+            blogService.refreshDomains(for: blog, success: {
+                updateDomainsList()
+            }, failure: nil)
         }
         .navigationBarTitle(TextContent.navigationTitle)
         .sheet(isPresented: $isShowingDomainRegistrationFlow, content: {
             makeDomainSearch(for: blog, onDismiss: {
                 isShowingDomainRegistrationFlow = false
+                blogService.refreshDomains(for: blog, success: {
+                    updateDomainsList()
+                }, failure: nil)
             })
         })
     }
@@ -76,7 +84,7 @@ struct DomainsDashboardView: View {
     /// Builds the domains list section with the` add a domain` button at the bottom, for the given blog
     private func makeDomainsListSection(blog: Blog) -> some View {
         Section(header: Text(TextContent.domainsListSectionHeader)) {
-            ForEach(blog.domainsList) {
+            ForEach(domainsList) {
                 makeDomainCell(domain: $0)
             }
             if blog.supports(.domains) {
@@ -131,6 +139,10 @@ struct DomainsDashboardView: View {
     /// Instantiates the proper search depending if it's for claiming a free domain with a paid plan or purchasing a new one
     private func makeDomainSearch(for blog: Blog, onDismiss: @escaping () -> Void) -> some View {
         return DomainSuggestionViewControllerWrapper(blog: blog, domainType: blog.canRegisterDomainWithPaidPlan ? .registered : .siteRedirect, onDismiss: onDismiss)
+    }
+
+    private func updateDomainsList() {
+        domainsList = blog.domainsList
     }
 }
 

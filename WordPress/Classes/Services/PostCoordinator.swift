@@ -242,6 +242,8 @@ class PostCoordinator: NSObject {
 
             if uploadedPost.isScheduled() {
                 self?.notifyNewPostScheduled()
+            } else if uploadedPost.isPublished() {
+                self?.notifyNewPostPublished()
             }
 
             SearchManager.shared.indexItem(uploadedPost)
@@ -327,6 +329,13 @@ class PostCoordinator: NSObject {
             let remoteURLStr = media.remoteURL else {
             return
         }
+        var imageURL = remoteURLStr
+
+        if let remoteLargeURL = media.remoteLargeURL {
+            imageURL = remoteLargeURL
+        } else if let remoteMediumURL = media.remoteMediumURL {
+            imageURL = remoteMediumURL
+        }
 
         let mediaLink = media.link
         let mediaUploadID = media.uploadID
@@ -342,10 +351,10 @@ class PostCoordinator: NSObject {
         gutenbergProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
-            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
             gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)

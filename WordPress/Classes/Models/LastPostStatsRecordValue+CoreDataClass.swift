@@ -10,6 +10,13 @@ public class LastPostStatsRecordValue: StatsRecordValue {
         return URL(string: url)
     }
 
+    public var featuredImageURL: URL? {
+        guard let url = featuredImageUrlString as String? else {
+            return nil
+        }
+        return URL(string: url)
+    }
+
     public override func validateForInsert() throws {
         try super.validateForInsert()
         try recordValueSingleValueValidation()
@@ -27,6 +34,7 @@ extension StatsLastPostInsight: StatsRecordValueConvertible {
         value.urlString = self.url.absoluteString
         value.viewsCount = Int64(self.viewsCount)
         value.postID = Int64(self.postID)
+        value.featuredImageUrlString = self.featuredImageURL?.absoluteString
 
         return [value]
     }
@@ -47,7 +55,8 @@ extension StatsLastPostInsight: StatsRecordValueConvertible {
                                     likesCount: Int(insight.likesCount),
                                     commentsCount: Int(insight.commentsCount),
                                     viewsCount: Int(insight.viewsCount),
-                                    postID: Int(insight.postID))
+                                    postID: Int(insight.postID),
+                                    featuredImageURL: insight.featuredImageURL)
     }
 
     static var recordType: StatsRecordType {

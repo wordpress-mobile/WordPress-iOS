@@ -24,6 +24,7 @@ Please refer to the sections below for more detailed information. The instructio
 
 #### Configure Your WordPress App Development Environment
 
+1. Check that your local version of Ruby matches the one in [.ruby-version](./.ruby-version). We recommend installing a tool like [rbenv](https://github.com/rbenv/rbenv) so your system will always use the version defined in that file. Once installed, simply run `rbenv install` in the repo to match the version.
 1. Return to the command line and run `rake init:oss` to configure your computer and WordPress app to be able to run and login to WordPress.com
 1. Once completed, run `rake xcode` to open the project in Xcode.
 
@@ -41,7 +42,7 @@ We use a few tools to help with development. Running `rake dependencies` will co
 
 #### CocoaPods
 
-WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.  
+WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.
 Third party libraries and resources managed by CocoaPods will be installed by the `rake dependencies` command above.
 
 #### SwiftLint

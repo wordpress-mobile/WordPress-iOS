@@ -62,7 +62,6 @@ struct FlexibleCard: View {
                 Spacer()
                 titleView
             }
-            .flipsForRightToLeftLayoutDirection(true)
         }
     }
 }

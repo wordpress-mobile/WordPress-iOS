@@ -12,7 +12,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let accessoryView: UIView?
     let mainTitle: String
     let navigationBarTitle: String?
-    let prompt: String
+    let prompt: String?
     let primaryActionTitle: String
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
@@ -27,6 +27,18 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     // If set to true, the header will always be pushed down after rotating from compact to regular
     // If set to false, this will only happen for no results views (default behavior).
     var alwaysResetHeaderOnRotation: Bool {
+        false
+    }
+
+    // If set to true, all header titles will always be shown.
+    // If set to false, largeTitleView and promptView labels are hidden in compact height (default behavior).
+    //
+    var alwaysShowHeaderTitles: Bool {
+        false
+    }
+
+    // Set this property to true to add a custom footerView with custom sizing when scrollableView is UITableView.
+    var allowCustomTableFooterView: Bool {
         false
     }
 
@@ -55,6 +67,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet weak var promptView: UILabel!
     @IBOutlet weak var accessoryBar: UIView!
     @IBOutlet weak var accessoryBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var accessoryBarTopCompactConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var defaultActionButton: UIButton!
@@ -118,7 +131,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     private var shouldUseCompactLayout: Bool {
-        return traitCollection.verticalSizeClass == .compact
+        return !alwaysShowHeaderTitles && traitCollection.verticalSizeClass == .compact
     }
 
     private var topInset: CGFloat = 0
@@ -156,6 +169,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         closeButton.layer.cornerRadius = 15
         closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        closeButton.accessibilityIdentifier = "close-button"
         closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
         closeButton.addTarget(target, action: action, for: .touchUpInside)
 
@@ -189,7 +203,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
          mainTitle: String,
          navigationBarTitle: String? = nil,
          headerImage: UIImage? = nil,
-         prompt: String,
+         prompt: String? = nil,
          primaryActionTitle: String,
          secondaryActionTitle: String? = nil,
          defaultActionTitle: String? = nil,
@@ -216,6 +230,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         super.viewDidLoad()
         insertChildView()
         insertAccessoryView()
+        configureSubtitleToCategoryBarSpacing()
         configureHeaderImageView()
         navigationItem.titleView = titleView
         largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
@@ -241,6 +256,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             layoutHeader()
         }
 
+        configureHeaderTitleVisibility()
         startObservingKeyboardChanges()
         super.viewWillAppear(animated)
     }
@@ -257,9 +273,12 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        guard isShowingNoResults || alwaysResetHeaderOnRotation else { return }
+        guard isShowingNoResults || alwaysResetHeaderOnRotation else {
+            return
+        }
 
         coordinator.animate(alongsideTransition: nil) { (_) in
+            self.accessoryBarTopCompactConstraint.isActive = self.shouldUseCompactLayout
             self.updateHeaderDisplay()
             // we're keeping this only for no results,
             // as originally intended before introducing the flag alwaysResetHeaderOnRotation
@@ -279,6 +298,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
         if let previousTraitCollection = previousTraitCollection, traitCollection.verticalSizeClass != previousTraitCollection.verticalSizeClass {
             isUserInitiatedScroll = false
+            configureHeaderTitleVisibility()
             layoutHeaderInsets()
 
             // This helps reset the header changes after a rotation.
@@ -323,6 +343,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         titleView.text = navigationBarTitle ?? mainTitle
         titleView.sizeToFit()
         largeTitleView.text = mainTitle
+        promptView.isHidden = prompt == nil
         promptView.text = prompt
         primaryActionButton.setTitle(primaryActionTitle, for: .normal)
 
@@ -370,6 +391,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func configureHeaderImageView() {
         headerImageView.isHidden = (headerImage == nil)
         headerImageView.image = headerImage
+    }
+
+    private func configureSubtitleToCategoryBarSpacing() {
+        if prompt?.isEmpty ?? true {
+            subtitleToCategoryBarSpacing.constant = 0
+        }
+    }
+
+    func configureHeaderTitleVisibility() {
+        largeTitleView.isHidden = shouldUseCompactLayout
+        promptView.isHidden = shouldUseCompactLayout
     }
 
     private func styleButtons() {
@@ -447,6 +479,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         let distanceToBottom = scrollableView.frame.height - minHeaderHeight - estimatedContentSize().height
         let newHeight: CGFloat = max(footerHeight, distanceToBottom)
         if let tableView = scrollableView as? UITableView {
+
+            guard !allowCustomTableFooterView else {
+                return
+            }
+
             tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: newHeight))
             tableView.tableFooterView?.isGhostableDisabled = true
             tableView.tableFooterView?.backgroundColor = .clear
@@ -502,16 +539,26 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     /// - The primary and secondary action buttons are always displayed.
     /// - The defaultActionButton is never displayed.
     /// Therefore:
-    /// - itemSelectionChanged is called to accomplish the two points above.
+    /// - The footerView with the action buttons is shown.
     /// - The selectedStateButtonsContainer axis is set to vertical.
     /// - The primaryActionButton is moved to the top of the stack view.
     func configureVerticalButtonView() {
         usesVerticalActionButtons = true
-        itemSelectionChanged(true)
+
+        footerView.backgroundColor = .systemBackground
+        footerHeightContraint.constant = footerHeight
         selectedStateButtonsContainer.axis = .vertical
 
         selectedStateButtonsContainer.removeArrangedSubview(primaryActionButton)
         selectedStateButtonsContainer.insertArrangedSubview(primaryActionButton, at: 0)
+    }
+
+    /// A public interface to hide the header blur.
+    func hideHeaderVisualEffects() {
+        visualEffects.forEach { (visualEffect) in
+            visualEffect.isHidden = true
+        }
+        navigationController?.navigationBar.backgroundColor = .systemBackground
     }
 
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
@@ -535,7 +582,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             UIView.animate(withDuration: animationSpeed, delay: 0, options: .curveEaseInOut, animations: {
                 self.footerHeightContraint.constant = hasSelectedItem ? self.footerHeight : 0
                 self.footerView.setNeedsLayout()
-                self.footerView.layoutIfNeeded()
+                // call layoutIfNeeded on the parent view to smoothly update constraints
+                // more info: https://stackoverflow.com/a/12664093
+                self.view.layoutIfNeeded()
             })
             return
         }

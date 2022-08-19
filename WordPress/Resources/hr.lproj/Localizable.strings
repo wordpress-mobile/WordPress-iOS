@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:34:02+0000 */
+/* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -61,6 +61,9 @@
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Odobri";
 
+/* Approves a Comment */
+"Approve Comment" = "Odobri Komentar";
+
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Jeste li sigurni da želite izbrisati ovaj post? ";
 
@@ -92,7 +95,7 @@
 "Button position" = "Položaj gumba";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -120,6 +123,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -137,6 +141,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -263,6 +268,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -275,6 +281,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Odbaci";
 
@@ -415,6 +422,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Saznaj više";
 
@@ -482,6 +490,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -540,6 +549,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Obavijesti";
 
@@ -644,6 +654,7 @@
 "Post updated" = "Objava je ažurirana";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -656,9 +667,8 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Predpregled";
 
@@ -795,7 +805,7 @@
 "Scheduled for" = "Tempirano za";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Pretraži";
 
@@ -813,6 +823,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Postavke";
@@ -823,6 +834,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Podijeli ";
 
@@ -832,15 +844,17 @@
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sjedište";
 
-/* The accessibility label for the followed sites search field */
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
 "Site URL" = "URL Web stranice";
 
 /* Image size option title. */
 "Size" = "Veličina";
 
-/* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Preskoči";
 
 /* Error title when updating the account password fails */
@@ -907,9 +921,6 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Pojavila se greška prilikom učitavanja plana";
 
-/* Title of a panel shown in the Blogging Reminders Settings screen, providing the user with a helpful tip. */
-"Tip" = "Savjet";
-
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
@@ -966,6 +977,9 @@
 /* Unapproves a Comment
    Unapproves a comment */
 "Unapprove" = "Odbaci";
+
+/* Unapproves a Comment */
+"Unapprove Comment" = "Neodobren Komentar";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Nepoznata greška.";
@@ -1031,8 +1045,7 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Pregled";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Pogledaj Web stranicu";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
@@ -1041,6 +1054,8 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Pregledi";
 
@@ -1054,6 +1069,7 @@
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Posjetitelji";
 
@@ -1125,6 +1141,12 @@
 
 /* Label displayed on image media items. */
 "image" = "slika";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Today */
 "today" = "danas";

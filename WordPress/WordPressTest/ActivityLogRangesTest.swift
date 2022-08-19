@@ -46,8 +46,8 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertEqual(defaultRange.range, range)
     }
 
-    func testRangeFactoryCreatesCommentRange() {
-        let commentRangeRaw = testData.getCommentRangeDictionary()
+    func testRangeFactoryCreatesCommentRange() throws {
+        let commentRangeRaw = try testData.getCommentRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: commentRangeRaw)
 
         XCTAssertNotNil(range)
@@ -59,8 +59,8 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(commentRange?.url)
     }
 
-    func testRangeFactoryCreatesThemeRange() {
-        let themeRangeRaw = testData.getThemeRangeDictionary()
+    func testRangeFactoryCreatesThemeRange() throws {
+        let themeRangeRaw = try testData.getThemeRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: themeRangeRaw)
 
         XCTAssertNotNil(range)
@@ -72,8 +72,8 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(themeRange?.url)
     }
 
-    func testRangeFactoryCreatesPostRange() {
-        let postRangeRaw = testData.getPostRangeDictionary()
+    func testRangeFactoryCreatesPostRange() throws {
+        let postRangeRaw = try testData.getPostRangeDictionary()
 
         let range = ActivityRangesFactory.contentRange(from: postRangeRaw)
         XCTAssertNotNil(range)
@@ -85,24 +85,24 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertEqual(postRange?.url?.absoluteString, testData.testPostUrl)
     }
 
-    func testRangeFactoryCreatesItalicRange() {
-        let italicRangeRaw = testData.getItalicRangeDictionary()
+    func testRangeFactoryCreatesItalicRange() throws {
+        let italicRangeRaw = try testData.getItalicRangeDictionary()
 
         let range = ActivityRangesFactory.contentRange(from: italicRangeRaw)
         XCTAssertNotNil(range)
         XCTAssertEqual(range?.kind, .italic)
     }
 
-    func testRangeFactoryCreatesSiteRange() {
-        let siteRangeRaw = testData.getSiteRangeDictionary()
+    func testRangeFactoryCreatesSiteRange() throws {
+        let siteRangeRaw = try testData.getSiteRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: siteRangeRaw)
 
         XCTAssertNotNil(range)
         XCTAssertEqual(range?.kind, .site)
     }
 
-    func testRangeFactoryCreatesPluginRange() {
-        let pluginRangeRaw = testData.getPluginRangeDictionary()
+    func testRangeFactoryCreatesPluginRange() throws {
+        let pluginRangeRaw = try testData.getPluginRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: pluginRangeRaw)
 
         XCTAssertNotNil(range)

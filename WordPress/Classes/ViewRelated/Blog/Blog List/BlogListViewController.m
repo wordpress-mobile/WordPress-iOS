@@ -93,7 +93,7 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton.accessibilityIdentifier = @"add-site-button";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"cancel-button";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"my-sites-cancel-button";
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -223,7 +223,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    NSInteger blogCount = self.dataSource.allBlogsCount;
+    NSInteger blogCount = self.dataSource.blogsCount;
     BOOL isLoggedIn = AccountHelper.isLoggedIn;
 
     if (blogCount > 0 && !isLoggedIn) {
@@ -238,7 +238,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateViewsForCurrentSiteCount
 {
-    NSUInteger count = self.dataSource.allBlogsCount;
+    NSUInteger count = self.dataSource.blogsCount;
     NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
@@ -297,7 +297,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self instantiateNoResultsViewControllerIfNeeded];
     
-    NSUInteger count = self.dataSource.allBlogsCount;
+    NSUInteger count = self.dataSource.blogsCount;
     
     NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
     
@@ -365,8 +365,7 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
 
     if (!defaultAccount) {
         [self handleSyncEnded];
@@ -869,7 +868,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldShowAddSiteButton
 {
-    return self.dataSource.allBlogsCount > 0;
+    return self.dataSource.blogsCount > 0;
 }
 
 - (BOOL)shouldShowEditButton
@@ -914,8 +913,7 @@ static NSInteger HideSearchMinSites = 3;
 - (WPAccount *)defaultWordPressComAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    return [accountService defaultWordPressComAccount];
+    return [WPAccount lookupDefaultWordPressComAccountInContext:context];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
@@ -926,7 +924,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
 {
-    if(!visible && self.dataSource.allBlogsCount > HideAllMinSites) {
+    if(!visible && self.dataSource.blogsCount > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -951,7 +949,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
                                                                      [context performBlock:^{
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         WPAccount *account = [accountService defaultWordPressComAccount];
+                                                                         WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
                                                                          [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
                                                                          [[ContextManager sharedInstance] saveContext:context];
                                                                      }];
@@ -991,7 +989,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showAddSiteAlertFrom:(id)source
 {
-    if (self.dataSource.allBlogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
+    if (self.dataSource.blogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
         [self setEditing:YES animated:YES];
     } else {
         AddSiteAlertFactory *factory = [AddSiteAlertFactory new];

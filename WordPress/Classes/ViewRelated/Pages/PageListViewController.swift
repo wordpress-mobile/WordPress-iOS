@@ -420,13 +420,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
         if page.isSiteHomepage {
-            let guide = QuickStartTourGuide.shared
-            if guide.isCurrentElement(.editHomepage) {
-                QuickStartTourGuide.shared.visited(.editHomepage)
-            } else {
-                QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), silentlyForBlog: blog)
-            }
-
             tableView.reloadRows(at: [indexPath], with: .automatic)
         } else if page.isSitePostsPage {
             showSitePostPageUneditableNotice()
@@ -460,12 +453,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
         configureCell(cell, at: indexPath)
-
-        if page.isSiteHomepage && QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
-            cell.accessoryView = QuickStartSpotlightView()
-        } else {
-            cell.accessoryView = nil
-        }
 
         return cell
     }
@@ -771,19 +758,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func deletePost(_ apost: AbstractPost) {
-        completeQuickStartStepIfNeeded(apost)
         super.deletePost(apost)
-    }
-
-    private func completeQuickStartStepIfNeeded(_ page: AbstractPost) {
-        guard let page = page as? Page else { return }
-        guard page.isSiteHomepage else { return }
-
-        if QuickStartTourGuide.shared.isCurrentElement(.editHomepage) {
-            QuickStartTourGuide.shared.visited(.editHomepage)
-        } else {
-            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
-        }
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {

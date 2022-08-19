@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2021-11-26 17:30:13+0000 */
+/* Translation-Revision-Date: 2022-05-03 21:58:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -267,6 +267,7 @@
    Browse all themes selection title
    Displays all of the historical threats
    Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
    Title of all Comments filter. */
 "All" = "Všetko";
 
@@ -565,7 +566,7 @@
 "Can Not Request Link" = "Nieje možné načítať adresu";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -593,6 +594,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -610,6 +612,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -702,7 +705,8 @@
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupov";
 
-/* Title of a Quick Start Tour */
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
 "Choose a theme" = "Vyberte tému";
 
 /* Menu option for selecting media from the device's photo library. */
@@ -823,9 +827,6 @@
 /* Title of alert prompting users to verify their accounts while attempting to publish */
 "Confirm your email first" = "Najskôr potvrďte svoj e-mail";
 
-/* Title of a Quick Start Tour */
-"Congrats on finishing Quick Start  🎉" = "Gratulujeme pri ukončení Rýchleho štartu";
-
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect" = "Pripojiť";
@@ -900,7 +901,8 @@
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    Title for the continue button in the What's New page.
-   Title of the continue button for the Site Intent screen. */
+   Title of the continue button for the Site Intent screen.
+   Title of the Continue button in the Site Name screen. */
 "Continue" = "Pokračovať";
 
 /* Menus alert button title to continue making changes. */
@@ -992,7 +994,8 @@
 "Create New Site" = "Vytvoriť novú webovú stránku";
 
 /* Button to progress to the next step
-   Site creation. Step 1. Screen title */
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "Vytvoriť stránku";
 
 /* Create WordPress.com site button */
@@ -1174,6 +1177,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -1186,6 +1190,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Zrušiť";
 
@@ -1275,7 +1280,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1501,9 +1507,6 @@
 /* Title of the filter button in the Reader */
 "Filter" = "Filter";
 
-/* Description of a Quick Start Tour */
-"Find sites that speak to you, and follow them to get updates when they publish." = "Nájdite stránky, ktoré s vami hovoria a sledujte ich pre získanie aktualizácií po ich publikovaní.";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -1513,9 +1516,6 @@
    Prompt to follow a blog.
    Verb. Button title. Follow a new blog. */
 "Follow" = "Odoberať";
-
-/* Title of a Quick Start Tour */
-"Follow other sites" = "Sledujte ostatné webové stránky";
 
 /* Verb. An option to follow a site. */
 "Follow site" = "Sledovať webovú stránku";
@@ -1691,8 +1691,7 @@
    Settings: Comments Moderation */
 "Hold for Moderation" = "Podržať pre moderovanie";
 
-/* The item to select during a guided tour.
-   Title for setting which shows the current page assigned as a site's homepage
+/* Title for setting which shows the current page assigned as a site's homepage
    Title for the homepage section in site settings screen
    Title of the Homepage Badge */
 "Homepage" = "Domovská stránka";
@@ -1899,6 +1898,7 @@
 
 /* A button title.
    Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Zistiť viac";
 
@@ -2138,6 +2138,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -2181,7 +2182,9 @@
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Stredný";
 
-/* The default text used for filling the name of a menu when creating it. */
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
 "Menu" = "Menu";
 
 /* Menus placeholder text for the name field of a menu with no name. */
@@ -2259,7 +2262,8 @@
 
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
-   Name text field placeholder */
+   Name text field placeholder
+   Shortened version of the main title to be used in back navigation. */
 "Name" = "Názov";
 
 /* Error to be displayed when a tag is empty */
@@ -2280,7 +2284,8 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
 
-/* Header of section in Plugin Directory showing newest plugins */
+/* Header of section in Plugin Directory showing newest plugins
+   Title for the tooltip anchor. */
 "New" = "Nový";
 
 /* IP Address or Range Insertion Title */
@@ -2340,9 +2345,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
-
-/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
-"No Saved Posts" = "Žiadne uložené články";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "No Thanks" = "Nie ďakujem";
@@ -2408,7 +2410,7 @@
 /* Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "No posts found matching %@ in your language." = "V %@ jazyku nebol nájdený žiadny príspevok.";
 
-/* A default message shown whe the reader can find no post to display */
+/* A default message shown when the reader can find no post to display */
 "No posts have been made recently" = "V poslednom čase neboli publikované žiadne články";
 
 /* Message shown whent the reader finds no posts for the chosen tag */
@@ -2448,7 +2450,8 @@
 /* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "Not Connected" = "Nepripojené";
 
-/* Nicer dialog answer for \"No\". */
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Teraz nie";
 
 /* Display value for Support email field if there is no user email address. */
@@ -2485,6 +2488,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Upozornenia";
 
@@ -2544,6 +2548,7 @@
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -2561,7 +2566,8 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Otvoriť Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
 
 /* Today widget label to launch WP app */
@@ -2605,7 +2611,8 @@
 "Originally posted on %@" = "Pôvodne uverejnené na %@";
 
 /* Displayed in the Notification Settings View
-   Link to About section (contains info about the app) */
+   Link to About section (contains info about the app)
+   Title of Stats section that shows referrer traffic from other sources. */
 "Other" = "Iné";
 
 /* Accessibility label for selecting an image or video from other applications on formatting toolbar.
@@ -2849,6 +2856,7 @@
 "Posting Activity" = "Aktivita prispievania";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -2881,9 +2889,8 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Náhľad";
 
@@ -2892,9 +2899,6 @@
 
 /* No comment provided by engineer. */
 "Preview post" = "Predchádzajúce články";
-
-/* Description of a Quick Start Tour */
-"Preview your new site to see what your visitors will see." = "Prezrite si svoje webové stránky, aby ste videli to, čo uvidia vaši návštevníci.";
 
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Predchádzajúce upozornenie";
@@ -3306,7 +3310,7 @@
 "Scheduling..." = "Plánovanie...";
 
 /* Placeholder text for the search bar
-   The menu item to select during a guided tour.
+   Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
 "Search" = "Hľadať";
 
@@ -3315,9 +3319,6 @@
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Prehľadávať WordPress\npre webovú stránku alebo príspevok";
 
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Vyhľadať stránky";
@@ -3346,9 +3347,6 @@
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to discover new themes" = "Zvoľte %@ a objavte nové témy";
-
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to look for sites with similar interests" = "Zvoľte %@ a objavte webové stránky s rovnakými témami";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your checklist" = "Zvoľte %@ a zobrazte váš zoznam";
@@ -3428,6 +3426,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavenia";
@@ -3450,6 +3449,7 @@
    Share the post.
    Shares the comment URL
    Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Zdieľať";
 
@@ -3544,7 +3544,6 @@
 
 /* Default title for a site
    Label for site title blog setting
-   Site info. Title
    The item to select during a guided tour.
    Title for screen that show site title editor */
 "Site Title" = "Názov webovej stránky";
@@ -3574,16 +3573,11 @@
 /* Image size option title. */
 "Size" = "Veľkosť";
 
-/* Button label when skipping all quick start items
-   Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.
-   Continue without making a selection */
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
 "Skip" = "Preskočiť";
-
-/* Label for button that will allow the user to skip all items in the Quick Start checklist */
-"Skip All" = "Preskočiť všetko";
-
-/* Title shown in alert to confirm skipping all quick start items */
-"Skip Quick Start" = "Preskočiť Rýchly štart";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Slug";
@@ -3904,9 +3898,6 @@
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Počet článkov na stránku.";
 
-/* Description shown in alert to confirm skipping all quick start items */
-"The quick start tour will guide you through building a basic site. Are you sure you want to skip? " = "Stručná úvodná prehliadka vás navedie vytvorením základnej webovej strany. Ste si istý, že chcete tento krok preskočiť?";
-
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server vrátil prázdnu odpoveď. Obvykle to znamená, že potrebujete zvýšiť obmedzenie pamäte pre vašu webovú stránku.";
 
@@ -4037,7 +4028,7 @@
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Túto akciu <b> nie je možné <\/b>zrušiť. Odstránením stránky odstránite všetok obsah, užívateľov, domény a aktualizácie zo stránky.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -4150,7 +4141,8 @@
 /* Accessibility Identifier for the Aztec Unordered List Style */
 "Toggles the unordered list style" = "Zapína a vypína nezoradený zoznam štýlov";
 
-/* Cell title for the Top Level option case */
+/* Cell title for the Top Level option case
+   Screen reader text expressing the menu item is at the top level and has no parent. */
 "Top level" = "Najvyššia úroveň";
 
 /* Shortened version of the main title to be used in back navigation
@@ -4313,9 +4305,11 @@
 "Underline" = "Podčiarknuť";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
+   Revert enabling notification after successfully subcribing to the comments for the post.
    The title of an 'undo' button. Tapping the button moves a trashed page out of the trash folder.
    The title of an 'undo' button. Tapping the button moves a trashed post out of the trash folder.
    Undo action */
@@ -4531,8 +4525,7 @@
 /* Button label for viewing a post */
 "View Post" = "Zobraziť príspevok";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
+/* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobraziť webovú stránku";
 
 /* Displays More Rows */
@@ -4564,6 +4557,8 @@
    Label for Period Overview views
    Label for post views count.
    Stats Views Label
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";
 
@@ -4592,6 +4587,7 @@
    Label for Period Overview visitors
    Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Návštevníci";
 
@@ -4693,6 +4689,9 @@
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Táto adresa nebude zverejnená.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Nastavenia aplikácie WordPress";
@@ -4954,9 +4953,6 @@
 /* The menu item to select during a guided tour. */
 "connections" = "Prepojenia";
 
-/* subhead shown to users when they complete all Quick Start items */
-"doesn’t it feel good to cross things off a list?" = "Je to dobrý pocit odškrtávať veci zo zoznamu?";
-
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/moja-stranka.sk (URL adresa)";
 
@@ -4971,6 +4967,12 @@
 
 /* Text for related post cell preview */
 "in \"Upgrade\"" = "v \"Aktualizácia\"";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Later today */
 "later today" = "neskôr dnes";

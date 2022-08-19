@@ -7,16 +7,18 @@ extension WPTabBarController {
             spotlightView?.removeFromSuperview()
             spotlightView = nil
 
+            let tabBarElements: [QuickStartTourElement] = [.readerTab, .notifications]
+
             guard let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
-                [.readerTab].contains(element) else {
+                  tabBarElements.contains(element) else {
                     return
             }
 
             let newSpotlight = QuickStartSpotlightView()
             self?.view.addSubview(newSpotlight)
 
-            guard let tabButton = self?.getTabButton(at: Int(WPTab.reader.rawValue)) else {
+            guard let tabButton = self?.getTabButton(for: element) else {
                 return
             }
 
@@ -39,6 +41,10 @@ extension WPTabBarController {
         QuickStartTourGuide.shared.visited(.readerTab)
     }
 
+    @objc func alertQuickStartThatNotificationsWasTapped() {
+        QuickStartTourGuide.shared.visited(.notifications)
+    }
+
     @objc func alertQuickStartThatOtherTabWasTapped() {
         QuickStartTourGuide.shared.visited(.tabFlipped)
     }
@@ -48,11 +54,28 @@ extension WPTabBarController {
         quickStartObserver = nil
     }
 
-    private func getTabButton(at index: Int) -> UIView? {
+    private func getTabButton(for element: QuickStartTourElement) -> UIView? {
+        guard let index = tabIndex(for: element) else {
+            return nil
+        }
         tabBar.layoutIfNeeded()
         var tabs = tabBar.subviews.compactMap { return $0 is UIControl ? $0 : nil }
         tabs.sort { $0.frame.origin.x < $1.frame.origin.x }
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            tabs.reverse()
+        }
         return tabs[safe: index]
+    }
+
+    private func tabIndex(for element: QuickStartTourElement) -> Int? {
+        switch element {
+        case .readerTab:
+            return Int(WPTab.reader.rawValue)
+        case .notifications:
+            return Int(WPTab.notifications.rawValue)
+        default:
+            return nil
+        }
     }
 
     private enum Constants {

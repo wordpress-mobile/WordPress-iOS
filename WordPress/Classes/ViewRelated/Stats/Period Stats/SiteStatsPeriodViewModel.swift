@@ -92,11 +92,11 @@ class SiteStatsPeriodViewModel: Observable {
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
             return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
@@ -195,16 +195,18 @@ class SiteStatsPeriodViewModel: Observable {
             }, error: {
                 return errorBlock(.periodVideos)
         }))
-        tableRows.append(contentsOf: blocks(for: .topFileDownloads,
-                                            type: .period,
-                                            status: store.topFileDownloadsStatus,
-                                            block: { [weak self] in
-                                                return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
-            }, loading: {
-                return loadingBlock(.periodFileDownloads)
-            }, error: {
-                return errorBlock(.periodFileDownloads)
-        }))
+        if SiteStatsInformation.sharedInstance.supportsFileDownloads {
+            tableRows.append(contentsOf: blocks(for: .topFileDownloads,
+                                                type: .period,
+                                                status: store.topFileDownloadsStatus,
+                                                block: { [weak self] in
+                                                    return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
+                }, loading: {
+                    return loadingBlock(.periodFileDownloads)
+                }, error: {
+                    return errorBlock(.periodFileDownloads)
+            }))
+        }
 
         tableRows.append(TableFooterRow())
 

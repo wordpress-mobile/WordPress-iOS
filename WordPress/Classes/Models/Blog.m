@@ -87,6 +87,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic quickStartTours;
+@dynamic quickStartTypeValue;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -595,6 +596,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureSmartframeEmbed:
             return [self supportsEmbedVariation: @"10.2"];
+        case BlogFeatureFileDownloadsStats:
+            return [self isHostedAtWPcom];
     }
 }
 
@@ -707,8 +710,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)accountIsDefaultAccount
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    return [accountService isDefaultWordPressComAccount:self.account];
+    return [[self account] isDefaultWordPressComAccount];
 }
 
 - (NSNumber *)dotComID

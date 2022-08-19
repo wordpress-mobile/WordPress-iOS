@@ -1,19 +1,6 @@
 import XCTest
 
-class MenuItemsViewControllerTests: XCTestCase {
-
-    private var context: NSManagedObjectContext!
-
-    override func setUpWithError() throws {
-        context = TestContextManager().mainContext
-        try super.setUpWithError()
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        TestContextManager.overrideSharedInstance(nil)
-        try super.tearDownWithError()
-    }
+class MenuItemsViewControllerTests: CoreDataTestCase {
 
     /// Tests that no string is provided when there is nothing to announce.
     func testOrderingChangeVOStringNoChanges() {
@@ -101,7 +88,7 @@ class MenuItemsViewControllerTests: XCTestCase {
 
     fileprivate func newMenuItem(named name: String) -> MenuItem {
         let entityName = MenuItem.classNameWithoutNamespaces()
-        let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: mainContext)
 
         let menuItem = entity as! MenuItem
         // set a name to make debugging easier

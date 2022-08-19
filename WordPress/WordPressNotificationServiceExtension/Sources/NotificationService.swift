@@ -329,5 +329,5 @@ private extension NotificationService {
         return content
     }
 
-    static let viewMilestoneTitle = NSLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
+    static let viewMilestoneTitle = AppLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
 }

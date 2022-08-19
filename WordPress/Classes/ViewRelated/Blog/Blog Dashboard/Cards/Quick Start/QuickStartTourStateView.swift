@@ -5,25 +5,10 @@ typealias QuickStartChecklistTappedTracker = (event: WPAnalyticsEvent, propertie
 final class QuickStartTourStateView: UIView {
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            customizeChecklistView,
-            growChecklistView
-        ])
+        let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         return stackView
-    }()
-
-    private lazy var customizeChecklistView: QuickStartChecklistView = {
-        let view = QuickStartChecklistView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private lazy var growChecklistView: QuickStartChecklistView = {
-        let view = QuickStartChecklistView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
 
     override init(frame: CGRect) {
@@ -36,27 +21,16 @@ final class QuickStartTourStateView: UIView {
     }
 
     func configure(blog: Blog, sourceController: UIViewController, checklistTappedTracker: QuickStartChecklistTappedTracker? = nil) {
-
-        customizeChecklistView.configure(
-            tours: QuickStartTourGuide.customizeListTours,
-            blog: blog,
-            title: Strings.customizeTitle,
-            hint: Strings.customizeHint
-        )
-
-        customizeChecklistView.onTap = { [weak self] in
-            self?.showQuickStart(with: .customize, from: sourceController, for: blog, tracker: checklistTappedTracker)
-        }
-
-        growChecklistView.configure(
-            tours: QuickStartTourGuide.growListTours,
-            blog: blog,
-            title: Strings.growTitle,
-            hint: Strings.growHint
-        )
-
-        growChecklistView.onTap = { [weak self] in
-            self?.showQuickStart(with: .grow, from: sourceController, for: blog, tracker: checklistTappedTracker)
+        stackView.removeAllSubviews()
+        let availableCollections = QuickStartFactory.collections(for: blog)
+        for collection in availableCollections {
+            var checklistView = collection.checklistViewType.init()
+            checklistView.translatesAutoresizingMaskIntoConstraints = false
+            checklistView.configure(collection: collection, blog: blog)
+            checklistView.onTap = { [weak self] in
+                self?.showQuickStart(with: collection, from: sourceController, for: blog, tracker: checklistTappedTracker)
+            }
+            stackView.addArrangedSubview(checklistView)
         }
     }
 
@@ -76,34 +50,18 @@ extension QuickStartTourStateView {
 
 extension QuickStartTourStateView {
 
-    private func showQuickStart(with type: QuickStartType, from sourceController: UIViewController, for blog: Blog, tracker: QuickStartChecklistTappedTracker? = nil) {
+    private func showQuickStart(with collection: QuickStartToursCollection, from sourceController: UIViewController, for blog: Blog, tracker: QuickStartChecklistTappedTracker? = nil) {
 
         if let tracker = tracker {
-            WPAnalytics.track(tracker.event,
-                              properties: tracker.properties,
-                              blog: blog)
+            WPAnalytics.trackQuickStartEvent(tracker.event,
+                                             properties: tracker.properties,
+                                             blog: blog)
         }
 
-        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collection)
         let navigationViewController = UINavigationController(rootViewController: checklist)
         sourceController.present(navigationViewController, animated: true)
 
         QuickStartTourGuide.shared.visited(.checklist)
-    }
-}
-
-// MARK: - Constants
-
-extension QuickStartTourStateView {
-
-    private enum Strings {
-        static let customizeTitle = NSLocalizedString("Customize Your Site",
-                                                      comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-        static let customizeHint = NSLocalizedString("A series of steps showing you how to add a theme, site icon and more.",
-                                                     comment: "A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button.")
-        static let growTitle = NSLocalizedString("Grow Your Audience",
-                                                comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-        static let growHint = NSLocalizedString("A series of steps to assist with growing your site's audience.",
-                                                comment: "A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button.")
     }
 }

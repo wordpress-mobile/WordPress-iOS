@@ -5,8 +5,6 @@ private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
 
-    @objc static let bottomPaddingForQuickStartNotices: CGFloat = 80.0
-
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard self?.blog.managedObjectContext != nil else {
@@ -17,23 +15,13 @@ extension BlogDetailsViewController {
 
             if let info = notification.userInfo?[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
                 switch info {
-                case .pages, .editHomepage, .sharing, .stats:
-                    self?.scroll(to: info)
-                case .viewSite:
-                    self?.scroll(to: info)
-
-                    guard let self = self,
-                        let navigationController = self.navigationController,
-                        navigationController.visibleViewController != self else {
+                case .stats, .mediaScreen:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDetails else {
                         return
                     }
-
-                    self.dismiss(animated: true) {
-                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                        self.shouldScrollToViewSite = true
-
-                        navigationController.popToRootViewController(animated: true)
-                    }
+                    fallthrough
+                case .pages, .sharing:
+                    self?.scroll(to: info)
                 default:
                     break
                 }
@@ -76,15 +64,16 @@ extension BlogDetailsViewController {
 
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
+
         guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
             return
         }
 
         if quickStartGuide.tourInProgress {
             // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
             quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-        else {
+        } else {
             guard shouldShowQuickStartChecklist() else {
                 return
             }
@@ -108,29 +97,18 @@ extension BlogDetailsViewController {
                 return false
             }
 
-            return QuickStartTourGuide.shouldShowChecklist(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
+            return QuickStartTourGuide.quickStartEnabled(for: blog) && parentVC.mySiteSettings.defaultSection == .siteMenu
         }
 
-        return QuickStartTourGuide.shouldShowChecklist(for: blog)
+        return QuickStartTourGuide.quickStartEnabled(for: blog)
     }
 
-    @objc func showQuickStartCustomize() {
-        showQuickStart(with: .customize)
-    }
-
-    @objc func showQuickStartGrow() {
-        showQuickStart(with: .grow)
-    }
-
-    @objc func cancelCompletedToursIfNeeded() {
-        if shouldShowQuickStartChecklist() && blog.homepagePageID == nil {
-            // Ends the tour Edit Homepage if the site doesn't have a homepage set or uses the blog.
-            QuickStartTourGuide.shared.complete(tour: QuickStartEditHomepageTour(), for: blog, postNotification: false)
+    @objc func showQuickStart() {
+        let currentCollections = QuickStartFactory.collections(for: blog)
+        guard let collectionToShow = currentCollections.first else {
+            return
         }
-    }
-
-    private func showQuickStart(with type: QuickStartType) {
-        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
         let navigationViewController = UINavigationController(rootViewController: checklist)
         present(navigationViewController, animated: true)
 

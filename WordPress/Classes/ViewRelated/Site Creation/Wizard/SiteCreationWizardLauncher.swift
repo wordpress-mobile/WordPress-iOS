@@ -2,19 +2,16 @@ import AutomatticTracks
 
 /// Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
-    private let intentVariant: SiteIntentAB.Variant
-    private let nameVariant: Variation
-
     private lazy var creator: SiteCreator = {
         return SiteCreator()
     }()
 
     private var shouldShowSiteIntent: Bool {
-        return intentVariant == .treatment && FeatureFlag.siteIntentQuestion.enabled
+        return FeatureFlag.siteIntentQuestion.enabled
     }
 
     private var shouldShowSiteName: Bool {
-        return nameVariant == .treatment(nil) && FeatureFlag.siteName.enabled
+        return FeatureFlag.siteName.enabled
     }
 
     lazy var steps: [SiteCreationStep] = {
@@ -66,20 +63,9 @@ final class SiteCreationWizardLauncher {
     private let onDismiss: ((Blog, Bool) -> Void)?
 
     init(
-        intentVariant: SiteIntentAB.Variant = SiteIntentAB.shared.variant,
-        nameVariant: Variation = ABTest.siteNameV1.variation,
         onDismiss: ((Blog, Bool) -> Void)? = nil
     ) {
         self.onDismiss = onDismiss
-        self.intentVariant = intentVariant
-        self.nameVariant = nameVariant
-
-        trackVariants()
-    }
-
-    private func trackVariants() {
-        SiteCreationAnalyticsHelper.trackSiteIntentExperiment(intentVariant)
-        // TODO: Track Site Name
     }
 
     private func initStep(_ step: SiteCreationStep) -> WizardStep {
@@ -88,7 +74,9 @@ final class SiteCreationWizardLauncher {
             let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
             return WebAddressStep(creator: self.creator, service: addressService)
         case .design:
-            return SiteDesignStep(creator: self.creator)
+            // we call dropLast to remove .siteAssembly
+            let isLastStep = steps.dropLast().last == .design
+            return SiteDesignStep(creator: self.creator, isLastStep: isLastStep)
         case .intent:
             return SiteIntentStep(creator: self.creator)
         case .name:

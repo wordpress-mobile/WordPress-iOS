@@ -15,6 +15,14 @@ extension BlockEditorSettings: GutenbergEditorSettings {
         return experimentalFeature(.galleryWithImageBlocks)
     }
 
+    public var quoteBlockV2: Bool {
+        return experimentalFeature(.quoteBlockV2)
+    }
+
+    public var listBlockV2: Bool {
+        return experimentalFeature(.listBlockV2)
+    }
+
     private func elementsByType(_ type: BlockEditorSettingElementTypes) -> [[String: String]]? {
         return elements?.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.order >= rhs.order
@@ -81,7 +89,23 @@ extension BlockEditorSettings {
                                                          type: .experimentalFeatures,
                                                          order: 0,
                                                          context: context)
+        let quoteKey = BlockEditorExperimentalFeatureKeys.quoteBlockV2.rawValue
+        let quoteRefactor = BlockEditorSettingElement(name: quoteKey,
+                                                         value: "\(remoteSettings.quoteBlockV2)",
+                                                         slug: quoteKey,
+                                                         type: .experimentalFeatures,
+                                                         order: 1,
+                                                         context: context)
+        let listKey = BlockEditorExperimentalFeatureKeys.listBlockV2.rawValue
+        let listRefactor = BlockEditorSettingElement(name: listKey,
+                                                         value: "\(remoteSettings.listBlockV2)",
+                                                         slug: listKey,
+                                                         type: .experimentalFeatures,
+                                                         order: 2,
+                                                         context: context)
         parsedElements.insert(galleryRefactor)
+        parsedElements.insert(quoteRefactor)
+        parsedElements.insert(listRefactor)
 
         self.elements = parsedElements
     }

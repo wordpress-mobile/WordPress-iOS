@@ -38,6 +38,7 @@ class BlogDetailHeaderView: UIView {
         didSet {
             refreshIconImage()
             toggleSpotlightOnSiteTitle()
+            toggleSpotlightOnSiteUrl()
             refreshSiteTitle()
 
             if let displayURL = blog?.displayURL as String? {
@@ -73,11 +74,15 @@ class BlogDetailHeaderView: UIView {
         titleView.titleButton.setTitle(title, for: .normal)
     }
 
-    @objc func toggleSpotlightOnSiteTitle() {
+    func toggleSpotlightOnSiteTitle() {
         titleView.titleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.siteTitle)
     }
 
-    @objc func toggleSpotlightOnSiteIcon() {
+    func toggleSpotlightOnSiteUrl() {
+        titleView.subtitleButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.viewSite)
+    }
+
+    func toggleSpotlightOnSiteIcon() {
         titleView.siteIconView.spotlightIsShown = QuickStartTourGuide.shared.isCurrentElement(.siteIcon)
     }
 
@@ -240,8 +245,8 @@ fileprivate extension BlogDetailHeaderView {
             return siteIconView
         }()
 
-        let subtitleButton: UIButton = {
-            let button = UIButton()
+        let subtitleButton: SpotlightableButton = {
+            let button = SpotlightableButton(type: .custom)
 
             button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
             button.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -272,6 +277,7 @@ fileprivate extension BlogDetailHeaderView {
 
         let titleButton: SpotlightableButton = {
             let button = SpotlightableButton(type: .custom)
+            button.spotlightHorizontalPosition = .trailing
             button.contentHorizontalAlignment = .leading
             button.titleLabel?.font = AppStyleGuide.blogDetailHeaderTitleFont
             button.titleLabel?.adjustsFontForContentSizeCategory = true

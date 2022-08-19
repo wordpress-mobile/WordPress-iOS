@@ -191,6 +191,17 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
+			<key>Spectrum &apos;22</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-&apos;22-icon-app-60x60</string>
+					<string>spectrum-&apos;22-icon-app-76x76</string>
+					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
 			<key>Spectrum Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -391,6 +402,17 @@
 					<string>spectrum-icon-app-60x60</string>
 					<string>spectrum-icon-app-76x76</string>
 					<string>spectrum-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum &apos;22</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-&apos;22-icon-app-60x60</string>
+					<string>spectrum-&apos;22-icon-app-76x76</string>
+					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>

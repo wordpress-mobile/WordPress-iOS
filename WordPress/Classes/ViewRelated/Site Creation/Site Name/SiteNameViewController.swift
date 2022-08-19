@@ -29,9 +29,23 @@ class SiteNameViewController: UIViewController {
         setTitleForTraitCollection()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        SiteCreationAnalyticsHelper.trackSiteNameViewed()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.becomeFirstResponder()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if isMovingFromParent {
+            // Called when popping from a nav controller, e.g. hitting "Back"
+            SiteCreationAnalyticsHelper.trackSiteNameCanceled()
+        }
     }
 }
 
@@ -40,6 +54,8 @@ private extension SiteNameViewController {
 
     func configureNavigationBar() {
         removeNavigationBarBorder()
+        // Title
+        navigationItem.backButtonTitle = TextContent.backButtonTitle
         // Add skip button
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: TextContent.skipButtonTitle,
                                                             style: .done,
@@ -85,5 +101,7 @@ private extension SiteNameViewController {
                                                                         comment: "Title for Site Name screen in iPhone landscape.")
         static let skipButtonTitle = NSLocalizedString("Skip",
                                                        comment: "Title for the Skip button in the Site Name Screen.")
+        static let backButtonTitle = NSLocalizedString("Name",
+                                                       comment: "Shortened version of the main title to be used in back navigation.")
     }
 }

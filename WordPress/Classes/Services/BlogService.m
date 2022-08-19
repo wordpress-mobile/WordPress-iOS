@@ -94,9 +94,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (Blog *)primaryBlog
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return defaultAccount.defaultBlog;
+    return [[WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] defaultBlog];
 }
 
 - (Blog *)firstBlogThatSupports:(BlogFeature)feature
@@ -691,6 +689,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
         [self updateBlogWithRemoteBlog:remoteBlog account:account];
+        [self updatePromptSettingsFor:remoteBlog context:self.managedObjectContext];
     }
 
     /*
@@ -969,6 +968,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                                                                error:&error];
                 if (blog) {
                     [self updateBlog:blog withRemoteBlog:blogs.firstObject];
+                    [self updatePromptSettingsFor:blogs.firstObject context:self.managedObjectContext];
 
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                 }

@@ -32,6 +32,7 @@ class BloggingRemindersTracker {
         case blogSettings = "blog_settings"
         case notificationSettings = "notification_settings"
         case statsInsights = "stats_insights"
+        case bloggingPromptsFeatureIntroduction = "blogging_prompts_onboarding"
     }
 
     enum FlowDismissSource: String {
@@ -60,6 +61,7 @@ class BloggingRemindersTracker {
         case source = "source"
         case screen = "screen"
         case selectedTime = "selected_time"
+        case state = "state"
     }
 
     /// The type of blog.

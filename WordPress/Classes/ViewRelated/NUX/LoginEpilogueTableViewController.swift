@@ -278,8 +278,8 @@ private extension LoginEpilogueTableViewController {
     ///
     func loadEpilogueForDotcom() -> LoginEpilogueUserInfo {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
             fatalError()
         }
 

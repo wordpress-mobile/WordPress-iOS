@@ -23,6 +23,7 @@ class EditPostViewController: UIViewController {
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
+    private let prompt: BloggingPrompt?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
@@ -60,13 +61,21 @@ class EditPostViewController: UIViewController {
         self.init(post: nil, blog: blog)
     }
 
+    /// Initialize as an editor to create a new post for the provided blog and prompt
+    ///
+    /// - Parameter blog: blog to create a new post for
+    /// - Parameter prompt: blogging prompt to configure the new post for
+    convenience init(blog: Blog, prompt: BloggingPrompt) {
+        self.init(post: nil, blog: blog, prompt: prompt)
+    }
+
     /// Initialize as an editor with a specified post to edit and blog to post too.
     ///
     /// - Parameters:
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false) {
+    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
@@ -77,6 +86,7 @@ class EditPostViewController: UIViewController {
             post.fixLocalMediaURLs()
         }
         self.blog = blog
+        self.prompt = prompt
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
@@ -126,6 +136,7 @@ class EditPostViewController: UIViewController {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
             let newPost = postService.createDraftPost(for: blog)
+            newPost.prepareForPrompt(prompt)
             post = newPost
             return newPost
         }

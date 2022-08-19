@@ -3,27 +3,25 @@ import XCTest
 @testable import WordPress
 @testable import WordPressKit
 
-class TimeZoneSelectorViewModelTests: XCTestCase {
-
-    private let contextManager = TestContextManager()
+class TimeZoneSelectorViewModelTests: CoreDataTestCase {
 
     private var viewModel: TimeZoneSelectorViewModel!
 
     private var timeZoneGroups: [TimeZoneGroup]!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() {
+        super.setUp()
 
         // Given TimeZoneGroups
         // When new ViewModel created with TimeZoneStore with state=loaded
         loadTimeZoneGroupsIntoViewModel()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
         viewModel = nil
         timeZoneGroups = nil
 
-        try super.tearDownWithError()
+        super.tearDown()
     }
 
     func loadTimeZoneGroupsIntoViewModel(selectedValue: String = "", filter: String? = nil) {
@@ -43,7 +41,7 @@ class TimeZoneSelectorViewModelTests: XCTestCase {
         case .ready(let groups):
             // Then viewModel should be ready
             XCTAssertEqual(groups.count, timeZoneGroups.count)
-        case .error(_):
+        case .error:
             XCTFail()
         }
     }

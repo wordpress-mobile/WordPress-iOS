@@ -3,9 +3,14 @@ import UIKit
 @objc protocol FeatureIntroductionDelegate: AnyObject {
     func primaryActionSelected()
     @objc optional func secondaryActionSelected()
+    @objc optional func closeButtonWasTapped()
 }
 
-// TODO: add description
+/// This is used to display a modal with information about a new feature.
+/// The feature description is displayed via the provided featureDescriptionView,
+/// which is presented in the scrollable area of the view.
+/// A primary action button is always displayed.
+/// A secondary action button is displayed if a secondaryButtonTitle is provided.
 
 class FeatureIntroductionViewController: CollapsableHeaderViewController {
 
@@ -24,6 +29,20 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
     }()
 
     weak var featureIntroductionDelegate: FeatureIntroductionDelegate?
+
+    // MARK: - Header View Configuration
+
+    override var separatorStyle: SeparatorStyle {
+        return .hidden
+    }
+
+    override var alwaysResetHeaderOnRotation: Bool {
+        WPDeviceIdentification.isiPhone()
+    }
+
+    override var alwaysShowHeaderTitles: Bool {
+        true
+    }
 
     // MARK: - Init
 
@@ -74,6 +93,11 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
         featureIntroductionDelegate?.secondaryActionSelected?()
     }
 
+    @IBAction func closeButtonTapped() {
+        featureIntroductionDelegate?.closeButtonWasTapped?()
+        dismiss(animated: true)
+    }
+
 }
 
 private extension FeatureIntroductionViewController {
@@ -81,6 +105,7 @@ private extension FeatureIntroductionViewController {
     func configureView() {
         navigationItem.rightBarButtonItem = CollapsableHeaderViewController.closeButton(target: self, action: #selector(closeButtonTapped))
         scrollView.addSubview(contentView)
+        hideHeaderVisualEffects()
 
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -89,10 +114,6 @@ private extension FeatureIntroductionViewController {
             contentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
-    }
-
-    @IBAction func closeButtonTapped() {
-        dismiss(animated: true)
     }
 
 }

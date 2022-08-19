@@ -42,7 +42,7 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
         return label
     }()
 
-    private let getStartedButton: UIButton = {
+    private lazy var getStartedButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.setTitle(TextContent.introButtonTitle, for: .normal)
@@ -63,7 +63,8 @@ class BloggingRemindersFlowIntroViewController: UIViewController {
             return TextContent.postPublishingintroDescription
         case .blogSettings,
              .notificationSettings,
-             .statsInsights:
+             .statsInsights,
+             .bloggingPromptsFeatureIntroduction:
             return TextContent.siteSettingsIntroDescription
         }
     }

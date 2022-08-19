@@ -10,9 +10,9 @@ class CreateButtonActionSheet: ActionSheetViewController {
         static let title = NSLocalizedString("Create New", comment: "Create New header text")
     }
 
-    init(actions: [ActionSheetItem]) {
+    init(headerView: UIView?, actions: [ActionSheetItem]) {
         let buttons = actions.map { $0.makeButton() }
-        super.init(headerTitle: Constants.title, buttons: buttons)
+        super.init(headerView: headerView, headerTitle: Constants.title, buttons: buttons)
     }
 
     required init?(coder: NSCoder) {

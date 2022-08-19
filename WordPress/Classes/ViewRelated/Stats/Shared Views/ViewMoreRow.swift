@@ -9,6 +9,7 @@ class ViewMoreRow: UIView, NibLoadable, Accessible {
     // MARK: - Properties
 
     @IBOutlet weak var viewMoreLabel: UILabel!
+    @IBOutlet weak var disclosureImageView: UIImageView!
 
     private var statSection: StatSection?
     private weak var delegate: ViewMoreRowDelegate?
@@ -38,6 +39,9 @@ private extension ViewMoreRow {
         backgroundColor = .listForeground
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
+        if FeatureFlag.statsNewAppearance.enabled && (statSection == .insightsFollowersWordPress || statSection == .insightsFollowersEmail) {
+            disclosureImageView.isHidden = true
+        }
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
@@ -63,41 +67,6 @@ private extension ViewMoreRow {
             WPAppAnalytics.track(event, withBlogID: blogIdentifier)
         } else {
             WPAppAnalytics.track(event)
-        }
-    }
-}
-
-// MARK: - Analytics support
-
-private extension StatSection {
-    var analyticsViewMoreEvent: WPAnalyticsStat? {
-        switch self {
-        case .periodAuthors, .insightsCommentsAuthors:
-            return .statsViewMoreTappedAuthors
-        case .periodClicks:
-            return .statsViewMoreTappedClicks
-        case .periodOverviewComments:
-            return .statsViewMoreTappedComments
-        case .periodCountries:
-            return .statsViewMoreTappedCountries
-        case .insightsFollowerTotals, .insightsFollowersEmail, .insightsFollowersWordPress:
-            return .statsViewMoreTappedFollowers
-        case .periodPostsAndPages:
-            return .statsViewMoreTappedPostsAndPages
-        case .insightsPublicize:
-            return .statsViewMoreTappedPublicize
-        case .periodReferrers:
-            return .statsViewMoreTappedReferrers
-        case .periodSearchTerms:
-            return .statsViewMoreTappedSearchTerms
-        case .insightsTagsAndCategories:
-            return .statsViewMoreTappedTagsAndCategories
-        case .periodVideos:
-            return .statsViewMoreTappedVideoPlays
-        case .periodFileDownloads:
-            return .statsViewMoreTappedFileDownloads
-        default:
-            return nil
         }
     }
 }

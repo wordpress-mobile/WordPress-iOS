@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="accessoryBar" destination="DE5-R9-8tB" id="IAj-gK-2g6"/>
                 <outlet property="accessoryBarHeightConstraint" destination="Eej-Tm-ddy" id="xGU-f0-4kH"/>
+                <outlet property="accessoryBarTopCompactConstraint" destination="uVe-Ze-eIF" id="VXw-pp-QBH"/>
                 <outlet property="containerView" destination="WmP-bw-ceT" id="lul-gs-fMI"/>
                 <outlet property="defaultActionButton" destination="dmc-kV-0d8" id="NfO-bU-Zl7"/>
                 <outlet property="footerHeightContraint" destination="lle-48-IUZ" id="CV2-G2-ryj"/>
@@ -41,7 +42,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="U3M-sT-nKQ">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="U3M-sT-nKQ">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -50,9 +51,9 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qq-k5-kWr">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="338"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999998807907104" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JJ1-pb-5F1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="338"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <accessibility key="accessibilityConfiguration">
@@ -63,7 +64,7 @@
                     <blurEffect style="regular"/>
                 </visualEffectView>
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LGN-fD-c9Q" userLabel="Header View" customClass="CollapsableHeaderView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="88" width="414" height="250"/>
+                    <rect key="frame" x="0.0" y="88" width="414" height="231"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IMu-iA-0ck" userLabel="Header Stack View">
                             <rect key="frame" x="16" y="10" width="382" height="85"/>
@@ -78,39 +79,31 @@
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw" userLabel="Large Title">
                                     <rect key="frame" x="79" y="48" width="224" height="37"/>
-                                    <accessibility key="accessibilityConfiguration">
-                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                    </accessibility>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
-                                    <variation key="heightClass=compact" hidden="YES"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73" userLabel="Prompt">
-                            <rect key="frame" x="64.5" y="107" width="285" height="55"/>
-                            <accessibility key="accessibilityConfiguration">
-                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                            </accessibility>
+                            <rect key="frame" x="16" y="107" width="382" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="width" priority="750" constant="285" id="Wga-Tr-jFk"/>
+                                <constraint firstAttribute="width" priority="750" constant="600" id="Wga-Tr-jFk"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" systemColor="secondaryLabelColor"/>
                             <nil key="highlightedColor"/>
-                            <variation key="heightClass=compact" hidden="YES"/>
                         </label>
                         <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB" userLabel="Accessory Bar">
-                            <rect key="frame" x="0.0" y="182" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="163" width="414" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Eej-Tm-ddy"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-KC-2W9" userLabel="Seperator">
-                            <rect key="frame" x="0.0" y="249.5" width="414" height="0.5"/>
+                            <rect key="frame" x="0.0" y="230.5" width="414" height="0.5"/>
                             <color key="backgroundColor" systemColor="separatorColor"/>
                             <accessibility key="accessibilityConfiguration">
                                 <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -122,7 +115,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="5" id="21t-vd-2bd"/>
+                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="16" id="21t-vd-2bd"/>
                         <constraint firstItem="IMu-iA-0ck" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" constant="10" id="Cym-Zp-9He"/>
                         <constraint firstAttribute="trailing" secondItem="IMu-iA-0ck" secondAttribute="trailing" constant="16" id="KV9-tA-ybQ"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" secondItem="bxz-wi-I73" secondAttribute="bottom" constant="20" id="LOU-MU-PJx"/>
@@ -131,6 +124,7 @@
                         <constraint firstItem="9w9-KC-2W9" firstAttribute="leading" secondItem="LGN-fD-c9Q" secondAttribute="leading" id="X3f-jY-uff"/>
                         <constraint firstAttribute="trailing" secondItem="DE5-R9-8tB" secondAttribute="trailing" id="a3z-v1-Ujv"/>
                         <constraint firstAttribute="trailing" secondItem="9w9-KC-2W9" secondAttribute="trailing" id="bqi-CI-mnl"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bxz-wi-I73" secondAttribute="trailing" constant="16" id="csW-Aq-EvI"/>
                         <constraint firstAttribute="height" constant="250" id="dks-Bz-gRQ"/>
                         <constraint firstAttribute="bottom" secondItem="9w9-KC-2W9" secondAttribute="bottom" id="ntw-Of-ryN"/>
                         <constraint firstItem="bxz-wi-I73" firstAttribute="top" secondItem="IMu-iA-0ck" secondAttribute="bottom" constant="12" id="ojs-jr-NYN"/>

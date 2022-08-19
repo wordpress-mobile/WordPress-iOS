@@ -9,6 +9,7 @@ import WordPressAuthenticator
     static let productBlogDisplayURL = "blog.wordpress.com"
     static let zendeskSourcePlatform = "mobile_-_ios"
     static let shareAppName: ShareAppName = .wordpress
+    static let mobileAnnounceAppId = "2"
     @objc static let eventNamePrefix = "wpios"
 
     /// Notifications Constants
@@ -39,13 +40,9 @@ extension AppConstants {
     }
 
     struct Settings {
-        static let aboutTitle: String = {
-            if FeatureFlag.aboutScreen.enabled {
-                return NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
-            } else {
-                return NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS")
-            }
-        }()
+        static let aboutTitle: String = NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+        static let shareButtonTitle = NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
+        static let whatIsNewTitle = NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
     }
 
     struct Login {
@@ -58,5 +55,10 @@ extension AppConstants {
 
     struct Zendesk {
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+    }
+
+    struct QuickStart {
+        static let getToKnowTheAppTourTitle = NSLocalizedString("Get to know the WordPress app",
+                                                                comment: "Name of the Quick Start list that guides users through a few tasks to explore the WordPress app.")
     }
 }

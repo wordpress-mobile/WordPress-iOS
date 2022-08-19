@@ -230,6 +230,40 @@ final class InteractiveNotificationsManager: NSObject {
                         timePeriod: .weeks,
                         date: targetDate)
                 }
+
+            case .bloggingPrompt:
+                WPAnalytics.track(.bloggingRemindersNotificationReceived, properties: ["prompt_included": true])
+
+                let answerPromptBlock = {
+                    WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(with: userInfo)
+                }
+
+                // check if user interacted with custom notification actions.
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .answerPrompt: // user taps on the "Answer" button.
+                        WPAnalytics.track(.promptsNotificationAnswerActionTapped)
+                        answerPromptBlock()
+
+                    case .dismissPrompt: // user taps on the "Dismiss" button.
+                        WPAnalytics.track(.promptsNotificationDismissActionTapped)
+                        // no-op, let the notification be dismissed.
+
+                    default:
+                        break
+                    }
+                }
+
+                // handle default notification actions.
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    WPAnalytics.track(.promptsNotificationTapped)
+                    answerPromptBlock()
+
+                } else if identifier == UNNotificationDismissActionIdentifier {
+                    WPAnalytics.track(.promptsNotificationDismissed)
+                    // no-op
+                }
+
             default: break
             }
         }
@@ -375,6 +409,7 @@ extension InteractiveNotificationsManager {
         case login                  = "push_auth"
         case bloggingReminderWeekly = "blogging-reminder-weekly"
         case weeklyRoundup          = "weekly-roundup"
+        case bloggingPrompt         = "blogging-prompt"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -404,6 +439,8 @@ extension InteractiveNotificationsManager {
                 return []
             case .weeklyRoundup:
                 return []
+            case .bloggingPrompt:
+                return [.answerPrompt, .dismissPrompt]
             }
         }
 
@@ -415,16 +452,25 @@ extension InteractiveNotificationsManager {
             return NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
+        var notificationCategoryOptions: [UNNotificationCategoryOptions] {
+            switch self {
+            case .bloggingPrompt:
+                return [.customDismissAction]
+            default:
+                return []
+            }
+        }
+
         func notificationCategory() -> UNNotificationCategory {
             return UNNotificationCategory(
                 identifier: identifier,
                 actions: actions.map({ $0.notificationAction() }),
                 intentIdentifiers: [],
-                options: [])
+                options: UNNotificationCategoryOptions())
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, login, bloggingReminderWeekly, bloggingPrompt]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure, bloggingReminderWeekly, weeklyRoundup, bloggingPrompt]
     }
 
 
@@ -442,6 +488,8 @@ extension InteractiveNotificationsManager {
         case shareEditPost    = "SHARE_EDIT_POST"
         case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
         case denyLogin        = "DENY_LOGIN_ATTEMPT"
+        case answerPrompt     = "ANSWER_BLOGGING_PROMPT"
+        case dismissPrompt    = "DISMISS_BLOGGING_PROMPT"
 
         var description: String {
             switch self {
@@ -465,6 +513,14 @@ extension InteractiveNotificationsManager {
                 return NSLocalizedString("Approve", comment: "Verb. Approves a 2fa authentication challenge, and logs in a user.")
             case .denyLogin:
                 return NSLocalizedString("Deny", comment: "Verb. Denies a 2fa authentication challenge.")
+            case .answerPrompt:
+                return NSLocalizedString("Answer", comment: "Verb. Opens the editor to answer the blogging prompt.")
+            case .dismissPrompt:
+                return NSLocalizedString(
+                    "bloggingPrompt.pushNotification.customActionDescription.dismiss",
+                    value: "Dismiss",
+                    comment: "Verb. Dismisses the blogging prompt notification."
+                )
             }
         }
 
@@ -487,7 +543,7 @@ extension InteractiveNotificationsManager {
 
         var requiresForeground: Bool {
             switch self {
-            case .mediaWritePost, .mediaRetry, .postView, .shareEditPost:
+            case .mediaWritePost, .mediaRetry, .postView, .shareEditPost, .answerPrompt:
                 return true
             default: return false
             }
@@ -537,7 +593,7 @@ extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
     }
 }
 

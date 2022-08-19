@@ -52,10 +52,9 @@ fileprivate extension StatsPeriodType {
 
 class SiteStatsDashboardViewController: UIViewController {
 
-    static var lastSelectedStatsPeriodTypeKey: String? {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
-            return nil
-        }
+    // MARK: - Keys
+
+    static func lastSelectedStatsPeriodTypeKey(forSiteID siteID: Int) -> String {
         return "LastSelectedStatsPeriodType-\(siteID)"
     }
 
@@ -64,6 +63,7 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
@@ -83,6 +83,9 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureJetpackBanner()
+        configureInsightsTableView()
+        configurePeriodTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedPeriodFromUserDefaults()
@@ -91,8 +94,27 @@ class SiteStatsDashboardViewController: UIViewController {
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
+    func configureInsightsTableView() {
+        insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
+        insightsTableViewController.bannerView = jetpackBannerView
+    }
+
+    private func configurePeriodTableViewController() {
+        periodTableViewController.bannerView = jetpackBannerView
+    }
+
     func configureNavBar() {
         parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+    }
+
+    func configureJetpackBanner() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            jetpackBannerView.removeFromSuperview()
+            return
+        }
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
     }
 
     @objc func manageInsightsButtonTapped() {
@@ -175,19 +197,19 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-
-        guard let key = Self.lastSelectedStatsPeriodTypeKey,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
               !insightsTableViewController.isGrowAudienceShowing else {
             return
         }
 
+        let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: key)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
 
-        guard let key = Self.lastSelectedStatsPeriodTypeKey,
-              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: key)) else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
+              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
             return .insights
         }
 

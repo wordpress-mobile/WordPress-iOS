@@ -1,7 +1,7 @@
-Ótima notícia, fãs de sites: sua tela Meu Site ficou ainda melhor. Agora você verá duas novas abas para interagir: Menu do site e Início.
+Realizamos algumas melhorias de desempenho na galeria e nos blocos de imagem do editor de blocos. Assim as imagens vão ocupar menos espaço de armazenamento em seu site, evitando que o seu dispositivo fique lento durante o upload de mídias. Quanto mais rápido, melhor.
 
-A aba Início contem cartões práticos com mais informações sobre seu site, incluindo rascunhos, posts agendados e estatísticas do dia. Ou, caso você esteja com pressa, você pode seguir facilmente para outra seção do aplicativo.
+Se o seu site usa o VideoPress, os blocos de vídeos salvos na versão Web agora também são exibidos corretamente no aplicativo móvel.
 
-Sempre preferimos uma comunicação clara. É por isso que adicionamos uma nova mensagem de erro ao processo de envio de fotos para quando você tentar enviar uma foto de seu dispositivo sem ter dado essa permissão ao aplicativo.
+A inserção de blocos no editor de blocos agora permite organizar melhor os tipos de bloco em coleções. Também fizemos um pequeno ajuste no espaçamento das notas de rodapé com texto alternativo em blocos de imagem porque os detalhes também são importantes.
 
-Finalmente, quando avisos do aplicativo aparecerem, eles sumirão mais suavemente quando você não precisar mais deles. Saída rápida pela esquerda.
+Por último, mas não menos importante, eliminamos um bug irritante no processo de criação do site. Quando você está rolando horizontalmente pelas opções de design do site, o aplicativo agora lembra onde você parou mesmo ao rolar a página para cima e para baixo.

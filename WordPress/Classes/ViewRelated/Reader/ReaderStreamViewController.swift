@@ -4,6 +4,8 @@ import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import UIKit
+import Combine
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -29,6 +31,8 @@ import WordPressFlux
     var tableView: UITableView! {
         return tableViewController.tableView
     }
+
+    var jetpackBannerView: JetpackBannerView?
 
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
 
@@ -97,6 +101,7 @@ import WordPressFlux
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
+    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
 
     /// Content management
     let content = ReaderTableContent()
@@ -317,7 +322,7 @@ import WordPressFlux
         refreshImageRequestAuthToken()
 
         configureCloseButtonIfNeeded()
-        setupTableView()
+        setupStackView()
         setupFooterView()
         setupContentHandler()
         setupResultsStatusView()
@@ -483,26 +488,42 @@ import WordPressFlux
 
     // MARK: - Setup
 
-    private func setupTableView() {
+    private func setupStackView() {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        setupTableView(stackView: stackView)
+        setupJetpackBanner(stackView: stackView)
+
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+    }
+
+    private func setupJetpackBanner(stackView: UIStackView) {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        let bannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
+        jetpackBannerView = bannerView
+        addTranslationObserver(bannerView)
+        stackView.addArrangedSubview(bannerView)
+    }
+
+    private func setupTableView(stackView: UIStackView) {
         configureRefreshControl()
-        add(tableViewController)
-        layoutTableView()
+
+        stackView.addArrangedSubview(tableViewController.view)
+        tableViewController.didMove(toParent: self)
         tableConfiguration.setup(tableView)
+        tableView.delegate = self
         setupUndoCell(tableView)
     }
 
     @objc func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-    }
-
-    private func layoutTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
     }
 
     private func setupContentHandler() {
@@ -548,6 +569,7 @@ import WordPressFlux
         let topConstraint = header.topAnchor.constraint(equalTo: tableView.topAnchor)
         let headerWidthConstraint = header.widthAnchor.constraint(equalTo: tableView.widthAnchor)
         headerWidthConstraint.priority = UILayoutPriority(999)
+        centerConstraint.priority = UILayoutPriority(999)
 
         NSLayoutConstraint.activate([
             centerConstraint,
@@ -658,8 +680,8 @@ import WordPressFlux
 
     /// Fetch and cache the current defaultAccount authtoken, if available.
     private func refreshImageRequestAuthToken() {
-        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        postCellActions?.imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        postCellActions?.imageRequestAuthToken = account?.authToken
     }
 
 
@@ -882,7 +904,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.shared!.connectionAvailable
+        return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
 
 
@@ -1977,5 +1999,13 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
     func didSelect(topic: String) {
         let topicStreamViewController = ReaderStreamViewController.controllerWithTagSlug(topic)
         navigationController?.pushViewController(topicStreamViewController, animated: true)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+
+extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
     }
 }

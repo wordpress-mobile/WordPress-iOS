@@ -120,6 +120,13 @@ class MeViewController: UITableViewController {
             action: pushMyProfile(),
             accessibilityIdentifier: "myProfile")
 
+        let qrLogin = NavigationItemRow(
+            title: RowTitles.qrLogin,
+            icon: .gridicon(.camera),
+            accessoryType: accessoryType,
+            action: presentQRLogin(),
+            accessibilityIdentifier: "qrLogin")
+
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
             icon: .gridicon(.cog),
@@ -150,7 +157,12 @@ class MeViewController: UITableViewController {
             .init(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
-                    rows = [myProfile, accountSettings] + rows
+                    var loggedInRows = [myProfile, accountSettings]
+                    if AppConfiguration.qrLoginEnabled && FeatureFlag.qrLogin.enabled {
+                        loggedInRows.append(qrLogin)
+                    }
+
+                    rows = loggedInRows + rows
                 }
                 return rows
             }()),
@@ -159,21 +171,17 @@ class MeViewController: UITableViewController {
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
-                if isRecommendAppRowEnabled {
-                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
-                                                  accessoryType: accessoryType,
-                                                  action: displayShareFlow(),
-                                                  loading: sharePresenter.isLoading))
-                }
+                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                              icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                              accessoryType: accessoryType,
+                                              action: displayShareFlow(),
+                                              loading: sharePresenter.isLoading))
 
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                }
+                rows.append(NavigationItemRow(title: RowTitles.about,
+                                              icon: UIImage.gridicon(.mySites),
+                                              accessoryType: .disclosureIndicator,
+                                              action: pushAbout(),
+                                              accessibilityIdentifier: "About"))
 
                 return rows
             }()),
@@ -236,6 +244,17 @@ class MeViewController: UITableViewController {
         }
     }
 
+    private func presentQRLogin() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else {
+                return
+            }
+
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            QRLoginCoordinator.present(from: self, origin: .menu)
+        }
+    }
+
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.openedAppSettings)
@@ -278,7 +297,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: .wordpress, in: self, source: .me, sourceView: selectedCell)
+            self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -345,10 +364,7 @@ class MeViewController: UITableViewController {
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
     // and initializing stuff with safer values like userID
     fileprivate func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     fileprivate func refreshAccountDetails() {
@@ -432,11 +448,6 @@ class MeViewController: UITableViewController {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
 
-    /// Convenience property to determine whether the recomend app row should be displayed or not.
-        private var isRecommendAppRowEnabled: Bool {
-            !AppConfiguration.isJetpack
-        }
-
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
         presenter.delegate = self
@@ -495,6 +506,7 @@ private extension MeViewController {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
+        static let qrLogin = NSLocalizedString("Scan Login Code", comment: "Link to opening the QR login scanner")
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
@@ -529,10 +541,22 @@ private extension MeViewController {
 
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
-        guard isRecommendAppRowEnabled else {
-             return
-         }
-
         reloadViewModel()
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension MeViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+              JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
     }
 }

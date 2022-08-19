@@ -3,15 +3,7 @@ import Nimble
 
 @testable import WordPress
 
-/// This test stuite is clashing with other tests
-/// Specifically:
-/// - [BlogJetpackTest testJetpackSetupDoesntReplaceDotcomAccount]
-/// - CommentServiceTests.testFailingFetchCommentLikesShouldCallFailureBlock()
-///
-/// We weren't able to figure out why but it seems a race condition + Core data
-/// For now, renaming the suite to change the execution order solves the issue.
-class ZBlogDashboardServiceTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class BlogDashboardServiceTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     private var service: BlogDashboardService!
@@ -26,7 +18,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
         service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
@@ -35,7 +26,6 @@ class ZBlogDashboardServiceTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testCallServiceWithCorrectIDAndCards() {
@@ -58,27 +48,31 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         let blog = newTestBlog(id: wpComID, context: context)
 
-        service.fetch(blog: blog) { snapshot in
-            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
-            let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
+        service.fetch(blog: blog) { cards in
+            let draftPostsCardItem = cards.first(where: {$0.cardType == .draftPosts})
+            let scheduledPostsCardItem = cards.first(where: {$0.cardType == .scheduledPosts})
 
             // Posts section exists
-            XCTAssertNotNil(postsSection)
-
-            // Item id is posts
-            XCTAssertEqual(postsCardItem.id, .posts)
+            XCTAssertNotNil(draftPostsCardItem)
+            XCTAssertNotNil(scheduledPostsCardItem)
 
             // Has published is `true`
-            XCTAssertTrue(postsCardItem.apiResponse!.posts!.hasPublished!)
+            XCTAssertTrue(draftPostsCardItem!.apiResponse!.posts!.hasPublished!)
 
             // 3 scheduled item
-            XCTAssertEqual(postsCardItem.apiResponse!.posts!.draft!.count, 3)
+            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.draft!.count, 3)
 
             // 1 scheduled item
-            XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
+            XCTAssertEqual(draftPostsCardItem!.apiResponse!.posts!.scheduled!.count, 1)
 
-            // cell view model is a `NSDictionary`
-            XCTAssertTrue(postsCardItem.hashableDictionary!["has_published"] as! Bool)
+            // Has published is `true`
+            XCTAssertTrue(scheduledPostsCardItem!.apiResponse!.posts!.hasPublished!)
+
+            // 3 scheduled item
+            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.draft!.count, 3)
+
+            // 1 scheduled item
+            XCTAssertEqual(scheduledPostsCardItem!.apiResponse!.posts!.scheduled!.count, 1)
 
             expect.fulfill()
         }
@@ -92,50 +86,17 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         let blog = newTestBlog(id: wpComID, context: context)
 
-        service.fetch(blog: blog) { snapshot in
-            let todaysStatsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .todaysStats })
-            let todaysStatsItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: todaysStatsSection!).first!
+        service.fetch(blog: blog) { cards in
+            let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
 
             // Todays stats section exists
-            XCTAssertNotNil(todaysStatsSection)
-
-            // The item identifier id is todaysStats
-            XCTAssertEqual(todaysStatsItem.id, .todaysStats)
+            XCTAssertNotNil(todaysStatsItem)
 
             // Entity has the correct values
-            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.views, 0)
-            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.visitors, 0)
-            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.likes, 0)
-            XCTAssertEqual(todaysStatsItem.apiResponse!.todaysStats!.comments, 0)
-
-            // Todays Stats has the correct NSDictionary
-            XCTAssertEqual(todaysStatsItem.hashableDictionary, ["views": 0, "visitors": 0, "likes": 0, "comments": 0])
-
-            expect.fulfill()
-        }
-
-        waitForExpectations(timeout: 3, handler: nil)
-    }
-
-    func testLocalCards() {
-        let expect = expectation(description: "Return local cards stats")
-        remoteServiceMock.respondWith = .withDraftAndSchedulePosts
-
-        let blog = newTestBlog(id: wpComID, context: context)
-
-        service.fetch(blog: blog) { snapshot in
-            // Quick Actions exists
-            let quickActionsSection = snapshot.sectionIdentifiers.filter { $0.id == .quickActions }
-            XCTAssertEqual(quickActionsSection.count, 1)
-
-            // The item identifier id is quick actions
-            XCTAssertEqual(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.id, .quickActions)
-
-            // It doesn't have an api response dictionary
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.hashableDictionary)
-
-            // It doesn't have an api response entity
-            XCTAssertNil(snapshot.itemIdentifiers(inSection: quickActionsSection.first!).first?.apiResponse)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.views, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.visitors, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.likes, 0)
+            XCTAssertEqual(todaysStatsItem!.apiResponse!.todaysStats!.comments, 0)
 
             expect.fulfill()
         }
@@ -165,10 +126,12 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         let blog = newTestBlog(id: wpComID, context: context)
 
-        let snapshot = service.fetchLocal(blog: blog)
+        let cards = service.fetchLocal(blog: blog)
 
-        let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
-        XCTAssertNotNil(postsSection)
+        let hasDrafts = cards.contains(where: {$0.cardType == .draftPosts})
+        let hasScheduled = cards.contains(where: {$0.cardType == .scheduledPosts})
+        XCTAssertTrue(hasDrafts)
+        XCTAssertTrue(hasScheduled)
         XCTAssertEqual(persistenceMock.didCallGetCardsWithWpComID, wpComID)
     }
 
@@ -181,9 +144,9 @@ class ZBlogDashboardServiceTests: XCTestCase {
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
         let blog = newTestBlog(id: 10, context: context)
 
-        service.fetch(blog: blog) { snapshot in
-            let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
-            XCTAssertNil(ghostSection)
+        service.fetch(blog: blog) { cards in
+            let hasGhost = cards.contains(where: {$0.cardType == .ghost})
+            XCTAssertFalse(hasGhost)
 
             expect.fulfill()
         }
@@ -197,10 +160,10 @@ class ZBlogDashboardServiceTests: XCTestCase {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
         let blog = newTestBlog(id: 11, context: context)
 
-        let snapshot = service.fetchLocal(blog: blog)
+        let cards = service.fetchLocal(blog: blog)
 
-        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
-        XCTAssertNil(ghostSection)
+        let hasGhost = cards.contains(where: {$0.cardType == .ghost})
+        XCTAssertFalse(hasGhost)
     }
 
     /// Ghost cards SHOULD be displayed when there are no cached data
@@ -210,11 +173,10 @@ class ZBlogDashboardServiceTests: XCTestCase {
         persistenceMock.respondWith = nil
         let blog = newTestBlog(id: 12, context: context)
 
-        let snapshot = service.fetchLocal(blog: blog)
+        let cards = service.fetchLocal(blog: blog)
 
-        let ghostSection = snapshot.sectionIdentifiers.first(where: { $0.id == .ghost })
-        XCTAssertNotNil(ghostSection)
-        XCTAssertEqual(snapshot.itemIdentifiers(inSection: ghostSection!).count, 1)
+        let ghostCards = cards.filter({$0.cardType == .ghost})
+        XCTAssertEqual(ghostCards.count, 1)
     }
 
     // MARK: - Error card
@@ -227,9 +189,9 @@ class ZBlogDashboardServiceTests: XCTestCase {
         persistenceMock.respondWith = nil
         let blog = newTestBlog(id: 13, context: context)
 
-        service.fetch(blog: blog) { _ in } failure: { snapshot in
-            let failureSection = snapshot?.sectionIdentifiers.first(where: { $0.id == .failure })
-            XCTAssertNotNil(failureSection)
+        service.fetch(blog: blog) { _ in } failure: { cards in
+            let hasError = cards.contains(where: {$0.cardType == .failure})
+            XCTAssertTrue(hasError)
 
             expect.fulfill()
         }
@@ -247,13 +209,13 @@ class ZBlogDashboardServiceTests: XCTestCase {
         let blog = newTestBlog(id: 14, context: context)
 
         /// Call it once and fails
-        service.fetch(blog: blog) { _ in } failure: { snapshot in
+        service.fetch(blog: blog) { _ in } failure: { cards in
 
             self.remoteServiceMock.respondWith = .withDraftAndSchedulePosts
             /// Call again and succeeds
-            self.service.fetch(blog: blog) { snapshot in
-                let failureSection = snapshot.sectionIdentifiers.first(where: { $0.id == .failure })
-                XCTAssertNil(failureSection)
+            self.service.fetch(blog: blog) { cards in
+                let hasError = cards.contains(where: {$0.cardType == .failure})
+                XCTAssertFalse(hasError)
 
                 expect.fulfill()
             }
@@ -275,15 +237,11 @@ class ZBlogDashboardServiceTests: XCTestCase {
 
         let blog = newTestBlog(id: wpComID, context: context)
 
-        service.fetch(blog: blog) { snapshot in
-            let postsSection = snapshot.sectionIdentifiers.first(where: { $0.id == .posts })
-            let postsCardItem: DashboardCardModel = snapshot.itemIdentifiers(inSection: postsSection!).first!
-
-            // It should have 1 draft items
-            XCTAssertEqual(postsCardItem.apiResponse!.posts!.draft!.count, 1)
-
-            // It should have 1 scheduled item
-            XCTAssertEqual(postsCardItem.apiResponse!.posts!.scheduled!.count, 1)
+        service.fetch(blog: blog) { cards in
+            let hasDrafts = cards.contains(where: {$0.cardType == .draftPosts})
+            let hasScheduled = cards.contains(where: {$0.cardType == .scheduledPosts})
+            XCTAssertTrue(hasDrafts)
+            XCTAssertTrue(hasScheduled)
 
             expect.fulfill()
         }
@@ -292,7 +250,7 @@ class ZBlogDashboardServiceTests: XCTestCase {
     }
 
     func dictionary(from file: String) -> NSDictionary? {
-        let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
+        let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: file, withExtension: nil)!
         let data: Data = try! Data(contentsOf: fileURL)
         return try? JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
     }
@@ -327,7 +285,7 @@ class DashboardServiceRemoteMock: DashboardServiceRemote {
         didCallWithBlogID = blogID
         didRequestCards = cards
 
-        if let fileURL: URL = Bundle(for: ZBlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
+        if let fileURL: URL = Bundle(for: BlogDashboardServiceTests.self).url(forResource: respondWith.rawValue, withExtension: nil),
         let data: Data = try? Data(contentsOf: fileURL),
            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject {
             success(jsonObject as! NSDictionary)

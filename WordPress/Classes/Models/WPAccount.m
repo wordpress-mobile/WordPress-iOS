@@ -57,19 +57,19 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 - (void)setUsername:(NSString *)username
 {
     NSString *previousUsername = self.username;
-    
+
     BOOL usernameChanged = ![previousUsername isEqualToString:username];
     NSString *authToken = nil;
-    
+
     if (usernameChanged) {
         authToken = self.authToken;
         self.authToken = nil;
     }
-    
+
     [self willChangeValueForKey:@"username"];
     [self setPrimitiveValue:username forKey:@"username"];
     [self didChangeValueForKey:@"username"];
-    
+
     if (usernameChanged) {
         self.authToken = authToken;
     }
@@ -89,7 +89,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
                           forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
                                    error:&error];
-        
+
         if (error) {
             DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
         }
@@ -103,7 +103,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
     }
-    
+
     // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
     _wordPressComRestApi = nil;
 }
@@ -116,12 +116,6 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
                                                                   selector:@selector(localizedCaseInsensitiveCompare:)];
 
     return [visibleBlogs sortedArrayUsingDescriptors:@[descriptor]];
-}
-
-- (BOOL)isDefault {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [service defaultWordPressComAccount];
-    return [defaultAccount isEqual:self];
 }
 
 - (BOOL)hasAtomicSite {
@@ -160,7 +154,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
             [_wordPressComRestApi setInvalidTokenHandler:^{
                 [weakSelf setAuthToken:nil];
                 [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
-                if (weakSelf.isDefault) {
+                if (weakSelf.isDefaultWordPressComAccount) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:weakSelf];
                 }
             }];

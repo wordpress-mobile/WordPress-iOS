@@ -2,9 +2,8 @@ import XCTest
 
 @testable import WordPress
 
-class BlogDashboardPostsParserTests: XCTestCase {
+class BlogDashboardPostsParserTests: CoreDataTestCase {
 
-    private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
     private var parser: BlogDashboardPostsParser!
@@ -12,7 +11,6 @@ class BlogDashboardPostsParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         parser = BlogDashboardPostsParser(managedObjectContext: context)
     }
@@ -20,7 +18,6 @@ class BlogDashboardPostsParserTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     /// When the API return no drafts, but there are local drafts
@@ -47,14 +44,13 @@ class BlogDashboardPostsParserTests: XCTestCase {
     }
 
     /// When the API return drafts, keep the amount returned
-    func testReturnDraftsAsItIsEvenWhenLocalDraftsExists() {
+    func testReturnDraftsTrimmedEvenWithZeroLocalDrafts() {
         let blog = BlogBuilder(context).build()
-        _ = PostBuilder(context, blog: blog).drafted().build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithPosts["posts"] as! NSDictionary,
                                                  for: blog)
 
-        XCTAssertEqual((postsWithLocalContent["draft"] as? [Any])?.count, 3)
+        XCTAssertEqual((postsWithLocalContent["draft"] as? [Any])?.count, 1)
     }
 
     /// When the API return no scheduled, but there are local scheduled posts

@@ -9,7 +9,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var post: ReaderPost?
     private var presentingViewController: UIViewController?
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
-    private var headerView: ReaderDetailCommentsHeader?
+    private(set) var headerView: ReaderDetailCommentsHeader?
+    var followButtonTappedClosure: (() ->Void)?
 
     private var totalRows = 0
     private var hideButton = true
@@ -57,6 +58,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         headerView?.updateFollowButtonState(post: post)
     }
 
+    func followButtonMidPoint() -> CGPoint? {
+        headerView?.followButtonMidPoint()
+    }
+
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,12 +104,31 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
-        header.configure(post: post, totalComments: totalComments, presentingViewController: presentingViewController)
+        header.configure(
+            post: post,
+            totalComments: totalComments,
+            presentingViewController: presentingViewController,
+            followButtonTappedClosure: followButtonTappedClosure
+        )
         headerView = header
         return header
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        /// We used this method to show the Jetpack badge rather than setting `tableFooterView` because it scaled better with Dynamic type.
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding,
+                                           target: self,
+                                           selector: #selector(jetpackButtonTapped))
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return ReaderDetailCommentsHeader.estimatedHeight
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
         return ReaderDetailCommentsHeader.estimatedHeight
     }
 
@@ -112,6 +136,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         return UITableView.automaticDimension
     }
 
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return 0
+        }
+        return UITableView.automaticDimension
+    }
 }
 
 private extension ReaderDetailCommentsTableViewDelegate {
@@ -124,11 +154,19 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
+    @objc func jetpackButtonTapped() {
+        guard let presentingViewController = presentingViewController else {
+            return
+        }
+        JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)
+    }
+
     struct Constants {
         static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }

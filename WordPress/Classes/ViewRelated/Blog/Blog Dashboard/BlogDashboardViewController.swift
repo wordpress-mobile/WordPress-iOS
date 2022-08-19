@@ -10,6 +10,8 @@ protocol BlogDashboardCardConfigurable {
 final class BlogDashboardViewController: UIViewController {
 
     var blog: Blog
+    var presentedPostStatus: String?
+
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
@@ -30,6 +32,11 @@ final class BlogDashboardViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         return refreshControl
     }()
+
+    /// The "My Site" parent view controller
+    var mySiteViewController: MySiteViewController? {
+        return parent as? MySiteViewController
+    }
 
     /// The "My Site" main scroll view
     var mySiteScrollView: UIScrollView? {
@@ -57,7 +64,6 @@ final class BlogDashboardViewController: UIViewController {
         addHeightObservers()
         addWillEnterForegroundObserver()
         addQuickStartObserver()
-        addNewPostAvailableObserver()
         viewModel.viewDidLoad()
 
         // Force the view to update its layout immediately, so the content size is calculated correctly
@@ -68,7 +74,7 @@ final class BlogDashboardViewController: UIViewController {
         super.viewDidAppear(animated)
 
         viewModel.loadCards()
-        QuickStartTourGuide.shared.currentTourOrigin = .blogDashboard
+        QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
         WPAnalytics.track(.mySiteDashboardShown)
@@ -76,6 +82,10 @@ final class BlogDashboardViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         stopAlertTimer()
+    }
+
+    func reloadCardsLocally() {
+        viewModel.loadCardsFromCache()
     }
 
     /// If you want to give any feedback when the dashboard
@@ -124,6 +134,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
+        collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
         }
@@ -141,11 +152,32 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     private func addQuickStartObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .QuickStartTourElementChangedNotification, object: nil)
-    }
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
 
-    private func addNewPostAvailableObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .newPostAvailableForDashboard, object: nil)
+            guard let self = self else {
+                return
+            }
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .setupQuickStart:
+                    self.loadCardsFromCache()
+                    self.displayQuickStart()
+                case .updateQuickStart:
+                    self.loadCardsFromCache()
+                case .stats, .mediaScreen:
+                    if self.embeddedInScrollView {
+                        self.mySiteScrollView?.scrollToTop(animated: true)
+                    } else {
+                        self.collectionView.scrollToTop(animated: true)
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 
     @objc private func updateCollectionViewHeight(notification: Notification) {
@@ -161,12 +193,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.loadCards()
     }
 
-    /// Load card from cache if view is appearing
+    /// Load card from cache
     @objc private func loadCardsFromCache() {
-        guard view.superview != nil else {
-            return
-        }
-
         viewModel.loadCardsFromCache()
     }
 
@@ -195,10 +223,9 @@ extension BlogDashboardViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        let isQuickActionSection = viewModel.card(for: sectionIndex) == .quickActions
-        let isLastSection = collectionView.numberOfSections == (sectionIndex + 1)
+        let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
         let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
-        let bottomInset = isLastSection ? Constants.verticalSectionInset : 0
+        let bottomInset = isQuickActionSection ? 0 : Constants.verticalSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,
@@ -228,15 +255,16 @@ extension BlogDashboardViewController {
 
     private func showNoticeAsNeeded() {
         let quickStartGuide = QuickStartTourGuide.shared
+
         guard let tourToSuggest = quickStartGuide.tourToSuggest(for: blog) else {
+            quickStartGuide.showCongratsNoticeIfNeeded(for: blog)
             return
         }
 
         if quickStartGuide.tourInProgress {
             // If tour is in progress, show notice regardless of quickstart is shown in dashboard or my site
             quickStartGuide.suggest(tourToSuggest, for: blog)
-        }
-        else {
+        } else {
             guard shouldShowQuickStartChecklist() else {
                 return
             }
@@ -248,6 +276,18 @@ extension BlogDashboardViewController {
     private func shouldShowQuickStartChecklist() -> Bool {
         return DashboardCard.quickStart.shouldShow(for: blog)
     }
+
+    private func displayQuickStart() {
+        let currentCollections = QuickStartFactory.collections(for: blog)
+        guard let collectionToShow = currentCollections.first else {
+            return
+        }
+        let checklist = QuickStartChecklistViewController(blog: blog, collection: collectionToShow)
+        let navigationViewController = UINavigationController(rootViewController: checklist)
+        present(navigationViewController, animated: true)
+
+        QuickStartTourGuide.shared.visited(.checklist)
+    }
 }
 
 extension BlogDashboardViewController {
@@ -255,7 +295,11 @@ extension BlogDashboardViewController {
     private enum Strings {
         static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
         static let failureTitle = NSLocalizedString("Couldn't update. Check that you're online and refresh.", comment: "Content show when the dashboard fails to load")
-        static let dismiss = NSLocalizedString("Dismiss", comment: "Action shown in a bottom notice to dismiss it.")
+        static let dismiss = NSLocalizedString(
+            "blogDashboard.dismiss",
+            value: "Dismiss",
+            comment: "Action shown in a bottom notice to dismiss it."
+        )
     }
 
 
@@ -264,7 +308,7 @@ extension BlogDashboardViewController {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 20
         static let verticalSectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 24
+        static let cellSpacing: CGFloat = 20
     }
 }
 

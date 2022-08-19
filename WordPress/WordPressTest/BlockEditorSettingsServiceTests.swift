@@ -2,7 +2,7 @@ import XCTest
 import Nimble
 @testable import WordPress
 
-class BlockEditorSettingsServiceTests: XCTestCase {
+class BlockEditorSettingsServiceTests: CoreDataTestCase {
     let expectationTimeout = TimeInterval(1)
     private let twentytwentyResponseFilename = "get_wp_v2_themes_twentytwenty"
     private let twentytwentyoneResponseFilename = "get_wp_v2_themes_twentytwentyone"
@@ -10,31 +10,27 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     private let blockSettingsThemeJSONResponseFilename = "wp-block-editor-v1-settings-success-ThemeJSON"
 
     private var service: BlockEditorSettingsService!
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
     var mockRemoteApi: MockWordPressComRestApi!
     var gssOriginalValue: Bool!
     private var blog: Blog!
 
     override func setUp() {
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
         mockRemoteApi = MockWordPressComRestApi()
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
     }
 
     // MARK: Editor `theme_supports` support
     func testThemeSupportsNewTheme() {
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { result in
@@ -56,12 +52,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testThemeSupportsThemeChange() {
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
 
         setData(withFilename: twentytwentyResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
@@ -87,12 +83,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testThemeSupportsThemeIsTheSame() {
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
 
         setData(withFilename: twentytwentyoneResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
@@ -248,7 +244,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettings_OrgSite_NoPlugin() {
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: mainContext)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { _ in
@@ -269,7 +265,7 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     func testFetchBlockEditorSettings_OrgSite() {
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: mainContext)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { _ in
@@ -284,12 +280,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_Com5_8Site() {
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
@@ -305,12 +301,12 @@ class BlockEditorSettingsServiceTests: XCTestCase {
     }
 
     func testFetchBlockEditorSettings_Com5_9Site() {
-        blog = BlogBuilder(context)
+        blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.9")
             .withAnAccount()
             .build()
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: context)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")

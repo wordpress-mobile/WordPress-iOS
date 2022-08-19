@@ -5,7 +5,7 @@ import Nimble
 import UIKit
 import XCTest
 
-class AztecPostViewController_MenuTests: XCTestCase {
+class AztecPostViewController_MenuTests: CoreDataTestCase {
 
     class Mock: AztecPostViewController {
         var callback: ((UIAlertController) -> Void)?
@@ -18,18 +18,15 @@ class AztecPostViewController_MenuTests: XCTestCase {
     }
 
     private var aztecPostViewController: Mock!
-    private var contextManager: TestContextManager!
     private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
     }
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        contextManager = nil
         context = nil
     }
 

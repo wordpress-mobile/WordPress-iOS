@@ -45,6 +45,7 @@ final class SitePickerViewController: UIViewController {
         super.viewDidLoad()
         setupHeaderView()
         startObservingQuickStart()
+        startObservingTitleChanges()
     }
 
     deinit {
@@ -56,6 +57,15 @@ final class SitePickerViewController: UIViewController {
         blogDetailHeaderView.delegate = self
         view.addSubview(blogDetailHeaderView)
         view.pinSubviewToAllEdges(blogDetailHeaderView)
+    }
+
+    private func startObservingTitleChanges() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.WPBlogUpdated,
+                                               object: nil,
+                                               queue: .main) { [weak self] _ in
+
+            self?.updateTitles()
+        }
     }
 }
 
@@ -138,8 +148,16 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 extension SitePickerViewController {
 
     private func switchToBlog(_ blog: Blog) {
+        guard self.blog != blog else {
+            return
+        }
+
         self.blog = blog
         blogDetailHeaderView.blog = blog
+
+        QuickStartTourGuide.shared.endCurrentTour()
+        toggleSpotlightOnHeaderView()
+
         onBlogSwitched?(blog)
     }
 
@@ -187,11 +205,10 @@ extension SitePickerViewController {
         blog.settings?.name = title
         blogDetailHeaderView.setTitleLoading(true)
 
-        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(),
-                                                    silentlyForBlog: blog)
+        QuickStartTourGuide.shared.complete(tour: QuickStartSiteTitleTour(blog: blog),
+                                            silentlyForBlog: blog)
 
         blogService.updateSettings(for: blog, success: { [weak self] in
-            NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
 
             let notice = Notice(title: title,
                                 message: SiteTitleStrings.titleChangeSuccessfulMessage,
@@ -199,7 +216,7 @@ extension SitePickerViewController {
             ActionDispatcher.global.dispatch(NoticeAction.post(notice))
 
             self?.blogDetailHeaderView.setTitleLoading(false)
-            self?.blogDetailHeaderView.refreshSiteTitle()
+            NotificationCenter.default.post(name: NSNotification.Name.WPBlogUpdated, object: nil)
         }, failure: { [weak self] error in
             self?.blog.settings?.name = existingBlogTitle
             self?.blogDetailHeaderView.setTitleLoading(false)
@@ -210,6 +227,16 @@ extension SitePickerViewController {
 
             DDLogError("Error while trying to update blog settings: \(error.localizedDescription)")
         })
+    }
+
+    /// Updates site title and navigation bar title
+    private func updateTitles() {
+        blogDetailHeaderView.refreshSiteTitle()
+
+        guard let parent = parent as? MySiteViewController else {
+            return
+        }
+        parent.updateNavigationTitle(for: blog)
     }
 
     private func showViewSite() {
@@ -224,7 +251,8 @@ extension SitePickerViewController {
             url: url,
             blog: blog,
             source: Constants.viewSiteSource,
-            withDeviceModes: true
+            withDeviceModes: true,
+            onClose: self.startAlertTimer
         )
 
         let navigationController = LightNavigationController(rootViewController: webViewController)
@@ -245,11 +273,6 @@ extension SitePickerViewController {
             //  currently working on the View Site tour.
             tourGuide.completeViewSiteTour(forBlog: blog)
         }
-
-        guard let parentVC = parent as? MySiteViewController else {
-            return
-        }
-        parentVC.additionalSafeAreaInsets = .zero
     }
 }
 

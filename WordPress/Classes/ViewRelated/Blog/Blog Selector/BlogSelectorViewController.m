@@ -78,9 +78,7 @@
 {
     if (onlyDefault) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        self.dataSource.account = defaultAccount;
+        self.dataSource.account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     } else {
         self.dataSource.account = nil;
     }
@@ -104,7 +102,9 @@
 
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
-    
+
+    self.dataSource.shouldHideSelfHostedSites = self.shouldHideSelfHostedSites;
+
     // TableView
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -239,10 +239,9 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     
     [context performBlock:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+
         if (!defaultAccount) {
             return;
         }

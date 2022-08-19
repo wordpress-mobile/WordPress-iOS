@@ -5,13 +5,19 @@ import UIKit
 protocol PostsCardView: AnyObject {
     var tableView: UITableView { get }
 
-    func showLoading()
-    func hideLoading()
-    func showError(message: String, retry: Bool)
-    func hideError()
-    func showNextPostPrompt()
-    func hideNextPrompt()
-    func firstPostPublished()
+    func removeIfNeeded()
+}
+
+enum PostsListSection: CaseIterable {
+    case posts
+    case error
+    case loading
+}
+
+enum PostsListItem: Hashable {
+    case post(NSManagedObjectID)
+    case error
+    case ghost(Int)
 }
 
 /// Responsible for populating a table view with posts
@@ -22,45 +28,51 @@ class PostsCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private let postService: PostService
-
     private var postListFilter: PostListFilter = PostListFilter.draftFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 
     private var status: BasePost.Status = .draft
 
-    private var shouldSync: Bool
+    private var isSyncing = false
 
-    private var syncing: (NSNumber?, BasePost.Status)?
-
-    private weak var viewController: PostsCardView?
-
-    typealias DataSource = UITableViewDiffableDataSource<Int, NSManagedObjectID>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
-
-    lazy var diffableDataSource = DataSource(tableView: viewController!.tableView) { [weak self] (tableView, indexPath, objectID) -> UITableViewCell? in
-        guard let self = self,
-            let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
-            return UITableViewCell()
+    private var currentState: PostsListSection = .loading {
+        didSet {
+            if oldValue != currentState {
+                forceReloadSnapshot()
+                trackCardDisplayedIfNeeded()
+            }
         }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath)
-
-        self.viewController?.hideLoading()
-
-        self.configureCell(cell, at: indexPath, with: post)
-
-        return cell
     }
 
-    init(blog: Blog, status: BasePost.Status, viewController: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext, shouldSync: Bool = true) {
+    private var lastPostsSnapshot: PostsSnapshot?
+
+    private weak var view: PostsCardView?
+
+    typealias DataSource = UITableViewDiffableDataSource<PostsListSection, PostsListItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<PostsListSection, PostsListItem>
+    typealias PostsSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+
+    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+        guard let self = self else {
+            return nil
+        }
+        switch item {
+        case .post(let objectID):
+            return self.configurePostCell(objectID: objectID, tableView: tableView, indexPath: indexPath)
+        case .error:
+            return self.configureErrorCell(tableView: tableView, indexPath: indexPath)
+        case .ghost:
+            return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
+        }
+
+    }
+
+    init(blog: Blog, status: BasePost.Status, view: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.blog = blog
-        self.viewController = viewController
+        self.view = view
         self.managedObjectContext = managedObjectContext
-        self.postService = PostService(managedObjectContext: managedObjectContext)
         self.status = status
-        self.shouldSync = shouldSync
 
         super.init()
     }
@@ -69,8 +81,9 @@ class PostsCardViewModel: NSObject {
     func refresh() {
         do {
             try fetchedResultsController.performFetch()
-            viewController?.tableView.reloadData()
-            showNextPostPromptIfNeeded()
+            view?.tableView.reloadData()
+            removeViewIfNeeded()
+            showLoadingIfNeeded()
         } catch {
             print("Fetch failed")
         }
@@ -84,6 +97,7 @@ class PostsCardViewModel: NSObject {
     /// Set up the view model to be ready for use
     func viewDidLoad() {
         performInitialLoading()
+        refresh()
     }
 
     /// Return the post at the given IndexPath
@@ -96,24 +110,47 @@ class PostsCardViewModel: NSObject {
         postListFilter.title
     }
 
-    /// Update currently displayed posts for the given blog and status
-    func update(blog: Blog, status: BasePost.Status, shouldSync: Bool) {
-        if self.blog != blog || self.status != status {
-            // If blog and/or status is different, reset the VC
-            self.blog = blog
-            self.status = status
-            self.shouldSync = shouldSync
-            self.syncing = nil
-            performInitialLoading()
-            refresh()
-        } else {
-            // If they're the same, just sync if needed
-            self.blog = blog
-            self.status = status
-            self.shouldSync = shouldSync
-            syncIfNeeded()
+    func stopObserving() {
+        DashboardPostsSyncManager.shared.removeListener(self)
+        fetchedResultsController.delegate = nil
+    }
+}
+
+// MARK: Cells Configuration
+
+private extension PostsCardViewModel {
+    private func configurePostCell(objectID: NSManagedObjectID, tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let post = try? self.managedObjectContext.existingObject(with: objectID) as? Post else {
+            return UITableViewCell()
         }
 
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostCompactCell.defaultReuseID, for: indexPath) as? PostCompactCell
+
+        cell?.accessoryType = .none
+        cell?.configureForDashboard(with: post)
+
+        return cell ?? UITableViewCell()
+    }
+
+    private func configureErrorCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: DashboardPostListErrorCell.defaultReuseID, for: indexPath) as? DashboardPostListErrorCell
+
+        cell?.errorMessage = Strings.loadingFailure
+        cell?.onCellTap = { [weak self] in
+            self?.retry()
+        }
+
+        return cell ?? UITableViewCell()
+    }
+
+    private func configureGhostCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: BlogDashboardPostCardGhostCell.defaultReuseID, for: indexPath) as? BlogDashboardPostCardGhostCell
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+        cell?.contentView.stopGhostAnimation()
+        cell?.contentView.startGhostAnimation(style: style)
+        return cell ?? UITableViewCell()
     }
 }
 
@@ -125,10 +162,11 @@ private extension PostsCardViewModel {
     }
 
     func performInitialLoading() {
+        DashboardPostsSyncManager.shared.addListener(self)
         updateFilter()
         createFetchedResultsController()
-        syncIfNeeded()
         showLoadingIfNeeded()
+        sync()
     }
 
     func createFetchedResultsController() {
@@ -157,67 +195,10 @@ private extension PostsCardViewModel {
         return postListFilter.sortDescriptors
     }
 
-    func syncIfNeeded() {
-        if shouldSync {
-            sync()
-        }
-    }
-
     func sync() {
+        isSyncing = true
         let filter = postListFilter
-
-        let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses.strings
-        options.authorID = blog.userID
-        options.number = Constants.numberOfPostsToSync
-        options.order = .descending
-        options.orderBy = .byModified
-        options.purgesLocalSync = true
-
-        guard syncing?.0 != blog.dotComID && syncing?.1 != status else {
-            return
-        }
-
-        syncing = (blog.dotComID, status)
-
-        // If the userID is nil we need to sync authors
-        // But only if the user is an admin
-        if blog.userID == nil && blog.isAdmin {
-            syncAuthors()
-            return
-        }
-
-        postService.syncPosts(
-            ofType: .post,
-            with: options,
-            for: blog,
-            success: { [weak self] posts in
-                if posts?.count == 0 {
-                    self?.showNextPostPrompt()
-                }
-
-                self?.hideLoading()
-                self?.syncing = nil
-            }, failure: { [weak self] _ in
-                self?.syncing = nil
-
-                if self?.numberOfPosts == 0 {
-                    self?.showNextPostPromptIfNeeded()
-                    self?.showLoadingFailureError()
-                }
-        })
-    }
-
-    func syncAuthors() {
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-        blogService.syncAuthors(for: blog, success: { [weak self] in
-            self?.syncing = nil
-            self?.performInitialLoading()
-            self?.refresh()
-        }, failure: { [weak self] _ in
-            self?.syncing = nil
-            self?.showLoadingFailureError()
-        })
+        DashboardPostsSyncManager.shared.syncPosts(blog: blog, statuses: filter.statuses.strings)
     }
 
     func updateFilter() {
@@ -231,47 +212,62 @@ private extension PostsCardViewModel {
         }
     }
 
-    func showNextPostPrompt() {
-        showNextPostPromptIfNeeded()
-        viewController?.hideLoading()
-    }
-
-    func showLoadingFailureError() {
-        viewController?.showError(message: Strings.loadingFailure, retry: true)
-        viewController?.hideLoading()
+    func showLoadingFailureErrorIfNeeded() {
+        // Only show error state if there are no posts at all
+        if numberOfPosts == 0 {
+            currentState = .error
+        }
+        else {
+            currentState = .posts
+        }
     }
 
     func hideLoading() {
-        viewController?.hideLoading()
+        currentState = .posts
     }
 
     func showLoadingIfNeeded() {
         // Only show loading state if there are no posts at all
-        if numberOfPosts == 0 && shouldSync {
-            viewController?.showLoading()
+        if numberOfPosts == 0 && isSyncing {
+            currentState = .loading
+        }
+        else {
+            currentState = .posts
         }
     }
 
-    func showNextPostPromptIfNeeded() {
-        if let postsCount = fetchedResultsController?.fetchedObjects?.count,
-           postsCount == 0, !isSyncing() {
-            viewController?.showNextPostPrompt()
-        } else {
-            viewController?.hideNextPrompt()
+    func updateDashboardStateWithSuccessfulSync() {
+        switch status {
+        case .draft:
+            blog.dashboardState.draftsSynced = true
+        case .scheduled:
+            blog.dashboardState.scheduledSynced = true
+        default:
+            return
         }
     }
 
-    /// If a post is published we want to let the viewController know
-    /// So the prompt can be updated
-    func checkIfPostIsPublished() {
-        if let post = fetchedResultsController.fetchedObjects?.first,
-           post.status == .publish || post.status == .publishPrivate {
-            viewController?.firstPostPublished()
+    /// Triggers the view to remove itself if the posts count reached zero and if we are not currently syncing.
+    /// - Returns: Boolean value indicating whether an update was needed or not.
+    /// Returns true if update was needed, false otherwise.
+    @discardableResult
+    func removeViewIfNeeded() -> Bool {
+        if let postsCount = fetchedResultsController?.fetchedObjects?.count, postsCount == 0, !isSyncing {
+            view?.removeIfNeeded()
+            return true
         }
+        return false
     }
 
-    func isSyncing() -> Bool {
-        syncing != nil
+    func trackCardDisplayedIfNeeded() {
+        switch currentState {
+        case .posts:
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
+        case .error:
+            BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": "error"])
+        case .loading:
+            return
+        }
     }
 
     enum Constants {
@@ -284,45 +280,96 @@ private extension PostsCardViewModel {
     }
 }
 
+// MARK: DashboardPostsSyncManagerListener
+
+extension PostsCardViewModel: DashboardPostsSyncManagerListener {
+    func postsSynced(success: Bool, blog: Blog, posts: [AbstractPost]?, for statuses: [String]) {
+        let currentStatuses = postListFilter.statuses.strings
+        guard self.blog == blog, currentStatuses.allSatisfy(statuses.contains) else {
+            return
+        }
+
+        isSyncing = false
+        if success {
+            updateDashboardStateWithSuccessfulSync()
+            if numberOfPosts == 0 {
+                removeViewIfNeeded()
+            }
+
+            hideLoading()
+        }
+        else {
+            showLoadingFailureErrorIfNeeded()
+        }
+    }
+}
+
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension PostsCardViewModel: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        guard let dataSource = viewController?.tableView.dataSource as? DataSource else {
+        guard let dataSource = view?.tableView.dataSource as? DataSource else {
             return
         }
-        var snapshot = snapshot as Snapshot
-        let currentSnapshot = dataSource.snapshot() as Snapshot
 
-        /// Ensure a maximum of `fetchRequest.fetchLimit` items is displayed
-        snapshot.deleteItems(snapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
+        let postsSnapshot = snapshot as PostsSnapshot
+        self.lastPostsSnapshot = postsSnapshot
 
-        let reloadIdentifiers: [NSManagedObjectID] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
-            guard let currentIndex = currentSnapshot.indexOfItem(itemIdentifier), let index = snapshot.indexOfItem(itemIdentifier), index == currentIndex else {
-                return nil
-            }
-            guard let existingObject = try? controller.managedObjectContext.existingObject(with: itemIdentifier), existingObject.isUpdated else { return nil }
-            return itemIdentifier
+        guard removeViewIfNeeded() == false else {
+            return // Don't update datasource if the view will be updated
         }
-        snapshot.reloadItems(reloadIdentifiers)
 
-        let shouldAnimate = viewController?.tableView.numberOfSections != 0 && viewController?.tableView.numberOfRows(inSection: 0) != 0
-        dataSource.defaultRowAnimation = .fade
-        dataSource.apply(snapshot as Snapshot,
-                         animatingDifferences: shouldAnimate,
-                         completion: { [weak self] in
-            self?.showNextPostPromptIfNeeded()
-            self?.checkIfPostIsPublished()
-        })
+        let currentSnapshot = dataSource.snapshot() as Snapshot
+        let finalSnapshot = createSnapshot(currentSnapshot: currentSnapshot, postsSnapshot: postsSnapshot)
+        applySnapshot(finalSnapshot, to: dataSource)
     }
 
-    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath, with post: Post) {
-        cell.accessoryType = .none
-        guard let configurablePostView = cell as? PostCompactCell else {
-                fatalError("Cell is not a PostCompactCell")
+    private func forceReloadSnapshot() {
+        guard let dataSource = view?.tableView.dataSource as? DataSource else {
+            return
         }
+        let currentSnapshot = dataSource.snapshot() as Snapshot
+        let postsSnapshot = self.lastPostsSnapshot ?? NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>()
+        let snapshot = createSnapshot(currentSnapshot: currentSnapshot, postsSnapshot: postsSnapshot)
+        applySnapshot(snapshot, to: dataSource)
+    }
 
-        viewController?.hideError()
-        configurablePostView.configureForDashboard(with: post)
+    private func createSnapshot(currentSnapshot: Snapshot, postsSnapshot: PostsSnapshot) -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections(PostsListSection.allCases)
+        switch currentState {
+        case .posts:
+            var adjustedPostsSnapshot = postsSnapshot
+            adjustedPostsSnapshot.deleteItems(adjustedPostsSnapshot.itemIdentifiers.enumerated().filter { $0.offset > fetchedResultsController.fetchRequest.fetchLimit - 1 }.map { $0.element })
+            let postItems: [PostsListItem] = adjustedPostsSnapshot.itemIdentifiers.map { .post($0) }
+            snapshot.appendItems(postItems, toSection: .posts)
+
+            let reloadIdentifiers: [PostsListItem] = snapshot.itemIdentifiers.compactMap { item in
+                guard case PostsListItem.post(let objectID) = item,
+                        let currentIndex = currentSnapshot.indexOfItem(item), let index = postsSnapshot.indexOfItem(objectID), index == currentIndex else {
+                    return nil
+                }
+                guard let existingObject = try? fetchedResultsController.managedObjectContext.existingObject(with: objectID),
+                        existingObject.isUpdated else {
+                            return nil
+                }
+                return item
+            }
+            snapshot.reloadItems(reloadIdentifiers)
+
+        case .error:
+            snapshot.appendItems([.error], toSection: .error)
+
+        case .loading:
+            let items: [PostsListItem] = (0..<Constants.numberOfPosts).map { .ghost($0) }
+            snapshot.appendItems(items, toSection: .loading)
+        }
+        return snapshot
+    }
+
+    private func applySnapshot(_ snapshot: Snapshot, to dataSource: DataSource) {
+        dataSource.defaultRowAnimation = .fade
+        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+        view?.tableView.allowsSelection = currentState == .posts
     }
 }

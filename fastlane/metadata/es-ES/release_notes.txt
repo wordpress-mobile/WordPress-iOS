@@ -1,7 +1,7 @@
-Grandes noticias, fans de los sitios – la pantalla de «Mi sitio» ahora es simplemente mejor. Ahora verás dos nuevas pestañas entre las que puedes alternar: menú del sitio e inicio.
+Hemos mejorado el rendimiento de los bloques de galería e imagen en el editor de bloques. Esto ayudará a que las imágenes ocupen menos espacio de almacenamiento en tu sitio y evitará que tu dispositivo se ralentice durante la subida de medios. Creemos que la velocidad es necesaria.
 
-La pestaña de inicio también contiene útiles tarjetas con más información sobre tu sitio, incluidos los borradores, entradas. programadas, y las estadísticas de hoy. O, si tienes prisa, puedes fácilmente cambiar a otra sección de la aplicación.
+Si tu sitio utiliza VideoPress, cualquier bloque de vídeo guardado en la versión web del sitio se mostrará ahora correctamente también en la aplicación móvil.
 
-Estamos comprometidos con la comunicación clara. Es por ello por lo que hemos añadido un nuevo texto de error al proceso de subida de fotos, solo en el caso de que trates de subir una foto desde tu dispositivo sin dar primero los permisos a la aplicación de fotos.
+El insertador de bloques en el editor de bloques ahora permite organizar mejor los tipos de bloques en colecciones. También hemos hecho un pequeño ajuste de espaciado en la nota al pie de página del texto alternativo en los bloques de imagen, porque los pequeños detalles también son importantes.
 
-Para finalizar, cuando la aplicación muestra avisos emergentes, ahora se desvanecen más suavemente cuando ya no los necesites. La última puerta a la izquierda.
+Por último, pero no menos importante, hemos eliminado un molesto error en el proceso de creación del sitio. Cuando te desplazas horizontalmente por las opciones de diseño del sitio, la aplicación ahora recuerda dónde lo dejaste, incluso si te desplazas hacia arriba y hacia abajo en la página.

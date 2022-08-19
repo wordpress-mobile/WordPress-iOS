@@ -2,21 +2,18 @@ import XCTest
 @testable import WordPress
 import Nimble
 
-class PostListFilterTests: XCTestCase {
-    private var contextManager: TestContextManager!
+class PostListFilterTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
     }
 
     override func tearDown() {
         super.tearDown()
         context = nil
-        contextManager = nil
     }
 
     func testSortDescriptorForPublished() {
@@ -92,8 +89,8 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testDraftFilterIncludesExistingDraftsAndPendingPostsTransitionedToOtherStatuses() {
@@ -114,7 +111,7 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testPublishedFilterIncludesExistingPrivateAndRemotePublishedPosts() {
@@ -140,8 +137,8 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testPublishedFilterIncludesExistingPublishedAndPrivatePostsTransitionedToOtherStatuses() {
@@ -162,7 +159,7 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsOnly() {
@@ -187,8 +184,8 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsTransitionedToOtherStatuses() {
@@ -203,7 +200,7 @@ class PostListFilterTests: XCTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 }
 

@@ -12,8 +12,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
     static let pageSize = 20
 
     private func apiRequest() -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
         if let api = defaultAccount?.wordPressComRestApi, api.hasCredentials() {
             return api
         }

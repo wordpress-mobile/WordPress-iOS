@@ -1,19 +1,7 @@
 import XCTest
 import Foundation
 
-class MenuItemTests: XCTestCase {
-
-    private var context: NSManagedObjectContext!
-
-    override func setUpWithError() throws {
-        context = TestContextManager().mainContext
-    }
-
-    override func tearDownWithError() throws {
-        TestContextManager.overrideSharedInstance(nil)
-        context.reset()
-        context = nil
-    }
+class MenuItemTests: CoreDataTestCase {
 
     /// Tests detection of descendants.
     func testIsDescendantOfItem() {
@@ -139,7 +127,7 @@ class MenuItemTests: XCTestCase {
 
     fileprivate func newMenuItem(named name: String) -> MenuItem {
         let entityName = MenuItem.classNameWithoutNamespaces()
-        let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: entityName, into: mainContext)
 
         let menuItem = entity as! MenuItem
         // set a name to make debugging easier

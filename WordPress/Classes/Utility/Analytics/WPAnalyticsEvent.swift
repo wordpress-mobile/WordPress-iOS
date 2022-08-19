@@ -48,6 +48,7 @@ import Foundation
     case gutenbergEditorSettingsFetched
     case gutenbergEditorHelpShown
     case gutenbergEditorBlockInserted
+    case gutenbergEditorBlockMoved
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -80,6 +81,7 @@ import Foundation
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
+    case readerMoreToggleFollowConversation
     case readerPostReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
@@ -93,6 +95,8 @@ import Foundation
     case readerSearchHistoryCleared
     case readerArticleLinkTapped
     case readerArticleImageTapped
+    case readerFollowConversationTooltipTapped
+    case readerFollowConversationAnchorTapped
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -107,11 +111,20 @@ import Foundation
     case statsReaderDiscoverNudgeTapped
     case statsReaderDiscoverNudgeDismissed
     case statsReaderDiscoverNudgeCompleted
+    case statsLineChartTapped
 
     // Stats - Insights
     case statsCustomizeInsightsShown
     case statsInsightsManagementSaved
     case statsInsightsManagementDismissed
+    case statsInsightsViewMore
+    case statsInsightsViewsVisitorsToggled
+    case statsInsightsViewsGrowAudienceDismissed
+    case statsInsightsViewsGrowAudienceConfirmed
+    case statsInsightsAnnouncementShown
+    case statsInsightsAnnouncementConfirmed
+    case statsInsightsAnnouncementDismissed
+    case statsInsightsTotalLikesGuideTapped
 
     // What's New - Feature announcements
     case featureAnnouncementShown
@@ -271,6 +284,8 @@ import Foundation
     case notificationsPreviousTapped
     case notificationsNextTapped
     case notificationsMarkAllReadTapped
+    case notificationMarkAsReadTapped
+    case notificationMarkAsUnreadTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -326,8 +341,67 @@ import Foundation
     case enhancedSiteCreationIntentQuestionViewed
     case enhancedSiteCreationIntentQuestionExperiment
 
+    // Site Name
+    case enhancedSiteCreationSiteNameCanceled
+    case enhancedSiteCreationSiteNameSkipped
+    case enhancedSiteCreationSiteNameEntered
+    case enhancedSiteCreationSiteNameViewed
+
     // Quick Start
     case quickStartStarted
+    case quickStartTapped
+
+    // Onboarding Question Prompt
+    case onboardingQuestionsDisplayed
+    case onboardingQuestionsItemSelected
+    case onboardingQuestionsSkipped
+
+    // Onboarding Enable Notifications Prompt
+    case onboardingEnableNotificationsDisplayed
+    case onboardingEnableNotificationsSkipped
+    case onboardingEnableNotificationsEnableTapped
+
+    // QR Login
+    case qrLoginScannerDisplayed
+    case qrLoginScannerScannedCode
+    case qrLoginScannerDismissed
+
+    case qrLoginCameraPermissionDisplayed
+    case qrLoginCameraPermissionApproved
+    case qrLoginCameraPermissionDenied
+
+    case qrLoginVerifyCodeDisplayed
+    case qrLoginVerifyCodeDismissed
+    case qrLoginVerifyCodeScanAgain
+    case qrLoginVerifyCodeFailed
+    case qrLoginVerifyCodeTokenValidated
+    case qrLoginVerifyCodeApproved
+    case qrLoginVerifyCodeCancelled
+    case qrLoginAuthenticated
+    // Blogging Reminders Notification
+    case bloggingRemindersNotificationReceived
+
+    // Blogging Prompts
+    case promptsBottomSheetAnswerPrompt
+    case promptsBottomSheetHelp
+    case promptsIntroductionModalViewed
+    case promptsIntroductionModalDismissed
+    case promptsIntroductionModalTryItNow
+    case promptsIntroductionModalRemindMe
+    case promptsIntroductionModalGotIt
+    case promptsDashboardCardAnswerPrompt
+    case promptsDashboardCardMenu
+    case promptsDashboardCardMenuViewMore
+    case promptsDashboardCardMenuSkip
+    case promptsDashboardCardMenuRemove
+    case promptsDashboardCardMenuLearnMore
+    case promptsListViewed
+    case promptsReminderSettingsIncludeSwitch
+    case promptsReminderSettingsHelp
+    case promptsNotificationAnswerActionTapped
+    case promptsNotificationDismissActionTapped
+    case promptsNotificationTapped
+    case promptsNotificationDismissed
 
     /// A String that represents the event
     var value: String {
@@ -405,6 +479,8 @@ import Foundation
             return "editor_help_shown"
         case .gutenbergEditorBlockInserted:
             return "editor_block_inserted"
+        case .gutenbergEditorBlockMoved:
+            return "editor_block_moved"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -463,6 +539,8 @@ import Foundation
             return "reader_toggle_follow_conversation"
         case .readerToggleCommentNotifications:
             return "reader_toggle_comment_notifications"
+        case .readerMoreToggleFollowConversation:
+            return "reader_more_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
         case .readerArticleDetailMoreTapped:
@@ -489,6 +567,10 @@ import Foundation
             return "reader_article_link_tapped"
         case .readerArticleImageTapped:
             return "reader_article_image_tapped"
+        case .readerFollowConversationTooltipTapped:
+            return "reader_follow_conversation_tooltip_tapped"
+        case .readerFollowConversationAnchorTapped:
+            return "reader_follow_conversation_anchor_tapped"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -515,6 +597,8 @@ import Foundation
             return "stats_reader_discover_nudge_dismissed"
         case .statsReaderDiscoverNudgeCompleted:
             return "stats_reader_discover_nudge_completed"
+        case .statsLineChartTapped:
+            return "stats_line_chart_tapped"
 
         // Stats - Insights
         case .statsCustomizeInsightsShown:
@@ -523,6 +607,22 @@ import Foundation
             return "stats_insights_management_saved"
         case .statsInsightsManagementDismissed:
             return "stats_insights_management_dismissed"
+        case .statsInsightsViewMore:
+            return "stats_insights_view_more"
+        case .statsInsightsViewsVisitorsToggled:
+            return "stats_insights_views_visitors_toggled"
+        case .statsInsightsViewsGrowAudienceDismissed:
+            return "stats_insights_views_grow_audience_dismissed"
+        case .statsInsightsViewsGrowAudienceConfirmed:
+            return "stats_insights_views_grow_audience_confirmed"
+        case .statsInsightsAnnouncementShown:
+            return "stats_insights_announcement_shown"
+        case .statsInsightsAnnouncementConfirmed:
+            return "stats_insights_announcement_confirmed"
+        case .statsInsightsAnnouncementDismissed:
+            return "stats_insights_announcement_dismissed"
+        case .statsInsightsTotalLikesGuideTapped:
+            return "stats_insights_total_likes_guide_tapped"
 
         // What's New - Feature announcements
         case .featureAnnouncementShown:
@@ -700,7 +800,7 @@ import Foundation
         case .domainsDashboardAddDomainTapped:
             return "domains_dashboard_add_domain_tapped"
         case .domainsSearchSelectDomainTapped:
-            return "domains_dashboard_add_domain_tapped"
+            return "domains_dashboard_select_domain_tapped"
         case .domainsRegistrationFormViewed:
             return "domains_registration_form_viewed"
         case .domainsRegistrationFormSubmitted:
@@ -784,12 +884,17 @@ import Foundation
         case .accountCloseCompleted:
             return "account_close_completed"
 
+        // Notifications
         case .notificationsPreviousTapped:
             return "notifications_previous_tapped"
         case .notificationsNextTapped:
             return "notifications_next_tapped"
         case .notificationsMarkAllReadTapped:
             return "notifications_mark_all_read_tapped"
+        case .notificationMarkAsReadTapped:
+            return "notification_mark_as_read_tapped"
+        case .notificationMarkAsUnreadTapped:
+            return "notification_mark_as_unread_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
@@ -864,6 +969,8 @@ import Foundation
         // Quick Start
         case .quickStartStarted:
             return "quick_start_started"
+        case .quickStartTapped:
+            return "quick_start_tapped"
 
         // Site Intent Question
         case .enhancedSiteCreationIntentQuestionCanceled:
@@ -881,6 +988,107 @@ import Foundation
         case .enhancedSiteCreationIntentQuestionExperiment:
             return "enhanced_site_creation_intent_question_experiment"
 
+        // Onboarding Question Prompt
+        case .onboardingQuestionsDisplayed:
+            return "onboarding_questions_displayed"
+        case .onboardingQuestionsItemSelected:
+            return "onboarding_questions_item_selected"
+        case .onboardingQuestionsSkipped:
+            return "onboarding_questions_skipped"
+
+        // Onboarding Enable Notifications Prompt
+        case .onboardingEnableNotificationsDisplayed:
+            return "onboarding_enable_notifications_displayed"
+        case .onboardingEnableNotificationsSkipped:
+            return "onboarding_enable_notifications_skipped"
+        case .onboardingEnableNotificationsEnableTapped:
+            return "onboarding_enable_notifications_enable_tapped"
+
+        // Site Name
+        case .enhancedSiteCreationSiteNameCanceled:
+            return "enhanced_site_creation_site_name_canceled"
+        case .enhancedSiteCreationSiteNameSkipped:
+            return "enhanced_site_creation_site_name_skipped"
+        case .enhancedSiteCreationSiteNameEntered:
+            return "enhanced_site_creation_site_name_entered"
+        case .enhancedSiteCreationSiteNameViewed:
+            return "enhanced_site_creation_site_name_viewed"
+
+        // QR Login
+        case .qrLoginScannerDisplayed:
+            return "qrlogin_scanner_displayed"
+        case .qrLoginScannerScannedCode:
+            return "qrlogin_scanner_scanned_code"
+        case .qrLoginScannerDismissed:
+            return "qrlogin_scanned_dismissed"
+        case .qrLoginVerifyCodeDisplayed:
+            return "qrlogin_verify_displayed"
+        case .qrLoginVerifyCodeDismissed:
+            return "qrlogin_verify_dismissed"
+        case .qrLoginVerifyCodeFailed:
+            return "qrlogin_verify_failed"
+        case .qrLoginVerifyCodeApproved:
+            return "qrlogin_verify_approved"
+        case .qrLoginVerifyCodeScanAgain:
+            return "qrlogin_verify_scan_again"
+        case .qrLoginVerifyCodeCancelled:
+            return "qrlogin_verify_cancelled"
+        case .qrLoginVerifyCodeTokenValidated:
+            return "qrlogin_verify_token_validated"
+        case .qrLoginAuthenticated:
+            return "qrlogin_authenticated"
+        case .qrLoginCameraPermissionDisplayed:
+            return "qrlogin_camera_permission_displayed"
+        case .qrLoginCameraPermissionApproved:
+            return "qrlogin_camera_permission_approved"
+        case .qrLoginCameraPermissionDenied:
+            return "qrlogin_camera_permission_denied"
+
+        // Blogging Reminders Notification
+        case .bloggingRemindersNotificationReceived:
+            return "blogging_reminders_notification_received"
+
+        // Blogging Prompts
+        case .promptsBottomSheetAnswerPrompt:
+            return "my_site_create_sheet_answer_prompt_tapped"
+        case .promptsBottomSheetHelp:
+            return "my_site_create_sheet_prompt_help_tapped"
+        case .promptsIntroductionModalViewed:
+            return "blogging_prompts_introduction_modal_viewed"
+        case .promptsIntroductionModalDismissed:
+            return "blogging_prompts_introduction_modal_dismissed"
+        case .promptsIntroductionModalTryItNow:
+            return "blogging_prompts_introduction_modal_try_it_now_tapped"
+        case .promptsIntroductionModalRemindMe:
+            return "blogging_prompts_introduction_modal_remind_me_tapped"
+        case .promptsIntroductionModalGotIt:
+            return "blogging_prompts_introduction_modal_got_it_tapped"
+        case .promptsDashboardCardAnswerPrompt:
+            return "blogging_prompts_my_site_card_answer_prompt_tapped"
+        case .promptsDashboardCardMenu:
+            return "blogging_prompts_my_site_card_menu_tapped"
+        case .promptsDashboardCardMenuViewMore:
+            return "blogging_prompts_my_site_card_menu_view_more_prompts_tapped"
+        case .promptsDashboardCardMenuSkip:
+            return "blogging_prompts_my_site_card_menu_skip_this_prompt_tapped"
+        case .promptsDashboardCardMenuRemove:
+            return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
+        case .promptsDashboardCardMenuLearnMore:
+            return "blogging_prompts_my_site_card_menu_learn_more_tapped"
+        case .promptsListViewed:
+            return "blogging_prompts_prompts_list_viewed"
+        case .promptsReminderSettingsIncludeSwitch:
+            return "blogging_reminders_include_prompt_tapped"
+        case .promptsReminderSettingsHelp:
+            return "blogging_reminders_include_prompt_help_tapped"
+        case .promptsNotificationAnswerActionTapped:
+            return "blogging_reminders_notification_prompt_answer_tapped"
+        case .promptsNotificationDismissActionTapped:
+            return "blogging_reminders_notification_prompt_dismiss_tapped"
+        case .promptsNotificationTapped:
+            return "blogging_reminders_notification_prompt_tapped"
+        case .promptsNotificationDismissed:
+            return "blogging_reminders_notification_prompt_dismissed"
         } // END OF SWITCH
     }
 
@@ -1038,6 +1246,7 @@ extension WPAnalytics {
         var event: WPAnalyticsEvent?
         switch eventName {
         case "editor_block_inserted": event = .gutenbergEditorBlockInserted
+        case "editor_block_moved": event = .gutenbergEditorBlockMoved
         default: event = nil
         }
 

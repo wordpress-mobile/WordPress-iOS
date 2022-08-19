@@ -109,6 +109,23 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         refreshControl.endRefreshing()
     }
 
+    func vaultPressActiveOnSite() {
+        let model = NoResultsViewController.Model(title: NoResultsText.vaultPressError.title,
+                                                  subtitle: NoResultsText.vaultPressError.subtitle,
+                                                  buttonText: NoResultsText.vaultPressError.buttonLabel,
+                                                  imageName: NoResultsText.multisiteError.imageName)
+        updateNoResults(model)
+
+        noResultsViewController?.actionButtonHandler = { [weak self] in
+            let dashboardURL = URL(string: "https://dashboard.vaultpress.com/")!
+            let webViewController = WebViewControllerFactory.controller(url: dashboardURL, source: "jetpack_backup")
+            let webViewNavigationController = UINavigationController(rootViewController: webViewController)
+            self?.present(webViewNavigationController, animated: true)
+        }
+
+        refreshControl.endRefreshing()
+    }
+
     func presentAlert(_ alert: UIAlertController) {
         present(alert, animated: true, completion: nil)
     }
@@ -352,6 +369,13 @@ extension JetpackScanViewController: NoResultsViewControllerDelegate {
         struct multisiteError {
             static let title = NSLocalizedString("WordPress multisites are not supported", comment: "Title for label when the user's site is a multisite.")
             static let subtitle = NSLocalizedString("We're sorry, Jetpack Scan is not compatible with multisite WordPress installations at this time.", comment: "Description for label when the user's site is a multisite.")
+            static let imageName = "jetpack-scan-state-error"
+        }
+
+        struct vaultPressError {
+            static let title = NSLocalizedString("Your site has VaultPress", comment: "Title for label when the user has VaultPress enabled.")
+            static let subtitle = NSLocalizedString("Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below.", comment: "Description for label when the user has a site with VaultPress.")
+            static let buttonLabel = NSLocalizedString("Visit Dashboard", comment: "Text of a button that links to the VaultPress dashboard.")
             static let imageName = "jetpack-scan-state-error"
         }
 

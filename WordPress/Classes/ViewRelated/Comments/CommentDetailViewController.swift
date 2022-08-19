@@ -15,6 +15,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
+    private let accountService: AccountService
+
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
@@ -190,6 +192,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -201,6 +204,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -292,6 +296,7 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let notificationDetailSource = ["source": "notification_details"]
     }
 
     /// Convenience computed variable for an inset setting that hides a cell's separator by pushing it off the edge of the screen.
@@ -751,7 +756,9 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
 private extension CommentDetailViewController {
 
     func unapproveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: notification?.metaSiteID) :
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
+                                                     withProperties: Constants.notificationDetailSource,
+                                                     withBlogID: notification?.metaSiteID) :
                                 CommentAnalytics.trackCommentUnApproved(comment: comment)
 
         commentService.unapproveComment(comment, success: { [weak self] in
@@ -764,7 +771,9 @@ private extension CommentDetailViewController {
     }
 
     func approveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: notification?.metaSiteID) :
+        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
+                                                     withProperties: Constants.notificationDetailSource,
+                                                     withBlogID: notification?.metaSiteID) :
                                 CommentAnalytics.trackCommentApproved(comment: comment)
 
         commentService.approve(comment, success: { [weak self] in
@@ -1065,6 +1074,11 @@ private extension CommentDetailViewController {
 
         let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        suggestionsView.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
+            fromPostAuthorId: comment.post?.authorID,
+            commentAuthorId: NSNumber(value: comment.authorID),
+            defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
+        )
         view.addSubview(suggestionsView)
 
         NSLayoutConstraint.activate([
@@ -1105,7 +1119,7 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         suggestionsTableView?.hideSuggestions()
 
         if let siteID = siteID {
-            controller.enableSuggestions(with: siteID)
+            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds)
         }
     }
 

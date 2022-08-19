@@ -12,8 +12,11 @@
     case periodPublished
     case periodVideos
     case periodFileDownloads
+    case insightsViewsVisitors
     case insightsLatestPostSummary
     case insightsAllTime
+    case insightsLikesTotals
+    case insightsCommentsTotals
     case insightsFollowerTotals
     case insightsMostPopularTime
     case insightsTagsAndCategories
@@ -31,20 +34,37 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights = [StatSection.insightsLatestPostSummary,
-                              .insightsAllTime,
-                              .insightsFollowerTotals,
-                              .insightsMostPopularTime,
-                              .insightsTagsAndCategories,
-                              .insightsAnnualSiteStats,
-                              .insightsCommentsAuthors,
-                              .insightsCommentsPosts,
-                              .insightsFollowersWordPress,
-                              .insightsFollowersEmail,
-                              .insightsTodaysStats,
-                              .insightsPostingActivity,
-                              .insightsPublicize
-    ]
+    static let allInsights = FeatureFlag.statsNewInsights.enabled  ?
+                                    [StatSection.insightsViewsVisitors,
+                                     .insightsLatestPostSummary,
+                                     .insightsAllTime,
+                                     .insightsLikesTotals,
+                                     .insightsCommentsTotals,
+                                     .insightsFollowerTotals,
+                                     .insightsMostPopularTime,
+                                     .insightsTagsAndCategories,
+                                     .insightsAnnualSiteStats,
+                                     .insightsCommentsAuthors,
+                                     .insightsCommentsPosts,
+                                     .insightsFollowersWordPress,
+                                     .insightsFollowersEmail,
+                                     .insightsTodaysStats,
+                                     .insightsPostingActivity,
+                                     .insightsPublicize] :
+                                    [StatSection.insightsLatestPostSummary,
+                                    .insightsAllTime,
+                                    .insightsFollowerTotals,
+                                    .insightsMostPopularTime,
+                                    .insightsTagsAndCategories,
+                                    .insightsAnnualSiteStats,
+                                    .insightsCommentsAuthors,
+                                    .insightsCommentsPosts,
+                                    .insightsFollowersWordPress,
+                                    .insightsFollowersEmail,
+                                    .insightsTodaysStats,
+                                    .insightsPostingActivity,
+                                    .insightsPublicize,
+                                    .insightsAddInsight]
 
     static let allPeriods = [StatSection.periodOverviewViews,
                              .periodOverviewVisitors,
@@ -71,10 +91,16 @@
 
     var title: String {
         switch self {
+        case .insightsViewsVisitors:
+            return InsightsHeaders.viewsVisitors
         case .insightsLatestPostSummary:
             return InsightsHeaders.latestPostSummary
         case .insightsAllTime:
             return InsightsHeaders.allTimeStats
+        case .insightsLikesTotals:
+            return InsightsHeaders.likesTotals
+        case .insightsCommentsTotals:
+            return InsightsHeaders.commentsTotals
         case .insightsFollowerTotals:
             return InsightsHeaders.followerTotals
         case .insightsMostPopularTime:
@@ -84,6 +110,17 @@
         case .insightsAnnualSiteStats:
             return InsightsHeaders.annualSiteStats
         case .insightsCommentsAuthors, .insightsCommentsPosts:
+            if FeatureFlag.statsNewInsights.enabled {
+                switch self {
+                case .insightsCommentsAuthors:
+                    return InsightsHeaders.topCommenters
+                case .insightsCommentsPosts:
+                    return InsightsHeaders.posts
+                default:
+                    return InsightsHeaders.comments
+                }
+            }
+
             return InsightsHeaders.comments
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return InsightsHeaders.followers
@@ -204,6 +241,8 @@
             return TabTitles.overviewLikes
         case .periodOverviewComments:
             return TabTitles.overviewComments
+        case .insightsPublicize:
+            return TabTitles.publicize
         default:
             return ""
         }
@@ -257,10 +296,16 @@
 
     var insightType: InsightType? {
         switch self {
+        case .insightsViewsVisitors:
+            return .viewsVisitors
         case .insightsLatestPostSummary:
             return .latestPostSummary
         case .insightsAllTime:
             return .allTimeStats
+        case.insightsLikesTotals:
+            return .likesTotals
+        case .insightsCommentsTotals:
+            return .commentsTotals
         case .insightsFollowerTotals:
             return .followersTotals
         case .insightsMostPopularTime:
@@ -281,6 +326,56 @@
             return .publicize
         default:
             return nil
+        }
+    }
+
+    // MARK: - analyticsEvent on ViewMore tapped
+
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsViewMoreTappedAuthors
+        case .periodClicks:
+            return .statsViewMoreTappedClicks
+        case .periodOverviewComments:
+            return .statsViewMoreTappedComments
+        case .periodCountries:
+            return .statsViewMoreTappedCountries
+        case .insightsFollowerTotals, .insightsFollowersEmail, .insightsFollowersWordPress:
+            return .statsViewMoreTappedFollowers
+        case .periodPostsAndPages:
+            return .statsViewMoreTappedPostsAndPages
+        case .insightsPublicize:
+            return .statsViewMoreTappedPublicize
+        case .periodReferrers:
+            return .statsViewMoreTappedReferrers
+        case .periodSearchTerms:
+            return .statsViewMoreTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsViewMoreTappedTagsAndCategories
+        case .periodVideos:
+            return .statsViewMoreTappedVideoPlays
+        case .periodFileDownloads:
+            return .statsViewMoreTappedFileDownloads
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
+        default:
+            return nil
+        }
+    }
+
+    var analyticsProperty: String {
+        switch self {
+        case .insightsViewsVisitors:
+            return "views_and_visitors"
+        case .insightsFollowerTotals:
+            return "total_followers"
+        case .insightsLikesTotals:
+            return "total_likes"
+        case .insightsCommentsTotals:
+            return "total_comments"
+        default:
+            return ""
         }
     }
 
@@ -305,14 +400,25 @@
     // MARK: String Structs
 
     struct InsightsHeaders {
+        static let viewsVisitors = NSLocalizedString("Views & Visitors", comment: "Insights views and visitors header")
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All-Time", comment: "Insights 'All-Time' header")
-        static let mostPopularTime = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
-        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
+        static var mostPopularTime: String {
+            if FeatureFlag.statsNewAppearance.enabled {
+                return NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
+            } else {
+                return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
+            }
+        }
+        static let likesTotals = NSLocalizedString("Likes Total", comment: "Insights 'Likes Total' header")
+        static let commentsTotals = NSLocalizedString("Comments Total", comment: "Insights 'Comments Total' header")
+        static let followerTotals = NSLocalizedString("Followers Total", comment: "Insights 'Followers Total' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let posts = NSLocalizedString("Posts", comment: "Insights 'Posts' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
+        static let topCommenters = NSLocalizedString("Top Commenters", comment: "Insights 'Top Commenters' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
@@ -372,6 +478,7 @@
         static let commentsPosts = NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
         static let followersWordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let followersEmail = NSLocalizedString("Email", comment: "Label for email followers")
+        static let publicize = NSLocalizedString("Social", comment: "Label for social followers")
         static let overviewViews = NSLocalizedString("Views", comment: "Label for Period Overview views")
         static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
         static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")

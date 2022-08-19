@@ -2,26 +2,18 @@ import CoreData
 import XCTest
 @testable import WordPress
 
-class BlogServiceAuthorTests: XCTestCase {
-    var contextManager: TestContextManager!
+class BlogServiceAuthorTests: CoreDataTestCase {
     var blogService: BlogService!
-    var context: NSManagedObjectContext {
-        return contextManager.mainContext
-    }
 
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
         blogService = BlogService(managedObjectContext: contextManager.mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        ContextManager.overrideSharedInstance(nil)
-        contextManager.mainContext.reset()
-        contextManager = nil
         blogService = nil
     }
 

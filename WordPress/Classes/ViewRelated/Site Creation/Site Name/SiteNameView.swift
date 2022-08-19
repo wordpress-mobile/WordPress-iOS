@@ -24,6 +24,8 @@ class SiteNameView: UIView {
         label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = Metrics.numberOfLinesInTitle
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Metrics.titleMinimumScaleFactor
         return label
     }()
 
@@ -89,7 +91,7 @@ class SiteNameView: UIView {
     }()
 
     @objc private func navigateToNextScreen() {
-        onContinue(searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines))
+        onContinue(searchBar.text)
     }
 
     private lazy var continueButtonView: UIView = {
@@ -132,9 +134,9 @@ class SiteNameView: UIView {
     }
 
     override func becomeFirstResponder() -> Bool {
-         super.becomeFirstResponder()
-         return searchBar.becomeFirstResponder()
-     }
+        super.becomeFirstResponder()
+        return searchBar.becomeFirstResponder()
+    }
 }
 
 // MARK: setup
@@ -142,20 +144,22 @@ private extension SiteNameView {
 
     /// Highlghts the site name in blue
     func setupTitleColors() {
-        // enclose the vertical name between two characters that are not in the title
-        // (and reasonably never will..) to distinguish it from any substring in the title
-        let selectedVerticalName = "😎" + siteVerticalName + "🙃"
-        let fullTitle = String(format: TextContent.title, selectedVerticalName)
-        var attributedTitle = NSMutableAttributedString(string: fullTitle)
-        guard let range = fullTitle.nsRange(of: selectedVerticalName), !siteVerticalName.isEmpty else {
+        // find the index where the vertical name goes, so that it won't be confused
+        // with any word in the title
+        let replacementIndex = NSString(string: TextContent.title).range(of: "%@")
+
+        guard !siteVerticalName.isEmpty, replacementIndex.length > 0 else {
             titleLabel.setText(TextContent.defaultTitle)
             return
         }
-        let polishedFullTitle = String(format: TextContent.title, " " + siteVerticalName + " ")
-        attributedTitle = NSMutableAttributedString(string: polishedFullTitle)
+
+        let fullTitle = String(format: TextContent.title, siteVerticalName)
+        let attributedTitle = NSMutableAttributedString(string: fullTitle)
+        let replacementRange = NSRange(location: replacementIndex.location, length: siteVerticalName.utf16.count)
+
         attributedTitle.addAttributes([
             .foregroundColor: UIColor.primary,
-        ], range: range)
+        ], range: replacementRange)
         titleLabel.attributedText = attributedTitle
     }
 
@@ -233,10 +237,22 @@ private extension SiteNameView {
 
     /// hides or shows titles based on the passed boolean parameter
     func hideTitlesIfNeeded() {
-        let isAccessibility = traitCollection.verticalSizeClass == .compact || traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        let isVerylarge = [UIContentSizeCategory.extraExtraLarge, UIContentSizeCategory.extraExtraExtraLarge].contains(traitCollection.preferredContentSizeCategory)
+        let isAccessibility = traitCollection.verticalSizeClass == .compact ||
+        traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+        let isVerylarge = [
+            UIContentSizeCategory.extraExtraLarge,
+            UIContentSizeCategory.extraExtraExtraLarge
+        ].contains(traitCollection.preferredContentSizeCategory)
+
         titleLabelView.isHidden = isAccessibility
-        subtitleLabelView.isHidden = isAccessibility || isVerylarge
+
+        subtitleLabelView.isHidden = isAccessibility || isVerylarge || isIphoneSEorSmaller
+    }
+
+    var isIphoneSEorSmaller: Bool {
+        UIScreen.main.nativeBounds.height <= Metrics.smallerIphonesNativeBoundsHeight &&
+        UIScreen.main.nativeScale <= Metrics.nativeScale
     }
 }
 
@@ -244,7 +260,7 @@ private extension SiteNameView {
 private extension SiteNameView {
 
     enum TextContent {
-        static let title = NSLocalizedString("Give your%@website a name",
+        static let title = NSLocalizedString("Give your %@ website a name",
                                              comment: "Title of the Site Name screen. Takes the vertical name as a parameter.")
         static let defaultTitle = NSLocalizedString("Give your website a name",
                                                     comment: "Default title of the Site Name screen.")
@@ -262,9 +278,11 @@ private extension SiteNameView {
         // search bar
         static let searchbarHeight: CGFloat = 64
         // title and subtitle
-        static let numberOfLinesInTitle = 0
+        static let numberOfLinesInTitle = 3
         static let numberOfLinesInSubtitle = 0
         static let titlesInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let verticalNameDisplayLimit = 32
+        static let titleMinimumScaleFactor: CGFloat = 0.75
         //continue button
         static let continueButtonStandardPadding: CGFloat = 16
         static let continueButtonAdditionaliPadPadding: CGFloat = 8
@@ -272,15 +290,18 @@ private extension SiteNameView {
         static func continueButtonViewFrame(_ accessoryWidth: CGFloat) -> CGRect {
             CGRect(x: 0, y: 0, width: accessoryWidth, height: 76)
         }
+        // native bounds height and scale of iPhone SE 3rd gen and iPhone 8
+        static let smallerIphonesNativeBoundsHeight: CGFloat = 1334
+        static let nativeScale: CGFloat = 2
     }
-
 }
 
 // MARK: search bar delegate
 extension SiteNameView: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        continueButton.isEnabled = !searchText.isEmpty
+        // disable the continue button if the text is either empty or contains only spaces, newlines or tabs.
+        continueButton.isEnabled = searchText.first(where: { !$0.isWhitespace }) != nil
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

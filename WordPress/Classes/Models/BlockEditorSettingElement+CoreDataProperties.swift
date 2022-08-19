@@ -13,6 +13,8 @@ enum BlockEditorSettingElementTypes: String {
 
 enum BlockEditorExperimentalFeatureKeys: String {
     case galleryWithImageBlocks
+    case quoteBlockV2
+    case listBlockV2
 }
 
 extension BlockEditorSettingElement {

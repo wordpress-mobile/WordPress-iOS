@@ -38,15 +38,25 @@ import Gridicons
 
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
     @IBOutlet fileprivate weak var filterBar: FilterTabBar!
-    @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
-    fileprivate var siteSearchController = ReaderSiteSearchViewController()
+    fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(childVC: ReaderSiteSearchViewController())
+    fileprivate var siteSearchController: ReaderSiteSearchViewController? {
+        return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
+    }
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
+
+    private lazy var bannerView: JetpackBannerView = {
+        let bannerView = JetpackBannerView() { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+        }
+        bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
+        return bannerView
+    }()
 
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
@@ -116,10 +126,12 @@ import Gridicons
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
-        configureLabel()
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
+        // hide the parent viewController's banner, if it exists
+        // because this viewController has its own.
+        streamController?.jetpackBannerView?.isHidden = true
     }
 
 
@@ -169,13 +181,32 @@ import Gridicons
     // MARK: - Configuration
 
 
-    @objc func setupSearchBar() {
+    private func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).placeholder = placeholderText
 
         searchBar.becomeFirstResponder()
         WPStyleGuide.configureSearchBar(searchBar)
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        searchBar.inputAccessoryView = bannerView
+        hideBannerViewIfNeeded()
+    }
+
+    /// hides the Jetpack powered banner on iPhone landscape
+    private func hideBannerViewIfNeeded() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        // hide the banner on iPhone landscape
+        bannerView.isHidden = traitCollection.verticalSizeClass == .compact
+    }
+
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        hideBannerViewIfNeeded()
     }
 
     func configureFilterBar() {
@@ -186,15 +217,6 @@ import Gridicons
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
-
-    @objc func configureLabel() {
-        let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
-        let rawAttributes = WPNUXUtility.titleAttributes(with: .neutral(.shade50)) as! [String: Any]
-        let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
-        label.numberOfLines = 2
-        label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
-    }
-
 
     @objc func configureBackgroundTapRecognizer() {
         backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
@@ -209,31 +231,30 @@ import Gridicons
         guard let topic = restoredSearchTopic else {
             return
         }
-        label.isHidden = true
         searchBar.text = topic.title
         streamController?.readerTopic = topic
     }
 
     private func configureSiteSearchViewController() {
-        siteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
+        jpSiteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        addChild(siteSearchController)
+        addChild(jpSiteSearchController)
 
-        view.addSubview(siteSearchController.view)
+        view.addSubview(jpSiteSearchController.view)
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: siteSearchController.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: siteSearchController.view.trailingAnchor),
-            filterBar.bottomAnchor.constraint(equalTo: siteSearchController.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: siteSearchController.view.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: jpSiteSearchController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: jpSiteSearchController.view.trailingAnchor),
+            filterBar.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: jpSiteSearchController.view.bottomAnchor),
             ])
 
-        siteSearchController.didMove(toParent: self)
+        jpSiteSearchController.didMove(toParent: self)
 
         if let topic = restoredSearchTopic {
-            siteSearchController.searchQuery = topic.title
+            siteSearchController?.searchQuery = topic.title
         }
 
-        siteSearchController.view.isHidden = true
+        jpSiteSearchController.view.isHidden = true
     }
 
     // MARK: - Actions
@@ -280,8 +301,6 @@ import Gridicons
         let topic = service.searchTopic(forSearchPhrase: phrase)
         streamController.readerTopic = topic
 
-        // Hide the starting label now that a topic has been set.
-        label.isHidden = true
         endSearch()
 
         if let previousTopic = previousTopic {
@@ -290,7 +309,7 @@ import Gridicons
     }
 
     private func performSitesSearch(for query: String) {
-        siteSearchController.searchQuery = query
+        siteSearchController?.searchQuery = query
     }
 
 
@@ -304,10 +323,10 @@ import Gridicons
         switch section {
         case .posts:
             streamController?.view.isHidden = false
-            siteSearchController.view.isHidden = true
+            jpSiteSearchController.view.isHidden = true
         case .sites:
             streamController?.view.isHidden = true
-            siteSearchController.view.isHidden = false
+            jpSiteSearchController.view.isHidden = false
         }
     }
 

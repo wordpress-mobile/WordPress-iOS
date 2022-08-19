@@ -3,11 +3,9 @@ import Nimble
 
 @testable import WordPress
 
-class NullBlogPropertySanitizerTests: XCTestCase {
+class NullBlogPropertySanitizerTests: CoreDataTestCase {
     private var keyValueDatabase: StubKeyValueDatabase!
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
-
-    private var context: NSManagedObjectContext!
 
     private var currentBuildVersion: String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -15,17 +13,14 @@ class NullBlogPropertySanitizerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        context = TestContextManager().mainContext
         keyValueDatabase = StubKeyValueDatabase()
-        nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueDatabase, context: context)
+        nullBlogPropertySanitizer = NullBlogPropertySanitizer(store: keyValueDatabase, context: mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
         nullBlogPropertySanitizer = nil
         keyValueDatabase = nil
-        context = nil
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testSetsTheSanitizedVersionEqualToCurrentBuildVersion() {

@@ -40,16 +40,13 @@ class MockSettingsPresenter: ScenePresenter {
     }
 }
 
-class ReaderTabViewModelTests: XCTestCase {
+class ReaderTabViewModelTests: CoreDataTestCase {
 
     var makeContentControllerExpectation: XCTestExpectation?
 
     var store: MockItemsStore!
     var viewModel: ReaderTabViewModel!
     var settingsPresenter: MockSettingsPresenter!
-
-    var contextManager: TestContextManager!
-    var context: NSManagedObjectContext!
 
     override func setUp() {
         store = MockItemsStore()
@@ -58,9 +55,6 @@ class ReaderTabViewModelTests: XCTestCase {
                                        searchNavigationFactory: { },
                                        tabItemsStore: store,
                                        settingsPresenter: settingsPresenter)
-
-        contextManager = TestContextManager()
-        context = contextManager.mainContext
     }
 
     override func tearDown() {
@@ -68,9 +62,6 @@ class ReaderTabViewModelTests: XCTestCase {
         store = nil
         settingsPresenter = nil
         makeContentControllerExpectation = nil
-
-        contextManager = nil
-        context = nil
     }
 
     func testRefreshTabBar() {
@@ -125,7 +116,7 @@ class ReaderTabViewModelTests: XCTestCase {
 
     func testResetFilter() {
         // Given
-        let selectedTopic = ReaderAbstractTopic(context: context)
+        let selectedTopic = ReaderAbstractTopic(context: mainContext)
         selectedTopic.title = "selected topic"
         let item = ReaderTabItem(ReaderContent(topic: selectedTopic))
 
@@ -148,7 +139,7 @@ class ReaderTabViewModelTests: XCTestCase {
         // Given
         makeContentControllerExpectation = expectation(description: "Content controller was constructed")
 
-        let topic = ReaderAbstractTopic(context: context)
+        let topic = ReaderAbstractTopic(context: mainContext)
         topic.title = "content topic"
         let content = ReaderContent(topic: topic)
         store.items = [ReaderTabItem(content)]

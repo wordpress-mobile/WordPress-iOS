@@ -5,6 +5,7 @@ protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)
     func didDeselectItem(forCell cell: CategorySectionTableViewCell)
     func accessibilityElementDidBecomeFocused(forCell cell: CategorySectionTableViewCell)
+    func saveHorizontalScrollPosition(forCell cell: CategorySectionTableViewCell, xPosition: CGFloat)
     var selectedPreviewDevice: PreviewDeviceSelectionViewController.PreviewDevice { get }
 }
 
@@ -17,22 +18,25 @@ protocol Thumbnail {
 
 protocol CategorySection {
     var categorySlug: String { get }
+    var caption: String? { get }
     var title: String { get }
     var emoji: String? { get }
     var description: String? { get }
     var thumbnails: [Thumbnail] { get }
-    var scrollOffset: CGPoint { get set }
+    var thumbnailSize: CGSize { get }
 }
 
 class CategorySectionTableViewCell: UITableViewCell {
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
     static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
-    static let expectedThumbnailSize = CGSize(width: 160.0, height: 240)
-    static let estimatedCellHeight: CGFloat = 310.0
+    static let defaultThumbnailSize = CGSize(width: 160, height: 240)
+    static let cellVerticalPadding: CGFloat = 70
 
     @IBOutlet weak var categoryTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var categoryCaptionLabel: UILabel!
 
     weak var delegate: CategorySectionTableViewCellDelegate?
 
@@ -46,25 +50,60 @@ class CategorySectionTableViewCell: UITableViewCell {
         didSet {
             thumbnails = section?.thumbnails ?? []
             categoryTitle.text = section?.title
-            collectionView.contentOffset = section?.scrollOffset ?? .zero
+            setCaption()
+
+            if let section = section {
+                collectionViewHeight.constant = section.thumbnailSize.height
+                setNeedsUpdateConstraints()
+            }
         }
     }
 
+    var categoryTitleFont: UIFont? {
+        didSet {
+            categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+        }
+    }
+
+    private func setCaption() {
+        guard let caption = section?.caption else {
+            categoryCaptionLabel.isHidden = true
+            return
+        }
+
+        categoryCaptionLabel.isHidden = false
+        categoryCaptionLabel.setText(caption)
+    }
+
     var isGhostCell: Bool = false
+    var ghostThumbnailSize: CGSize = defaultThumbnailSize {
+        didSet {
+            collectionViewHeight.constant = ghostThumbnailSize.height
+            setNeedsUpdateConstraints()
+        }
+    }
+    var showsCheckMarkWhenSelected = true
+    var horizontalScrollOffset: CGFloat = .zero {
+        didSet {
+            collectionView.contentOffset.x = horizontalScrollOffset
+        }
+    }
 
     override func prepareForReuse() {
-        section?.scrollOffset = collectionView.contentOffset
         delegate = nil
         super.prepareForReuse()
         collectionView.contentOffset.x = 0
+        categoryTitleFont = nil
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionView.register(CollapsableHeaderCollectionViewCell.nib, forCellWithReuseIdentifier: CollapsableHeaderCollectionViewCell.cellReuseIdentifier)
-        categoryTitle.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
+        categoryTitle.font = categoryTitleFont ?? WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.headline, fontWeight: .semibold)
         categoryTitle.layer.masksToBounds = true
         categoryTitle.layer.cornerRadius = 4
+        categoryCaptionLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        setCaption()
     }
 
     private func deselectItem(_ indexPath: IndexPath) {
@@ -90,6 +129,7 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
             deselectItem(indexPath)
             return false
         }
+
         return true
     }
 
@@ -101,11 +141,15 @@ extension CategorySectionTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         delegate?.didDeselectItem(forCell: self)
     }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        delegate?.saveHorizontalScrollPosition(forCell: self, xPosition: scrollView.contentOffset.x)
+    }
 }
 
 extension CategorySectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CategorySectionTableViewCell.expectedThumbnailSize
+        return section?.thumbnailSize ?? ghostThumbnailSize
      }
 }
 
@@ -126,6 +170,7 @@ extension CategorySectionTableViewCell: UICollectionViewDataSource {
 
         let thumbnail = thumbnails[indexPath.row]
         cell.previewURL = thumbnailUrl(forThumbnail: thumbnail)
+        cell.showsCheckMarkWhenSelected = showsCheckMarkWhenSelected
         cell.isAccessibilityElement = true
         cell.accessibilityLabel = thumbnail.slug
         return cell

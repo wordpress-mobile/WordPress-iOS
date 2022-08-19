@@ -5,14 +5,14 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 
 @interface BlogServiceTest : XCTestCase
 
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) id blogServiceMock;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) TestContextManager *testContextManager;
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
 
 @end
 
@@ -21,13 +21,13 @@
 - (void)setUp
 {
     [super setUp];
- 
-    self.testContextManager = [[TestContextManager alloc] init];
-    
-    self.blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+
+    self.coreDataStack = [[ContextManagerMock alloc] init];
+
+    self.blogService = [[BlogService alloc] initWithManagedObjectContext:[self.coreDataStack mainContext]];
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
     WPAccount *account = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
-    self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
+    self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.coreDataStack.mainContext];
     self.blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     self.blog.url = @"http://test.blog/";
     self.blog.options = @{@"jetpack_version": @{
@@ -43,47 +43,42 @@
                           };
     self.blog.account = account;
     self.blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings"
-                                                                       inManagedObjectContext:self.testContextManager.mainContext];
+                                                                       inManagedObjectContext:self.coreDataStack.mainContext];
 
     self.blogServiceMock = OCMPartialMock(self.blogService);
-    
+
     [service setDefaultWordPressComAccount:account];
 }
 
 - (void)tearDown
 {
-    [ContextManager overrideSharedInstance:nil];
+    [self cleanUpNSUserDefaultValues];
 
     self.blogService = nil;
     self.blogServiceMock = nil;
     self.blog = nil;
-    self.testContextManager = nil;
-    
-    [self cleanUpNSUserDefaultValues];
-    
+    self.coreDataStack = nil;
+
     [super tearDown];
 }
 
 - (void)testHasVisibleWPComAccountsWithVisibleWPComAccounts
 {
     OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(1);
-    
+
     XCTAssertTrue([self.blogService hasVisibleWPComAccounts]);
 }
 
 - (void)testHasVisibleWPComAccountsWithNoVisibleWPComAccounts
 {
     OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(0);
-    
+
     XCTAssertFalse([self.blogService hasVisibleWPComAccounts]);
 }
 
 - (void)cleanUpNSUserDefaultValues
 {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    if ([service defaultWordPressComAccount]) {
-        [service removeDefaultWordPressComAccount];
-    }
+    [UserSettings setDefaultDotComUUID:nil];
 }
 
 @end

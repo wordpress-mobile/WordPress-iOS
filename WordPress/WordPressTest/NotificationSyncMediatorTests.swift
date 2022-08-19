@@ -6,10 +6,7 @@ import OHHTTPStubs
 
 // MARK: - NotificationSyncMediatorTests
 //
-class NotificationSyncMediatorTests: XCTestCase {
-    /// CoreData Context Manager
-    ///
-    fileprivate var manager: TestContextManager!
+class NotificationSyncMediatorTests: CoreDataTestCase {
 
     /// WordPress REST API
     ///
@@ -29,12 +26,11 @@ class NotificationSyncMediatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        manager = TestContextManager()
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
-        mediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
+        mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI)
 
         // Note:
-        // Since the TestContextManager actually changed, and thus, the entire Core Data stack,
+        // Since the ContextManagerMock actually changed, and thus, the entire Core Data stack,
         // we'll need to manually reset the global shared Derived Context.
         // This definitely won't be needed in the actual app.
         //
@@ -44,7 +40,6 @@ class NotificationSyncMediatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        manager = nil
         HTTPStubs.removeAllStubs()
     }
 
@@ -59,22 +54,21 @@ class NotificationSyncMediatorTests: XCTestCase {
         HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
+        XCTAssert(mainContext.countObjects(ofType: Notification.self) == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
-
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Sync")
 
         // Sync!
         mediator.sync { (_, _) in
-            XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
+            XCTAssert(self.mainContext.countObjects(ofType: Notification.self) == 1)
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 
@@ -87,7 +81,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 //        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 //
 //        // Make sure the collection is empty, to begin with
-//        XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
+//        XCTAssert(mainContext.countObjects(ofType: Notification.self) == 0)
 //
 //        // Shutdown Expectation Warnings. Please
 //        manager.requiresTestExpectation = false
@@ -109,7 +103,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 //        let expect = expectation(description: "Async!")
 //
 //        group.notify(queue: DispatchQueue.main, execute: {
-//            XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
+//            XCTAssert(self.mainContext.countObjects(ofType: Notification.self) == 1)
 //            expect.fulfill()
 //        })
 //
@@ -126,10 +120,10 @@ class NotificationSyncMediatorTests: XCTestCase {
         HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
+        XCTAssert(mainContext.countObjects(ofType: Notification.self) == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Sync")
@@ -141,13 +135,13 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 
     /// Verifies that Mark as Read effectively toggles a Notification's read flag
     ///
-    func testMarkAsReadEffectivelyTogglesNotificationReadStatus() {
+    func testMarkAsReadEffectivelyTogglesNotificationReadStatus() throws {
         // Stub Endpoint
         let endpoint = "notifications/read"
         let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
@@ -155,13 +149,13 @@ class NotificationSyncMediatorTests: XCTestCase {
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path) as! WordPress.Notification
+        let note = try WordPress.Notification.fixture(fromFile: path, insertInto: mainContext)
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -172,12 +166,12 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
     /// Verifies that Mark Notifications as Read effectively toggles a Notifications' read flag
     ///
-    func testMarkNotificationsAsReadEffectivelyTogglesNotificationsReadStatus() {
+    func testMarkNotificationsAsReadEffectivelyTogglesNotificationsReadStatus() throws {
         // Stub Endpoint
         let endpoint = "notifications/read"
         let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
@@ -187,9 +181,9 @@ class NotificationSyncMediatorTests: XCTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
-        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
-        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+        let note1 = try WordPress.Notification.fixture(fromFile: path1, insertInto: mainContext)
+        let note2 = try WordPress.Notification.fixture(fromFile: path2, insertInto: mainContext)
+        let note3 = try WordPress.Notification.fixture(fromFile: path3, insertInto: mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
@@ -197,7 +191,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssertTrue(note2.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -210,12 +204,12 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
     /// Verifies that Mark Notifications as Read modifies only the specified notifications' read status
     ///
-    func testMarkNotificationsAsReadTogglesOnlyTheReadStatusOfPassedInNotifications() {
+    func testMarkNotificationsAsReadTogglesOnlyTheReadStatusOfPassedInNotifications() throws {
         // Stub Endpoint
         let endpoint = "notifications/read"
         let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
@@ -225,9 +219,9 @@ class NotificationSyncMediatorTests: XCTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path1) as! WordPress.Notification
-        let note2 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path2) as! WordPress.Notification
-        let note3 = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path3) as! WordPress.Notification
+        let note1 = try WordPress.Notification.fixture(fromFile: path1, insertInto: mainContext)
+        let note2 = try WordPress.Notification.fixture(fromFile: path2, insertInto: mainContext)
+        let note3 = try WordPress.Notification.fixture(fromFile: path3, insertInto: mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
@@ -235,7 +229,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         XCTAssertTrue(note2.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectation(description: "Context save expectation")
+        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
 
         // Mediator Expectations
         let expect = expectation(description: "Mark as Read")
@@ -247,7 +241,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             expect.fulfill()
         }
 
-        waitForExpectations(timeout: timeout, handler: nil)
+        wait(for: [contextSaved, expect], timeout: timeout)
     }
 
 

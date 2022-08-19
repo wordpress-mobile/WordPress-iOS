@@ -55,7 +55,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
         return label
     }()
 
-    private let doneButton: UIButton = {
+    private lazy var doneButton: UIButton = {
         let button = FancyButton()
         button.isPrimary = true
         button.setTitle(TextContent.doneButtonTitle, for: .normal)
@@ -166,7 +166,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     // Populates the prompt label with formatted text detailing the reminders set by the user.
     //
     private func configurePromptLabel() {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return
         }
 
@@ -196,7 +196,7 @@ class BloggingRemindersFlowCompletionViewController: UIViewController {
     }
 
     private func configureTitleLabel() {
-        guard let scheduler = try? BloggingRemindersScheduler() else {
+        guard let scheduler = try? ReminderScheduleCoordinator() else {
             return
         }
 

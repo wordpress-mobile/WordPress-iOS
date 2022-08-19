@@ -70,7 +70,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     }()
     @objc lazy var closeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: .gridicon(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        button.title = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
+        button.title = NSLocalizedString("webKit.button.dismiss", value: "Dismiss", comment: "Verb. Dismiss the web view screen.")
         return button
     }()
 
@@ -88,6 +88,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     private var reachabilityObserver: Any?
     private var tapLocation = CGPoint(x: 0.0, y: 0.0)
     private var widthConstraint: NSLayoutConstraint?
+    private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
 
     private var barButtonTintColor: UIColor {
@@ -187,7 +188,16 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
         NSLayoutConstraint.activate(edgeConstraints)
 
-        view.pinSubviewAtCenter(stackView)
+        // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
+        let safeArea = self.view.safeAreaLayoutGuide
+
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+
+        // this constraint saved as a varible so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
+        let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        stackViewBottomAnchor = stackViewBottom
+        NSLayoutConstraint.activate([stackViewBottom])
 
         let stackWidthConstraint = stackView.widthAnchor.constraint(equalToConstant: 0)
         stackWidthConstraint.priority = UILayoutPriority.defaultLow
@@ -299,6 +309,8 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         navigationController?.isToolbarHidden = secureInteraction
 
         guard !secureInteraction else {
+            // if not a secure interaction/view, no toolbar is displayed, so deactivate constraint pinning stack view to safe area
+            stackViewBottomAnchor?.isActive = false
             return
         }
 
@@ -347,9 +359,19 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
 
     /// Sets the width of the web preview
     /// - Parameter width: The width value to set the webView to
-    func setWidth(_ width: CGFloat?) {
+    /// - Parameter viewWidth: The view width the webView must fit within, used to manage view transitions, e.g. orientation change
+    func setWidth(_ width: CGFloat?, viewWidth: CGFloat? = nil) {
         if let width = width {
-            widthConstraint?.constant = min(width, view.superview?.frame.width ?? width)
+            let horizontalViewBound: CGFloat
+            if let viewWidth = viewWidth {
+                horizontalViewBound = viewWidth
+            } else if let superViewWidth = view.superview?.frame.width {
+                horizontalViewBound = superViewWidth
+            } else {
+                horizontalViewBound = width
+            }
+
+            widthConstraint?.constant = min(width, horizontalViewBound)
             widthConstraint?.priority = UILayoutPriority.defaultHigh
         } else {
             widthConstraint?.priority = UILayoutPriority.defaultLow

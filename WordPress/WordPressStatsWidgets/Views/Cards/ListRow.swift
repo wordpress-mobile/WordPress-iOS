@@ -80,7 +80,6 @@ struct ListRow: View {
         .frame(height: rowHeight)
         .offset(x: 0, y: Constants.verticalCenteringOffset) // each row isn't _quite_ centered vertically
                                                             // and we're not entirely sure why yet, but this fixes it
-        .flipsForRightToLeftLayoutDirection(true)
     }
 }
 

@@ -1,10 +1,11 @@
 import Foundation
 import Nimble
 import OHHTTPStubs
+import XCTest
 
 @testable import WordPress
 
-final class CommentService_RepliesTests: XCTestCase {
+final class CommentService_RepliesTests: CoreDataTestCase {
     private let commentID: Int = 1
     private let siteID: Int = 2
     private let authorID: Int = 99
@@ -16,7 +17,6 @@ final class CommentService_RepliesTests: XCTestCase {
         "sites/\(siteID)/comments"
     }
 
-    private var context: NSManagedObjectContext!
     private var commentService: CommentService!
     private var accountService: AccountService!
 
@@ -24,17 +24,13 @@ final class CommentService_RepliesTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = TestContextManager().mainContext
-        commentService = CommentService(managedObjectContext: context)
+        commentService = CommentService(managedObjectContext: mainContext)
         accountService = makeAccountService()
     }
 
     override func tearDown() {
-        context.reset()
-        ContextManager.overrideSharedInstance(nil)
         HTTPStubs.removeAllStubs()
 
-        context = nil
         commentService = nil
         accountService = nil
         super.tearDown()
@@ -115,11 +111,11 @@ private extension CommentService_RepliesTests {
     func makeMockService() -> (CommentService, MockWordPressComRestApi) {
         let mockApi = MockWordPressComRestApi()
         let mockFactory = CommentServiceRemoteFactoryMock(restApi: mockApi)
-        return (.init(managedObjectContext: context, commentServiceRemoteFactory: mockFactory), mockApi)
+        return (.init(managedObjectContext: mainContext, commentServiceRemoteFactory: mockFactory), mockApi)
     }
 
     func makeAccountService() -> AccountService {
-        let service = AccountService(managedObjectContext: context)
+        let service = AccountService(managedObjectContext: mainContext)
         let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
         account.userID = NSNumber(value: authorID)
         service.setDefaultWordPressComAccount(account)

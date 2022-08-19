@@ -17,14 +17,22 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
-    case aboutScreen
     case mySiteDashboard
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
     case statsPerformanceImprovements
     case siteIntentQuestion
     case landInTheEditor
+    case statsNewAppearance
+    case statsNewInsights
     case siteName
+    case quickStartForExistingUsers
+    case qrLogin
+    case betaSiteDesigns
+    case featureHighlightTooltip
+    case jetpackPowered
+    case jetpackPoweredBottomSheet
+    case sharedUserDefaults
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -34,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
 
         switch self {
         case .bloggingPrompts:
-            return false
+            return AppConfiguration.isJetpack
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -61,10 +69,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .weeklyRoundupBGProcessingTask:
             return true
         case .domains:
-            return false
-        case .timeZoneSuggester:
+            // Note: when used to control access to the domains feature, you should also check whether
+            // the current AppConfiguration and blog support domains.
+            // See BlogDetailsViewController.shouldShowDomainRegistration for an example.
             return true
-        case .aboutScreen:
+        case .timeZoneSuggester:
             return true
         case .mySiteDashboard:
             return true
@@ -78,9 +87,31 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .landInTheEditor:
             return false
+        case .statsNewAppearance:
+            return AppConfiguration.showsStatsRevampV2
+        case .statsNewInsights:
+            return AppConfiguration.showsStatsRevampV2
         case .siteName:
             return false
+        case .quickStartForExistingUsers:
+            return true
+        case .qrLogin:
+            return true
+        case .betaSiteDesigns:
+            return false
+        case .featureHighlightTooltip:
+            return true
+        case .jetpackPowered:
+            return true
+        case .jetpackPoweredBottomSheet:
+            return false
+        case .sharedUserDefaults:
+            return false
         }
+    }
+
+    var disabled: Bool {
+        return enabled == false
     }
 
     /// This key must match the server-side one for remote feature flagging
@@ -136,8 +167,6 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
-        case .aboutScreen:
-            return "New Unified About Screen"
         case .mySiteDashboard:
             return "My Site Dashboard"
         case .mediaPickerPermissionsNotice:
@@ -150,8 +179,26 @@ extension FeatureFlag {
             return "Site Intent Question"
         case .landInTheEditor:
             return "Land In The Editor"
+        case .statsNewAppearance:
+            return "New Appearance for Stats"
+        case .statsNewInsights:
+            return "New Cards for Stats Insights"
         case .siteName:
             return "Site Name"
+        case .quickStartForExistingUsers:
+            return "Quick Start For Existing Users"
+        case .qrLogin:
+            return "QR Code Login"
+        case .betaSiteDesigns:
+            return "Fetch Beta Site Designs"
+        case .featureHighlightTooltip:
+            return "Feature Highlight Tooltip"
+        case .jetpackPowered:
+            return "Jetpack powered banners and badges"
+        case .jetpackPoweredBottomSheet:
+            return "Jetpack powered bottom sheet"
+        case .sharedUserDefaults:
+            return "Shared User Defaults"
         }
     }
 

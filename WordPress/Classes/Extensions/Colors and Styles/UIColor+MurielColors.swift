@@ -62,6 +62,12 @@ extension UIColor {
         return muriel(color: .primary, shade)
     }
 
+    /// Muriel editor primary color
+    static var editorPrimary = muriel(color: .editorPrimary)
+    class func editorPrimary(_ shade: MurielColorShade) -> UIColor {
+        return muriel(color: .editorPrimary, shade)
+    }
+
     /// Muriel success color
     static var success = muriel(color: .success)
     class func success(_ shade: MurielColorShade) -> UIColor {

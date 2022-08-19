@@ -1,16 +1,31 @@
 #import <XCTest/XCTest.h>
 #import "ReaderPost.h"
-#import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 @import WordPressShared;
 
 @interface ReaderPostTest : XCTestCase
+
+@property (nonatomic, strong) ContextManagerMock *coreDataStack;
+
 @end
 
 @implementation ReaderPostTest
 
+@synthesize coreDataStack = coreDataStack;
+
+- (void)setUp
+{
+    self.coreDataStack = [[ContextManagerMock alloc] init];
+}
+
+- (void)tearDown
+{
+    self.coreDataStack = nil;
+}
+
 - (void)testSiteIconForDisplay
 {
-    NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.coreDataStack mainContext];
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                          inManagedObjectContext:context];
 
@@ -33,7 +48,7 @@
 
 - (void)testDisplayDate
 {
-    NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.coreDataStack mainContext];
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                                      inManagedObjectContext:context];
 

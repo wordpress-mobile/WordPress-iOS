@@ -3,21 +3,18 @@ import XCTest
 
 @testable import WordPress
 
-class PostTests: XCTestCase {
-
-    fileprivate var contextManager: TestContextManager!
-    fileprivate var context: NSManagedObjectContext!
+class PostTests: CoreDataTestCase {
 
     fileprivate func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
     }
 
     fileprivate func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
     }
 
     fileprivate func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: context) as! PostCategory
+        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
     }
 
     fileprivate func newTestPostCategory(_ name: String) -> PostCategory {
@@ -25,19 +22,6 @@ class PostTests: XCTestCase {
         category.categoryName = name
 
         return category
-    }
-
-    override func setUp() {
-        super.setUp()
-        contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = contextManager.mainContext
-    }
-
-    override func tearDown() {
-        context.rollback()
-        ContextManager.overrideSharedInstance(nil)
-        super.tearDown()
     }
 
     func testThatNoCategoriesReturnEmptyStringWhenCallingCategoriesText() {
@@ -231,7 +215,7 @@ class PostTests: XCTestCase {
             ("z", "Z")
         ]
 
-        let blog = BlogBuilder(context)
+        let blog = BlogBuilder(mainContext)
             .with(postFormats: postFormats)
             .build()
 
@@ -524,7 +508,7 @@ class PostTests: XCTestCase {
     /// When removing the featured image hasLocalChanges returns true
     func testLocalChangesWhenfeaturedImageIsRemoved() {
         let post = newTestPost()
-        post.featuredImage = Media.makeMedia(in: context)
+        post.featuredImage = Media.makeMedia(in: mainContext)
         let revision = post.createRevision()
         revision.featuredImage = nil
 
@@ -535,7 +519,7 @@ class PostTests: XCTestCase {
     func testLocalChangesWhenfeaturedImageIsAdded() {
         let post = newTestPost()
         let revision = post.createRevision()
-        revision.featuredImage = Media.makeMedia(in: context)
+        revision.featuredImage = Media.makeMedia(in: mainContext)
 
         XCTAssertTrue(revision.hasLocalChanges())
     }
@@ -543,7 +527,7 @@ class PostTests: XCTestCase {
     /// When keeping the featured image hasLocalChanges returns false
     func testLocalChangesWhenFeaturedImageIsTheSame() {
         let post = newTestPost()
-        let media = Media.makeMedia(in: context)
+        let media = Media.makeMedia(in: mainContext)
         post.featuredImage = media
         let revision = post.createRevision()
         revision.featuredImage = media

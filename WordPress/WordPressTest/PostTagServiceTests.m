@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "PostTag.h"
 #import "PostTagService.h"
-#import "TestContextManager.h"
 @import WordPressKit;
 #import "WordPressTest-Swift.h"
 
@@ -28,7 +27,7 @@
 
 @interface PostTagServiceTests : XCTestCase
 
-@property (nonatomic, strong) TestContextManager *manager;
+@property (nonatomic, strong) ContextManagerMock *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostTagServiceForStubbing *service;
 
@@ -40,7 +39,7 @@
 {
     [super setUp];
 
-    self.manager = [TestContextManager new];
+    self.manager = [ContextManagerMock new];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
 
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:self.manager.mainContext];

@@ -71,8 +71,7 @@ class JetpackConnectionWebViewController: UIViewController {
     }
 
     private func jetpackConnectionURL() -> URL? {
-        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
-        var urlString = "https://wordpress.com/jetpack/connect/?mobile_redirect=\(mobileRedirectURL)&from=mobile&lang=\(locale)"
+        var urlString = "https://wordpress.com/jetpack/connect/?mobile_redirect=\(mobileRedirectURL)&from=mobile"
 
         if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             urlString = urlString + "&url=\(escapedSiteURL)"
@@ -332,9 +331,7 @@ private extension JetpackConnectionWebViewController {
     }
 
     func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        return service.defaultWordPressComAccount()
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     enum Debug {

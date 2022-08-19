@@ -11,7 +11,7 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    private let searchButton: SpotlightableButton = SpotlightableButton(type: .custom)
+    private let settingsButton: SpotlightableButton = SpotlightableButton(type: .custom)
 
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
@@ -38,6 +38,7 @@ class ReaderTabViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        startObservingQuickStart()
 
         viewModel.fetchReaderMenu()
     }
@@ -61,32 +62,42 @@ class ReaderTabViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        searchButton.shouldShowSpotlight = QuickStartTourGuide.shared.isCurrentElement(.readerSearch)
+        super.viewWillAppear(animated)
+
+        if QuickStartTourGuide.shared.isCurrentElement(.readerDiscoverSettings) {
+
+            if viewModel.selectedIndex != ReaderTabConstants.discoverIndex {
+                viewModel.showTab(at: ReaderTabConstants.discoverIndex)
+            }
+
+            settingsButton.shouldShowSpotlight = true
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         ReaderTracker.shared.stop(.main)
+
+        QuickStartTourGuide.shared.endCurrentTour()
     }
 
     func setupNavigationButtons() {
-        // Settings Button
-        let settingsButton = UIBarButtonItem(image: UIImage.gridicon(.cog),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(didTapSettingsButton))
-        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
-
         // Search Button
-        searchButton.spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
-        searchButton.setImage(.gridicon(.search), for: .normal)
-        searchButton.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
+        let searchButton = UIBarButtonItem(image: UIImage.gridicon(.search),
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapSearchButton))
         searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
 
-        let searchBarButton = UIBarButtonItem(customView: searchButton)
+        // Settings Button
+        settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
+        settingsButton.setImage(.gridicon(.cog), for: .normal)
+        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
+        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
+        let settingsButton = UIBarButtonItem(customView: settingsButton)
 
-        navigationItem.rightBarButtonItems = [searchBarButton, settingsButton]
+        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
     }
 
     override func loadView() {
@@ -120,6 +131,18 @@ extension ReaderTabViewController {
 
     @objc private func didTapSearchButton() {
         viewModel.navigateToSearch()
+    }
+}
+
+// MARK: Observing Quick Start
+extension ReaderTabViewController {
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+                self?.settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
+            }
+        }
     }
 }
 
@@ -172,5 +195,6 @@ extension ReaderTabViewController {
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
         static let discoverIndex = 1
+        static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
     }
 }

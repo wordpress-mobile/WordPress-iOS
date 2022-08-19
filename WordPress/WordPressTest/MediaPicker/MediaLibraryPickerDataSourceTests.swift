@@ -2,9 +2,8 @@ import XCTest
 @testable import WordPress
 import WPMediaPicker
 
-class MediaLibraryPickerDataSourceTests: XCTestCase {
+class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
 
-    fileprivate var contextManager: TestContextManager!
     fileprivate var context: NSManagedObjectContext!
     fileprivate var dataSource: MediaLibraryPickerDataSource!
     fileprivate var blog: Blog!
@@ -12,7 +11,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
         context = contextManager.newDerivedContext()
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
         blog.url = "http://wordpress.com"
@@ -26,7 +24,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
         context.rollback()
-        ContextManager.overrideSharedInstance(nil)
     }
 
     func testMediaPixelSize() {

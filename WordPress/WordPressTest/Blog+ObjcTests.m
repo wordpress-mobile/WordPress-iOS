@@ -1,25 +1,20 @@
 #import <XCTest/XCTest.h>
-#import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 
 @interface Blog_ObjcTests : XCTestCase
-@property (strong, nonatomic) NSManagedObjectContext *context;
+@property (strong, nonatomic) ContextManagerMock *contextManager;
 @end
 
 @implementation Blog_ObjcTests
 
 - (void)setUp {
-    self.context = [[TestContextManager new] mainContext];
+    self.contextManager = [ContextManagerMock new];
     [super setUp];
-}
-
-- (void)tearDown {
-    self.context = nil;
-    [super tearDown];
 }
 
 - (void)testThatNilBlogIDDoesNotCrashWhenCreatingPredicate {
     NSNumber *number = nil;
-    Blog *blog = [Blog lookupWithID:number in:self.context];
+    Blog *blog = [Blog lookupWithID:number in:self.contextManager.mainContext];
     XCTAssertNil(blog);
 }
 

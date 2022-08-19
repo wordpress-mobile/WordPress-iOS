@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
+final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable {
 
     private lazy var scrollView: ButtonScrollView = {
         let scrollView = ButtonScrollView()
@@ -13,10 +13,10 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
-            pagesButton,
+            statsButton,
             postsButton,
-            mediaButton,
-            statsButton
+            pagesButton,
+            mediaButton
         ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
@@ -51,18 +51,15 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        startObservingQuickStart()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Not implemented")
     }
 
-    func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-        guard let viewController = viewController else {
-            return
-        }
-
-        configureQuickActionButtons(for: blog, with: viewController)
+    deinit {
+        stopObservingQuickStart()
     }
 }
 
@@ -70,7 +67,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, BlogD
 
 extension DashboardQuickActionsCardCell {
 
-    private func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
+    func configureQuickActionButtons(for blog: Blog, with sourceController: UIViewController) {
         statsButton.onTap = { [weak self] in
             self?.showStats(for: blog, from: sourceController)
         }
@@ -132,6 +129,46 @@ extension DashboardQuickActionsCardCell {
             scrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
             stackView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }
+    }
+
+    private func startObservingQuickStart() {
+        NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] notification in
+
+            if let info = notification.userInfo,
+               let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+
+                switch element {
+                case .stats:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                        return
+                    }
+
+                    self?.autoScrollToStatsButton()
+                case .mediaScreen:
+                    guard QuickStartTourGuide.shared.entryPointForCurrentTour == .blogDashboard else {
+                        return
+                    }
+
+                    self?.autoScrollToMediaButton()
+                default:
+                    break
+                }
+                self?.statsButton.shouldShowSpotlight = element == .stats
+                self?.mediaButton.shouldShowSpotlight = element == .mediaScreen
+            }
+        }
+    }
+
+    private func stopObservingQuickStart() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    private func autoScrollToStatsButton() {
+        scrollView.scrollHorizontallyToView(statsButton, animated: true)
+    }
+
+    private func autoScrollToMediaButton() {
+        scrollView.scrollHorizontallyToView(mediaButton, animated: true)
     }
 }
 

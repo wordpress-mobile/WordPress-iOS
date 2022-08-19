@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-04-04 06:09:00+0000 */
+/* Translation-Revision-Date: 2022-05-25 09:41:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/3.0.0-rc.4 */
+/* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: pl */
 
 /* Plan yearly price */
@@ -38,6 +38,9 @@
    Verb. Approves a 2fa authentication challenge, and logs in a user. */
 "Approve" = "Zatwierdź";
 
+/* Approves a Comment */
+"Approve Comment" = "Zatwierdź komentarz";
+
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -50,7 +53,7 @@
 "Blog" = "Blog";
 
 /* Alert dismissal title
-   Button label when canceling alert in quick start
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -78,6 +81,7 @@
    Cancel registering a domain
    Cancel removing a plugin
    Cancel site creation
+   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -95,6 +99,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -176,6 +181,7 @@
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
    Dismiss button title
@@ -188,6 +194,7 @@
    User action to dismiss featured media options.
    User action to dismiss media options.
    Verb. Button title. Tapping dismisses a prmopt.
+   Verb. Dismisses the blogging prompt notification.
    Verb. User action to dismiss error alert when failing to load media item. */
 "Dismiss" = "Odrzuć";
 
@@ -294,6 +301,7 @@
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
    Tab bar title for the Media tab in Media Picker
+   The menu item to select during a guided tour.
    Title for Media Library section of the app.
    Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
@@ -341,11 +349,12 @@
 "OK" = "OK";
 
 /* Disabled */
-"Off" = "Wyłączone";
+"Off" = "Wyłączono";
 
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
+   Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
    Title for the view when there's an error loading the plugin
@@ -410,6 +419,7 @@
 "Post Format" = "Format treści";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
    Stats Posts Label
@@ -419,9 +429,8 @@
 
 /* Displays the Post Preview Interface
    Section title for related posts section preview
-   Title for button to preview a selected homepage design
    Title for button to preview a selected layout
-   Title for screen to preview a selected homepage design
+   Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Podgląd";
 
@@ -527,6 +536,7 @@
 
 /* Link to plugin's Settings
    Section title
+   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Ustawienia";
@@ -594,6 +604,9 @@
    Unapproves a comment */
 "Unapprove" = "Odrzuć";
 
+/* Unapproves a Comment */
+"Unapprove Comment" = "Cofnij akceptację komentarza";
+
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";
 
@@ -639,9 +652,8 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
 
-/* Action title. Opens the user's site in an in-app browser
-   The menu item to select during a guided tour. */
-"View Site" = "Zobacz stronę";
+/* Action title. Opens the user's site in an in-app browser */
+"View Site" = "Zobacz witrynę";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -691,6 +703,12 @@
 
 /* Hint for users when hidden privacy setting is set */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Wszyscy mogą odwiedzić Twoją stronę, ale nie jest ona dostępna dla wyszukiwarek internetowych.";
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"ios-widget.gpCwrM" = "Select Site";
+
+/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
+"ios-widget.tVvJ9c" = "Select Site Intent";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Wpisy";

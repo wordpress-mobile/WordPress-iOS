@@ -184,7 +184,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask?.rawValue)")
+        if let bgTask = bgTask {
+            DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -204,9 +206,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         checkAppleIDCredentialState()
 
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
-
-        // TODO: remove when final launching source determine.
-        WPTabBarController.sharedInstance().showBloggingPromptsFeatureIntroduction()
     }
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -354,8 +353,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
         }
-
-        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     }
 
     // MARK: - Helpers
@@ -497,6 +494,10 @@ extension WordPressAppDelegate {
             let url = activity.webpageURL else {
                 FailureNavigationAction().failAndBounce(activity.webpageURL)
                 return
+        }
+
+        if QRLoginCoordinator.didHandle(url: url) {
+            return
         }
 
         trackDeepLink(for: url) { url in
@@ -788,9 +789,8 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             ShareExtensionService.configureShareExtensionToken(authToken)
             ShareExtensionService.configureShareExtensionUsername(account.username)
         }
@@ -808,9 +808,8 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             NotificationSupportService.insertContentExtensionToken(authToken)
             NotificationSupportService.insertContentExtensionUsername(account.username)
 
@@ -880,6 +879,17 @@ extension WordPressAppDelegate {
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
+
+        // Post Settings styles
+        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
+
+        /// Sets the `tintColor` for parent category selection within the Post Settings screen
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
+
+        /// It's necessary to target `PostCategoriesViewController` a second time to "reset" the UI element's `tintColor` for use in the app's Site Settings screen.
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
+
     }
 }
 
