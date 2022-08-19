@@ -1,7 +1,7 @@
-Hemos mejorado el rendimiento de los bloques de galería e imagen en el editor de bloques. Esto ayudará a que las imágenes ocupen menos espacio de almacenamiento en tu sitio y evitará que tu dispositivo se ralentice durante la subida de medios. Creemos que la velocidad es necesaria.
+Hemos corregido un fallo en la sección de estadísticas - cuando miras las lisas de los motores de búsqueda que han enviado visitantes a tu sitio, ahora puedes ver resultados anidados, igual que lo verías en tu navegador.
 
-Si tu sitio utiliza VideoPress, cualquier bloque de vídeo guardado en la versión web del sitio se mostrará ahora correctamente también en la aplicación móvil.
+Al pulsar la tecla @ mientras escribes un comentario sigue mostrándose una lista de usuarios sugeridos a los que podría apetecerte etiquetar, pero ahora esos usuarios están divididos en grupos. Si estás respondiendo a un comentario superior, el autor del comentario aparece en la parte superior de la lisa, justo al lado del autor de la entrada.
 
-El insertador de bloques en el editor de bloques ahora permite organizar mejor los tipos de bloques en colecciones. También hemos hecho un pequeño ajuste de espaciado en la nota al pie de página del texto alternativo en los bloques de imagen, porque los pequeños detalles también son importantes.
+Ahora la aplicación admite vistas previas de imagen en alta resolución, hemos subido el tamaño de las capturas de pantalla del tema en el selector del tema del sitio. Se acabó el pixelado, ahora hay perfección al píxel.
 
-Por último, pero no menos importante, hemos eliminado un molesto error en el proceso de creación del sitio. Cuando te desplazas horizontalmente por las opciones de diseño del sitio, la aplicación ahora recuerda dónde lo dejaste, incluso si te desplazas hacia arriba y hacia abajo en la página.
+Para finalizar, ya no habrá más ceros en tu repaso semanal - si no recibers ningún comentario a tus entradas o ningún «me gusta» esta semana, no incluiremos ese número en los avisos de tu dispositivo. Solo recibirás vibraciones positivas.
