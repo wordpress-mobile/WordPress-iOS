@@ -17,7 +17,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     public override init(managedObjectContext context: NSManagedObjectContext) {
         super.init(managedObjectContext: context)
 
-        if let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
             defaultAccount.authToken != nil,
             let restApi = defaultAccount.wordPressComRestApi {
             remoteApi = restApi.hasCredentials() ? restApi : nil

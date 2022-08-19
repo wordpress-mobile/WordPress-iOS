@@ -3,7 +3,7 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
-    private var buttonAction: (() -> Void)?
+    var buttonAction: (() -> Void)?
 
     init(buttonAction: (() -> Void)? = nil) {
         super.init(frame: .zero)
@@ -26,6 +26,8 @@ class JetpackBannerView: UIView {
     }
 
     private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: JetpackBannerView.minimumHeight).isActive = true
         backgroundColor = Self.jetpackBannerBackgroundColor
 
         let jetpackButton = JetpackButton(style: .banner)
@@ -34,11 +36,10 @@ class JetpackBannerView: UIView {
         addSubview(jetpackButton)
 
         pinSubviewToSafeArea(jetpackButton)
-        jetpackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: JetpackBannerView.minimumHeight).isActive = true
     }
 
     /// Preferred minimum height to be used for constraints
-    static let minimumHeight: CGFloat = 50
+    static let minimumHeight: CGFloat = 44
     private static let jetpackBannerBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
                                                               dark: .muriel(color: .jetpackGreen, .shade90))
 }
@@ -46,16 +47,15 @@ class JetpackBannerView: UIView {
 // MARK: Responding to scroll events
 extension JetpackBannerView: Subscriber {
 
-    typealias Input = CGFloat
+    typealias Input = Bool
     typealias Failure = Never
 
     func receive(subscription: Subscription) {
         subscription.request(.unlimited)
     }
 
-    func receive(_ input: CGFloat) -> Subscribers.Demand {
-
-        let isHidden: Bool = input < 0
+    func receive(_ input: Bool) -> Subscribers.Demand {
+        let isHidden = input
 
         guard self.isHidden != isHidden else {
             return .unlimited

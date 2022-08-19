@@ -95,6 +95,7 @@ final class BlogBuilder {
         set(blogOption: "active_modules", value: modules)
     }
 
+    @discardableResult
     func build() -> Blog {
         return blog
     }

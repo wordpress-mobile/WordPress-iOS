@@ -1077,7 +1077,7 @@ private extension CommentDetailViewController {
         suggestionsView.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
             fromPostAuthorId: comment.post?.authorID,
             commentAuthorId: NSNumber(value: comment.authorID),
-            defaultAccountId: accountService.defaultWordPressComAccount()?.userID
+            defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
         )
         view.addSubview(suggestionsView)
 

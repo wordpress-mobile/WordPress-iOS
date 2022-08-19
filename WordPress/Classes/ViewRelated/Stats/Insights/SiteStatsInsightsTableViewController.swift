@@ -477,9 +477,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        let controller: UIViewController = JetpackBannerWrapperViewController(childVC: sharingVC)
-        let navigationController = UINavigationController(rootViewController: controller)
-
+        let navigationController = UINavigationController(rootViewController: sharingVC)
         present(navigationController, animated: true)
 
         applyTableUpdates()

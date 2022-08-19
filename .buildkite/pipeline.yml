@@ -68,7 +68,7 @@ steps:
       - slack:
           channels:
             - "#mobile-apps-tests-notif"
-        if: build.state == "failed"
+        if: build.state == "failed" && build.branch == "trunk"
 
   #################
   # UI Tests
@@ -88,7 +88,7 @@ steps:
           - slack:
               channels:
                 - "#mobile-apps-tests-notif"
-            if: build.state == "failed"
+            if: build.state == "failed" && build.branch == "trunk"
 
       - label: "🔬 UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh WordPressUITests "iPad Air (5th generation)" 15.0
@@ -103,7 +103,7 @@ steps:
           - slack:
               channels:
                 - "#mobile-apps-tests-notif"
-            if: build.state == "failed"
+            if: build.state == "failed" && build.branch == "trunk"
 
   #################
   # Linters

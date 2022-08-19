@@ -94,9 +94,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (Blog *)primaryBlog
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return defaultAccount.defaultBlog;
+    return [[WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] defaultBlog];
 }
 
 - (Blog *)firstBlogThatSupports:(BlogFeature)feature

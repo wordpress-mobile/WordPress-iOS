@@ -168,8 +168,7 @@ private extension CachedAnnouncementsStore {
     }
 
     enum Identifiers {
-        // 2 is the identifier of WordPress-iOS in the backend
-        static let appId = "2"
+        static let appId = AppConstants.mobileAnnounceAppId
         static var appVersion: String {
             Bundle.main.shortVersionString() ?? ""
         }

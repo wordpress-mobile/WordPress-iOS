@@ -182,7 +182,7 @@ class BloggingPromptsService {
     required init?(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        guard let account = AccountService(managedObjectContext: contextManager.mainContext).defaultWordPressComAccount(),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
               let siteID = blog?.dotComID ?? account.primaryBlogID else {
             return nil
         }

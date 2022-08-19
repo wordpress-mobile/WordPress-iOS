@@ -1,5 +1,10 @@
 20.6
 -----
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
+* [**] [Jetpack-only] Self-hosted sites: enables logging in via a self-hosted site / adding a self-hosted site [#19194]
+* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
+* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
 
 
 20.5

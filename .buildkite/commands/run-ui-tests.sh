@@ -6,6 +6,14 @@ IOS_VERSION=$3
 
 echo "Running $TEST_NAME on $DEVICE for iOS $IOS_VERSION"
 
+# Run this at the start to fail early if value not available
+echo '--- :test-analytics: Configuring Test Analytics'
+if [[ $DEVICE =~ ^iPhone ]]; then
+  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPHONE
+else
+  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPAD
+fi
+
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products.tar
 tar -xf build-products.tar

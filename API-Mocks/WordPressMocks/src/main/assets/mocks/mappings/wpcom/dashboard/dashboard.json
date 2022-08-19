@@ -1,0 +1,30 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPath": "/wpcom/v2/sites/181977606/dashboard/cards-data/",
+      "queryParameters": {
+        "locale": {
+            "matches": "(.*)"
+        },
+        "cards": {
+            "equalTo": "todays_stats,posts"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "jsonBody": {
+        "todays_stats": {
+            "views": 56,
+            "visitors": 44,
+            "likes": 19,
+            "comments": 0
+        },
+        "posts": {
+            "has_published": true,
+            "draft": [{}],
+            "scheduled": [{}]
+        }
+      }
+    }
+  }
