@@ -1,7 +1,9 @@
-Realizamos algumas melhorias de desempenho na galeria e nos blocos de imagem do editor de blocos. Assim as imagens vão ocupar menos espaço de armazenamento em seu site, evitando que o seu dispositivo fique lento durante o upload de mídias. Quanto mais rápido, melhor.
+Corrigimos um bug na seção de Estatísticas do aplicativo: agora é possível ver resultados aninhados das listas de mecanismos de busca que enviaram visitantes ao seu site, do jeito que você faria no seu navegador.
 
-Se o seu site usa VideoPress, os blocos de vídeos salvos na versão Web agora também são exibidos corretamente no aplicativo móvel.
+Ainda aparecerá uma lista de usuários sugeridos para marcar ao digitar o @ nos comentários, mas agora estes usuários estarão separados por grupos. Se você estiver respondendo a um comentário principal, o comentário do autor aparecerá na parte superior da lista, próximo ao post dele.
 
-A inserção de blocos no editor de blocos agora permite organizar melhor os tipos de bloco em coleções. Também fizemos um pequeno ajuste no espaçamento das notas de rodapé com texto alternativo em blocos de imagem porque os detalhes também são importantes.
+Agora que o aplicativo suporta a visualização de imagens em alta resolução, aumentamos o tamanho das capturas de tela do tema no seletor de temas do site. Chega de pixelização, agora está tudo perfeito.
 
-Por último, mas não menos importante, eliminamos um bug irritante no processo de criação do site. Quando você está rolando horizontalmente pelas opções de design do site, o aplicativo agora lembra onde você parou mesmo ao rolar a página para cima e para baixo.
+Mudamos alguns elementos visuais no editor de verde para azul. Agora combina com o visual do aplicativo do WordPress.
+
+Por fim, chega de zero no seu relatório semanal. Se seu post não tiver comentários ou curtidas, não vamos incluir esse dado nas suas notificações de dispositivo. Vamos manter a vibe positiva.
