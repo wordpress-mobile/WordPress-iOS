@@ -22,20 +22,20 @@ struct JetpackBrandingAnalyticsHelper {
     }
 
     enum JetpackBannerScreen: String {
-        case activityLog
+        case activityLog = "activity_log"
         case notifications
         case reader
-        case readerSearch
+        case readerSearch = "reader_search"
         case stats
     }
 
     enum JetpackBadgeScreen: String {
-        case activityDetail
-        case appSettings
+        case activityDetail = "activity_detail"
+        case appSettings = "app_settings"
         case home
         case me
-        case notificationsSettings
-        case readerDetail
+        case notificationsSettings = "notifications_settings"
+        case readerDetail = "reader_detail"
         case sharing
     }
 }
