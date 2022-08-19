@@ -311,10 +311,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
-        if let authenticationHandler = authenticationHandler {
-            authenticationHandler.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
-            return
-        }
 
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)
@@ -323,11 +319,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
-        if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
-            return
-        }
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
@@ -396,11 +387,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
-        if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
-            authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
-            return
-        }
 
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {

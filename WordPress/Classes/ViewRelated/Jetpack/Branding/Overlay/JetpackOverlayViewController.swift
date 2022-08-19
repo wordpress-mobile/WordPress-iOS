@@ -45,6 +45,10 @@ extension JetpackOverlayViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
         false
     }
+
+    var compactWidth: DrawerWidth {
+        .maxWidth
+    }
 }
 
 extension JetpackOverlayViewController: ChildDrawerPositionable {

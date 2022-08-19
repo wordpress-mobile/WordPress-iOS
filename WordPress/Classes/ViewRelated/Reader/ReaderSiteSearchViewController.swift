@@ -54,7 +54,7 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
     // MARK: - JPScrollViewDelegate
 
-    let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - View lifecycle
 
@@ -411,6 +411,6 @@ class ReaderSiteSearchFooterView: UIView {
 
 extension ReaderSiteSearchViewController: JPScrollViewDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        processJetpackBannerVisibility(scrollView)
     }
 }

@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 class JetpackInstallPromptTests: XCTestCase {
-    private var contextManager: TestContextManager!
+    private var contextManager: ContextManagerMock!
     private var context: NSManagedObjectContext!
     private var userDefaults: UserDefaults!
     private var settings: JetpackInstallPromptSettings!
@@ -10,7 +10,7 @@ class JetpackInstallPromptTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        contextManager = TestContextManager()
+        contextManager = ContextManagerMock()
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.parent = contextManager.mainContext
 

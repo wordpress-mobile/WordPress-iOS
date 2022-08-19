@@ -101,7 +101,7 @@ import Combine
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
-    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     /// Content management
     let content = ReaderTableContent()
@@ -501,6 +501,11 @@ import Combine
     }
 
     private func setupJetpackBanner(stackView: UIStackView) {
+        /// If being presented in a modal, don't show a Jetpack banner
+        if let nav = navigationController, nav.isModal() {
+            return
+        }
+
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
@@ -2006,6 +2011,6 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
 
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        processJetpackBannerVisibility(scrollView)
     }
 }
