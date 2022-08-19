@@ -232,6 +232,7 @@ static ContextManager *_instance;
 
     // Initialize the container
     NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
+    _persistentContainer = persistentContainer;
     persistentContainer.persistentStoreDescriptions = @[self.storeDescription];
     [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
         if (error != nil) {
