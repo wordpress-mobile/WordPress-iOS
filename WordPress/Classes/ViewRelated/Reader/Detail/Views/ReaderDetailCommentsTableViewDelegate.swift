@@ -159,6 +159,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
             return
         }
         JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .readerDetail)
     }
 
     struct Constants {

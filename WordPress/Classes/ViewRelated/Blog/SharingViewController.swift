@@ -9,5 +9,6 @@ extension SharingViewController {
     @objc
     func presentJetpackOverlay() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .sharing)
     }
 }
