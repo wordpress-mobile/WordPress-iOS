@@ -114,6 +114,7 @@ class SiteStatsDashboardViewController: UIViewController {
         }
         jetpackBannerView.buttonAction = { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .stats)
         }
     }
 

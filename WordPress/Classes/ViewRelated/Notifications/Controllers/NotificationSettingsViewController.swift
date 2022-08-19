@@ -595,6 +595,7 @@ private extension NotificationSettingsViewController {
 
     @objc func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .notificationsSettings)
     }
 }
 

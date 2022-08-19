@@ -95,6 +95,7 @@ class JetpackOverlayView: UIView {
 
     @objc private func didTapButton() {
         buttonAction?()
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBottomSheetButtonTapped()
     }
 
     @objc private func dismissTapped() {
