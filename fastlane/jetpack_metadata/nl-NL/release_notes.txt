@@ -1,7 +1,9 @@
-We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
+We hebben een bug opgelost in de statistiekensectie van de app. Als je nu kijkt naar de lijst van zoekmachines die je bezoekers hebben gebruikt om op je site terecht te komen, kun je net als in je browser de geneste resultaten zien.
 
-If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
+Door @ te typen terwijl je een reactie schrijft, komt er nog steeds een lijst met voorgestelde gebruikers tevoorschijn die je misschien wilt taggen, maar nu zijn deze gebruikers opgesplitst in groepen. Als je reageert op een bovenliggende reactie komt de schrijver van deze reactie bovenaan de lijst te staan direct naast de schrijver van het originele bericht.
 
-The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.
+Omdat de app nu ook voorbeeldweergaven van afbeeldingen van hoge resolutie ondersteunt, hebben we de grootte van de themaschermafbeeldingen vergroot in de themakiezer van de site. Geen pixels meer, alleen maar pixel-perfectie.
 
-Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.
+We hebben een aantal visuele elementen in de editor aangepast van groen naar blauw. Nu komen ze overeen met de visuele elementen die je in de app van WordPress ziet.
+
+Eindelijk geen nullen meer in je wekelijkse overzicht. Als je geen reacties of likes hebt geplaatst deze week, dan worden ze niet weergegeven in je apparaatmeldingen. Alleen nog maar een positief gevoel.

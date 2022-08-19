@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-03 11:54:22+0000 */
+/* Translation-Revision-Date: 2022-08-10 14:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: tr */
@@ -2464,23 +2464,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Kapat";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -4133,8 +4126,14 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "Soyad";
 
-/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Geçen hafta %1$d görüntüleme, %2$d yorum ve %3$d beğeni aldınız.";
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "Geçen hafta %1$@ görüntüleme ve %2$@ yorum aldınız.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "Geçen hafta %1$@ görüntüleme ve %2$@ beğeni aldınız.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "Geçen hafta %@ görüntüleme oldu.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "En güncel yazı özeti";
@@ -9768,6 +9767,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "bir yıl";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "Kapat";
+
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
 
@@ -9776,6 +9778,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Kapat";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Kapat";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Kapat";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Kapat";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "%@ tarafından";
@@ -9802,6 +9816,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "takip et";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Kapat";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/benim-site-adresim (URL)";
@@ -9872,6 +9889,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "spam olarak işaretlendi";
 
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Kapat";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Kapat";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Kapat";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = ",";
 
@@ -9938,6 +9967,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Yeterli etkinlik yok. Sitenizin daha fazla ziyaretçisi olduğunda daha sonra tekrar kontrol edin!";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Kapat";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "Bu sohbette";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Site üyeleri";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
 
@@ -9961,6 +9999,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "belge sayfamızı ziyaret edin";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Kapat";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Şuana kadar ki en iyi görüntülemeler";

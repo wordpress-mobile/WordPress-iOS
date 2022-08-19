@@ -1,7 +1,9 @@
-Wir haben einige Performance-Verbesserungen für die Galerie und Bild-Blöcke im Block-Editor vorgenommen. So brauchen Bilder auf deiner Website weniger Speicherplatz und verlangsamen dein Gerät während Medien-Uploads nicht mehr. Wir mögen Geschwindigkeit.
+Wir haben einen Fehler im Abschnitt „Statistiken“ der App behoben. Wenn du dir ansiehst, über welche Suchmaschinen deine Besucher auf deine Website gelangt sind, werden dir die Ergebnisse nun verschachtelt angezeigt – ganz wie in deinem Browser.
 
-Wenn deine Website VideoPress nutzt, können Video-Blöcke, die in der Web-Version deiner Website gespeichert sind, jetzt auch problemlos in der mobilen App angezeigt werden.
+Wenn du die @-Taste drückst, während du einen Kommentar schreibst, werden dir Benutzer vorgeschlagen, die du möglicherweise erwähnen möchtest. Diese Benutzer wurden nun in Gruppen eingeteilt. Wenn du auf einen übergeordneten Kommentar antwortest, erscheint der Autor des Kommentars ganz oben in der Liste und direkt neben dem Namen des Beitragsautors.
 
-Der Block-Inserter im Block-Editor ermöglicht das bessere Organisieren von Block-Typen in Sammlungen. Wir haben außerdem den Abstand der Fußnote des Alt-Texts in Bild-Blöcken angepasst, denn auch die kleinen Dinge sind wichtig.
+Nie wieder verpixelte Bilder! Weil die App nun eine hochauflösende Bildvorschau ermöglicht, haben wir die Größe von Theme-Screenshots in der Website-Theme-Auswahl angepasst. So erwarten dich nur gestochen scharfe Bilder.
 
-Zu guter Letzt konnten wir noch einen lästigen Bug im Website-Erstellungsprozess beseitigen. Wenn du horizontal durch die Designoptionen für Websites scrollst, merkt die App sich jetzt, wo du aufgehört hast, selbst wenn du auf der Seite rauf- und runterscrollst.
+Wir haben einige Designelemente im Editor angepasst. Sie sind jetzt blau statt grün. Damit passen sie nun optimal zum Design der WordPress-App.
+
+Bei uns ist niemand eine Null. Solltest du in dieser Woche für deinen Beitrag mal keine Kommentare oder Likes erhalten, nehmen wir das nicht mehr in deine Gerätebenachrichtigungen mit auf. Immer positiv bleiben!

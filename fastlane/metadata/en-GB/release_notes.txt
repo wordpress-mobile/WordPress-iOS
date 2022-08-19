@@ -1,7 +1,7 @@
-We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
+We fixed a bug in the app’s Stats section—when you’re looking at lists of search engines that have sent visitors to your site, you can now see nested results, just like you would in your browser.
 
-If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
+Hitting the @ key when you’re writing a comment still brings up a list of suggested users you might like to tag, but now those users are split into groups. If you’re responding to a parent comment, the comment’s author appears at the top of the list, right next to the post’s author.
 
-The block inserter in the Block Editor now allows block types to be better organised in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks because little things are important, too.
+Now that the app supports higher-resolution image previews, we bumped up the size of theme screenshots in the site theme picker. No more pixelation, only pixel perfection.
 
-Last but not least, we squashed a pesky bug in the site creation process. When you’re scrolling through site design options horizontally, the app now remembers where you left off, even if you scroll up and down on the page.
+Finally, no more zeroes in your weekly roundup—if you don’t get any post comments or likes this week, we won’t include that number in your device notifications. Positive vibes only.
