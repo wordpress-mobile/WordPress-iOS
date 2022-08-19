@@ -1486,6 +1486,41 @@
 		8384C64428AAC85F00EABE26 /* KeychainUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64328AAC85F00EABE26 /* KeychainUtilsTests.swift */; };
 		839B150B2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
 		839B150C2795DEE0009F5E77 /* UIView+Margins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839B150A2795DEE0009F5E77 /* UIView+Margins.swift */; };
+		83A1B19528AFE47900E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19628AFE47A00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19728AFE47A00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19828AFE47B00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19928AFE47B00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19A28AFE47C00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19B28AFE47D00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19C28AFE47D00E737AC /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8384C64028AAC82600EABE26 /* KeychainUtils.swift */; };
+		83A1B19E28AFE86A00E737AC /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
+		83A1B1A028AFE89700E737AC /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		83A1B1A328AFE89F00E737AC /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
+		83A1B1A628AFF10900E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1A728AFF10A00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1A828AFF10A00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1A928AFF10B00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1AA28AFF10B00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1AB28AFF10C00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1AC28AFF10D00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1AD28AFF10D00E737AC /* UserPersistentStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */; };
+		83A1B1AE28AFF11A00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1AF28AFF11B00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B028AFF11B00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B128AFF11C00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B228AFF11C00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B328AFF11D00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B428AFF11D00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B528AFF11E00E737AC /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
+		83A1B1B628AFF15200E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1B728AFF15300E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1B828AFF15300E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1B928AFF15400E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1BA28AFF15400E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1BB28AFF15500E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1BC28AFF15500E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
+		83A1B1BD28AFF15600E737AC /* UserPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */; };
 		83B1D037282C62620061D911 /* BloggingPromptsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */; };
 		83B1D038282C62620061D911 /* BloggingPromptsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1D036282C62620061D911 /* BloggingPromptsAttribution.swift */; };
 		83C972E0281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C972DF281C45AB0049E1FE /* Post+BloggingPrompts.swift */; };
@@ -19913,6 +19948,8 @@
 				3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */,
 				3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
 				3FCF66E925CAF8C50047F337 /* ListStatsView.swift in Sources */,
+				83A1B19A28AFE47C00E737AC /* KeychainUtils.swift in Sources */,
+				83A1B1BB28AFF15500E737AC /* UserPersistentStore.swift in Sources */,
 				3F6BC06D25B24787007369D3 /* BuildConfiguration.swift in Sources */,
 				3F1FD2502548AD8B0060C53A /* TodayWidgetStats.swift in Sources */,
 				3F2F0C16256C6B2C003351C7 /* StatsWidgetsService.swift in Sources */,
@@ -19936,6 +19973,7 @@
 				3F1FD27B2548AE900060C53A /* CocoaLumberjack.swift in Sources */,
 				3FCF66FB25CAF8E00047F337 /* ListRow.swift in Sources */,
 				8323789828526E6D003F4443 /* AppConfiguration.swift in Sources */,
+				83A1B1B328AFF11D00E737AC /* UserPersistentRepository.swift in Sources */,
 				3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
@@ -19946,6 +19984,7 @@
 				3FD675D925C87A15009AB3C1 /* Sites.intentdefinition in Sources */,
 				3FE77C8325B0CA89007DE9E5 /* LocalizableStrings.swift in Sources */,
 				3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */,
+				83A1B1AB28AFF10C00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */,
 				3F71D5302548C2B200A4BA93 /* Double+Stats.swift in Sources */,
 				98390AD2254C985F00868F0A /* Tracks.swift in Sources */,
@@ -20018,9 +20057,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83A1B1AC28AFF10D00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				8323789928526E6E003F4443 /* AppConfiguration.swift in Sources */,
 				7345EAC4212DD49400607EC9 /* CircularImageView.swift in Sources */,
+				83A1B19B28AFE47D00E737AC /* KeychainUtils.swift in Sources */,
 				436110DD22C41AFD000773AD /* FeatureFlag.swift in Sources */,
+				83A1B1BC28AFF15500E737AC /* UserPersistentStore.swift in Sources */,
 				436110DC22C41ADB000773AD /* UIColor+MurielColors.swift in Sources */,
 				170BEC8A239153160017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				433ADC1B223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
@@ -20032,6 +20074,7 @@
 				FAD257F52611B54200EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
 				736584E6213752730029C9A4 /* SFHFKeychainUtils.m in Sources */,
+				83A1B1B428AFF11D00E737AC /* UserPersistentRepository.swift in Sources */,
 				73B05D2621374B960073ECAA /* Tracks.swift in Sources */,
 				1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */,
 				FAD2566F2611AEC700EDAF88 /* AppStyleGuide.swift in Sources */,
@@ -20046,13 +20089,16 @@
 				73ACDF9D2118AF7D00233AD4 /* Constants.m in Sources */,
 				7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */,
 				7335AC6621220EA60012EF2D /* NotificationContentRange.swift in Sources */,
+				83A1B1A028AFE89700E737AC /* AppConfiguration.swift in Sources */,
 				7335AC5B21220ADD0012EF2D /* FormattableContentStyles.swift in Sources */,
 				7335AC6A21220ED90012EF2D /* FormattableRangesFactory.swift in Sources */,
 				7335AC5C21220AF40012EF2D /* FormattableContentAction.swift in Sources */,
 				7335AC6B21220EF80012EF2D /* DefaultFormattableContentAction.swift in Sources */,
 				7335AC6421220E880012EF2D /* FormattableMediaContent.swift in Sources */,
+				83A1B1BD28AFF15600E737AC /* UserPersistentStore.swift in Sources */,
 				7335AC6521220E940012EF2D /* FormattableTextContent.swift in Sources */,
 				7335AC5D21220AFE0012EF2D /* FormattableContentActionCommand.swift in Sources */,
+				83A1B1AD28AFF10D00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				7335AC5A21220AD10012EF2D /* FormattableContentRange.swift in Sources */,
 				7335AC6821220EC10012EF2D /* FormattableCommentContent.swift in Sources */,
 				7335AC6921220ECE0012EF2D /* NotificationCommentRange.swift in Sources */,
@@ -20071,10 +20117,14 @@
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
 				73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */,
 				7335AC5821220AB40012EF2D /* FormattableContentGroup.swift in Sources */,
+				83A1B19C28AFE47D00E737AC /* KeychainUtils.swift in Sources */,
 				170BEC8C2391533D0017AEC1 /* KeyValueDatabase.swift in Sources */,
 				7335AC5E21220C630012EF2D /* Notifiable.swift in Sources */,
 				7335AC6321220E6E0012EF2D /* NotificationTextContent.swift in Sources */,
+				83A1B19E28AFE86A00E737AC /* FeatureFlag.swift in Sources */,
 				73E8E592212CD635000B26A5 /* UIImage+Assets.swift in Sources */,
+				83A1B1A328AFE89F00E737AC /* BuildConfiguration.swift in Sources */,
+				83A1B1B528AFF11E00E737AC /* UserPersistentRepository.swift in Sources */,
 				73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */,
 				73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */,
 				73F6DD45212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
@@ -20089,6 +20139,7 @@
 				74021A21202E173F006CC39F /* TextList+WordPress.swift in Sources */,
 				433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */,
 				74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */,
+				83A1B1B728AFF15300E737AC /* UserPersistentStore.swift in Sources */,
 				74021A1C202E158F006CC39F /* ShareExtensionService.swift in Sources */,
 				747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
@@ -20099,8 +20150,10 @@
 				74021A19202E14C1006CC39F /* NSAttributedStringKey+Conversion.swift in Sources */,
 				74021A03202E1307006CC39F /* NSExtensionContext+Extensions.swift in Sources */,
 				74021A22202E1740006CC39F /* Header+WordPress.swift in Sources */,
+				83A1B1AF28AFF11B00E737AC /* UserPersistentRepository.swift in Sources */,
 				74021A02202E12FF006CC39F /* Extensions.xcdatamodeld in Sources */,
 				FAD256B82611B01B00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
+				83A1B1A728AFF10A00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */,
 				9822D8DE214194EB0092CBD1 /* NoResultsViewController.swift in Sources */,
 				74021A1A202E1502006CC39F /* WPStyleGuide+Gridicon.swift in Sources */,
@@ -20123,6 +20176,7 @@
 				170BEC88239153110017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */,
 				CBF6201426E8FB8A0061A1F8 /* RemotePost+ShareData.swift in Sources */,
+				83A1B19628AFE47A00E737AC /* KeychainUtils.swift in Sources */,
 				CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */,
 				74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */,
 				74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */,
@@ -20175,6 +20229,7 @@
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
 				43EE90EF223B1029006A33E9 /* TextBundleWrapper.m in Sources */,
 				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
+				83A1B1B628AFF15200E737AC /* UserPersistentStore.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
@@ -20185,8 +20240,10 @@
 				74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
+				83A1B1AE28AFF11A00E737AC /* UserPersistentRepository.swift in Sources */,
 				74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				FAD256A62611B01A00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
+				83A1B1A628AFF10900E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				74D06FEB1FE0788500AF1788 /* TextList+WordPress.swift in Sources */,
 				74FA2EE4200E8A6C001DDC13 /* AppExtensionsService.swift in Sources */,
 				74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */,
@@ -20209,6 +20266,7 @@
 				745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */,
 				170BEC872391530D0017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				CBF6201326E8FB520061A1F8 /* RemotePost+ShareData.swift in Sources */,
+				83A1B19528AFE47900E737AC /* KeychainUtils.swift in Sources */,
 				74448F542044BC7600BD4CDA /* CategoryTree.swift in Sources */,
 				74402F2A200528F200A1D4A2 /* ExtensionPresentationController.swift in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
@@ -20245,7 +20303,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				98906507237CC1DF00218CD2 /* WidgetTwoColumnCell.swift in Sources */,
+				83A1B1B028AFF11B00E737AC /* UserPersistentRepository.swift in Sources */,
 				433ADC1C223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
+				83A1B1A828AFF10A00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */,
 				FAD2566C2611AEC300EDAF88 /* AppStyleGuide.swift in Sources */,
 				938CF3DE1EF1BE8000AF838E /* CocoaLumberjack.swift in Sources */,
@@ -20255,8 +20315,10 @@
 				436110DA22C3ED44000773AD /* FeatureFlag.swift in Sources */,
 				436110DB22C3ED4C000773AD /* BuildConfiguration.swift in Sources */,
 				98906503237CC1DF00218CD2 /* WidgetUnconfiguredCell.swift in Sources */,
+				83A1B1B828AFF15300E737AC /* UserPersistentStore.swift in Sources */,
 				93C2075D1CC7FFC800C94D04 /* Tracks+TodayWidget.swift in Sources */,
 				98E58A302360D23400E5534B /* TodayWidgetStats.swift in Sources */,
+				83A1B19728AFE47A00E737AC /* KeychainUtils.swift in Sources */,
 				4326191722FCB9F9003C7642 /* MurielColor.swift in Sources */,
 				436110D922C3ED18000773AD /* UIColor+MurielColors.swift in Sources */,
 				FAD256CA2611B01C00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
@@ -20290,10 +20352,14 @@
 				98712D1F23DA1D0A00555316 /* WidgetNoConnectionCell.swift in Sources */,
 				FAD257F42611B54100EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				092C3802275E718100BBBDD9 /* AppLocalizedString.swift in Sources */,
+				83A1B1AA28AFF10B00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				8323789728526E6C003F4443 /* AppConfiguration.swift in Sources */,
 				98A3C3052399A2370048D38D /* ThisWeekViewController.swift in Sources */,
+				83A1B1BA28AFF15400E737AC /* UserPersistentStore.swift in Sources */,
 				17A4B6A324F911D5002DFB8E /* KeyValueDatabase.swift in Sources */,
 				989643E523A02F640070720A /* MurielColor.swift in Sources */,
+				83A1B19928AFE47B00E737AC /* KeychainUtils.swift in Sources */,
+				83A1B1B228AFF11C00E737AC /* UserPersistentRepository.swift in Sources */,
 				983AE84D2399AC6B00E5B7F6 /* Constants.m in Sources */,
 				989643ED23A0437B0070720A /* WidgetDifferenceCell.swift in Sources */,
 				FAD2566E2611AEC600EDAF88 /* AppStyleGuide.swift in Sources */,
@@ -20320,10 +20386,14 @@
 				98712D1E23DA1D0900555316 /* WidgetNoConnectionCell.swift in Sources */,
 				98A6B993239881860031AEBD /* MurielColor.swift in Sources */,
 				092C3801275E718100BBBDD9 /* AppLocalizedString.swift in Sources */,
+				83A1B1A928AFF10B00E737AC /* UserPersistentStoreFactory.swift in Sources */,
 				8323789628526E6C003F4443 /* AppConfiguration.swift in Sources */,
 				FAD256EE2611B01F00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
+				83A1B1B928AFF15400E737AC /* UserPersistentStore.swift in Sources */,
 				17A4B6A224F911D4002DFB8E /* KeyValueDatabase.swift in Sources */,
 				98D31BC223972A79009CFF43 /* SFHFKeychainUtils.m in Sources */,
+				83A1B19828AFE47B00E737AC /* KeychainUtils.swift in Sources */,
+				83A1B1B128AFF11C00E737AC /* UserPersistentRepository.swift in Sources */,
 				98D31BAE239708FB009CFF43 /* Constants.m in Sources */,
 				98C0CE9B23C559C800D0F27C /* Double+Stats.swift in Sources */,
 				FAD2566D2611AEC500EDAF88 /* AppStyleGuide.swift in Sources */,

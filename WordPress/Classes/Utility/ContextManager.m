@@ -35,10 +35,13 @@ static ContextManager *_instance;
 
 - (instancetype)init
 {
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                        NSUserDomainMask,
-                                                                        YES) lastObject];
-    NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+    NSURL *storeURL;
+    if ([self isSharedLoginEnabled]) {
+        [self copyDatabaseToSharedDirectoryIfNeeded];
+        storeURL = [self sharedDatabasePath];
+    } else {
+        storeURL = [self localDatabasePath];
+    }
 
     return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL];
 }
@@ -381,6 +384,41 @@ static ContextManager *_instance;
 - (NSString *)modelPath
 {
     return [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
+}
+
+- (BOOL)isSharedLoginEnabled
+{
+   return [Feature enabled:FeatureFlagSharedLogin];
+}
+
+- (NSURL *)localDatabasePath
+{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+}
+
+- (NSURL *)sharedDatabasePath
+{
+    NSURL *sharedDirectory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.org.wordpress"];
+    return [sharedDirectory URLByAppendingPathComponent:@"WordPress.sqlite"];
+}
+
+- (void)copyDatabaseToSharedDirectoryIfNeeded
+{
+    BOOL sharedDatabaseExists = [[NSFileManager defaultManager] fileExistsAtPath:[[self sharedDatabasePath] absoluteString]];
+    if (![self isSharedLoginEnabled] || sharedDatabaseExists || AppConfiguration.isJetpack) {
+        return;
+    }
+    
+    NSString *shmLocalFilePath = [[[self localDatabasePath] absoluteString] stringByAppendingString:@"-shm"];
+    NSString *walLocalFilePath = [[[self localDatabasePath] absoluteString] stringByAppendingString:@"-wal"];
+    NSString *shmSharedFilePath = [[[self sharedDatabasePath] absoluteString] stringByAppendingString:@"-shm"];
+    NSString *walSharedFilePath = [[[self sharedDatabasePath] absoluteString] stringByAppendingString:@"-wal"];
+    [[NSFileManager defaultManager] copyItemAtURL:[self localDatabasePath] toURL:[self sharedDatabasePath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtURL:[NSURL URLWithString:shmLocalFilePath] toURL:[NSURL URLWithString:shmSharedFilePath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtURL:[NSURL URLWithString:walLocalFilePath] toURL:[NSURL URLWithString:walSharedFilePath] error:nil];
 }
 
 @end
