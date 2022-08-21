@@ -1,9 +1,7 @@
-We fixed a bug in the app’s Stats section—when you’re looking at lists of search engines that have sent visitors to your site, you can now see nested results, just like you would in your browser.
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
+* [**] [Jetpack-only] Self-hosted sites: enables logging in via a self-hosted site / adding a self-hosted site [#19194]
+* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
+* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
 
-Hitting the @ key when you’re writing a comment still brings up a list of suggested users you might like to tag, but now those users are split into groups. If you’re responding to a parent comment, the comment’s author appears at the top of the list, right next to the post’s author.
 
-Now that the app supports higher-resolution image previews, we bumped up the size of theme screenshots in the site theme picker. No more pixellation, only pixel perfection.
-
-We changed some visual elements in the editor from green to blue. It now matches the visuals you’d see in the WordPress app.
-
-Finally, no more zeroes in your weekly roundup—if you don’t get any post comments or likes this week, we won’t include that number in your device notifications. Positive vibes only.
