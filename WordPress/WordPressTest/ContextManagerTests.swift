@@ -187,7 +187,7 @@ class ContextManagerTests: XCTestCase {
         }
         XCTAssertEqual(numberOfAccounts(), 0)
 
-        await contextManager.save { context in
+        await contextManager.performAndSave { context in
             let account = WPAccount(context: context)
             account.userID = 1
             account.username = "First User"
@@ -202,7 +202,7 @@ class ContextManagerTests: XCTestCase {
         // From: https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md#overloading-and-overload-resolution
         // > "In non-async functions, and closures without any await expression, the compiler selects the non-async overload"
         let sync: () -> Void = {
-            contextManager.save { context in
+            contextManager.performAndSave { context in
                 let account = WPAccount(context: context)
                 account.userID = 2
                 account.username = "Second User"
@@ -226,12 +226,12 @@ class ContextManagerTests: XCTestCase {
             self.expectation(description: "Second User is saved"),
         ]
 
-        contextManager.save {
+        contextManager.performAndSave {
             let account = WPAccount(context: $0)
             account.userID = 1
             account.username = "First User"
 
-            contextManager.save {
+            contextManager.performAndSave {
                 let account = WPAccount(context: $0)
                 account.userID = 2
                 account.username = "Second User"

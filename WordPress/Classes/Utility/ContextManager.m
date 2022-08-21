@@ -195,7 +195,7 @@ static ContextManager *_instance;
     }];
 }
 
-- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock
 {
     NSManagedObjectContext *context = [self newDerivedContext];
     [context performBlockAndWait:^{
@@ -205,7 +205,7 @@ static ContextManager *_instance;
     }];
 }
 
-- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion
 {
     NSManagedObjectContext *context = [self newDerivedContext];
     [context performBlock:^{
