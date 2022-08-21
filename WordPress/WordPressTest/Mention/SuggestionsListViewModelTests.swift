@@ -119,7 +119,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatch() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [17, 22, 38, 44, 71, 80, 81, 88, 91], regularIds: [], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [81, 71, 38, 17, 88, 80, 91, 44, 22], regularIds: [])
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
@@ -133,7 +133,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [17, 22, 38, 44, 71, 80, 81, 91], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [81, 71, 38, 17, 80, 91, 44, 22])
         self.viewModel.prominentSuggestionsIds = [88]
 
         // When
@@ -148,7 +148,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [17, 22, 38, 44, 71, 80, 81], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [81, 71, 38, 17, 80, 44, 22])
         self.viewModel.prominentSuggestionsIds = [91, 88]
 
         // When
@@ -190,7 +190,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     // MARK: - Helpers
 
-    private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int], in userSuggestions: [UserSuggestion]) -> [SuggestionsListSection] {
+    private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int]) -> [SuggestionsListSection] {
         let prominentSection = suggestionsSection(fromIds: prominentIds)
         let regularSection = suggestionsSection(fromIds: regularIds)
         return [prominentSection, regularSection].compactMap { $0 }

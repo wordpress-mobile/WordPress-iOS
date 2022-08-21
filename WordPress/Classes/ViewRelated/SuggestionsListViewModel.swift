@@ -123,13 +123,38 @@ import CoreData
         }
         switch suggestions {
         case .users(let userSuggestions):
+            let sortedUserSuggestions = Self.sort(
+                userSuggestions: userSuggestions, by: searchQuery
+            )
             return Self.searchResultByMovingProminentSuggestionsToTop(
-                userSuggestions: userSuggestions,
+                userSuggestions: sortedUserSuggestions,
                 prominentSuggestionsIds: prominentSuggestionsIds
             )
         case .sites(let siteSuggestions):
             return .sites(siteSuggestions)
         }
+    }
+
+    private static func sort(userSuggestions: [UserSuggestion], by searchQuery: String) -> [UserSuggestion] {
+        guard !searchQuery.isEmpty else { return userSuggestions }
+        var prefixedUserSuggestions = [UserSuggestion]()
+        var otherUserSuggestions = [UserSuggestion]()
+        var sortedUserSuggestions = [UserSuggestion]()
+
+        userSuggestions.forEach { suggestion in
+            guard let displayName = suggestion.displayName else { return }
+            if displayName.hasPrefix(searchQuery) {
+                prefixedUserSuggestions.append(suggestion)
+            } else {
+                otherUserSuggestions.append(suggestion)
+            }
+        }
+
+        prefixedUserSuggestions.sort()
+        otherUserSuggestions.sort()
+        sortedUserSuggestions.append(contentsOf: prefixedUserSuggestions)
+        sortedUserSuggestions.append(contentsOf: otherUserSuggestions)
+        return sortedUserSuggestions
     }
 
     private static func searchResultByMovingProminentSuggestionsToTop(userSuggestions: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> SearchResult {
