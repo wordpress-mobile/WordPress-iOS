@@ -55,8 +55,38 @@ private extension NSExceptionName {
     static let coreDataSaveDerivedException = NSExceptionName("Unresolved Core Data save error (Derived Context)")
 }
 
-extension ContextManager {
-    @objc(handleSaveError:inContext:)
+extension LegacyContextFactory {
+
+    /// A wrapper of `internalSave(_:)` to expose it as an Objective-C API for `LegacyContextFactory` to call.
+    @objc func internalSaveContext(_ context: NSManagedObjectContext) {
+        internalSave(context)
+    }
+
+}
+
+extension ManagedObjectContextFactory {
+
+    func internalSave(_ context: NSManagedObjectContext) {
+        let inserted = Array(context.insertedObjects)
+        do {
+            try context.obtainPermanentIDs(for: inserted)
+        } catch {
+            DDLogError("Error obtaining permanent object IDs for \(inserted), \(error)");
+        }
+
+        if (context.hasChanges) {
+            do {
+                try context.save()
+            } catch {
+                handleSaveError(error as NSError, in: context)
+            }
+        }
+    }
+
+}
+
+private extension ManagedObjectContextFactory {
+
     func handleSaveError(_ error: NSError, in context: NSManagedObjectContext) {
         let isMainContext = context == mainContext
         let exceptionName: NSExceptionName = isMainContext ? .coreDataSaveMainException : .coreDataSaveDerivedException
@@ -68,9 +98,7 @@ extension ContextManager {
         let exception = NSException(name: exceptionName, reason: reason, userInfo: nil)
         exception.raise()
     }
-}
 
-private extension ContextManager {
     func reasonForError(_ error: NSError) -> String {
         if error.code == NSValidationMultipleErrorsError {
             guard let errors = error.userInfo[NSDetailedErrorsKey] as? [NSError] else {

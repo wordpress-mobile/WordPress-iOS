@@ -27,6 +27,7 @@
 
 #import "EditCommentViewController.h"
 
+#import "LegacyContextFactory.h"
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
