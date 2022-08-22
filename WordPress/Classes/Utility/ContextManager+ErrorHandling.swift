@@ -71,10 +71,10 @@ extension ManagedObjectContextFactory {
         do {
             try context.obtainPermanentIDs(for: inserted)
         } catch {
-            DDLogError("Error obtaining permanent object IDs for \(inserted), \(error)");
+            DDLogError("Error obtaining permanent object IDs for \(inserted), \(error)")
         }
 
-        if (context.hasChanges) {
+        if context.hasChanges {
             do {
                 try context.save()
             } catch {

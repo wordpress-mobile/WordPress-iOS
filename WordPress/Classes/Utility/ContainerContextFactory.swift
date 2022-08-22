@@ -27,7 +27,7 @@ class ContainerContextFactory: NSObject, ManagedObjectContextFactory {
                 completionBlock?()
             }
         }
-        if (wait) {
+        if wait {
             context.performAndWait(block)
         } else {
             context.perform(block)
