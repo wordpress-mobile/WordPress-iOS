@@ -29,17 +29,6 @@ public class MediaPickerAlbumListScreen: ScreenObject {
         return try MediaPickerAlbumScreen()
     }
 
-    public func waitAndTap( _ element: XCUIElement) {
-        var retries = 0
-        let maxRetries = 10
-        if element.waitForIsHittable(timeout: 10) {
-            while element.isHittable && retries < maxRetries {
-                element.tap()
-                retries += 1
-            }
-        }
-    }
-
     public static func isLoaded() -> Bool {
         (try? MediaPickerAlbumListScreen().isLoaded) ?? false
     }
