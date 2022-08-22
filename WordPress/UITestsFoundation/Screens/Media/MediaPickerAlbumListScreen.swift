@@ -24,7 +24,7 @@ public class MediaPickerAlbumListScreen: ScreenObject {
         Logger.log(message: "IS SELECTED: \(selectedAlbum.isSelected)", event: .i)
         Logger.log(message: "IS A. ELEMENT:\(selectedAlbum.isAccessibilityElement)", event: .i)
         XCTAssertTrue(selectedAlbum.waitForExistence(timeout: 5), "Selected album did not load")
-        selectedAlbum.tap()
+        selectedAlbum.doubleTap()
 
         return try MediaPickerAlbumScreen()
     }
