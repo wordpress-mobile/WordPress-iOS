@@ -136,7 +136,7 @@ import CoreData
     }
 
     private static func sort(userSuggestions: [UserSuggestion], by searchQuery: String) -> [UserSuggestion] {
-        guard !searchQuery.isEmpty else { return userSuggestions }
+        guard !searchQuery.isEmpty, !userSuggestions.isEmpty else { return userSuggestions }
         var prefixedUserSuggestions = [UserSuggestion]()
         var otherUserSuggestions = [UserSuggestion]()
         var sortedUserSuggestions = [UserSuggestion]()
