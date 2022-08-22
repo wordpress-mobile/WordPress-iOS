@@ -139,7 +139,6 @@ import CoreData
         guard !searchQuery.isEmpty, !userSuggestions.isEmpty else { return userSuggestions }
         var prefixedUserSuggestions = [UserSuggestion]()
         var otherUserSuggestions = [UserSuggestion]()
-        var sortedUserSuggestions = [UserSuggestion]()
 
         userSuggestions.forEach { suggestion in
             guard let displayName = suggestion.displayName else { return }
@@ -150,11 +149,7 @@ import CoreData
             }
         }
 
-        prefixedUserSuggestions.sort()
-        otherUserSuggestions.sort()
-        sortedUserSuggestions.append(contentsOf: prefixedUserSuggestions)
-        sortedUserSuggestions.append(contentsOf: otherUserSuggestions)
-        return sortedUserSuggestions
+        return prefixedUserSuggestions.sorted() + otherUserSuggestions.sorted()
     }
 
     private static func searchResultByMovingProminentSuggestionsToTop(userSuggestions: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> SearchResult {
