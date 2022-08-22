@@ -24,20 +24,9 @@ public class MediaPickerAlbumListScreen: ScreenObject {
         Logger.log(message: "IS SELECTED: \(selectedAlbum.isSelected)", event: .i)
         Logger.log(message: "IS A. ELEMENT:\(selectedAlbum.isAccessibilityElement)", event: .i)
         XCTAssertTrue(selectedAlbum.waitForExistence(timeout: 5), "Selected album did not load")
-        waitAndTap(selectedAlbum)
+        selectedAlbum.tap()
 
         return try MediaPickerAlbumScreen()
-    }
-
-    public func waitAndTap( _ element: XCUIElement) {
-        var retries = 0
-        let maxRetries = 10
-        if element.waitForIsHittable(timeout: 10) {
-            while element.isHittable && retries < maxRetries {
-                element.tap()
-                retries += 1
-            }
-        }
     }
 
     public static func isLoaded() -> Bool {
