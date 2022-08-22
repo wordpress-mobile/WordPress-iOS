@@ -1,7 +1,6 @@
 #import "TodayExtensionService.h"
 #import <NotificationCenter/NotificationCenter.h>
 #import "Constants.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPress-Swift.h"
 
 @implementation TodayExtensionService
@@ -33,12 +32,12 @@
     [sharedDefaults setObject:blogUrl forKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
-                         andPassword:oauth2Token
-                      forServiceName:WPStatsTodayWidgetKeychainServiceName
-                         accessGroup:WPAppKeychainAccessGroup
-                      updateExisting:YES
-                               error:&error];
+    [KeychainUtils.shared storeUsername:WPStatsTodayWidgetKeychainTokenKey
+                               password:oauth2Token
+                            serviceName:WPStatsTodayWidgetKeychainServiceName
+                            accessGroup:WPAppKeychainAccessGroup
+                         updateExisting:YES
+                                  error:&error];
     if (error) {
         DDLogError(@"Today Widget OAuth2Token error: %@", error);
     }
@@ -53,20 +52,20 @@
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
     
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
-                              andServiceName:WPStatsTodayWidgetKeychainServiceName
-                                 accessGroup:WPAppKeychainAccessGroup
-                                       error:nil];
+    [KeychainUtils.shared deleteItemWithUsername:WPStatsTodayWidgetKeychainTokenKey
+                                     serviceName:WPStatsTodayWidgetKeychainServiceName
+                                     accessGroup:WPAppKeychainAccessGroup
+                                           error:nil];
 }
 
 - (BOOL)widgetIsConfigured
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
-                                                       andServiceName:WPStatsTodayWidgetKeychainServiceName
-                                                          accessGroup:WPAppKeychainAccessGroup
-                                                                error:nil];
+    NSString *oauth2Token = [KeychainUtils.shared getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
+                                                             serviceName:WPStatsTodayWidgetKeychainServiceName
+                                                             accessGroup:WPAppKeychainAccessGroup
+                                                                   error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {
         return NO;
