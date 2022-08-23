@@ -1,7 +1,7 @@
 extension UserSuggestion: Comparable {
-    public static func < (lus: UserSuggestion, rus: UserSuggestion) -> Bool {
-        guard let ldn = lus.displayName,
-              let rdn = rus.displayName else { return false }
-        return ldn.localizedCaseInsensitiveCompare(rdn) == .orderedAscending
+    public static func < (lhs: UserSuggestion, rhs: UserSuggestion) -> Bool {
+        guard let leftDisplayName = lhs.displayName,
+              let rightDisplayName = rhs.displayName else { return false }
+        return leftDisplayName.localizedCaseInsensitiveCompare(rightDisplayName) == .orderedAscending
     }
 }
