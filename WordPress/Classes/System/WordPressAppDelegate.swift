@@ -227,7 +227,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         let lastSavedStateVersionKey = "lastSavedStateVersionKey"
-        let defaults = UserDefaults.standard
+        let defaults = UserPersistentStoreFactory.instance()
 
         var shouldRestoreApplicationState = false
 
@@ -237,9 +237,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 shouldRestoreApplicationState = self.shouldRestoreApplicationState
             }
 
-            defaults.setValue(currentVersion, forKey: lastSavedStateVersionKey)
+            defaults.set(currentVersion, forKey: lastSavedStateVersionKey)
         }
-
         return shouldRestoreApplicationState
     }
 

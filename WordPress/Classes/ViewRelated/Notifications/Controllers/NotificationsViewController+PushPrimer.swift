@@ -103,34 +103,3 @@ extension NotificationsViewController {
         }
     }
 }
-
-// MARK: - User Defaults for Push Notifications
-
-extension UserDefaults {
-    private enum Keys: String {
-        case notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
-        case secondNotificationsAlertCount = "secondNotificationsAlertCount"
-    }
-
-    var notificationPrimerInlineWasAcknowledged: Bool {
-        get {
-            return bool(forKey: Keys.notificationPrimerInlineWasAcknowledged.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.notificationPrimerInlineWasAcknowledged.rawValue)
-        }
-    }
-
-    var secondNotificationsAlertCount: Int {
-        get {
-            integer(forKey: Keys.secondNotificationsAlertCount.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.secondNotificationsAlertCount.rawValue)
-        }
-    }
-
-    @objc var welcomeNotificationSeenKey: String {
-        return "welcomeNotificationSeen"
-    }
-}
