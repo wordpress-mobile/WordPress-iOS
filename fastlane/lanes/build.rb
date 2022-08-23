@@ -397,21 +397,6 @@ platform :ios do
     )
   end
 
-  # Returns the value of `VERSION_SHORT`` from the `Version.public.xcconfig` file
-  #
-  # FIXME: This ought to be extracted into the release toolkit, ideally in a configurable way but with smart defaults.
-  #        See discussion in https://github.com/wordpress-mobile/WordPress-iOS/pull/16805/files/5f3009c5e0d01448cf0369656dddc1fe3757e45f#r664069046
-  #
-  def read_version_from_config
-    fastlane_require 'Xcodeproj'
-
-    # If the file is not available, the method will raise so we should be fine not handling that case. We'll never return an empty string.
-    File.open(File.join(PROJECT_ROOT_FOLDER, 'Config', 'Version.public.xcconfig')) do |config|
-      configuration = Xcodeproj::Config.new(config)
-      configuration.attributes['VERSION_SHORT']
-    end
-  end
-
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
 
