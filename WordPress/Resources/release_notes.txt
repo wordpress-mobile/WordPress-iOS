@@ -1,2 +1,3 @@
-* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
-* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
+Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
+
+File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
