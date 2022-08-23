@@ -39,7 +39,7 @@ static ContextManager *_instance;
                                                                         YES) lastObject];
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 
-    return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL contextFactory:[LegacyContextFactory class]];
+    return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL contextFactory:nil];
 }
 
 - (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL contextFactory:(Class)factory
