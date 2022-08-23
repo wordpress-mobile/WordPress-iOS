@@ -97,11 +97,11 @@ private extension NotificationReplyStore {
     ///
     var replies: [String: String] {
         get {
-            let replies = UserDefaults.standard.dictionary(forKey: Settings.contentsKey) as? [String: String]
+            let replies = UserPersistentStoreFactory.instance().dictionary(forKey: Settings.contentsKey) as? [String: String]
             return replies ?? [String: String]()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Settings.contentsKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Settings.contentsKey)
         }
     }
 
@@ -109,11 +109,11 @@ private extension NotificationReplyStore {
     ///
     var timestamps: [String: Date] {
         get {
-            let timestamps = UserDefaults.standard.dictionary(forKey: Settings.timestampsKey) as? [String: Date]
+            let timestamps = UserPersistentStoreFactory.instance().dictionary(forKey: Settings.timestampsKey) as? [String: Date]
             return timestamps ?? [String: Date]()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Settings.timestampsKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Settings.timestampsKey)
         }
     }
 }

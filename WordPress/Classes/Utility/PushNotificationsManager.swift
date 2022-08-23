@@ -20,10 +20,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.tokenKey) ?? String()
+            return UserPersistentStoreFactory.instance().string(forKey: Device.tokenKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.tokenKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Device.tokenKey)
         }
     }
 
@@ -32,10 +32,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceId: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.idKey) ?? String()
+            return UserPersistentStoreFactory.instance().string(forKey: Device.idKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.idKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Device.idKey)
         }
     }
 

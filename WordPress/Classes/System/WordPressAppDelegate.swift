@@ -154,9 +154,20 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+
+        copyToSharedDefaultsIfNeeded()
         return true
     }
 
+    private func copyToSharedDefaultsIfNeeded() {
+        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserDefaults.standard.isOneOffMigrationComplete {
+            let dict = UserDefaults.standard.dictionaryRepresentation()
+            for (key, value) in dict {
+                UserPersistentStore.standard.set(value, forKey: key)
+                UserDefaults.standard.isOneOffMigrationComplete = true
+            }
+        }
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
@@ -512,7 +523,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressComApi() {
-        if let baseUrl = UserDefaults.standard.string(forKey: "wpcom-api-base-url") {
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url") {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
         }
     }
@@ -646,9 +657,9 @@ extension WordPressAppDelegate {
         let unknown = "Unknown"
 
         let device = UIDevice.current
-        let crashCount = UserDefaults.standard.integer(forKey: "crashCount")
+        let crashCount = UserPersistentStoreFactory.instance().integer(forKey: "crashCount")
 
-        let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
+        let extraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug")
 
         let bundle = Bundle.main
         let detailedVersionNumber = bundle.detailedVersionNumber() ?? unknown
@@ -668,7 +679,7 @@ extension WordPressAppDelegate {
 
         let devicePlatform = UIDeviceHardware.platformString()
         let architecture = UIDeviceHardware.platform()
-        let languages = UserDefaults.standard.array(forKey: "AppleLanguages")
+        let languages = UserPersistentStoreFactory.instance().array(forKey: "AppleLanguages")
         let currentLanguage = languages?.first ?? unknown
         let udid = device.wordPressIdentifier() ?? unknown
 
@@ -687,25 +698,25 @@ extension WordPressAppDelegate {
         if !AccountHelper.isLoggedIn {
             // When there are no blogs in the app the settings screen is unavailable.
             // In this case, enable extra_debugging by default to help troubleshoot any issues.
-            guard UserDefaults.standard.object(forKey: "orig_extra_debug") == nil else {
+            guard UserPersistentStoreFactory.instance().object(forKey: "orig_extra_debug") == nil else {
                 // Already saved. Don't save again or we could loose the original value.
                 return
             }
 
-            let origExtraDebug = UserDefaults.standard.bool(forKey: "extra_debug") ? "YES" : "NO"
-            UserDefaults.standard.set(origExtraDebug, forKey: "orig_extra_debug")
-            UserDefaults.standard.set(true, forKey: "extra_debug")
+            let origExtraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug") ? "YES" : "NO"
+            UserPersistentStoreFactory.instance().set(origExtraDebug, forKey: "orig_extra_debug")
+            UserPersistentStoreFactory.instance().set(true, forKey: "extra_debug")
             WordPressAppDelegate.setLogLevel(.verbose)
         } else {
-            guard let origExtraDebug = UserDefaults.standard.string(forKey: "orig_extra_debug") else {
+            guard let origExtraDebug = UserPersistentStoreFactory.instance().string(forKey: "orig_extra_debug") else {
                 return
             }
 
             let origExtraDebugValue = (origExtraDebug as NSString).boolValue
 
             // Restore the original setting and remove orig_extra_debug
-            UserDefaults.standard.set(origExtraDebugValue, forKey: "extra_debug")
-            UserDefaults.standard.removeObject(forKey: "orig_extra_debug")
+            UserPersistentStoreFactory.instance().set(origExtraDebugValue, forKey: "extra_debug")
+            UserPersistentStoreFactory.instance().removeObject(forKey: "orig_extra_debug")
 
             if origExtraDebugValue {
                 WordPressAppDelegate.setLogLevel(.verbose)

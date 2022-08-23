@@ -13,10 +13,10 @@ class StatsRevampV2IntroductionPresenter: NSObject {
 
     static var hasPresented: Bool {
         get {
-            UserDefaults.standard.bool(forKey: Constants.statsRevampV2FeatureIntroDisplayedKey)
+            UserPersistentStoreFactory.instance().bool(forKey: Constants.statsRevampV2FeatureIntroDisplayedKey)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Constants.statsRevampV2FeatureIntroDisplayedKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.statsRevampV2FeatureIntroDisplayedKey)
         }
     }
 

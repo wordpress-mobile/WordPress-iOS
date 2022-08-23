@@ -21,11 +21,11 @@ struct WeeklyRoundupDebugScreen: View {
 
         var isEnabledForA8cP2s: Bool {
             get {
-                (UserDefaults.standard.value(forKey: weeklyRoundupEnabledForA8cP2sKey) as? Bool) ?? false
+                (UserPersistentStoreFactory.instance().object(forKey: weeklyRoundupEnabledForA8cP2sKey) as? Bool) ?? false
             }
 
             set {
-                UserDefaults.standard.setValue(newValue, forKey: weeklyRoundupEnabledForA8cP2sKey)
+                UserPersistentStoreFactory.instance().set(newValue, forKey: weeklyRoundupEnabledForA8cP2sKey)
             }
         }
     }

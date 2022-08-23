@@ -406,7 +406,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
             }
 
-            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
+            UserPersistentStoreFactory.instance().set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
