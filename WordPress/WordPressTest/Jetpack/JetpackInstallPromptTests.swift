@@ -18,7 +18,10 @@ class JetpackInstallPromptTests: XCTestCase {
         userDefaults = UserDefaults(suiteName: name)
         userDefaults.removePersistentDomain(forName: name)
 
-        settings = JetpackInstallPromptSettings(userDefaults: userDefaults)
+        settings = JetpackInstallPromptSettings(
+            userDefaults: userDefaults,
+            showJetpackPluginInstallPrompt: true
+        )
     }
 
     override func tearDown() {
@@ -55,6 +58,17 @@ class JetpackInstallPromptTests: XCTestCase {
         blog.isAdmin = true
 
         settings.setPromptWasDismissed(true, for: blog)
+
+        XCTAssertFalse(settings.canDisplay(for: blog))
+    }
+
+    func testPromptWillNotShowForSitesWithoutJetpackPluginInstallPromptFlagEnabled() {
+        settings = JetpackInstallPromptSettings(
+            userDefaults: userDefaults,
+            showJetpackPluginInstallPrompt: false
+        )
+        let blog = BlogBuilder(context).withJetpack(version: nil, username: nil, email: nil).build()
+        blog.isAdmin = true
 
         XCTAssertFalse(settings.canDisplay(for: blog))
     }
