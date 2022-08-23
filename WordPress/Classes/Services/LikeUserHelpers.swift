@@ -59,11 +59,8 @@ import CoreData
     }
 
     class func purgeStaleLikes() {
-        let derivedContext = ContextManager.shared.newDerivedContext()
-
-        derivedContext.perform {
-            purgeStaleLikes(fromContext: derivedContext)
-            ContextManager.shared.save(derivedContext)
+        ContextManager.shared.performAndSave {
+            purgeStaleLikes(fromContext: $0)
         }
     }
 

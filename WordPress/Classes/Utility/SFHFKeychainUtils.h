@@ -65,4 +65,7 @@
                   accessGroup:(NSString *)accessGroup
                         error:(NSError **)error;
 
++ (NSArray<NSDictionary<NSString *, NSString *> *> *)getAllPasswordsForAccessGroup:(NSString *)accessGroup
+                                                                             error:(NSError **)error;
+
 @end

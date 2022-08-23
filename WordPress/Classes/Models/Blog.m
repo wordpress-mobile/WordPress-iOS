@@ -5,7 +5,6 @@
 #import "ContextManager.h"
 #import "Constants.h"
 #import "WordPress-Swift.h"
-#import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
@@ -466,7 +465,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)password
 {
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
+    return [KeychainUtils.shared getPasswordForUsername:self.username serviceName:self.xmlrpc accessGroup:nil error:nil];
 }
 
 - (void)setPassword:(NSString *)password
@@ -474,15 +473,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     NSAssert(self.username != nil, @"Can't set password if we don't know the username yet");
     NSAssert(self.xmlrpc != nil, @"Can't set password if we don't know the XML-RPC endpoint yet");
     if (password) {
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:password
-                          forServiceName:self.xmlrpc
-                          updateExisting:YES
-                                   error:nil];
+        [KeychainUtils.shared storeUsername:self.username
+                                   password:password
+                                serviceName:self.xmlrpc
+                                accessGroup:nil
+                             updateExisting:YES
+                                      error:nil];
     } else {
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:self.xmlrpc
-                                           error:nil];
+        [KeychainUtils.shared deleteItemWithUsername:self.username
+                                         serviceName:self.xmlrpc
+                                         accessGroup:nil
+                                               error:nil];
     }
 }
 
@@ -596,6 +597,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureSmartframeEmbed:
             return [self supportsEmbedVariation: @"10.2"];
+        case BlogFeatureFileDownloadsStats:
+            return [self isHostedAtWPcom];
     }
 }
 

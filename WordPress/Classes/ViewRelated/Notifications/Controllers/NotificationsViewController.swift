@@ -135,7 +135,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }()
 
     /// Used by JPScrollViewDelegate to send scroll position
-    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - View Lifecycle
 
@@ -626,6 +626,7 @@ extension NotificationsViewController {
         }
         jetpackBannerView.buttonAction = { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
         }
         jetpackBannerView.isHidden = false
         addTranslationObserver(jetpackBannerView)
@@ -2075,6 +2076,6 @@ extension NotificationsViewController: WPScrollableViewController {
 //
 extension NotificationsViewController: JPScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        processJetpackBannerVisibility(scrollView)
     }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-01 18:42:20+0000 */
+/* Translation-Revision-Date: 2022-08-16 11:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -2464,24 +2464,17 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
-"Dismiss" = "Respinto";
+   User action to dismiss media options. */
+"Dismiss" = "Ignora";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "Ignora il passaggio %@ dell'Avvio rapido";
@@ -3337,6 +3330,9 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Seguaci";
 
+/* Insights 'Followers Total' header */
+"Followers Total" = "Follower totali";
+
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4130,8 +4126,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "Cognome";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "L'ultima settimana hai avuto %1$@ visualizzazioni e %2$@ commenti.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "L'ultima settimana hai avuto %1$@ visualizzazioni e %2$@ Mi piace.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "L'ultima settimana hai avuto %1$d visualizzazioni, %2$d commenti e %3$d Mi piace.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "L'ultima settimana hai avuto %1$@ visualizzazioni, %2$@ commenti e %3$@ Mi piace.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "L'ultima settimana hai avuto %@ visualizzazioni.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Riassunto ultimo articolo";
@@ -8574,6 +8579,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Upgrade Focus: VideoPress For Weddings" = "Punti principali dell'aggiornamento: VideoPress per matrimoni";
 
 /* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Aggiorna il piano per caricare audio";
+
+/* No comment provided by engineer. */
 "Upgrade your plan to use video covers" = "Aggiorna il piano per utilizzare cover video";
 
 /* Title for button displayed when the user has an empty media library */
@@ -9407,7 +9415,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You are about to change your username, which is currently %@. %@" = "Stai per modificare il tuo nome utente, che attualmente è %1$@. %2$@";
 
 /* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Stai già seguendo questo sito";
+"You are already following this site." = "Stai già seguendo questo sito.";
 
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Stai per cambiare il tuo nome utente in %@. Cambiando il tuo nome utente avrà effetto anche sul tuo profilo Gravatar e gli indirizzi del profilo su IntenseDebate.\nConferma il tuo nuovo nome utente per continuare.";
@@ -9762,6 +9770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "un anno";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "Ignora";
+
 /* Age between dates equaling one hour. */
 "an hour" = "un'ora";
 
@@ -9770,6 +9781,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Ignora";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Ignora";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Ignora";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Ignora";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "di %@";
@@ -9796,6 +9819,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "segui";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Ignora";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/indirizzo-del-sito (URL)";
@@ -9866,6 +9892,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "contrassegnato come spam";
 
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Ignora";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Ignora";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Ignora";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Ignora";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "di";
 
@@ -9932,6 +9970,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Attività insufficiente. Controlla nuovamente più tardi quando più utenti hanno visitato il tuo sito.";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Ignora";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "In questa conversazione";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Membri del sito";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "questi elementi verranno eliminati:";
 
@@ -9955,6 +10002,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visita la pagina della documentazione";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Ignora";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Record di visualizzazioni";

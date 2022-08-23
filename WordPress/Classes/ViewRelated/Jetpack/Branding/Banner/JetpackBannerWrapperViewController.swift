@@ -1,13 +1,19 @@
 import Foundation
 import UIKit
+import WordPressShared
 
-@objc class JetpackBannerWrapperViewController: UIViewController {
+class JetpackBannerWrapperViewController: UIViewController {
     /// The wrapped child view controller.
     private(set) var childVC: UIViewController?
+    private var analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen?
 
-    @objc convenience init(childVC: UIViewController) {
+    convenience init(
+        childVC: UIViewController,
+        analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen? = nil
+    ) {
         self.init()
         self.childVC = childVC
+        self.analyticsId = analyticsId
     }
 
     override func viewDidLoad() {
@@ -38,12 +44,15 @@ import UIKit
     }
 
     private func configureJetpackBanner(_ stackView: UIStackView) {
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard JetpackBrandingVisibility.all.enabled, !isModal() else {
             return
         }
 
         let jetpackBannerView = JetpackBannerView() { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            if let screen = analyticsId {
+                JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: screen)
+            }
         }
         stackView.addArrangedSubview(jetpackBannerView)
 

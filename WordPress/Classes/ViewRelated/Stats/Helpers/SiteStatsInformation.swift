@@ -13,6 +13,7 @@ import Foundation
     @objc var siteID: NSNumber?
     @objc var siteTimeZone: TimeZone?
     @objc var oauth2Token: String?
+    @objc var supportsFileDownloads: Bool = true
 
     func updateTimeZone() {
         let context = ContextManager.shared.mainContext

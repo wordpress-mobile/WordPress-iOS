@@ -6,7 +6,6 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
-#import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
@@ -130,6 +129,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         
         SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
         SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
+        SiteStatsInformation.sharedInstance.supportsFileDownloads = [self.blog supports:BlogFeatureFileDownloadsStats];
         
         [self addStatsViewControllerToView];
         [self initializeStatsWidgetsIfNeeded];

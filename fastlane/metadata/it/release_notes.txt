@@ -1,7 +1,0 @@
-Abbiamo apportato alcuni miglioramenti alle prestazioni dei blocchi Galleria e Immagine nell'Editor a blocchi. Ciò consentirà alle immagini di occupare meno spazio di archiviazione sul sito ed eviterà il rallentamento del dispositivo durante i caricamenti multimediali. Sentiamo l'esigenza della velocità.
-
-Se il tuo sito utilizza VideoPress, tutti i blocchi video salvati nella versione web del sito verranno ora visualizzati correttamente anche nell'app mobile.
-
-L'inseritore di blocchi nell'Editor a blocchi ora consente di organizzare meglio i tipi di blocchi nelle raccolte. Abbiamo anche apportato una piccola regolazione della spaziatura nella nota a piè di pagina del testo alternativo nei Blocchi immagine, perché anche le piccole cose sono importanti.
-
-Ultimo ma non meno importante, abbiamo eliminato un fastidioso bug nel processo di creazione del sito. Quando scorri orizzontalmente le opzioni di progettazione del sito, l'app ora ricorda dove avevi interrotto, anche se scorri su e giù nella pagina.

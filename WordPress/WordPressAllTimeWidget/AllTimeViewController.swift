@@ -258,7 +258,7 @@ private extension AllTimeViewController {
     }
 
     func fetchOAuthBearerToken() -> String? {
-        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, andServiceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
+        let oauth2Token = try? KeychainUtils.shared.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, serviceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
 
         return oauth2Token as String?
     }

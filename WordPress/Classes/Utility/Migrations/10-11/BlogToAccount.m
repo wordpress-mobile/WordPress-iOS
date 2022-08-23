@@ -1,8 +1,8 @@
 #import "BlogToAccount.h"
 #import <NSURL_IDN/NSURL+IDN.h>
-#import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
 #import "Constants.h"
+#import "WordPress-Swift.h"
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
@@ -42,11 +42,10 @@
         NSString *newKey = WPComXMLRPCUrl;
 
         NSError *error;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
+        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password 
-                                  forServiceName:newKey updateExisting:YES error:&error]) {
-                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
+            if ([KeychainUtils.shared storeUsername:username password:password serviceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [KeychainUtils.shared deleteItemWithUsername:username serviceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {
@@ -113,10 +112,10 @@
             newKey = xmlrpc;
         }
         NSError *error;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
+        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey updateExisting:YES error:&error]) {
-                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
+            if ([KeychainUtils.shared storeUsername:username password:password serviceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [KeychainUtils.shared deleteItemWithUsername:username serviceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {
