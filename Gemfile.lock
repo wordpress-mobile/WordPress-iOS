@@ -188,7 +188,7 @@ GEM
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-appcenter (1.11.1)
     fastlane-plugin-sentry (1.11.0)
-    fastlane-plugin-wpmreleasetoolkit (5.2.0)
+    fastlane-plugin-wpmreleasetoolkit (5.4.0)
       activesupport (~> 5)
       bigdecimal (~> 1.4)
       buildkit (~> 1.5)
@@ -208,7 +208,8 @@ GEM
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
-    git (1.11.0)
+    git (1.12.0)
+      addressable (~> 2.8)
       rchardet (~> 1.8)
     google-apis-androidpublisher_v3 (0.25.0)
       google-apis-core (>= 0.7, < 2.a)
@@ -268,7 +269,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.2)
+    minitest (5.16.3)
     molinillo (0.8.0)
     multi_json (1.15.0)
     multipart-post (2.0.0)
@@ -283,7 +284,7 @@ GEM
     octokit (4.25.1)
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
-    oj (3.13.20)
+    oj (3.13.21)
     open4 (1.3.4)
     optimist (3.0.1)
     options (2.3.2)
@@ -395,4 +396,4 @@ DEPENDENCIES
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.3.19
+   2.3.20
