@@ -47,7 +47,7 @@ static ContextManager *_instance;
     self = [super init];
     if (self) {
         if (factory == nil) {
-            factory = [LegacyContextFactory class];
+            factory = [ContainerContextFactory class];
         }
 
         NSParameterAssert([modelName isEqualToString:ContextManagerModelNameCurrent] || [modelName hasPrefix:@"WordPress "]);
