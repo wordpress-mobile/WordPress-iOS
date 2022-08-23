@@ -67,6 +67,10 @@ extension LegacyContextFactory {
 extension ManagedObjectContextFactory {
 
     func internalSave(_ context: NSManagedObjectContext) {
+        guard context.hasChanges else {
+            return
+        }
+
         let inserted = Array(context.insertedObjects)
         do {
             try context.obtainPermanentIDs(for: inserted)
@@ -74,12 +78,10 @@ extension ManagedObjectContextFactory {
             DDLogError("Error obtaining permanent object IDs for \(inserted), \(error)")
         }
 
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                handleSaveError(error as NSError, in: context)
-            }
+        do {
+            try context.save()
+        } catch {
+            handleSaveError(error as NSError, in: context)
         }
     }
 
