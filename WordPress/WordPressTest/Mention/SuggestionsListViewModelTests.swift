@@ -119,7 +119,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatch() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [102, 101, 81, 71, 38, 17, 88, 80, 91, 44, 22], regularIds: [])
+        let expectedResult = suggestionsList(fromProminentIds: [101, 81, 71, 102, 38, 17, 88, 80, 91, 44, 22], regularIds: [])
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
@@ -133,7 +133,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [102, 101, 81, 71, 38, 17, 80, 91, 44, 22])
+        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [101, 81, 71, 102, 38, 17, 80, 91, 44, 22])
         self.viewModel.prominentSuggestionsIds = [88]
 
         // When
@@ -148,7 +148,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
     func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [102, 101, 81, 71, 38, 17, 80, 44, 22])
+        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [101, 81, 71, 102, 38, 17, 80, 44, 22])
         self.viewModel.prominentSuggestionsIds = [91, 88]
 
         // When

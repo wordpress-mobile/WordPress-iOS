@@ -135,16 +135,21 @@ import CoreData
         }
     }
 
-    /// Sort user suggestions by prefix first, then alphabetically. The collection is sorted first by checking if displayName begins with the provided prefix. The remaining items are sorted alphabetically by displayName. The prefix comparison is both case sensitive and Unicode safe.
+    /// Sort user suggestions by prefix first, then alphabetically. The collection is sorted first by checking if displayName begins with the provided prefix. The remaining items are sorted alphabetically by displayName. The prefix comparison is both case-insensitive and diacritic-insensitive.
     /// - Parameter userSuggestions: The user suggestions collection to be sorted.
-    /// - Parameter prefix: The prefix to be used when checking the user displayNames.
+    /// - Parameter prefix: The prefix to be used when checking the usernames and displayNames.
+    /// - Returns: The sorted user suggestion collection.
     private static func sort(userSuggestions: [UserSuggestion], by prefix: String) -> [UserSuggestion] {
         guard !userSuggestions.isEmpty, !prefix.isEmpty else { return userSuggestions }
         var prefixedUserSuggestions = [UserSuggestion]()
         var otherUserSuggestions = [UserSuggestion]()
 
-        userSuggestions.forEach { suggestion in
-            if let displayName = suggestion.displayName, displayName.hasPrefix(prefix) {
+        for suggestion in userSuggestions {
+            guard let username = suggestion.username else {
+                continue
+            }
+            if let displayName = suggestion.displayName,
+               (username.beginsWith(prefix: prefix) || displayName.beginsWith(prefix: prefix)) {
                 prefixedUserSuggestions.append(suggestion)
             } else {
                 otherUserSuggestions.append(suggestion)
