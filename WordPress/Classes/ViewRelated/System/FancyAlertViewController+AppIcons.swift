@@ -54,20 +54,3 @@ extension FancyAlertViewController {
         return controller
     }
 }
-
-// MARK: - User Defaults
-
-extension UserDefaults {
-    private enum Keys: String {
-        case hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
-    }
-
-    var hasShownCustomAppIconUpgradeAlert: Bool {
-        get {
-            return bool(forKey: Keys.hasShownCustomAppIconUpgradeAlert.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.hasShownCustomAppIconUpgradeAlert.rawValue)
-        }
-    }
-}

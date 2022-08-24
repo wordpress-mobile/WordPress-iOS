@@ -7,6 +7,9 @@ private enum UPRUConstants {
     static let notificationsTabAccessCount = "NotificationsTabAccessCount"
     static let notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
     static let secondNotificationsAlertCount = "secondNotificationsAlertCount"
+    static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
+    static let createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
+    static let createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -63,7 +66,7 @@ extension UserPersistentRepositoryUtility {
 
     var notificationPrimerInlineWasAcknowledged: Bool {
         get {
-            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.notificationPrimerInlineWasAcknowledged)
+            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.notificationPrimerInlineWasAcknowledged)
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.notificationPrimerInlineWasAcknowledged)
@@ -76,6 +79,33 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.secondNotificationsAlertCount)
+        }
+    }
+
+    var hasShownCustomAppIconUpgradeAlert: Bool {
+        get {
+            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.hasShownCustomAppIconUpgradeAlert)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.hasShownCustomAppIconUpgradeAlert)
+        }
+    }
+
+    var createButtonTooltipDisplayCount: Int {
+        get {
+            UserPersistentStoreFactory.instance().integer(forKey: UPRUConstants.createButtonTooltipDisplayCount)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.createButtonTooltipDisplayCount)
+        }
+    }
+
+    var createButtonTooltipWasDisplayed: Bool {
+        get {
+            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.createButtonTooltipWasDisplayed)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.createButtonTooltipWasDisplayed)
         }
     }
 }

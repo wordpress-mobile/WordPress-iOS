@@ -8,7 +8,7 @@ extension NotificationsViewController {
 
     var shouldShowPrimeForPush: Bool {
         get {
-            return !UserDefaults.standard.notificationPrimerInlineWasAcknowledged
+            return !UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged
         }
     }
 
@@ -44,7 +44,7 @@ extension NotificationsViewController {
             InteractiveNotificationsManager.shared.requestAuthorization { _ in
                 DispatchQueue.main.async {
                     self?.hideInlinePrompt(delay: 0.0)
-                    UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+                    UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
                 }
             }
         }
@@ -54,7 +54,7 @@ extension NotificationsViewController {
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
             self?.hideInlinePrompt(delay: 0.0)
-            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+            UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
         }
 
         // We _seriously_ need to call the following method at last.
@@ -65,9 +65,9 @@ extension NotificationsViewController {
 
     private func setupWinback() {
         // only show the winback for folks that denied without seeing the post-login primer: aka users of a previous version
-        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+        guard !UserPersistentStoreFactory.instance().notificationPrimerAlertWasDisplayed else {
             // they saw the primer, and denied us. they aren't coming back, we aren't bothering them anymore.
-            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+            UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
             return
         }
 
@@ -91,7 +91,7 @@ extension NotificationsViewController {
             self?.hideInlinePrompt(delay: 0.0)
             let targetURL = URL(string: UIApplication.openSettingsURLString)
             UIApplication.shared.open(targetURL!)
-            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+            UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
         }
 
         inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
@@ -99,7 +99,7 @@ extension NotificationsViewController {
                 WPAnalytics.track(.pushNotificationWinbackNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
             self?.hideInlinePrompt(delay: 0.0)
-            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+            UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
         }
     }
 }

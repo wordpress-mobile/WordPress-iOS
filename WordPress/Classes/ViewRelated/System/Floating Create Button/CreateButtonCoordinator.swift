@@ -273,33 +273,6 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
     }
 }
 
-@objc
-extension UserDefaults {
-    private enum Keys: String {
-        case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
-        case createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
-    }
-
-    var createButtonTooltipDisplayCount: Int {
-        get {
-            return integer(forKey: Keys.createButtonTooltipDisplayCount.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.createButtonTooltipDisplayCount.rawValue)
-        }
-    }
-
-    var createButtonTooltipWasDisplayed: Bool {
-        get {
-            return bool(forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
-        }
-    }
-}
-
-
 // MARK: - Blogging Prompts Methods
 
 private extension CreateButtonCoordinator {
