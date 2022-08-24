@@ -50,7 +50,7 @@ struct ReaderCSS {
     }
 
     init(now: Int = Int(Date().timeIntervalSince1970),
-         store: KeyValueDatabase = UserDefaults.standard,
+         store: KeyValueDatabase = UserPersistentStoreFactory.instance(),
          isInternetReachable: @escaping () -> Bool = ReachabilityUtils.isInternetReachable) {
         self.store = store
         self.now = now

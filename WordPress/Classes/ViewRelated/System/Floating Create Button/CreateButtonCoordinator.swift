@@ -39,20 +39,20 @@ import WordPressFlux
             if newValue >= Constants.maximumTooltipViews {
                 didDismissTooltip = true
             } else {
-                UserDefaults.standard.createButtonTooltipDisplayCount = newValue
+                UserPersistentStoreFactory.instance().createButtonTooltipDisplayCount = newValue
             }
         }
         get {
-            return UserDefaults.standard.createButtonTooltipDisplayCount
+            return UserPersistentStoreFactory.instance().createButtonTooltipDisplayCount
         }
     }
 
     private var didDismissTooltip: Bool {
         set {
-            UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
+            UserPersistentStoreFactory.instance().createButtonTooltipWasDisplayed = newValue
         }
         get {
-            return UserDefaults.standard.createButtonTooltipWasDisplayed
+            return UserPersistentStoreFactory.instance().createButtonTooltipWasDisplayed
         }
     }
 

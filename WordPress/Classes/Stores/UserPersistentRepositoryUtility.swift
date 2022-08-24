@@ -10,6 +10,11 @@ private enum UPRUConstants {
     static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
     static let createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
     static let createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
+    static let savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
+    static let storiesIntroWasAcknowledged = "storiesIntroWasAcknowledged"
+    static let currentAnnouncementsKey = "currentAnnouncements"
+    static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
+    static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -106,6 +111,57 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.createButtonTooltipWasDisplayed)
+        }
+    }
+
+    var savedPostsPromoWasDisplayed: Bool {
+        get {
+            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.savedPostsPromoWasDisplayed)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.savedPostsPromoWasDisplayed)
+        }
+    }
+
+    var storiesIntroWasAcknowledged: Bool {
+        get {
+            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.storiesIntroWasAcknowledged)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.storiesIntroWasAcknowledged)
+        }
+    }
+
+    var announcements: [Announcement]? {
+        get {
+            guard let encodedAnnouncements = UserPersistentStoreFactory.instance().object(forKey: UPRUConstants.currentAnnouncementsKey) as? Data,
+                  let announcements = try? PropertyListDecoder().decode([Announcement].self, from: encodedAnnouncements) else {
+                return nil
+            }
+            return announcements
+        }
+
+        set {
+            guard let announcements = newValue, let encodedAnnouncements = try? PropertyListEncoder().encode(announcements) else {
+                UserPersistentStoreFactory.instance().removeObject(forKey: UPRUConstants.currentAnnouncementsKey)
+                UserPersistentStoreFactory.instance().removeObject(forKey: UPRUConstants.currentAnnouncementsDateKey)
+                return
+            }
+            UserPersistentStoreFactory.instance().set(encodedAnnouncements, forKey: UPRUConstants.currentAnnouncementsKey)
+            UserPersistentStoreFactory.instance().set(Date(), forKey: UPRUConstants.currentAnnouncementsDateKey)
+        }
+    }
+
+    var announcementsDate: Date? {
+        UserPersistentStoreFactory.instance().object(forKey: UPRUConstants.currentAnnouncementsDateKey) as? Date
+    }
+
+    var announcementsVersionDisplayed: String? {
+        get {
+            UserPersistentStoreFactory.instance().string(forKey: UPRUConstants.announcementsVersionDisplayedKey)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.announcementsVersionDisplayedKey)
         }
     }
 }

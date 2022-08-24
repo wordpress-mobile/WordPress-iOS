@@ -12,11 +12,11 @@ extension FancyAlertViewController {
         guard AppConfiguration.allowsCustomAppIcons,
               AppIcon.isUsingCustomIcon,
               origin.presentedViewController == nil,
-              UserDefaults.standard.hasShownCustomAppIconUpgradeAlert == false else {
+              UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert == false else {
             return
         }
 
-        UserDefaults.standard.hasShownCustomAppIconUpgradeAlert = true
+        UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert = true
 
         let controller = FancyAlertViewController.makeCustomAppIconUpgradeAlertController(with: origin)
         controller.modalPresentationStyle = .custom
