@@ -135,28 +135,16 @@ import CoreData
         }
     }
 
-    /// Sort user suggestions by prefix first, then alphabetically. The collection is sorted first by checking if displayName begins with the provided prefix. The remaining items are sorted alphabetically by displayName. The prefix comparison is both case-insensitive and diacritic-insensitive.
+    /// Sort user suggestions by prefix first, then alphabetically. The collection is sorted first by checking if username or displayName begins with the provided prefix. The remaining items are sorted alphabetically by displayName. The prefix comparison is both case-insensitive and diacritic-insensitive.
     /// - Parameter userSuggestions: The user suggestions collection to be sorted.
     /// - Parameter prefix: The prefix to be used when checking the usernames and displayNames.
     /// - Returns: The sorted user suggestion collection.
     private static func sort(userSuggestions: [UserSuggestion], by prefix: String) -> [UserSuggestion] {
         guard !userSuggestions.isEmpty, !prefix.isEmpty else { return userSuggestions }
-        var prefixedUserSuggestions = [UserSuggestion]()
-        var otherUserSuggestions = [UserSuggestion]()
-
-        for suggestion in userSuggestions {
-            guard let username = suggestion.username else {
-                continue
-            }
-            if let displayName = suggestion.displayName,
-               (username.beginsWith(prefix: prefix) || displayName.beginsWith(prefix: prefix)) {
-                prefixedUserSuggestions.append(suggestion)
-            } else {
-                otherUserSuggestions.append(suggestion)
-            }
+        let triagedList = Dictionary(grouping: userSuggestions) { suggestion in
+            suggestion.username?.beginsWith(prefix: prefix, with: Self.compareOptions) == true || suggestion.displayName?.beginsWith(prefix: prefix, with: Self.compareOptions) == true
         }
-
-        return prefixedUserSuggestions.sorted() + otherUserSuggestions.sorted()
+        return (triagedList[true] ?? []).sorted() + (triagedList[false] ?? []).sorted()
     }
 
     private static func searchResultByMovingProminentSuggestionsToTop(userSuggestions: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> SearchResult {
