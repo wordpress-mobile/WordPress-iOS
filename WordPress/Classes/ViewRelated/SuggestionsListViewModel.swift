@@ -34,6 +34,8 @@ import CoreData
 
     // MARK: - State
 
+    private static let compareOptions: String.CompareOptions = [.anchored, .caseInsensitive, .diacriticInsensitive]
+
     @objc private(set) var isLoading = false
     @objc private(set) var sections = [SuggestionsListSection]()
 
@@ -142,7 +144,7 @@ import CoreData
     private static func sort(userSuggestions: [UserSuggestion], by prefix: String) -> [UserSuggestion] {
         guard !userSuggestions.isEmpty, !prefix.isEmpty else { return userSuggestions }
         let triagedList = Dictionary(grouping: userSuggestions) { suggestion in
-            suggestion.username?.beginsWith(prefix: prefix) == true || suggestion.displayName?.beginsWith(prefix: prefix) == true
+            suggestion.username?.hasPrefix(prefix, with: compareOptions) == true || suggestion.displayName?.hasPrefix(prefix, with: compareOptions) == true
         }
         return (triagedList[true] ?? []).sorted() + (triagedList[false] ?? []).sorted()
     }

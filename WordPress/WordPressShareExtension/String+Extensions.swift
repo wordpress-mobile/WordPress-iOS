@@ -88,11 +88,12 @@ extension String {
         return self + returnURLString
     }
 
-    /// Returns a Boolean value indicating if this String begins with provided prefix. The comparison is both case-insensitive and diacritic-insensitive.
-    /// - Parameter prefix: The provideded prefix to verify.
-    /// - Returns: true if this string begins with the provided prefix, false otherwise.
-    func beginsWith(prefix: String) -> Bool {
-        return range(of: prefix, options: [.anchored, .caseInsensitive, .diacriticInsensitive]) != nil
+    /// Returns a Boolean value indicating if this String begins with provided prefix.
+    /// - Parameter prefix: The provided prefix to verify.
+    /// - Parameter options: The provided compare options.
+    /// - Returns: true if this String begins with the provided prefix following the given compare options, false otherwise.
+    func hasPrefix(_ prefix: String, with options: CompareOptions) -> Bool {
+        return range(of: prefix, options: options) != nil
     }
 
     /// Returns true if this String consists of digits
