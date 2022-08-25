@@ -35,7 +35,7 @@ public func waitAndTap( _ element: XCUIElement) {
     var retries = 0
     let maxRetries = 10
     if element.waitForIsHittable(timeout: 10) {
-        while element.exists && element.isHittable && retries < maxRetries {
+        while element.isHittable && retries < maxRetries {
             element.tap()
             retries += 1
         }
