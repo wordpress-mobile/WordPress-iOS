@@ -1305,6 +1305,11 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
         suggestionsTableView.hideSuggestions()
         controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds, searchText: lastSearchText)
     }
+
+    func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
+        guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else { return }
+        suggestionsTableView?.showSuggestions(forWord: lastSearchText)
+    }
 }
 
 // MARK: - UIScrollViewDelegate

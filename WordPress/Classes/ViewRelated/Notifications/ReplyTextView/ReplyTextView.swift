@@ -8,6 +8,8 @@ import Gridicons
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 
     @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController)
+
+    @objc optional func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?)
 }
 
 
@@ -211,7 +213,13 @@ import Gridicons
             }
 
             // Dismiss the fullscreen view, once it has fully closed process the saving if needed
-            presenter.dismiss(animated: true)
+            presenter.dismiss(animated: true) {
+                let respondsToDidExit = self.delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:didExitFullScreen:))) ?? false
+
+                if respondsToDidExit {
+                    self.delegate?.replyTextView?(self, didExitFullScreen: lastSearchText)
+                }
+            }
         }
 
         self.resignFirstResponder()

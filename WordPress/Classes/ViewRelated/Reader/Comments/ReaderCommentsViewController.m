@@ -1378,4 +1378,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [controller enableSuggestionsWith:self.siteID prominentSuggestionsIds:self.suggestionsTableView.prominentSuggestionsIds
                         searchText:searchText];
 }
+
+- (void)replyTextView:(ReplyTextView *)replyTextView didExitFullScreen:(NSString *)lastSearchText
+{
+    if ([lastSearchText length] != 0) {
+        [self.suggestionsTableView showSuggestionsForWord:lastSearchText];
+    }
+}
+
 @end

@@ -1124,6 +1124,11 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         }
     }
 
+    func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
+        guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else { return }
+        suggestionsTableView?.showSuggestions(forWord: lastSearchText)
+    }
+
 }
 
 // MARK: - SuggestionsTableViewDelegate
