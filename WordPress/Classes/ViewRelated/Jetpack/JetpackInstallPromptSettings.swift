@@ -2,11 +2,14 @@ import Foundation
 
 public final class JetpackInstallPromptSettings {
     private let userDefaults: UserDefaults
+    private let showJetpackPluginInstallPrompt: Bool
 
     // MARK: - Init
 
-    init(userDefaults: UserDefaults = .standard) {
+    init(userDefaults: UserDefaults = .standard,
+         showJetpackPluginInstallPrompt: Bool = AppConfiguration.showJetpackPluginInstallPrompt) {
         self.userDefaults = userDefaults
+        self.showJetpackPluginInstallPrompt = showJetpackPluginInstallPrompt
     }
 
     // MARK: - User Defaults Storage
@@ -20,6 +23,10 @@ public final class JetpackInstallPromptSettings {
     /// - Parameter blog: The blog object to check against
     /// - Returns: Whether the prompt can be displayed
     func canDisplay(for blog: Blog) -> Bool {
+        guard showJetpackPluginInstallPrompt else {
+            return false
+        }
+
         guard let jetpack = blog.jetpack else {
             return false
         }
