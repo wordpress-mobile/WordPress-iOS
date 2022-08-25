@@ -162,7 +162,7 @@ class JetpackInstallPromptViewController: UIViewController {
 
 // MARK: - Notifications
 extension NSNotification.Name {
-    static let installJetpack = NSNotification.Name(rawValue: "JetpackInstall")
+    static let promptInstallJetpack = NSNotification.Name(rawValue: "JetpackPluginInstallPrompt")
 }
 
 // MARK: - Localization

@@ -2,34 +2,67 @@ import UIKit
 
 extension MySiteViewController {
     func subscribeToJetpackInstallNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchJetpackInstallFromNotification(_:)), name: .installJetpack, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(promptJetpackPluginInstallFromNotification(_:)), name: .promptInstallJetpack, object: nil)
     }
 
-    /// Presents the Jetpack Login (Install) controller from a notification
-    @objc func launchJetpackInstallFromNotification(_ notification: NSNotification) {
-        guard let blog = blog else {
+    /// Presents the prompt to install Jetpack from a notification
+    @objc func promptJetpackPluginInstallFromNotification(_ notification: NSNotification) {
+        guard let blog = blog,
+            let promptSettings = notification.userInfo?["jetpackInstallPromptSettings"] as? JetpackInstallPromptSettings else {
             return
         }
 
-        let controller = JetpackLoginViewController(blog: blog)
-        controller.promptType = .installPrompt
+        let installPromptViewController = JetpackInstallPromptViewController(blog: blog)
+        let installPromptNavigationController = UINavigationController(rootViewController: installPromptViewController)
+        installPromptNavigationController.modalPresentationStyle = .fullScreen
 
-        let navController = UINavigationController(rootViewController: controller)
-        navController.modalPresentationStyle = .fullScreen
-
-        navigationController?.present(navController, animated: true)
-
-        controller.completionBlock = { [weak self] in
-            defer {
-                navController.dismiss(animated: true)
+        installPromptViewController.dismiss = { [weak self] dismissAction in
+            switch dismissAction {
+            case .noThanks:
+                installPromptNavigationController.dismiss(animated: true)
+            case .install:
+                self?.presentJetpackInstall(on: installPromptNavigationController, blog: blog, jetpackInstallPromptSettings: promptSettings)
             }
+        }
 
-            guard let self = self else {
-                return
-            }
 
-            DispatchQueue.main.async {
-                self.syncBlogs()
+        navigationController?.present(installPromptNavigationController, animated: true)
+    }
+
+    /// Presents the Jetpack plugin install flow on top of the prompt
+    private func presentJetpackInstall(
+        on controller: UINavigationController,
+        blog: Blog,
+        jetpackInstallPromptSettings: JetpackInstallPromptSettings
+    ) {
+        let jetpackLoginViewController = JetpackLoginViewController(blog: blog)
+        jetpackLoginViewController.promptType = .installPrompt
+        let navigationController = UINavigationController(rootViewController: jetpackLoginViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+
+        controller.present(navigationController, animated: true)
+
+        jetpackLoginViewController.completionBlock = { [weak self] in
+            jetpackInstallPromptSettings.setPromptWasDismissed(true, for: blog)
+
+            /// If Jetpack install + WP.com login flow is completed, the blog will be synced and jetpack.isConnected will be true
+            /// Dismissing the prompt
+            if let jetpack = blog.jetpack, jetpack.isConnected {
+                self?.syncBlogs()
+                controller.dismiss(animated: true)
+
+            /// If Jetpack install + WP.com login flow was not fully completed, the blog will not be synced
+            /// Jetpack.isConnected can still be true if the flow is completed except for WP.com login
+            /// Sync the blog and dismiss the prompt if Jetpack.isConnected
+            } else {
+                let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+                blogService.syncBlog(blog) {
+                    if let jetpack = blog.jetpack, jetpack.isConnected {
+                        controller.dismiss(animated: true)
+                    }
+                } failure: { _ in
+                    controller.dismiss(animated: true)
+                }
             }
         }
     }
