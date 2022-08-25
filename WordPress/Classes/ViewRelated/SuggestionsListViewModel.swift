@@ -142,7 +142,7 @@ import CoreData
     private static func sort(userSuggestions: [UserSuggestion], by prefix: String) -> [UserSuggestion] {
         guard !userSuggestions.isEmpty, !prefix.isEmpty else { return userSuggestions }
         let triagedList = Dictionary(grouping: userSuggestions) { suggestion in
-            suggestion.username?.beginsWith(prefix: prefix, with: Self.compareOptions) == true || suggestion.displayName?.beginsWith(prefix: prefix, with: Self.compareOptions) == true
+            suggestion.username?.beginsWith(prefix: prefix) == true || suggestion.displayName?.beginsWith(prefix: prefix) == true
         }
         return (triagedList[true] ?? []).sorted() + (triagedList[false] ?? []).sorted()
     }
