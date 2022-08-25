@@ -41,14 +41,14 @@ class JetpackInstallPromptViewController: UIViewController {
 
     private let blog: Blog
 
-    enum DismissAction {
+    enum Action {
         case install
         case noThanks
     }
 
     /// Closure to be executed upon dismissal.
     ///
-    var dismiss: ((_ action: DismissAction) -> Void)?
+    var actionHandler: ((_ action: Action) -> Void)?
 
     // MARK: - Init
 
@@ -86,13 +86,11 @@ class JetpackInstallPromptViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func installTapped(_ sender: Any) {
-        dismiss?(.install)
-        dismiss(animated: true)
+        actionHandler?(.install)
     }
 
     @IBAction func noThanksTapped(_ sender: Any) {
-        dismiss?(.noThanks)
-        dismiss(animated: true)
+        actionHandler?(.noThanks)
     }
 
     @IBAction func learnMoreButtonTapped(_ sender: Any) {

@@ -16,15 +16,14 @@ extension MySiteViewController {
         let installPromptNavigationController = UINavigationController(rootViewController: installPromptViewController)
         installPromptNavigationController.modalPresentationStyle = .fullScreen
 
-        installPromptViewController.dismiss = { [weak self] dismissAction in
-            switch dismissAction {
+        installPromptViewController.actionHandler = { [weak self] action in
+            switch action {
             case .noThanks:
                 installPromptNavigationController.dismiss(animated: true)
             case .install:
                 self?.presentJetpackInstall(on: installPromptNavigationController, blog: blog, jetpackInstallPromptSettings: promptSettings)
             }
         }
-
 
         navigationController?.present(installPromptNavigationController, animated: true)
     }
