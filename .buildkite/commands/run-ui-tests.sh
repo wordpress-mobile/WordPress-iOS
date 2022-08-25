@@ -1,10 +1,8 @@
 #!/bin/bash -eu
 
 DEVICE=$1
-# Default to the latest iOS, with the option of overriding
-IOS_VERSION=${2:-15.0}
 
-echo "Running UI tests $DEVICE for iOS $IOS_VERSION"
+echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
 
 # Run this at the start to fail early if value not available
 echo '--- :test-analytics: Configuring Test Analytics'
@@ -36,7 +34,7 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE" ios_version:"$IOS_VERSION"
+bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
 
