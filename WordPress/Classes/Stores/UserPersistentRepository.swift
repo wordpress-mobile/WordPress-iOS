@@ -21,7 +21,9 @@ protocol UserPersistentRepositoryWriter: KeyValueDatabase {
 
 typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter & UserPersistentRepositoryUtility
 
-extension UserDefaults: UserPersistentRepository {
+extension UserDefaults: UserPersistentRepository {}
+
+extension UserPersistentStore {
     private static var isOneOffMigrationCompleteKey: String {
         "defaults_one_off_migration"
     }
