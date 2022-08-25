@@ -1116,10 +1116,11 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        let lastSearchText = suggestionsTableView?.viewModel.searchText
         suggestionsTableView?.hideSuggestions()
 
         if let siteID = siteID {
-            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds)
+            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds, searchText: lastSearchText)
         }
     }
 

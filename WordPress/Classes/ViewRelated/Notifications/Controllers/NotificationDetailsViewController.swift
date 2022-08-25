@@ -1301,8 +1301,9 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
             return
         }
 
+        let lastSearchText = suggestionsTableView.viewModel.searchText
         suggestionsTableView.hideSuggestions()
-        controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds)
+        controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView.prominentSuggestionsIds, searchText: lastSearchText)
     }
 }
 
