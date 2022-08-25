@@ -324,12 +324,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         if let wporg = credentials.wporg,
            let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: ContextManager.shared.mainContext) {
 
-            if shouldPresentJetpackInstallPrompt(for: blog) {
-                presentJetpackInstallPrompt(for: blog, in: navigationController, onDismiss: onDismiss)
-            } else if self.windowManager.isShowingFullscreenSignIn {
-                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            let completion = { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                if self.shouldPresentJetpackInstallPrompt(for: blog) {
+                    self.presentJetpackInstallPrompt(for: blog)
+                }
+            }
+
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog, completion: completion)
             } else {
-                navigationController.dismiss(animated: true)
+                navigationController.dismiss(animated: true, completion: completion)
             }
 
             return
@@ -621,36 +629,10 @@ private extension WordPressAuthenticationManager {
         return jetpackInstallPromptSettings.canDisplay(for: blog)
     }
 
-    private func presentJetpackInstallPrompt(for blog: Blog,
-                                             in navigationController: UINavigationController,
-                                             onDismiss: (() -> Void)? = nil) {
-        let viewController = JetpackInstallPromptViewController(blog: blog)
-        let windowManager = self.windowManager
+    private func presentJetpackInstallPrompt(for blog: Blog) {
 
-        viewController.dismiss = { dismissAction in
-            let completion: (() -> Void)?
-
-            switch dismissAction {
-            case .noThanks:
-                self.jetpackInstallPromptSettings.setPromptWasDismissed(true, for: blog)
-                completion = nil
-            case .install:
-                completion = {
-                    NotificationCenter.default.post(name: .installJetpack, object: nil)
-                }
-            }
-
-            if windowManager.isShowingFullscreenSignIn {
-                windowManager.dismissFullscreenSignIn(completion: completion)
-            } else {
-                navigationController.dismiss(animated: true, completion: completion)
-            }
-
-            onDismiss?()
-        }
-
-
-        navigationController.pushViewController(viewController, animated: true)
+        let userInfo = ["jetpackInstallPromptSettings": jetpackInstallPromptSettings]
+        NotificationCenter.default.post(name: .promptInstallJetpack, object: nil, userInfo: userInfo)
     }
 }
 
