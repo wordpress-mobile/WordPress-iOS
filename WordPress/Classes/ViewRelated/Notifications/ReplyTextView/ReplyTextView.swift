@@ -193,7 +193,7 @@ import Gridicons
         editViewController.content = textView.text
         editViewController.placeholder = placeholder
         editViewController.isModalInPresentation = true
-        editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
+        editViewController.onExitFullscreen = { (shouldSave, updatedContent, lastSearchText) in
             self.text = updatedContent
 
             // If the user was editing before they entered fullscreen, then restore that state
