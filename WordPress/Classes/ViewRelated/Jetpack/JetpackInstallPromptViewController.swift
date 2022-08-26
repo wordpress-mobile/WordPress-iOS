@@ -33,6 +33,7 @@ class JetpackInstallPromptViewController: UIViewController {
     @IBOutlet weak var noThanksButton: FancyButton!
     @IBOutlet weak var learnMoreButton: FancyButton!
 
+    @IBOutlet weak var textStackView: UIStackView!
     @IBOutlet weak var lineItemStats: UILabel!
     @IBOutlet weak var lineItemNotifications: UILabel!
     @IBOutlet weak var lineItemAndMore: UILabel!
@@ -171,6 +172,9 @@ class JetpackInstallPromptViewController: UIViewController {
 
         noThanksButton.accessibilityHint = Strings.noThanksButtonHint
         noThanksButton.accessibilityTraits = .button
+
+        textStackView.isAccessibilityElement = true
+        textStackView.accessibilityLabel = [Strings.title, Strings.stats, Strings.notifications, Strings.andMore].joined(separator: "\n")
     }
 }
 

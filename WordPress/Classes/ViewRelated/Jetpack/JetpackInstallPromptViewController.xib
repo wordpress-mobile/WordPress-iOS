@@ -20,6 +20,7 @@
                 <outlet property="lineItemNotifications" destination="o3P-Vj-6QF" id="4gP-Fe-MKj"/>
                 <outlet property="lineItemStats" destination="k6V-58-BCL" id="QK6-Xr-Fd6"/>
                 <outlet property="noThanksButton" destination="gpx-gG-s9d" id="xoH-Lr-VIa"/>
+                <outlet property="textStackView" destination="Msb-FG-hPu" id="f4v-2M-fug"/>
                 <outlet property="titleLabel" destination="z18-fN-ZJi" id="Fgm-tN-OYA"/>
                 <outlet property="view" destination="ae3-3D-D7u" id="a7K-Mo-dvf"/>
             </connections>
