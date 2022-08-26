@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -128,6 +128,8 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Msb-FG-hPu" secondAttribute="trailing" id="7at-nh-oXA"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="leading" secondItem="69h-bg-uwt" secondAttribute="leading" id="8lm-cv-1EJ"/>
+                                <constraint firstItem="Msb-FG-hPu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="69h-bg-uwt" secondAttribute="top" id="LxU-4d-MmZ"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Msb-FG-hPu" secondAttribute="bottom" id="a8e-nN-bdB"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="centerY" secondItem="69h-bg-uwt" secondAttribute="centerY" id="ej7-kc-ALM"/>
                             </constraints>
                         </view>

@@ -127,12 +127,14 @@ class JetpackInstallPromptViewController: UIViewController {
         // Title
         titleLabel.font = JetpackPromptStyles.Title.font
         titleLabel.textColor = JetpackPromptStyles.Title.textColor
+        titleLabel.adjustsFontForContentSizeCategory = true
 
         // Line items
         let lineItems = [lineItemStats, lineItemNotifications, lineItemAndMore]
         for lineItem in lineItems {
             lineItem?.font = JetpackPromptStyles.LineItem.font
             lineItem?.textColor = JetpackPromptStyles.LineItem.textColor
+            lineItem?.adjustsFontForContentSizeCategory = true
         }
 
         // Buttons
