@@ -1,5 +1,5 @@
 @objcMembers
-class KeychainUtils {
+class KeychainUtils: NSObject {
 
     static let shared = KeychainUtils()
 
@@ -26,7 +26,7 @@ class KeychainUtils {
         )
     }
 
-    func getPasswordForUsername(_ username: String, serviceName: String, accessGroup: String? = nil) throws -> String? {
+    func getPasswordForUsername(_ username: String, serviceName: String, accessGroup: String? = nil) throws -> String {
         try keychainUtils.getPasswordForUsername(
                 username,
                 andServiceName: serviceName,
@@ -40,6 +40,26 @@ class KeychainUtils {
                 andServiceName: serviceName,
                 accessGroup: accessGroup ?? keychainGroup
         )
+    }
+
+    func copyKeychainToSharedKeychainIfNeeded() {
+        guard shouldUseSharedKeychain(),
+              AppConfiguration.isWordPress,
+              !UserPersistentStoreFactory.instance().bool(forKey: "keychain-copied"),
+              let items = try? keychainUtils.getAllPasswords(forAccessGroup: nil) else {
+            return
+        }
+
+        for item in items {
+            guard let username = item["username"],
+                  let password = item["password"],
+                  let serviceName = item["serviceName"] else {
+                continue
+            }
+
+            try? keychainUtils.storeUsername(username, andPassword: password, forServiceName: serviceName, accessGroup: WPAppKeychainAccessGroup, updateExisting: false)
+        }
+        UserPersistentStoreFactory.instance().set(true, forKey: "keychain-copied")
     }
 
 }

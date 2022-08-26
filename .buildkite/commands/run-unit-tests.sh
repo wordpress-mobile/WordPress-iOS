@@ -17,7 +17,7 @@ install_gems
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+bundle exec fastlane test_without_building name:WordPressUnitTests
 TESTS_EXIT_STATUS=$?
 set -e
 

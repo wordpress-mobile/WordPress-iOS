@@ -100,7 +100,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: read_version_from_config,
+  app_version: ios_get_app_version,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,

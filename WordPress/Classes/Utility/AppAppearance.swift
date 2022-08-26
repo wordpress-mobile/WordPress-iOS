@@ -46,7 +46,7 @@ struct AppAppearance {
     ///
     private static var savedStyle: UIUserInterfaceStyle {
         get {
-            guard let rawValue = UserDefaults.standard.value(forKey: Keys.appAppearanceDefaultsKey) as? Int,
+            guard let rawValue = UserPersistentStoreFactory.instance().object(forKey: Keys.appAppearanceDefaultsKey) as? Int,
                 let style = UIUserInterfaceStyle(rawValue: rawValue) else {
                     return AppAppearance.default
             }
@@ -54,7 +54,7 @@ struct AppAppearance {
             return style
         }
         set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.appAppearanceDefaultsKey)
+            UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: Keys.appAppearanceDefaultsKey)
         }
     }
 
