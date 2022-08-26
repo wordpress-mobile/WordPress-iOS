@@ -32,7 +32,7 @@ import Foundation
 
 extension SiteStatsInformation {
 
-    func getCurrentSiteInsights(_ userDefaults: UserDefaults = UserDefaults.standard) -> [InsightType] {
+    func getCurrentSiteInsights(_ userDefaults: UserPersistentRepository = UserPersistentStoreFactory.instance()) -> [InsightType] {
 
         guard let siteID = siteID?.stringValue else {
             return InsightType.defaultInsights
@@ -44,7 +44,7 @@ extension SiteStatsInformation {
         return InsightType.typesForValues(values ?? InsightType.defaultInsightsValues)
     }
 
-    func saveCurrentSiteInsights(_ insightsCards: [InsightType], _ userDefaults: UserDefaults = UserDefaults.standard) {
+    func saveCurrentSiteInsights(_ insightsCards: [InsightType], _ userDefaults: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
 
         guard let siteID = siteID?.stringValue else {
             return

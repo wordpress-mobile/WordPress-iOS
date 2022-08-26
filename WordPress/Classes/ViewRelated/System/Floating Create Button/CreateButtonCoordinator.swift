@@ -39,20 +39,20 @@ import WordPressFlux
             if newValue >= Constants.maximumTooltipViews {
                 didDismissTooltip = true
             } else {
-                UserDefaults.standard.createButtonTooltipDisplayCount = newValue
+                UserPersistentStoreFactory.instance().createButtonTooltipDisplayCount = newValue
             }
         }
         get {
-            return UserDefaults.standard.createButtonTooltipDisplayCount
+            return UserPersistentStoreFactory.instance().createButtonTooltipDisplayCount
         }
     }
 
     private var didDismissTooltip: Bool {
         set {
-            UserDefaults.standard.createButtonTooltipWasDisplayed = newValue
+            UserPersistentStoreFactory.instance().createButtonTooltipWasDisplayed = newValue
         }
         get {
-            return UserDefaults.standard.createButtonTooltipWasDisplayed
+            return UserPersistentStoreFactory.instance().createButtonTooltipWasDisplayed
         }
     }
 
@@ -272,33 +272,6 @@ extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
         return (viewController?.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
     }
 }
-
-@objc
-extension UserDefaults {
-    private enum Keys: String {
-        case createButtonTooltipWasDisplayed = "CreateButtonTooltipWasDisplayed"
-        case createButtonTooltipDisplayCount = "CreateButtonTooltipDisplayCount"
-    }
-
-    var createButtonTooltipDisplayCount: Int {
-        get {
-            return integer(forKey: Keys.createButtonTooltipDisplayCount.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.createButtonTooltipDisplayCount.rawValue)
-        }
-    }
-
-    var createButtonTooltipWasDisplayed: Bool {
-        get {
-            return bool(forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.createButtonTooltipWasDisplayed.rawValue)
-        }
-    }
-}
-
 
 // MARK: - Blogging Prompts Methods
 

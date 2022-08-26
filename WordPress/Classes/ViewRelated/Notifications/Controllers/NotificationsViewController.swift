@@ -1847,8 +1847,8 @@ private extension NotificationsViewController {
         return NotificationActionsService(managedObjectContext: mainContext)
     }
 
-    var userDefaults: UserDefaults {
-        return UserDefaults.standard
+    var userDefaults: UserPersistentRepository {
+        return UserPersistentStoreFactory.instance()
     }
 
     var lastSeenTime: String? {
@@ -1856,7 +1856,7 @@ private extension NotificationsViewController {
             return userDefaults.string(forKey: Settings.lastSeenTime)
         }
         set {
-            userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
+            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
         }
     }
 
@@ -2037,7 +2037,7 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
                 return
             }
 
-            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
+            UserPersistentStoreFactory.instance().notificationPrimerAlertWasDisplayed = true
 
             let alert = alertController
             alert.modalPresentationStyle = .custom

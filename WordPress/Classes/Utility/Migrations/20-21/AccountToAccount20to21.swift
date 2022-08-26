@@ -18,8 +18,8 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         if let unwrappedAccount = legacyDefaultWordPressAccount(manager.sourceContext) {
             let username = unwrappedAccount.value(forKey: "username") as! String
 
-            let userDefaults = UserDefaults.standard
-            userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
+            let userDefaults = UserPersistentStoreFactory.instance()
+            userDefaults.set(username, forKey: defaultDotcomUsernameKey)
 
             DDLogWarn(">> Migration process matched [\(username)] as the default WordPress.com account")
         } else {
@@ -29,7 +29,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
     override func end(_ mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Load the default username
-        let userDefaults = UserDefaults.standard
+        let userDefaults = UserPersistentStoreFactory.instance()
         let defaultUsername = userDefaults.string(forKey: defaultDotcomUsernameKey) ?? String()
 
         // Find the Default Account
@@ -88,7 +88,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
         let accountURL = account.objectID.uriRepresentation()
 
-        let defaults = UserDefaults.standard
+        let defaults = UserPersistentStoreFactory.instance()
         defaults.set(accountURL, forKey: defaultDotcomKey)
     }
 }

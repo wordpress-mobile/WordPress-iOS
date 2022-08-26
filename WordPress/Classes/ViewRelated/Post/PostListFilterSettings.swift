@@ -104,7 +104,7 @@ class PostListFilterSettings: NSObject {
     /// currentPostListFilter: returns the index of the last active PostListFilter
     @objc func currentFilterIndex() -> Int {
 
-        let userDefaults = UserDefaults.standard
+        let userDefaults = UserPersistentStoreFactory.instance()
 
         if let filter = userDefaults.object(forKey: keyForCurrentListStatusFilter()) as? Int, filter < availablePostListFilters().count {
 

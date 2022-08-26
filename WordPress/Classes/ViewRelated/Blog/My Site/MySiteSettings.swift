@@ -9,8 +9,8 @@ protocol DefaultSectionProvider {
 ///
 @objc final class MySiteSettings: NSObject, DefaultSectionProvider {
 
-    private var userDefaults: UserDefaults {
-        UserDefaults.standard
+    private var userDefaults: UserPersistentRepository {
+        UserPersistentStoreFactory.instance()
     }
 
     var defaultSection: MySiteViewController.Section {

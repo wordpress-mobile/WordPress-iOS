@@ -31,8 +31,8 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         }
 
         if isDotCom! == true {
-            let userDefaults = UserDefaults.standard
-            userDefaults.setValue(username!, forKey: defaultDotcomUsernameKey)
+            let userDefaults = UserPersistentStoreFactory.instance()
+            userDefaults.set(username!, forKey: defaultDotcomUsernameKey)
 
             DDLogWarn(">> Migration process matched [\(username!)] as the default WordPress.com account")
         } else {
@@ -74,7 +74,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         }
 
         // Set the defaultAccount (if any)
-        let userDefaults = UserDefaults.standard
+        let userDefaults = UserPersistentStoreFactory.instance()
 
         if defaultAccount != nil {
             let uuid = defaultAccount!.value(forKey: "uuid") as! String
@@ -142,7 +142,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             return
         }
 
-        let defaults = UserDefaults.standard
+        let defaults = UserPersistentStoreFactory.instance()
         defaults.set(uuid, forKey: defaultDotcomUUIDKey)
     }
 
