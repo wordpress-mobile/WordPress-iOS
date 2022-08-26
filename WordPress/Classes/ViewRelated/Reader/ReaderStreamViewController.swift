@@ -511,6 +511,7 @@ import Combine
         }
         let bannerView = JetpackBannerView() { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
         }
         jetpackBannerView = bannerView
         addTranslationObserver(bannerView)

@@ -41,7 +41,10 @@ import Gridicons
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
-    fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(childVC: ReaderSiteSearchViewController())
+    fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(
+        childVC: ReaderSiteSearchViewController(),
+        analyticsId: .readerSearch
+    )
     fileprivate var siteSearchController: ReaderSiteSearchViewController? {
         return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
     }
@@ -53,6 +56,7 @@ import Gridicons
     private lazy var bannerView: JetpackBannerView = {
         let bannerView = JetpackBannerView() { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .readerSearch)
         }
         bannerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: JetpackBannerView.minimumHeight)
         return bannerView

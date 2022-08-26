@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-27 06:57:01+0000 */
+/* Translation-Revision-Date: 2022-08-09 07:58:03+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: cs_CZ */
@@ -1419,6 +1419,9 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Kontrola nákupů...";
 
+/* Title of button that asks the users if they'd like to focus on checking their sites stats */
+"Checking stats" = "Kontrola statistik";
+
 /* Screen reader text expressing the menu item is a child of another menu item. Argument is a name for another menu item. */
 "Child of %@" = "Dítě %@";
 
@@ -2362,23 +2365,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Skrýt";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3957,7 +3953,7 @@ translators: Block name. %s: The localized block name */
 "Last Name" = "Příjmení";
 
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Minulý týden jste měli %1$d zobrazení, %2$d komentářů a %3$d lajků.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Minulý týden jste měli %1$@ zobrazení, %2$@ komentářů a %3$@ lajků.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Přehled posledních příspěvků";

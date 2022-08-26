@@ -55,7 +55,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
     // MARK: - Private Helpers
 
     fileprivate func legacyDefaultWordPressAccount(_ context: NSManagedObjectContext) -> NSManagedObject? {
-        let objectURL = UserDefaults.standard.url(forKey: defaultDotcomKey)
+        let objectURL = UserPersistentStoreFactory.instance().url(forKey: defaultDotcomKey)
         if objectURL == nil {
             return nil
         }

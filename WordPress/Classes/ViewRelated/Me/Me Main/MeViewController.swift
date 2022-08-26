@@ -558,5 +558,6 @@ extension MeViewController {
 
     @objc private func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .me)
     }
 }

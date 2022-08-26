@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-29 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-08-10 12:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ja_JP */
@@ -2464,23 +2464,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "非表示にする";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -4133,8 +4126,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "姓";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "先週、%1$@件の表示と%2$@件のコメントを受け取りました。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "先週、%1$@件の表示と%2$@件の「いいね」を受け取りました。";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "先週、%1$d件の表示、%2$d件のコメント、%3$d件の「いいね」を受け取りました。";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "先週、%1$@件の表示、%2$@件のコメント、%3$@件の「いいね」を受け取りました。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "先週、%@件の表示がありました。";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新の投稿概要";
@@ -9759,6 +9761,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1年";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "削除";
+
 /* Age between dates equaling one hour. */
 "an hour" = "1時間";
 
@@ -9767,6 +9772,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音声ファイル";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "削除";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "削除";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "削除";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "削除";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "作成者: %@";
@@ -9793,6 +9810,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "フォロー";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "削除";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
@@ -9863,6 +9883,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "スパムとしてマーク";
 
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "削除";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "削除";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
 
@@ -9929,6 +9961,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "アクティビティが足りません。 サイトの訪問者数が増えたら後でもう一度確認してください。";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "削除";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "この会話内";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "サイトメンバー";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "次の項目が削除されます:";
 
@@ -9952,6 +9993,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "ドキュメントページに移動する";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "削除";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "過去最高の表示数";

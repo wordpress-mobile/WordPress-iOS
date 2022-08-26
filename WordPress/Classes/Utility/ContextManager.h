@@ -16,8 +16,8 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
-- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock;
-- (void)saveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion;
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock;
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion;
 @end
 
 @interface ContextManager : NSObject <CoreDataStack>

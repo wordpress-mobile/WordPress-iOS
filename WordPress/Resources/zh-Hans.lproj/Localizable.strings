@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-28 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-11 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -2464,23 +2464,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "关闭";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3961,6 +3954,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "URL 无效，请检查您输入的网址是否有效。";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "URL 无效。";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
 /* No comment provided by engineer. */
@@ -4127,8 +4123,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "姓氏";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "上周共计 %1$@ 次查看和 %2$@ 条评论。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "上周共计 %1$@ 次查看和 %2$@ 个赞。";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "上周共计 %1$d 次查看、%2$d 条评论和 %3$d 个赞。";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "上周共计 %1$@ 次查看、%2$@ 条评论和 %3$@ 个赞。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "上周共计 %@ 次查看。";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
@@ -9753,6 +9758,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1 年后";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "忽略";
+
 /* Age between dates equaling one hour. */
 "an hour" = "一小时";
 
@@ -9761,6 +9769,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "忽略";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "忽略";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "忽略";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "忽略";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
@@ -9787,6 +9807,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "关注";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "忽略";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
@@ -9857,6 +9880,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
 
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "忽略";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "忽略";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "忽略";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
 
@@ -9923,6 +9958,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "忽略";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "此会话中";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "站点成员";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
 
@@ -9946,6 +9990,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "访问我们的文档页面";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "忽略";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最受欢迎的文章";

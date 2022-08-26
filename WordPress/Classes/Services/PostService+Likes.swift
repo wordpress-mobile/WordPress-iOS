@@ -90,14 +90,13 @@ private extension PostService {
 
         guard let remoteLikeUsers = remoteLikeUsers,
               !remoteLikeUsers.isEmpty else {
-            onComplete()
+            DispatchQueue.main.async {
+                onComplete()
+            }
             return
         }
 
-        let derivedContext = ContextManager.shared.newDerivedContext()
-
-        derivedContext.perform {
-
+        ContextManager.shared.performAndSave { derivedContext in
             let likers = remoteLikeUsers.map { remoteUser in
                 LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }
@@ -105,11 +104,9 @@ private extension PostService {
             if purgeExisting {
                 self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
-
-            ContextManager.shared.save(derivedContext) {
-                DispatchQueue.main.async {
-                    onComplete()
-                }
+        } completion: {
+            DispatchQueue.main.async {
+                onComplete()
             }
         }
     }

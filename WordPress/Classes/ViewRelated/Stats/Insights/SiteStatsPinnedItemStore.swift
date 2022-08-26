@@ -30,11 +30,11 @@ final class SiteStatsPinnedItemStore {
     }
 
     func markPinnedItemAsHidden(_ item: SiteStatsPinnable) {
-        UserDefaults.standard.set(true, forKey: userDefaultsKey(for: item))
+        UserPersistentStoreFactory.instance().set(true, forKey: userDefaultsKey(for: item))
     }
 
     func shouldShow(_ item: SiteStatsPinnable) -> Bool {
-        !UserDefaults.standard.bool(forKey: userDefaultsKey(for: item))
+        !UserPersistentStoreFactory.instance().bool(forKey: userDefaultsKey(for: item))
     }
 }
 

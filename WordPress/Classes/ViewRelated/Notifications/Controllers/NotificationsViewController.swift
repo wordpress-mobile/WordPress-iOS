@@ -626,6 +626,7 @@ extension NotificationsViewController {
         }
         jetpackBannerView.buttonAction = { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
         }
         jetpackBannerView.isHidden = false
         addTranslationObserver(jetpackBannerView)

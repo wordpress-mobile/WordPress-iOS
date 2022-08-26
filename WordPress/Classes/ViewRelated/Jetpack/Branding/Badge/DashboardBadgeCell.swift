@@ -46,5 +46,6 @@ extension DashboardBadgeCell: BlogDashboardCardConfigurable {
             return
         }
         JetpackBrandingCoordinator.presentOverlay(from: viewController)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .home)
     }
 }

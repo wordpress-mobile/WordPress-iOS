@@ -1,7 +1,9 @@
-Abbiamo apportato alcuni miglioramenti alle prestazioni dei blocchi Galleria e Immagine nell'Editor a blocchi. Ciò consentirà alle immagini di occupare meno spazio di archiviazione sul sito ed eviterà il rallentamento del dispositivo durante i caricamenti multimediali. Sentiamo l'esigenza della velocità.
+Abbiamo risolto un bug nella sezione delle statistiche dell'app: quando consulti gli elenchi di motori di ricerca che hanno inviato visitatori al tuo sito, puoi ora visualizzare risultati nidificati, proprio come nel browser.
 
-Se il tuo sito utilizza VideoPress, tutti i blocchi video salvati nella versione web del sito verranno ora visualizzati correttamente anche nell'app mobile.
+Premendo il tasto @ mentre digiti un commento, visualizzerai comunque un elenco di utenti suggeriti che potresti voler menzionare, ma questi utenti sono ora divisi in gruppi. Se stai rispondendo a un commento principale, l'autore di quest'ultimo è visualizzato in cima all'elenco, proprio accanto all'autore dell'articolo.
 
-L'inseritore di blocchi nell'Editor a blocchi ora consente di organizzare meglio i tipi di blocchi nelle raccolte. Abbiamo anche apportato una piccola regolazione della spaziatura nella nota a piè di pagina del testo alternativo nei Blocchi immagine, perché anche le piccole cose sono importanti.
+Ora che l'app supporta le anteprime delle immagini a risoluzione più elevata, abbiamo aumentato le dimensioni degli screenshot dei temi nel selezionatore di temi del sito. Pixel: niente più scomposizione, solo perfezione.
 
-Ultimo ma non meno importante, abbiamo eliminato un fastidioso bug nel processo di creazione del sito. Quando scorri orizzontalmente le opzioni di progettazione del sito, l'app ora ricorda dove avevi interrotto, anche se scorri su e giù nella pagina.
+Abbiamo modificato alcuni elementi visivi nell'editor da verdi a blu. Sono ora abbinati agli elementi visivi dell'app WordPress.
+
+Infine, niente più zero nel resoconto settimanale: se i tuoi articoli non ricevono commenti o Mi piace durante la settimana, non includeremo quel numero nelle notifiche del dispositivo. Solo positività.
