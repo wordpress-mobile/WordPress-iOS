@@ -11,12 +11,13 @@
   ],
   "defaultOptions" : {
     "codeCoverage" : false,
+    "maximumTestRepetitions" : 50,
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "1D6058900D05DD3D006BFB54",
       "name" : "WordPress"
     },
-    "testRepetitionMode" : "retryOnFailure"
+    "testRepetitionMode" : "untilFailure"
   },
   "testTargets" : [
     {
