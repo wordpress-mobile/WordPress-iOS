@@ -67,6 +67,7 @@ class JetpackInstallPromptViewController: UIViewController {
 
         applyStyles()
         localizeText()
+        configureAccessibility()
 
         backgroundView.addSubview(starFieldView)
         backgroundView.layer.addSublayer(gradientLayer)
@@ -160,6 +161,17 @@ class JetpackInstallPromptViewController: UIViewController {
         button.primaryHighlightBackgroundColor = style.highlighted.backgroundColor
         button.primaryHighlightBorderColor = style.highlighted.borderColor
     }
+
+    private func configureAccessibility() {
+        learnMoreButton.accessibilityHint = Strings.learnMoreButtonHint
+        learnMoreButton.accessibilityTraits = .link
+
+        installButton.accessibilityHint = Strings.installButtonHint
+        installButton.accessibilityTraits = .button
+
+        noThanksButton.accessibilityHint = Strings.noThanksButtonHint
+        noThanksButton.accessibilityTraits = .button
+    }
 }
 
 // MARK: - Notifications
@@ -176,8 +188,11 @@ private struct Strings {
     static let andMore = NSLocalizedString("... and more!", comment: "Label, hint there are more features")
 
     static let learnMoreButton = NSLocalizedString("Learn More", comment: "Button title, opens a webview with more features")
+    static let learnMoreButtonHint = NSLocalizedString("Opens Jetpack website for more information.", comment: "VoiceOver accessibility hint, informating the user that the button opens a website with more information")
     static let installButton = NSLocalizedString("Install", comment: "Button title, accepting the install offer")
+    static let installButtonHint = NSLocalizedString("Opens the Jetpack installation view.", comment: "VoiceOver accessibility hint, informating the user that the button opens a view that installs Jetpack")
     static let noThanksButton = NSLocalizedString("No Thanks", comment: "Button title, declining the offer")
+    static let noThanksButtonHint = NSLocalizedString("Closes the installation prompt.", comment: "VoiceOver accessibility hint, informating the user that the button closes current view")
 }
 
 // MARK: - Styles
