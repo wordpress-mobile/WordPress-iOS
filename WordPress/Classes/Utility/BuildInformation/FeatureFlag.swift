@@ -34,6 +34,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackPoweredBottomSheet
     case sharedUserDefaults
     case sharedLogin
+    case jetpackPluginInstallPrompt
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -110,6 +111,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .sharedLogin:
             return false
+        case .jetpackPluginInstallPrompt:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -204,6 +207,8 @@ extension FeatureFlag {
             return "Shared User Defaults"
         case .sharedLogin:
             return "Shared Login"
+        case .jetpackPluginInstallPrompt:
+            return "Jetpack plugin install prompt after login"
         }
     }
 

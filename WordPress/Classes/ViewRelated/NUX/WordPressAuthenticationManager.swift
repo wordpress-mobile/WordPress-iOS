@@ -626,11 +626,10 @@ private extension WordPressAuthenticationManager {
 //
 private extension WordPressAuthenticationManager {
     private func shouldPresentJetpackInstallPrompt(for blog: Blog) -> Bool {
-        return jetpackInstallPromptSettings.canDisplay(for: blog)
+        return FeatureFlag.jetpackPluginInstallPrompt.enabled && jetpackInstallPromptSettings.canDisplay(for: blog)
     }
 
     private func presentJetpackInstallPrompt(for blog: Blog) {
-
         let userInfo = ["jetpackInstallPromptSettings": jetpackInstallPromptSettings]
         NotificationCenter.default.post(name: .promptInstallJetpack, object: nil, userInfo: userInfo)
     }
