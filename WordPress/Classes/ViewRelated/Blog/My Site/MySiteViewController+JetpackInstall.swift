@@ -25,7 +25,7 @@ extension MySiteViewController {
             }
         }
 
-        navigationController?.present(installPromptNavigationController, animated: true)
+        present(installPromptNavigationController, animated: true)
     }
 
     /// Presents the Jetpack plugin install flow on top of the prompt
