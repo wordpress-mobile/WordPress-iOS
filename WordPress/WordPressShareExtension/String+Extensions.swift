@@ -93,7 +93,8 @@ extension String {
     /// - Parameter options: The provided compare options.
     /// - Returns: true if this String begins with the provided prefix following the given compare options, false otherwise.
     func hasPrefix(_ prefix: String, with options: CompareOptions) -> Bool {
-        return range(of: prefix, options: options) != nil
+        let fullOptions = options.union([.anchored])
+        return range(of: prefix, options: fullOptions) != nil
     }
 
     /// Returns true if this String consists of digits
