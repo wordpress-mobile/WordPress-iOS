@@ -43,9 +43,13 @@ class KeychainUtils: NSObject {
     }
 
     func copyKeychainToSharedKeychainIfNeeded() {
+        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+
         guard shouldUseSharedKeychain(),
               AppConfiguration.isWordPress,
-              !UserPersistentStoreFactory.instance().bool(forKey: "keychain-copied"),
+              !defaults.bool(forKey: "keychain-copied"),
               let items = try? keychainUtils.getAllPasswords(forAccessGroup: nil) else {
             return
         }
@@ -59,7 +63,7 @@ class KeychainUtils: NSObject {
 
             try? keychainUtils.storeUsername(username, andPassword: password, forServiceName: serviceName, accessGroup: WPAppKeychainAccessGroup, updateExisting: false)
         }
-        UserPersistentStoreFactory.instance().set(true, forKey: "keychain-copied")
+        defaults.set(true, forKey: "keychain-copied")
     }
 
 }

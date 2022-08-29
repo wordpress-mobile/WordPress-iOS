@@ -148,17 +148,6 @@ private extension WhatIsNewScenePresenter {
 
 
 private extension UserDefaults {
-
-    static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
-
-    var announcementsVersionDisplayed: String? {
-        get {
-            string(forKey: UserDefaults.announcementsVersionDisplayedKey)
-        }
-        set {
-            set(newValue, forKey: UserDefaults.announcementsVersionDisplayedKey)
-        }
-    }
 }
 
 fileprivate extension String {

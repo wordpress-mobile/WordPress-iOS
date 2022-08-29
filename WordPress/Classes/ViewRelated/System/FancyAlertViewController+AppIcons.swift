@@ -12,11 +12,11 @@ extension FancyAlertViewController {
         guard AppConfiguration.allowsCustomAppIcons,
               AppIcon.isUsingCustomIcon,
               origin.presentedViewController == nil,
-              UserDefaults.standard.hasShownCustomAppIconUpgradeAlert == false else {
+              UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert == false else {
             return
         }
 
-        UserDefaults.standard.hasShownCustomAppIconUpgradeAlert = true
+        UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert = true
 
         let controller = FancyAlertViewController.makeCustomAppIconUpgradeAlertController(with: origin)
         controller.modalPresentationStyle = .custom
@@ -52,22 +52,5 @@ extension FancyAlertViewController {
 
         let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
         return controller
-    }
-}
-
-// MARK: - User Defaults
-
-extension UserDefaults {
-    private enum Keys: String {
-        case hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
-    }
-
-    var hasShownCustomAppIconUpgradeAlert: Bool {
-        get {
-            return bool(forKey: Keys.hasShownCustomAppIconUpgradeAlert.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.hasShownCustomAppIconUpgradeAlert.rawValue)
-        }
     }
 }

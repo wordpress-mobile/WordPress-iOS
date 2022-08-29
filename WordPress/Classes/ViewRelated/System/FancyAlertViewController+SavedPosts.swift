@@ -11,8 +11,8 @@ extension FancyAlertViewController {
     }
 
     static func presentReaderSavedPostsAlertControllerIfNecessary(from origin: UIViewController & UIViewControllerTransitioningDelegate) {
-        if !UserDefaults.standard.savedPostsPromoWasDisplayed {
-            UserDefaults.standard.savedPostsPromoWasDisplayed = true
+        if !UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed {
+            UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed = true
 
             let controller = FancyAlertViewController.makeReaderSavedPostsAlertController()
             controller.modalPresentationStyle = .custom
@@ -39,22 +39,5 @@ extension FancyAlertViewController {
 
         let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
         return controller
-    }
-}
-
-// MARK: - User Defaults
-
-extension UserDefaults {
-    private enum Keys: String {
-        case savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
-    }
-
-    var savedPostsPromoWasDisplayed: Bool {
-        get {
-            return bool(forKey: Keys.savedPostsPromoWasDisplayed.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.savedPostsPromoWasDisplayed.rawValue)
-        }
     }
 }
