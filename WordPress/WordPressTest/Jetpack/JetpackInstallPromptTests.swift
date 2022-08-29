@@ -36,26 +36,27 @@ class JetpackInstallPromptTests: XCTestCase {
     }
 
     func testPromptWillShowForSitesWithoutJetpack() {
-        let blog = BlogBuilder(context).withJetpack(version: nil, username: nil, email: nil).build()
-        blog.isAdmin = true
+        let blog = buildSelfHostedBlog(jetpackInstalled: false, jetpackConnected: false, isAdmin: true)
         XCTAssertTrue(settings.canDisplay(for: blog))
     }
 
     func testPromptWillNotShowForNonAdmins() {
-        let blog = BlogBuilder(context).withJetpack(version: nil, username: nil, email: nil).build()
-        blog.isAdmin = false
+        let blog = buildSelfHostedBlog(jetpackInstalled: false, jetpackConnected: false, isAdmin: false)
         XCTAssertFalse(settings.canDisplay(for: blog))
     }
 
-    func testPromptWillNotShowForBlogsWithJetpack() {
-        let blog = BlogBuilder(context).withJetpack(version: "1.0", username: "test", email: "test@example.com").build()
-        blog.isAdmin = true
+    func testPromptWillShowForBlogsWithJetpackNotConnected() {
+        let blog = buildSelfHostedBlog(jetpackInstalled: true, jetpackConnected: false, isAdmin: true)
+        XCTAssertTrue(settings.canDisplay(for: blog))
+    }
+
+    func testPromptWillNotShowForBlogsWithJetpackConnected() {
+        let blog = buildSelfHostedBlog(jetpackInstalled: true, jetpackConnected: true, isAdmin: true)
         XCTAssertFalse(settings.canDisplay(for: blog))
     }
 
     func testPromptWillNotShowIfDismissedBefore() {
-        let blog = BlogBuilder(context).withJetpack(version: nil, username: nil, email: nil).build()
-        blog.isAdmin = true
+        let blog = buildSelfHostedBlog(jetpackInstalled: false, jetpackConnected: false, isAdmin: true)
 
         settings.setPromptWasDismissed(true, for: blog)
 
@@ -67,9 +68,20 @@ class JetpackInstallPromptTests: XCTestCase {
             userDefaults: userDefaults,
             showJetpackPluginInstallPrompt: false
         )
-        let blog = BlogBuilder(context).withJetpack(version: nil, username: nil, email: nil).build()
-        blog.isAdmin = true
+        let blog = buildSelfHostedBlog(jetpackInstalled: false, jetpackConnected: false, isAdmin: true)
 
         XCTAssertFalse(settings.canDisplay(for: blog))
+    }
+}
+
+private extension JetpackInstallPromptTests {
+    func buildSelfHostedBlog(jetpackInstalled: Bool, jetpackConnected: Bool, isAdmin: Bool) -> Blog {
+        let version: String? = jetpackInstalled ? "1.0" : nil
+        let clientId: Int? = jetpackConnected ? 1 : nil
+
+        let blog = BlogBuilder(context).withJetpack(clientId: clientId, version: version, username: nil, email: nil).build()
+        blog.isAdmin = isAdmin
+
+        return blog
     }
 }

@@ -31,7 +31,7 @@ public final class JetpackInstallPromptSettings {
             return false
         }
 
-        return !jetpack.isInstalled && blog.isAdmin && !promptWasDismissed(for: blog)
+        return !jetpack.isConnected && blog.isAdmin && !promptWasDismissed(for: blog)
     }
 
     func setPromptWasDismissed(_ value: Bool, for blog: Blog) {
