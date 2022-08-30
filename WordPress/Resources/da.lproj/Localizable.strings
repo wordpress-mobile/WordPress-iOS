@@ -22,9 +22,6 @@
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen titel)";
 
-/* About this app (information page title) */
-"About" = "Om";
-
 /* Account Settings Title
    Link to Account Settings section */
 "Account Settings" = "Kontoindstillinger";
@@ -110,8 +107,7 @@
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Bloker websted";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
@@ -1078,8 +1074,7 @@
    Primary Web Site */
 "Primary Site" = "Primært websted";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privatlivspolitik";
 
 /* Name for the status of a post that is marked private.
@@ -1420,8 +1415,7 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Servicevilkår";
 
 /* Title of a button style */
@@ -1525,8 +1519,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Prøv igen";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -1609,8 +1602,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Brugernavne skal være på mindst 4 tegn.";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Version";
 
 /* Description for the version label in the What's new page. */

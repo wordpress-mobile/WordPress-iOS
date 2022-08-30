@@ -1,9 +1,0 @@
-Hemos solucionado un error de la sección Estadísticas de la aplicación. Ahora, si consultas las listas de los motores de búsqueda que han enviado visitantes a tu sitio, podrás ver resultados anidados, tal y como lo harías en tu navegador.
-
-Si pulsas la tecla @ al escribir un comentario, todavía hace que aparezca una lista de usuarios sugeridos que tal vez quieras etiquetar. Sin embargo, ahora, estos usuarios se dividen en grupos. Si respondes a un comentario padre, el autor del comentario aparecerá al principio de la lista, justo al lado del autor de la entrada.
-
-Ahora que la aplicación admite las vistas previas de imágenes de alta resolución, hemos aumentado el tamaño de las capturas de pantallas de los temas en el selector de temas del sitio. Diles adiós a las imágenes pixeladas y saluda a las de alta resolución.
-
-Hemos cambiado el color de algunos elementos visuales en el editor de verde a azul. Ahora coincide con los que verías en la aplicación de WordPress.
-
-Finalmente, olvídate de los ceros en tu resumen semanal. Si no consigues ningún comentario o Me gusta en tu entrada esta semana, no incluiremos ese número en las notificaciones de tu dispositivo. Solo noticias positivas.

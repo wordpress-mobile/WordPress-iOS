@@ -111,14 +111,8 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "MORADA";
 
-/* About this app (information page title) */
-"About" = "Sobre";
-
 /* My Profile 'About me' label */
 "About Me" = "Sobre mim";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Sobre a aplicação WordPress para iOS";
 
 /* Title for the account section in site settings screen */
 "Account" = "Conta";
@@ -367,8 +361,7 @@
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Bloquear tentativas maliciosas de iniciar sessão";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Site";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
@@ -2173,8 +2166,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privacidade";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Política de privacidade";
 
 /* Register Domain - Privacy Protection section header title */
@@ -2246,9 +2238,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Notificações push foram desligadas nas definições do iOS. Toque em \"Permitir notificações\" para voltar a ligar.";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Classifique-nos na App Store";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -2689,8 +2678,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Ordenar por";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Código fonte";
 
 /* Label for showing the available disk space quota available for media */
@@ -2783,8 +2771,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Escreva algo sobre si.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos do serviço";
 
 /* Menu item label for linking a testimonial post. */
@@ -3045,8 +3032,7 @@
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Tente com o endereço do site";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -3238,8 +3224,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verificar sessão";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Versão";
 
 /* Version of a plugin to install
