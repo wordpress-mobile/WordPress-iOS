@@ -46,6 +46,16 @@ class JetpackRemoteInstallViewController: UIViewController {
 private extension JetpackRemoteInstallViewController {
     func setupNavigationBar() {
         title = NSLocalizedString("Jetpack", comment: "Title for the Jetpack Installation")
+
+        navigationController?.setNavigationBarHidden(false, animated: true)
+
+        /// Keep showing "Back" button if this is not the only view controller in navigation controller
+        if navigationController?.viewControllers.count == 1 {
+            setupCancelButton()
+        }
+    }
+
+    func setupCancelButton() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancel))
@@ -102,6 +112,7 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
+        setupCancelButton()
         WPAnalytics.track(event)
         viewModel.installJetpack(with: url, username: username, password: password)
     }
