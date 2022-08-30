@@ -26,9 +26,6 @@
 /* No comment provided by engineer. */
 "ADD LINK" = "Dodaj poveznicu";
 
-/* About this app (information page title) */
-"About" = "Info";
-
 /* Accessibility label for add button to add items to the user's media library
    Remove asset from media picker list */
 "Add" = "Dodaj";
@@ -83,8 +80,7 @@
 /* Title for the Background Color section */
 "Background Color" = "Boja pozadine";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Accessibility label for bold button on formatting toolbar.
@@ -665,8 +661,7 @@
    Title for screen to preview a static content. */
 "Preview" = "Predpregled";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Pravila privatnosti";
 
 /* Name for the status of a post that is marked private.
@@ -886,8 +881,7 @@
    Title for the tag selector view */
 "Tags" = "Tagovi";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Uvjeti korištenja";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
@@ -1023,8 +1017,7 @@
    Username placeholder */
 "Username" = "Korisničko ime";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Verzija";
 
 /* Description for the version label in the What's new page. */
