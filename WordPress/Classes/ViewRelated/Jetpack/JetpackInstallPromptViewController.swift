@@ -40,15 +40,16 @@ class JetpackInstallPromptViewController: UIViewController {
     // MARK: - Properties
 
     private let blog: Blog
+    private var coordinator: JetpackInstallCoordinator?
 
-    enum Action {
+    enum DismissAction {
         case install
         case noThanks
     }
 
     /// Closure to be executed upon dismissal.
     ///
-    var actionHandler: ((_ action: Action) -> Void)?
+    var dismiss: ((_ action: DismissAction) -> Void)?
 
     // MARK: - Init
 
@@ -72,6 +73,12 @@ class JetpackInstallPromptViewController: UIViewController {
         backgroundView.layer.addSublayer(gradientLayer)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return [.portrait, .portraitUpsideDown]
     }
@@ -86,11 +93,19 @@ class JetpackInstallPromptViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func installTapped(_ sender: Any) {
-        actionHandler?(.install)
+        coordinator = JetpackInstallCoordinator(
+            blog: blog,
+            promptType: .installPrompt,
+            navigationController: navigationController) { [weak self] in
+                self?.dismiss?(.install)
+            }
+
+        coordinator?.openJetpackRemoteInstall()
     }
 
     @IBAction func noThanksTapped(_ sender: Any) {
-        actionHandler?(.noThanks)
+        dismiss?(.noThanks)
+        dismiss(animated: true)
     }
 
     @IBAction func learnMoreButtonTapped(_ sender: Any) {
@@ -117,8 +132,6 @@ class JetpackInstallPromptViewController: UIViewController {
     }
 
     private func applyStyles() {
-        navigationController?.navigationBar.isHidden = true
-
         view.backgroundColor = JetpackPromptStyles.backgroundColor
         backgroundView.backgroundColor = JetpackPromptStyles.backgroundColor
 
