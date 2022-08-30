@@ -2320,6 +2320,8 @@
 		C3C39B0826F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */; };
 		C3C70C562835C5BB00DD2546 /* SiteDesignSectionLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C70C552835C5BB00DD2546 /* SiteDesignSectionLoaderTests.swift */; };
 		C3DA0EE02807062600DA3250 /* SiteCreationNameTracksEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DA0EDF2807062600DA3250 /* SiteCreationNameTracksEventTests.swift */; };
+		C3DD4DCE28BE5D4D0046C68E /* SplashPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */; };
+		C3DD4DCF28BE62A20046C68E /* SplashPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */; };
 		C3E2462926277B7700B99EA6 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
 		C3E42AB027F4D30E00546706 /* MenuItemsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E42AAF27F4D30E00546706 /* MenuItemsViewControllerTests.swift */; };
 		C3FBF4E828AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FBF4E728AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift */; };
@@ -7233,6 +7235,7 @@
 		C3C39B0626F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordPressSupportSourceTag+Editor.swift"; sourceTree = "<group>"; };
 		C3C70C552835C5BB00DD2546 /* SiteDesignSectionLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignSectionLoaderTests.swift; sourceTree = "<group>"; };
 		C3DA0EDF2807062600DA3250 /* SiteCreationNameTracksEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationNameTracksEventTests.swift; sourceTree = "<group>"; };
+		C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPrologueViewController.swift; sourceTree = "<group>"; };
 		C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAuthorSelectorViewController.swift; sourceTree = "<group>"; };
 		C3E42AAF27F4D30E00546706 /* MenuItemsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemsViewControllerTests.swift; sourceTree = "<group>"; };
 		C3FBF4E728AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingAnalyticsHelper.swift; sourceTree = "<group>"; };
@@ -9015,14 +9018,14 @@
 			path = "Resources/Icons/hot-pink";
 			sourceTree = SOURCE_ROOT;
 		};
-		176E194525C465E00058F1C5 /* Prologue */ = {
+		176E194525C465E00058F1C5 /* UnifiedPrologue */ = {
 			isa = PBXGroup;
 			children = (
 				1705CEE6260A57F900F23763 /* ContentViews */,
 				176E194625C465F70058F1C5 /* UnifiedPrologueViewController.swift */,
 				17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */,
 			);
-			name = Prologue;
+			name = UnifiedPrologue;
 			sourceTree = "<group>";
 		};
 		1797373920EBDA1100377B4E /* Universal Links */ = {
@@ -14120,6 +14123,14 @@
 			path = Jetpack;
 			sourceTree = "<group>";
 		};
+		C3DD4DCC28BE5D300046C68E /* SplashPrologue */ = {
+			isa = PBXGroup;
+			children = (
+				C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */,
+			);
+			name = SplashPrologue;
+			sourceTree = "<group>";
+		};
 		C3E42AAD27F4D2CF00546706 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
@@ -15139,7 +15150,8 @@
 		E6417B961CA07B060084050A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				176E194525C465E00058F1C5 /* Prologue */,
+				C3DD4DCC28BE5D300046C68E /* SplashPrologue */,
+				176E194525C465E00058F1C5 /* UnifiedPrologue */,
 				E6C1E8431EF1D21F00D139D9 /* Epilogue */,
 				98C43E841FE98041006FEF54 /* Social Signup */,
 			);
@@ -19110,6 +19122,7 @@
 				9887560C2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
+				C3DD4DCE28BE5D4D0046C68E /* SplashPrologueViewController.swift in Sources */,
 				1716AEFC25F2927600CF49EC /* MySiteViewController.swift in Sources */,
 				F18CB8962642E58700B90794 /* FixedSizeImageView.swift in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
@@ -21794,6 +21807,7 @@
 				FABB242A2602FC2C00C8785C /* Pattern.swift in Sources */,
 				FABB242B2602FC2C00C8785C /* ShareExtensionService.swift in Sources */,
 				FABB242C2602FC2C00C8785C /* KanvasCameraCustomUI.swift in Sources */,
+				C3DD4DCF28BE62A20046C68E /* SplashPrologueViewController.swift in Sources */,
 				FABB242D2602FC2C00C8785C /* MediaPreviewHelper.swift in Sources */,
 				F1C197A72670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */,

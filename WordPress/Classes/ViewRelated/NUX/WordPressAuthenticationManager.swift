@@ -80,7 +80,15 @@ extension WordPressAuthenticationManager {
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+                if FeatureFlag.newLandingScreen.enabled {
+                    return SplashPrologueViewController()
+                }
+
+                if FeatureFlag.unifiedPrologueCarousel.enabled {
+                    return UnifiedPrologueViewController()
+                }
+
+                return nil
             }
 
             return viewController
