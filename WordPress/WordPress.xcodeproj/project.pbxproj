@@ -43,6 +43,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		011040CB28BE1CBB00F5656E /* JetpackInstallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011040CA28BE1CBA00F5656E /* JetpackInstallCoordinator.swift */; };
+		011040CC28BE1CBB00F5656E /* JetpackInstallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011040CA28BE1CBA00F5656E /* JetpackInstallCoordinator.swift */; };
 		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
 		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
@@ -2368,20 +2370,15 @@
 		C79C308126EA975900E88514 /* ReferrerDetailsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215E9267F59CB008C3B69 /* ReferrerDetailsHeaderCell.swift */; };
 		C79C308226EA99D500E88514 /* ReferrerDetailsSpamActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215F3267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift */; };
 		C79C308326EA9A2300E88514 /* ReferrerDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931215ED267F6799008C3B69 /* ReferrerDetailsCell.swift */; };
+		C7A09A4A28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
+		C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
+		C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
+		C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
 		C7A0C15A278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */; };
 		C7A0C15B278789A80062E668 /* JetpackInstallPromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */; };
 		C7A0C15C278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */; };
 		C7A0C15D278789A80062E668 /* JetpackInstallPromptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */; };
 		C7A0C15F2788AB130062E668 /* StarFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7124E912638905B00929318 /* StarFieldView.swift */; };
-		C7CECDFD27F64E4D008A58FD /* JetpackInstallPromptSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */; };
-		C7CECDFE27F64E4D008A58FD /* JetpackInstallPromptSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */; };
-		C7CECE0127F64F83008A58FD /* JetpackInstallPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */; };
-		C7CECE0327FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */; };
-		C7CECE0427FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */; };
-		C7A09A4A28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
-		C7A09A4B28401B7B003096ED /* QRLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4928401B7B003096ED /* QRLoginService.swift */; };
-		C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
-		C7A09A4E28403A34003096ED /* QRLoginURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */; };
 		C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF875283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */; };
 		C7AFF877283C2623000E01DF /* QRLoginScanningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */; };
@@ -2399,6 +2396,11 @@
 		C7BB601D2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */; };
 		C7BB601F2863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */; };
 		C7BB60202863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */; };
+		C7CECDFD27F64E4D008A58FD /* JetpackInstallPromptSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */; };
+		C7CECDFE27F64E4D008A58FD /* JetpackInstallPromptSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */; };
+		C7CECE0127F64F83008A58FD /* JetpackInstallPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */; };
+		C7CECE0327FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */; };
+		C7CECE0427FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */; };
 		C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */; };
 		C7E5F2522799BD54009BC263 /* cool-blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */; };
 		C7E5F2532799BD54009BC263 /* cool-blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */; };
@@ -5016,6 +5018,7 @@
 
 /* Begin PBXFileReference section */
 		0075A07B739C4EDB5EC613B8 /* Pods_WordPressAllTimeWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressAllTimeWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		011040CA28BE1CBA00F5656E /* JetpackInstallCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackInstallCoordinator.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
@@ -7266,13 +7269,10 @@
 		C77FC90E2800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingEnableNotificationsViewController.xib; sourceTree = "<group>"; };
 		C78543D125B889CC006CEAFB /* JetpackScanThreatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanThreatViewModel.swift; sourceTree = "<group>"; };
 		C789952425816F96001B7B43 /* JetpackScanCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackScanCoordinator.swift; sourceTree = "<group>"; };
-		C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackInstallPromptViewController.swift; sourceTree = "<group>"; };
-		C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackInstallPromptViewController.xib; sourceTree = "<group>"; };
-		C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JetpackInstallPromptSettings.swift; path = "../../../../../../WordPress-iOS/WordPress/Classes/ViewRelated/Jetpack/JetpackInstallPromptSettings.swift"; sourceTree = "<group>"; };
-		C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackInstallPromptTests.swift; sourceTree = "<group>"; };
-		C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MySiteViewController+JetpackInstall.swift"; path = "../../../../../../WordPress-iOS/WordPress/Classes/ViewRelated/Blog/My Site/MySiteViewController+JetpackInstall.swift"; sourceTree = "<group>"; };
 		C7A09A4928401B7B003096ED /* QRLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginService.swift; sourceTree = "<group>"; };
 		C7A09A4C28403A34003096ED /* QRLoginURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginURLParser.swift; sourceTree = "<group>"; };
+		C7A0C158278789A80062E668 /* JetpackInstallPromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackInstallPromptViewController.swift; sourceTree = "<group>"; };
+		C7A0C159278789A80062E668 /* JetpackInstallPromptViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackInstallPromptViewController.xib; sourceTree = "<group>"; };
 		C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Helpers.swift"; sourceTree = "<group>"; };
 		C7AFF876283C2623000E01DF /* QRLoginScanningCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginScanningCoordinator.swift; sourceTree = "<group>"; };
 		C7AFF87B283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginVerifyCoordinator.swift; sourceTree = "<group>"; };
@@ -7282,6 +7282,9 @@
 		C7BB60182863AF9700748FD9 /* QRLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginProtocols.swift; sourceTree = "<group>"; };
 		C7BB601B2863B3D600748FD9 /* QRLoginCameraPermissionsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCameraPermissionsHandler.swift; sourceTree = "<group>"; };
 		C7BB601E2863B9E800748FD9 /* QRLoginCameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRLoginCameraSession.swift; sourceTree = "<group>"; };
+		C7CECDFC27F64E4D008A58FD /* JetpackInstallPromptSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JetpackInstallPromptSettings.swift; path = "../../../../../../WordPress-iOS/WordPress/Classes/ViewRelated/Jetpack/JetpackInstallPromptSettings.swift"; sourceTree = "<group>"; };
+		C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackInstallPromptTests.swift; sourceTree = "<group>"; };
+		C7CECE0227FCB0D5008A58FD /* MySiteViewController+JetpackInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MySiteViewController+JetpackInstall.swift"; path = "../../../../../../WordPress-iOS/WordPress/Classes/ViewRelated/Blog/My Site/MySiteViewController+JetpackInstall.swift"; sourceTree = "<group>"; };
 		C7D30C642638B07A00A1695B /* JetpackPrologueStyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPrologueStyleGuide.swift; sourceTree = "<group>"; };
 		C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-76x76.png"; sourceTree = "<group>"; };
 		C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-blue-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
@@ -13075,6 +13078,7 @@
 		9A8ECE032254A3260043C8DA /* Install */ = {
 			isa = PBXGroup;
 			children = (
+				011040CA28BE1CBA00F5656E /* JetpackInstallCoordinator.swift */,
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
 				9A8ECE1F22550A210043C8DA /* Error */,
 				9A8ECE1A2254ADFA0043C8DA /* View */,
@@ -14248,14 +14252,6 @@
 			path = System;
 			sourceTree = "<group>";
 		};
-		C7CECDFF27F64F72008A58FD /* Jetpack */ = {
-			isa = PBXGroup;
-			children = (
-				C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */,
-			);
-			path = Jetpack;
-			sourceTree = "<group>";
-		};
 		C738CB0928623CD6001BE107 /* QRLogin */ = {
 			isa = PBXGroup;
 			children = (
@@ -14300,6 +14296,14 @@
 				C7234A4D2832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		C7CECDFF27F64F72008A58FD /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				C7CECE0027F64F83008A58FD /* JetpackInstallPromptTests.swift */,
+			);
+			path = Jetpack;
 			sourceTree = "<group>";
 		};
 		C7E5F2422799BB1E009BC263 /* cool-blue */ = {
@@ -14741,7 +14745,6 @@
 			isa = PBXGroup;
 			children = (
 				C7CECDFF27F64F72008A58FD /* Jetpack */,
-				7EC9FE0822C6275900C5A888 /* Analytics */,
 				7E442FC520F677A300DEACA5 /* ActivityLog */,
 				7EC9FE0822C6275900C5A888 /* Analytics */,
 				FF7691661EE06CF500713F4B /* Aztec */,
@@ -19445,6 +19448,7 @@
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
+				011040CB28BE1CBB00F5656E /* JetpackInstallCoordinator.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				FE18495827F5ACBA00D26879 /* DashboardPromptsCardCell.swift in Sources */,
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
@@ -21274,6 +21278,7 @@
 				8BA125EC27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */,
 				3FB1929626C79EC6000F5AA3 /* Date+TimeStrings.swift in Sources */,
 				FABB22822602FC2C00C8785C /* WPTableViewActivityCell.m in Sources */,
+				011040CC28BE1CBB00F5656E /* JetpackInstallCoordinator.swift in Sources */,
 				FABB22842602FC2C00C8785C /* PeopleViewController.swift in Sources */,
 				FABB22852602FC2C00C8785C /* ConfettiView.swift in Sources */,
 				FABB22862602FC2C00C8785C /* RegisterDomainSuggestionsViewController.swift in Sources */,
