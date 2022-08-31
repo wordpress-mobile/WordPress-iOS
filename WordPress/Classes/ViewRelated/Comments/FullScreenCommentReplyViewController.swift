@@ -25,17 +25,28 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     private(set) var replyButton: UIBarButtonItem!
 
     /// Reply Suggestions
-    ///
     private var siteID: NSNumber?
     private var prominentSuggestionsIds: [NSNumber]?
     private var suggestionsTableView: SuggestionsTableView?
     private var searchText: String?
 
+    private var viewModel: FullScreenCommentReplyViewModelType
+
     // Static margin between the suggestions view and the text cursor position
     private let suggestionViewMargin: CGFloat = 5
 
-    var viewModel: FullScreenCommentReplyViewModelType = FullScreenCommentReplyViewModel()
     public var placeholder = String()
+
+    init(viewModel: FullScreenCommentReplyViewModelType = FullScreenCommentReplyViewModel()) {
+        // nibName from super class
+        let nibName = String(describing: EditCommentViewController.self)
+        self.viewModel = viewModel
+        super.init(nibName: nibName, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View Methods
     public override func viewDidLoad() {

@@ -3,12 +3,13 @@ import XCTest
 @testable import WordPress
 
 class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
+    private var viewModel: FullScreenCommentReplyViewModelType!
     private var controller: FullScreenCommentReplyViewController!
     private var window: UIWindow!
 
     override func setUp() {
-        controller = FullScreenCommentReplyViewController.newEdit()
-        controller.viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+        viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
 
         window = UIWindow()
 
@@ -30,14 +31,9 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
     /// Tests loading a new instance of the view controller and checking the content
     /// config property is being set correctly in the text view
     func testTextViewContentIsLoaded() {
-        guard let controller = FullScreenCommentReplyViewController.newEdit() else {
-            XCTFail("Controller is nil")
-            return
-        }
-        controller.viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
-
-
         let content = "Test Content"
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+
         controller.content = content
 
         load(controller, inWindow: UIWindow())
@@ -66,11 +62,7 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
 
     /// Test if SuggestionsTableView is visible when searchText is provided and it is already opened when text input is collapsed
     func testSuggestionListVisibleWhenAlreadyVisibleWhenCollapsed() throws {
-        guard let controller = FullScreenCommentReplyViewController.newEdit() else {
-            XCTFail("Controller is nil")
-            return
-        }
-        controller.viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
         controller.enableSuggestions(with: NSNumber(value: 1), prominentSuggestionsIds: [], searchText: "@Ren")
         controller.content = "Test"
         load(controller, inWindow: UIWindow())
@@ -83,12 +75,7 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
     }
 
     /// Test if SuggestionsTableView is not visible when expanded
-    func testSuggestionListNotVisibleWhenExpanded() throws {
-        guard let controller = FullScreenCommentReplyViewController.newEdit() else {
-            XCTFail("Controller is nil")
-            return
-        }
-        controller.viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+    func testSuggestionListNotVisibleWhenExpanded() throws {controller = FullScreenCommentReplyViewController(viewModel: viewModel)
         controller.enableSuggestions(with: NSNumber(value: 1), prominentSuggestionsIds: [], searchText: "")
         controller.content = "Test"
         load(controller, inWindow: UIWindow())
@@ -113,7 +100,7 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
 
             XCTAssertFalse(shouldSave)
             XCTAssertEqual(content, testContent)
-            XCTAssertTrue(lastSearchText?.isEmpty ?? false)
+            XCTAssertNil(lastSearchText)
         }
 
         controller.btnExitFullscreenPressed()
@@ -127,11 +114,7 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
         let testContent = "Test - Cancel"
         let expectedLastSearchText = "@Ren"
         let callbackExpectation = expectation(description: "onExitFullscreen is called successfully when the cancel button is pressed")
-        guard let controller = FullScreenCommentReplyViewController.newEdit() else {
-            XCTFail("Controller is nil")
-            return
-        }
-        controller.viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
         controller.enableSuggestions(with: NSNumber(value: 1), prominentSuggestionsIds: [], searchText: expectedLastSearchText)
         controller.content = testContent
         load(controller, inWindow: UIWindow())

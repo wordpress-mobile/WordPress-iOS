@@ -173,14 +173,11 @@ import Gridicons
     }
 
     @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
-        guard let editViewController = FullScreenCommentReplyViewController.newEdit() else {
-            return
-        }
-
         guard let presenter = WPTabBarController.sharedInstance() else {
             return
         }
 
+        let editViewController = FullScreenCommentReplyViewController()
 
         // Inform any listeners
         let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
