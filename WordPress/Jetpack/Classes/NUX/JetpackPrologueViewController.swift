@@ -18,10 +18,15 @@ class JetpackPrologueViewController: UIViewController {
         // Start color is the background color with no alpha because if we use clear it will fade to black
         // instead of just disappearing
         let startColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0)
+        let midTopColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.9)
+        let midBottomColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.2)
         let endColor = JetpackPrologueStyleGuide.backgroundColor
 
-        gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
-        gradientLayer.locations = [0.0, 0.9]
+        gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
+        [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
+        [startColor.cgColor, endColor.cgColor]
+
+        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.2, 0.5, 1.0] : [0.0, 0.9]
 
         return gradientLayer
     }()
@@ -30,20 +35,39 @@ class JetpackPrologueViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
-        view.addSubview(starFieldView)
+        if FeatureFlag.newLandingScreen.enabled {
+            let viewModel = JetpackPromptsViewModel()
+            let jetpackAnimatedView = UIView.embedSwiftUIView(JetpackLandingScreenView(viewModel: viewModel))
+            view.addSubview(jetpackAnimatedView)
+            view.pinSubviewToAllEdges(jetpackAnimatedView)
+        } else {
+            view.addSubview(starFieldView)
+        }
         view.layer.addSublayer(gradientLayer)
-
-        titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
-        titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
-        titleLabel.font = JetpackPrologueStyleGuide.Title.font
-
+        if FeatureFlag.newLandingScreen.enabled {
+            stackView.isHidden = true
+            titleLabel.isHidden = true
+            let logoImageView = UIImageView(image: UIImage(named: "jetpack-logo"))
+            logoImageView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(logoImageView)
+            NSLayoutConstraint.activate([
+                logoImageView.widthAnchor.constraint(equalToConstant: 72),
+                logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
+                logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+            ])
+        } else {
+            titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
+            titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
+            titleLabel.font = JetpackPrologueStyleGuide.Title.font
+        }
         // Move the layers to appear below everything else
-        starFieldView.layer.zPosition = Constants.starLayerPosition
-        gradientLayer.zPosition = Constants.gradientLayerPosition
-
-        addParallax()
-
-        updateLabel(for: traitCollection)
+        if !FeatureFlag.newLandingScreen.enabled {
+            starFieldView.layer.zPosition = Constants.starLayerPosition
+            gradientLayer.zPosition = Constants.gradientLayerPosition
+            addParallax()
+            updateLabel(for: traitCollection)
+        }
     }
 
     func updateLabel(for traitCollection: UITraitCollection) {
@@ -56,14 +80,15 @@ class JetpackPrologueViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        guard !FeatureFlag.newLandingScreen.enabled else { return }
         updateLabel(for: traitCollection)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        starFieldView.frame = view.bounds
+        if !FeatureFlag.newLandingScreen.enabled {
+            starFieldView.frame = view.bounds
+        }
         gradientLayer.frame = view.bounds
     }
 
