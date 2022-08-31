@@ -31,14 +31,16 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
-public func waitAndTap( _ element: XCUIElement) {
+public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10, timeout: TimeInterval = 10) {
+    guard element.waitForIsHittable(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) was not hittable after \(timeout) seconds.")
+        return
+    }
+
     var retries = 0
-    let maxRetries = 10
-    if element.waitForIsHittable(timeout: 10) {
-        while element.isHittable && retries < maxRetries {
-            element.tap()
-            retries += 1
-        }
+    while element.isHittable && retries < maxRetries {
+        element.tap()
+        retries += 1
     }
 }
 
