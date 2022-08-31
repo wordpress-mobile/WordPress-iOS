@@ -110,7 +110,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if ([self hasConnectedAccounts] && section == 0) {
         title = NSLocalizedString(@"Connected Accounts", @"Noun. Title. Title for the list of accounts for third party sharing services.");
     } else {
-        NSString *format = NSLocalizedString(@"Publicize to %@", @"Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name.");
+        NSString *format = NSLocalizedString(@"Share post to %@", @"Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name.");
         title = [NSString stringWithFormat:format, self.publicizeService.label];
     }
     return title;
