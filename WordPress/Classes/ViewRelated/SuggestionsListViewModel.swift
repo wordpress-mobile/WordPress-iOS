@@ -212,7 +212,7 @@ import CoreData
     private static func predicate(for searchQuery: String, suggestionType: SuggestionType) -> NSPredicate {
         switch suggestionType {
         case .mention:
-            return NSPredicate(format: "(displayName contains[c] %@) OR (username contains[c] %@)", searchQuery, searchQuery)
+            return NSPredicate(format: "(displayName contains[cd] %@) OR (username contains[cd] %@)", searchQuery, searchQuery)
         case .xpost:
             return NSPredicate(format: "(title contains[cd] %@) OR (siteURL.absoluteString contains[cd] %@)", searchQuery, searchQuery)
         }

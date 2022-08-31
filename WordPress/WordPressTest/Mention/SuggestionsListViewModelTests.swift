@@ -115,11 +115,39 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
+    /// Tests that the seach result has one match with case-insensitive and diacritic-insensitive
+    func testSearchSuggestionsWithOneMatch() throws {
+        // Given
+        let word = "@Caa"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
     /// Tests that the seach result has a few matches
-    func testSearchSuggestionsWithPartialMatch() throws {
+    func testSearchSuggestionsWithPartialUpperCaseMatch() throws {
+        // Given
+        let word = "@Ca"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the seach result has a few matches
+    func testSearchSuggestionsWithPartialLowerCaseMatch() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22], regularIds: [])
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
