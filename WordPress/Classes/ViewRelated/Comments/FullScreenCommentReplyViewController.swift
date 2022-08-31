@@ -38,10 +38,8 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public var placeholder = String()
 
     init(viewModel: FullScreenCommentReplyViewModelType = FullScreenCommentReplyViewModel()) {
-        // nibName from super class
-        let nibName = String(describing: EditCommentViewController.self)
         self.viewModel = viewModel
-        super.init(nibName: nibName, bundle: nil)
+        super.init(nibName: Self.nibName(), bundle: nil)
     }
 
     required init?(coder: NSCoder) {
