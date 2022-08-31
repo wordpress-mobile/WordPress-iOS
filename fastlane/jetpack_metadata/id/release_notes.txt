@@ -1,0 +1,9 @@
+Up, up, and away! You can now add and log in via self-hosted sites in the Jetpack app.
+
+See what’s new in the app in the What’s New feature modals. Talk about meta.
+
+Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
+
+File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
+
+Like using Jetpack? Tell your friends all about it. You can now share the app through the About and Me screens.
