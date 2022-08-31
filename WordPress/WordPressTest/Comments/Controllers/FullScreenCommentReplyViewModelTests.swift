@@ -20,6 +20,10 @@ class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
     }
 
     func testShouldShowSuggestionsIsFalse() {
-        XCTAssertFalse(sut.shouldShowSuggestions(with: number))
+        let expectedResult = false
+
+        let result = sut.shouldShowSuggestions(with: number)
+
+        XCTAssertEqual(result, expectedResult, "shouldShowSuggestions should return false")
     }
 }
