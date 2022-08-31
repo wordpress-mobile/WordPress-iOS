@@ -118,7 +118,7 @@ static CGFloat const jetpackBadgePadding = 30;
 {
     switch (section) {
         case SharingPublicizeServices:
-            return NSLocalizedString(@"Connections", @"Section title for Publicize services in Sharing screen");
+            return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
         case SharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
         default:
