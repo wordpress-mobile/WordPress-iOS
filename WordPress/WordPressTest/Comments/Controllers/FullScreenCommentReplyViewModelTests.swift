@@ -13,10 +13,18 @@ class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
         sut = FullScreenCommentReplyViewModel(suggestionsService: suggestionsServiceMock, context: mainContext)
     }
 
-    func testSuggestionsTableViewIsNotNil() {
-        let tableView = sut.suggestionsTableView(with: number, useTransparentHeader: false, prominentSuggestionsIds: [number], delegate: SuggestionsTableViewDelegateMock())
+    /// Test if SuggestionsTableView is setup properly.
+    func testSuggestionsTableViewSetup() {
+        let expectedProminentSuggestionsIds = [number]
+        let tableView = sut.suggestionsTableView(with: number, useTransparentHeader: false, prominentSuggestionsIds: expectedProminentSuggestionsIds, delegate: SuggestionsTableViewDelegateMock())
 
-        XCTAssertNotNil(tableView)
+
+        let viewModel = tableView.viewModel as? SuggestionsListViewModel
+        XCTAssertTrue(viewModel?.userSuggestionService is SuggestionServiceMock)
+        XCTAssertTrue(viewModel?.suggestionType == .mention)
+        XCTAssertFalse(tableView.translatesAutoresizingMaskIntoConstraints)
+        XCTAssertFalse(tableView.useTransparentHeader)
+        XCTAssertEqual(tableView.prominentSuggestionsIds, expectedProminentSuggestionsIds)
     }
 
     func testShouldShowSuggestionsIsFalse() {
