@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-11 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-08-26 14:54:27+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -431,9 +431,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "주소";
 
-/* About this app (information page title) */
-"About" = "이 앱은";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "iOS용 젯팩 정보";
 
@@ -442,9 +439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "워드프레스 소개";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "WordPress for iOS에 대하여";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "AMP(Accelerated Mobile Page)";
@@ -465,8 +459,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "계정 종료됨";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "인증";
 
 /* Theme Activate action title */
@@ -1166,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "블록은 코드를 작성하는 방법을 몰라도 삽입, 재정렬 및 스타일 지정이 가능한 콘텐츠 조각입니다. 블록은 아름다운 레이아웃을 생성할 수 있는 쉽고 현대적인 방법입니다.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "블로그";
 
 /* Create new Blog Post button title */
@@ -4132,6 +4124,9 @@ translators: Block name. %s: The localized block name */
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
 "Last week you had %1$@ views and %2$@ likes." = "지난주 조회수는 %1$@회, 좋아요는 %2$@개입니다.";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "지난주에는 조회수 %1$@개, 댓글 %2$@개 및 좋아요 %3$@개가 있습니다.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
 "Last week you had %@ views." = "지난주 조회수는 %@회입니다.";
 
@@ -5912,8 +5907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "개인 정보";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "개인 정보 보호 정책";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6057,9 +6051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "평가하기";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "사이트 계속 읽기:";
@@ -6884,7 +6875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for action to share post. */
 "Share Post" = "글 공유";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "친구와 WordPress 공유";
 
 /* Informational text for Collect Information setting */
@@ -7221,8 +7212,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "정렬 기준";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "소스 코드";
 
 /* Label for showing the available disk space quota available for media */
@@ -7557,8 +7547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "이용 약관";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "서비스 약관";
 
 /* Menu item label for linking a testimonial post. */
@@ -8239,8 +8228,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "사이트 알림을 켰음";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "트위터";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8697,8 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "이메일 주소 확인 - %@에 지침 전송";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "버전";
 
 /* Description for the version label in the What's new page. */
@@ -9195,8 +9182,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "새로운 기능";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "워드프레스 새소식";
 
 /* Title of alert helping users understand their site address */
@@ -9623,6 +9609,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "무료 워드프레스닷컴 주소:";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "최신 글 <a href=\"\">%1$@<\/a>에 <strong>%2$d<\/strong>개의 좋아요가 있습니다.";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "최신 글 <a href=\"\">%@<\/a>에 <strong>하나<\/strong>의 좋아요가 있습니다.";
 
@@ -9877,6 +9866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "젯팩 제공";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "새로운 젯팩 앱 체험하기";
+
 /* Later today */
 "later today" = "오늘 중";
 
@@ -10080,9 +10072,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Google로 로그인합니다.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• 도메인";

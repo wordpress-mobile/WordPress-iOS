@@ -1,7 +1,0 @@
-Wir haben einen Fehler im Statistikbereich der App behoben. Wenn du dir die Listen der Suchmaschinen ansiehst, die Besucher auf deine Website geschickt haben, kannst du jetzt verschachtelte Ergebnisse sehen, genau wie in deinem Browser.
-
-Wenn du beim Schreiben eines Kommentars auf die @-Taste drückst, wird immer noch eine Liste mit vorgeschlagenen Benutzern angezeigt, die du markieren möchtest, aber jetzt sind diese Benutzer in Gruppen aufgeteilt. Wenn du auf einen übergeordneten Kommentar antwortest, erscheint der Autor des Kommentars ganz oben in der Liste, direkt neben dem Autor des Beitrags.
-
-Da die App jetzt höher aufgelöste Bildvorschauen unterstützt, haben wir die Größe der Theme-Screenshots in der Theme-Auswahl der Website erhöht. Keine Verpixelung mehr, nur noch Pixel-Perfektion.
-
-Endlich gibt es keine Nullen mehr in deiner wöchentlichen Zusammenfassung. Falls du in dieser Woche keine Kommentare oder Likes bekommst, wird diese Zahl nicht in deinen Gerätebenachrichtigungen angezeigt. Nur noch gute Laune.

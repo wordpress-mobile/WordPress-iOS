@@ -54,9 +54,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "ใช้งาน";
 
-/* About this app (information page title) */
-"About" = "เกี่ยวกับ";
-
 /* My Profile 'About me' label */
 "About Me" = "เกี่ยวกับฉัน";
 
@@ -177,8 +174,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "ปิดกั้นการโค้ดข้อความ";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "บล็อก";
 
 /* Accessibility label for bold button on formatting toolbar.
@@ -1269,8 +1265,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "ส่วนตัว";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
 /* Name for the status of a post that is marked private.
@@ -1318,9 +1313,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "ให้คะแนนบนแอพสโตร์";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -1648,8 +1640,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "เรียงตาม";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "ซอร์สโค้ด";
 
 /* Button title for Spam comment state.
@@ -1713,8 +1704,7 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "ลำดับขั้น";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "เงื่อนไขการใช้บริการ";
 
 /* Message of alert when theme activation succeeds */
@@ -1891,8 +1881,7 @@
    Try to load the list of interests again. */
 "Try Again" = "ลองใหม่อีกครั้ง";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* URL text field placeholder */
@@ -2012,8 +2001,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "รุ่น";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */

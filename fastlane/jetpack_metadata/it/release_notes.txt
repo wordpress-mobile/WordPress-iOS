@@ -1,9 +1,9 @@
-Abbiamo risolto un bug nella sezione delle statistiche dell'app: quando consulti gli elenchi di motori di ricerca che hanno inviato visitatori al tuo sito, puoi ora visualizzare risultati nidificati, proprio come nel browser.
+Pronti, partenza, via! Ora puoi aggiungere e accedere tramite siti ospitati personalmente all'app Jetpack.
 
-Premendo il tasto @ mentre digiti un commento, visualizzerai comunque un elenco di utenti suggeriti che potresti voler menzionare, ma questi utenti sono ora divisi in gruppi. Se stai rispondendo a un commento principale, l'autore di quest'ultimo è visualizzato in cima all'elenco, proprio accanto all'autore dell'articolo.
+Scopri le novità dell'app nei modali della funzionalità Cosa c'è di nuovo. Parla di meta.
 
-Ora che l'app supporta le anteprime delle immagini a risoluzione più elevata, abbiamo aumentato le dimensioni degli screenshot dei temi nel selezionatore di temi del sito. Pixel: niente più scomposizione, solo perfezione.
+Non preoccupatevi, amici: l'elenco delle pagine non si bloccherà più quando l'immagine in evidenza di una pagina è una GIF.
 
-Abbiamo modificato alcuni elementi visivi nell'editor da verdi a blu. Sono ora abbinati agli elementi visivi dell'app WordPress.
+Le statistiche sui download dei file non sono supportate sui siti Jetpack ospitati personalmente, quindi non vedrai più la relativa sezione nelle tue Statistiche.
 
-Infine, niente più zero nel resoconto settimanale: se i tuoi articoli non ricevono commenti o Mi piace durante la settimana, non includeremo quel numero nelle notifiche del dispositivo. Solo positività.
+Ti piace usare Jetpack? Dillo ai tuoi amici. Ora puoi condividere l'app tramite le schermate Informazioni e Io.

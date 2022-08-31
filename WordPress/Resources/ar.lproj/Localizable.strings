@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-11 14:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-19 06:46:44+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -431,9 +431,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "العنوان";
 
-/* About this app (information page title) */
-"About" = "نبذة";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "حول Jetpack لـ iOS";
 
@@ -442,9 +439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "نبذة عن ووردبريس";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "حول ووردبريس لنظام التشغيل iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "صفحات الجوال المسرّعة (AMP)";
@@ -465,8 +459,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "تم إغلاق الحساب";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "شكر وتقدير";
 
 /* Theme Activate action title */
@@ -1166,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "المكوِّنات عبارة عن أجزاء من المحتوى التي يمكنك إدراجها وإعادة ترتيبها وتصميمها من دون الحاجة إلى معرفة كيفية ترميزها. المكوِّنات عبارة عن طريقة سهلة وعصرية لك لإنشاء تخطيطات جميلة.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "مدونة";
 
 /* Create new Blog Post button title */
@@ -3329,6 +3321,9 @@ translators: Block name. %s: The localized block name */
    Insights 'Followers' header
    Label for number of followers. */
 "Followers" = "المتابعين";
+
+/* Insights 'Followers Total' header */
+"Followers Total" = "إجمالي المتابعين";
 
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
@@ -5912,8 +5907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "الخصوصية";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "سياسة الخصوصية";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6057,9 +6051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "قيّمنا";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "ضع تصنيفًا لنا على متجر التطبيقات";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "مواصلة القراءة";
@@ -6884,7 +6875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for action to share post. */
 "Share Post" = "مشاركة المقالة";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "مشاركة ووردبريس مع صديق";
 
 /* Informational text for Collect Information setting */
@@ -7221,8 +7212,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "فرز حسب";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "التعليمات البرمجية المصدر";
 
 /* Label for showing the available disk space quota available for media */
@@ -7557,8 +7547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "الشروط والأحكام";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "شروط الخدمة";
 
 /* Menu item label for linking a testimonial post. */
@@ -8239,8 +8228,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "تم تشغيل إشعارات الموقع";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "تويتر";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8697,8 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "التحقُّق من عنوان بريدك الإلكتروني - تم إرسال الإرشادات إلى %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "النسخة";
 
 /* Description for the version label in the What's new page. */
@@ -9195,8 +9182,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "ما الجديد؟";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "ما الجديد في ووردبريس";
 
 /* Title of alert helping users understand their site address */
@@ -9622,6 +9608,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "عنوان ووردبريس.كوم المجاني الخاص بك هو";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%1$@<\/a> <strong>%2$d<\/strong> من الإعجابات.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%@<\/a> <strong>إعجابًا<\/strong> واحدًا.";
@@ -10080,9 +10069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} تسجيل الدخول باستخدام Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• نطاقات";

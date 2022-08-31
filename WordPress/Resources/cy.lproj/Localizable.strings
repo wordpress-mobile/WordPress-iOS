@@ -90,9 +90,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
 
-/* About this app (information page title) */
-"About" = "Ynghylch";
-
 /* My Profile 'About me' label */
 "About Me" = "Amdanaf Fi";
 
@@ -283,8 +280,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Dyfyniad Bloc";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Blog's User Profile. Displayed when the name is empty! */
@@ -1743,8 +1739,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Preifatrwydd";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Polisi Preifatrwydd";
 
 /* Name for the status of a post that is marked private.
@@ -1810,9 +1805,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Barnwch ni yn yr App Store";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -2230,8 +2222,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Trefnu yn ôl";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Cod Ffynhonnell";
 
 /* Button title for Spam comment state.
@@ -2306,8 +2297,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Dywedwch wrthym amdanoch eich hun.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
 
 /* Menu item label for linking a testimonial post. */
@@ -2542,8 +2532,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Ceisiwch Eto";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -2698,8 +2687,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Fersiwn";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */

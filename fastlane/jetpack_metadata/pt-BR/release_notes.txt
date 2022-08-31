@@ -1,9 +1,0 @@
-Corrigimos um bug na seção de Estatísticas do aplicativo: agora é possível ver resultados aninhados das listas de mecanismos de busca que enviaram visitantes ao seu site, do jeito que você faria no seu navegador.
-
-Ainda aparecerá uma lista de usuários sugeridos para marcar ao digitar o @ nos comentários, mas agora estes usuários estarão separados por grupos. Se você estiver respondendo a um comentário principal, o comentário do autor aparecerá na parte superior da lista, próximo ao post dele.
-
-Agora que o aplicativo suporta a visualização de imagens em alta resolução, aumentamos o tamanho das capturas de tela do tema no seletor de temas do site. Chega de pixelização, agora está tudo perfeito.
-
-Mudamos alguns elementos visuais no editor de verde para azul. Agora combina com o visual do aplicativo do WordPress.
-
-Por fim, chega de zero no seu relatório semanal. Se seu post não tiver comentários ou curtidas, não vamos incluir esse dado nas suas notificações de dispositivo. Vamos manter a vibe positiva.

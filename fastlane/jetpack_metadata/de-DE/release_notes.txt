@@ -1,9 +1,0 @@
-Wir haben einen Fehler im Abschnitt „Statistiken“ der App behoben. Wenn du dir ansiehst, über welche Suchmaschinen deine Besucher auf deine Website gelangt sind, werden dir die Ergebnisse nun verschachtelt angezeigt – ganz wie in deinem Browser.
-
-Wenn du die @-Taste drückst, während du einen Kommentar schreibst, werden dir Benutzer vorgeschlagen, die du möglicherweise erwähnen möchtest. Diese Benutzer wurden nun in Gruppen eingeteilt. Wenn du auf einen übergeordneten Kommentar antwortest, erscheint der Autor des Kommentars ganz oben in der Liste und direkt neben dem Namen des Beitragsautors.
-
-Nie wieder verpixelte Bilder! Weil die App nun eine hochauflösende Bildvorschau ermöglicht, haben wir die Größe von Theme-Screenshots in der Website-Theme-Auswahl angepasst. So erwarten dich nur gestochen scharfe Bilder.
-
-Wir haben einige Designelemente im Editor angepasst. Sie sind jetzt blau statt grün. Damit passen sie nun optimal zum Design der WordPress-App.
-
-Bei uns ist niemand eine Null. Solltest du in dieser Woche für deinen Beitrag mal keine Kommentare oder Likes erhalten, nehmen wir das nicht mehr in deine Gerätebenachrichtigungen mit auf. Immer positiv bleiben!
