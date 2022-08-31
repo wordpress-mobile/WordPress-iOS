@@ -199,13 +199,11 @@ extension CoreDataStack {
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
         let context = newDerivedContext()
         context.perform {
-            do {
-                let result = try block(context)
+            let result = Result(catching: { try block(context) })
+            if case .success = result {
                 self.saveContextAndWait(context)
-                completion?(.success(result))
-            } catch {
-                completion?(.failure(error))
             }
+            completion?(result)
         }
     }
 
