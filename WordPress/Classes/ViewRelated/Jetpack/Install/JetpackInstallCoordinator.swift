@@ -1,5 +1,10 @@
 import UIKit
 
+extension NSNotification.Name {
+    static let jetpackPluginInstallCompleted = NSNotification.Name(rawValue: "JetpackPluginInstallCompleted")
+    static let jetpackPluginInstallCanceled = NSNotification.Name(rawValue: "JetpackPluginInstallCanceled")
+}
+
 final class JetpackInstallCoordinator {
     private let promptType: JetpackLoginPromptType
     private let blog: Blog
@@ -106,11 +111,15 @@ private extension JetpackInstallCoordinator {
         trackStat(.installJetpackCompleted)
         trackStat(.signedInToJetpack, blog: blog)
 
+        NotificationCenter.default.post(name: .jetpackPluginInstallCompleted, object: nil)
+
         navigationController?.dismiss(animated: true, completion: completionBlock)
     }
 
     func jetpackIsCanceled() {
         trackStat(.installJetpackCanceled)
+
+        NotificationCenter.default.post(name: .jetpackPluginInstallCanceled, object: nil)
 
         navigationController?.dismiss(animated: true, completion: completionBlock)
     }
