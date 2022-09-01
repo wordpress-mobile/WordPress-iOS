@@ -72,7 +72,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result is empty when an empty word is provided
+    /// Tests that the search result is empty when an empty word is provided
     func testSearchSuggestionsWithEmptyWord() {
         // Given
         let word = ""
@@ -85,7 +85,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertFalse(result)
     }
 
-    /// Tests that the seach result is not empty when @ sign is provided
+    /// Tests that the search result is not empty when @ sign is provided
     func testSearchSuggestionsWithAtSignWord() {
         // Given
         let word = "@"
@@ -100,7 +100,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has an exact match
+    /// Tests that the search result has an exact match
     func testSearchSuggestionsWithExactMatch() throws {
         // Given
         let word = "@glegrandx"
@@ -115,7 +115,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has one match with case-insensitive and diacritic-insensitive
+    /// Tests that the search result has one match with case-insensitive and diacritic-insensitive
     func testSearchSuggestionsWithOneMatch() throws {
         // Given
         let word = "@Caa"
@@ -129,7 +129,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches
+    /// Tests that the search result has a few matches
     func testSearchSuggestionsWithPartialUpperCaseMatch() throws {
         // Given
         let word = "@Ca"
@@ -143,7 +143,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches
+    /// Tests that the search result has a few matches
     func testSearchSuggestionsWithPartialLowerCaseMatch() throws {
         // Given
         let word = "@ca"
@@ -157,7 +157,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with one prominent suggestion at the top
+    /// Tests that the search result has a few matches with one prominent suggestion at the top
     func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
@@ -172,7 +172,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with two prominent suggestions at the top
+    /// Tests that the search result has a few matches with two prominent suggestions at the top
     func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
