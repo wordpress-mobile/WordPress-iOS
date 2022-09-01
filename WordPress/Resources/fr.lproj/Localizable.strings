@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-25 13:54:08+0000 */
+/* Translation-Revision-Date: 2022-08-30 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: fr */
@@ -9910,6 +9910,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Optimisé par Jetpack";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Essayer la nouvelle application Jetpack";
 
 /* Description of the Jetpack powered overlay. */
 "jetpack.branding.overlay.description" = "La nouvelle application Jetpack contient des statistiques, un lecteur, des notifications et bien plus qui améliorent votre WordPress.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-19 07:03:55+0000 */
+/* Translation-Revision-Date: 2022-08-30 11:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ja_JP */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "「その他」ボタンには共有ボタンを表示するドロップダウンリストが含まれています";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com アカウントはストアのログイン情報に連携されています。 続行する場合は、上のメールアドレスに認証リンクが届きます。";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "アイキャッチ画像が設定されました。変更するにはタップしてください。";
 
@@ -730,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "「通常のブロックへ変換」をタップして、これらのブロックを個別に切り離して編集できます。";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "または、このアカウントのパスワードを入力することもできます。";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "もしくは、";
@@ -1353,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "キャンセル中...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "このアドレスのサイトにアクセスできません。 もう一度確認してから、やり直してください。";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "決められませんか ? テーマはいつでも変更できます。";
 
@@ -1439,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "よく読まれているヒントを確認して表示数とトラフィックを増やす";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "この端末でメールアドレスを確認してください。";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "この端末でメールをチェックして、WordPress.com から届いたメールにあるリンクをタップしてください。";
@@ -3742,6 +3754,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "すでにサイトがある場合は、無料の Jetpack プラグインをインストールし、WordPress.com アカウントに接続する必要があります。";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "メールが見つからない場合は、迷惑メールやスパムのフォルダーを確認してください";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Apple または Google を引き続き使用し、WordPress.com アカウントをまだお持ちでない場合は、アカウントを作成して WordPress.com の利用規約に同意します。";
 
@@ -3953,6 +3968,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "無効な URL。音声ファイルが見つかりません。";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "無効な URL です。 もう一度確認してから、やり直してください。";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "無効な URL。 正しい URL を入力してください。";
@@ -4414,6 +4432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "ログインリクエスト期限切れ";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "アカウントパスワードでログイン";
 
 /* No comment provided by engineer. */
 "Logs" = "ログ";
@@ -5349,6 +5370,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "または、サイトアドレスを入力してログインしてください。";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "またはマジックリンクでログイン";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "番号つきリスト";
@@ -6791,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "テストクラッシュを送信";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "メール認証リンクを送信";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "通知をメールで送信する";
 
@@ -6871,6 +6898,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "共有";
+
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Jetpack を友達とシェア";
 
 /* Label for action to share post. */
 "Share Post" = "投稿をシェア";
@@ -6994,6 +7024,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "登録";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "サイトのログイン情報でログイン";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "登録";
@@ -8644,6 +8677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "アイコンボタンを使用";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "パスワードを使用してログイン";
+
 /* No comment provided by engineer. */
 "Use this site" = "このサイトを使用";
 
@@ -8980,6 +9016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "メールアドレス「%@」宛てにリンクを送信しました。お使いのメールソフトをチェックして、ログインリンクをタップしてください。";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "マジックリンクを次のアドレスに送信しました: ";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "ブロックエディターを大幅に改善しました。ぜひお試しください。\n\n新規投稿とページに対して有効化していますが、旧エディターに変更する場合は「自分のサイト」→「サイトの設定」に移動してください。";
 
@@ -9167,6 +9206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "このファイルで行う操作:アップロードし、そのファイルへのリンクを投稿に追加するか、ファイルのコンテンツを直接投稿を追加しますか ?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "WordPress.com とは何ですか ?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "ブロックとは";
 
@@ -9181,6 +9223,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "更新情報";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Jetpack の最新情報";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress の新機能";
@@ -9865,6 +9910,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack 提供";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "新しい Jetpack アプリを試す";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "新しい Jetpack アプリに搭載されている統計情報、Reader、通知などの機能により、WordPress がより便利になりました。";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress が Jetpack でパワーアップ";
 
 /* Later today */
 "later today" = "今日あとで";
