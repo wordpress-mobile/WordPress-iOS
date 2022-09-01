@@ -1,7 +1,3 @@
-We made some performance improvements to the Gallery and Image blocks in the Block Editor. This will help images take up less storage on your site and keep your device from slowing down during media uploads. We feel the need for speed.
+Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
 
-If your site uses VideoPress, any Video blocks saved on the web version of the site will now display properly in the mobile app, too.
-
-The block inserter in the Block Editor now allows block types to be better organized in collections. We also made a small spacing adjustment in the alt text footnote in Image blocks, because little things are important, too.
-
-Last but not least, we squashed a pesky bug in the site creation process. When you’re horizontally scrolling through site design options, the app now remembers where you left off, even if you scroll up and down on the page.
+File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.

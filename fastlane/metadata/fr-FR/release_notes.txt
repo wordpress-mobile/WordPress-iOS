@@ -1,7 +1,0 @@
-Nous avons apporté quelques améliorations au niveau des performances de la galerie et des blocs d'images dans l’éditeur de blocs. Cela permettra aux images de prendre moins d’espace sur votre site et d’empêcher votre appareil de ralentir durant le chargement de médias. Nous recherchons la rapidité.
-
-Si votre site Web utilise VideoPress, tout bloc vidéo sauvegardé sur la version web de votre site s’affichera désormais correctement dans l’application mobile, elle aussi.
-
-L’outil d’insertion de bloc dans l’éditeur de blocs permet maintenant une meilleure organisation des types de blocs dans les collections. Nous avons également apporté un petit ajustement de l’espacement dans les notes de bas de page du texte alternatif au sein des blocs d'images, car les petites choses ont elles aussi leur importance.
-
-Finalement, nous avons corrigé un bug dans la procédure de création de site Web. Lorsque vous faites défiler horizontalement les options de design du site, l’application se souvient désormais d'où vous vous êtes arrêté, même si vous faites défiler la page vers le haut et vers le bas.

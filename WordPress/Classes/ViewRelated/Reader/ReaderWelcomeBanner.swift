@@ -20,7 +20,7 @@ class ReaderWelcomeBanner: UIView, NibLoadable {
 
     /// Present the Welcome banner just one time
     class func displayIfNeeded(in tableView: UITableView,
-                               database: KeyValueDatabase = UserDefaults.standard) {
+                               database: KeyValueDatabase = UserPersistentStoreFactory.instance()) {
         guard !database.bool(forKey: ReaderWelcomeBanner.bannerPresentedKey) else {
             return
         }

@@ -46,6 +46,7 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         addTranslationObserver(jetpackBannerView)
         jetpackBannerView.buttonAction = { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .activityLog)
         }
     }
 }

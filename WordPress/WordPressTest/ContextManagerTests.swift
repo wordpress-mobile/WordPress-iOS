@@ -41,7 +41,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest version
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
 
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
@@ -79,7 +79,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
         XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
@@ -106,7 +106,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Initialize 24 > 25 Migration
-        let contextManager = ContextManager(modelName: model25Name, store: storeURL)
+        let contextManager = ContextManager(modelName: model25Name, store: storeURL, contextFactory: nil)
         let secondContext = contextManager.mainContext
 
         // Test the existence of Post object after migration
@@ -176,7 +176,6 @@ class ContextManagerTests: XCTestCase {
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
-        XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
         expect(try findFirstUser()?.username) == "First User"
     }
 
@@ -187,7 +186,7 @@ class ContextManagerTests: XCTestCase {
         }
         XCTAssertEqual(numberOfAccounts(), 0)
 
-        await contextManager.save { context in
+        await contextManager.performAndSave { context in
             let account = WPAccount(context: context)
             account.userID = 1
             account.username = "First User"
@@ -202,7 +201,7 @@ class ContextManagerTests: XCTestCase {
         // From: https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md#overloading-and-overload-resolution
         // > "In non-async functions, and closures without any await expression, the compiler selects the non-async overload"
         let sync: () -> Void = {
-            contextManager.save { context in
+            contextManager.performAndSave { context in
                 let account = WPAccount(context: context)
                 account.userID = 2
                 account.username = "Second User"
@@ -226,12 +225,12 @@ class ContextManagerTests: XCTestCase {
             self.expectation(description: "Second User is saved"),
         ]
 
-        contextManager.save {
+        contextManager.performAndSave {
             let account = WPAccount(context: $0)
             account.userID = 1
             account.username = "First User"
 
-            contextManager.save {
+            contextManager.performAndSave {
                 let account = WPAccount(context: $0)
                 account.userID = 2
                 account.username = "Second User"

@@ -13,7 +13,7 @@ class ContextManagerMock: ContextManager {
     ///
     /// - SeeAlso `ContextManager`
     init(modelName: String) {
-        super.init(modelName: modelName, store: ContextManager.inMemoryStoreURL)
+        super.init(modelName: modelName, store: ContextManager.inMemoryStoreURL, contextFactory: nil)
     }
 
     override func saveContextAndWait(_ context: NSManagedObjectContext) {

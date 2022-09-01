@@ -56,9 +56,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         // Make sure the collection is empty, to begin with
         XCTAssert(mainContext.countObjects(ofType: Notification.self) == 0)
 
-        // CoreData Expectations
-        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
-
         // Mediator Expectations
         let expect = expectation(description: "Sync")
 
@@ -68,7 +65,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
             expect.fulfill()
         }
 
-        wait(for: [contextSaved, expect], timeout: timeout)
+        wait(for: [expect], timeout: timeout)
     }
 
 
@@ -122,9 +119,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         // Make sure the collection is empty, to begin with
         XCTAssert(mainContext.countObjects(ofType: Notification.self) == 0)
 
-        // CoreData Expectations
-        let contextSaved = expectation(forNotification: .NSManagedObjectContextDidSave, object: mainContext)
-
         // Mediator Expectations
         let expect = expectation(description: "Sync")
 
@@ -135,7 +129,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
             expect.fulfill()
         }
 
-        wait(for: [contextSaved, expect], timeout: timeout)
+        wait(for: [expect], timeout: timeout)
     }
 
 

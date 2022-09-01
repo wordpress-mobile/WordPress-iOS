@@ -236,10 +236,7 @@ extension PlanService {
 
 struct PlanStorage {
     static func activatePlan(_ planID: Int, forSite siteID: Int) {
-        let manager = ContextManager.sharedInstance()
-        let context = manager.newDerivedContext()
-
-        context.performAndWait {
+        ContextManager.shared.performAndSave { context in
             guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
@@ -248,16 +245,12 @@ struct PlanStorage {
             }
             if blog.planID?.intValue != planID {
                 blog.planID = NSNumber(value: planID)
-                manager.saveContextAndWait(context)
             }
         }
     }
 
     static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool) {
-        let manager = ContextManager.sharedInstance()
-        let context = manager.newDerivedContext()
-
-        context.performAndWait {
+        ContextManager.shared.performAndSave { context in
             guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
                 let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
@@ -266,7 +259,6 @@ struct PlanStorage {
             }
             if blog.hasDomainCredit != hasDomainCredit {
                 blog.hasDomainCredit = hasDomainCredit
-                manager.saveContextAndWait(context)
             }
         }
     }

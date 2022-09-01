@@ -177,6 +177,7 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
     @objc private func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .activityDetail)
     }
 
     private func setupText() {

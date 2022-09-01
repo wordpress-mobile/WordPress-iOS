@@ -27,7 +27,7 @@ final class KeychainTools: NSObject {
             return
         }
 
-        guard let item = UserDefaults.standard.value(forKey: keychainDebugWipeArgument) as? String else {
+        guard let item = UserPersistentStoreFactory.instance().object(forKey: keychainDebugWipeArgument) as? String else {
             return
         }
 

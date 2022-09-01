@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-27 13:54:08+0000 */
+/* Translation-Revision-Date: 2022-08-19 06:46:44+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -431,9 +431,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "العنوان";
 
-/* About this app (information page title) */
-"About" = "نبذة";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "حول Jetpack لـ iOS";
 
@@ -442,9 +439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "نبذة عن ووردبريس";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "حول ووردبريس لنظام التشغيل iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "صفحات الجوال المسرّعة (AMP)";
@@ -465,8 +459,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "تم إغلاق الحساب";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "شكر وتقدير";
 
 /* Theme Activate action title */
@@ -1166,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "المكوِّنات عبارة عن أجزاء من المحتوى التي يمكنك إدراجها وإعادة ترتيبها وتصميمها من دون الحاجة إلى معرفة كيفية ترميزها. المكوِّنات عبارة عن طريقة سهلة وعصرية لك لإنشاء تخطيطات جميلة.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "مدونة";
 
 /* Create new Blog Post button title */
@@ -2464,23 +2456,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "تجاهل";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3337,6 +3322,9 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "المتابعين";
 
+/* Insights 'Followers Total' header */
+"Followers Total" = "إجمالي المتابعين";
+
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4130,8 +4118,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "اسم العائلة";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "كانت لديك الأسبوع الماضي %1$@ من المشاهدات و%2$@ من التعليقات.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "كانت لديك الأسبوع الماضي %1$@ من المشاهدات و%2$@ من الإعجابات.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "كان لديك الأسبوع الماضي ⁦%1$d⁩ من المشاهدات، و⁦%2$d⁩ من التعليقات، و⁦%3$d⁩ من الإعجابات.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "كانت لديك الأسبوع الماضي %1$@ من المشاهدات و%2$@ من التعليقات و%3$@ من الإعجابات.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "كانت لديك الأسبوع الماضي %@ من المشاهدات.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "ملخص آخر مقالة";
@@ -5910,8 +5907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "الخصوصية";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "سياسة الخصوصية";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6055,9 +6051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "قيّمنا";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "ضع تصنيفًا لنا على متجر التطبيقات";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "مواصلة القراءة";
@@ -6882,7 +6875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for action to share post. */
 "Share Post" = "مشاركة المقالة";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "مشاركة ووردبريس مع صديق";
 
 /* Informational text for Collect Information setting */
@@ -7219,8 +7212,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "فرز حسب";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "التعليمات البرمجية المصدر";
 
 /* Label for showing the available disk space quota available for media */
@@ -7555,8 +7547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "الشروط والأحكام";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "شروط الخدمة";
 
 /* Menu item label for linking a testimonial post. */
@@ -8237,8 +8228,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "تم تشغيل إشعارات الموقع";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "تويتر";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8695,8 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "التحقُّق من عنوان بريدك الإلكتروني - تم إرسال الإرشادات إلى %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "النسخة";
 
 /* Description for the version label in the What's new page. */
@@ -9193,8 +9182,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "ما الجديد؟";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "ما الجديد في ووردبريس";
 
 /* Title of alert helping users understand their site address */
@@ -9621,6 +9609,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "عنوان ووردبريس.كوم المجاني الخاص بك هو";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%1$@<\/a> <strong>%2$d<\/strong> من الإعجابات.";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "لقد تلقت تدوينتك الأخيرة <a href=\"\">%@<\/a> <strong>إعجابًا<\/strong> واحدًا.";
 
@@ -9762,6 +9753,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "سنة";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "تجاهُل";
+
 /* Age between dates equaling one hour. */
 "an hour" = "ساعة";
 
@@ -9770,6 +9764,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ملف صوت";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "تجاهُل";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "تجاهُل";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "تجاهُل";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "تجاهُل";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "بواسطة %@";
@@ -9796,6 +9802,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "متابعة";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "تجاهُل";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (عنوان URL)";
@@ -9866,6 +9875,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "تم وضع علامة على أنه بريد مزعج";
 
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "تجاهُل";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "تجاهُل";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "تجاهُل";
+
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "من";
 
@@ -9932,6 +9953,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "لا يوجد نشاط كافٍ. تحقَّق من هذا مرة أخرى لاحقًا عندما يكون لدى موقعك مزيد من الزائرين!";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "تجاهُل";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "في هذه المحادثة";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "أعضاء الموقع";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "سيتم حذف هذه العناصر:";
 
@@ -9955,6 +9985,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "زيارة صفحة الوثائق الخاصة بنا";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "تجاهُل";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "أفضل المشاهدات على الإطلاق";
@@ -10036,9 +10069,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} تسجيل الدخول باستخدام Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• نطاقات";
