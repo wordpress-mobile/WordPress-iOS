@@ -5,9 +5,45 @@ import WordPressAuthenticator
 /// The colors in here intentionally do not support light or dark modes since they're the same on both.
 ///
 struct JetpackPrologueStyleGuide {
-    static let backgroundColor = FeatureFlag.newLandingScreen.enabled ?
-    UIColor(light: .muriel(color: .jetpackGreen, .shade5), dark: .muriel(color: .jetpackGreen, .shade100)):
-    UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
+    // Background colors
+    // old
+    static let oldBackgroundColor = UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
+    // new
+    static let newBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade5), dark: .muriel(color: .jetpackGreen, .shade100))
+    // combined
+    static let backgroundColor = FeatureFlag.newLandingScreen.enabled ? newBackgroundColor : oldBackgroundColor
+
+    // Continue with WordPress button colors
+    // old
+    static let oldContinueHighlightedFillColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90)
+    // new
+    static let newContinueFillColor = UIColor.muriel(color: .jetpackGreen, .shade50)
+    static let newContinueHighlightedFillColor = UIColor.muriel(color: .jetpackGreen, .shade90)
+
+    // combined
+    static let continueFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueFillColor : .white
+    static let continueHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueHighlightedFillColor : oldContinueHighlightedFillColor
+    static let continueTextColor = FeatureFlag.newLandingScreen.enabled ? .white : oldBackgroundColor
+    static let continueHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
+
+
+    // Enter your site address button
+    // old
+    static let oldSiteBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.40)
+    static let oldSiteHighlightedBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20)
+    // combined
+    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .white : backgroundColor
+    static let siteBorderColor = FeatureFlag.newLandingScreen.enabled ? .white : oldSiteBorderColor
+    static let siteTextColor = FeatureFlag.newLandingScreen.enabled ? UIColor.black : UIColor.white
+    static let siteHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : backgroundColor
+    static let siteHighlightedBorderColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldSiteHighlightedBorderColor
+    static let siteHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? .black : whiteWithAlpha07
+
+    // Color used in both old and versions
+    static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)
+
+
+
 
     struct Title {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.title3, fontWeight: .semibold)
@@ -24,32 +60,27 @@ struct JetpackPrologueStyleGuide {
         ]
     }
 
-    static let continueButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: .white,
-                                                                 borderColor: .white,
-                                                                 titleColor: FeatureFlag.newLandingScreen.enabled ? .black: Self.backgroundColor),
+    static let continueButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: continueFillColor,
+                                                                  borderColor: continueFillColor,
+                                                                  titleColor: continueTextColor),
+                                                    highlighted: .init(backgroundColor: continueHighlightedFillColor,
+                                                                       borderColor: continueHighlightedFillColor,
+                                                                       titleColor: continueHighlightedTextColor),
 
-                                                   highlighted: .init(backgroundColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90),
-                                                                      borderColor: UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90),
-                                                                      titleColor: FeatureFlag.newLandingScreen.enabled ? .black: Self.backgroundColor),
+                                                    disabled: .init(backgroundColor: .white,
+                                                                    borderColor: .white,
+                                                                    titleColor: backgroundColor))
 
-                                                   disabled: .init(backgroundColor: .white,
-                                                                   borderColor: .white,
-                                                                   titleColor: Self.backgroundColor))
+    static let siteAddressButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: siteFillColor,
+                                                                     borderColor: siteBorderColor,
+                                                                   titleColor: siteTextColor),
 
-    static let siteAddressButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: FeatureFlag.newLandingScreen.enabled ?
-                                                                     UIColor.muriel(color: .jetpackGreen, .shade50) :
-                                                                        Self.backgroundColor,
-                                                                     borderColor: FeatureFlag.newLandingScreen.enabled ? .clear : UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.40),
-                                                                   titleColor: .white),
-
-                                                     highlighted: .init(backgroundColor: FeatureFlag.newLandingScreen.enabled ?
-                                                                        UIColor.muriel(color: .jetpackGreen, .shade90) :
-                                                                           Self.backgroundColor,
-                                                                        borderColor: FeatureFlag.newLandingScreen.enabled ? .clear : UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20),
-                                                                        titleColor: UIColor.white.withAlphaComponent(0.7)),
+                                                     highlighted: .init(backgroundColor: siteHighlightedFillColor,
+                                                                        borderColor: siteHighlightedBorderColor,
+                                                                        titleColor: siteHighlightedTextColor),
 
                                                      disabled: .init(backgroundColor: .white,
                                                                      borderColor: .white,
-                                                                     titleColor: Self.backgroundColor))
+                                                                     titleColor: backgroundColor))
 
 }
