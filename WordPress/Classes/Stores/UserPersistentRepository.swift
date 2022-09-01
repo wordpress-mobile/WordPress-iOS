@@ -1,5 +1,4 @@
 protocol UserPersistentRepositoryReader {
-    func object(forKey key: String) -> Any?
     func string(forKey key: String) -> String?
     func bool(forKey key: String) -> Bool
     func integer(forKey key: String) -> Int
@@ -7,9 +6,10 @@ protocol UserPersistentRepositoryReader {
     func double(forKey key: String) -> Double
     func array(forKey key: String) -> [Any]?
     func dictionary(forKey key: String) -> [String: Any]?
+    func url(forKey key: String) -> URL?
 }
 
-protocol UserPersistentRepositoryWriter {
+protocol UserPersistentRepositoryWriter: KeyValueDatabase {
     func set(_ value: Any?, forKey key: String)
     func set(_ value: Int, forKey key: String)
     func set(_ value: Float, forKey key: String)
@@ -19,6 +19,20 @@ protocol UserPersistentRepositoryWriter {
     func removeObject(forKey key: String)
 }
 
-typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter
+typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter & UserPersistentRepositoryUtility
 
-extension UserDefaults: UserPersistentRepository { }
+extension UserDefaults: UserPersistentRepository {}
+
+extension UserPersistentStore {
+    private static var isOneOffMigrationCompleteKey: String {
+        "defaults_one_off_migration"
+    }
+
+    var isOneOffMigrationComplete: Bool {
+        get {
+            bool(forKey: Self.isOneOffMigrationCompleteKey)
+        } set {
+            set(newValue, forKey: Self.isOneOffMigrationCompleteKey)
+        }
+    }
+}

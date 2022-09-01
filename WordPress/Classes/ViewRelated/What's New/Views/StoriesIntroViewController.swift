@@ -86,20 +86,3 @@ class StoriesIntroViewController: WhatIsNewViewController {
         WPAnalytics.track(.storyIntroDismissed)
     }
 }
-
-// MARK: - Helpers
-
-extension UserDefaults {
-    private enum Keys: String {
-        case storiesIntroWasAcknowledged = "storiesIntroWasAcknowledged"
-    }
-
-    var storiesIntroWasAcknowledged: Bool {
-        get {
-            return bool(forKey: Keys.storiesIntroWasAcknowledged.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.storiesIntroWasAcknowledged.rawValue)
-        }
-    }
-}

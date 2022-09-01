@@ -426,11 +426,11 @@
 /* Shown when a user types a non-number into the two factor field. */
 "A verification code will only contain numbers." = "A verification code will only contain numbers.";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above.";
+
 /* Age between dates equaling one year. */
 "a year" = "a year";
-
-/* About this app (information page title) */
-"About" = "About";
 
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "About Jetpack for iOS";
@@ -440,9 +440,6 @@
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "About WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "About WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -463,8 +460,7 @@
    Link to Account Settings section */
 "Account Settings" = "Account Settings";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Acknowledgements";
 
 /* Theme Activate action title */
@@ -765,6 +761,9 @@
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternatively:";
@@ -1209,8 +1208,7 @@
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1406,6 +1404,9 @@
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Canceling...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Cannot access the site at this address. Please double-check and try again.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Can’t decide? You can change the theme at any time.";
 
@@ -1492,6 +1493,9 @@
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Check Purchases Error";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Check your email on this device!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Check your email on this device, and tap the link in the email you receive from WordPress.com.";
@@ -3826,6 +3830,9 @@
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "If you can’t find the email, please check your junk or spam email folder";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_.";
 
@@ -4053,6 +4060,9 @@
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Invalid URL. Audio file not found.";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "Invalid URL. Please double-check and try again.";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "Invalid URL. Please enter a valid URL.";
 
@@ -4170,6 +4180,15 @@
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack powered";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Try the new Jetpack app";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "The new Jetpack app has Stats, Reader, Notifications, and more that make your WordPress better.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress is better with Jetpack";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
@@ -4525,6 +4544,9 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Login Request Expired";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Login with account password";
 
 /* No comment provided by engineer. */
 "Logs" = "Logs";
@@ -5478,6 +5500,9 @@
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Or log in by _entering your site address_.";
 
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Or log in with magic link";
+
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Ordered List";
 
@@ -6047,8 +6072,7 @@
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Privacy notice for California users";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privacy Policy";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6189,9 +6213,6 @@
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Rate Us";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Rate us on the App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Read on";
@@ -6910,6 +6931,9 @@
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Selects this topic as the intent for your site.";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Send email verification link";
+
 /* This is one of the buttons we display when prompting the user for a review */
 "Send Feedback" = "Send Feedback";
 
@@ -7015,6 +7039,9 @@
 /* Title. A call to action to share an invite link. */
 "Share invite link" = "Share invite link";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Share Jetpack with a friend";
+
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Share link";
 
@@ -7024,7 +7051,7 @@
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Share with Friends";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Share WordPress with a friend";
 
 /* Aztec's Text Placeholder
@@ -7128,6 +7155,9 @@
 
 /* Accessibility hint for the site name and URL button on Reader's Post Details. */
 "Shows the site's posts." = "Shows the site's posts.";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Sign in with site credentials";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Sign up";
@@ -7351,8 +7381,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Sort By";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Source Code";
 
 /* Label for showing the available disk space quota available for media */
@@ -7750,8 +7779,7 @@
 /* The underlined title sentence */
 "Terms and Conditions" = "Terms and Conditions";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Terms of Service";
 
 /* Menu item label for linking a testimonial post. */
@@ -8441,8 +8469,7 @@
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Turned on site notifications";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8861,6 +8888,9 @@
 /* No comment provided by engineer. */
 "Use icon button" = "Use icon button";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Use password to sign in";
+
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
 "Use Sandbox Store" = "Use Sandbox Store";
 
@@ -8908,8 +8938,7 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verify your email address - instructions sent to %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Version";
 
 /* Description for the version label in the What's new page. */
@@ -9204,6 +9233,9 @@
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "We just emailed a link to %@. Please check your mail app and tap the link to log in.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "We just sent a magic link to";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'.";
 
@@ -9400,6 +9432,9 @@
 /* No comment provided by engineer. */
 "What is alt text?" = "What is alt text?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "What is WordPress.com?";
+
 /* Title for the problem section in the Threat Details */
 "What was the problem?" = "What was the problem?";
 
@@ -9412,8 +9447,10 @@
 /* Title of section that contains plugins' change log */
 "What's New" = "What's New";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "What's New in Jetpack";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "What's New in WordPress";
 
 /* Select the site's intent. Title */
@@ -10039,9 +10076,6 @@
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Log in with Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domains";

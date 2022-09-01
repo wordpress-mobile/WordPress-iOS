@@ -9,7 +9,7 @@ class ReaderSelectInterestsCoordinator {
     ///   - store: An optional backing store to keep track of if the user has seen the select interests view or not
     ///   - userId: The logged in user account, this makes sure the tracking is a per-user basis
     init(service: ReaderFollowedInterestsService? = nil,
-         store: KeyValueDatabase = UserDefaults.standard,
+         store: KeyValueDatabase = UserPersistentStoreFactory.instance(),
          userId: NSNumber? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 

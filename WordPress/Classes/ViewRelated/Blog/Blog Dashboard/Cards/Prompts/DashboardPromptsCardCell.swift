@@ -633,7 +633,7 @@ private extension DashboardPromptsCardCell {
 private extension DashboardPromptsCardCell {
 
     static var allSkippedPrompts: [[String: Int32]] {
-        return UserDefaults.standard.array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] ?? []
+        return UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] ?? []
     }
 
     func saveSkippedPromptForSite() {
@@ -648,7 +648,7 @@ private extension DashboardPromptsCardCell {
         var updatedSkippedPrompts = DashboardPromptsCardCell.allSkippedPrompts
         updatedSkippedPrompts.append(skippedPrompt)
 
-        UserDefaults.standard.set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
+        UserPersistentStoreFactory.instance().set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
     }
 
     func clearSkippedPromptForSite() {
@@ -657,7 +657,7 @@ private extension DashboardPromptsCardCell {
         }
 
         let updatedSkippedPrompts = DashboardPromptsCardCell.allSkippedPrompts.filter { $0.keys.first != siteID }
-        UserDefaults.standard.set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
+        UserPersistentStoreFactory.instance().set(updatedSkippedPrompts, forKey: Constants.skippedPromptsUDKey)
     }
 
     static func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {

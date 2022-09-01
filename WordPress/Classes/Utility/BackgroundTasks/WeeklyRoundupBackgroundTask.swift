@@ -218,11 +218,11 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         private let lastRunDateKey = "weeklyRoundup.lastExecutionDate"
 
         func getLastRunDate() -> Date? {
-            UserDefaults.standard.object(forKey: lastRunDateKey) as? Date
+            UserPersistentStoreFactory.instance().object(forKey: lastRunDateKey) as? Date
         }
 
         func setLastRunDate(_ date: Date) {
-            UserDefaults.standard.set(date, forKey: lastRunDateKey)
+            UserPersistentStoreFactory.instance().set(date, forKey: lastRunDateKey)
         }
     }
 

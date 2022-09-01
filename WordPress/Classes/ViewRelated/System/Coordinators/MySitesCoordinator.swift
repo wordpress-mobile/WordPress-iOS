@@ -126,12 +126,12 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog)
 
         if let date = date {
-            UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
+            UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
 
         if let siteID = blog.dotComID?.intValue {
             let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
+            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
         }
 
         mySiteViewController.showBlogDetailsSubsection(.stats)

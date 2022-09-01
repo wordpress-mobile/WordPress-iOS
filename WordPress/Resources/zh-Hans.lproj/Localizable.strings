@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-28 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-24 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -431,9 +431,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About this app (information page title) */
-"About" = "关于";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "关于Jetpack iOS版";
 
@@ -442,9 +439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "关于 WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "关于 WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -465,8 +459,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "账户已关闭";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "确认";
 
 /* Theme Activate action title */
@@ -1166,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "博客";
 
 /* Create new Blog Post button title */
@@ -2464,23 +2456,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "关闭";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3337,6 +3322,9 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "粉丝";
 
+/* Insights 'Followers Total' header */
+"Followers Total" = "粉丝总数";
+
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -3961,6 +3949,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "URL 无效，请检查您输入的网址是否有效。";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "URL 无效。";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
 /* No comment provided by engineer. */
@@ -4127,8 +4118,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "姓氏";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "上周共计 %1$@ 次查看和 %2$@ 条评论。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "上周共计 %1$@ 次查看和 %2$@ 个赞。";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "上周共计 %1$d 次查看、%2$d 条评论和 %3$d 个赞。";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "上周共计 %1$@ 次查看、%2$@ 条评论和 %3$@ 个赞。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "上周共计 %@ 次查看。";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
@@ -5061,6 +5061,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "无结果。请尝试其他搜索词。";
 
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "没有已保存的文章";
+
 /* A message title */
 "No sites found" = "找不到站点";
 
@@ -5904,8 +5907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "隐私";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "隐私政策";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6049,9 +6051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "给我们评分";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "在 App Store 中给我们评分";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "在以下网站上阅读：";
@@ -6705,6 +6704,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select paragraph style" = "选择段落样式";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "选择“%@”选项卡，随时随地获取更新。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体账户";
 
 /* Instructional text about the Sharing feature. */
@@ -6873,7 +6875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for action to share post. */
 "Share Post" = "分享文章";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "将 WordPress 与您的朋友分享";
 
 /* Informational text for Collect Information setting */
@@ -7210,8 +7212,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "排序方式";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "源代码";
 
 /* Label for showing the available disk space quota available for media */
@@ -7546,8 +7547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "条款和条件";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "使用条款";
 
 /* Menu item label for linking a testimonial post. */
@@ -8228,8 +8228,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "已打开站点通知";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8686,8 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "请验证您的电子邮件地址（说明已发送至 %@）";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "版本";
 
 /* Description for the version label in the What's new page. */
@@ -9184,8 +9182,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 的新变化";
 
 /* Title of alert helping users understand their site address */
@@ -9612,6 +9609,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "您的免费 WordPress.com 地址是";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "您的最新文章 <a href=\"\">%1$@<\/a> 收到了 <strong>%2$d<\/strong> 个赞。";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "您的最新文章 <a href=\"\">%@<\/a> 收到了 <strong>1<\/strong> 个赞。";
 
@@ -9753,6 +9753,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1 年后";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "忽略";
+
 /* Age between dates equaling one hour. */
 "an hour" = "一小时";
 
@@ -9761,6 +9764,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "忽略";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "忽略";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "忽略";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "忽略";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
@@ -9787,6 +9802,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "关注";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "忽略";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
@@ -9848,6 +9866,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "由 Jetpack 提供支持";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "试用新版 Jetpack 应用程序";
+
 /* Later today */
 "later today" = "稍后再说";
 
@@ -9856,6 +9877,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "忽略";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "忽略";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "忽略";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -9923,6 +9956,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "忽略";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "此会话中";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "站点成员";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
 
@@ -9946,6 +9988,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "访问我们的文档页面";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "忽略";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最受欢迎的文章";
@@ -10027,9 +10072,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} 使用 Google 登录。";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "•域";

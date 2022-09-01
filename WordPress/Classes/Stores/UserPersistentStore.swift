@@ -77,6 +77,14 @@ class UserPersistentStore: UserPersistentRepository {
         return UserDefaults.standard.dictionary(forKey: key)
     }
 
+    func url(forKey key: String) -> URL? {
+        if let url = userDefaults.url(forKey: key) {
+            return url
+        }
+
+        return UserDefaults.standard.url(forKey: key)
+    }
+
     // MARK: - UserPersistentRepositoryWriter
     func set(_ value: Any?, forKey key: String) {
         userDefaults.set(value, forKey: key)

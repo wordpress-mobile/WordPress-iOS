@@ -34,6 +34,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackPoweredBottomSheet
     case sharedUserDefaults
     case sharedLogin
+    case newLandingScreen
     case jetpackPluginInstallPrompt
 
     /// Returns a boolean indicating if the feature is enabled
@@ -110,6 +111,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .sharedUserDefaults:
             return false
         case .sharedLogin:
+            return false
+        case .newLandingScreen:
             return false
         case .jetpackPluginInstallPrompt:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
@@ -207,6 +210,8 @@ extension FeatureFlag {
             return "Shared User Defaults"
         case .sharedLogin:
             return "Shared Login"
+        case .newLandingScreen:
+            return "Jetpack and WordPress new landing screens"
         case .jetpackPluginInstallPrompt:
             return "Jetpack plugin install prompt after login"
         }

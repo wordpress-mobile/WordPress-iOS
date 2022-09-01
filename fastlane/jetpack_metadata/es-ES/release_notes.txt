@@ -1,7 +1,0 @@
-Hemos hecho algunas mejoras de rendimiento de los bloques Galería e Imagen en el Editor de bloques. Esto servirá para que las imágenes ocupen menos espacio de almacenamiento en tu sitio y evitará que el dispositivo se ralentice al cargar material multimedia. La velocidad es buena para todos.
-
-Si tu sitio utiliza VideoPress, los bloques Vídeo guardados en la versión web del sitio ahora también se mostrarán correctamente en la aplicación móvil.
-
-Ahora, el insertador del Editor de bloques permite organizar mejor los tipos de bloques en colecciones. También hemos hecho un pequeño ajuste de espaciado para la nota al pie de página del texto alternativo en los bloques Imagen porque los pequeños detalles también son importantes.
-
-Por último, pero no menos importante, hemos eliminado un molesto error en el proceso de creación de sitios. Cuando te desplazas horizontalmente por las opciones de diseño del sitio, la aplicación recuerda dónde te quedaste, aunque te desplaces hacia arriba y hacia abajo en la página.

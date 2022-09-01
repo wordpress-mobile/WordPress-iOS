@@ -403,6 +403,11 @@ import Foundation
     case promptsNotificationTapped
     case promptsNotificationDismissed
 
+    // Jetpack branding
+    case jetpackPoweredBadgeTapped
+    case jetpackPoweredBannerTapped
+    case jetpackPoweredBottomSheetButtonTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1089,6 +1094,14 @@ import Foundation
             return "blogging_reminders_notification_prompt_tapped"
         case .promptsNotificationDismissed:
             return "blogging_reminders_notification_prompt_dismissed"
+
+        // Jetpack branding
+        case .jetpackPoweredBadgeTapped:
+            return "jetpack_powered_badge_tapped"
+        case .jetpackPoweredBannerTapped:
+            return "jetpack_powered_banner_tapped"
+        case .jetpackPoweredBottomSheetButtonTapped:
+            return "jetpack_powered_bottom_sheet_button_tapped"
         } // END OF SWITCH
     }
 
