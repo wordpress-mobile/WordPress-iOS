@@ -137,8 +137,8 @@ class DomainSuggestionsTableViewController: UITableViewController {
 
         isSearching = true
 
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        let api = account?.wordPressComRestApi ?? WordPressComRestApi.defaultApi(oAuthToken: "")
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
 

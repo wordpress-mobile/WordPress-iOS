@@ -152,8 +152,7 @@ class NotificationSettingsViewController: UIViewController {
 
     fileprivate func groupSettings(_ settings: [NotificationSettings]) -> [Section: [NotificationSettings]] {
         // Find the Default Blog ID
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let defaultAccount = service.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
         let primaryBlogId = defaultAccount?.defaultBlog?.dotComID as? Int
 
         // Proceed Grouping
@@ -328,7 +327,9 @@ private extension NotificationSettingsViewController {
         labelView.translatesAutoresizingMaskIntoConstraints = false
 
         let badgeView = JetpackButton.makeBadgeView(topPadding: FooterMetrics.jetpackBadgeTopPadding,
-                                                    bottomPadding: FooterMetrics.jetpackBadgeBottomPatting)
+                                                    bottomPadding: FooterMetrics.jetpackBadgeBottomPatting,
+                                                    target: self,
+                                                    selector: #selector(jetpackButtonTapped))
         badgeView.translatesAutoresizingMaskIntoConstraints = false
 
         let stackView = UIStackView(arrangedSubviews: [labelView, badgeView])
@@ -590,6 +591,11 @@ private extension NotificationSettingsViewController {
             let streamsViewController = NotificationSettingStreamsViewController(settings: settings)
             navigationController?.pushViewController(streamsViewController, animated: true)
         }
+    }
+
+    @objc func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .notificationsSettings)
     }
 }
 

@@ -73,6 +73,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         navigationItem.setRightBarButton(doneButton, animated: false)
 
         setup(topView: chosenValueRow, pickerView: datePickerView)
+        view.tintColor = .editorPrimary
 
         setupForAccessibility()
     }

@@ -95,6 +95,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureLoomEmbed,
     /// Does the blog support Smartframe embed block?
     BlogFeatureSmartframeEmbed,
+    /// Does the blog support File Downloads section in stats?
+    BlogFeatureFileDownloadsStats,
 
 };
 

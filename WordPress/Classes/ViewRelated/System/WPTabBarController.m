@@ -556,7 +556,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 -(BOOL) welcomeNotificationSeen
 {
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 

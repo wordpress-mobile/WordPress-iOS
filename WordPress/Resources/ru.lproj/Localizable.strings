@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-13 15:54:07+0000 */
+/* Translation-Revision-Date: 2022-08-23 16:26:59+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ru */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d непросмотренных записей";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "Блок %1$s преобразован в %2$s";
@@ -371,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "При нажатии на кнопку «Ещё» открывается список кнопок «Поделиться»";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Учётная запись WordPress.com подключена к вашим учётным данным магазина. Чтобы продолжить, перейдите по ссылке для подтверждения, которую мы отправили на указанный адрес электронной почты.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Изображение записи установлено. Нажмите, чтобы изменить его.";
 
@@ -434,9 +434,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "АДРЕС";
 
-/* About this app (information page title) */
-"About" = "О нас";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "О Jetpack для iOS";
 
@@ -445,9 +442,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "О WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "О приложении WordPress для iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -468,8 +462,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Учётная запись закрыта";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Благодарность";
 
 /* Theme Activate action title */
@@ -740,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Альтернативным вариантом вы можете рассоединить и отредактировать эти блоки по отдельности, нажав на \"преобразовать в обычные блоки\".";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "В качестве альтернативы можно ввести пароль для этой учётной записи.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Альтернативно:";
@@ -1169,8 +1165,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Блоки - это части содержимого, которые можно вставлять, переставлять и стилизовать, без необходимости использования кода. Блоки - это простой и современный способ создавать красивые макеты.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Блог";
 
 /* Create new Blog Post button title */
@@ -1364,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Отмена...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Невозможно открыть сайт по этому адресу. Проверьте данные и повторите попытку.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Не можете выбрать? Изменить тему можно в любой момент.";
 
@@ -1450,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Прочитайте советы по повышению просмотров и посещаемости";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Проверьте электронную почту на этом устройстве!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Проверьте почту на этом устройстве и нажмите ссылку в письме от WordPress.com.";
@@ -1965,9 +1966,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "Скопировать URL из буфера обмена, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "Копировать блок";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "Скопировать URL файла";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -2470,23 +2468,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Игнорировать";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3559,6 +3550,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Получение URL сайта";
 
 /* No comment provided by engineer. */
+"Gradient" = "Градиент";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Тип градиента";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3759,6 +3753,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Если у вас уже есть сайт, вам необходимо установить бесплатный плагин Jetpack и подключить его к вашей учетной записи WordPress.com.";
+
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Если не удаётся найти письмо, проверьте папку спама или нежелательной почты.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Если вы продолжите работу с учетной записью Apple или Google, не имея учётной записи WordPress.com, вы создадите учётную запись и примете наши _Условия обслуживания_.";
@@ -3967,7 +3964,13 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "Недействительный URL-адрес, проверьте правильность адреса сайта.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "Неверный URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Неверный URL. Аудиофайл не найден.";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "Неверный URL. Пожалуйста перепроверьте и попытку позднее";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "Неверный URL, укажите корректный URL.";
@@ -4069,7 +4072,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack установлен";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "На базе Jetpack";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -4133,8 +4136,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "Фамилия";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "За последнюю неделю сайт просмотрели %1$@ раз(а) и оставили несколько (%2$@) комментариев.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "За последнюю неделю сайт просмотрели %1$@ раз(а) и поставили несколько (%2$@) отметок «Нравится».";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "За последнюю неделю сайт просмотрели %1$d раз, оставили %2$d комментариев и %3$d отметок нравится.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "За последнюю неделю сайт просмотрели %1$@ раз, оставили %2$@ комментариев и %3$@ отметок нравится.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "За последнюю неделю сайт просмотрели %@ раз(а).";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "Сводка по последней записи";
@@ -4420,6 +4432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "Срок действия запроса истёк";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Войти с помощью пароля";
 
 /* No comment provided by engineer. */
 "Logs" = "Логи";
@@ -5289,6 +5304,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops!" = "Ой!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Прозрачность";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "Открыть меню действий с блоком";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -5352,6 +5370,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Или войдите с _адресом вашего сайта_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "или войдите по специальной ссылке";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Упорядоченный список";
@@ -5910,8 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Приватность";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Конфиденциальность";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6055,9 +6075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Оцените нас";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Оцените нас в App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Прочесть на";
@@ -6574,9 +6591,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Искать в WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Искать в WordPress\nсайт или запись";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Ярлык блока поиска. Сейчас -";
 
@@ -6801,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Отправить тестовое сообщение о падении";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Отправить ссылку для подтверждения по email";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Отправлять уведомления по электронной почте";
 
@@ -6882,10 +6899,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Поделиться";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Поделитесь Jetpack с друзьями";
+
 /* Label for action to share post. */
 "Share Post" = "Поделиться записью";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Поделитесь WordPress с друзьями";
 
 /* Informational text for Collect Information setting */
@@ -7004,6 +7024,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "Регистрация";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Войти с учетными данными сайта";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Регистрация";
@@ -7222,8 +7245,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "Приоритет сортировки";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Исходный код";
 
 /* Label for showing the available disk space quota available for media */
@@ -7558,8 +7580,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "Правила и условия";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Условия сервиса";
 
 /* Menu item label for linking a testimonial post. */
@@ -7567,9 +7588,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Только текст";
-
-/* No comment provided by engineer. */
-"Text color" = "Цвет текста";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Элементы управления форматированием текста расположены на панели инструментов над клавиатурой при редактировании текстового блока";
@@ -8243,8 +8261,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Уведомления сайта включены";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8579,6 +8596,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Акцент обновления: VideoPress для свадеб";
 
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Улучшите тарифный план, чтобы загружать аудио";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Улучшите тарифный план, чтобы использовать видеообложки";
+
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Загрузить медиафайлы";
 
@@ -8654,6 +8677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Использовать кнопку со значком";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Войти с паролем";
+
 /* No comment provided by engineer. */
 "Use this site" = "Использовать этот сайт";
 
@@ -8695,8 +8721,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Проверьте ваш адрес электронной почты, инструкции отосланы на %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Версия";
 
 /* Description for the version label in the What's new page. */
@@ -8991,6 +9016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Мы только что отправили ссылку на %@. Проверьте вашу почту в приложении и нажмите на ссылку, чтобы войти.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Только что мы отправили специальную ссылку на";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Мы значительно улучшили редактор блоков. Вы должны его попробовать!\n\nМы включили редактор блоков для новых записей и страниц. Если вы захотите вернуться на классический редактор, то перейдите в 'Мой сайт' > 'Настройки сайта'.";
 
@@ -9178,6 +9206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Что вы хотите сделать с файлом? Загрузить и добавить ссылку на файл в записи или добавить содержимое прямо в запись?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Что такое WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Что такое блок?";
 
@@ -9193,8 +9224,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "Что нового";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Что нового в Jetpack";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Что нового в WordPress";
 
 /* Title of alert helping users understand their site address */
@@ -9765,6 +9798,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "год";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "Закрыть";
+
 /* Age between dates equaling one hour. */
 "an hour" = "час";
 
@@ -9773,6 +9809,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "аудио файл";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Закрыть";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Закрыть";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Закрыть";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Закрыть";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "автора %@";
@@ -9799,6 +9847,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "подписка";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Закрыть";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/мой-адрес-сайта (URL)";
@@ -9857,6 +9908,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Выберите назначение сайта";
 
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "На базе Jetpack";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Попробуйте новое приложение Jetpack";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Новое приложение Jetpack имеет статистику, Чтиво, уведомления и другое, что сделает ваш WordPress гораздо лучше.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress будет гораздо лучше с Jetpack";
+
 /* Later today */
 "later today" = "позже сегодня";
 
@@ -9865,6 +9928,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "отмечено как спам";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Закрыть";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Закрыть";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Закрыть";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Закрыть";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "из";
@@ -9932,6 +10007,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Недостаточно активности. Вернитесь позже, когда на сайте будет больше посетителей!";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Закрыть";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "В этом обсуждении";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Пользователи сайта";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "эти элементы будут удалены:";
 
@@ -9955,6 +10039,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "посетите нашу страницу документации";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Закрыть";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Максимальное число просмотров за всё время";
@@ -10036,9 +10123,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Войти через Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Домены";

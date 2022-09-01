@@ -6,6 +6,18 @@ SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
 
+# https://buildkite.com/docs/test-analytics/ci-environments
+TEST_ANALYTICS_ENVIRONMENT = %w[
+  BUILDKITE_ANALYTICS_TOKEN
+  BUILDKITE_BUILD_ID
+  BUILDKITE_BUILD_NUMBER
+  BUILDKITE_JOB_ID
+  BUILDKITE_BRANCH
+  BUILDKITE_COMMIT
+  BUILDKITE_MESSAGE
+  BUILDKITE_BUILD_URL
+].freeze
+
 # Lanes related to Building and Testing the code
 #
 platform :ios do
@@ -67,6 +79,8 @@ platform :ios do
     end.first
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+
+    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -383,18 +397,25 @@ platform :ios do
     )
   end
 
-  # Returns the value of `VERSION_SHORT`` from the `Version.public.xcconfig` file
-  #
-  # FIXME: This ought to be extracted into the release toolkit, ideally in a configurable way but with smart defaults.
-  #        See discussion in https://github.com/wordpress-mobile/WordPress-iOS/pull/16805/files/5f3009c5e0d01448cf0369656dddc1fe3757e45f#r664069046
-  #
-  def read_version_from_config
-    fastlane_require 'Xcodeproj'
+  def inject_buildkite_analytics_environment(xctestrun_path:)
+    require 'plist'
 
-    # If the file is not available, the method will raise so we should be fine not handling that case. We'll never return an empty string.
-    File.open(File.join(PROJECT_ROOT_FOLDER, 'Config', 'Version.public.xcconfig')) do |config|
-      configuration = Xcodeproj::Config.new(config)
-      configuration.attributes['VERSION_SHORT']
+    xctestrun = Plist.parse_xml(xctestrun_path)
+    xctestrun['TestConfigurations'].each do |configuration|
+      configuration['TestTargets'].each do |target|
+        TEST_ANALYTICS_ENVIRONMENT.each do |key|
+          value = ENV.fetch(key)
+          next if value.nil?
+
+          target['EnvironmentVariables'][key] = value
+        end
+      end
     end
+
+    File.write(xctestrun_path, Plist::Emit.dump(xctestrun))
+  end
+
+  def buildkite_ci?
+    ENV.fetch('BUILDKITE', false)
   end
 end

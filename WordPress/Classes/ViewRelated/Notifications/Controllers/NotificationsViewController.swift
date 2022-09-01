@@ -135,7 +135,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }()
 
     /// Used by JPScrollViewDelegate to send scroll position
-    internal let scrollViewTranslationPublisher = PassthroughSubject<CGFloat, Never>()
+    internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - View Lifecycle
 
@@ -624,7 +624,10 @@ extension NotificationsViewController {
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
+        }
         jetpackBannerView.isHidden = false
         addTranslationObserver(jetpackBannerView)
     }
@@ -1844,8 +1847,8 @@ private extension NotificationsViewController {
         return NotificationActionsService(managedObjectContext: mainContext)
     }
 
-    var userDefaults: UserDefaults {
-        return UserDefaults.standard
+    var userDefaults: UserPersistentRepository {
+        return UserPersistentStoreFactory.instance()
     }
 
     var lastSeenTime: String? {
@@ -1853,7 +1856,7 @@ private extension NotificationsViewController {
             return userDefaults.string(forKey: Settings.lastSeenTime)
         }
         set {
-            userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
+            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
         }
     }
 
@@ -2025,17 +2028,16 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
     private func showNotificationAlert(_ alertController: FancyAlertViewController) {
         let mainContext = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        guard accountService.defaultWordPressComAccount() != nil else {
+        guard (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil else {
             return
         }
+
         PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
             guard enabled == .notDetermined else {
                 return
             }
 
-            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
+            UserPersistentStoreFactory.instance().notificationPrimerAlertWasDisplayed = true
 
             let alert = alertController
             alert.modalPresentationStyle = .custom
@@ -2074,6 +2076,6 @@ extension NotificationsViewController: WPScrollableViewController {
 //
 extension NotificationsViewController: JPScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewTranslationPublisher.send(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)
+        processJetpackBannerVisibility(scrollView)
     }
 }

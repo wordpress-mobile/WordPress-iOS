@@ -73,10 +73,10 @@ extension RemoteFeatureFlagStore {
     /// The `deviceID` ensures we retain a stable set of Feature Flags between updates. If there are staged rollouts or other dynamic changes
     /// happening server-side we don't want out flags to change on each fetch, so we provide an anonymous ID to manage this.
     private var deviceID: String {
-        guard let deviceID = UserDefaults.standard.string(forKey: Constants.DeviceIdKey) else {
+        guard let deviceID = UserPersistentStoreFactory.instance().string(forKey: Constants.DeviceIdKey) else {
             DDLogInfo("🚩 Unable to find existing device ID – generating a new one")
             let newID = UUID().uuidString
-            UserDefaults.standard.set(newID, forKey: Constants.DeviceIdKey)
+            UserPersistentStoreFactory.instance().set(newID, forKey: Constants.DeviceIdKey)
             return newID
         }
 
@@ -88,13 +88,13 @@ extension RemoteFeatureFlagStore {
         get {
             // Read from the cache in a thread-safe way
             queue.sync {
-                UserDefaults.standard.dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
+                UserPersistentStoreFactory.instance().dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
             }
         }
         set {
             // Write to the cache in a thread-safe way.
             self.queue.sync {
-                UserDefaults.standard.set(newValue, forKey: Constants.CachedFlagsKey)
+                UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.CachedFlagsKey)
             }
         }
     }

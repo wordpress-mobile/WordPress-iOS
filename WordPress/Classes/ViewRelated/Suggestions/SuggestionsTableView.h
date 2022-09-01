@@ -8,7 +8,7 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 @protocol SuggestionsListViewModelType;
 @protocol SuggestionsTableViewDelegate;
 
-@interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
+@interface SuggestionsTableView : UIView
 
 @property (nonatomic, nonnull, strong, readonly) id <SuggestionsListViewModelType> viewModel;
 @property (nonatomic, nullable, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
@@ -36,12 +36,9 @@ typedef NS_CLOSED_ENUM(NSUInteger, SuggestionType) {
 
 - (void)hideSuggestions;
 
-/// Tells the number of suggestions available for the current search
-- (NSInteger)numberOfSuggestions;
-
 /// Select the suggestion at a certain position and triggers the selection delegate
-/// @param position the index to select
-- (void)selectSuggestionAtPosition:(NSInteger)position;
+/// @param indexPath the index to select
+- (void)selectSuggestionAtIndexPath:(NSIndexPath * _Nonnull)indexPath;
 
 /// Show suggestions for the given word.
 /// @param word Used to find the suggestions that contain this word.

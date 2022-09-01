@@ -290,14 +290,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* About this app (information page title) */
-"About" = "Om";
-
 /* My Profile 'About me' label */
 "About Me" = "Om meg";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Om WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -315,8 +309,7 @@ translators: Block name. %s: The localized block name */
    Link to Account Settings section */
 "Account Settings" = "Kontoinnstillinger";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Takk til";
 
 /* Theme Activate action title */
@@ -837,8 +830,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Blocklist */
 "Blocklist" = "Blokkeringsliste";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blogg";
 
 /* Create new Blog Post button title */
@@ -1385,9 +1377,6 @@ translators: Block name. %s: The localized block name */
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
 
-/* No comment provided by engineer. */
-"Copy block" = "Kopier blokk";
-
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan bli bedre";
 
@@ -1750,23 +1739,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Ignorer";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -4154,8 +4136,7 @@ translators: Block name. %s: The localized block name */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Personvern";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Personvern";
 
 /* Register Domain - Privacy Protection section header title */
@@ -4276,9 +4257,6 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Hurtigstart";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Vurder oss på App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Les på";
@@ -4655,9 +4633,6 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Søk WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Søk WordPress\nfor et nettsted eller innlegg";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Søk blokker";
@@ -5161,8 +5136,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Sorter etter";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Kildekode";
 
 /* Label for showing the available disk space quota available for media */
@@ -5404,8 +5378,7 @@ translators: Block name. %s: The localized block name */
 /* The underlined title sentence */
 "Terms and Conditions" = "Vilkår for bruk";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Bruksregler";
 
 /* Menu item label for linking a testimonial post. */
@@ -5894,8 +5867,7 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Skru på sidevarslinger";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -6238,8 +6210,7 @@ translators: Block name. %s: The localized block name */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Bekreft din e-postadresse - instruksjoner sendt til %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Versjon";
 
 /* Description for the version label in the What's new page. */
@@ -7044,9 +7015,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Logg inn med Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domener";

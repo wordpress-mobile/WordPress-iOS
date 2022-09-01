@@ -17,7 +17,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     public override init(managedObjectContext context: NSManagedObjectContext) {
         super.init(managedObjectContext: context)
 
-        if let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
             defaultAccount.authToken != nil,
             let restApi = defaultAccount.wordPressComRestApi {
             remoteApi = restApi.hasCredentials() ? restApi : nil
@@ -78,7 +78,7 @@ open class NotificationSettingsService: LocalCoreDataService {
 
         for key in NotificationSettings.locallyStoredKeys {
             let userDefaultsKey = userDefaultsKey(withNotificationSettingKey: key, for: blog)
-            let value = (UserDefaults.standard.value(forKey: userDefaultsKey) as? Bool) ?? true
+            let value = (UserPersistentStoreFactory.instance().object(forKey: userDefaultsKey) as? Bool) ?? true
 
             localSettings[key] = value
         }
@@ -89,7 +89,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     private func saveLocalSettings(_ settings: [String: Bool], blog: Blog) {
         for (key, value) in settings {
             if NotificationSettings.isLocallyStored(key) {
-                UserDefaults.standard.set(value, forKey: userDefaultsKey(withNotificationSettingKey: key, for: blog))
+                UserPersistentStoreFactory.instance().set(value, forKey: userDefaultsKey(withNotificationSettingKey: key, for: blog))
             }
         }
     }

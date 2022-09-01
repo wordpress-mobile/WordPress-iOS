@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-07-14 16:54:07+0000 */
+/* Translation-Revision-Date: 2022-08-26 14:54:27+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d개의 보지 않은 글";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s(%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%2$s(으)로 변형된 %1$s";
@@ -434,9 +431,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "주소";
 
-/* About this app (information page title) */
-"About" = "이 앱은";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "iOS용 젯팩 정보";
 
@@ -445,9 +439,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "워드프레스 소개";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "WordPress for iOS에 대하여";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "AMP(Accelerated Mobile Page)";
@@ -468,8 +459,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "계정 종료됨";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "인증";
 
 /* Theme Activate action title */
@@ -1169,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "블록은 코드를 작성하는 방법을 몰라도 삽입, 재정렬 및 스타일 지정이 가능한 콘텐츠 조각입니다. 블록은 아름다운 레이아웃을 생성할 수 있는 쉽고 현대적인 방법입니다.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "블로그";
 
 /* Create new Blog Post button title */
@@ -1965,9 +1954,6 @@ translators: Block name. %s: The localized block name */
 "Copy URL from the clipboard, %s" = "클립보드에서 URL 복사, %s";
 
 /* No comment provided by engineer. */
-"Copy block" = "블록 복사하기";
-
-/* No comment provided by engineer. */
 "Copy file URL" = "파일 URL 복사하기";
 
 /* Button title displayed in popup indicating the user copied the local copy */
@@ -2470,23 +2456,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "무시";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3559,6 +3538,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "사이트 URL 확보";
 
 /* No comment provided by engineer. */
+"Gradient" = "기울기";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "그라디언트 유형";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3967,6 +3949,9 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "잘못된 URL입니다. 올바른 사이트 주소를 입력했는지 확인하세요.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "유효하지 않은 URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
 
 /* No comment provided by engineer. */
@@ -4069,7 +4054,7 @@ translators: Block name. %s: The localized block name */
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "젯팩이 설치됨";
 
-/* Title of the Jetpack powered banner. */
+/* No comment provided by engineer. */
 "Jetpack powered" = "젯팩 제공";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
@@ -4133,8 +4118,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "성";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "지난주 조회수는 %1$@회 댓글은 %2$@개입니다.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "지난주 조회수는 %1$@회, 좋아요는 %2$@개입니다.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "지난주에는 조회수 %1$d개, 댓글 %2$d개 및 좋아요 %3$d개가 있습니다.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "지난주에는 조회수 %1$@개, 댓글 %2$@개 및 좋아요 %3$@개가 있습니다.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "지난주 조회수는 %@회입니다.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "최신 글 요약";
@@ -5289,6 +5283,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops!" = "이런!";
 
 /* No comment provided by engineer. */
+"Opacity" = "불투명도";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "블록 활동 메뉴 열기";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -5910,8 +5907,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "개인 정보";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "개인 정보 보호 정책";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6055,9 +6051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "평가하기";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "App Store에서 워드프레스닷컴 평가";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "사이트 계속 읽기:";
@@ -6574,9 +6567,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "워드프레스 검색";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "사이트나 게시물을 위한\n워드프레스 검색";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "블록 레이블을 검색합니다. 현재 텍스트는";
 
@@ -6885,7 +6875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for action to share post. */
 "Share Post" = "글 공유";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "친구와 WordPress 공유";
 
 /* Informational text for Collect Information setting */
@@ -7222,8 +7212,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "정렬 기준";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "소스 코드";
 
 /* Label for showing the available disk space quota available for media */
@@ -7558,8 +7547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "이용 약관";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "서비스 약관";
 
 /* Menu item label for linking a testimonial post. */
@@ -7567,9 +7555,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "텍스트만";
-
-/* No comment provided by engineer. */
-"Text color" = "텍스트 색상";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "텍스트 서식 지정 컨트롤은 텍스트 블록을 편집하는 동안 키보드 위에 배치되는 도구 모음 내에 있습니다.";
@@ -8243,8 +8228,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "사이트 알림을 켰음";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "트위터";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8579,6 +8563,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "업그레이드 핵심: 웨딩용 VideoPress";
 
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "오디오를 업로드하려면 요금제를 업그레이드하세요.";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "비디오 커버를 사용하려면 요금제를 업그레이드하세요.";
+
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "미디어 업로드";
 
@@ -8695,8 +8685,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "이메일 주소 확인 - %@에 지침 전송";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "버전";
 
 /* Description for the version label in the What's new page. */
@@ -9193,8 +9182,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "새로운 기능";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "워드프레스 새소식";
 
 /* Title of alert helping users understand their site address */
@@ -9621,6 +9609,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "무료 워드프레스닷컴 주소:";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "최신 글 <a href=\"\">%1$@<\/a>에 <strong>%2$d<\/strong>개의 좋아요가 있습니다.";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "최신 글 <a href=\"\">%@<\/a>에 <strong>하나<\/strong>의 좋아요가 있습니다.";
 
@@ -9762,6 +9753,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1년";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "무시";
+
 /* Age between dates equaling one hour. */
 "an hour" = "1시간";
 
@@ -9770,6 +9764,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "무시";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "무시";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "무시";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "무시";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "제작자: %@";
@@ -9796,6 +9802,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "팔로우";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "무시";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
@@ -9854,6 +9863,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "사이트 의도 선택";
 
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "젯팩 제공";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "새로운 젯팩 앱 체험하기";
+
 /* Later today */
 "later today" = "오늘 중";
 
@@ -9862,6 +9877,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "무시";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "무시";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "무시";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -9929,6 +9956,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "활동이 충분하지 않습니다. 나중에 사이트의 방문자가 증가하면 다시 확인하세요!";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "무시";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "대화";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "사이트 회원";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";
 
@@ -9952,6 +9988,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "설명서 페이지 방문";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "무시";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "최고 조회수";
@@ -10033,9 +10072,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Google로 로그인합니다.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• 도메인";

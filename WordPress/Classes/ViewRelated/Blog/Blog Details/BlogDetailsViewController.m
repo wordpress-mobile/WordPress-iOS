@@ -728,7 +728,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     
-    if (AppConfiguration.showsQuickActions && ![[MySiteSettings alloc] isAssignedToExperiment]) {
+    if (AppConfiguration.showsQuickActions && ![self isDashboardEnabled]) {
         [marr addObject:[self quickActionsSectionViewModel]];
     }
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
@@ -1071,8 +1071,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     NSDate *hideWPAdminDate = [NSDate dateWithISO8601String:HideWPAdminDate];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
 }
 
@@ -1513,8 +1512,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
 
     } else {
-        SharingViewController *sharingVC = [[SharingViewController alloc] initWithBlog:self.blog delegate:nil];
-        controller = [[JetpackBannerWrapperViewController alloc] initWithChildVC: sharingVC];
+        controller = [[SharingViewController alloc] initWithBlog:self.blog delegate:nil];
     }
 
     [self trackEvent:WPAnalyticsStatOpenedSharingManagement fromSource:source];

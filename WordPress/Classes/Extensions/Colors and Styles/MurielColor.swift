@@ -69,6 +69,7 @@ struct MurielColor {
     static let textSubtle = AppStyleGuide.textSubtle
     static let warning = AppStyleGuide.warning
     static let jetpackGreen = AppStyleGuide.jetpackGreen
+    static let editorPrimary = AppStyleGuide.editorPrimary
 
     /// The full name of the color, with required shade value
     func assetName() -> String {

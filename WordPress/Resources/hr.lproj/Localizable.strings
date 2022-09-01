@@ -26,9 +26,6 @@
 /* No comment provided by engineer. */
 "ADD LINK" = "Dodaj poveznicu";
 
-/* About this app (information page title) */
-"About" = "Info";
-
 /* Accessibility label for add button to add items to the user's media library
    Remove asset from media picker list */
 "Add" = "Dodaj";
@@ -83,8 +80,7 @@
 /* Title for the Background Color section */
 "Background Color" = "Boja pozadine";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Accessibility label for bold button on formatting toolbar.
@@ -266,23 +262,16 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Odbaci";
 
 /* Accessibility label for the Done button in the Me screen.
@@ -672,8 +661,7 @@
    Title for screen to preview a static content. */
 "Preview" = "Predpregled";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Pravila privatnosti";
 
 /* Name for the status of a post that is marked private.
@@ -893,8 +881,7 @@
    Title for the tag selector view */
 "Tags" = "Tagovi";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Uvjeti korištenja";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
@@ -1030,8 +1017,7 @@
    Username placeholder */
 "Username" = "Korisničko ime";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Verzija";
 
 /* Description for the version label in the What's new page. */

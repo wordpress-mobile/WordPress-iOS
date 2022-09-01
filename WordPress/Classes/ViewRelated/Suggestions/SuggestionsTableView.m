@@ -93,6 +93,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         if (!weakSelf) return;
         [weakSelf.tableView reloadData];
         [weakSelf setNeedsUpdateConstraints];
+        [weakSelf setNeedsLayout];
+        [weakSelf layoutIfNeeded];
     };
 }
 
@@ -113,14 +115,22 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)setupTableView
 {
-    _tableView = [[UITableView alloc] init];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [_tableView registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_tableView setRowHeight:STVRowHeight];
+    [_tableView setBackgroundColor:[UIColor systemBackgroundColor]];
+
+    // Removes a small padding at the bottom of the tableView
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    footerView.backgroundColor = [UIColor clearColor];
+    [_tableView setTableFooterView:footerView];
+
     // Table separator insets defined to match left edge of username in cell.
     [_tableView setSeparatorInset:UIEdgeInsetsMake(0.f, 47.f, 0.f, 0.f)];
+
     // iOS8 added and requires the following in order for that separator inset to be used
     if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
         [_tableView setLayoutMargins:UIEdgeInsetsZero];
@@ -195,7 +205,7 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    NSUInteger suggestionCount = self.viewModel.items.count;
+    NSUInteger suggestionCount = self.viewModel.sections.count;
     BOOL isSearchApplied = !self.viewModel.searchText.isEmpty;
     BOOL isLoadingSuggestions = self.viewModel.isLoading;
     BOOL showTable = (self.showLoading && isSearchApplied && isLoadingSuggestions) || suggestionCount > 0;
@@ -214,27 +224,23 @@ CGFloat const STVSeparatorHeight = 1.f;
     }
     self.headerMinimumHeightConstraint.constant = minimumHeaderHeight;
 
-    // Take the height of the table frame and make it so only whole results are displayed
-    NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
-
+    // Get the number of max rows from the delegate.
+    NSNumber *maxRows = nil;
     if([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewMaxDisplayedRows:)]){
-        NSInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
-
-        maxRows = delegateMaxRows;
+        NSUInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
+        maxRows = [NSNumber numberWithUnsignedInteger:delegateMaxRows];
     }
 
-    if (maxRows < 1) {
-        maxRows = 1;
-    }    
-    
-    if (self.viewModel.isLoading) {
-        self.heightConstraint.constant = STVRowHeight;
-    } else if (self.viewModel.items.count > maxRows) {
-        self.heightConstraint.constant = ceilf((maxRows * STVRowHeight) + (STVRowHeight*0.4));
+    // Set height constraint
+    [self.tableView setNeedsLayout];
+    [self.tableView layoutIfNeeded];
+    if (maxRows) {
+        self.heightConstraint.constant = [SuggestionsTableView maximumHeightForTableView:self.tableView
+                                                                maxNumberOfRowsToDisplay:maxRows];
     } else {
-        self.heightConstraint.constant = self.viewModel.items.count * STVRowHeight;
+        self.heightConstraint.constant = [SuggestionsTableView heightForTableView:self.tableView
+                                                                    maximumHeight:self.bounds.size.height - minimumHeaderHeight];
     }
-    
     [super updateConstraints];
 }
 
@@ -248,7 +254,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     [self setNeedsUpdateConstraints];
-    
+
     [UIView animateWithDuration:animationDuration animations:^{
         [self layoutIfNeeded];
     }];
@@ -272,64 +278,16 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self showSuggestionsForWord:@""];
 }
 
-- (NSInteger)numberOfSuggestions {
-    return self.viewModel.items.count;
-}
-
-- (void)selectSuggestionAtPosition:(NSInteger)position {
-    if ([self.viewModel.items count] == 0) {
-        return;
+- (void)selectSuggestionAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray<SuggestionsListSection *> *sections = self.viewModel.sections;
+    if (indexPath.section < sections.count && indexPath.row < sections[indexPath.section].rows.count) {
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     }
-    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0]];
 }
 
 - (void)didTapHeader {
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewDidTapHeader:)]) {
         [self.suggestionsDelegate suggestionsTableViewDidTapHeader:self];
-    }
-}
-
-#pragma mark - UITableViewDataSource and UITableViewDelegate Methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.viewModel.isLoading ? 1 : [self.viewModel.items count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
-                                                                forIndexPath:indexPath];
-    
-    if (self.viewModel.isLoading) {
-        cell.titleLabel.text = NSLocalizedString(@"Loading...", @"Suggestions loading message");
-        cell.subtitleLabel.text = nil;
-        [cell.iconImageView setImage:nil];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-
-    SuggestionViewModel *suggestion = [self.viewModel.items objectAtIndex:indexPath.row];
-    cell.titleLabel.text = suggestion.title;
-    cell.subtitleLabel.text = suggestion.subtitle;
-    [self loadImageFor:suggestion in:cell at:indexPath with:self.viewModel];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SuggestionViewModel *suggestion = [self.viewModel.items objectAtIndex:indexPath.row];
-    NSString *currentSearchText = [self.viewModel.searchText substringFromIndex:1];
-    NSString *suggestionTitle = [suggestion.title substringFromIndex:1];
-    if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didSelectSuggestion:forSearchText:)]) {
-        [self.suggestionsDelegate suggestionsTableView:self didSelectSuggestion:suggestionTitle forSearchText:currentSearchText];
     }
 }
 

@@ -1,6 +1,24 @@
-20.5
+20.7
 -----
 
+
+20.6
+-----
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
+* [**] [Jetpack-only] Self-hosted sites: enables logging in via a self-hosted site / adding a self-hosted site [#19194]
+* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
+* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
+
+
+20.5
+-----
+* [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
+* [***] [internal] Block Editor: List block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/42702]
+* [**] Fix for Referrers Card Not Showing Search Engine Details [https://github.com/wordpress-mobile/WordPress-iOS/pull/19158]
+* [*] WeeklyRoundupBackgroundTask - format notification body [https://github.com/wordpress-mobile/WordPress-iOS/pull/19144]
 
 20.4
 -----

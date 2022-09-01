@@ -93,12 +93,6 @@ extension XCTestCase {
         }
     }
 
-    public func waitAndTap( _ element: XCUIElement) {
-        if element.waitForExistence(timeout: 5) {
-            element.tap()
-        }
-    }
-
     private enum Constants {
         static let homeApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }

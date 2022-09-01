@@ -8,11 +8,10 @@ import Foundation
     ///
     @objc static func isDotcomAvailable() -> Bool {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
         var available = false
 
         context.performAndWait {
-            available = service.defaultWordPressComAccount() != nil
+            available = (try? WPAccount.lookupDefaultWordPressComAccount(in: context)) != nil
         }
 
         return available
@@ -43,14 +42,13 @@ import Foundation
     }
 
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
-        let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
         let allBlogs = blogService.blogsForAllAccounts()
         let blogsByAccount = Dictionary(grouping: allBlogs, by: { $0.account })
 
-        let defaultAccount = accountService.defaultWordPressComAccount()
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
-        let accountCount = accountService.numberOfAccounts()
+        let accountCount = (try? WPAccount.lookupNumberOfAccounts(in: context)) ?? 0
         let otherAccounts = accountCount > 1 ? " + \(accountCount - 1) others" : ""
         let accountsDescription = "wp.com account: " + (defaultAccount?.logDescription ?? "<none>") + otherAccounts
 
@@ -77,7 +75,7 @@ import Foundation
         // Unschedule any scheduled blogging reminders for the account's blogs.
         // We don't just clear all reminders, in case the user has self-hosted
         // sites added to the app.
-        if let account = service.defaultWordPressComAccount(),
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
            let blogs = account.blogs,
            let scheduler = try? ReminderScheduleCoordinator() {
             blogs.forEach { scheduler.unschedule(for: $0) }

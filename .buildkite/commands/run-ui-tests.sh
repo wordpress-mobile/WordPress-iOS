@@ -1,10 +1,16 @@
 #!/bin/bash -eu
 
-TEST_NAME=$1
-DEVICE=$2
-IOS_VERSION=$3
+DEVICE=$1
 
-echo "Running $TEST_NAME on $DEVICE for iOS $IOS_VERSION"
+echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."
+
+# Run this at the start to fail early if value not available
+echo '--- :test-analytics: Configuring Test Analytics'
+if [[ $DEVICE =~ ^iPhone ]]; then
+  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPHONE
+else
+  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPAD
+fi
 
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products.tar
@@ -28,7 +34,7 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-bundle exec fastlane test_without_building name:"$TEST_NAME" try_count:3 device:"$DEVICE" ios_version:"$IOS_VERSION"
+bundle exec fastlane test_without_building name:WordPressUITests device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
 

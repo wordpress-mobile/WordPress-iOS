@@ -731,7 +731,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshProminentSuggestions
 {
     NSIndexPath *commentIndexPath = self.indexPathForCommentRepliedTo;
-    WPAccount *defaultAccount = [self.accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     NSNumber *defaultAccountId = defaultAccount ? defaultAccount.userID : nil;
     NSNumber *postAuthorId = self.post ? self.post.authorID : nil;
     Comment *comment = commentIndexPath ? [self.tableViewHandler.resultsController objectAtIndexPath:commentIndexPath] : nil;

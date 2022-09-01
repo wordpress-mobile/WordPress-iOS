@@ -6,27 +6,27 @@ struct FeatureHighlightStore {
         static let followConversationTooltipCounterKey = "follow-conversation-tooltip-counter"
     }
 
-    private let userDefaults: UserDefaults
+    private let userStore: UserPersistentRepository
 
-    init(userDefaults: UserDefaults = UserDefaults.standard) {
-        self.userDefaults = userDefaults
+    init(userStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+        self.userStore = userStore
     }
 
     var didDismissTooltip: Bool {
         get {
-            return userDefaults.bool(forKey: Keys.didUserDismissTooltipKey)
+            return userStore.bool(forKey: Keys.didUserDismissTooltipKey)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.didUserDismissTooltipKey)
+            userStore.set(newValue, forKey: Keys.didUserDismissTooltipKey)
         }
     }
 
     var followConversationTooltipCounter: Int {
         get {
-            return userDefaults.integer(forKey: Keys.followConversationTooltipCounterKey)
+            return userStore.integer(forKey: Keys.followConversationTooltipCounterKey)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.followConversationTooltipCounterKey)
+            userStore.set(newValue, forKey: Keys.followConversationTooltipCounterKey)
         }
     }
 

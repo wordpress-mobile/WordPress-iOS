@@ -1,9 +1,9 @@
-Abbiamo aggiunto alcune modifiche nell'editor a blocchi per migliorare ulteriormente l'esperienza di pubblicazione.
+Pronti, partenza, via! Ora puoi aggiungere e accedere tramite siti ospitati personalmente all'app Jetpack.
 
-- Niente più copia e incolla del testo alternativo: quando aggiungi un elemento nella libreria multimediale a un blocco Immagine, il testo alternativo dell'elemento viene riportato con esso.
-- Puoi inserire elementi multimediali da un URL nei blocchi Video.
-- Se un blocco contiene contenuto non previsto o non valido, puoi usare l'opzione di ripristino del blocco per visualizzare il contenuto in modo corretto, senza aggiungerlo nuovamente da zero.
+Scopri le novità dell'app nei modali della funzionalità Cosa c'è di nuovo. Parla di meta.
 
-I commenti agli articoli sono un po' più intuitivi da usare. Quando premi il simbolo @ per inserire il riferimento a un altro utente nel tuo commento, l'autore dell'articolo o del commento viene prima nell'elenco degli utenti suggeriti. Carino.
+Non preoccupatevi, amici: l'elenco delle pagine non si bloccherà più quando l'immagine in evidenza di una pagina è una GIF.
 
-Infine, abbiamo risolto un problema con il selezionatore di elementi multimediali dell'editor per il quale le query di ricerca rimanevano anche dopo aver chiuso e riaperto la finestra. Abbiamo anche risolto un bug che provocava l'arresto anomalo dell'app durante l'aggiunta di più elementi a un articolo della storia.
+Le statistiche sui download dei file non sono supportate sui siti Jetpack ospitati personalmente, quindi non vedrai più la relativa sezione nelle tue Statistiche.
+
+Ti piace usare Jetpack? Dillo ai tuoi amici. Ora puoi condividere l'app tramite le schermate Informazioni e Io.

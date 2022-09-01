@@ -9,33 +9,19 @@ protocol DefaultSectionProvider {
 ///
 @objc final class MySiteSettings: NSObject, DefaultSectionProvider {
 
-    private var userDefaults: UserDefaults {
-        UserDefaults.standard
+    private var userDefaults: UserPersistentRepository {
+        UserPersistentStoreFactory.instance()
     }
 
     var defaultSection: MySiteViewController.Section {
-        let defaultSection: MySiteViewController.Section = .siteMenu
+        let defaultSection: MySiteViewController.Section = AppConfiguration.isJetpack ? .dashboard : .siteMenu
         let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int ?? defaultSection.rawValue
         return MySiteViewController.Section(rawValue: rawValue) ?? defaultSection
-    }
-
-    @objc var experimentAssignment: String {
-        if let rawValue = userDefaults.object(forKey: Constants.defaultSectionKey) as? Int,
-            let defaultSection = MySiteViewController.Section(rawValue: rawValue)?.analyticsDescription {
-            return defaultSection
-        }
-
-        return "nonexistent"
-    }
-
-    @objc var isAssignedToExperiment: Bool {
-        FeatureFlag.mySiteDashboard.enabled && experimentAssignment != "nonexistent"
     }
 
     func setDefaultSection(_ tab: MySiteViewController.Section) {
         userDefaults.set(tab.rawValue, forKey: Constants.defaultSectionKey)
         QuickStartTourGuide.shared.refreshQuickStart()
-        WPAnalytics.track(.mySiteDefaultTabExperimentVariantAssigned, properties: ["default_tab_experiment": experimentAssignment])
     }
 
     private enum Constants {

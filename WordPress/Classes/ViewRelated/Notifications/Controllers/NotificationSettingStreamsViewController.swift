@@ -192,7 +192,11 @@ class NotificationSettingStreamsViewController: UITableViewController {
                                         "3. Select **WordPress**\n" +
                                         "4. Turn on **Allow Notifications**",
                                         comment: "Displayed when Push Notifications are disabled (iOS 7)")
-        let button = NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
+        let button = NSLocalizedString(
+            "notificationSettingStreams.pushNotificationAlert.dismissButton",
+            value: "Dismiss",
+            comment: "Dismiss the alert with instructions on how to enable push notifications."
+        )
 
         let alert = AlertView(title: title, message: message, button: button)
         alert.show()

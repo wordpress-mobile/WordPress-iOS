@@ -165,14 +165,19 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         jetpackBadgeView.isHidden = false
         let jetpackBadgeButton = JetpackButton(style: .badge)
         jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
+        jetpackBadgeButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         jetpackBadgeView.addSubview(jetpackBadgeButton)
         NSLayoutConstraint.activate([
             jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
-            jetpackBadgeButton.widthAnchor.constraint(lessThanOrEqualTo: jetpackBadgeView.widthAnchor),
             jetpackBadgeButton.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Constants.jetpackBadgeTopInset),
             jetpackBadgeButton.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor)
         ])
         jetpackBadgeView.backgroundColor = .listBackground
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .activityDetail)
     }
 
     private func setupText() {

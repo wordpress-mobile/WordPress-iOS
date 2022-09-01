@@ -386,10 +386,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - Account
 
     private func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     // MARK: - Main Blog
