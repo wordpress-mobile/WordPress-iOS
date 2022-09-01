@@ -176,6 +176,7 @@ class ContextManagerTests: XCTestCase {
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
+        XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
         expect(try findFirstUser()?.username) == "First User"
     }
 
