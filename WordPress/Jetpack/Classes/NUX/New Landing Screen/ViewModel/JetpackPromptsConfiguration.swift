@@ -93,7 +93,7 @@ private extension JetpackPromptsConfiguration {
                               comment: "Add an author prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.searchPosts",
                               value: "Search for posts or sites",
-                              comment: "Serach for posts or sites prompt for the jetpack prologue"),
+                              comment: "Search for posts or sites prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.writeBlog",
                               value: "Write a blog",
                               comment: "Write a blog prompt for the jetpack prologue"),
