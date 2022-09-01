@@ -47,6 +47,8 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
         return !UserSettings.userHasOptedOutOfCrashLogging
     }
 
+    let performanceTracking = PerformanceTracking.enabled(.init(sampleRate: 0.5))
+
     var currentUser: TracksUser? {
         let context = ContextManager.sharedInstance().mainContext
 

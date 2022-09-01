@@ -20,8 +20,8 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.4.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.11.1):
-    - Sentry (~> 6)
+  - Automattic-Tracks-iOS (0.12.0-beta.2):
+    - Sentry (~> 7.23)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
   - boost (1.76.0)
@@ -481,9 +481,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (6.2.1):
-    - Sentry/Core (= 6.2.1)
-  - Sentry/Core (6.2.1)
+  - Sentry (7.23.0):
+    - Sentry/Core (= 7.23.0)
+  - Sentry/Core (7.23.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -536,7 +536,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (~> 0.11.1)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `mokagio/sentry-7.23.0`)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.81.1/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.81.1/third-party-podspecs/BVLinearGradient.podspec.json`)
   - CocoaLumberjack (~> 3.0)
@@ -619,7 +619,6 @@ SPEC REPOS:
     - AlamofireNetworkActivityIndicator
     - AppAuth
     - AppCenter
-    - Automattic-Tracks-iOS
     - CocoaLumberjack
     - CropViewController
     - DoubleConversion
@@ -665,6 +664,9 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :branch: mokagio/sentry-7.23.0
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   boost:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.81.1/third-party-podspecs/boost.podspec.json
   BVLinearGradient:
@@ -768,6 +770,9 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.81.1/third-party-podspecs/Yoga.podspec.json
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :commit: b2283a5fe87fe93f3f42e166a91494bef59e8b1d
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -786,7 +791,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
+  Automattic-Tracks-iOS: 8930f3cfe6e8cf813fc1819ea466aef24f129efb
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
@@ -857,7 +862,7 @@ SPEC CHECKSUMS:
   RNTAztecView: 271480de346d6118a46e3d9d5e04f9831ed09dd2
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: 9b922b396b0e0bca8516a10e36b0ea3ebea5faf7
+  Sentry: a0d4563fa4ddacba31fdcc35daaa8573d87224d6
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -880,6 +885,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 56c1f2420534ad028f5eedb117843ea1910eb991
+PODFILE CHECKSUM: d0e067c1acd8165fa64971b1fecf90392c797e9f
 
 COCOAPODS: 1.11.2
