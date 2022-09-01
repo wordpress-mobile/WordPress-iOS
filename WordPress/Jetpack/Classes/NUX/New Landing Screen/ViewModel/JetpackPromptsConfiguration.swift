@@ -17,10 +17,10 @@ struct JetpackPromptsConfiguration {
 
         var prompts = [JetpackPrompt]()
 
-        let frameHeight = ceil(size.height / CGFloat(Constants.visibleRows))
+        let frameHeight = ceil(size.height / CGFloat(Constants.visibleRows)) + JetpackPromptView.totalVerticalPadding
         self.frameHeight = frameHeight
 
-        let fontSize = floor(frameHeight * Constants.fontScaleFactor)
+        let fontSize = floor((frameHeight - JetpackPromptView.totalVerticalPadding) * Constants.fontScaleFactor)
         self.fontSize = fontSize
         // sum of all the offsets + frame height of the last element = total height
         var cumulatedOffset: CGFloat = 0
