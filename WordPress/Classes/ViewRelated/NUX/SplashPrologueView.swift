@@ -22,9 +22,9 @@ struct SplashPrologueView: View {
                     .resizable()
                     .frame(width: 50, height: 50)
                     .padding(10)
-                Text(Self.Appearance.mainText)
+                Text(Self.Appearance.caption)
                     .multilineTextAlignment(.center)
-                    .font(Font.custom("EBGaramond-Regular", size: 25))
+                    .font(Self.Appearance.font)
                     .foregroundColor(Color(Self.Appearance.fontColor))
             }
         }
@@ -33,11 +33,15 @@ struct SplashPrologueView: View {
 
 private extension SplashPrologueView {
     enum Appearance {
-        // TODO - namespace
-        static let mainText = NSLocalizedString("""
-        Write, edit, and publish
-        from anywhere.
-        """, comment: "something here")
+        static let font = Font.custom("EBGaramond-Regular", size: 25)
+        static let caption = NSLocalizedString(
+            "wordpress.prologue.splash.caption",
+            value: """
+            Write, edit, and publish
+            from anywhere.
+            """,
+            comment: "Caption displayed during the login flow."
+        )
 
         static let fontColor = UIColor(light: .colorFromHex("101517"), dark: .white)
         static let backgroundColor = UIColor(light: .colorFromHex("F6F7F7"), dark: .colorFromHex("2C3338"))
