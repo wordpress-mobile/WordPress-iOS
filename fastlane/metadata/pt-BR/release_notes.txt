@@ -1,0 +1,3 @@
+Pessoal, notícias quentinhas: a lista de páginas não vai mais congelar quando a imagem destacada de uma página for um GIF.
+
+As estatísticas de download de arquivos não são compatíveis com sites auto-hospedados do Jetpack, então você não vai ver mais essa seção em estatísticas.
