@@ -1,9 +1,9 @@
 Toujours plus loin ! Vous pouvez désormais ajouter et vous connecter via des sites auto-hébergés dans l’application Jetpack.
 
-Découvrez les nouveautés de l’application dans le modal « Nouvelles fonctionnalités ». Parlons de méta.
+Découvrez les nouveautés de l’application dans les modaux « Nouvelles fonctionnalités ». Parlons de méta.
 
 Ne bougez pas les amis : la liste des pages ne se fige plus lorsque l’image mise en avant sur une page est un GIF.
 
-Les statistiques de téléchargement de fichiers ne sont pas prises en charge sur les sites Jetpack auto-hébergés, vous ne verrez donc plus cette section dans votre section Statistiques.
+Les statistiques de téléchargement de fichiers ne sont pas prises en charge sur les sites Jetpack auto-hébergés. Vous ne verrez donc plus cette section dans votre section Statistiques.
 
 Vous aimez utiliser Jetpack ? Dites-le à vos amis. Vous pouvez désormais partager l’application via les écrans « À propos de » et « Moi ».

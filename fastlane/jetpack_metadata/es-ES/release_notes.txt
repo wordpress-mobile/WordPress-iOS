@@ -1,9 +1,9 @@
 ¡Manos a la obra! Ahora puedes añadir y acceder mediante sitios autoalojados a la aplicación de Jetpack.
 
-Consulta las novedades de la aplicación en las ventanas modales de nuevas funciones. Hablemos sobre metadatos.
+Consulta las novedades de la aplicación en las ventanas modales de la función Novedades. Hablemos sobre metadatos.
 
 Ya no hace falta abrigarse. La lista de páginas ya no se quedará congelada cuando la imagen destacada de una página es un GIF.
 
 Las estadísticas de descarga de archivos no son compatibles con los sitios autoalojados de Jetpack, por lo que no podrás consultar esa sección en la sección Estadísticas nunca más.
 
-¿Te gusta usar Jetpack? Cuéntales a tus amigos todo lo que deben saber sobre este servicio. Ahora puedes compartir la aplicación a través de las pantallas Acerca de y Yo.
+¿Te gusta usar Jetpack? Cuéntaselo a tus amigos. Ahora puedes compartir la aplicación a través de las pantallas Acerca de y Yo.
