@@ -32,10 +32,10 @@ struct JetpackPrologueStyleGuide {
     static let oldSiteBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.40)
     static let oldSiteHighlightedBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20)
     // combined
-    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .white : backgroundColor
+    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .white : oldBackgroundColor
     static let siteBorderColor = FeatureFlag.newLandingScreen.enabled ? .white : oldSiteBorderColor
     static let siteTextColor = FeatureFlag.newLandingScreen.enabled ? UIColor.black : UIColor.white
-    static let siteHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : backgroundColor
+    static let siteHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
     static let siteHighlightedBorderColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldSiteHighlightedBorderColor
     static let siteHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? .black : whiteWithAlpha07
 
