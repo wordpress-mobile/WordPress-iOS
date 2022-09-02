@@ -247,6 +247,42 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(accounts(), ["First User", "Second User"])
     }
 
+    func testUpdateFetchedResultController() throws {
+        let contextManager = ContextManagerMock()
+        let request = NSFetchRequest<WPAccount>(entityName: "Account")
+        request.sortDescriptors = [NSSortDescriptor(key: "userID", ascending: true)]
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: contextManager.mainContext, sectionNameKeyPath: nil, cacheName: nil)
+        let delegate = SimpleFetchedResultsControllerDelegate()
+        frc.delegate = delegate
+
+        try frc.performFetch()
+
+        contextManager.performAndSave { context in
+            let account = WPAccount(context: context)
+            account.userID = 1
+            account.username = "First User"
+        }
+        expect(delegate.changes).toEventually(equal(1))
+
+        contextManager.performAndSave {
+            let account = WPAccount(context: $0)
+            account.userID = 2
+            account.username = "Second User"
+        }
+        expect(delegate.changes).toEventually(equal(2))
+
+        contextManager.performAndSave { context in
+            let request = NSFetchRequest<WPAccount>(entityName: "Account")
+            request.predicate = NSPredicate(format: "userID = 1")
+            let firstUser = try? context.fetch(request).first
+            XCTAssertNotNil(firstUser)
+            // "Update" using the same data
+            firstUser?.userID = 1
+            firstUser?.username = "First User"
+        }
+        expect(delegate.changes).toEventually(equal(2))
+    }
+
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
@@ -297,4 +333,14 @@ class ContextManagerTests: XCTestCase {
 
         return url
     }
+}
+
+fileprivate class SimpleFetchedResultsControllerDelegate: NSObject, NSFetchedResultsControllerDelegate {
+
+    var changes: Int = 0
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        changes += 1
+    }
+
 }

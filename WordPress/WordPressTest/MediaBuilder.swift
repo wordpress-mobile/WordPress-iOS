@@ -31,4 +31,22 @@ class MediaBuilder {
 
         return self
     }
+
+    func with(title: String) -> Self {
+        media.title = title
+
+        return self
+    }
+
+    func with(blog: Blog) -> Self {
+        media.blog = blog
+
+        return self
+    }
+
+    func with(mediaType: MediaType) -> Self {
+        media.mediaType = mediaType
+
+        return self
+    }
 }
