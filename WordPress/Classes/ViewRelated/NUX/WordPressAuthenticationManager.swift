@@ -161,6 +161,8 @@ extension WordPressAuthenticationManager {
                                                   viewControllerBackgroundColor: .basicBackground,
                                                   prologueButtonsBackgroundColor: prologueButtonsBackgroundColor,
                                                   prologueViewBackgroundColor: prologueViewBackgroundColor,
+                                                  prologueBackgroundImage: authenticationHandler?.prologueBackgroundImage,
+                                                  prologueButtonsBlurEffect: authenticationHandler?.prologueButtonsBlurEffect,
                                                   navBarBackgroundColor: .appBarBackground,
                                                   navButtonTextColor: .appBarTint,
                                                   navTitleTextColor: .appBarText)
