@@ -23,4 +23,3 @@ struct UserDefaultsAnnouncementsCache: AnnouncementsCache {
         UserPersistentStoreFactory.instance().announcementsDate
     }
 }
-
