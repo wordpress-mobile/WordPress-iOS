@@ -24,6 +24,9 @@ static ContextManager *_instance;
 @property (nonatomic, strong) NSString *modelName;
 @property (nonatomic, strong) NSURL *storeURL;
 @property (nonatomic, strong) id<ManagedObjectContextFactory> contextFactory;
+@property (nonatomic, strong) NSOperationQueue *remoteChangeQueue;
+@property (nonatomic, strong) NSPersistentHistoryToken *historyToken;
+@property (nonatomic, strong) id updateUIObserver;
 
 @end
 
@@ -63,6 +66,10 @@ static ContextManager *_instance;
         [NSValueTransformer registerCustomTransformers];
         self.contextFactory = (id<ManagedObjectContextFactory>)[[factory alloc] initWithPersistentContainer:self.persistentContainer];
         [[[NullBlogPropertySanitizer alloc] initWithContext:self.contextFactory.mainContext] sanitize];
+        
+        if ([self isSharedLoginEnabled]) {
+            [self observeStoreChanges];
+        }
     }
 
     return self;
@@ -132,6 +139,88 @@ static ContextManager *_instance;
     }];
 }
 
+#pragma mark - Store Changes
+
+- (void)observeStoreChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleStoreChanges:)
+                                                 name:NSPersistentStoreRemoteChangeNotification
+                                               object:self.persistentContainer.persistentStoreCoordinator];
+}
+
+- (void)handleStoreChanges:(NSNotification *)notification
+{
+    NSLog(@"[CM]: Persistent store remote change notification");
+    __weak __typeof(self) weakSelf = self;
+    [self.remoteChangeQueue addOperationWithBlock:^{
+        [weakSelf proccessRemoteChanges];
+    }];
+}
+
+- (void)proccessRemoteChanges
+{
+    NSLog(@"[CM]: Processing remote changes");
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlockAndWait:^{
+        NSPersistentHistoryChangeRequest *historyChangeRequest = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:self.historyToken];
+        NSFetchRequest *fetchRequest = [NSPersistentHistoryTransaction fetchRequest];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"bundleID != %@", [[NSBundle mainBundle] bundleIdentifier]];
+        historyChangeRequest.fetchRequest = fetchRequest;
+        NSPersistentHistoryResult *result = [context executeRequest:historyChangeRequest error:nil];
+        NSArray<NSPersistentHistoryTransaction *> *transactions = result.result;
+        
+        if (transactions.count > 0) {
+            for (NSPersistentHistoryTransaction *transaction in transactions) {
+                NSDictionary *userInfo = transaction.objectIDNotification.userInfo;
+                
+                if (userInfo) {
+                    NSLog(@"[CM]: Merging into main context %@", userInfo);
+                    [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo
+                                                                 intoContexts:@[self.mainContext]];
+                }
+            }
+            [self saveContext:self.mainContext];
+            self.historyToken = transactions.lastObject.token;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleUIUpdate];
+            });
+        } else {
+            NSLog(@"[CM]: No transactions");
+        }
+    
+    }];
+}
+
+- (void)handleUIUpdate
+{
+    UIApplicationState state = UIApplication.sharedApplication.applicationState;
+    
+    void (^showUI)(void) = ^{
+        NSLog(@"[CM]: Updating UI if necessary");
+
+        WordPressAppDelegate *delegate = (WordPressAppDelegate *) UIApplication.sharedApplication.delegate;
+        if (AccountHelper.isLoggedIn) {
+            [WPTabBarController.sharedInstance reloadSplitViewControllers];
+            [delegate.windowManager showAppUIFor:nil completion:nil];
+        } else {
+            [delegate.windowManager showFullscreenSignIn];
+        }
+    };
+    if (state == UIApplicationStateActive) {
+        showUI();
+    } else if (!self.updateUIObserver) {
+        __weak __typeof(self) weakSelf = self;
+        self.updateUIObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
+                                                                                object:nil
+                                                                                 queue:[NSOperationQueue mainQueue]
+                                                                            usingBlock:^(NSNotification * _Nonnull note) {
+            showUI();
+            [[NSNotificationCenter defaultCenter] removeObserver:weakSelf.updateUIObserver];
+            weakSelf.updateUIObserver = nil;
+        }];
+    }
+}
 
 #pragma mark - Setup
 
@@ -188,6 +277,12 @@ static ContextManager *_instance;
     NSPersistentStoreDescription *storeDescription = [[NSPersistentStoreDescription alloc] initWithURL:self.storeURL];
     storeDescription.shouldInferMappingModelAutomatically = true;
     storeDescription.shouldMigrateStoreAutomatically = true;
+    
+    if ([self isSharedLoginEnabled]) {
+        [storeDescription setOption:@YES forKey:NSPersistentHistoryTrackingKey];
+        [storeDescription setOption:@YES forKey:NSPersistentStoreRemoteChangeNotificationPostOptionKey];
+    }
+    
     return storeDescription;
 }
 
@@ -209,6 +304,39 @@ static ContextManager *_instance;
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:versionedModelURL];
     }
     return _managedObjectModel;
+}
+
+- (NSOperationQueue *)remoteChangeQueue
+{
+    if (_remoteChangeQueue) {
+        return _remoteChangeQueue;
+    }
+    
+    _remoteChangeQueue = [[NSOperationQueue alloc] init];
+    _remoteChangeQueue.maxConcurrentOperationCount = 1;
+    return _remoteChangeQueue;
+}
+
+- (void)setHistoryToken:(NSPersistentHistoryToken *)historyToken
+{
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:historyToken
+                                         requiringSecureCoding:YES
+                                                         error:nil];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"transactionHistoryToken"];
+}
+
+- (NSPersistentHistoryToken *)historyToken
+{
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"transactionHistoryToken"];
+    if (data) {
+        NSPersistentHistoryToken *token = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSPersistentHistoryToken class]
+                                                                            fromData:data
+                                                                               error:nil];
+        return token;
+    }
+    
+    return nil;
 }
 
 
