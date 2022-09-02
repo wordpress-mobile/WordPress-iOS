@@ -34,10 +34,10 @@ class JetpackPrologueViewController: UIViewController {
 
         // Start color is the background color with no alpha because if we use clear it will fade to black
         // instead of just disappearing
-        let startColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0)
-        let midTopColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.9)
-        let midBottomColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.2)
-        let endColor = JetpackPrologueStyleGuide.backgroundColor
+        let startColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0)
+        let midTopColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.9)
+        let midBottomColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.2)
+        let endColor = JetpackPrologueStyleGuide.gradientColor
 
         gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
         [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
