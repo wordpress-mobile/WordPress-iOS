@@ -1,0 +1,3 @@
+Kein Grund mehr zu zittern — die Seitenliste friert jetzt nicht mehr ein, wenn das Beitragsbild einer Seite ein GIF ist.
+
+Da selbst-gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
