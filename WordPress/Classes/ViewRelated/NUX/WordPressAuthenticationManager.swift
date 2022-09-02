@@ -110,8 +110,16 @@ extension WordPressAuthenticationManager {
             return image
         }()
 
-        let prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
-        let prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        var prologuePrimaryButtonStyle: NUXButtonStyle?
+        var prologueSecondaryButtonStyle: NUXButtonStyle?
+
+        if FeatureFlag.newLandingScreen.enabled {
+            prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
+            prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
+        } else {
+            prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
+            prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        }
 
         return WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                            primaryNormalBorderColor: nil,
