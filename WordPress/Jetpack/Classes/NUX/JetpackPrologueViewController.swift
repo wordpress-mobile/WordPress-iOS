@@ -64,10 +64,7 @@ class JetpackPrologueViewController: UIViewController {
         // hide old view unused elements
         stackView.isHidden = true
         titleLabel.isHidden = true
-        // complex gradient background
-        if let backgroundImage = UIImage(named: "JPBackground") {
-            view.layer.contents = backgroundImage.cgImage
-        }
+
         // animated view
 
         view.addSubview(jetpackAnimatedView)
