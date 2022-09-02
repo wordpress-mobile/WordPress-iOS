@@ -12,6 +12,13 @@ class JetpackPrologueViewController: UIViewController {
         return view
     }()
 
+    private lazy var jetpackAnimatedView: UIView = {
+        let viewModel = JetpackPromptsViewModel()
+        let jetpackAnimatedView = UIView.embedSwiftUIView(JetpackLandingScreenView(viewModel: viewModel))
+        jetpackAnimatedView.translatesAutoresizingMaskIntoConstraints = false
+        return jetpackAnimatedView
+    }()
+
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "jetpack-logo"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,15 +69,14 @@ class JetpackPrologueViewController: UIViewController {
             view.layer.contents = backgroundImage.cgImage
         }
         // animated view
-        let viewModel = JetpackPromptsViewModel()
-        let jetpackAnimatedView = UIView.embedSwiftUIView(JetpackLandingScreenView(viewModel: viewModel))
+
         view.addSubview(jetpackAnimatedView)
         view.pinSubviewToAllEdges(jetpackAnimatedView)
         // Jetpack logo with parallax
         view.addSubview(logoImageView)
         addParallax(to: logoImageView)
         // linear gradient above the animated view
-        view.layer.insertSublayer(gradientLayer, below: logoImageView.layer)
+        view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
             logoImageView.widthAnchor.constraint(equalToConstant: 72),
@@ -111,7 +117,7 @@ class JetpackPrologueViewController: UIViewController {
         }
         gradientLayer.removeFromSuperlayer()
         gradientLayer = makeGradientLayer()
-        view.layer.insertSublayer(gradientLayer, below: logoImageView.layer)
+        view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
     }
 
     override func viewDidLayoutSubviews() {
