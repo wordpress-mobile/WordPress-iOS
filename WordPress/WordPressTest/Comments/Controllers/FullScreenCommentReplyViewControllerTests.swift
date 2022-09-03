@@ -62,8 +62,10 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
 
     /// Test if SuggestionsTableView is visible when searchText is provided and it is already opened when text input is collapsed
     func testSuggestionListVisibleWhenAlreadyVisibleWhenCollapsed() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
         controller = FullScreenCommentReplyViewController(viewModel: viewModel)
-        controller.enableSuggestions(with: NSNumber(value: 1), prominentSuggestionsIds: [], searchText: "@Ren")
+        controller.enableSuggestions(with: blog.dotComID!, prominentSuggestionsIds: [], searchText: "@Ren")
         controller.content = "Test"
         load(controller, inWindow: UIWindow())
 
@@ -75,8 +77,11 @@ class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
     }
 
     /// Test if SuggestionsTableView is not visible when expanded
-    func testSuggestionListNotVisibleWhenExpanded() throws {controller = FullScreenCommentReplyViewController(viewModel: viewModel)
-        controller.enableSuggestions(with: NSNumber(value: 1), prominentSuggestionsIds: [], searchText: "")
+    func testSuggestionListNotVisibleWhenExpanded() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+        controller.enableSuggestions(with: blog.dotComID!, prominentSuggestionsIds: [], searchText: "")
         controller.content = "Test"
         load(controller, inWindow: UIWindow())
 

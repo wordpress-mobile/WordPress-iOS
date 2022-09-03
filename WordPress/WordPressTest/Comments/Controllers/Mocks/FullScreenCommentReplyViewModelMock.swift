@@ -13,15 +13,13 @@ struct FullScreenCommentReplyViewModelMock: FullScreenCommentReplyViewModelType 
     }
 
     func suggestionsTableView(with siteID: NSNumber, useTransparentHeader: Bool, prominentSuggestionsIds: [NSNumber]?, delegate: SuggestionsTableViewDelegate) -> SuggestionsTableView {
-        let blog = Blog(context: context)
-        let suggestionListViewModel = SuggestionsListViewModel(blog: blog)
-        suggestionListViewModel.context = context
+        let suggestionListViewModel = SuggestionsListViewModel(siteID: siteID, context: context)
         suggestionListViewModel.userSuggestionService = suggestionsService
         suggestionListViewModel.suggestionType = .mention
         let tableView = SuggestionsTableView(viewModel: suggestionListViewModel, delegate: delegate)
-        tableView.prominentSuggestionsIds = prominentSuggestionsIds
         tableView.useTransparentHeader = useTransparentHeader
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.prominentSuggestionsIds = prominentSuggestionsIds
         return tableView
     }
 
