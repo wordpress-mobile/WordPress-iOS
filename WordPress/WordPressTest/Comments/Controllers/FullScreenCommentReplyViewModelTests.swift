@@ -16,8 +16,8 @@ class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
     func testSuggestionsTableViewSetup() throws {
         let blog = BlogBuilder(mainContext).build()
         try mainContext.save()
-        let tableView = sut.suggestionsTableView(with: blog.dotComID!, useTransparentHeader: false, prominentSuggestionsIds: nil, delegate: SuggestionsTableViewDelegateMock())
 
+        let tableView = sut.suggestionsTableView(with: blog.dotComID!, useTransparentHeader: false, prominentSuggestionsIds: nil, delegate: SuggestionsTableViewDelegateMock())
 
         let viewModel = tableView.viewModel as? SuggestionsListViewModel
         XCTAssertTrue(viewModel?.userSuggestionService is SuggestionServiceMock)
