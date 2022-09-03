@@ -2293,6 +2293,8 @@
 		C3234F5427EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */; };
 		C3234F5527EBBACA004ADB29 /* SiteIntentVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3234F5327EBBACA004ADB29 /* SiteIntentVertical.swift */; };
 		C324D7A928C26F3F00310DEF /* SplashPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C324D7A828C26F3F00310DEF /* SplashPrologueStyleGuide.swift */; };
+		C324D7AB28C2F73100310DEF /* SplashPrologueStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C324D7A828C26F3F00310DEF /* SplashPrologueStyleGuide.swift */; };
+		C324D7AC28C2F73F00310DEF /* SplashPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */; };
 		C32A6A2C2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */; };
 		C32A6A2D2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */; };
 		C3439B5F27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3439B5E27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift */; };
@@ -21673,6 +21675,7 @@
 				FABB23A72602FC2C00C8785C /* ReaderPost+Searchable.swift in Sources */,
 				FABB23A82602FC2C00C8785C /* MeViewController.swift in Sources */,
 				FABB23A92602FC2C00C8785C /* BlogService+BlogAuthors.swift in Sources */,
+				C324D7AC28C2F73F00310DEF /* SplashPrologueViewController.swift in Sources */,
 				FABB23AA2602FC2C00C8785C /* AuthorFilterButton.swift in Sources */,
 				FABB23AB2602FC2C00C8785C /* MenuItemTagsViewController.m in Sources */,
 				FABB23AC2602FC2C00C8785C /* ReachabilityUtils.m in Sources */,
@@ -22094,6 +22097,7 @@
 				C72A52CF2649B158009CA633 /* JetpackWindowManager.swift in Sources */,
 				FABB25062602FC2C00C8785C /* ReaderTagsTableViewModel.swift in Sources */,
 				17ABD3532811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift in Sources */,
+				C324D7AB28C2F73100310DEF /* SplashPrologueStyleGuide.swift in Sources */,
 				FABB25072602FC2C00C8785C /* SiteAssemblyService.swift in Sources */,
 				FABB25082602FC2C00C8785C /* ManagedPerson.swift in Sources */,
 				FABB25092602FC2C00C8785C /* ChosenValueRow.swift in Sources */,
