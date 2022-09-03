@@ -5,7 +5,6 @@ import XCTest
 class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
     private var suggestionsServiceMock: SuggestionServiceMock!
     private var sut: FullScreenCommentReplyViewModel!
-    private let number = NSNumber(value: 1)
 
     override func setUp() {
         super.setUp()
@@ -13,10 +12,11 @@ class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
         sut = FullScreenCommentReplyViewModel(suggestionsService: suggestionsServiceMock, context: mainContext)
     }
 
-    /// Test if SuggestionsTableView is setup properly.
-    func testSuggestionsTableViewSetup() {
-        let expectedProminentSuggestionsIds = [number]
-        let tableView = sut.suggestionsTableView(with: number, useTransparentHeader: false, prominentSuggestionsIds: expectedProminentSuggestionsIds, delegate: SuggestionsTableViewDelegateMock())
+    /// Test SuggestionsTableView setup.
+    func testSuggestionsTableViewSetup() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        let tableView = sut.suggestionsTableView(with: blog.dotComID!, useTransparentHeader: false, prominentSuggestionsIds: nil, delegate: SuggestionsTableViewDelegateMock())
 
 
         let viewModel = tableView.viewModel as? SuggestionsListViewModel
@@ -24,14 +24,38 @@ class FullScreenCommentReplyViewModelTests: CoreDataTestCase {
         XCTAssertTrue(viewModel?.suggestionType == .mention)
         XCTAssertFalse(tableView.translatesAutoresizingMaskIntoConstraints)
         XCTAssertFalse(tableView.useTransparentHeader)
-        XCTAssertEqual(tableView.prominentSuggestionsIds, expectedProminentSuggestionsIds)
+        XCTAssertEqual(tableView.prominentSuggestionsIds, nil)
     }
 
-    func testShouldShowSuggestionsIsFalse() {
+    /// Test if shouldShowSuggestions returns true.
+    /// It should return true if there is a blog with the same siteID in the database.
+    func testShouldShowSuggestionsIsTrue() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        let expectedResult = true
+
+        let result = sut.shouldShowSuggestions(with: blog.dotComID!)
+
+        XCTAssertEqual(result, expectedResult)
+    }
+
+    /// Test if shouldShowSuggestions returns false.
+    /// It should return false when siteID is nil.
+    func testShouldShowSuggestionsIsFalseWhenSiteIDIsNil() throws {
         let expectedResult = false
 
-        let result = sut.shouldShowSuggestions(with: number)
+        let result = sut.shouldShowSuggestions(with: nil)
 
-        XCTAssertEqual(result, expectedResult, "shouldShowSuggestions should return false")
+        XCTAssertEqual(result, expectedResult)
+    }
+
+    /// Test if shouldShowSuggestions returns false.
+    /// It should return false if there is no blog with the same siteID in the database.
+    func testShouldShowSuggestionsIsFalseWhenNoBlogWithSameSiteID() throws {
+        let expectedResult = false
+
+        let result = sut.shouldShowSuggestions(with: NSNumber(value: 1))
+
+        XCTAssertEqual(result, expectedResult)
     }
 }
