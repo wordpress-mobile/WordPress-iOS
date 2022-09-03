@@ -6,8 +6,7 @@ struct SplashPrologueView: View {
         ZStack {
             Color(SplashPrologueStyleGuide.backgroundColor)
             HStack {
-                Rectangle()
-                    .foregroundColor(.clear)
+                Spacer()
                     .frame(minWidth: 0, maxWidth: .infinity)
                 Image("splashBrushStroke")
                     .resizable()
