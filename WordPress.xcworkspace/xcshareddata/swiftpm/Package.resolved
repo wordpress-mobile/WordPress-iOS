@@ -59,9 +59,9 @@
         "package": "ScreenObject",
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
-          "branch": null,
-          "revision": "e27405a65672c62e5a055697eafdeaf073ea63ff",
-          "version": "0.2.1"
+          "branch": "add-isHittable-to-waitForScreen",
+          "revision": "644e10c3ca5b4f24f70b66851aaebae3730536cd",
+          "version": null
         }
       },
       {
