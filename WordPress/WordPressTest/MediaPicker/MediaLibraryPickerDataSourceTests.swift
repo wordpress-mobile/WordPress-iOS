@@ -1,6 +1,7 @@
 import XCTest
 @testable import WordPress
 import WPMediaPicker
+import Nimble
 
 class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
 
@@ -71,6 +72,39 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
             XCTAssertTrue(asset.duration.value > 0, "Asset should have a duration")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func testMediaGroupUpdates() {
+        contextManager.useAsSharedInstance(untilTestFinished: self)
+        dataSource.setMediaTypeFilter(.image)
+
+        var changes = 0
+        dataSource.registerGroupChangeObserverBlock {
+            changes += 1
+        }
+
+        let video = MediaBuilder(context).build()
+        video.remoteStatus = .sync
+        video.blog = self.blog
+        video.mediaType = .video
+        contextManager.saveContextAndWait(context)
+        expect(changes).toEventually(equal(0))
+
+        let newImage = MediaBuilder(context).build()
+        newImage.remoteStatus = .sync
+        newImage.blog = self.blog
+        newImage.mediaType = .image
+        newImage.creationDate = Date()
+        contextManager.saveContextAndWait(context)
+        expect(changes).toEventually(equal(1))
+
+        let oldImage = MediaBuilder(context).build()
+        oldImage.remoteStatus = .sync
+        oldImage.blog = self.blog
+        oldImage.mediaType = .image
+        oldImage.creationDate = Date().advanced(by: -60)
+        contextManager.saveContextAndWait(context)
+        expect(changes).toEventually(equal(1))
     }
 
     fileprivate func newImageMedia() -> Media? {
