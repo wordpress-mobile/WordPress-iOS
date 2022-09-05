@@ -573,9 +573,17 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    Media *media = [[[ContextManager sharedInstance] mainContext] existingObjectWithID:self.imageMediaID error:nil];
-    if (media == nil)
-    {
+    Media *media = nil;
+
+    if (self.imageMediaID == nil) {
+        [self refreshImageMedia];
+    }
+
+    if (self.imageMediaID != nil) {
+        media = [[[ContextManager sharedInstance] mainContext] existingObjectWithID:self.imageMediaID error:nil];
+    }
+
+    if (media == nil) {
         UIImage *placeholderImage = [UIImage imageNamed:@"WordPress-share"];
         completionHandler(placeholderImage, nil);
         return 0;
