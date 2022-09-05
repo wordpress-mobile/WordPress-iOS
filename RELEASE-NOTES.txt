@@ -1,3 +1,7 @@
+20.8
+-----
+* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
+
 20.7
 -----
 * [*] [Jetpack-only] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
