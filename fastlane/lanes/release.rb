@@ -209,7 +209,7 @@ lane :gutenberg_dep_check do
     end
   end
 
-  UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
+  UI.message("Gutenberg version: #{res.scan(/'([^']*)'/)[0][0]}")
 end
 
 # Returns the path to the extracted Release Notes file for the given `app`.
