@@ -68,7 +68,7 @@ platform :ios do
       bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
     )
       push_to_git_remote(tags: false)
-      trigger_beta_build(branch: "release/#{ios_get_app_version}")
+      trigger_beta_build
     else
       UI.message('Aborting code freeze completion. See you later.')
     end
@@ -86,8 +86,7 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
-    version = ios_get_app_version
-    trigger_beta_build(branch: "release/#{version}")
+    trigger_beta_build
   end
 
   # Sets the stage to start working on a hotfix
@@ -116,9 +115,7 @@ platform :ios do
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
     git_pull
-
-    version = ios_get_app_version
-    trigger_release_build(branch: "release/#{version}")
+    trigger_release_build
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -150,8 +147,7 @@ platform :ios do
     create_new_milestone(repository: GHHELPER_REPO)
     close_milestone(repository: GHHELPER_REPO, milestone: version)
 
-    # Start the build
-    trigger_release_build(branch: "release/#{version}")
+    trigger_release_build
   end
 
   # Triggers a beta build on CI
