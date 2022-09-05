@@ -156,18 +156,20 @@ platform :ios do
 
   # Triggers a beta build on CI
   #
-  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`
+  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch], beta: true)
+    branch = options[:branch] || "release/#{ios_get_app_version}"
+    trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
   # Triggers a stable release build on CI
   #
-  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`
+  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch], beta: false)
+    branch = options[:branch] || "release/#{ios_get_app_version}"
+    trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
 
