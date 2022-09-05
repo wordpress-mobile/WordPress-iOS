@@ -1,9 +1,9 @@
-Up, up, and away! You can now add and log in via self-hosted sites in the Jetpack app.
+Upp, upp och iväg! Du kan nu lägga till och logga in via webbplatser på egen server i Jetpack-appen.
 
-See what’s new in the app in the What’s New feature modals. Talk about meta.
+Se vad som är nytt i appen i modalfönstret Nyheter. Tala om meta.
 
-Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
+Håll er varma, vänner – sidlistan fryser inte längre om den utvalda bilden för en sida är en GIF.
 
-File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
+Filnedladdningsstatistik stöds inte för Jetpack-webbplatser på egen server, så den sektionen kommer inte längre att visas i sektionen Statistik.
 
-Like using Jetpack? Tell your friends all about it. You can now share the app through the About and Me screens.
+Gillar du att använda Jetpack? Berätta om det för dina vänner. Du kan nu dela appen via skärmarna Om och Mig.

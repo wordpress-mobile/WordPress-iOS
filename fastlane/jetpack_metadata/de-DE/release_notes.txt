@@ -1,9 +1,9 @@
-Auf, auf und davon! Du kannst jetzt selbst-gehostete Websites hinzufügen und dich darüber in der Jetpack-App anmelden.
+Auf, auf und davon! Ab sofort kannst du in der Jetpack-App selbst gehostete Websites hinzufügen und dich darüber anmelden.
 
-Schau dir in den Fenstern mit Neuigkeiten zu Funktionen an, was es neues in der App gibt. Ganz schön meta.
+Schau dir in den Funktionsmodulen zu Neuigkeiten an, was es Neues in der App gibt. Ganz schön meta.
 
 Kein Grund mehr zu zittern — die Seitenliste friert jetzt nicht mehr ein, wenn das Beitragsbild einer Seite ein GIF ist.
 
-Da selbst-gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
+Da selbst gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
 
-Du bist Jetpack-Fan? Dann erzähl deinen Freunden davon. Du kannst die App jetzt über die Bildschirme „Über“ und „Ich“ teilen.
+Du bist Jetpack-Fan? Dann erzähle deinen Freunden davon. Du kannst die App jetzt über die Bildschirme „Über“ und „Ich“ teilen.

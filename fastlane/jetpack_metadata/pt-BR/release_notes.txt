@@ -1,8 +1,8 @@
-Cabeça erguida e em frente! Agora você pode adicionar e fazer login com os sites auto-hospedados no aplicativo do Jetpack.
+Para o alto e avante! Agora você pode adicionar e fazer login com os sites auto-hospedados no aplicativo do Jetpack.
 
-Veja o que há de novo no aplicativo pelo modal de funcionalidade Novidades. Fale sobre o meta.
+Veja o que há de novo no aplicativo na janela Novidades. Fale sobre o meta.
 
-Amigos, podem ficar aquecidos, a lista de páginas não vai mais congelar quando a imagem destacada de uma página for um GIF.
+Pessoal, notícias quentinhas: a lista de páginas não vai mais congelar quando a imagem destacada de uma página for um GIF.
 
 As estatísticas de download de arquivos não são compatíveis com sites auto-hospedados do Jetpack, então você não vai ver mais essa seção em estatísticas.
 
