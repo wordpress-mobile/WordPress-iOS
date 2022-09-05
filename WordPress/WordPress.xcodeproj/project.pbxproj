@@ -2310,6 +2310,7 @@
 		C3835559288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */; };
 		C383555A288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3835558288B02B00062E402 /* JetpackBannerWrapperViewController.swift */; };
 		C387B7A22638D66F00BDEF86 /* PostAuthorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2462826277B7700B99EA6 /* PostAuthorSelectorViewController.swift */; };
+		C3895DDD28C65435004E7C9B /* SplashPrologueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B6D5A28BFB6F300E64FEB /* SplashPrologueView.swift */; };
 		C38C5D8127F61D2C002F517E /* MenuItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38C5D8027F61D2C002F517E /* MenuItemTests.swift */; };
 		C395FB232821FE4400AE7C11 /* SiteDesignSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395FB222821FE4400AE7C11 /* SiteDesignSection.swift */; };
 		C395FB242821FE4B00AE7C11 /* SiteDesignSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395FB222821FE4400AE7C11 /* SiteDesignSection.swift */; };
@@ -21900,6 +21901,7 @@
 				FABB24672602FC2C00C8785C /* StatsBarChartView.swift in Sources */,
 				FABB24682602FC2C00C8785C /* URLQueryItem+Parameters.swift in Sources */,
 				FABB24692602FC2C00C8785C /* MenuItemView.m in Sources */,
+				C3895DDD28C65435004E7C9B /* SplashPrologueView.swift in Sources */,
 				FABB246A2602FC2C00C8785C /* WordPressAuthenticationManager.swift in Sources */,
 				FABB246B2602FC2C00C8785C /* SiteManagementService.swift in Sources */,
 				FABB246C2602FC2C00C8785C /* ActivityPostRange.swift in Sources */,
