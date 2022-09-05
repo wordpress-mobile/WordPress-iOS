@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-10 10:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-25 08:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: id */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Tombol \"lagi\" berisi menu buka bawah yang menampilkan tombol berbagi";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Akun WordPress.com terhubung ke kredensial toko Anda. Untuk melanjutkan, kami akan mengirimkan tautan verifikasi ke alamat email di atas.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Gambar yang ditampilkan sudah siap. Ketuk untuk mengubahnya.";
 
@@ -431,9 +434,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ALAMAT";
 
-/* About this app (information page title) */
-"About" = "Perihal";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "Tentang Jetpack untuk iOS";
 
@@ -442,9 +442,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "Tentang WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Tentang WordPress untuk iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -465,8 +462,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Akun ditutup";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Pernyataan";
 
 /* Theme Activate action title */
@@ -737,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Selain itu, blok ini bisa dilepas lalu disunting secara terpisah dengan mengetuk \"Ubah ke blok reguler\".";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Atau, Anda bisa memasukkan kata sandi untuk akun ini.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Atau:";
@@ -1166,8 +1165,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1361,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Membatalkan...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Tidak dapat mengakses situs dengan alamat ini. Periksa lagi lalu coba lagi.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Bingung memilih? Anda dapat mengganti tema kapan saja.";
 
@@ -1447,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Cek tips terbaik kami untuk meningkatkan pratinjau dan kunjungan Anda";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Periksa email Anda di perangkat ini!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Periksa e-mail Anda di perangkat ini, dan klik tautan pada e-mail yang Anda terima dari WordPress.com";
@@ -3750,6 +3754,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Jika Anda sudah memiliki situs, Anda perlu memasang plugin Jetpack gratis ini dan menghubungkannya ke akun WordPress.com Anda.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Jika tidak dapat menemukan emailnya, periksa tong sampah atau folder email spam Anda";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Jika Anda melanjutkan dengan Apple atau Google dan belum memiliki akun WordPress.com, Anda akan membuat akun dan menyetujui _Ketentuan Layanan_ kami.";
 
@@ -3961,6 +3968,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL tidak valid. Berkas audio tidak ditemukan.";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL tidak valid. Periksa lagi lalu coba lagi.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "URL tidak valid. Silakan masukkan URL yang benar.";
@@ -4422,6 +4432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "Permintaan Masuk Kedaluwarsa";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Login dengan kata sandi akun";
 
 /* No comment provided by engineer. */
 "Logs" = "Log";
@@ -5358,6 +5371,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Atau login dengan _memasukkan alamat situs Anda_.";
 
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Atau login dengan tautan ajaib";
+
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Daftar Berurutan";
 
@@ -5915,8 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privasi";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Kebijakan Privasi";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6060,9 +6075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Beri Rating";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Beri nilai kami di App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Baca di";
@@ -6803,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Kirim Uji Crash";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Kirim tautan verifikasi email";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Mengirim pemberitahuan melalui email";
 
@@ -6884,10 +6899,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Sebarkan";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Rekomendasikan Jetpack pada teman";
+
 /* Label for action to share post. */
 "Share Post" = "Bagikan Pos";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Bagikan WordPress dengan teman";
 
 /* Informational text for Collect Information setting */
@@ -7006,6 +7024,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "Mendaftar";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Login dengan kredensial situs";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Mendaftar";
@@ -7224,8 +7245,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "Urutkan Berdasarkan";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Kode Sumber";
 
 /* Label for showing the available disk space quota available for media */
@@ -7560,8 +7580,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "Syarat dan Ketentuan";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Pernyataan Layanan";
 
 /* Menu item label for linking a testimonial post. */
@@ -8242,8 +8261,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Mengaktifkan pemberitahuan situs";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8659,6 +8677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Gunakan tombol ikon";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Gunakan kata sandi untuk login";
+
 /* No comment provided by engineer. */
 "Use this site" = "Gunakan situs ini";
 
@@ -8700,8 +8721,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifikasi alamat email Anda - instruksi dikirim ke %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Versi";
 
 /* Description for the version label in the What's new page. */
@@ -8996,6 +9016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Kami baru saja mengirim tautan ke email %@. Harap periksa aplikasi email Anda dan ketuk tautan untuk login.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Kami baru saja mengirimkan tautan ajaib ke ";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kami membuat peningkatan besar untuk penyunting blok dan merasa itu layak dicoba!\n\nKami mengaktifkannya untuk pos dan halaman baru tetapi jika Anda ingin mengganti ke penyunting klasik, buka 'Situs Saya' > 'Pengaturan Situs'.";
 
@@ -9183,6 +9206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Apa yang ingin Anda lakukan dengan file ini: mengunggahnya dan menambahkan tautan ke file dalam pos Anda, atau menambahkan konten file langsung ke pos?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Apa itu WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Apakah blok?";
 
@@ -9198,8 +9224,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "Apa yang baru?";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Yang Baru dari Jetpack";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Apa yang Baru di WordPress";
 
 /* Title of alert helping users understand their site address */
@@ -9883,6 +9911,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Didukung Jetpack";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Coba aplikasi Jetpack baru";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Aplikasi Jetpack baru memiliki Statistik, Pembaca, Pemberitahuan, dan masih banyak lainnya yang membuat WordPress Anda lebih baik.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress berfungsi lebih baik dengan Jetpack";
+
 /* Later today */
 "later today" = "belakangan hari ini";
 
@@ -10086,9 +10123,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Login dengan Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domain";

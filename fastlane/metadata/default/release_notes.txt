@@ -1,7 +1,3 @@
-We fixed a bug in the app’s Stats section—when you’re looking at lists of search engines that have sent visitors to your site, you can now see nested results, just like you would in your browser.
+Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
 
-Hitting the @ key when you’re writing a comment still brings up a list of suggested users you might like to tag, but now those users are split into groups. If you’re responding to a parent comment, the comment’s author appears at the top of the list, right next to the post’s author.
-
-Now that the app supports higher-resolution image previews, we bumped up the size of theme screenshots in the site theme picker. No more pixellation, only pixel perfection.
-
-Finally, no more zeroes in your weekly roundup—if you don’t get any post comments or likes this week, we won’t include that number in your device notifications. Positive vibes only.
+File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.

@@ -1,9 +1,9 @@
-Uygulamanın İstatistikler bölümündeki bir hatayı düzelttik; sitenize ziyaretçi gönderen arama motorlarının listelerine baktığınızda tıpkı tarayıcınızda olduğu gibi artık iç içe sonuçları görebilirsiniz.
+Yukarı, yukarı ve ileri! Artık Jetpack uygulamasında kullanıcı tarafından barındırılan siteler ekleyebilir ve giriş yapabilirsiniz.
 
-Bir yorum yazarken @ tuşuna bastığınızda, etiketlemek isteyebileceğiniz önerilen kullanıcıların listesi görünmeye devam ediyor, ancak artık bu kullanıcılar gruplara ayrıldı. Bir üst yoruma yanıt verirken, yorumun yazarını listenin en üstünde, gönderinin yazarının hemen yanında göreceksiniz.
+Yenilikler özelliği modellerinde uygulamadaki yenilikleri görün. Meta hakkında konuşun.
 
-Uygulama artık daha yüksek çözünürlüklü görsel önizlemelerini desteklediğinden, site teması seçicisinde tema ekran görüntülerinin boyutunu artırdık. Artık pikselleşme değil, yalnızca piksel mükemmelliğini yaşayacaksınız.
+Sıcak kalın dostlar—bir sayfanın öne çıkan görseli GIF olduğunda, sayfa listesi artık donmayacak.
 
-Düzenleyicideki yeşil renkli bazı görsel öğeleri mavi renge dönüştürdük. Artık WordPress uygulamasında gördüğünüz görsellerle eşleşiyor.
+Dosya İndirme istatistikleri, kullanıcı tarafından barındırılan Jetpack sitelerinde desteklenmez, bu nedenle o bölümü artık İstatistikler bölümünüzde görmezsiniz.
 
-Son olarak, artık haftalık özetinizde sıfırlar yok. Hafta içinde herhangi bir gönderi yorumu veya beğeni almadıysanız o sayı cihaz bildirimlerinize dahil edilmeyecek. Sadece olumlu duygular.
+Jetpack kullanmayı seviyor musunuz? Arkadaşlarınıza ondan bahsedin. Artık Hakkında ve Ben ekranları aracılığıyla uygulamayı paylaşabilirsiniz.

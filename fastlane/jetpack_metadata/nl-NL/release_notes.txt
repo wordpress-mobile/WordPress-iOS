@@ -1,9 +1,9 @@
-We hebben een bug opgelost in de statistiekensectie van de app. Als je nu kijkt naar de lijst van zoekmachines die je bezoekers hebben gebruikt om op je site terecht te komen, kun je net als in je browser de geneste resultaten zien.
+Daar gaan we! Je kunt nu zelf-gehoste sites toevoegen en erbij inloggen in de Jetpack-app.
 
-Door @ te typen terwijl je een reactie schrijft, komt er nog steeds een lijst met voorgestelde gebruikers tevoorschijn die je misschien wilt taggen, maar nu zijn deze gebruikers opgesplitst in groepen. Als je reageert op een bovenliggende reactie komt de schrijver van deze reactie bovenaan de lijst te staan direct naast de schrijver van het originele bericht.
+Ontdek wat er is vernieuwd in de Wat is er nieuw functiemodules. Dat is nog eens meta.
 
-Omdat de app nu ook voorbeeldweergaven van afbeeldingen van hoge resolutie ondersteunt, hebben we de grootte van de themaschermafbeeldingen vergroot in de themakiezer van de site. Geen pixels meer, alleen maar pixel-perfectie.
+Blijf lekker warm: de pagina's bevriezen niet meer wanneer de uitgelichte afbeelding van een pagina een GIF is.
 
-We hebben een aantal visuele elementen in de editor aangepast van groen naar blauw. Nu komen ze overeen met de visuele elementen die je in de app van WordPress ziet.
+Statistieken voor bestandsdownloads worden niet ondersteund voor zelf-gehoste Jetpack-sites, dus je ziet dat onderdeel niet meer in het onderdeel Statistieken.
 
-Eindelijk geen nullen meer in je wekelijkse overzicht. Als je geen reacties of likes hebt geplaatst deze week, dan worden ze niet weergegeven in je apparaatmeldingen. Alleen nog maar een positief gevoel.
+Vind je Jetpack handig? Vertel je vrienden erover. Je kunt de app nu delen via de schermen Over en Ik.

@@ -1,7 +1,3 @@
-Vi har åtgärdat ett fel i appens statistiksektion. När du tittar på listor över sökmotorer som har skickat besökare till din webbplats kan du nu se inbäddade resultat, precis som i din webbläsare.
+En trevlig nyhet – listan över sidor låser sig inte längre om någon sida har en GIF som utvald bild.
 
-Om du trycker på @-tangenten när du skriver en kommentar visas fortfarande en lista över föreslagna användare att tagga, men nu är dessa användare uppdelade i grupper. Om du svarar på en överordnad kommentar visas kommentarens författare högst upp i listan, precis bredvid inläggets författare.
-
-Nu när appen stöder högupplösta förhandsgranskningar av bilder har vi gjort temaskärmbilderna större i din webbplats temaväljare. Ingen mer pixelering, bara pixelperfektion.
-
-Slutligen, inga fler nollor i din veckoöversikt – om du inte får några inläggskommentarer eller gilla-markeringar en vecka kommer vi inte att inkludera den siffran i dina enhetsnotiser. Endast positiva vibbar.
+För webbhotellbaserade webbplatser med Jetpack saknas stöd för statistik över nedladdningar. Därför visas inte längre denna sektion i statistiken i dessa fall.

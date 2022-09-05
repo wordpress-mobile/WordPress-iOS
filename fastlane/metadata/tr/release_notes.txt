@@ -1,7 +1,3 @@
-Uygulamanın İstatistikler bölümündeki bir hatayı düzelttik; sitenize ziyaretçi gönderen arama motorlarının listelerine baktığınızda tıpkı tarayıcınızda olduğu gibi artık iç içe sonuçları görebilirsiniz.
+Sıcak kalın dostlar—bir sayfanın öne çıkan görseli GIF olduğunda, sayfa listesi artık donmayacak.
 
-Bir yorum yazarken @ tuşuna bastığınızda, etiketlemek isteyebileceğiniz önerilen kullanıcıların listesi görünmeye devam ediyor, ancak artık bu kullanıcılar gruplara ayrıldı. Bir üst yoruma yanıt verirken, yorumun yazarını listenin en üstünde, gönderinin yazarının hemen yanında göreceksiniz.
-
-Uygulama artık daha yüksek çözünürlüklü görsel önizlemelerini desteklediğinden, site teması seçicisinde tema ekran görüntülerinin boyutunu artırdık. Artık pikselleşme değil, yalnızca piksel mükemmelliğini yaşayacaksınız.
-
-Son olarak, artık haftalık özetinizde sıfırlar yok. Hafta içinde herhangi bir gönderi yorumu veya beğeni almadıysanız o sayı cihaz bildirimlerinize dahil edilmeyecek. Sadece olumlu duygular.
+Dosya İndirme istatistikleri, kullanıcı tarafından barındırılan Jetpack sitelerinde desteklenmez, bu nedenle o bölümü artık İstatistikler bölümünüzde görmezsiniz.

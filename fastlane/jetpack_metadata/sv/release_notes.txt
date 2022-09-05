@@ -1,9 +1,9 @@
-Vi har åtgärdat ett fel i appens statistiksektion. När du tittar på listor över sökmotorer som har skickat besökare till din webbplats kan du nu se inbäddade resultat, precis som i din webbläsare.
+Upp, upp och iväg! Du kan nu lägga till och logga in via webbplatser på egen server i Jetpack-appen.
 
-Om du trycker på @-tangenten när du skriver en kommentar visas fortfarande en lista över föreslagna användare att tagga, men nu är dessa användare uppdelade i grupper. Om du svarar på en överordnad kommentar visas kommentarens författare högst upp i listan, precis bredvid inläggets författare.
+Se vad som är nytt i appen i modalfönstret Nyheter. Tala om meta.
 
-Nu när appen stöder högupplösta förhandsgranskningar av bilder har vi gjort temaskärmbilderna större i din webbplats temaväljare. Ingen mer pixelering, bara pixelperfektion.
+Håll er varma, vänner – sidlistan fryser inte längre om den utvalda bilden för en sida är en GIF.
 
-Vi har ändrat några visuella element i redigeraren från grönt till blått. Redigerarens färger matchar nu färgerna i WordPress-appen.
+Filnedladdningsstatistik stöds inte för Jetpack-webbplatser på egen server, så den sektionen kommer inte längre att visas i sektionen Statistik.
 
-Slutligen, inga fler nollor i din veckoöversikt – om du inte får några inläggskommentarer eller gilla-markeringar en vecka kommer vi inte att inkludera den siffran i dina enhetsnotiser. Endast positiva vibbar.
+Gillar du att använda Jetpack? Berätta om det för dina vänner. Du kan nu dela appen via skärmarna Om och Mig.

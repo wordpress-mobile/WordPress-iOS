@@ -1,9 +1,9 @@
-Corrigimos um bug na seção de Estatísticas do aplicativo: agora é possível ver resultados aninhados das listas de mecanismos de busca que enviaram visitantes ao seu site, do jeito que você faria no seu navegador.
+Para o alto e avante! Agora você pode adicionar e fazer login com os sites auto-hospedados no aplicativo do Jetpack.
 
-Ainda aparecerá uma lista de usuários sugeridos para marcar ao digitar o @ nos comentários, mas agora estes usuários estarão separados por grupos. Se você estiver respondendo a um comentário principal, o comentário do autor aparecerá na parte superior da lista, próximo ao post dele.
+Veja o que há de novo no aplicativo na janela Novidades. Fale sobre o meta.
 
-Agora que o aplicativo suporta a visualização de imagens em alta resolução, aumentamos o tamanho das capturas de tela do tema no seletor de temas do site. Chega de pixelização, agora está tudo perfeito.
+Pessoal, notícias quentinhas: a lista de páginas não vai mais congelar quando a imagem destacada de uma página for um GIF.
 
-Mudamos alguns elementos visuais no editor de verde para azul. Agora combina com o visual do aplicativo do WordPress.
+As estatísticas de download de arquivos não são compatíveis com sites auto-hospedados do Jetpack, então você não vai ver mais essa seção em estatísticas.
 
-Por fim, chega de zero no seu relatório semanal. Se seu post não tiver comentários ou curtidas, não vamos incluir esse dado nas suas notificações de dispositivo. Vamos manter a vibe positiva.
+Gosta de usar o Jetpack? Conte tudo aos seus amigos. Agora você pode compartilhar o aplicativo com as telas Sobre e Eu.

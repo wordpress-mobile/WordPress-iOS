@@ -1,7 +1,4 @@
-Hemos corregido un fallo en la sección de estadísticas - cuando miras las lisas de los motores de búsqueda que han enviado visitantes a tu sitio, ahora puedes ver resultados anidados, igual que lo verías en tu navegador.
+Ya no hace falta abrigarse. La lista de páginas ya no se quedará congelada cuando la imagen destacada de una página es un GIF.
 
-Al pulsar la tecla @ mientras escribes un comentario sigue mostrándose una lista de usuarios sugeridos a los que podría apetecerte etiquetar, pero ahora esos usuarios están divididos en grupos. Si estás respondiendo a un comentario superior, el autor del comentario aparece en la parte superior de la lisa, justo al lado del autor de la entrada.
+Las estadísticas de descarga de archivos no son compatibles con los sitios autoalojados de Jetpack, por lo que no podrás consultar esa sección en la sección Estadísticas nunca más.
 
-Ahora la aplicación admite vistas previas de imagen en alta resolución, hemos subido el tamaño de las capturas de pantalla del tema en el selector del tema del sitio. Se acabó el pixelado, ahora hay perfección al píxel.
-
-Para finalizar, ya no habrá más ceros en tu repaso semanal - si no recibers ningún comentario a tus entradas o ningún «me gusta» esta semana, no incluiremos ese número en los avisos de tu dispositivo. Solo recibirás vibraciones positivas.

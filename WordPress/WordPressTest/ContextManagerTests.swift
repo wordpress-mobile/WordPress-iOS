@@ -41,7 +41,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest version
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
 
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
@@ -79,7 +79,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
         XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
@@ -106,7 +106,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Initialize 24 > 25 Migration
-        let contextManager = ContextManager(modelName: model25Name, store: storeURL)
+        let contextManager = ContextManager(modelName: model25Name, store: storeURL, contextFactory: nil)
         let secondContext = contextManager.mainContext
 
         // Test the existence of Post object after migration
