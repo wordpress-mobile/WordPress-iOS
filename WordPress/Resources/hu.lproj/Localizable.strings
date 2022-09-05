@@ -9,9 +9,6 @@
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(nincs cím)";
 
-/* About this app (information page title) */
-"About" = "Névjegy";
-
 /* Option in Support view to see activity logs. */
 "Activity Logs" = "Tevékenységi napló";
 
@@ -44,8 +41,7 @@
    Spoken accessibility label */
 "Back" = "Vissza";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Alert dismissal title
@@ -620,8 +616,7 @@
 /* No comment provided by engineer. */
 "Preview post" = "Bejegyzés előnézet";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
 /* Name for the status of a post that is marked private.
@@ -871,8 +866,7 @@
    View title for Support page. */
 "Support" = "Segítség";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Általános Szerződési Feltételek";
 
 /* No comment provided by engineer. */

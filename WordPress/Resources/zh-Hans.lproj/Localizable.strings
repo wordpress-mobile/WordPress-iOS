@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-11 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-08-30 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "“更多”按钮包含显示共享按钮的下拉菜单";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com 账户已关联您的商店凭据。 要继续，我们将向上述电子邮件地址发送一个验证链接。";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "已设置特色图片。轻点以更改该图片。";
 
@@ -431,9 +434,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About this app (information page title) */
-"About" = "关于";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "关于Jetpack iOS版";
 
@@ -442,9 +442,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "关于 WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "关于 WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -465,8 +462,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "账户已关闭";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "确认";
 
 /* Theme Activate action title */
@@ -737,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "您也可以通过点击“转换为常规区块”来单独分离和编辑这些区块。";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "此外，您也可以输入此账户的密码。";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "其他方式：";
@@ -1166,8 +1165,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "博客";
 
 /* Create new Blog Post button title */
@@ -1361,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "无法访问此地址的站点。 请仔细检查，然后重试。";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "决定不了？ 您可以随时更改主题。";
 
@@ -1447,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "查看我们的重要贴士，增加您的阅读量和流量";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "检查此设备上的电子邮件！";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
@@ -3330,6 +3334,9 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "粉丝";
 
+/* Insights 'Followers Total' header */
+"Followers Total" = "粉丝总数";
+
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -3747,6 +3754,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "如果您已经拥有一个站点，则需要安装免费的 Jetpack 插件并将其连接到您的 WordPress.com 账户。";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "如果您找不到该电子邮件，请检查您的垃圾邮件文件夹";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 账户，则需要创建一个账户，并同意我们的_服务条款_。";
 
@@ -3958,6 +3968,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL 无效。 请仔细检查，然后重试。";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "无效 URL。请输入有效 URL。";
@@ -4419,6 +4432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "登录请求已过期";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "使用账户密码登录";
 
 /* No comment provided by engineer. */
 "Logs" = "日志";
@@ -5066,6 +5082,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "无结果。请尝试其他搜索词。";
 
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "没有已保存的文章";
+
 /* A message title */
 "No sites found" = "找不到站点";
 
@@ -5351,6 +5370,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或通过 _输入您的站点地址_ 登录。";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "或者通过免密链接登录";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "有序列表";
@@ -5909,8 +5931,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "隐私";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "隐私政策";
 
 /* Register Domain - Privacy Protection section header title */
@@ -6054,9 +6075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "给我们评分";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "在 App Store 中给我们评分";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "在以下网站上阅读：";
@@ -6710,6 +6728,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select paragraph style" = "选择段落样式";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "选择“%@”选项卡，随时随地获取更新。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体账户";
 
 /* Instructional text about the Sharing feature. */
@@ -6794,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "发送测试崩溃";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "发送电子邮件验证链接";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "通过电子邮件发送通知";
 
@@ -6875,10 +6899,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "分享";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "与朋友分享 Jetpack";
+
 /* Label for action to share post. */
 "Share Post" = "分享文章";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "将 WordPress 与您的朋友分享";
 
 /* Informational text for Collect Information setting */
@@ -6997,6 +7024,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "注册";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "使用站点凭据登录";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "注册";
@@ -7215,8 +7245,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "排序方式";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "源代码";
 
 /* Label for showing the available disk space quota available for media */
@@ -7551,8 +7580,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "条款和条件";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "使用条款";
 
 /* Menu item label for linking a testimonial post. */
@@ -8233,8 +8261,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "已打开站点通知";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8650,6 +8677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "使用图标按钮";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "使用密码登录";
+
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
 
@@ -8691,8 +8721,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "请验证您的电子邮件地址（说明已发送至 %@）";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "版本";
 
 /* Description for the version label in the What's new page. */
@@ -8987,6 +9016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "我们刚刚通过电子邮件向 %@ 发送了一个链接。请查看您的邮箱应用程序，点击链接登录。";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "我们刚刚发送了一个免密链接至";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "我们对区块编辑器进行了重大改进，绝对值得一试！\n\n我们已为新文章和页面启用该编辑器，但是，如果您想改用经典编辑器，请转到“我的站点”>“站点设置”。";
 
@@ -9174,6 +9206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "您想要使用此文件完成的操作：上传此文件并在文章中添加指向此文件的链接，还是直接在文章中添加该文件的内容？";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "什么是 WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "什么是区块？";
 
@@ -9189,8 +9224,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Jetpack 的新变化";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 的新变化";
 
 /* Title of alert helping users understand their site address */
@@ -9617,6 +9654,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "您的免费 WordPress.com 地址是";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "您的最新文章 <a href=\"\">%1$@<\/a> 收到了 <strong>%2$d<\/strong> 个赞。";
+
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "您的最新文章 <a href=\"\">%@<\/a> 收到了 <strong>1<\/strong> 个赞。";
 
@@ -9871,6 +9911,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "由 Jetpack 提供支持";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "试用新版 Jetpack 应用程序";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "新的 Jetpack 应用程序具有“统计信息”、“阅读器”、“通知”等功能，让您的 WordPress 变得更好。";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
+
 /* Later today */
 "later today" = "稍后再说";
 
@@ -10074,9 +10123,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} 使用 Google 登录。";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "•域";

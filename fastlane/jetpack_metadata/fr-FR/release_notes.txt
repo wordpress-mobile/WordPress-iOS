@@ -1,9 +1,9 @@
-Nous avons corrigé un bug dans la section Statistiques de l’application. Lorsque vous consultez les listes de moteurs de recherche qui ont redirigé des visiteurs vers votre site, vous pouvez désormais voir les résultats imbriqués, comme dans votre navigateur.
+Toujours plus loin ! Vous pouvez désormais ajouter et vous connecter via des sites auto-hébergés dans l’application Jetpack.
 
-Quand vous appuyez sur la touche @ lorsque vous écrivez un commentaire, une liste de suggestion d’utilisateurs que vous pourriez taguer s’affiche, mais ils sont désormais divisés en groupes. Si vous répondez à un commentaire parent, l’auteur du commentaire apparaît en haut de la liste, juste à côté de l’auteur de la publication.
+Découvrez les nouveautés de l’application dans les modaux « Nouvelles fonctionnalités ». Parlons de méta.
 
-Maintenant que l’application prend en charge les aperçus d’images de plus haute résolution, nous avons agrandi les captures d’écran des thèmes dans le sélecteur de thème du site. Dites adieu à la pixellisation et profitez d’images nettes !
+Ne bougez pas les amis : la liste des pages ne se fige plus lorsque l’image mise en avant sur une page est un GIF.
 
-Certains éléments visuels dans l’éditeur sont maintenant bleus et non plus verts. Ils correspondent désormais aux éléments visuels de l’application WordPress.
+Les statistiques de téléchargement de fichiers ne sont pas prises en charge sur les sites Jetpack auto-hébergés. Vous ne verrez donc plus cette section dans votre section Statistiques.
 
-Enfin, plus aucun chiffre zéro ne s’affichera dans les notifications de votre bilan hebdomadaire si vous n’avez pas reçu de commentaires ou de J’aime cette semaine. Ne vous concentrez que sur le positif !
+Vous aimez utiliser Jetpack ? Dites-le à vos amis. Vous pouvez désormais partager l’application via les écrans « À propos de » et « Moi ».

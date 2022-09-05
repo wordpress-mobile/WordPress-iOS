@@ -1,9 +1,9 @@
-Kami memperbaiki bug pada bagian Statistik aplikasi. Ketika melihat daftar mesin pencari yang telah mengirimkan pengunjung ke situs, Anda sekarang dapat melihat hasil tersusun seperti di browser.
+Semakin mudah! Sekarang Anda dapat menambahkan dan login melalui situs yang dihosting sendiri pada aplikasi Jetpack.
 
-Bila tombol @ ditekan saat menulis komentar, akan muncul daftar saran pengguna yang mungkin ingin Anda sebut. Kini, para pengguna tersebut dibagi dalam kelompok-kelompok. Jika Anda membalas komentar induk, penulis komentar akan muncul di bagian atas daftar tepat setelah penulis pos.
+Ketahui apa yang baru di aplikasi pada modal fitur Apa yang Baru. Penjelasan tentang meta.
 
-Sekarang, setelah aplikasi mendukung pratinjau gambar dengan resolusi lebih tinggi, kami memperbesar tangkapan layar pada pemilih tema situs. Gambar pratinjau pun lebih tajam dan tidak pecah.
+Jangan khawatir, teman—daftar halaman tidak akan macet lagi jika gambar unggulan suatu halaman berbentuk GIF.
 
-Kami mengubah beberapa elemen visual di editor dari hijau menjadi biru. Warnanya kini cocok dengan yang Anda lihat di aplikasi WordPress.
+Statistik Unduhan File tidak didukung di situs Jetpack yang dihosting sendiri. Jadi, Anda tidak akan lagi melihat bagian Unduhan File di Statistik.
 
-Terakhir, tidak ada lagi nilai nol pada ringkasan mingguan Anda. Jika pos tidak mendapatkan komentar atau suka pada minggu ini, kami tidak akan menyertakannya dalam pemberitahuan perangkat Anda. Kami hanya akan menampilkan kabar baik.
+Suka menggunakan Jetpack? Beri tahu teman-teman Anda. Kini Anda dapat membagikan aplikasi melalui layar Tentang dan Saya.

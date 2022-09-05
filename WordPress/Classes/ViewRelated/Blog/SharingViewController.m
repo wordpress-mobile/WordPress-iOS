@@ -118,7 +118,7 @@ static CGFloat const jetpackBadgePadding = 30;
 {
     switch (section) {
         case SharingPublicizeServices:
-            return NSLocalizedString(@"Connections", @"Section title for Publicize services in Sharing screen");
+            return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
         case SharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
         default:
@@ -336,7 +336,7 @@ static CGFloat const jetpackBadgePadding = 30;
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {
-            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Jetpack Social service synchronization failed", @"Message to show when Publicize service synchronization failed")];
             [weakSelf refreshPublicizers];
         }
     }];
@@ -352,7 +352,7 @@ static CGFloat const jetpackBadgePadding = 30;
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {
-            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Jetpack Social connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
             [weakSelf refreshPublicizers];
         }
     }];

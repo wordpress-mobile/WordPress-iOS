@@ -51,7 +51,7 @@ extension OnboardingQuestionsCoordinator {
         }
 
         track(.onboardingQuestionsItemSelected, option: option)
-        UserDefaults.standard.onboardingQuestionSelected = option
+        UserPersistentStoreFactory.instance().onboardingQuestionSelected = option
 
         // Check if notification's are already enabled
         // If they are just dismiss, if not then prompt
@@ -73,7 +73,7 @@ extension OnboardingQuestionsCoordinator {
 extension OnboardingQuestionsCoordinator {
     func notificationsDisplayed(option: OnboardingOption) {
         track(.onboardingEnableNotificationsDisplayed, option: option)
-        UserDefaults.standard.onboardingNotificationsPromptDisplayed = true
+        UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed = true
     }
 
     func notificationsEnabledTapped(selection: OnboardingOption) {
@@ -89,33 +89,5 @@ extension OnboardingQuestionsCoordinator {
     func notificationsSkipped(selection: OnboardingOption) {
         track(.onboardingEnableNotificationsSkipped, option: selection)
         dismiss(selection: selection)
-    }
-}
-
-
-extension UserDefaults {
-    private static let promptKey = "onboarding_notifications_prompt_displayed"
-    private static let questionKey = "onboarding_question_selection"
-
-    var onboardingNotificationsPromptDisplayed: Bool {
-        get {
-            bool(forKey: Self.promptKey)
-        }
-        set {
-            set(newValue, forKey: Self.promptKey)
-        }
-    }
-
-    var onboardingQuestionSelected: OnboardingOption? {
-        get {
-            if let str = string(forKey: Self.questionKey) {
-                return OnboardingOption(rawValue: str)
-            }
-
-            return nil
-        }
-        set {
-            set(newValue?.rawValue, forKey: Self.questionKey)
-        }
     }
 }

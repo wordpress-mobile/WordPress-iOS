@@ -160,12 +160,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserDefaults.standard.isOneOffMigrationComplete {
+        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
             let dict = UserDefaults.standard.dictionaryRepresentation()
             for (key, value) in dict {
                 UserPersistentStore.standard.set(value, forKey: key)
-                UserDefaults.standard.isOneOffMigrationComplete = true
             }
+            UserPersistentStore.standard.isOneOffMigrationComplete = true
         }
     }
 
@@ -227,7 +227,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         let lastSavedStateVersionKey = "lastSavedStateVersionKey"
-        let defaults = UserDefaults.standard
+        let defaults = UserPersistentStoreFactory.instance()
 
         var shouldRestoreApplicationState = false
 
@@ -237,9 +237,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 shouldRestoreApplicationState = self.shouldRestoreApplicationState
             }
 
-            defaults.setValue(currentVersion, forKey: lastSavedStateVersionKey)
+            defaults.set(currentVersion, forKey: lastSavedStateVersionKey)
         }
-
         return shouldRestoreApplicationState
     }
 

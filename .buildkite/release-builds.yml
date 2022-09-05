@@ -14,22 +14,21 @@ common_params:
 
 steps:
 
-  - label: ":wordpress::testflight: WordPress Release Build (App Store Connect)"
+  - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
     env: *common_env
     plugins: *common_plugins
     notify:
     - slack: "#build-and-ship"
 
-  # There is no App Center emojiy
-  - label: ":wordpress::hockeyapp: WordPress Release Build (App Center)"
+  - label: ":wordpress: :appcenter: WordPress Release Build (App Center)"
     command: ".buildkite/commands/release-build-wordpress-internal.sh"
     env: *common_env
     plugins: *common_plugins
     notify:
     - slack: "#build-and-ship"
 
-  - label: ":jetpack::testflight: Jetpack Release Build (App Store Connect)"
+  - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-jetpack.sh"
     env: *common_env
     plugins: *common_plugins

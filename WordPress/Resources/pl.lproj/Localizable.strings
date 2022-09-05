@@ -9,9 +9,6 @@
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(brak tytułu)";
 
-/* About this app (information page title) */
-"About" = "Informacje";
-
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
 
@@ -48,8 +45,7 @@
    Spoken accessibility label */
 "Back" = "Powrót";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Alert dismissal title

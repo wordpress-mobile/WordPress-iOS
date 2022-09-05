@@ -34,6 +34,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackPoweredBottomSheet
     case sharedUserDefaults
     case sharedLogin
+    case newLandingScreen
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -109,6 +110,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .sharedUserDefaults:
             return false
         case .sharedLogin:
+            return false
+        case .newLandingScreen:
             return false
         }
     }
@@ -204,6 +207,8 @@ extension FeatureFlag {
             return "Shared User Defaults"
         case .sharedLogin:
             return "Shared Login"
+        case .newLandingScreen:
+            return "Jetpack and WordPress new landing screens"
         }
     }
 
