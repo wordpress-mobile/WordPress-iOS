@@ -142,7 +142,7 @@ platform :ios do
 
     # Wrap up
     version = ios_get_app_version
-    removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
+    removebranchprotection(repository: GHHELPER_REPO, branch: release_branch_name)
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
     close_milestone(repository: GHHELPER_REPO, milestone: version)
@@ -155,7 +155,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    branch = options[:branch] || "release/#{ios_get_app_version}"
+    branch = options[:branch] || release_branch_name
     trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
@@ -164,7 +164,7 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    branch = options[:branch] || "release/#{ios_get_app_version}"
+    branch = options[:branch] || release_branch_name
     trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
@@ -247,4 +247,8 @@ def prompt_for_confirmation(message:, bypass:)
   return true if bypass
 
   UI.confirm(message)
+end
+
+def release_branch_name
+  "release/#{ios_get_app_version}"
 end
