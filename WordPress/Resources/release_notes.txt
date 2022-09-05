@@ -1,3 +1,2 @@
-Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
+* [*] [Jetpack-only] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
 
-File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
