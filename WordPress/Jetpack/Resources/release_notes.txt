@@ -1,2 +1,1 @@
 * [*] [Jetpack-only] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
-
