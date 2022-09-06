@@ -20,7 +20,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (4.4.1):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (0.11.1):
+  - Automattic-Tracks-iOS (0.12.0):
     - Sentry (~> 6)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -536,7 +536,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (~> 0.11.1)
+  - Automattic-Tracks-iOS (~> 0.12)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.82.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.82.0/third-party-podspecs/BVLinearGradient.podspec.json`)
   - CocoaLumberjack (~> 3.0)
@@ -601,7 +601,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 2.1)
+  - WordPressAuthenticator (~> 2.3.0)
   - WordPressKit (~> 4.57.1)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
@@ -786,7 +786,7 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  Automattic-Tracks-iOS: 5cd49d3acf76c26b92b4094d34ba84e6b55e5425
+  Automattic-Tracks-iOS: dae8787ffc2c74493a3a908abc48aed527686131
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 9373b32b8f749c00fe59e3482b45091eeacec08b
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
@@ -880,6 +880,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 56fc7615b2e8da2bfb408d38c18ab544a650cbe4
+PODFILE CHECKSUM: b42e34b2fe69230f3e6c0213e4d7dc0f39a9acad
 
 COCOAPODS: 1.11.2
