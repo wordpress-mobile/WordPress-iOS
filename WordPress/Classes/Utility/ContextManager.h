@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "ManagedObjectContextFactory.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -59,8 +61,9 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
                   Use ContextManagerModelNameCurrent for current version, or
                   "WordPress <version>" for specific version.
  @param storeURL Database location. Use +[ContextManager inMemoryStoreURL] to create an in-memory database.
+ @param contextFactory A type that conforms to `ManagedObjectContextFactory`.
  */
-- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL contextFactory:(Class<ManagedObjectContextFactory> _Nullable)factory NS_DESIGNATED_INITIALIZER;
 
 
 ///--------------------------

@@ -31,6 +31,19 @@ public func pullToRefresh(app: XCUIApplication = XCUIApplication()) {
     top.press(forDuration: 0.01, thenDragTo: bottom)
 }
 
+public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 10, timeout: TimeInterval = 10) {
+    guard element.waitForIsHittable(timeout: timeout) else {
+        XCTFail("Expected element (\(element)) was not hittable after \(timeout) seconds.")
+        return
+    }
+
+    var retries = 0
+    while element.isHittable && retries < maxRetries {
+        element.tap()
+        retries += 1
+    }
+}
+
 extension ScreenObject {
 
     // TODO: This was implemented on the original `BaseScreen` and is here just as a copy-paste for the transition.

@@ -82,7 +82,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
            let timePeriod = action.timePeriod {
             // Initializing a StatsPeriodType to ensure we have a valid period
             let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
+            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
         }
     }
 

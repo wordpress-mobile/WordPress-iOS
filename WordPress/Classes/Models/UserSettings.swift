@@ -26,7 +26,7 @@ struct UserSettings {
 
     /// Reset all UserSettings back to their defaults
     static func reset() {
-        UserSettings.Keys.allCases.forEach { UserDefaults.standard.removeObject(forKey: $0.rawValue) }
+        UserSettings.Keys.allCases.forEach { UserPersistentStoreFactory.instance().removeObject(forKey: $0.rawValue) }
     }
 }
 
@@ -58,10 +58,10 @@ struct UserDefault<T> {
 
     var wrappedValue: T {
         get {
-            return UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
+            return UserPersistentStoreFactory.instance().object(forKey: key) as? T ?? defaultValue
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: key)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: key)
         }
     }
 }
@@ -77,13 +77,13 @@ struct NullableUserDefault<T> {
 
     var wrappedValue: T? {
         get {
-            return UserDefaults.standard.object(forKey: key) as? T
+            return UserPersistentStoreFactory.instance().object(forKey: key) as? T
         }
         set {
             if let newValue = newValue {
-                UserDefaults.standard.set(newValue, forKey: key)
+                UserPersistentStoreFactory.instance().set(newValue, forKey: key)
             } else {
-                UserDefaults.standard.removeObject(forKey: key)
+                UserPersistentStoreFactory.instance().removeObject(forKey: key)
             }
         }
     }

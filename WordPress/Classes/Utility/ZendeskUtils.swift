@@ -95,7 +95,7 @@ extension NSNotification.Name {
         NotificationCenter.default.addObserver(self, selector: #selector(ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
 
         // Get unread notification count from User Defaults.
-        unreadNotificationsCount = UserDefaults.standard.integer(forKey: Constants.userDefaultsZendeskUnreadNotifications)
+        unreadNotificationsCount = UserPersistentStoreFactory.instance().integer(forKey: Constants.userDefaultsZendeskUnreadNotifications)
 
         //If there are any, post NSNotification so the unread indicators are displayed.
         if unreadNotificationsCount > 0 {
@@ -546,11 +546,11 @@ private extension ZendeskUtils {
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
         DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
-        UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
+        UserPersistentStoreFactory.instance().set(userProfile, forKey: Constants.zendeskProfileUDKey)
     }
 
     static func loadUserProfile() -> Bool {
-        guard let userProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) else {
+        guard let userProfile = UserPersistentStoreFactory.instance().dictionary(forKey: Constants.zendeskProfileUDKey) else {
             return false
         }
 
@@ -571,7 +571,7 @@ private extension ZendeskUtils {
     }
 
     static func saveUnreadCount() {
-        UserDefaults.standard.set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
+        UserPersistentStoreFactory.instance().set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
     }
 
     // MARK: - Data Helpers

@@ -1,9 +1,9 @@
-Up, up, and away! You can now add and log in via self-hosted sites in the Jetpack app.
+Semakin mudah! Sekarang Anda dapat menambahkan dan login melalui situs yang dihosting sendiri pada aplikasi Jetpack.
 
-See what’s new in the app in the What’s New feature modals. Talk about meta.
+Ketahui apa yang baru di aplikasi pada modal fitur Apa yang Baru. Penjelasan tentang meta.
 
-Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
+Jangan khawatir, teman—daftar halaman tidak akan macet lagi jika gambar unggulan suatu halaman berbentuk GIF.
 
-File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
+Statistik Unduhan File tidak didukung di situs Jetpack yang dihosting sendiri. Jadi, Anda tidak akan lagi melihat bagian Unduhan File di Statistik.
 
-Like using Jetpack? Tell your friends all about it. You can now share the app through the About and Me screens.
+Suka menggunakan Jetpack? Beri tahu teman-teman Anda. Kini Anda dapat membagikan aplikasi melalui layar Tentang dan Saya.
