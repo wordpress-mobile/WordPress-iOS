@@ -12,21 +12,21 @@ extension MySiteViewController {
             return
         }
 
-        let installPromptViewController = JetpackInstallPromptViewController(blog: blog)
+        let installPromptViewController = JetpackInstallPromptViewController(blog: blog, promptSettings: promptSettings, delegate: self)
         let navigationController = UINavigationController(rootViewController: installPromptViewController)
         navigationController.modalPresentationStyle = .fullScreen
 
-        installPromptViewController.dismiss = { [weak self] dismissAction in
-            promptSettings.setPromptWasDismissed(true, for: blog)
-
-            switch dismissAction {
-            case .install:
-                self?.syncBlogs()
-            default:
-                break
-            }
-        }
-
         present(navigationController, animated: true)
+    }
+}
+
+extension MySiteViewController: JetpackInstallPromptDelegate {
+    func jetpackInstallPromptDidDismiss(_ action: JetpackInstallPromptDismissAction) {
+        switch action {
+        case .install:
+            self.syncBlogs()
+        default:
+            break
+        }
     }
 }

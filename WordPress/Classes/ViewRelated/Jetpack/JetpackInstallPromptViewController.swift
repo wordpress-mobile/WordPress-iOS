@@ -1,6 +1,15 @@
 import UIKit
 import WordPressAuthenticator
 
+enum JetpackInstallPromptDismissAction {
+    case install
+    case noThanks
+}
+
+protocol JetpackInstallPromptDelegate: AnyObject {
+    func jetpackInstallPromptDidDismiss(_ action: JetpackInstallPromptDismissAction)
+}
+
 class JetpackInstallPromptViewController: UIViewController {
     var starFieldView: StarFieldView = {
         let config = StarFieldViewConfig(particleImage: JetpackPromptStyles.Stars.particleImage,
@@ -40,21 +49,19 @@ class JetpackInstallPromptViewController: UIViewController {
     // MARK: - Properties
 
     private let blog: Blog
+    private let promptSettings: JetpackInstallPromptSettings
     private var coordinator: JetpackInstallCoordinator?
 
-    enum DismissAction {
-        case install
-        case noThanks
-    }
-
-    /// Closure to be executed upon dismissal.
-    ///
-    var dismiss: ((_ action: DismissAction) -> Void)?
+    private weak var delegate: JetpackInstallPromptDelegate?
 
     // MARK: - Init
 
-    init(blog: Blog) {
+    init(blog: Blog,
+         promptSettings: JetpackInstallPromptSettings,
+         delegate: JetpackInstallPromptDelegate?) {
         self.blog = blog
+        self.promptSettings = promptSettings
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -97,14 +104,19 @@ class JetpackInstallPromptViewController: UIViewController {
             blog: blog,
             promptType: .installPrompt,
             navigationController: navigationController) { [weak self] in
-                self?.dismiss?(.install)
+                guard let self = self else {
+                    return
+                }
+
+                self.promptSettings.setPromptWasDismissed(true, for: self.blog)
+                self.delegate?.jetpackInstallPromptDidDismiss(.install)
             }
 
         coordinator?.openJetpackRemoteInstall()
     }
 
     @IBAction func noThanksTapped(_ sender: Any) {
-        dismiss?(.noThanks)
+        delegate?.jetpackInstallPromptDidDismiss(.noThanks)
         dismiss(animated: true)
     }
 
