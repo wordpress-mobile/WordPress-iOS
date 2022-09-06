@@ -1,5 +1,6 @@
 20.8
 -----
+* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
 * [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
 
 20.7

@@ -33,7 +33,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     /// Tests that the user suggestions array is loaded.
     func testUserSuggestionsCount() {
-        XCTAssertEqual(userSuggestions.count, 100)
+        XCTAssertEqual(userSuggestions.count, 103)
     }
 
     // MARK: - Test searchSuggestions(forWord:) -> Bool
@@ -72,7 +72,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result is empty when an empty word is provided
+    /// Tests that the search result is empty when an empty word is provided
     func testSearchSuggestionsWithEmptyWord() {
         // Given
         let word = ""
@@ -85,7 +85,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertFalse(result)
     }
 
-    /// Tests that the seach result is not empty when @ sign is provided
+    /// Tests that the search result is not empty when @ sign is provided
     func testSearchSuggestionsWithAtSignWord() {
         // Given
         let word = "@"
@@ -100,7 +100,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has an exact match
+    /// Tests that the search result has an exact match
     func testSearchSuggestionsWithExactMatch() throws {
         // Given
         let word = "@glegrandx"
@@ -115,11 +115,11 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches
-    func testSearchSuggestionsWithPartialMatch() throws {
+    /// Tests that the search result has one match with case-insensitive and diacritic-insensitive
+    func testSearchSuggestionsWithOneMatch() throws {
         // Given
-        let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [17, 22, 38, 44, 71, 80, 81, 88, 91], regularIds: [], in: userSuggestions)
+        let word = "@Caa"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101])
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
@@ -129,11 +129,39 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with one prominent suggestion at the top
+    /// Tests that the search result has a few matches
+    func testSearchSuggestionsWithPartialUpperCaseMatch() throws {
+        // Given
+        let word = "@Ca"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the search result has a few matches
+    func testSearchSuggestionsWithPartialLowerCaseMatch() throws {
+        // Given
+        let word = "@ca"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the search result has a few matches with one prominent suggestion at the top
     func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [17, 22, 38, 44, 71, 80, 81, 91], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [101, 81, 71, 102, 38, 17, 103, 80, 91, 44, 22])
         self.viewModel.prominentSuggestionsIds = [88]
 
         // When
@@ -144,11 +172,11 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with two prominent suggestions at the top
+    /// Tests that the search result has a few matches with two prominent suggestions at the top
     func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [17, 22, 38, 44, 71, 80, 81], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [101, 81, 71, 102, 38, 17, 103, 80, 44, 22])
         self.viewModel.prominentSuggestionsIds = [91, 88]
 
         // When
@@ -190,7 +218,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     // MARK: - Helpers
 
-    private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int], in userSuggestions: [UserSuggestion]) -> [SuggestionsListSection] {
+    private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int]) -> [SuggestionsListSection] {
         let prominentSection = suggestionsSection(fromIds: prominentIds)
         let regularSection = suggestionsSection(fromIds: regularIds)
         return [prominentSection, regularSection].compactMap { $0 }
