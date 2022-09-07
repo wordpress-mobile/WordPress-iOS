@@ -43,7 +43,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var pingHubManager: PingHubManager?
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
-    private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
 
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
@@ -655,7 +654,7 @@ extension WordPressAppDelegate {
         let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
         let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
         let remote = FeatureFlagRemote(wordPressComRestApi: api)
-        remoteFeatureFlagStore.updateIfNeeded(forced: forced, using: remote)
+        RemoteFeatureFlagStore.shared.updateIfNeeded(forced: forced, using: remote)
     }
 }
 

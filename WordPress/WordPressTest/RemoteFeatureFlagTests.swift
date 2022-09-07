@@ -22,15 +22,15 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        RemoteFeatureFlagStore().updateIfNeeded(using: mock)
+        RemoteFeatureFlagStore.shared.updateIfNeeded(using: mock)
         UserPersistentStoreFactory.instance().removeObject(forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
-        RemoteFeatureFlagStore().updateIfNeeded(using: mock)
+        RemoteFeatureFlagStore.shared.updateIfNeeded(using: mock)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     func testThatStoreReturnsCorrectCompileTimeDefaultForColdCache() {
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature))
@@ -40,14 +40,14 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatStoreDoesNotHaveValueForColdCache() {
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
         let flag = FeatureFlag.allCases.first!
         XCTAssertFalse(store.hasValue(for: flag))
     }
 
     func testThatUpdateCachesNewFlags() {
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
 
         store.updateIfNeeded(using: mock)
 
@@ -76,7 +76,7 @@ class RemoteFeatureFlagTests: XCTestCase {
         let recentDate = Date(timeInterval: -1, since: Date())
         userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
 
         // When
         store.updateIfNeeded(using: mock)
@@ -92,7 +92,7 @@ class RemoteFeatureFlagTests: XCTestCase {
         let distantDate = Date(timeInterval: -90_000, since: Date())
         userDefaults.set(distantDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
 
         // When
         store.updateIfNeeded(using: mock)
@@ -108,7 +108,7 @@ class RemoteFeatureFlagTests: XCTestCase {
         let recentDate = Date(timeInterval: -1, since: Date())
         userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore.shared
 
         // When
         store.updateIfNeeded(forced: true, using: mock)

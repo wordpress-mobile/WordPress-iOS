@@ -3,7 +3,9 @@ import WordPressKit
 
 class RemoteFeatureFlagStore {
 
-    init() {
+    public static let shared = RemoteFeatureFlagStore()
+
+    private init() {
         DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
