@@ -105,7 +105,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureReachability()
         configureSelfHostedChallengeHandler()
-        remoteFeatureFlagStore.update()
+        remoteFeatureFlagStore.updateIfNeeded()
 
         window?.makeKeyAndVisible()
 
@@ -206,6 +206,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
+        remoteFeatureFlagStore.updateIfNeeded()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
