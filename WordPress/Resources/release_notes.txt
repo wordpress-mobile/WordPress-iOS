@@ -1,0 +1,1 @@
+* [*] Jetpack Social: Rebrand Publicize to Jetpack Social [https://github.com/wordpress-mobile/WordPress-iOS/pull/19262]

@@ -1,1 +1,2 @@
 * [*] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
+* [*] Jetpack Social: Rebrand Publicize to Jetpack Social [https://github.com/wordpress-mobile/WordPress-iOS/pull/19262]
