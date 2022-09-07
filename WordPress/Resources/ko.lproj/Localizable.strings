@@ -1890,9 +1890,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "사용할 수 없는 연결";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "연결";
-
 /* Support email label. */
 "Contact Email" = "연락처 이메일";
 
@@ -5989,15 +5986,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "배포 기능";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "연결 동기화 배포 실패";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "서비스 동기화 배포 실패";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "%@에 배포";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6924,8 +6912,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "여기서 스토리 공유...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "공유";
