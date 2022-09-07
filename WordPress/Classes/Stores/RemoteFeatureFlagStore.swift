@@ -3,27 +3,22 @@ import WordPressKit
 
 class RemoteFeatureFlagStore {
 
-    /// Alllow injecting the FeatureFlagRemote for tests (or to customize the WordPress.com API)
-    private let remote: FeatureFlagRemote
-
-    /// Create a new RemoteFeatureFlagStore, with an optionally injected FeatureFlagRemote. If none is provided, it will use  an anonymous connection to WordPress.com.
-    ///
-    /// - Parameters:
-    ///     - remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
-    ///     to authenticate with the Remote Feature Flags endpoint – this alllows customizing flags server-side on a per-user basis.
-    init(remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())) {
-        self.remote = remote
+    init() {
         DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
     /// Fetches remote feature flags from the server.
     /// - Parameters:
     ///
-    ///     - force: An optional boolean that can override the cache expiry logic. If passed `true`, the flags will be updated regardless of the cache's state.
+    ///     - forced: An optional Boolean that can override the cache expiry logic. If passed `true`, the flags will be updated regardless of the cache's state.
     ///     If passed `false`, the flags will only be updated if the cache has expired. Default value is `false`.
+    ///     - remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
+    ///     to authenticate with the Remote Feature Flags endpoint – this alllows customizing flags server-side on a per-user basis.
     ///     - callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
-    public func updateIfNeeded(force: Bool = false, then callback: FetchCallback? = nil) {
-        guard force || hasCacheExpired else {
+    public func updateIfNeeded(forced: Bool = false,
+                               using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
+                               then callback: FetchCallback? = nil) {
+        guard forced || hasCacheExpired else {
             DDLogInfo("🚩 Will not update local feature flags because the cache is still valid")
             return
         }
