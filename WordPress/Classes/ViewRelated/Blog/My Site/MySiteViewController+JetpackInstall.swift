@@ -2,35 +2,31 @@ import UIKit
 
 extension MySiteViewController {
     func subscribeToJetpackInstallNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(launchJetpackInstallFromNotification(_:)), name: .installJetpack, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(promptJetpackPluginInstallFromNotification(_:)), name: .promptInstallJetpack, object: nil)
     }
 
-    /// Presents the Jetpack Login (Install) controller from a notification
-    @objc func launchJetpackInstallFromNotification(_ notification: NSNotification) {
-        guard let blog = blog else {
+    /// Presents the prompt to install Jetpack from a notification
+    @objc func promptJetpackPluginInstallFromNotification(_ notification: NSNotification) {
+        guard let blog = blog,
+            let promptSettings = notification.userInfo?["jetpackInstallPromptSettings"] as? JetpackInstallPromptSettings else {
             return
         }
 
-        let controller = JetpackLoginViewController(blog: blog)
-        controller.promptType = .installPrompt
+        let installPromptViewController = JetpackInstallPromptViewController(blog: blog, promptSettings: promptSettings, delegate: self)
+        let navigationController = UINavigationController(rootViewController: installPromptViewController)
+        navigationController.modalPresentationStyle = .fullScreen
 
-        let navController = UINavigationController(rootViewController: controller)
-        navController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
+    }
+}
 
-        navigationController?.present(navController, animated: true)
-
-        controller.completionBlock = { [weak self] in
-            defer {
-                navController.dismiss(animated: true)
-            }
-
-            guard let self = self else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                self.syncBlogs()
-            }
+extension MySiteViewController: JetpackInstallPromptDelegate {
+    func jetpackInstallPromptDidDismiss(_ action: JetpackInstallPromptDismissAction) {
+        switch action {
+        case .install:
+            self.syncBlogs()
+        default:
+            break
         }
     }
 }

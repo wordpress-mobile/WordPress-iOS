@@ -3,14 +3,11 @@ import UIKit
 import WordPressShared
 import WordPressAuthenticator
 
-
 /// A view controller that presents a Jetpack login form.
 ///
 class JetpackLoginViewController: UIViewController {
 
     // MARK: - Constants
-
-    fileprivate let jetpackInstallRelativePath = "plugin-install.php?tab=plugin-information&plugin=jetpack"
     var blog: Blog
 
     // MARK: - Properties
@@ -30,6 +27,8 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
     @IBOutlet private var tacButton: UIButton!
     @IBOutlet private var faqButton: UIButton!
+
+    private var coordinator: JetpackInstallCoordinator?
 
     /// Returns true if the blog has the proper version of Jetpack installed,
     /// otherwise false
@@ -62,10 +61,6 @@ class JetpackLoginViewController: UIViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupControls()
-
-        if promptType == .installPrompt {
-            openJetpackRemoteInstall()
-        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -172,36 +167,9 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Browser
 
-    fileprivate func openInstallJetpackURL() {
-        trackStat(.selectedInstallJetpack)
-        let controller = JetpackConnectionWebViewController(blog: blog)
-        controller.delegate = self
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true)
-    }
-
     fileprivate func signIn() {
         observeLoginNotifications(true)
         WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
-    }
-
-    fileprivate func trackStat(_ stat: WPAnalyticsStat, blog: Blog? = nil) {
-        var properties = [String: String]()
-        switch promptType {
-        case .stats:
-            properties["source"] = "stats"
-        case .notifications:
-            properties["source"] = "notifications"
-
-        case .installPrompt:
-            properties["source"] = "install_prompt"
-        }
-
-        if let blog = blog {
-            WPAppAnalytics.track(stat, withProperties: properties, with: blog)
-        } else {
-            WPAnalytics.track(stat, withProperties: properties)
-        }
     }
 
     private func openWebView(for webviewType: JetpackWebviewType) {
@@ -214,46 +182,6 @@ class JetpackLoginViewController: UIViewController {
         present(navigationViewController, animated: true, completion: nil)
     }
 
-    private func jetpackIsCanceled() {
-        trackStat(.installJetpackCanceled)
-
-        guard let completionBlock = completionBlock else {
-            dismiss(animated: true)
-            return
-        }
-
-        completionBlock()
-    }
-
-    private func jetpackIsCompleted() {
-        trackStat(.installJetpackCompleted)
-        trackStat(.signedInToJetpack, blog: blog)
-
-        guard let completionBlock = completionBlock else {
-            dismiss(animated: true)
-            return
-        }
-
-        completionBlock()
-    }
-
-    private func openJetpackRemoteInstall() {
-        trackStat(.selectedInstallJetpack)
-        let controller = JetpackRemoteInstallViewController(blog: blog,
-                                                            delegate: self,
-                                                            promptType: promptType)
-
-        // If we're already in a nav controller then push don't present again
-        guard promptType == .installPrompt, let navController = navigationController else {
-            let navController = UINavigationController(rootViewController: controller)
-            navController.modalPresentationStyle = .fullScreen
-            present(navController, animated: true)
-            return
-        }
-
-        navController.pushViewController(controller, animated: false)
-    }
-
     // MARK: - Actions
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
@@ -261,7 +189,13 @@ class JetpackLoginViewController: UIViewController {
     }
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
-        openJetpackRemoteInstall()
+        coordinator = JetpackInstallCoordinator(
+            blog: blog,
+            promptType: promptType,
+            navigationController: navigationController,
+            completionBlock: completionBlock
+        )
+        coordinator?.openJetpackRemoteInstall()
     }
 
     @IBAction func didTouchTacButton(_ sender: Any) {
@@ -270,33 +204,6 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchFaqButton(_ sender: Any) {
         openWebView(for: .faq)
-    }
-}
-
-extension JetpackLoginViewController: JetpackConnectionWebDelegate {
-    func jetpackConnectionCompleted() {
-        jetpackIsCompleted()
-    }
-
-    func jetpackConnectionCanceled() {
-        jetpackIsCanceled()
-    }
-}
-
-extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
-    func jetpackRemoteInstallCanceled() {
-        jetpackIsCanceled()
-    }
-
-    func jetpackRemoteInstallCompleted() {
-        jetpackIsCompleted()
-    }
-
-    func jetpackRemoteInstallWebviewFallback() {
-        trackStat(.installJetpackRemoteStartManualFlow)
-        dismiss(animated: true) { [weak self] in
-            self?.openInstallJetpackURL()
-        }
     }
 }
 
