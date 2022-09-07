@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/Automattic/ScreenObject",
         "state": {
           "branch": null,
-          "revision": "e27405a65672c62e5a055697eafdeaf073ea63ff",
-          "version": "0.2.1"
+          "revision": "cb38a32bbcc733ba03e307ca7bcae63f8c5de729",
+          "version": "0.2.2"
         }
       },
       {
