@@ -88,6 +88,14 @@ extension String {
         return self + returnURLString
     }
 
+    /// Returns a Boolean value indicating if this String begins with the provided prefix.
+    /// - Parameter prefix: The prefix to check for.
+    /// - Parameter options: The string comparison options to use when checking for the prefix.
+    func hasPrefix(_ prefix: String, with options: CompareOptions) -> Bool {
+        let fullOptions = options.union([.anchored])
+        return range(of: prefix, options: fullOptions) != nil
+    }
+
     /// Returns true if this String consists of digits
     var isNumeric: Bool {
         return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil

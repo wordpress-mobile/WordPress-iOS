@@ -82,7 +82,15 @@ extension WordPressAuthenticationManager {
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+                if FeatureFlag.newLandingScreen.enabled {
+                    return SplashPrologueViewController()
+                }
+
+                if FeatureFlag.unifiedPrologueCarousel.enabled {
+                    return UnifiedPrologueViewController()
+                }
+
+                return nil
             }
 
             return viewController
@@ -104,8 +112,16 @@ extension WordPressAuthenticationManager {
             return image
         }()
 
-        let prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
-        let prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        var prologuePrimaryButtonStyle: NUXButtonStyle?
+        var prologueSecondaryButtonStyle: NUXButtonStyle?
+
+        if FeatureFlag.newLandingScreen.enabled {
+            prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
+            prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
+        } else {
+            prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
+            prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        }
 
         return WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                            primaryNormalBorderColor: nil,

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-19 06:46:44+0000 */
+/* Translation-Revision-Date: 2022-08-30 15:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "يحتوي زر \"المزيد\" على قائمة منسدلة تعرض أزرار المشاركة";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "يرتبط حساب ووردبريس.كوم ببيانات اعتماد متجرك. للمواصلة، سنرسل رابط تحقُّق إلى عنوان البريد الإلكتروني الوارد أعلاه.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "تم تعيين صورة بارزة. انقر لتغييرها.";
 
@@ -730,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "وبدلاً من ذلك، يمكنك فصل هذه المكوِّنات وتحريرها بشكل منفصل عن طريق الضغط على \"التحويل إلى مكوِّنات عادية\".";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "بدلاً من ذلك، قد تقوم بإدخال كلمة مرور هذا الحساب.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "بدلاً من ذلك:";
@@ -1353,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "جاري الإلغاء...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "يتعذر الوصول إلى الموقع على هذا العنوان. يرجى التحقُّق مجددًا والمحاولة مرة أخرى.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "ألا يمكنك التحديد؟ يمكنك تغيير القالب في أي وقت.";
 
@@ -1439,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "راجع أفضل نصائحنا لزيادة مشاهداتك وحركة مرورك";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "تحقَّق من بريدك الإلكتروني على هذا الجهاز!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "تحقق من بريدك الإلكتروني على هذا الجهاز، واضغط على الرابط في رسالة البريد الإلكتروني التي استلمتها من WordPress.com.";
@@ -3742,6 +3754,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "إذا كان لديك موقع بالفعل، فسيتعيَّن عليك تثبيت إضافة Jetpack المجانية وربطها بحسابك على WordPress.com.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "إذا تعذر عليك العثور على البريد الإلكتروني، فيرجى التحقُّق من مجلد البريد الإلكتروني غير الهام والبريد الإلكتروني المزعج";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "إذا قمت بالمتابعة مع Apple أو Google وليس لديك حساب WordPress.com بالفعل، فأنت تقوم بإنشاء حساب وتوافق على _شروط الخدمة_.";
 
@@ -3953,6 +3968,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "رابط غير صالح. لم يتم العثور على ملف صوت.";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "عنوان URL غير صالح. يرجى التحقُّق مجددًا والمحاولة مرة أخرى.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "رابط غير صالح. الرجاء إدخال عنوان موقع صالح.";
@@ -4414,6 +4432,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "انتهت صلاحية طلب تسجيل الدخول";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "تسجيل الدخول باستخدام كلمة مرور الحساب";
 
 /* No comment provided by engineer. */
 "Logs" = "السجلات";
@@ -5349,6 +5370,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "أو تسجيل الدخول عن طريق _إدخال عنوان رابط موقعك_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "أو تسجيل الدخول باستخدام رابط سحري";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "قائمة مرتبة";
@@ -6791,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "إرسال اختبار الأعطال";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "إرسال رابط التحقُّق عبر البريد الإلكتروني";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "إرسال تنبيهات عبر البريد الإلكتروني";
 
@@ -6871,6 +6898,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "مشاركة";
+
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "مشاركة Jetpack مع صديق";
 
 /* Label for action to share post. */
 "Share Post" = "مشاركة المقالة";
@@ -6994,6 +7024,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "تسجيل";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "تسجيل الدخول باستخدام بيانات اعتماد الموقع";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "تسجيل";
@@ -8644,6 +8677,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "استخدام زر الأيقونة";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "استخدام كلمة المرور لتسجيل الدخول";
+
 /* No comment provided by engineer. */
 "Use this site" = "استخدام هذا الموقع";
 
@@ -8980,6 +9016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "أرسلنا للتو رسالة عبر البريد الإلكتروني إلى %@ تتضمن رابطًا. يرجى التحقق من تطبيق البريد الخاص بك والنقر على الرابط لتسجيل الدخول.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "أرسلنا رابطًا سحريًا للتو إلى";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "أجرينا تحسينات هائلة بمحرِّر المكوّنات، ونعتقد أنها تستحق التجربة!\n\nقمنا بتمكينها في المقالات والصفحات الجديدة، ولكن إذا رغبتَ في التغيير إلى المحرِّر التقليدي فانتقل إلى \"موقعي\" > \"إعدادات الموقع\".";
 
@@ -9167,6 +9206,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "ما الذي ترغب في فعله بهذا الملف: هل ترغب في رفعه وإضافة رابط للملف إلى مقالتك، أو إضافة محتويات الملف مباشرة إلى المقالة؟";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "ما هو ووردبريس.كوم؟";
+
 /* No comment provided by engineer. */
 "What is a block?" = "ماذا يُقصد بالمكوِّن؟";
 
@@ -9181,6 +9223,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "ما الجديد؟";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "ما الجديد في Jetpack";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "ما الجديد في ووردبريس";
@@ -9865,6 +9910,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "مدعوم بواسطة Jetpack";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "تجربة تطبيق Jetpack الجديد";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "يحتوي تطبيق Jetpack الجديد على إحصاءات وقارئ وتنبيهات والمزيد الذي يجعل ووردبريس الخاص بك أفضل.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "ووردبريس أفضل مع Jetpack";
 
 /* Later today */
 "later today" = "في وقتٍ لاحقٍ اليوم";

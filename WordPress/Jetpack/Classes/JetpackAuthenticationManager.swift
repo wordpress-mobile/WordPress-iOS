@@ -1,7 +1,7 @@
 import WordPressAuthenticator
 
 struct JetpackAuthenticationManager: AuthenticationHandler {
-    var statusBarStyle: UIStatusBarStyle = .lightContent
+    var statusBarStyle: UIStatusBarStyle = FeatureFlag.newLandingScreen.enabled ? .default : .lightContent
     var prologueViewController: UIViewController? = JetpackPrologueViewController()
     var buttonViewTopShadowImage: UIImage? = UIImage()
     var prologueButtonsBackgroundColor: UIColor? = JetpackPrologueStyleGuide.backgroundColor

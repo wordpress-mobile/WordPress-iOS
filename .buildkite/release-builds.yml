@@ -21,7 +21,6 @@ steps:
     notify:
     - slack: "#build-and-ship"
 
-  # There is no App Center emojiy
   - label: ":wordpress: :appcenter: WordPress Release Build (App Center)"
     command: ".buildkite/commands/release-build-wordpress-internal.sh"
     env: *common_env
