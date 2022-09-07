@@ -18,8 +18,15 @@ class RemoteFeatureFlagStore {
 
     /// Fetches remote feature flags from the server.
     /// - Parameters:
+    ///
+    ///     - force: An optional boolean that can override the cache expiry logic. If passed `true`, the flags will be updated regardless of the cache's state.
+    ///     If passed `false`, the flags will only be updated if the cache has expired. Default value is `false`.
     ///     - callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
-    public func update(then callback: FetchCallback? = nil) {
+    public func updateIfNeeded(force: Bool = false, then callback: FetchCallback? = nil) {
+        guard force || hasCacheExpired else {
+            DDLogInfo("🚩 Will not update local feature flags because the cache is still valid")
+            return
+        }
         remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
             switch result {
                 case .success(let flags):
@@ -66,6 +73,8 @@ extension RemoteFeatureFlagStore {
     struct Constants {
         static let DeviceIdKey = "FeatureFlagDeviceId"
         static let CachedFlagsKey = "FeatureFlagStoreCache"
+        static let LastRefreshDateKey = "FeatureFlagLastRefreshDate"
+        static let CacheTTL: TimeInterval = 86_400 // 24 hours
     }
 
     typealias FetchCallback = () -> Void
@@ -95,7 +104,33 @@ extension RemoteFeatureFlagStore {
             // Write to the cache in a thread-safe way.
             self.queue.sync {
                 UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.CachedFlagsKey)
+                lastRefreshDate = Date()
             }
+        }
+    }
+
+    // MARK: Cache Expiry
+
+    private var hasCacheExpired: Bool {
+        guard let date = lastRefreshDate else {
+            return true
+        }
+
+        let interval = Date().timeIntervalSince(date)
+        let expired = interval > Constants.CacheTTL
+
+        let intervalLogMessage = "(\(String(format: "%.2f", interval))s since last refresh)"
+        DDLogInfo("🚩 Feature flags cache has \(expired ? "" : "not ")expired \(intervalLogMessage).")
+
+        return expired
+    }
+
+    private var lastRefreshDate: Date? {
+        get {
+            UserPersistentStoreFactory.instance().object(forKey: Constants.LastRefreshDateKey) as? Date
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.LastRefreshDateKey)
         }
     }
 }
