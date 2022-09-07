@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import CoreData
 
 // MARK: - NSManagedObject Default entityName Helper
 //
@@ -191,5 +192,26 @@ extension ContextManager {
     /// Tests purpose only
     @objc public class func overrideSharedInstance(_ instance: CoreDataStack?) {
         ContextManager.overrideInstance = instance
+    }
+}
+
+extension CoreDataStack {
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
+        let context = newDerivedContext()
+        context.perform {
+            let result = Result(catching: { try block(context) })
+            if case .success = result {
+                self.saveContextAndWait(context)
+            }
+            completion?(result)
+        }
+    }
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            performAndSave(block) {
+                continuation.resume(with: $0)
+            }
+        }
     }
 }

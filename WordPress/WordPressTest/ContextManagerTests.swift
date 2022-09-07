@@ -176,6 +176,7 @@ class ContextManagerTests: XCTestCase {
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
+        XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
         expect(try findFirstUser()?.username) == "First User"
     }
 
@@ -190,6 +191,19 @@ class ContextManagerTests: XCTestCase {
             let account = WPAccount(context: context)
             account.userID = 1
             account.username = "First User"
+        }
+        XCTAssertEqual(numberOfAccounts(), 1)
+
+        do {
+            try await contextManager.performAndSave { context in
+                let account = WPAccount(context: context)
+                account.userID = 100
+                account.username = "Unknown User"
+                throw NSError(domain: "save", code: 1)
+            }
+            XCTFail("The above call should throw")
+        } catch {
+            XCTAssertEqual((error as NSError).domain, "save")
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 

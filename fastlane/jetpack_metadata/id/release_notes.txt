@@ -1,0 +1,9 @@
+Semakin mudah! Sekarang Anda dapat menambahkan dan login melalui situs yang dihosting sendiri pada aplikasi Jetpack.
+
+Ketahui apa yang baru di aplikasi pada modal fitur Apa yang Baru. Penjelasan tentang meta.
+
+Jangan khawatir, teman—daftar halaman tidak akan macet lagi jika gambar unggulan suatu halaman berbentuk GIF.
+
+Statistik Unduhan File tidak didukung di situs Jetpack yang dihosting sendiri. Jadi, Anda tidak akan lagi melihat bagian Unduhan File di Statistik.
+
+Suka menggunakan Jetpack? Beri tahu teman-teman Anda. Kini Anda dapat membagikan aplikasi melalui layar Tentang dan Saya.

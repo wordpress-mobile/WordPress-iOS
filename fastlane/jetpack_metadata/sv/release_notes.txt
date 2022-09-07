@@ -1,0 +1,9 @@
+Upp, upp och iväg! Du kan nu lägga till och logga in via webbplatser på egen server i Jetpack-appen.
+
+Se vad som är nytt i appen i modalfönstret Nyheter. Tala om meta.
+
+Håll er varma, vänner – sidlistan fryser inte längre om den utvalda bilden för en sida är en GIF.
+
+Filnedladdningsstatistik stöds inte för Jetpack-webbplatser på egen server, så den sektionen kommer inte längre att visas i sektionen Statistik.
+
+Gillar du att använda Jetpack? Berätta om det för dina vänner. Du kan nu dela appen via skärmarna Om och Mig.
