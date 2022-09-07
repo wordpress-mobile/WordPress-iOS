@@ -1,3 +1,0 @@
-Blijf lekker warm: de pagina's bevriezen niet meer wanneer de uitgelichte afbeelding van een pagina een GIF is.
-
-Statistieken voor bestandsdownloads worden niet ondersteund voor zelf-gehoste Jetpack-sites, dus je ziet dat onderdeel niet meer in het onderdeel Statistieken.

@@ -1,3 +1,0 @@
-Sıcak kalın dostlar—bir sayfanın öne çıkan görseli GIF olduğunda, sayfa listesi artık donmayacak.
-
-Dosya İndirme istatistikleri, kullanıcı tarafından barındırılan Jetpack sitelerinde desteklenmez, bu nedenle o bölümü artık İstatistikler bölümünüzde görmezsiniz.
