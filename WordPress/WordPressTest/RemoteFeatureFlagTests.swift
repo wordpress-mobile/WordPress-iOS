@@ -22,9 +22,9 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        RemoteFeatureFlagStore(remote: mock).updateIfNeeded()
+        RemoteFeatureFlagStore().updateIfNeeded(using: mock)
         UserPersistentStoreFactory.instance().removeObject(forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
-        RemoteFeatureFlagStore(remote: mock).updateIfNeeded()
+        RemoteFeatureFlagStore().updateIfNeeded(using: mock)
 
         wait(for: [exp], timeout: 1.0)
     }
@@ -47,9 +47,9 @@ class RemoteFeatureFlagTests: XCTestCase {
 
     func testThatUpdateCachesNewFlags() {
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
+        let store = RemoteFeatureFlagStore()
 
-        let store = RemoteFeatureFlagStore(remote: mock)
-        store.updateIfNeeded()
+        store.updateIfNeeded(using: mock)
 
         // All of the remotely defined values should be present
         XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
@@ -76,10 +76,10 @@ class RemoteFeatureFlagTests: XCTestCase {
         let recentDate = Date(timeInterval: -1, since: Date())
         userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore(remote: mock)
+        let store = RemoteFeatureFlagStore()
 
         // When
-        store.updateIfNeeded()
+        store.updateIfNeeded(using: mock)
 
         // Then
         // The remote flags should not be present
@@ -92,10 +92,10 @@ class RemoteFeatureFlagTests: XCTestCase {
         let distantDate = Date(timeInterval: -90_000, since: Date())
         userDefaults.set(distantDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore(remote: mock)
+        let store = RemoteFeatureFlagStore()
 
         // When
-        store.updateIfNeeded()
+        store.updateIfNeeded(using: mock)
 
         // Then
         // The remote flags should be present
@@ -108,10 +108,10 @@ class RemoteFeatureFlagTests: XCTestCase {
         let recentDate = Date(timeInterval: -1, since: Date())
         userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore(remote: mock)
+        let store = RemoteFeatureFlagStore()
 
         // When
-        store.updateIfNeeded(force: true)
+        store.updateIfNeeded(forced: true, using: mock)
 
         // Then
         // The remote flags should not be present
