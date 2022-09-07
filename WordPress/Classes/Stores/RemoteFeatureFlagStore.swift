@@ -10,13 +10,11 @@ class RemoteFeatureFlagStore {
     }
 
     /// Fetches remote feature flags from the server.
-    /// - Parameters:
-    ///
-    ///     - forced: An optional Boolean that can override the cache expiry logic. If passed `true`, the flags will be updated regardless of the cache's state.
-    ///     If passed `false`, the flags will only be updated if the cache has expired. Default value is `false`.
-    ///     - remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
-    ///     to authenticate with the Remote Feature Flags endpoint – this alllows customizing flags server-side on a per-user basis.
-    ///     - callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
+    /// - Parameter forced: An optional Boolean that can override the cache expiry logic. If passed `true`, the flags will be updated regardless of the cache's state.
+    /// If passed `false`, the flags will only be updated if the cache has expired. Default value is `false`.
+    /// - Parameter remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
+    /// to authenticate with the Remote Feature Flags endpoint – this alllows customizing flags server-side on a per-user basis.
+    /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func updateIfNeeded(forced: Bool = false,
                                using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
                                then callback: FetchCallback? = nil) {
