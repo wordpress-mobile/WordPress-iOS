@@ -76,7 +76,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 13'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone SE (3rd generation)'
         depends_on: "build"
         env: *common_env
         plugins: *common_plugins
