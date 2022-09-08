@@ -76,7 +76,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderAbstractTopic *)currentTopicFromSavedPath
 {
     ReaderAbstractTopic *topic;
-    NSString *topicPathString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicPathKey];
+    NSString *topicPathString = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:ReaderTopicCurrentTopicPathKey];
     if (topicPathString) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
         request.predicate = [NSPredicate predicateWithFormat:@"path = %@", topicPathString];
@@ -121,10 +121,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)setCurrentTopic:(ReaderAbstractTopic *)topic
 {
     if (!topic) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
         
         dispatch_async(dispatch_get_main_queue(), ^{

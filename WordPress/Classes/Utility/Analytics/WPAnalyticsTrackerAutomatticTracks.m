@@ -194,10 +194,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (NSString *)anonymousID
 {
     if (_anonymousID == nil || _anonymousID.length == 0) {
-        NSString *anonymousID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsAnonymousUserIDKey];
+        NSString *anonymousID = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:TracksUserDefaultsAnonymousUserIDKey];
         if (anonymousID == nil) {
             anonymousID = [[NSUUID UUID] UUIDString];
-            [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+            [[UserPersistentStoreFactory userDefaultsInstance] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
         }
         
         _anonymousID = anonymousID;
@@ -211,17 +211,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     _anonymousID = anonymousID;
 
     if (anonymousID == nil) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
 }
 
 - (NSString *)loggedInID
 {
     if (_loggedInID == nil || _loggedInID.length == 0) {
-        NSString *loggedInID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
+        NSString *loggedInID = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
         if (loggedInID != nil) {
             _loggedInID = loggedInID;
         }
@@ -235,11 +235,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     _loggedInID = loggedInID;
 
     if (loggedInID == nil) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
