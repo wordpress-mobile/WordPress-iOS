@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -20,6 +20,7 @@
                 <outlet property="lineItemNotifications" destination="o3P-Vj-6QF" id="4gP-Fe-MKj"/>
                 <outlet property="lineItemStats" destination="k6V-58-BCL" id="QK6-Xr-Fd6"/>
                 <outlet property="noThanksButton" destination="gpx-gG-s9d" id="xoH-Lr-VIa"/>
+                <outlet property="textStackView" destination="Msb-FG-hPu" id="f4v-2M-fug"/>
                 <outlet property="titleLabel" destination="z18-fN-ZJi" id="Fgm-tN-OYA"/>
                 <outlet property="view" destination="ae3-3D-D7u" id="a7K-Mo-dvf"/>
             </connections>
@@ -128,6 +129,8 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Msb-FG-hPu" secondAttribute="trailing" id="7at-nh-oXA"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="leading" secondItem="69h-bg-uwt" secondAttribute="leading" id="8lm-cv-1EJ"/>
+                                <constraint firstItem="Msb-FG-hPu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="69h-bg-uwt" secondAttribute="top" id="LxU-4d-MmZ"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Msb-FG-hPu" secondAttribute="bottom" id="a8e-nN-bdB"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="centerY" secondItem="69h-bg-uwt" secondAttribute="centerY" id="ej7-kc-ALM"/>
                             </constraints>
                         </view>
