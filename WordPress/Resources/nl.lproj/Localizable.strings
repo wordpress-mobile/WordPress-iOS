@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-02 08:07:19+0000 */
+/* Translation-Revision-Date: 2022-09-07 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: nl */
@@ -4060,6 +4060,15 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-instellingen";
 
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social-verbindingen";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Verbindingssynchronisatie Jetpack Social mislukt";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Servicesynchronisatie Jetpack Social mislukt";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
 
@@ -6904,6 +6913,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Deel link";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Deel bericht op %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Deel met vrienden";
@@ -9906,6 +9918,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress is completer met Jetpack";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Maak een website";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Share op Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Verhelp een probleem met de beveiliging";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Reageer op reacties";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Schrijf een blog.";
 
 /* Later today */
 "later today" = "later vandaag";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-23 14:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: it */
@@ -4060,6 +4060,15 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Impostazioni Jetpack";
 
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Connessioni di Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Sincronizzazione della connessione di Jetpack Social non riuscita";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Sincronizzazione dei servizi di Jetpack Social non riuscita";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack non può essere installato in questo momento.";
 
@@ -6904,6 +6913,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Condividi il link";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Condividi l'articolo per %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Condividi con gli amici";
@@ -9906,6 +9918,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress è migliore insieme a Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Aggiungi un autore";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Crea un sito";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Verifica le notifiche";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Condividi su Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Risolvi un problema di sicurezza";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Pubblica una foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Leggi un articolo";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Rispondi ai commenti";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Ripristina un backup";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Cerca i plugin";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Cerca articoli o siti";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Guarda le tue statistiche";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Scrivi un blog";
 
 /* Later today */
 "later today" = "Più tardi";

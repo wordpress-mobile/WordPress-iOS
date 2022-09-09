@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-30 17:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-08 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: fr */
@@ -4060,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Réglages de Jetpack";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Connexions Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Échec de la synchronisation de la connexion Jetpack Social";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Échec de la synchronisation du service Jetpack Social ";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Impossible d’installer Jetpack pour le moment.";
 
@@ -6904,6 +6916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Lien de partage";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Partager l’article sur %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Partager avec des amis";
@@ -9906,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress est mieux avec Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Ajouter un auteur";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Construire un site";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Vérifier vos notifications";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Partager sur Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Résoudre un incident de sécurité";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Publier une photo";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Lire un article";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Répondre aux commentaires";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Rétablir une sauvegarde";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Rechercher des extensions";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Rechercher des articles ou sites";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Consulter vos statistiques";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Tenir un blog";
 
 /* Later today */
 "later today" = "ultérieurement aujourd'hui";

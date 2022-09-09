@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-30 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ja_JP */
@@ -4060,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack ソーシャル";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack ソーシャル連携";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack ソーシャルの連携の同期に失敗しました";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack ソーシャルのサービスの同期に失敗しました";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack は現在インストールできません。";
 
@@ -6904,6 +6916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "リンクを共有";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "投稿を %@ にシェア";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "友達と共有";
@@ -9906,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress が Jetpack でパワーアップ";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "投稿者を追加";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "サイトを構築";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "通知を確認";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Facebook で共有";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "セキュリティの問題を修正";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "写真を投稿";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "記事を読む";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "コメントに返信";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "バックアップから復元";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "プラグインを検索";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "投稿またはサイトを検索";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "統計情報を見る";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "ブログに投稿";
 
 /* Later today */
 "later today" = "今日あとで";

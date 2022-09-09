@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-31 09:54:09+0000 */
+/* Translation-Revision-Date: 2022-09-07 14:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ko_KR */
@@ -4060,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "젯팩 설정";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "젯팩 소셜";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "젯팩 소셜 연결";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "젯팩 소셜 연결 동기화 실패";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "젯팩 소셜 서비스 동기화 실패";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "지금은 젯팩을 설치할 수 없습니다";
 
@@ -6904,6 +6916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "공유 링크";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "%@에 글 공유";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "친구와 공유";
@@ -9906,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "워드프레스는 젯팩과 함께 사용하면 더 좋습니다.";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "글쓴이 추가";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "사이트 구축";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "알림 확인";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "페이스북으로 공유하기";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "보안 문제 해결";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "사진 게시";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "글 읽기";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "댓글 응답";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "백업 복원";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "플러그인 검색";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "글 또는 사이트 검색";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "별 보기";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "블로그 작성";
 
 /* Later today */
 "later today" = "오늘 중";

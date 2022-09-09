@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-06 09:14:20+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: sv_SE */
@@ -4065,6 +4065,12 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social-anslutningar";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Synkroniseringen av Jetpack Social-anslutningen misslyckades";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Synkroniseringen av Jetpack Social-tjänsten misslyckades";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Det gick inte att installera Jetpack nu.";

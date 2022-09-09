@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-30 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -4060,6 +4060,15 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack设置";
 
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social 连接";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Social 连接同步失败";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social 服务同步失败";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "当前无法安装Jetpack";
 
@@ -6904,6 +6913,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "分享链接";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "将文章共享至 %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "分享给朋友";
@@ -9906,6 +9918,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "添加作者";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "构建站点";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "查看通知";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "在 Facebook 上共享";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "修复安全问题";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "发表图片";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "阅读文章";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "回复评论";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "恢复备份";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "搜索插件";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "搜索文章或站点";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "观看统计数据";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "撰写博客";
 
 /* Later today */
 "later today" = "稍后再说";

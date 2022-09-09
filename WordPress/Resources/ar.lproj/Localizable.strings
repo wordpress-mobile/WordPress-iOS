@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-30 15:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-07 23:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ar */
@@ -4060,6 +4060,15 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "إعدادات Jetpack";
 
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "عمليات الربط بـ Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "فشلت مزامنة الربط بـ Jetpack Social";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "فشلت مزامنة خدمة Jetpack Social";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "يتعذر تنصيب Jetpack في الوقت الحالي.";
 
@@ -6904,6 +6913,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "رابط المشاركة";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "مشاركة التدوينة في %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "مشاركة مع الأصدقاء";
@@ -9906,6 +9918,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "ووردبريس أفضل مع Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "إضافة مؤلف";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "إنشاء موقع";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "التحقُّق من الإشعارات";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "شارك على فيسبوك";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "إصلاح مشكلة الأمان";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "نشر صورة";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "قراءة مقالة";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "الرد على التعليقات";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "استعادة نسخة احتياطية";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "البحث عن الإضافات";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "البحث عن التدوينات أو المواقع";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "رصد إحصاءاتك";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "كتابة مدونة";
 
 /* Later today */
 "later today" = "في وقتٍ لاحقٍ اليوم";
