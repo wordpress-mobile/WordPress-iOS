@@ -408,6 +408,12 @@ import Foundation
     case jetpackPoweredBannerTapped
     case jetpackPoweredBottomSheetButtonTapped
 
+    // Jetpack plugin install prompt
+    case jetpackInstallPromptShown
+    case jetpackInstallPromptLearnMoreTapped
+    case jetpackInstallPromptInstallTapped
+    case jetpackInstallPromptDismissTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1102,6 +1108,17 @@ import Foundation
             return "jetpack_powered_banner_tapped"
         case .jetpackPoweredBottomSheetButtonTapped:
             return "jetpack_powered_bottom_sheet_button_tapped"
+
+        // Jetpack plugin install prompt
+        case .jetpackInstallPromptShown:
+            return "jetpack_install_prompt_shown"
+        case .jetpackInstallPromptLearnMoreTapped:
+            return "jetpack_install_prompt_learn_more_tapped"
+        case .jetpackInstallPromptInstallTapped:
+            return "jetpack_install_prompt_install_tapped"
+        case .jetpackInstallPromptDismissTapped:
+            return "jetpack_install_prompt_dismiss_tapped"
+
         } // END OF SWITCH
     }
 

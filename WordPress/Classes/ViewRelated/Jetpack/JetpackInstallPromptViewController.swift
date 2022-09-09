@@ -80,6 +80,8 @@ class JetpackInstallPromptViewController: UIViewController {
 
         backgroundView.addSubview(starFieldView)
         backgroundView.layer.addSublayer(gradientLayer)
+
+        WPAnalytics.track(.jetpackInstallPromptShown, properties: [:], blog: blog)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -114,15 +116,21 @@ class JetpackInstallPromptViewController: UIViewController {
                 self.delegate?.jetpackInstallPromptDidDismiss(.install)
             }
 
+        WPAnalytics.track(.jetpackInstallPromptInstallTapped, properties: [:], blog: blog)
+
         coordinator?.openJetpackRemoteInstall()
     }
 
     @IBAction func noThanksTapped(_ sender: Any) {
+        WPAnalytics.track(.jetpackInstallPromptDismissTapped, properties: [:], blog: blog)
+
         delegate?.jetpackInstallPromptDidDismiss(.noThanks)
         dismiss(animated: true)
     }
 
     @IBAction func learnMoreButtonTapped(_ sender: Any) {
+        WPAnalytics.track(.jetpackInstallPromptLearnMoreTapped, properties: [:], blog: blog)
+
         guard let url = URL(string: "https://jetpack.com/features/") else {
             return
         }
