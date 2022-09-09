@@ -61,6 +61,8 @@ class JetpackLoginViewController: UIViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupControls()
+
+        observeExternalJetpackInstallNotifications()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -169,6 +171,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         observeLoginNotifications(true)
+        stopObservingExternalJetpackInstallNotifications()
         WordPressAuthenticator.showLoginForJustWPCom(from: self, jetpackLogin: true, connectedEmail: blog.jetpack?.connectedEmail)
     }
 
@@ -196,6 +199,8 @@ class JetpackLoginViewController: UIViewController {
             completionBlock: completionBlock
         )
         coordinator?.openJetpackRemoteInstall()
+
+        stopObservingExternalJetpackInstallNotifications()
     }
 
     @IBAction func didTouchTacButton(_ sender: Any) {
@@ -204,6 +209,29 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchFaqButton(_ sender: Any) {
         openWebView(for: .faq)
+    }
+}
+
+// MARK: - Observing external Jetpack install notifications
+
+extension JetpackLoginViewController {
+    /// Observe Jetpack plugin installation notifications that could happen outside JetpackLoginViewController:
+    /// - JetpackLoginViewController can be presented in the default detail view controller on the iPad and it can be loaded before Jetpack is installed
+    /// - Jetpack plugin can be installed from the other source while JetpackLoginViewController is presented
+    private func observeExternalJetpackInstallNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(completeJetpackInstallation), name: .jetpackPluginInstallCompleted, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(completeJetpackInstallation), name: .jetpackPluginInstallCanceled, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .wordpressLoginFinishedJetpackLogin, object: nil)
+    }
+
+    private func stopObservingExternalJetpackInstallNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .jetpackPluginInstallCompleted, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .jetpackPluginInstallCanceled, object: nil)
+    }
+
+    @objc private func completeJetpackInstallation() {
+        completionBlock?()
     }
 }
 
