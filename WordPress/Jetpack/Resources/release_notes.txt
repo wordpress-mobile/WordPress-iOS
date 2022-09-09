@@ -1,1 +1,3 @@
-* [*] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
+Links in action sheets (those pop-up menus on your device that bring up extra options) are now blue instead of green.
+
+We’ve also made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.

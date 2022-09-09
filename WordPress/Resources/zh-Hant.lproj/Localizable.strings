@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-24 12:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-08 17:17:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_TW */
@@ -1889,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "無法連結";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "連結";
 
 /* Support email label. */
 "Contact Email" = "聯絡電子郵件";
@@ -4063,6 +4060,15 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
 
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social 連結";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Social 連結同步失敗";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social 服務同步失敗";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "目前無法安裝 Jetpack。";
 
@@ -5989,15 +5995,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "宣傳功能連線同步處理失敗";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "宣傳服務同步處理失敗";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "宣傳至 %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6917,6 +6914,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "分享連結";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "將文章分享到 %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "與朋友分享";
 
@@ -6924,8 +6924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "在此分享你的故事...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "分享";
@@ -7175,7 +7174,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
    Error message shown when the app fails to save user selected interests
    Error message shown when user tries to share the app with others, but failed due to unknown errors. */
-"Something went wrong. Please try again." = "發生錯誤。請再試一次。";
+"Something went wrong. Please try again." = "執行時發生錯誤。請再試一次。";
 
 /* Invite Validation Alert
    Update User Failed Title */
@@ -9919,6 +9918,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress 搭配 Jetpack 效果更加";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "新增作者";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "建置網站";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "查看通知";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "分享到 Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "修正安全問題";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "發表相片";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "閱讀文章";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "回應留言";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "還原備份";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "搜尋外掛程式";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "搜尋文章或網站";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "查看你的統計資料";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "撰寫網誌";
 
 /* Later today */
 "later today" = "今日稍晚";
