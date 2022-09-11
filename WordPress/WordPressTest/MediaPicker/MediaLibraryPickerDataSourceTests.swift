@@ -78,11 +78,14 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         contextManager.useAsSharedInstance(untilTestFinished: self)
         dataSource.setMediaTypeFilter(.image)
 
+        // This variable tracks how many times the album cover (which is what
+        // the "group" is in this use case) has changed.
         var changes = 0
         dataSource.registerGroupChangeObserverBlock {
             changes += 1
         }
 
+        // Adding a video does not change the album cover.
         let video = MediaBuilder(context).build()
         video.remoteStatus = .sync
         video.blog = self.blog
@@ -90,6 +93,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         contextManager.saveContextAndWait(context)
         expect(changes).toEventually(equal(0))
 
+        // Adding a newly created image changes the album cover.
         let newImage = MediaBuilder(context).build()
         newImage.remoteStatus = .sync
         newImage.blog = self.blog
@@ -98,6 +102,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         contextManager.saveContextAndWait(context)
         expect(changes).toEventually(equal(1))
 
+        // Added an old image does not change the album cover.
         let oldImage = MediaBuilder(context).build()
         oldImage.remoteStatus = .sync
         oldImage.blog = self.blog
