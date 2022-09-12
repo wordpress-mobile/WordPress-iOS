@@ -102,7 +102,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         contextManager.saveContextAndWait(context)
         expect(changes).toEventually(equal(1))
 
-        // Added an old image does not change the album cover.
+        // Adding an old image does not change the album cover.
         let oldImage = MediaBuilder(context).build()
         oldImage.remoteStatus = .sync
         oldImage.blog = self.blog
