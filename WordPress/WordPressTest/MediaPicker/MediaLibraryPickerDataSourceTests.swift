@@ -91,7 +91,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         video.blog = self.blog
         video.mediaType = .video
         contextManager.saveContextAndWait(context)
-        expect(changes).toEventually(equal(0))
+        expect(changes).toNever(beGreaterThan(0))
 
         // Adding a newly created image changes the album cover.
         let newImage = MediaBuilder(context).build()
