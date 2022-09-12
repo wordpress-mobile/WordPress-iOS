@@ -109,7 +109,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         oldImage.mediaType = .image
         oldImage.creationDate = Date().advanced(by: -60)
         contextManager.saveContextAndWait(context)
-        expect(changes).toEventually(equal(1))
+        expect(changes).toNever(beGreaterThan(1))
     }
 
     fileprivate func newImageMedia() -> Media? {
