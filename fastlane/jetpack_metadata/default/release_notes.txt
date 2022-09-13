@@ -1,9 +1,3 @@
-Up, up, and away! You can now add and log in via self-hosted sites in the Jetpack app.
+Links in action sheets (those pop-up menus on your device that bring up extra options) are now blue instead of green.
 
-See what’s new in the app in the What’s New feature modals. Talk about meta.
-
-Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
-
-File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
-
-Like using Jetpack? Tell your friends all about it. You can now share the app through the About and Me screens.
+We’ve also made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.

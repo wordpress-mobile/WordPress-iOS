@@ -1373,7 +1373,17 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
 {
+    NSString *searchText = [self.suggestionsTableView viewModel].searchText;
     [self.suggestionsTableView hideSuggestions];
-    [controller enableSuggestionsWith:self.siteID prominentSuggestionsIds:self.suggestionsTableView.prominentSuggestionsIds];
+    [controller enableSuggestionsWith:self.siteID prominentSuggestionsIds:self.suggestionsTableView.prominentSuggestionsIds
+                        searchText:searchText];
 }
+
+- (void)replyTextView:(ReplyTextView *)replyTextView didExitFullScreen:(NSString *)lastSearchText
+{
+    if ([lastSearchText length] != 0) {
+        [self.suggestionsTableView showSuggestionsForWord:lastSearchText];
+    }
+}
+
 @end

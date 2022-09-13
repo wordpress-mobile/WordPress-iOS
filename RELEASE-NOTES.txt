@@ -1,6 +1,12 @@
+20.8
+-----
+* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
+* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
+
 20.7
 -----
 * [*] [Jetpack-only] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
+* [*] Jetpack Social: Rebrand Publicize to Jetpack Social [https://github.com/wordpress-mobile/WordPress-iOS/pull/19262]
 
 20.6
 -----
@@ -9,7 +15,6 @@
 * [**] [Jetpack-only] Self-hosted sites: enables logging in via a self-hosted site / adding a self-hosted site [#19194]
 * [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
 * [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
-
 
 20.5
 -----
@@ -33,7 +38,7 @@
 20.3
 -----
 * [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
-* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979] 
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979]
 * [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
 * [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
 * [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]

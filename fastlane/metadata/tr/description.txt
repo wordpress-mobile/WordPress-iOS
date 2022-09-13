@@ -1,0 +1,11 @@
+WordPress blogunuzu veya web sitenizi doğrudan iOS cihazınızdan yönetin veya oluşturun: Gönderiler ve sayfalar oluşturun ve düzenleyin, en sevdiğiniz fotoğraf ve videoları yükleyin, istatistikleri görüntüleyin ve yorumları yanıtlayın.
+
+İOS için WordPress ile yayınlama gücü avucunuzun içinde. Koltuğunuzdan doğaçlama bir haiku hazırlayın. Öğlen tatilinizde bir fotoğraf çekin ve yayınlayın. En son yorumlara yanıt verin veya bugünkü ziyaretçilerin hangi yeni ülkelerden geldiğini görmek için istatistiklerinizi kontrol edin.
+
+İOS için WordPress bir Açık Kaynak projesidir, yani siz de geliştirilmesine katkıda bulunabilirsiniz. https://apps.wordpress.com/contribute/ adresinden daha fazla bilgi edinin.
+
+İOS için WordPress, WordPress.com'u ve WordPress 4.0 veya daha üstünü çalıştıran, kendi kendine barındırılan WordPress.org sitelerini destekler.
+
+Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org/ adresindeki forumları ziyaret edin veya @WordPressiOS etiketiyle bize tweet atın.
+
+Kaliforniya'daki Kullanıcılar Gizlilik Bildirimi'ni https://automattic.com/privacy/#california-consumer-privacy-act-ccpa adresinden görüntüleyebilirler.

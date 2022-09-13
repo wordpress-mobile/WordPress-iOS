@@ -123,13 +123,29 @@ import CoreData
         }
         switch suggestions {
         case .users(let userSuggestions):
+            let sortedUserSuggestions = Self.sort(
+                userSuggestions: userSuggestions, by: searchQuery
+            )
             return Self.searchResultByMovingProminentSuggestionsToTop(
-                userSuggestions: userSuggestions,
+                userSuggestions: sortedUserSuggestions,
                 prominentSuggestionsIds: prominentSuggestionsIds
             )
         case .sites(let siteSuggestions):
             return .sites(siteSuggestions)
         }
+    }
+
+    /// Sort user suggestions by prefix first, then alphabetically. The collection is sorted first by checking if username or displayName begins with the provided prefix. The remaining items are sorted alphabetically by displayName. The prefix comparison is both case-insensitive and diacritic-insensitive.
+    /// - Parameter userSuggestions: The user suggestions collection to be sorted.
+    /// - Parameter prefix: The prefix to be used when checking the usernames and displayNames.
+    /// - Returns: The sorted user suggestion collection.
+    private static func sort(userSuggestions: [UserSuggestion], by prefix: String) -> [UserSuggestion] {
+        guard !userSuggestions.isEmpty, !prefix.isEmpty else { return userSuggestions }
+        let compareOptions: String.CompareOptions = [.anchored, .caseInsensitive, .diacriticInsensitive]
+        let triagedList = Dictionary(grouping: userSuggestions) { suggestion in
+            suggestion.username?.hasPrefix(prefix, with: compareOptions) == true || suggestion.displayName?.hasPrefix(prefix, with: compareOptions) == true
+        }
+        return (triagedList[true] ?? []).sorted() + (triagedList[false] ?? []).sorted()
     }
 
     private static func searchResultByMovingProminentSuggestionsToTop(userSuggestions: [UserSuggestion], prominentSuggestionsIds ids: [NSNumber]) -> SearchResult {
@@ -196,7 +212,7 @@ import CoreData
     private static func predicate(for searchQuery: String, suggestionType: SuggestionType) -> NSPredicate {
         switch suggestionType {
         case .mention:
-            return NSPredicate(format: "(displayName contains[c] %@) OR (username contains[c] %@)", searchQuery, searchQuery)
+            return NSPredicate(format: "(displayName contains[cd] %@) OR (username contains[cd] %@)", searchQuery, searchQuery)
         case .xpost:
             return NSPredicate(format: "(title contains[cd] %@) OR (siteURL.absoluteString contains[cd] %@)", searchQuery, searchQuery)
         }

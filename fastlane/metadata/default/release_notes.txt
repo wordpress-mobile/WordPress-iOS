@@ -1,3 +1,1 @@
-Stay warm, friends—the pages list will no longer freeze when a page’s featured image is a GIF.
-
-File Download stats aren’t supported on self-hosted Jetpack sites, so you won’t see that section in your Stats section anymore.
+This release is short and sweet: we’ve made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.
