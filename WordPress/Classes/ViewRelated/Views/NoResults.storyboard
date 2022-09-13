@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -92,6 +92,7 @@
                                 <constraints>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="NmZ-mA-W4r"/>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="centerY" secondItem="0Ae-eX-ae9" secondAttribute="centerY" id="awy-Qw-qAb"/>
+                                    <constraint firstItem="Mkl-mm-wtH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="htC-A3-u00"/>
                                 </constraints>
                             </view>
                         </subviews>
