@@ -32,6 +32,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
+    private var sections = [SectionType] ()
     private var rows = [RowType]()
     private var moderationBar: CommentModerationBar?
     private var notification: Notification?
@@ -95,6 +96,10 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
         return cell
     }()
+
+    private lazy var moderationCell: UITableViewCell = {
+        return $0
+    }(UITableViewCell())
 
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
@@ -222,7 +227,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         configureSuggestionsView()
         configureNavigationBar()
         configureTable()
-        configureRows()
+        configureSections()
         refreshCommentReplyIfNeeded()
     }
 
@@ -281,10 +286,16 @@ private extension CommentDetailViewController {
 
     typealias Style = WPStyleGuide.CommentDetail
 
+    enum SectionType: Equatable {
+        case content([RowType])
+        case moderation([RowType])
+    }
+
     enum RowType: Equatable {
         case header
         case content
         case replyIndicator
+        case moderation
         case text(title: String, detail: String, image: UIImage? = nil)
         case deleteComment
     }
@@ -371,13 +382,9 @@ private extension CommentDetailViewController {
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
 
-    func configureRows() {
+    func configureContentRows() -> [RowType] {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
-
-        defer {
-            self.rows = rows
-        }
 
         if isCommentReplied {
             rows.append(.replyIndicator)
@@ -390,12 +397,12 @@ private extension CommentDetailViewController {
 
         // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
         guard comment.allowsModeration() else {
-            return
+            return rows
         }
 
         // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
         if !comment.author_email.isEmpty {
-            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
+            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email, image: Style.externalIconImage))
         }
 
         rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
@@ -403,13 +410,27 @@ private extension CommentDetailViewController {
         if comment.deleteWillBePermanent() {
             rows.append(.deleteComment)
         }
+
+        return rows
+    }
+
+    func configureModeratationRows() -> [RowType] {
+        []
+    }
+
+    func configureSections() {
+        var sections: [SectionType] = []
+
+        sections.append(.content(configureContentRows()))
+        sections.append(.moderation([]))
+        self.sections = sections
     }
 
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
         configureNavBarButton()
-        configureRows()
+        configureSections()
         tableView.reloadData()
     }
 
@@ -523,7 +544,7 @@ private extension CommentDetailViewController {
         // If there is a reply, add reply indicator if it is not being shown.
         if replyID > 0 && !rows.contains(.replyIndicator) {
             // Update the rows first so replyIndicator is present in `rows`.
-            configureRows()
+            configureSections()
             guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
                 tableView.reloadData()
                 return
@@ -540,7 +561,7 @@ private extension CommentDetailViewController {
                 return
             }
 
-            configureRows()
+            configureSections()
             tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
         }
     }
@@ -887,11 +908,16 @@ private extension CommentDetailViewController {
 extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
+        switch sections[section] {
+        case .content(let rows):
+            return rows.count
+        case .moderation(let rows):
+            return rows.count
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -899,35 +925,51 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
         let cell: UITableViewCell = {
-            switch row {
-            case .header:
-                configureHeaderCell()
-                return headerCell
+            switch sections[indexPath.section] {
+            case .content(let rows):
+                switch rows[indexPath.row] {
+                case .header:
+                    configureHeaderCell()
+                    return headerCell
 
-            case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
-                    return .init()
+                case .content:
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                        return .init()
+                    }
+
+                    configureContentCell(cell, comment: comment)
+                    cell.moderationBar.delegate = self
+                    moderationBar = cell.moderationBar
+                    return cell
+
+                case .replyIndicator:
+                    return replyIndicatorCell
+
+                case .moderation:
+                    return UITableViewCell()
+
+                case .text:
+                    return configuredTextCell(for: rows[indexPath.row])
+
+                case .deleteComment:
+                    return deleteButtonCell
                 }
-
-                configureContentCell(cell, comment: comment)
-                cell.moderationBar.delegate = self
-                moderationBar = cell.moderationBar
-                return cell
-
-            case .replyIndicator:
-                return replyIndicatorCell
-
-            case .text:
-                return configuredTextCell(for: row)
-
-            case .deleteComment:
-                return deleteButtonCell
+            case .moderation(let rows):
+                return UITableViewCell()
             }
         }()
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch sections[section] {
+        case .content:
+            return nil
+        case .moderation:
+            return "STATUS"
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
