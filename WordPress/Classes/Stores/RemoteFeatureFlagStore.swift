@@ -77,10 +77,10 @@ extension RemoteFeatureFlagStore {
     /// The `deviceID` ensures we retain a stable set of Feature Flags between updates. If there are staged rollouts or other dynamic changes
     /// happening server-side we don't want out flags to change on each fetch, so we provide an anonymous ID to manage this.
     private var deviceID: String {
-        guard let deviceID = UserPersistentStoreFactory.instance().string(forKey: Constants.DeviceIdKey) else {
+        guard let deviceID = UserDefaults.standard.string(forKey: Constants.DeviceIdKey) else {
             DDLogInfo("🚩 Unable to find existing device ID – generating a new one")
             let newID = UUID().uuidString
-            UserPersistentStoreFactory.instance().set(newID, forKey: Constants.DeviceIdKey)
+            UserDefaults.standard.set(newID, forKey: Constants.DeviceIdKey)
             return newID
         }
 
@@ -92,13 +92,13 @@ extension RemoteFeatureFlagStore {
         get {
             // Read from the cache in a thread-safe way
             queue.sync {
-                UserPersistentStoreFactory.instance().dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
+                UserDefaults.standard.dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
             }
         }
         set {
             // Write to the cache in a thread-safe way.
             self.queue.sync {
-                UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.CachedFlagsKey)
+                UserDefaults.standard.set(newValue, forKey: Constants.CachedFlagsKey)
                 lastRefreshDate = Date()
             }
         }
@@ -122,10 +122,10 @@ extension RemoteFeatureFlagStore {
 
     private var lastRefreshDate: Date? {
         get {
-            UserPersistentStoreFactory.instance().object(forKey: Constants.LastRefreshDateKey) as? Date
+            UserDefaults.standard.object(forKey: Constants.LastRefreshDateKey) as? Date
         }
         set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: Constants.LastRefreshDateKey)
+            UserDefaults.standard.set(newValue, forKey: Constants.LastRefreshDateKey)
         }
     }
 }
