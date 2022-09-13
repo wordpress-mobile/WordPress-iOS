@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-26 09:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-07 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: nl */
@@ -1449,6 +1449,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Bekijk onze beste tips voor meer weergaven en bezoekers";
 
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Controleer je e-mail op dit apparaat!";
+
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Controleer je e-mail op dit apparaat en tik op de link in de e-mail die je ontvangen hebt van WordPress.com.";
 
@@ -1886,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Verbinding niet beschikbaar";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Verbindingen";
 
 /* Support email label. */
 "Contact Email" = "E-mail contactpersoon";
@@ -3751,6 +3751,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Als je al een site hebt, zul je de gratis Jetpack plugin moeten installeren en deze verbinden met je WordPress.com account.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Als je de e-mail niet kunt vinden, controleer dan de spamfolder of de prullenbak van je inbox";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Als je doorgaat met een Apple of Google account en je hebt nog geen WordPress.com account, dan maak je een account aan en ga je akkoord met onze _algemene voorwaarden_.";
 
@@ -4056,6 +4059,15 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-instellingen";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social-verbindingen";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Verbindingssynchronisatie Jetpack Social mislukt";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Servicesynchronisatie Jetpack Social mislukt";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kan momenteel niet geïnstalleerd worden.";
@@ -5983,15 +5995,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Verbindingssynchronisatie van publiceren mislukt";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Servicesynchronisatie van publiceren mislukt";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publiceren naar %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6893,6 +6896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Delen";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Deel Jetpack met een vriend";
+
 /* Label for action to share post. */
 "Share Post" = "Deel bericht";
 
@@ -6908,6 +6914,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Deel link";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Deel bericht op %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Deel met vrienden";
 
@@ -6915,8 +6924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Deel hier je verhaal...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Delen";
@@ -9197,6 +9205,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Wat wil je doen met dit bestand? Wil je het uploaden en een link naar het bestand aan je bericht toevoegen of wil je de inhoud van het bestand rechtstreeks aan het bericht toevoegen?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Wat is WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Wat is een blok?";
 
@@ -9211,6 +9222,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Wat is nieuw?";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Wat is er nieuw in Jetpack";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Wat is er nieuw in WordPress";
@@ -9901,6 +9915,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description of the Jetpack powered overlay. */
 "jetpack.branding.overlay.description" = "De nieuwe Jetpack-app heeft Statistieken, Lezer, Meldingen en nog meer dat je WordPress verbetert.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress is completer met Jetpack";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Maak een website";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Share op Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Verhelp een probleem met de beveiliging";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Reageer op reacties";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Schrijf een blog.";
 
 /* Later today */
 "later today" = "later vandaag";

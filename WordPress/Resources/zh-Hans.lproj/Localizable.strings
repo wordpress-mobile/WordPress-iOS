@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-24 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: zh_CN */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "“更多”按钮包含显示共享按钮的下拉菜单";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com 账户已关联您的商店凭据。 要继续，我们将向上述电子邮件地址发送一个验证链接。";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "已设置特色图片。轻点以更改该图片。";
 
@@ -730,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "您也可以通过点击“转换为常规区块”来单独分离和编辑这些区块。";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "此外，您也可以输入此账户的密码。";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "其他方式：";
@@ -1353,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "无法访问此地址的站点。 请仔细检查，然后重试。";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "决定不了？ 您可以随时更改主题。";
 
@@ -1439,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "查看我们的重要贴士，增加您的阅读量和流量";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "检查此设备上的电子邮件！";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
@@ -1877,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "连接不可用";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "连接";
 
 /* Support email label. */
 "Contact Email" = "联系电子邮件地址";
@@ -3742,6 +3751,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "如果您已经拥有一个站点，则需要安装免费的 Jetpack 插件并将其连接到您的 WordPress.com 账户。";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "如果您找不到该电子邮件，请检查您的垃圾邮件文件夹";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 账户，则需要创建一个账户，并同意我们的_服务条款_。";
 
@@ -3954,6 +3966,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL 无效。 请仔细检查，然后重试。";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "无效 URL。请输入有效 URL。";
 
@@ -4044,6 +4059,15 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack设置";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social 连接";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Social 连接同步失败";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social 服务同步失败";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "当前无法安装Jetpack";
@@ -4414,6 +4438,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "登录请求已过期";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "使用账户密码登录";
 
 /* No comment provided by engineer. */
 "Logs" = "日志";
@@ -5350,6 +5377,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或通过 _输入您的站点地址_ 登录。";
 
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "或者通过免密链接登录";
+
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "有序列表";
 
@@ -5964,15 +5994,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "发布连接同步失败";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "发布服务同步失败";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "发布 %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -6791,6 +6812,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "发送测试崩溃";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "发送电子邮件验证链接";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "通过电子邮件发送通知";
 
@@ -6872,6 +6896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "分享";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "与朋友分享 Jetpack";
+
 /* Label for action to share post. */
 "Share Post" = "分享文章";
 
@@ -6887,6 +6914,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "分享链接";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "将文章共享至 %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "分享给朋友";
 
@@ -6894,8 +6924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "在此处分享您的故事...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共享";
@@ -6994,6 +7023,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "注册";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "使用站点凭据登录";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "注册";
@@ -8644,6 +8676,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "使用图标按钮";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "使用密码登录";
+
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
 
@@ -8980,6 +9015,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "我们刚刚通过电子邮件向 %@ 发送了一个链接。请查看您的邮箱应用程序，点击链接登录。";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "我们刚刚发送了一个免密链接至";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "我们对区块编辑器进行了重大改进，绝对值得一试！\n\n我们已为新文章和页面启用该编辑器，但是，如果您想改用经典编辑器，请转到“我的站点”>“站点设置”。";
 
@@ -9167,6 +9205,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "您想要使用此文件完成的操作：上传此文件并在文章中添加指向此文件的链接，还是直接在文章中添加该文件的内容？";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "什么是 WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "什么是区块？";
 
@@ -9181,6 +9222,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Jetpack 的新变化";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 的新变化";
@@ -9868,6 +9912,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "试用新版 Jetpack 应用程序";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "新的 Jetpack 应用程序具有“统计信息”、“阅读器”、“通知”等功能，让您的 WordPress 变得更好。";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "添加作者";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "构建站点";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "查看通知";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "在 Facebook 上共享";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "修复安全问题";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "发表图片";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "阅读文章";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "回复评论";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "恢复备份";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "搜索插件";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "搜索文章或站点";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "观看统计数据";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "撰写博客";
 
 /* Later today */
 "later today" = "稍后再说";

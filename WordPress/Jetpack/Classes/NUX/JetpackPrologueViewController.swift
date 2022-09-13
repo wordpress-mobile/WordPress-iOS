@@ -12,37 +12,90 @@ class JetpackPrologueViewController: UIViewController {
         return view
     }()
 
-    var gradientLayer: CALayer = {
+    private lazy var jetpackAnimatedView: UIView = {
+        let viewModel = JetpackPromptsViewModel()
+        let jetpackAnimatedView = UIView.embedSwiftUIView(JetpackLandingScreenView(viewModel: viewModel))
+        jetpackAnimatedView.translatesAutoresizingMaskIntoConstraints = false
+        return jetpackAnimatedView
+    }()
+
+    private lazy var logoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "jetpack-logo"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    private lazy var gradientLayer: CALayer = {
+        makeGradientLayer()
+    }()
+
+    private func makeGradientLayer() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
 
         // Start color is the background color with no alpha because if we use clear it will fade to black
         // instead of just disappearing
         let startColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0)
+        let midTopColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.9)
+        let midBottomColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.2)
         let endColor = JetpackPrologueStyleGuide.backgroundColor
 
-        gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
-        gradientLayer.locations = [0.0, 0.9]
+        gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
+        [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
+        [startColor.cgColor, endColor.cgColor]
+
+        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.2, 0.5, 1.0] : [0.0, 0.9]
 
         return gradientLayer
-    }()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
+
+        guard FeatureFlag.newLandingScreen.enabled else {
+            loadOldPrologueView()
+            return
+        }
+        loadNewPrologueView()
+    }
+
+    private func loadNewPrologueView() {
+        // hide old view unused elements
+        stackView.isHidden = true
+        titleLabel.isHidden = true
+        // complex gradient background
+        if let backgroundImage = UIImage(named: "JPBackground") {
+            view.layer.contents = backgroundImage.cgImage
+        }
+        // animated view
+
+        view.addSubview(jetpackAnimatedView)
+        view.pinSubviewToAllEdges(jetpackAnimatedView)
+        // Jetpack logo with parallax
+        view.addSubview(logoImageView)
+        addParallax(to: logoImageView)
+        // linear gradient above the animated view
+        view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
+        // constraints
+        NSLayoutConstraint.activate([
+            logoImageView.widthAnchor.constraint(equalToConstant: 72),
+            logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+        ])
+    }
+
+    private func loadOldPrologueView() {
         view.addSubview(starFieldView)
         view.layer.addSublayer(gradientLayer)
-
         titleLabel.text = NSLocalizedString("Site security and performance\nfrom your pocket", comment: "Prologue title label, the \n force splits it into 2 lines.")
         titleLabel.textColor = JetpackPrologueStyleGuide.Title.textColor
         titleLabel.font = JetpackPrologueStyleGuide.Title.font
-
         // Move the layers to appear below everything else
         starFieldView.layer.zPosition = Constants.starLayerPosition
         gradientLayer.zPosition = Constants.gradientLayerPosition
-
-        addParallax()
-
+        addParallax(to: stackView)
         updateLabel(for: traitCollection)
     }
 
@@ -57,18 +110,26 @@ class JetpackPrologueViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        updateLabel(for: traitCollection)
+        guard FeatureFlag.newLandingScreen.enabled,
+        previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
+            updateLabel(for: traitCollection)
+            return
+        }
+        gradientLayer.removeFromSuperlayer()
+        gradientLayer = makeGradientLayer()
+        view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        starFieldView.frame = view.bounds
+        if !FeatureFlag.newLandingScreen.enabled {
+            starFieldView.frame = view.bounds
+        }
         gradientLayer.frame = view.bounds
     }
 
     /// Slightly moves the logo / text when moving the device
-    private func addParallax() {
+    private func addParallax(to view: UIView) {
         let amount = Constants.parallaxAmount
 
         let horizontal = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
@@ -82,7 +143,7 @@ class JetpackPrologueViewController: UIViewController {
         let group = UIMotionEffectGroup()
         group.motionEffects = [horizontal, vertical]
 
-        stackView.addMotionEffect(group)
+        view.addMotionEffect(group)
     }
 
     private struct Constants {
