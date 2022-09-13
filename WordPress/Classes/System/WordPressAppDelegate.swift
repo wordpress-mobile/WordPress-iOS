@@ -651,10 +651,14 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if an account exists, or using an anonymous remote if no account exists.
     /// - Parameter forced: If true, feature flags cache policy is ignored. If false, feature flags are only updated if the cache has expired.
     func updateFeatureFlags(forced: Bool) {
-        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
-        let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
-        let remote = FeatureFlagRemote(wordPressComRestApi: api)
-        RemoteFeatureFlagStore.shared.updateIfNeeded(forced: forced, using: remote)
+        do {
+            let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+            let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
+            let remote = FeatureFlagRemote(wordPressComRestApi: api)
+            RemoteFeatureFlagStore.shared.updateIfNeeded(forced: forced, using: remote)
+        } catch {
+            DDLogError("Error fetching default user account: \(error)")
+        }
     }
 }
 
