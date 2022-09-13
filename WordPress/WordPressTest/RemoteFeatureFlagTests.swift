@@ -89,7 +89,7 @@ class RemoteFeatureFlagTests: XCTestCase {
     func testThatUpdateIfNeededUpdatesIfCacheIsExpired() {
         // Given
         let userDefaults = UserPersistentStoreFactory.instance()
-        let distantDate = Date(timeInterval: -90_000, since: Date())
+        let distantDate = Date(timeInterval: -50_000, since: Date()) // A little over 12 hours ago
         userDefaults.set(distantDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
         let store = RemoteFeatureFlagStore.shared

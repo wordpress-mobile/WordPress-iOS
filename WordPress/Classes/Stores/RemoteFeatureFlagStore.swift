@@ -69,7 +69,7 @@ extension RemoteFeatureFlagStore {
         static let DeviceIdKey = "FeatureFlagDeviceId"
         static let CachedFlagsKey = "FeatureFlagStoreCache"
         static let LastRefreshDateKey = "FeatureFlagLastRefreshDate"
-        static let CacheTTL: TimeInterval = 86_400 // 24 hours
+        static let CacheTTL: TimeInterval = 43_200 // 12 hours
     }
 
     typealias FetchCallback = () -> Void
