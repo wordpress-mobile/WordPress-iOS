@@ -171,7 +171,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 + (NSInteger)sessionCount
 {
-    return [[UserPersistentStoreFactory userDefaultsInstance] integerForKey:WPAppAnalyticsKeySessionCount];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:WPAppAnalyticsKeySessionCount];
 }
 
 - (NSInteger)incrementSessionCount
@@ -183,7 +183,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
         [WPAnalytics track:WPAnalyticsStatAppInstalled];
     }
 
-    [[UserPersistentStoreFactory userDefaultsInstance] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
+    [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
 
     return sessionCount;
 }
