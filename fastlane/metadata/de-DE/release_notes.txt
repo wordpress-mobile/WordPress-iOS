@@ -1,0 +1,1 @@
+Klein aber fein: In diesem Release haben wir dafür gesorgt, dass Jetpack Social im Teilen-Bereich deiner Website-Einstellungen sowie in deinen Beitragseinstellungen auffälliger angezeigt wird. Los geht's mit den sozialen Medien.

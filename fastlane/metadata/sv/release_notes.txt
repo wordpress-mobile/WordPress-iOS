@@ -1,0 +1,1 @@
+Den här versionen är koncis – vi har gjort Jetpack Social mer synligt i delningssektionen av dina webbplatsinställningar, samt i dina inläggsinställningar. Dags att vara social.
