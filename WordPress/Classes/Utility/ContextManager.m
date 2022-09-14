@@ -151,16 +151,14 @@ static ContextManager *_instance;
 
 - (void)handleStoreChanges:(NSNotification *)notification
 {
-    NSLog(@"[CM]: Persistent store remote change notification");
     __weak __typeof(self) weakSelf = self;
     [self.remoteChangeQueue addOperationWithBlock:^{
-        [weakSelf proccessRemoteChanges];
+        [weakSelf processRemoteChanges];
     }];
 }
 
-- (void)proccessRemoteChanges
+- (void)processRemoteChanges
 {
-    NSLog(@"[CM]: Processing remote changes");
     NSManagedObjectContext *context = [self newDerivedContext];
     [context performBlockAndWait:^{
         NSPersistentHistoryChangeRequest *historyChangeRequest = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:self.historyToken];
@@ -169,13 +167,12 @@ static ContextManager *_instance;
         historyChangeRequest.fetchRequest = fetchRequest;
         NSPersistentHistoryResult *result = [context executeRequest:historyChangeRequest error:nil];
         NSArray<NSPersistentHistoryTransaction *> *transactions = result.result;
-        
+
         if (transactions.count > 0) {
             for (NSPersistentHistoryTransaction *transaction in transactions) {
                 NSDictionary *userInfo = transaction.objectIDNotification.userInfo;
-                
+
                 if (userInfo) {
-                    NSLog(@"[CM]: Merging into main context %@", userInfo);
                     [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo
                                                                  intoContexts:@[self.mainContext]];
                 }
@@ -185,10 +182,7 @@ static ContextManager *_instance;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self handleUIUpdate];
             });
-        } else {
-            NSLog(@"[CM]: No transactions");
         }
-    
     }];
 }
 
@@ -197,8 +191,6 @@ static ContextManager *_instance;
     UIApplicationState state = UIApplication.sharedApplication.applicationState;
     
     void (^showUI)(void) = ^{
-        NSLog(@"[CM]: Updating UI if necessary");
-
         WordPressAppDelegate *delegate = (WordPressAppDelegate *) UIApplication.sharedApplication.delegate;
         if (AccountHelper.isLoggedIn) {
             [WPTabBarController.sharedInstance reloadSplitViewControllers];
