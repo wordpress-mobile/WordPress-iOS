@@ -12,9 +12,9 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     static NSString * _defaultUserAgent;
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
-        NSDictionary * registrationDomain = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+        NSDictionary * registrationDomain = [[UserPersistentStoreFactory userDefaultsInstance] volatileDomainForName:NSRegistrationDomain];
         NSString *storeCurrentUA = [registrationDomain objectForKey:WPUserAgentKeyUserAgent];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
+        [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
         
         if ([NSThread isMainThread]){
             _defaultUserAgent = [WKWebView userAgent];
@@ -24,7 +24,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
             });
         }
         if (storeCurrentUA) {
-            [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
+            [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
         }
     });
     NSAssert(_defaultUserAgent != nil, @"User agent shouldn't be nil");
@@ -48,8 +48,8 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 + (void)useWordPressUserAgentInWebViews
 {
     // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"AppUserAgent"];
+    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:@"DefaultUserAgent"];
+    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:@"AppUserAgent"];
 
     NSString *userAgent = [self wordPressUserAgent];
 
@@ -57,7 +57,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     
     NSDictionary *dictionary = @{WPUserAgentKeyUserAgent: userAgent};
     // We have to call registerDefaults else the change isn't picked up by WKWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:dictionary];
     
     DDLogVerbose(@"User-Agent set to: %@", userAgent);
 }
