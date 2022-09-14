@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-06 07:00:46+0000 */
+/* Translation-Revision-Date: 2022-09-12 09:08:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.1 */
 /* Language: ro */
@@ -4049,10 +4049,10 @@ translators: Block name. %s: The localized block name */
 "Jetpack Scan will resolve the threat." = "Scanarea Jetpack va înlătura amenințarea.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va derula înapoi fișierul afectat la o versiune mai veche (curată).";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va restaura fișierul afectat la o versiune mai veche (curată).";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Scanarea Jetpack va derula înapoi fișierul afectat la versiunea din %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Scanarea Jetpack va restaura fișierul afectat la versiunea din %1$@.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Scanarea Jetpack va fi actualizată la o versiune mai nouă.";
