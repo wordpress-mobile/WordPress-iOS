@@ -31,11 +31,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
 
     /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
-    var hidesModerationBar: Bool = false {
-        didSet {
-            updateModerationBarVisibility()
-        }
-    }
+//    var hidesModerationBar: Bool = false {
+//        didSet {
+//            updateModerationBarVisibility()
+//        }
+//    }
 
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
@@ -116,10 +116,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
-    // This is public so its delegate can be set directly.
-    @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
-    @IBOutlet private weak var moderationBarView: UIView!
-
     @IBOutlet private weak var highlightBarView: UIView!
 
     // MARK: Private Properties
@@ -170,11 +166,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     }
 
     /// Controls the visibility of the moderation bar view.
-    private var isModerationEnabled: Bool = false {
-        didSet {
-            updateModerationBarVisibility()
-        }
-    }
+//    private var isModerationEnabled: Bool = false {
+//        didSet {
+//            updateModerationBarVisibility()
+//        }
+//    }
 
     private var isReactionBarVisible: Bool {
         return isCommentReplyEnabled || isCommentLikesEnabled
@@ -236,18 +232,18 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isCommentReplyEnabled = comment.canReply()
         isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
-        isModerationEnabled = comment.allowsModeration()
+//        isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
         containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: contentContainerView)
 
         // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
         // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
-        containerStackBottomConstraint.constant = (isReactionBarVisible || isModerationEnabled) ? 0 : customBottomSpacing
+        containerStackBottomConstraint.constant = (isReactionBarVisible /* || isModerationEnabled */) ? 0 : customBottomSpacing
 
-        if isModerationEnabled {
-            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
-        }
+//        if isModerationEnabled {
+//            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
+//        }
 
         // Configure content renderer.
         self.onContentLoaded = onContentLoaded
@@ -262,7 +258,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(with: comment, onContentLoaded: onContentLoaded)
 
-        hidesModerationBar = true
+//        hidesModerationBar = true
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
         isAccessoryButtonEnabled = false
@@ -389,9 +385,9 @@ private extension CommentContentTableViewCell {
         avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
     }
 
-    func updateModerationBarVisibility() {
-        moderationBarView.isHidden = !isModerationEnabled || hidesModerationBar
-    }
+//    func updateModerationBarVisibility() {
+//        moderationBarView.isHidden = !isModerationEnabled || hidesModerationBar
+//    }
 
     func updateContainerLeadingConstraint() {
         containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
