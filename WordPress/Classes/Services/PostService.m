@@ -127,7 +127,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                               return;
                           }
                           if (remotePost) {
-                              AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              AbstractPost *post = [blog lookupPostWithID:postID inContext:self.managedObjectContext];
                               
                               if (!post) {
                                   if ([remotePost.type isEqualToString:PostServiceTypePage]) {
@@ -706,7 +706,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:self.managedObjectContext];
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
