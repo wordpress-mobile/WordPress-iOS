@@ -68,6 +68,7 @@ static ContextManager *_instance;
         [[[NullBlogPropertySanitizer alloc] initWithContext:self.contextFactory.mainContext] sanitize];
         
         if ([self isSharedLoginEnabled]) {
+            [self pruneTransactionHistory];
             [self observeStoreChanges];
         }
     }
@@ -226,6 +227,18 @@ static ContextManager *_instance;
             weakSelf.updateUIObserver = nil;
         }];
     }
+}
+
+- (void)pruneTransactionHistory
+{
+    [self performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
+                                                                value:-7
+                                                               toDate:[NSDate date]
+                                                              options:0];
+        NSPersistentHistoryChangeRequest *deletionRequest = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:date];
+        [context executeRequest:deletionRequest error:nil];
+    }];
 }
 
 #pragma mark - Setup
