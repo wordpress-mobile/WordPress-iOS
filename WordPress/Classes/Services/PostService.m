@@ -74,9 +74,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                               
                               if (!post) {
                                   if ([remotePost.type isEqualToString:PostServiceTypePage]) {
-                                      post = [self createPageForBlog:blog];
+                                      post = [blog createPage];
                                   } else {
-                                      post = [self createPostForBlog:blog];
+                                      post = [blog createPost];
                                   }
                               }
                               
@@ -647,10 +647,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
-                post = [self createPageForBlog:blog];
+                post = [blog createPage];
             } else {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
-                post = [self createPostForBlog:blog];
+                post = [blog createPost];
             }
         }
         [self updatePost:post withRemotePost:remotePost];
