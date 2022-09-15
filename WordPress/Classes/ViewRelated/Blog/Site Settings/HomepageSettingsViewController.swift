@@ -151,11 +151,11 @@ import WordPressShared
 
     var selectedPagesRows: [ImmuTableRow] {
         let homepageID = blog.homepagePageID
-        let homepage = homepageID.flatMap { postService.findPost(withID: NSNumber(value: $0), in: blog) }
+        let homepage = homepageID.flatMap { blog.lookupPost(withID: Int64($0), in: postService.managedObjectContext) }
         let homepageTitle = homepage?.titleForDisplay() ?? ""
 
         let postsPageID = blog.homepagePostsPageID
-        let postsPage = postsPageID.flatMap { postService.findPost(withID: NSNumber(value: $0), in: blog) }
+        let postsPage = postsPageID.flatMap { blog.lookupPost(withID: Int64($0), in: postService.managedObjectContext) }
         let postsPageTitle = postsPage?.titleForDisplay() ?? ""
 
         let homepageRow = pageSelectionRow(selectionType: .homepage,
