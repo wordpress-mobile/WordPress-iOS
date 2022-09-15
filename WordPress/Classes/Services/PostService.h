@@ -31,9 +31,6 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
 
-- (Post *)createDraftPostForBlog:(Blog *)blog;
-- (Page *)createDraftPageForBlog:(Blog *)blog;
-
 /**
  Sync a specific post from the API
 
