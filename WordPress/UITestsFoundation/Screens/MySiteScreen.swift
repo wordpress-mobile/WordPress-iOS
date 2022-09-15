@@ -94,7 +94,7 @@ public class MySiteScreen: ScreenObject {
         if XCUIDevice.isPad {
             removeButton = app.alerts.buttons.element(boundBy: 1)
         } else {
-            removeButton = app.sheets.buttons.element(boundBy: 0)
+            removeButton = app.buttons["Remove Site"]
         }
 
         removeButton.tap()
