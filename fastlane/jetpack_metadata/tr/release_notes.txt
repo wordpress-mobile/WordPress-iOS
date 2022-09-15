@@ -1,0 +1,3 @@
+Eylem sayfalarındaki bağlantılar (cihazınızda ek seçenekler sağlayan açılır menüler) artık yeşil değil, mavi renkte.
+
+Ayrıca site ayarlarınızın Paylaşım bölümünde ve gönderi ayarlarınızda Jetpack Social'ı daha dikkat çekici hale getirdik. Haydi sosyalleşelim.
