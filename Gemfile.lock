@@ -83,8 +83,7 @@ GEM
     colored2 (3.1.2)
     commander (4.6.0)
       highline (~> 2.0.0)
-    commonmarker (0.21.2)
-      ruby-enum (~> 0.5)
+    commonmarker (0.23.4)
     concurrent-ruby (1.1.10)
     cork (0.3.0)
       colored2 (~> 3.1)
@@ -326,8 +325,6 @@ GEM
       parser (>= 3.1.1.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    ruby-enum (0.9.0)
-      i18n
     ruby-macho (2.5.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
