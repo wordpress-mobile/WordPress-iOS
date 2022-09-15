@@ -1,0 +1,3 @@
+I link nei fogli delle azioni (quei menu di scelta rapida sul dispositivo che sono impiegati per opzioni extra) sono ora blu invece che verdi.
+
+Abbiamo anche reso Jetpack Social più chiaro nella sezione Condivisione delle impostazioni del sito, nonché in quelle dell'articolo. Diventa social.

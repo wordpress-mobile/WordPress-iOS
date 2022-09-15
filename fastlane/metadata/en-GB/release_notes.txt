@@ -1,0 +1,1 @@
+This release is short and sweet: we’ve made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.
