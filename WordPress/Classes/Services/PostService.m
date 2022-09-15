@@ -770,13 +770,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     }
 }
 
-- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND original = NULL AND postID = %@", blog, postID];
-    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
-    return [posts firstObject];
-}
-
 - (NSUInteger)countPostsWithoutRemote
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
