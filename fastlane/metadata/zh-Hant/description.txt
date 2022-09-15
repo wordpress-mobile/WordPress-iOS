@@ -1,0 +1,11 @@
+直接在 iOS 裝置上管理或建立 WordPress 網誌或網站：你可以建立和編輯文章和頁面、上傳最愛的相片和視訊，並查看統計資料及回覆留言。
+
+使用 iOS 版 WordPress，你就能夠在掌上輕鬆發佈文章。 窩在沙發上信手創作幾行俳句； 趁著午休時間拍照並上傳； 回覆最新的回應；或者查看統計資料，並瞭解今天的讀者來自哪些國家。
+
+iOS 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力協助開發此程式。 深入瞭解：https://apps.wordpress.com/contribute/。
+
+iOS 版 WordPress 支援 WordPress.com 和執行 WordPress 4.0 或以上版本的自助託管 WordPress.org 網站。
+
+需要應用程式的說明嗎？ 請造訪論壇：https://ios.forums.wordpress.org/ 或使用 Twitter 推文給我們：@WordPressiOS。
+
+請檢閱加州使用者的隱私權聲明：https://automattic.com/privacy/#california-consumer-privacy-act-ccpa。
