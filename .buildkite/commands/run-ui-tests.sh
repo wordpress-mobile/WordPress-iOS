@@ -20,10 +20,6 @@ echo "--- :wrench: Fixing VM"
 brew install openjdk@11
 sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
 
-# Temporary fix until we're on the Xcode 13.1 VM
-echo "--- :rubygems: Fixing Ruby Setup"
-gem install bundler
-
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
