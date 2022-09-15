@@ -1,3 +1,3 @@
-Los enlaces de las hojas de acción (aquellos menús emergentes en tu dispositivo que muestran opciones adicionales) ahora son de color azul en lugar de verde.
+Ahora, los enlaces de las hojas de acción (es decir, los menús emergentes que aparecen en tu dispositivo y muestran opciones adicionales) son de color azul en lugar de verde.
 
-También hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de entrada. Vamos a socializar.
+También hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.

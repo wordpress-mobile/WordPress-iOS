@@ -1,0 +1,3 @@
+Links em janelas de opções (aqueles menus pop-up que exibem opções extra no seu dispositivo) agora são azuis em vez de verdes.
+
+Também deixamos o Jetpack Social mais em destaque na seção Compartilhamento das configurações do seu site e do seu post. Vamos socializar!
