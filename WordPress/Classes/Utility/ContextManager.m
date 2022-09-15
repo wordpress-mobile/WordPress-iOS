@@ -159,27 +159,41 @@ static ContextManager *_instance;
 
 - (void)processRemoteChanges
 {
+    // When changes are made to the database outside the app, a `NSPersistentStoreRemoteChangeNotification` notification
+    // will fire. When we receive one of these notifications, we need to check for database transactions made outside the
+    // current app and process them. We merge these transactions into the main context to sync it with the outside changes
+    // and then update the app's UI.
     NSManagedObjectContext *context = [self newDerivedContext];
     [context performBlockAndWait:^{
+        // Fetch all transactions after the last processed transaction or all if no history token is set
         NSPersistentHistoryChangeRequest *historyChangeRequest = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:self.historyToken];
         NSFetchRequest *fetchRequest = [NSPersistentHistoryTransaction fetchRequest];
+
+        // Filters the transactions based on the bundle ID. This is so we only fetch changes made outside the current
+        // running app
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"bundleID != %@", [[NSBundle mainBundle] bundleIdentifier]];
         historyChangeRequest.fetchRequest = fetchRequest;
+
         NSPersistentHistoryResult *result = [context executeRequest:historyChangeRequest error:nil];
         NSArray<NSPersistentHistoryTransaction *> *transactions = result.result;
 
         if (transactions.count > 0) {
+            // Transactions to the database were made outside the current app so we need to merge them into the main
+            // context of the current app
             for (NSPersistentHistoryTransaction *transaction in transactions) {
                 NSDictionary *userInfo = transaction.objectIDNotification.userInfo;
 
                 if (userInfo) {
+                    // Merge the transaction into the main context
                     [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo
                                                                  intoContexts:@[self.mainContext]];
                 }
             }
             [self saveContext:self.mainContext];
+            // Store the history token of the last transaction so we don't process the same ones again
             self.historyToken = transactions.lastObject.token;
             dispatch_async(dispatch_get_main_queue(), ^{
+                // Force the app to update the current UI
                 [self handleUIUpdate];
             });
         }
