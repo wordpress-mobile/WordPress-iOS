@@ -777,14 +777,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     return [posts firstObject];
 }
 
-- (NSUInteger)countPostsWithoutRemote
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"postID = NULL OR postID <= 0"];
-
-    return [self.managedObjectContext countForFetchRequest:request error:nil];
-}
-
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
                                               withOptions:(nonnull PostServiceSyncOptions *)options
 {
