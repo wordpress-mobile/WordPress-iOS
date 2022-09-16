@@ -34,21 +34,20 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var managedObjectContext: NSManagedObjectContext
     private var sections = [SectionType] ()
     private var rows = [RowType]()
-    private var selectedModerationStatus: ModerationStatus {
+    private var commentStatus: CommentStatusType? {
         didSet {
-            switch selectedModerationStatus {
+            switch commentStatus {
             case .pending:
                 unapproveComment()
             case .approved:
                 approveComment()
             case .spam:
                 spamComment()
-            case .none:
+            default:
                 break
             }
         }
     }
-    
     private var notification: Notification?
 
     private var isNotificationComment: Bool {
@@ -209,7 +208,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                isLastInList: Bool,
                managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
-        self.selectedModerationStatus = ModerationStatus(commentStatusType: CommentStatusType.typeForStatus(comment.status)!)
+        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
         self.accountService = AccountService(managedObjectContext: managedObjectContext)
@@ -221,7 +220,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
-        self.selectedModerationStatus = ModerationStatus(commentStatusType: CommentStatusType.typeForStatus(comment.status)!)
+        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
@@ -312,7 +311,7 @@ private extension CommentDetailViewController {
         case content
         case replyIndicator
         case text(title: String, detail: String, image: UIImage? = nil)
-        case status(status: ModerationStatus)
+        case status(status: CommentStatusType)
         case deleteComment
     }
 
@@ -530,7 +529,7 @@ private extension CommentDetailViewController {
         return cell
     }
 
-    func configuredStatusCell(for status: ModerationStatus) -> UITableViewCell {
+    func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .moderationCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .moderationCellIdentifier)
 
         cell.selectionStyle = .none
@@ -541,7 +540,7 @@ private extension CommentDetailViewController {
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = status.title
 
-        cell.accessoryView = status == selectedModerationStatus ? UIImageView(image: .gridicon(.checkmark)) : nil
+        cell.accessoryView = status == commentStatus ? UIImageView(image: .gridicon(.checkmark)) : nil
 
         return cell
     }
@@ -764,40 +763,6 @@ private extension CommentDetailViewController {
         activityViewController.popoverPresentationController?.sourceView = senderView
         present(activityViewController, animated: true, completion: nil)
     }
-
-    enum ModerationStatus {
-        case pending
-        case approved
-        case spam
-        case none
-
-        init(commentStatusType: CommentStatusType) {
-            switch commentStatusType {
-            case .pending:
-                self = .pending
-            case .approved:
-                self = .approved
-            case .spam:
-                self = .spam
-            case .unapproved, .draft:
-                self = .none
-            }
-        }
-
-        var title: String? {
-            switch self {
-            case .pending:
-                return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
-            case .approved:
-                return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
-            case .spam:
-                return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
-            case .none:
-                return nil
-            }
-        }
-    }
-
 }
 
 // MARK: - Strings
@@ -819,18 +784,24 @@ private extension String {
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
 }
 
+private extension CommentStatusType {
+    var title: String? {
+        switch self {
+        case .pending:
+            return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
+        case .approved:
+            return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
+        case .spam:
+            return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
+        default:
+            return nil
+        }
+    }
+}
+
 // MARK: - Comment Moderation Actions
 
 private extension CommentDetailViewController {
-
-    func updateModerationSection(with commentStatusString: String?) {
-        if let commentStatus = CommentStatusType.typeForStatus(commentStatusString) {
-            self.selectedModerationStatus = ModerationStatus(commentStatusType: commentStatus)
-        } else {
-            self.selectedModerationStatus = .none
-        }
-    }
-
     func unapproveComment() {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
                                                      withProperties: Constants.notificationDetailSource,
@@ -842,7 +813,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.pendingFail)
-            self?.updateModerationSection(with: self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -857,7 +828,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.approveFail)
-            self?.updateModerationSection(with: self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -870,7 +841,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.spamFail)
-            self?.updateModerationSection(with: self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -883,7 +854,8 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.trashFail)
-            self?.updateModerationSection(with: self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+
         })
     }
 
@@ -1055,7 +1027,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .moderation(let rows):
             switch rows[indexPath.row] {
             case .status(let statusType):
-                selectedModerationStatus = statusType
+                commentStatus = statusType
                 tableView.reloadSections([1], with: .automatic)
                 notifyDelegateCommentModerated()
             default:
