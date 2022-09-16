@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-09-07 14:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-15 22:16:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -4059,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-instellingen";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
 
 /* Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social-verbindingen";
@@ -9919,8 +9922,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress is completer met Jetpack";
 
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
+
 /* Build a site prompt for the jetpack prologue */
 "jetpack.prologue.prompt.buildSite" = "Maak een website";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Controleer meldingen";
 
 /* Share on Facebook prompt for the jetpack prologue */
 "jetpack.prologue.prompt.fbShare" = "Share op Facebook";
@@ -9928,8 +9937,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Fix a security issue prompt for the jetpack prologue */
 "jetpack.prologue.prompt.fixSecurity" = "Verhelp een probleem met de beveiliging";
 
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Plaats een foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Lees een artikel";
+
 /* Respond to comments prompt for the jetpack prologue */
 "jetpack.prologue.prompt.respondComments" = "Reageer op reacties";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Zet een back-up terug";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Zoek naar plugins";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Zoek naar berichten of sites";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Bekijk je statistieken";
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Schrijf een blog.";

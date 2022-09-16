@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-15 22:14:44+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -4059,6 +4059,9 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack设置";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
 
 /* Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social 连接";
