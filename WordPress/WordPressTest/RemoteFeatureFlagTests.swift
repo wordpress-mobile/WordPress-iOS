@@ -3,14 +3,14 @@ import XCTest
 
 class RemoteFeatureFlagTests: XCTestCase {
 
+    private var mockUserDefaults: InMemoryUserDefaults!
+
     override func setUp() {
-        let userDefaults = UserPersistentStoreFactory.instance()
-        userDefaults.removeObject(forKey: RemoteFeatureFlagStore.Constants.CachedFlagsKey)
-        userDefaults.removeObject(forKey: RemoteFeatureFlagStore.Constants.DeviceIdKey)
-        userDefaults.removeObject(forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
+        mockUserDefaults = InMemoryUserDefaults()
     }
 
     func testThatDeviceIdIsTheSameForEveryInstanceOfTheStore() {
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let mock = MockFeatureFlagRemote()
         var deviceId = ""
 
@@ -22,15 +22,15 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        RemoteFeatureFlagStore.shared.updateIfNeeded(using: mock)
-        UserPersistentStoreFactory.instance().removeObject(forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
-        RemoteFeatureFlagStore.shared.updateIfNeeded(using: mock)
+        store.updateIfNeeded(using: mock)
+        mockUserDefaults.removeObject(forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
+        store.updateIfNeeded(using: mock)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     func testThatStoreReturnsCorrectCompileTimeDefaultForColdCache() {
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature))
@@ -40,14 +40,14 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatStoreDoesNotHaveValueForColdCache() {
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flag = FeatureFlag.allCases.first!
         XCTAssertFalse(store.hasValue(for: flag))
     }
 
     func testThatUpdateCachesNewFlags() {
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
         store.updateIfNeeded(using: mock)
 
@@ -72,11 +72,10 @@ class RemoteFeatureFlagTests: XCTestCase {
 
     func testThatUpdateIfNeededDoesNotUpdateIfCacheIsValid() {
         // Given
-        let userDefaults = UserPersistentStoreFactory.instance()
         let recentDate = Date(timeInterval: -1, since: Date())
-        userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
+        mockUserDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
         // When
         store.updateIfNeeded(using: mock)
@@ -88,12 +87,11 @@ class RemoteFeatureFlagTests: XCTestCase {
 
     func testThatUpdateIfNeededUpdatesIfCacheIsExpired() {
         // Given
-        let userDefaults = UserPersistentStoreFactory.instance()
         let ttl = RemoteFeatureFlagStore.Constants.CacheTTL
         let distantDate = Date(timeInterval: -(ttl + 1), since: Date())
-        userDefaults.set(distantDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
+        mockUserDefaults.set(distantDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
         // When
         store.updateIfNeeded(using: mock)
@@ -105,11 +103,10 @@ class RemoteFeatureFlagTests: XCTestCase {
 
     func testThatForcedUpdateRunsEvenIfCacheIsValid() {
         // Given
-        let userDefaults = UserPersistentStoreFactory.instance()
         let recentDate = Date(timeInterval: -1, since: Date())
-        userDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
+        mockUserDefaults.set(recentDate, forKey: RemoteFeatureFlagStore.Constants.LastRefreshDateKey)
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
-        let store = RemoteFeatureFlagStore.shared
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
         // When
         store.updateIfNeeded(forced: true, using: mock)
