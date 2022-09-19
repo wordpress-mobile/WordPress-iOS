@@ -999,6 +999,12 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
     }
 
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = Style.tertiaryTextFont
+        header.textLabel?.textColor = UIColor.secondaryLabel
+    }
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Hide cell separator if it's positioned before the delete button cell.
         cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
