@@ -26,10 +26,10 @@ extension GutenbergViewController {
     }
 
     private func currentLProjFolderName(in bundle: Bundle) -> String? {
-        /// Localizable.strings file path use dashes for languages and regions (e.g. pt-BR)
-        /// We cannot use Locale.current.identifier directly because it uses underscores
-        /// Bundle.preferredLocalizations matches what NSLocalizedString uses
-        /// and is safer than parsing and converting identifiers ourselves
+        // Localizable.strings file path use dashes for languages and regions (e.g. pt-BR)
+        // We cannot use Locale.current.identifier directly because it uses underscores
+        // Bundle.preferredLocalizations matches what NSLocalizedString uses
+        // and is safer than parsing and converting identifiers ourselves
         return bundle.preferredLocalizations.first
     }
 }
