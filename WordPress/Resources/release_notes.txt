@@ -1,1 +1,4 @@
-This release is short and sweet: we’ve made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.
+* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
+* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
+* [***] [internal] Update Sentry, our crash monitoring tool, to its latest major version [#19315]
+
