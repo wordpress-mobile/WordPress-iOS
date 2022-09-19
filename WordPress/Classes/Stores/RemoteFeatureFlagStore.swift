@@ -1,11 +1,20 @@
 import Foundation
 import WordPressKit
 
+fileprivate extension DispatchQueue {
+    static let remoteFeatureFlagStoreQueue = DispatchQueue(label: "remote-feature-flag-store-queue")
+}
+
 class RemoteFeatureFlagStore {
 
-    public static let shared = RemoteFeatureFlagStore()
+    /// Thread Safety Coordinator
+    private var queue: DispatchQueue
+    private var persistenceStore: UserPersistentRepository
 
-    private init() {
+    init(queue: DispatchQueue = .remoteFeatureFlagStoreQueue,
+                 persistenceStore: UserPersistentRepository = UserDefaults.standard) {
+        self.queue = queue
+        self.persistenceStore = persistenceStore
         DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
@@ -59,9 +68,6 @@ class RemoteFeatureFlagStore {
 
         return value
     }
-
-    /// Thread Safety Coordinator
-    private let queue = DispatchQueue(label: "remote-feature-flag-store-queue")
 }
 
 extension RemoteFeatureFlagStore {
@@ -77,10 +83,10 @@ extension RemoteFeatureFlagStore {
     /// The `deviceID` ensures we retain a stable set of Feature Flags between updates. If there are staged rollouts or other dynamic changes
     /// happening server-side we don't want out flags to change on each fetch, so we provide an anonymous ID to manage this.
     private var deviceID: String {
-        guard let deviceID = UserDefaults.standard.string(forKey: Constants.DeviceIdKey) else {
+        guard let deviceID = persistenceStore.string(forKey: Constants.DeviceIdKey) else {
             DDLogInfo("🚩 Unable to find existing device ID – generating a new one")
             let newID = UUID().uuidString
-            UserDefaults.standard.set(newID, forKey: Constants.DeviceIdKey)
+            persistenceStore.set(newID, forKey: Constants.DeviceIdKey)
             return newID
         }
 
@@ -92,13 +98,13 @@ extension RemoteFeatureFlagStore {
         get {
             // Read from the cache in a thread-safe way
             queue.sync {
-                UserDefaults.standard.dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
+                persistenceStore.dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
             }
         }
         set {
             // Write to the cache in a thread-safe way.
             self.queue.sync {
-                UserDefaults.standard.set(newValue, forKey: Constants.CachedFlagsKey)
+                persistenceStore.set(newValue, forKey: Constants.CachedFlagsKey)
                 lastRefreshDate = Date()
             }
         }
@@ -122,10 +128,10 @@ extension RemoteFeatureFlagStore {
 
     private var lastRefreshDate: Date? {
         get {
-            UserDefaults.standard.object(forKey: Constants.LastRefreshDateKey) as? Date
+            persistenceStore.object(forKey: Constants.LastRefreshDateKey) as? Date
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Constants.LastRefreshDateKey)
+            persistenceStore.set(newValue, forKey: Constants.LastRefreshDateKey)
         }
     }
 }
