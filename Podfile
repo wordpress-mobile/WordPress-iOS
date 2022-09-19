@@ -149,6 +149,8 @@ def gutenberg_dependencies(options)
     RNCMaskedView
     RNCClipboard
     RNFastImage
+    React-Codegen
+    React-bridging
   ]
   if options[:path]
     podspec_prefix = options[:path]
