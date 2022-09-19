@@ -1,3 +1,4 @@
-Links in action sheets (those pop-up menus on your device that bring up extra options) are now blue instead of green.
+* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
+* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
+* [***] [internal] Update Sentry, our crash monitoring tool, to its latest major version [#19315]
 
-We’ve also made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.
