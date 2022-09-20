@@ -954,8 +954,8 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         let cell: UITableViewCell = {
             let rows: [RowType]
             switch sections[indexPath.section] {
-            case .content(let x), .moderation(let x):
-                rows = x
+            case .content(let sectionRows), .moderation(let sectionRows):
+                rows = sectionRows
             }
 
             switch rows[indexPath.row] {
@@ -969,8 +969,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
 
                 configureContentCell(cell, comment: comment)
-                //                    cell.moderationBar.delegate = self
-                //                    moderationBar = cell.moderationBar
                 return cell
 
             case .replyIndicator:

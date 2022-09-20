@@ -51,9 +51,11 @@ extension WPStyleGuide {
             static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
             static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
-            static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
+            static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .medium)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
+            static let infoIconImageName = "info.circle"
+
 
             static var replyIconImage: UIImage? {
                 // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
