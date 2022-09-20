@@ -310,7 +310,6 @@ private extension CommentDetailViewController {
         case header
         case content
         case replyIndicator
-        case text(title: String, detail: String, image: UIImage? = nil)
         case status(status: CommentStatusType)
         case deleteComment
     }
@@ -498,35 +497,6 @@ private extension CommentDetailViewController {
         cell.replyButtonAction = { [weak self] in
             self?.showReplyView()
         }
-    }
-
-    func configuredTextCell(for row: RowType) -> UITableViewCell {
-        guard case let .text(title, detail, image) = row else {
-            return .init()
-        }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
-
-        cell.selectionStyle = .none
-        cell.tintColor = Style.tintColor
-
-        cell.textLabel?.font = Style.secondaryTextFont
-        cell.textLabel?.textColor = Style.secondaryTextColor
-        cell.textLabel?.text = title
-
-        cell.detailTextLabel?.font = Style.textFont
-        cell.detailTextLabel?.textColor = Style.textColor
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
-
-        cell.accessoryView = {
-            guard let image = image else {
-                return nil
-            }
-            return UIImageView(image: image)
-        }()
-
-        return cell
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
@@ -752,16 +722,17 @@ private extension CommentDetailViewController {
     }
 
     func shareCommentURL(_ senderView: UIView) {
-        guard let commentURL = comment.commentURL() else {
-            return
-        }
+        let viewModel = CommentDetailInfoViewModel(url: comment.commentURL(), email: comment.author_email, ipAddress: comment.author_ip)
+        let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
+        bottomSheet.show(from: self)
 
-        // track share intent.
-        WPAnalytics.track(.siteCommentsCommentShared)
-
-        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = senderView
-        present(activityViewController, animated: true, completion: nil)
+//        // track share intent.
+//        WPAnalytics.track(.siteCommentsCommentShared)
+//
+//        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+//        activityViewController.popoverPresentationController?.sourceView = senderView
+//        present(activityViewController, animated: true, completion: nil)
     }
 }
 
@@ -779,8 +750,6 @@ private extension String {
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
-    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
-    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
 }
 
@@ -974,9 +943,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
             case .replyIndicator:
                 return replyIndicatorCell
 
-            case .text:
-                return configuredTextCell(for: rows[indexPath.row])
-
             case .deleteComment:
                 return deleteButtonCell
 
@@ -1022,8 +988,8 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
             case .replyIndicator:
                 navigateToReplyComment()
-            case .text(let title, _, _) where title == .webAddressLabelText:
-                visitAuthorURL()
+//            case .text(let title, _, _) where title == .webAddressLabelText:
+//                visitAuthorURL()
             default:
                 break
             }
