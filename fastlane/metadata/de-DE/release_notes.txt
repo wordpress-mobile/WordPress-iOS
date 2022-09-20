@@ -1,3 +1,1 @@
-Kein Grund mehr zu zittern — die Seitenliste friert jetzt nicht mehr ein, wenn das Beitragsbild einer Seite ein GIF ist.
-
-Da selbst-gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
+Klein aber fein: In diesem Release haben wir dafür gesorgt, dass Jetpack Social im Teilen-Bereich deiner Website-Einstellungen sowie in deinen Beitragseinstellungen auffälliger angezeigt wird. Los geht's mit den sozialen Medien.

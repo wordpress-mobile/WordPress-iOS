@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-08-19 11:32:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1877,9 +1877,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Lidhje jo gati";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Lidhje";
 
 /* Support email label. */
 "Contact Email" = "Email Kontaktesh";
@@ -5953,15 +5950,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Njëkohësimi i lidhjes për publicizimi dështoi";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Njëkohësimi me shërbim publicizimi dështoi";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicizojeni te %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6882,8 +6870,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Ndajeni shembullin tuaj me të tjerët…";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Ndarje Me të Tjerët";

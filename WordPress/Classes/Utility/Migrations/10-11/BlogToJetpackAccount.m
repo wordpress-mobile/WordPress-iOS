@@ -105,7 +105,7 @@ static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 
 - (NSString *)jetpackUsernameForBlog:(NSManagedObject *)blog
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:[self jetpackDefaultsKeyForBlog:blog]];
+    return [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:[self jetpackDefaultsKeyForBlog:blog]];
 }
 
 - (NSString *)jetpackPasswordForBlog:(NSManagedObject *)blog

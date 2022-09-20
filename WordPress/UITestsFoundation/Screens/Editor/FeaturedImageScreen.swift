@@ -16,7 +16,7 @@ public class FeaturedImageScreen: ScreenObject {
 
     public func tapRemoveFeaturedImageButton() {
         removeButton.tap()
-        app.sheets.buttons.element(boundBy: 0).tap()
+        app.buttons["Remove"].tap()
     }
 
 }

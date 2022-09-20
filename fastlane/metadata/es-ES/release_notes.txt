@@ -1,0 +1,1 @@
+Esta actualización es breve y concisa: hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.

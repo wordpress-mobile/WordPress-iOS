@@ -1,0 +1,1 @@
+Deze release is kort maar krachtig: Jetpack Social is nu beter zichtbaar in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.

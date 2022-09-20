@@ -35,6 +35,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case sharedUserDefaults
     case sharedLogin
     case newLandingScreen
+    case newCoreDataContext
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -112,6 +113,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .sharedLogin:
             return false
         case .newLandingScreen:
+            return false
+        case .newCoreDataContext:
             return false
         }
     }
@@ -209,6 +212,8 @@ extension FeatureFlag {
             return "Shared Login"
         case .newLandingScreen:
             return "Jetpack and WordPress new landing screens"
+        case .newCoreDataContext:
+            return "Use new Core Data context structure (Require app restart)"
         }
     }
 

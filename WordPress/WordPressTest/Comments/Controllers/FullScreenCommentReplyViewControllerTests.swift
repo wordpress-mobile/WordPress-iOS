@@ -2,18 +2,21 @@
 import XCTest
 @testable import WordPress
 
-class FullScreenCommentReplyViewControllerTests: XCTestCase {
+class FullScreenCommentReplyViewControllerTests: CoreDataTestCase {
+    private var viewModel: FullScreenCommentReplyViewModelType!
     private var controller: FullScreenCommentReplyViewController!
     private var window: UIWindow!
 
     override func setUp() {
-        controller = FullScreenCommentReplyViewController.newEdit()
+        viewModel = FullScreenCommentReplyViewModelMock(context: mainContext)
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+
         window = UIWindow()
 
         XCTAssertNotNil(controller)
         XCTAssertNotNil(window)
 
-        loadView(forController: controller, inWindow: window)
+        load(controller, inWindow: window)
     }
 
     override func tearDown() {
@@ -28,18 +31,13 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
     /// Tests loading a new instance of the view controller and checking the content
     /// config property is being set correctly in the text view
     func testTextViewContentIsLoaded() {
-        guard let controller = FullScreenCommentReplyViewController.newEdit() else {
-            XCTFail("Controller is nil")
-            return
-        }
-
-
         let content = "Test Content"
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+
         controller.content = content
 
-        loadView(forController: controller, inWindow: UIWindow())
+        load(controller, inWindow: UIWindow())
         XCTAssertEqual(content, controller.textView.text)
-
     }
 
     /// Tests the button state becomes correctly enabled
@@ -62,6 +60,37 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
         }
     }
 
+    /// Test if SuggestionsTableView is visible when searchText is provided and it is already opened when text input is collapsed
+    func testSuggestionListVisibleWhenAlreadyVisibleWhenCollapsed() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+        controller.enableSuggestions(with: blog.dotComID!, prominentSuggestionsIds: [], searchText: "@Ren")
+        controller.content = "Test"
+        load(controller, inWindow: UIWindow())
+
+        let view = controller.navigationController?.view.subviews.first { view in
+            return view is SuggestionsTableView
+        }
+        let suggestionsTableView = try XCTUnwrap(view)
+        XCTAssertFalse(suggestionsTableView.isHidden)
+    }
+
+    /// Test if SuggestionsTableView is not visible when expanded
+    func testSuggestionListNotVisibleWhenExpanded() throws {
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+        controller.enableSuggestions(with: blog.dotComID!, prominentSuggestionsIds: [], searchText: "")
+        controller.content = "Test"
+        load(controller, inWindow: UIWindow())
+
+        let view = controller.navigationController?.view.subviews.first { view in
+            return view is SuggestionsTableView
+        }
+        let suggestionsTableView = try XCTUnwrap(view)
+        XCTAssertTrue(suggestionsTableView.isHidden)
+    }
 
     /// Tests the onExitFullscreen callback is correctly called when pressing the cancel button
     /// also validates the arguments being triggered are correct
@@ -71,11 +100,38 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
 
         controller.textView.text = testContent
 
-        controller.onExitFullscreen = { (shouldSave, content) in
+        controller.onExitFullscreen = { (shouldSave, content, lastSearchText) in
             callbackExpectation.fulfill()
 
             XCTAssertFalse(shouldSave)
             XCTAssertEqual(content, testContent)
+            XCTAssertNil(lastSearchText)
+        }
+
+        controller.btnExitFullscreenPressed()
+
+        waitForExpectations(timeout: 1)
+    }
+
+    /// Tests the onExitFullscreen callback is correctly called when pressing the cancel button
+    /// also validates the arguments being triggered are correct
+    func testExitCallbackCalledWithLastSearchTextWhenCancelPressed() throws {
+        let testContent = "Test - Cancel"
+        let expectedLastSearchText = "@Ren"
+        let callbackExpectation = expectation(description: "onExitFullscreen is called successfully when the cancel button is pressed")
+        let blog = BlogBuilder(mainContext).build()
+        try mainContext.save()
+        controller = FullScreenCommentReplyViewController(viewModel: viewModel)
+        controller.enableSuggestions(with: blog.dotComID!, prominentSuggestionsIds: [], searchText: expectedLastSearchText)
+        controller.content = testContent
+        load(controller, inWindow: UIWindow())
+
+        controller.onExitFullscreen = { (shouldSave, content, lastSearchText) in
+            callbackExpectation.fulfill()
+
+            XCTAssertFalse(shouldSave)
+            XCTAssertEqual(content, testContent)
+            XCTAssertEqual(lastSearchText, expectedLastSearchText)
         }
 
         controller.btnExitFullscreenPressed()
@@ -91,11 +147,12 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
 
         controller.textView.text = testContent
 
-        controller.onExitFullscreen = { (shouldSave, content) in
+        controller.onExitFullscreen = { (shouldSave, content, lastSearchText) in
             callbackExpectation.fulfill()
 
             XCTAssertTrue(shouldSave)
             XCTAssertEqual(content, testContent)
+            XCTAssertNil(lastSearchText)
         }
 
         controller.btnSavePressed()
@@ -105,12 +162,15 @@ class FullScreenCommentReplyViewControllerTests: XCTestCase {
 
     // MARK: - Helpers
 
-    /// Helper method to trigger the viewDidLoad method
+    /// Helper method to trigger the viewDidLoad, viewWillAppear and viewDidAppear methods
     /// - Parameters:
-    ///   - forController: The controller whose view you want to load
+    ///   - controller: The controller you want to load
     ///   - inWindow: The window instance you want to load it in
-    private func loadView(forController: UIViewController, inWindow: UIWindow) {
-        inWindow.addSubview(forController.view)
+    private func load(_ controller: UIViewController, inWindow: UIWindow) {
+        inWindow.addSubview(controller.view)
+        inWindow.rootViewController = LightNavigationController(rootViewController: controller)
+        inWindow.makeKeyAndVisible()
+        controller.beginAppearanceTransition(true, animated: false)
         RunLoop.current.run(until: Date())
     }
 }

@@ -1,9 +1,3 @@
-Auf, auf und davon! Du kannst jetzt selbst-gehostete Websites hinzufügen und dich darüber in der Jetpack-App anmelden.
+Links in Action Sheets (die Pop-up-Menüs auf deinem Gerät, über die dir zusätzliche Optionen angezeigt werden) sind jetzt blau statt grün.
 
-Schau dir in den Fenstern mit Neuigkeiten zu Funktionen an, was es neues in der App gibt. Ganz schön meta.
-
-Kein Grund mehr zu zittern — die Seitenliste friert jetzt nicht mehr ein, wenn das Beitragsbild einer Seite ein GIF ist.
-
-Da selbst-gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
-
-Du bist Jetpack-Fan? Dann erzähl deinen Freunden davon. Du kannst die App jetzt über die Bildschirme „Über“ und „Ich“ teilen.
+Zudem haben wir dafür gesorgt, dass Jetpack Social im Teilen-Bereich deiner Website-Einstellungen sowie in deinen Beitrags-Einstellungen auffälliger angezeigt wird. Los geht's mit den sozialen Medien.

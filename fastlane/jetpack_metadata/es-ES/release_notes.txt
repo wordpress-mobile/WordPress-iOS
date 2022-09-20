@@ -1,9 +1,3 @@
-¡Manos a la obra! Ahora puedes añadir y acceder mediante sitios autoalojados a la aplicación de Jetpack.
+Ahora, los enlaces de las hojas de acción (es decir, los menús emergentes que aparecen en tu dispositivo y muestran opciones adicionales) son de color azul en lugar de verde.
 
-Consulta las novedades de la aplicación en las ventanas modales de nuevas funciones. Hablemos sobre metadatos.
-
-Ya no hace falta abrigarse. La lista de páginas ya no se quedará congelada cuando la imagen destacada de una página es un GIF.
-
-Las estadísticas de descarga de archivos no son compatibles con los sitios autoalojados de Jetpack, por lo que no podrás consultar esa sección en la sección Estadísticas nunca más.
-
-¿Te gusta usar Jetpack? Cuéntales a tus amigos todo lo que deben saber sobre este servicio. Ahora puedes compartir la aplicación a través de las pantallas Acerca de y Yo.
+También hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.

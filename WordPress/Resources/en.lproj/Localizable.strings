@@ -1940,9 +1940,6 @@
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Connection not available";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Connections";
-
 /* The menu item to select during a guided tour. */
 "connections" = "connections";
 
@@ -4169,6 +4166,18 @@
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack Settings";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Social connection synchronization failed";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social Connections";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social service synchronization failed";
+
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
 
@@ -4189,6 +4198,45 @@
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress is better with Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Add an author";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Build a site";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Check notifications";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Share on Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Fix a security issue";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Post a photo";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Read an article";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Respond to comments";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Restore a backup";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Search for plugins";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Search for posts or sites";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Watch your stats";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Write a blog";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
@@ -6127,15 +6175,6 @@
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Publicize connection synchronization failed";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Publicize service synchronization failed";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicize to %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -7048,6 +7087,9 @@
 /* Label for action to share post. */
 "Share Post" = "Share Post";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Share post to %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Share with Friends";
 
@@ -7058,8 +7100,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Share your story here...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
@@ -9662,6 +9703,10 @@
 
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "WordPress.org Plugin Page";
+
+/* Caption displayed during the login flow. */
+"wordpress.prologue.splash.caption" = "Write, edit, and publish
+from anywhere.";
 
 /* Title for the card displaying draft posts. */
 "Work on a draft post" = "Work on a draft post";
