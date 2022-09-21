@@ -404,22 +404,10 @@ private extension CommentDetailViewController {
             rows.append(.replyIndicator)
         }
 
-        // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
-//        if comment.authorURL() != nil {
-//            rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
-//        }
-
         // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
         guard comment.allowsModeration() else {
             return rows
         }
-
-        // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-//        if !comment.author_email.isEmpty {
-//            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email, image: Style.externalIconImage))
-//        }
-
-//        rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
 
         if comment.deleteWillBePermanent() {
             rows.append(.deleteComment)
@@ -714,7 +702,13 @@ private extension CommentDetailViewController {
     }
 
     func presentUserInfoSheet(_ senderView: UIView) {
-        let viewModel = CommentDetailInfoViewModel(url: comment.authorURL(), email: comment.author_email, ipAddress: comment.author_ip)
+        let viewModel = CommentDetailInfoViewModel(
+            url: comment.authorURL(),
+            urlToDisplay: comment.authorUrlForDisplay(),
+            email: comment.author_email,
+            ipAddress: comment.author_ip,
+            isAdmin: comment.allowsModeration()
+        )
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
         viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
