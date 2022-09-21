@@ -43,6 +43,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                 approveComment()
             case .spam:
                 spamComment()
+            case .unapproved:
+                trashComment()
             default:
                 break
             }
@@ -117,12 +119,27 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                        normalColor: Constants.deleteButtonNormalColor,
                        highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
         cell.delegate = self
         return cell
     }()
+
+    private lazy var trashButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .trashButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                       normalColor: Constants.deleteButtonNormalColor,
+                       highlightedColor: Constants.trashButtonHighlightColor,
+                       borderColor: .clear,
+                       buttonInsets: Constants.deleteButtonInsets,
+                       backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.delegate = self
+        return cell
+    }()
+
 
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
@@ -321,6 +338,8 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
+        static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
         static let notificationDetailSource = ["source": "notification_details"]
     }
 
@@ -409,10 +428,6 @@ private extension CommentDetailViewController {
             return rows
         }
 
-        if comment.deleteWillBePermanent() {
-            rows.append(.deleteComment)
-        }
-
         return rows
     }
 
@@ -421,6 +436,9 @@ private extension CommentDetailViewController {
         rows.append(.status(status: .approved))
         rows.append(.status(status: .pending))
         rows.append(.status(status: .spam))
+
+        rows.append(.deleteComment)
+
         return rows
     }
 
@@ -440,14 +458,18 @@ private extension CommentDetailViewController {
         tableView.reloadData()
     }
 
-
     /// Checks if the index path is positioned before the delete button cell.
     func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
-        guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+        switch sections[indexPath.section] {
+        case .content(_):
             return false
-        }
+        case .moderation(let rows):
+            guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+                return false
+            }
 
-        return indexPath.row == deleteCellIndex - 1
+            return indexPath.row == deleteCellIndex - 1
+        }
     }
 
     // MARK: Cell configuration
@@ -738,6 +760,7 @@ private extension String {
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
+    static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
 }
 
 private extension CommentStatusType {
@@ -931,7 +954,11 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return replyIndicatorCell
 
             case .deleteComment:
-                return deleteButtonCell
+                if comment.deleteWillBePermanent() {
+                    return deleteButtonCell
+                } else {
+                    return trashButtonCell
+                }
 
             case .status(let statusType):
                 return configuredStatusCell(for: statusType)
@@ -988,7 +1015,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                     break
                 }
                 commentStatus = statusType
-                tableView.reloadSections([1], with: .automatic)
                 notifyDelegateCommentModerated()
             default:
                 break
@@ -1192,7 +1218,11 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func buttonTapped() {
-        deleteButtonTapped()
+        if comment.deleteWillBePermanent() {
+            deleteButtonTapped()
+        } else {
+            commentStatus = .unapproved
+        }
     }
 
 }
