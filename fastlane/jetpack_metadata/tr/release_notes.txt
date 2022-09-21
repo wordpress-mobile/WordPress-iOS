@@ -1,9 +1,3 @@
-Yukarı, yukarı ve ileri! Artık Jetpack uygulamasında kullanıcı tarafından barındırılan siteler ekleyebilir ve giriş yapabilirsiniz.
+Eylem sayfalarındaki bağlantılar (cihazınızda ek seçenekler sağlayan açılır menüler) artık yeşil değil, mavi renkte.
 
-Yenilikler özelliği modellerinde uygulamadaki yenilikleri görün. Meta hakkında konuşun.
-
-Sıcak kalın dostlar—bir sayfanın öne çıkan görseli GIF olduğunda, sayfa listesi artık donmayacak.
-
-Dosya İndirme istatistikleri, kullanıcı tarafından barındırılan Jetpack sitelerinde desteklenmez, bu nedenle o bölümü artık İstatistikler bölümünüzde görmezsiniz.
-
-Jetpack kullanmayı seviyor musunuz? Arkadaşlarınıza ondan bahsedin. Artık Hakkında ve Ben ekranları aracılığıyla uygulamayı paylaşabilirsiniz.
+Ayrıca site ayarlarınızın Paylaşım bölümünde ve gönderi ayarlarınızda Jetpack Social'ı daha dikkat çekici hale getirdik. Haydi sosyalleşelim.

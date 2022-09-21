@@ -1,3 +1,1 @@
-Jangan khawatir, teman—daftar halaman tidak akan macet lagi jika gambar unggulan suatu halaman berbentuk GIF.
-
-Statistik Unduhan File tidak didukung di situs Jetpack yang dihosting sendiri. Jadi, Anda tidak akan lagi melihat bagian Unduhan File di Statistik.
+Rilis ini ringkas dan praktis: kami membuat Jetpack Social lebih mudah dikenali di bagian Berbagi pada pengaturan situs, serta pada pengaturan pos Anda. Mari berjejaring sosial.

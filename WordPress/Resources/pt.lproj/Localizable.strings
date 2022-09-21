@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -657,9 +657,6 @@
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Ligação indisponível";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Ligações";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -2192,9 +2189,6 @@
 /* Insights 'Publicize' header */
 "Publicize" = "Publicitar";
 
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicitar em %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -2532,8 +2526,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Partilhe aqui a sua história...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partilha";

@@ -1,3 +1,1 @@
-Non preoccupatevi, amici: l'elenco delle pagine non si bloccherà più quando l'immagine in evidenza di una pagina è una GIF.
-
-Le statistiche sui download dei file non sono supportate sui siti Jetpack ospitati personalmente, quindi non vedrai più la relativa sezione nelle tue Statistiche.
+Questo rilascio è breve e gradito: abbiamo reso Jetpack Social più chiaro nella sezione Condivisione delle impostazioni del sito, nonché in quelle dell'articolo. Diventa social.

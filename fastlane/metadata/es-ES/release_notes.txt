@@ -1,4 +1,1 @@
-Ya no hace falta abrigarse. La lista de páginas ya no se quedará congelada cuando la imagen destacada de una página es un GIF.
-
-Las estadísticas de descarga de archivos no son compatibles con los sitios autoalojados de Jetpack, por lo que no podrás consultar esa sección en la sección Estadísticas nunca más.
-
+Esta actualización es breve y concisa: hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.

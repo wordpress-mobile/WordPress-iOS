@@ -38,7 +38,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
@@ -91,7 +91,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -274,7 +274,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
         // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     }
 }
 
