@@ -12,13 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackInstallPromptViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundView" destination="2I1-fs-ZEe" id="Idh-Gz-hWt"/>
                 <outlet property="buttonsStackView" destination="dem-Gw-33r" id="Pl4-G2-SGS"/>
+                <outlet property="descriptionLabel" destination="TqQ-2O-fk1" id="yXG-Uc-qfK"/>
                 <outlet property="installButton" destination="OR8-xD-k9A" id="reu-mk-3O1"/>
-                <outlet property="learnMoreButton" destination="HTj-l0-UU7" id="rel-kK-9D9"/>
-                <outlet property="lineItemAndMore" destination="gjn-2q-9W6" id="ThZ-iP-Job"/>
-                <outlet property="lineItemNotifications" destination="o3P-Vj-6QF" id="4gP-Fe-MKj"/>
-                <outlet property="lineItemStats" destination="k6V-58-BCL" id="QK6-Xr-Fd6"/>
                 <outlet property="noThanksButton" destination="gpx-gG-s9d" id="xoH-Lr-VIa"/>
                 <outlet property="textStackView" destination="Msb-FG-hPu" id="f4v-2M-fug"/>
                 <outlet property="titleLabel" destination="z18-fN-ZJi" id="Fgm-tN-OYA"/>
@@ -30,98 +26,34 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2I1-fs-ZEe">
-                    <rect key="frame" x="0.0" y="44" width="414" height="630"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDs-Rf-ZMD">
-                    <rect key="frame" x="20" y="54" width="374" height="610"/>
+                    <rect key="frame" x="20" y="54" width="374" height="670"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="69h-bg-uwt">
-                            <rect key="frame" x="0.0" y="0.0" width="374" height="610"/>
+                            <rect key="frame" x="0.0" y="0.0" width="374" height="246"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-FG-hPu">
-                                    <rect key="frame" x="0.0" y="157" width="374" height="296"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-FG-hPu">
+                                    <rect key="frame" x="0.0" y="20" width="374" height="206"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="57D-Bk-kaD" userLabel="Messaging Stack View">
-                                            <rect key="frame" x="10.5" y="0.0" width="353" height="135"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jetpack-long-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OYd-i2-UsM">
-                                                    <rect key="frame" x="76.5" y="0.0" width="200" height="105"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="Vds-T2-ncZ"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Would you like to install Jetpack?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z18-fN-ZJi">
-                                                    <rect key="frame" x="0.0" y="105" width="353" height="30"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Tes-Fb-IIl">
-                                            <rect key="frame" x="2" y="155" width="370.5" height="141"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3g6-0v-bnW" userLabel="List Line">
-                                                    <rect key="frame" x="0.0" y="0.0" width="370.5" height="38.5"/>
-                                                    <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="jetpack-icon-stats" translatesAutoresizingMaskIntoConstraints="NO" id="opB-p6-YlG">
-                                                            <rect key="frame" x="0.0" y="7.5" width="24" height="24"/>
-                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="24" id="SGl-ph-K18"/>
-                                                                <constraint firstAttribute="height" constant="24" id="v4X-Lm-gRK"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clear, concise, and actionable site stats about visitors and traffic." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6V-58-BCL">
-                                                            <rect key="frame" x="34" y="0.0" width="336.5" height="38.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <color key="textColor" name="Gray0"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="VXD-if-1zm" userLabel="List Line">
-                                                    <rect key="frame" x="0.0" y="58.5" width="370.5" height="38.5"/>
-                                                    <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="jetpack-icon-notifications" translatesAutoresizingMaskIntoConstraints="NO" id="FMe-xj-lzO">
-                                                            <rect key="frame" x="0.0" y="7.5" width="24" height="24"/>
-                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="24" id="9bY-H4-MUC"/>
-                                                                <constraint firstAttribute="height" constant="24" id="JzJ-FI-A4x"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep up with your site’s activity, even when you're away from your desk." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o3P-Vj-6QF">
-                                                            <rect key="frame" x="34" y="0.0" width="336.5" height="38.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <color key="textColor" name="Gray0"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="h9w-na-DYK" userLabel="List Line">
-                                                    <rect key="frame" x="0.0" y="117" width="370.5" height="24"/>
-                                                    <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="ftB-MP-LeI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="24" id="dLv-K5-Mfj"/>
-                                                                <constraint firstAttribute="height" constant="24" id="n0f-Tr-rjd"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="... and more!" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gjn-2q-9W6">
-                                                            <rect key="frame" x="34" y="2.5" width="336.5" height="19.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                            <color key="textColor" name="Gray0"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                        </stackView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jetpack-install-prompt-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OYd-i2-UsM">
+                                            <rect key="frame" x="0.0" y="0.0" width="98" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="52z-hH-Fe2"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make WordPress better by installing the Jetpack plugin." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z18-fN-ZJi">
+                                            <rect key="frame" x="0.0" y="70" width="304.5" height="61"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqQ-2O-fk1" userLabel="Description">
+                                            <rect key="frame" x="0.0" y="151" width="358.5" height="55"/>
+                                            <string key="text">Get access to all your Jetpack features including Stats, Notifications, Backup, Security and much more by installing the Jetpack plugin for WordPress.</string>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </stackView>
                             </subviews>
@@ -129,7 +61,7 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Msb-FG-hPu" secondAttribute="trailing" id="7at-nh-oXA"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="leading" secondItem="69h-bg-uwt" secondAttribute="leading" id="8lm-cv-1EJ"/>
-                                <constraint firstItem="Msb-FG-hPu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="69h-bg-uwt" secondAttribute="top" id="LxU-4d-MmZ"/>
+                                <constraint firstItem="Msb-FG-hPu" firstAttribute="top" secondItem="69h-bg-uwt" secondAttribute="top" constant="20" id="LxU-4d-MmZ"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Msb-FG-hPu" secondAttribute="bottom" id="a8e-nN-bdB"/>
                                 <constraint firstItem="Msb-FG-hPu" firstAttribute="centerY" secondItem="69h-bg-uwt" secondAttribute="centerY" id="ej7-kc-ALM"/>
                             </constraints>
@@ -145,16 +77,16 @@
                     </constraints>
                 </scrollView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dem-Gw-33r" userLabel="Bottom Button Stack View">
-                    <rect key="frame" x="20" y="674" width="374" height="164"/>
+                    <rect key="frame" x="20" y="734" width="374" height="104"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTj-l0-UU7" userLabel="Learn More" customClass="FancyButton" customModule="WordPressUI">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpx-gG-s9d" customClass="FancyButton" customModule="WordPressUI">
                             <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="44" id="hah-Fz-EQW"/>
+                                <constraint firstAttribute="height" constant="44" id="2Qd-Nj-wvZ"/>
                             </constraints>
-                            <state key="normal" title="Learn More"/>
+                            <state key="normal" title="No Thanks"/>
                             <connections>
-                                <action selector="learnMoreButtonTapped:" destination="-1" eventType="touchUpInside" id="sOG-vP-yt3"/>
+                                <action selector="noThanksTapped:" destination="-1" eventType="touchUpInside" id="KsV-SG-dUO"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OR8-xD-k9A" customClass="FancyButton" customModule="WordPressUI">
@@ -167,32 +99,18 @@
                                 <action selector="installTapped:" destination="-1" eventType="touchUpInside" id="Yr2-KD-Aqp"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpx-gG-s9d" customClass="FancyButton" customModule="WordPressUI">
-                            <rect key="frame" x="0.0" y="120" width="374" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="44" id="2Qd-Nj-wvZ"/>
-                            </constraints>
-                            <state key="normal" title="No Thanks"/>
-                            <connections>
-                                <action selector="noThanksTapped:" destination="-1" eventType="touchUpInside" id="KsV-SG-dUO"/>
-                            </connections>
-                        </button>
                     </subviews>
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="wO3-am-aF5"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="2I1-fs-ZEe" firstAttribute="leading" secondItem="wO3-am-aF5" secondAttribute="leading" id="0aI-di-tCV"/>
                 <constraint firstItem="wO3-am-aF5" firstAttribute="bottom" secondItem="dem-Gw-33r" secondAttribute="bottom" constant="24" id="2Hs-Da-wD5"/>
                 <constraint firstAttribute="trailingMargin" secondItem="dem-Gw-33r" secondAttribute="trailing" id="8Zc-9k-zy5"/>
-                <constraint firstItem="2I1-fs-ZEe" firstAttribute="top" secondItem="wO3-am-aF5" secondAttribute="top" id="OB1-PY-JBZ"/>
                 <constraint firstItem="dem-Gw-33r" firstAttribute="top" secondItem="DDs-Rf-ZMD" secondAttribute="bottom" constant="10" id="Oal-zo-d9X"/>
-                <constraint firstItem="wO3-am-aF5" firstAttribute="trailing" secondItem="2I1-fs-ZEe" secondAttribute="trailing" id="Ogc-9W-dcL"/>
                 <constraint firstAttribute="trailingMargin" secondItem="DDs-Rf-ZMD" secondAttribute="trailing" id="dmp-Gc-nAr"/>
                 <constraint firstItem="DDs-Rf-ZMD" firstAttribute="top" secondItem="wO3-am-aF5" secondAttribute="top" constant="10" id="e2E-vg-reb"/>
                 <constraint firstAttribute="leadingMargin" secondItem="dem-Gw-33r" secondAttribute="leading" id="fuQ-My-laL"/>
-                <constraint firstItem="dem-Gw-33r" firstAttribute="top" secondItem="2I1-fs-ZEe" secondAttribute="bottom" id="mJb-ww-MMq"/>
                 <constraint firstItem="DDs-Rf-ZMD" firstAttribute="leading" secondItem="ae3-3D-D7u" secondAttribute="leadingMargin" id="n39-um-kq3"/>
             </constraints>
             <point key="canvasLocation" x="-128" y="63"/>
@@ -287,7 +205,7 @@
         <image name="cloud.fill" catalog="system" width="128" height="88"/>
         <image name="jetpack-icon-notifications" width="24" height="24"/>
         <image name="jetpack-icon-stats" width="35" height="35"/>
-        <image name="jetpack-long-logo" width="386" height="105"/>
+        <image name="jetpack-install-prompt-logo" width="98" height="56"/>
         <image name="jetpack-scan-menu-icon" width="24" height="24"/>
         <namedColor name="Gray0">
             <color red="0.96470588235294119" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
