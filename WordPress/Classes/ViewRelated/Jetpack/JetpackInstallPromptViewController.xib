@@ -14,8 +14,8 @@
             <connections>
                 <outlet property="buttonsStackView" destination="dem-Gw-33r" id="Pl4-G2-SGS"/>
                 <outlet property="descriptionLabel" destination="TqQ-2O-fk1" id="yXG-Uc-qfK"/>
+                <outlet property="dismissButton" destination="gpx-gG-s9d" id="dBl-2t-1yu"/>
                 <outlet property="installButton" destination="OR8-xD-k9A" id="reu-mk-3O1"/>
-                <outlet property="noThanksButton" destination="gpx-gG-s9d" id="xoH-Lr-VIa"/>
                 <outlet property="textStackView" destination="Msb-FG-hPu" id="f4v-2M-fug"/>
                 <outlet property="titleLabel" destination="z18-fN-ZJi" id="Fgm-tN-OYA"/>
                 <outlet property="view" destination="ae3-3D-D7u" id="a7K-Mo-dvf"/>
@@ -86,7 +86,7 @@
                             </constraints>
                             <state key="normal" title="No Thanks"/>
                             <connections>
-                                <action selector="noThanksTapped:" destination="-1" eventType="touchUpInside" id="KsV-SG-dUO"/>
+                                <action selector="dismissTapped:" destination="-1" eventType="touchUpInside" id="ihX-CN-mM8"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OR8-xD-k9A" customClass="FancyButton" customModule="WordPressUI">

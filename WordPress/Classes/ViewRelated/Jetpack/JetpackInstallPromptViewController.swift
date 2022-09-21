@@ -19,7 +19,7 @@ class JetpackInstallPromptViewController: UIViewController {
 
     @IBOutlet weak var buttonsStackView: UIStackView!
     @IBOutlet weak var installButton: FancyButton!
-    @IBOutlet weak var noThanksButton: FancyButton!
+    @IBOutlet weak var dismissButton: FancyButton!
 
     private lazy var learnMoreButton: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(target: self, action: #selector(learnMoreButtonTapped))
@@ -85,7 +85,7 @@ class JetpackInstallPromptViewController: UIViewController {
         coordinator?.openJetpackRemoteInstall()
     }
 
-    @IBAction func noThanksTapped(_ sender: Any) {
+    @IBAction func dismissTapped(_ sender: Any) {
         delegate?.jetpackInstallPromptDidDismiss(.noThanks)
         dismiss(animated: true)
     }
@@ -107,7 +107,7 @@ class JetpackInstallPromptViewController: UIViewController {
         descriptionLabel.text = Strings.description
 
         installButton.setTitle(Strings.installButton, for: .normal)
-        noThanksButton.setTitle(Strings.noThanksButton, for: .normal)
+        dismissButton.setTitle(Strings.dismissButton, for: .normal)
         learnMoreButton.title = Strings.learnMoreButton
     }
 
@@ -128,10 +128,10 @@ class JetpackInstallPromptViewController: UIViewController {
     private func configureButtons() {
         installButton.isPrimary = true
 
-        noThanksButton.secondaryNormalBorderColor = .clear
-        noThanksButton.secondaryHighlightBorderColor = .clear
-        noThanksButton.secondaryTitleColor = JetpackPromptStyles.Button.textColor
-        noThanksButton.secondaryHighlightBackgroundColor = .clear
+        dismissButton.secondaryNormalBorderColor = .clear
+        dismissButton.secondaryHighlightBorderColor = .clear
+        dismissButton.secondaryTitleColor = JetpackPromptStyles.Button.textColor
+        dismissButton.secondaryHighlightBackgroundColor = .clear
 
         learnMoreButton.setTitleTextAttributes([.foregroundColor: JetpackPromptStyles.Button.textColor], for: .normal)
         learnMoreButton.setTitleTextAttributes([.foregroundColor: JetpackPromptStyles.Button.highlightedTextColor], for: .highlighted)
@@ -148,10 +148,10 @@ class JetpackInstallPromptViewController: UIViewController {
         installButton.accessibilityHint = Strings.installButtonHint
         installButton.accessibilityTraits = .button
 
-        noThanksButton.isAccessibilityElement = true
-        noThanksButton.accessibilityLabel = Strings.noThanksButton
-        noThanksButton.accessibilityHint = Strings.noThanksButtonHint
-        noThanksButton.accessibilityTraits = .button
+        dismissButton.isAccessibilityElement = true
+        dismissButton.accessibilityLabel = Strings.dismissButton
+        dismissButton.accessibilityHint = Strings.dismissButtonHint
+        dismissButton.accessibilityTraits = .button
 
         textStackView.isAccessibilityElement = true
         textStackView.accessibilityLabel = [Strings.title, Strings.description].joined(separator: "\n")
@@ -173,8 +173,8 @@ private struct Strings {
     static let learnMoreButtonHint = NSLocalizedString("Opens Jetpack website for more information.", comment: "VoiceOver accessibility hint, informating the user that the button opens a website with more information")
     static let installButton = NSLocalizedString("Install Jetpack", comment: "Button title, accepting the install offer")
     static let installButtonHint = NSLocalizedString("Opens the Jetpack installation view.", comment: "VoiceOver accessibility hint, informating the user that the button opens a view that installs Jetpack")
-    static let noThanksButton = NSLocalizedString("Continue without Jetpack", comment: "Button title, declining the offer")
-    static let noThanksButtonHint = NSLocalizedString("Closes the installation prompt.", comment: "VoiceOver accessibility hint, informating the user that the button closes current view")
+    static let dismissButton = NSLocalizedString("Continue without Jetpack", comment: "Button title, declining the offer")
+    static let dismissButtonHint = NSLocalizedString("Closes the installation prompt.", comment: "VoiceOver accessibility hint, informating the user that the button closes current view")
 }
 
 // MARK: - Styles
