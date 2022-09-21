@@ -722,7 +722,7 @@ private extension CommentDetailViewController {
     }
 
     func shareCommentURL(_ senderView: UIView) {
-        let viewModel = CommentDetailInfoViewModel(url: comment.commentURL(), email: comment.author_email, ipAddress: comment.author_ip)
+        let viewModel = CommentDetailInfoViewModel(url: comment.authorURL(), email: comment.author_email, ipAddress: comment.author_ip)
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)

@@ -25,7 +25,7 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
     func fetchUserDetails() -> [CommentDetailInfoUserDetails] {
         var details: [CommentDetailInfoUserDetails] = []
         if let url = url {
-            details.append(CommentDetailInfoUserDetails(title: Strings.addressLabelText, description: url.absoluteString))
+            details.append(CommentDetailInfoUserDetails(title: Strings.addressLabelText, description: url.relativeString))
         }
 
         if let email = email {

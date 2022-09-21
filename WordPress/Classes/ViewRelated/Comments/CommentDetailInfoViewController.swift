@@ -26,9 +26,13 @@ final class CommentDetailInfoViewController: UIViewController {
         addTableViewConstraints()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setPreferredContentSize()
+    }
+
     private func configureTableView() {
         tableView.dataSource = self
-//        tableView.register(UITableViewCell.self, cellReuseIdentifier: Self.cellReuseIdentifier)
         view.addSubview(tableView)
     }
 
@@ -39,6 +43,11 @@ final class CommentDetailInfoViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)
         ])
+    }
+
+    private func setPreferredContentSize() {
+        tableView.layoutIfNeeded()
+        preferredContentSize = tableView.contentSize
     }
 }
 
