@@ -206,7 +206,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.12'
+  pod 'Automattic-Tracks-iOS', '~> 0.13.0-beta.2'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -453,6 +453,19 @@ post_install do |installer|
       configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
     end
   end
+
+  # Fix a code signing issue in Xcode 14 beta.
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
+  # ====================================
+  #
+  # TODO: fix the linting issue if this workaround is still needed in Xcode 14 GM.
+  # rubocop:disable Style/CombinableLoops
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+    end
+  end
+  # rubocop:enable Style/CombinableLoops
 
   # Flag Alpha builds for Tracks
   # ============================

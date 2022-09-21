@@ -1,0 +1,3 @@
+Länkar i åtgärdsblad (popup-menyerna på din enhet som visar ytterligare alternativ) är nu blåa istället för gröna.
+
+Vi har också gjort Jetpack Social mer synligt i delningssektionen av dina webbplatsinställningar, samt i dina inläggsinställningar. Dags att vara social.

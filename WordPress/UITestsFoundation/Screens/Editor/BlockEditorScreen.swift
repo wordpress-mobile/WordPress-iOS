@@ -144,7 +144,7 @@ public class BlockEditorScreen: ScreenObject {
 
     public func openPostSettings() throws -> EditorPostSettings {
         moreButton.tap()
-        let postSettingsButton = app.sheets.buttons["Post Settings"] // Uses a localized string
+        let postSettingsButton = app.buttons["Post Settings"] // Uses a localized string
         postSettingsButton.tap()
 
         return try EditorPostSettings()
@@ -163,7 +163,7 @@ public class BlockEditorScreen: ScreenObject {
             app.otherElements["PopoverDismissRegion"].tap()
             dismissImageViewIfNeeded()
         } else {
-            app.sheets.buttons["Keep Editing"].tap()
+            app.buttons["Keep Editing"].tap()
         }
     }
 
@@ -219,7 +219,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func chooseFromDevice() throws -> MediaPickerAlbumScreen {
-        let imageDeviceButton = app.sheets.buttons["Choose from device"] // Uses a localized string
+        let imageDeviceButton = app.buttons["Choose from device"] // Uses a localized string
 
         imageDeviceButton.tap()
 

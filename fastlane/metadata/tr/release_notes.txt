@@ -1,0 +1,1 @@
+Bu sürüm kısa, öz ve çok güzel: Jetpack Social'ı site ayarlarınızın Paylaşım bölümünde ve gönderi ayarlarınızda daha belirgin hale getirdik. Haydi sosyalleşelim.
