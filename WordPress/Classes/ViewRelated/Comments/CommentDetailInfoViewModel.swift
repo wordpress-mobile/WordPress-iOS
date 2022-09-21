@@ -1,10 +1,14 @@
 import Foundation
 
 protocol CommentDetailInfoViewModelInputs {
+    func didSelectItem(at index: Int)
+}
+
+protocol CommentDetailInfoViewModelOutputs {
     func fetchUserDetails() -> [CommentDetailInfoUserDetails]
 }
 
-typealias CommentDetailInfoViewModelType = CommentDetailInfoViewModelInputs
+typealias CommentDetailInfoViewModelType = CommentDetailInfoViewModelInputs & CommentDetailInfoViewModelOutputs
 
 struct CommentDetailInfoUserDetails {
     let title: String
@@ -15,6 +19,8 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
     private let url: URL?
     private let email: String?
     private let ipAddress: String?
+
+    weak var view: CommentDetailInfoView?
 
     init(url: URL?, email: String?, ipAddress: String?) {
         self.url = url
@@ -37,6 +43,14 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
         }
 
         return details
+    }
+
+    func didSelectItem(at index: Int) {
+        guard fetchUserDetails()[index].title == Strings.addressLabelText, let url = url else {
+            return
+        }
+
+        view?.showAuthorPage(url: url)
     }
 
     private enum Strings {

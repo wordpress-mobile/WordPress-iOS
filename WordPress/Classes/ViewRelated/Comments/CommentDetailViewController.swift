@@ -487,7 +487,7 @@ private extension CommentDetailViewController {
         }
 
         cell.accessoryButtonAction = { [weak self] senderView in
-            self?.shareCommentURL(senderView)
+            self?.presentUserInfoSheet(senderView)
         }
 
         cell.likeButtonAction = { [weak self] in
@@ -713,17 +713,10 @@ private extension CommentDetailViewController {
         })
     }
 
-    func visitAuthorURL() {
-        guard let authorURL = comment.authorURL() else {
-            return
-        }
-
-        openWebView(for: authorURL)
-    }
-
-    func shareCommentURL(_ senderView: UIView) {
+    func presentUserInfoSheet(_ senderView: UIView) {
         let viewModel = CommentDetailInfoViewModel(url: comment.authorURL(), email: comment.author_email, ipAddress: comment.author_ip)
         let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
 

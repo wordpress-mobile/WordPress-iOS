@@ -2,6 +2,10 @@ import Foundation
 import WordPressUI
 import UIKit
 
+protocol CommentDetailInfoView: AnyObject {
+    func showAuthorPage(url: URL)
+}
+
 final class CommentDetailInfoViewController: UIViewController {
     private static let cellReuseIdentifier = "infoCell"
     private let tableView: UITableView = {
@@ -33,6 +37,7 @@ final class CommentDetailInfoViewController: UIViewController {
 
     private func configureTableView() {
         tableView.dataSource = self
+        tableView.delegate = self
         view.addSubview(tableView)
     }
 
@@ -48,6 +53,15 @@ final class CommentDetailInfoViewController: UIViewController {
     private func setPreferredContentSize() {
         tableView.layoutIfNeeded()
         preferredContentSize = tableView.contentSize
+    }
+}
+
+// MARK: - CommentDetailInfoView
+extension CommentDetailInfoViewController: CommentDetailInfoView {
+    func showAuthorPage(url: URL) {
+        let viewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "comment_detail")
+        let navigationControllerToPresent = UINavigationController(rootViewController: viewController)
+        present(navigationControllerToPresent, animated: true, completion: nil)
     }
 }
 
@@ -77,6 +91,13 @@ extension CommentDetailInfoViewController: UITableViewDataSource {
         cell.detailTextLabel?.text = info.description.isEmpty ? " " : info.description // prevent the cell from collapsing due to empty label text.
 
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension CommentDetailInfoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectItem(at: indexPath.item)
     }
 }
 
