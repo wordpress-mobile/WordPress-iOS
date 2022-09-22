@@ -139,6 +139,7 @@ class JetpackInstallPromptViewController: UIViewController {
         dismissButton.secondaryNormalBorderColor = .clear
         dismissButton.secondaryHighlightBorderColor = .clear
         dismissButton.secondaryTitleColor = JetpackPromptStyles.Button.textColor
+        dismissButton.secondaryNormalBackgroundColor = .clear
         dismissButton.secondaryHighlightBackgroundColor = .clear
 
         learnMoreButton.setTitleTextAttributes([.foregroundColor: JetpackPromptStyles.Button.textColor], for: .normal)
@@ -188,17 +189,17 @@ private struct Strings {
 // MARK: - Styles
 private struct JetpackPromptStyles {
     struct Button {
-        static let textColor = UIColor.primary
-        static let highlightedTextColor = UIColor.primaryDark
+        static let textColor: UIColor = .primary
+        static let highlightedTextColor: UIColor = .primaryDark
     }
 
     struct Title {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .semibold)
-        static let textColor: UIColor = .black
+        static let textColor: UIColor = .text
     }
 
     struct Description {
         static let font: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-        static let textColor: UIColor = .black
+        static let textColor: UIColor = .text
     }
 }
