@@ -45,9 +45,10 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v20.7-whats-new"
+msgctxt "v20.8-whats-new"
 msgid ""
-"This release is short and sweet: we’ve made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.\n"
+"We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.\n"
+"We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
