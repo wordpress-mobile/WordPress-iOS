@@ -222,9 +222,7 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  # pod 'WordPressAuthenticator', '~> 2.1'
-  pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/jetpack-landing-screen-blur-effect'
-  # pod 'WordPressAuthenticator', '~> 2.3.0'
+  pod 'WordPressAuthenticator', '~> 3.2.0-beta'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
