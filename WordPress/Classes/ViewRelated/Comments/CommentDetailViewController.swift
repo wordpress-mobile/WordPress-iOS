@@ -219,6 +219,19 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return button
     }()
 
+    private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: comment.allowsModeration()
+            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
+            : UIImage(systemName: Style.Content.shareIconImageName),
+            style: .plain,
+            target: self,
+            action: #selector(shareCommentURL)
+        )
+        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
+        return button
+    }()
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -392,9 +405,12 @@ private extension CommentDetailViewController {
     }
 
     func configureNavBarButton() {
+        var barItems: [UIBarButtonItem] = []
+        barItems.append(shareBarButtonItem)
         if comment.allowsModeration() {
-            navigationItem.setRightBarButton(editBarButtonItem, animated: false)
+            barItems.append(editBarButtonItem)
         }
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     func configureTable() {
@@ -423,11 +439,6 @@ private extension CommentDetailViewController {
             rows.append(.replyIndicator)
         }
 
-        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
-        guard comment.allowsModeration() else {
-            return rows
-        }
-
         return rows
     }
 
@@ -446,7 +457,9 @@ private extension CommentDetailViewController {
         var sections: [SectionType] = []
 
         sections.append(.content(configureContentRows()))
-        sections.append(.moderation(configureModeratationRows()))
+        if comment.allowsModeration() {
+            sections.append(.moderation(configureModeratationRows()))
+        }
         self.sections = sections
     }
 
@@ -723,6 +736,19 @@ private extension CommentDetailViewController {
         })
     }
 
+    @objc func shareCommentURL(_ senderView: UIView) {
+        guard let commentURL = comment.commentURL() else {
+            return
+        }
+
+        // track share intent.
+        WPAnalytics.track(.siteCommentsCommentShared)
+
+        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = senderView
+        present(activityViewController, animated: true, completion: nil)
+    }
+
     func presentUserInfoSheet(_ senderView: UIView) {
         let viewModel = CommentDetailInfoViewModel(
             url: comment.authorURL(),
@@ -735,13 +761,6 @@ private extension CommentDetailViewController {
         viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
-
-//        // track share intent.
-//        WPAnalytics.track(.siteCommentsCommentShared)
-//
-//        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-//        activityViewController.popoverPresentationController?.sourceView = senderView
-//        present(activityViewController, animated: true, completion: nil)
     }
 }
 
@@ -973,7 +992,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .content:
             return nil
         case .moderation:
-            return "STATUS"
+            return NSLocalizedString("STATUS", comment: "Section title for the moderation section of the comment details screen.")
         }
     }
 

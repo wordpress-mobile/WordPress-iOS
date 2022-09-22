@@ -166,13 +166,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    /// Controls the visibility of the moderation bar view.
-//    private var isModerationEnabled: Bool = false {
-//        didSet {
-//            updateModerationBarVisibility()
-//        }
-//    }
-
     private var isReactionBarVisible: Bool {
         return isCommentReplyEnabled || isCommentLikesEnabled
     }
