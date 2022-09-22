@@ -1,4 +1,2 @@
-* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
-* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
-* [***] [internal] Update Sentry, our crash monitoring tool, to its latest major version [#19315]
-
+We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
+We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.
