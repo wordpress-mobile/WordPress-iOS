@@ -32,6 +32,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
+@property (nonatomic, strong) AccountService *accountService;
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -78,12 +79,14 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
     controller.source = source;
+    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     return controller;
 }
 
 + (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
+    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     [controller setupWithPostID:postID siteID:siteID];
     [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;
@@ -522,6 +525,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
     self.highlightedIndexPath = indexPathForCommentRepliedTo;
     _indexPathForCommentRepliedTo = indexPathForCommentRepliedTo;
+    
+    [self refreshProminentSuggestions];
 }
 
 - (UIView *)cachedHeaderView {
@@ -671,7 +676,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     return self.shouldDisplayReplyTextView && [self shouldShowSuggestionsFor:self.post.siteID];
 }
 
-
 #pragma mark - View Refresh Helpers
 
 - (void)refreshAndSync
@@ -682,7 +686,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
     [self refreshTableViewAndNoResultsView];
-
     [self.syncHelper syncContent];
 }
 
@@ -722,6 +725,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)refreshSuggestionsTableView
 {
     self.suggestionsTableView.enabled = self.shouldDisplaySuggestionsTableView;
+    [self refreshProminentSuggestions];
+}
+
+- (void)refreshProminentSuggestions
+{
+    NSIndexPath *commentIndexPath = self.indexPathForCommentRepliedTo;
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    NSNumber *defaultAccountId = defaultAccount ? defaultAccount.userID : nil;
+    NSNumber *postAuthorId = self.post ? self.post.authorID : nil;
+    Comment *comment = commentIndexPath ? [self.tableViewHandler.resultsController objectAtIndexPath:commentIndexPath] : nil;
+    NSNumber *commentAuthorId = comment ? [NSNumber numberWithInt:comment.authorID] : nil;
+    self.suggestionsTableView.prominentSuggestionsIds = [SuggestionsTableView prominentSuggestionsFromPostAuthorId:postAuthorId
+                                                                                                 commentAuthorId:commentAuthorId
+                                                                                                  defaultAccountId:defaultAccountId];
 }
 
 - (void)refreshReplyTextViewPlaceholder
@@ -1356,8 +1373,17 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)replyTextView:(ReplyTextView *)replyTextView willEnterFullScreen:(FullScreenCommentReplyViewController *)controller
 {
+    NSString *searchText = [self.suggestionsTableView viewModel].searchText;
     [self.suggestionsTableView hideSuggestions];
-    
-    [controller enableSuggestionsWith:self.siteID];
+    [controller enableSuggestionsWith:self.siteID prominentSuggestionsIds:self.suggestionsTableView.prominentSuggestionsIds
+                        searchText:searchText];
 }
+
+- (void)replyTextView:(ReplyTextView *)replyTextView didExitFullScreen:(NSString *)lastSearchText
+{
+    if ([lastSearchText length] != 0) {
+        [self.suggestionsTableView showSuggestionsForWord:lastSearchText];
+    }
+}
+
 @end

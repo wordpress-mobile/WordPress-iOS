@@ -104,7 +104,7 @@
 #pragma mark - Public static methods
 
 + (void)configureLoggerLevelWithExtraDebug {
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    BOOL extraDebug = [[UserPersistentStoreFactory userDefaultsInstance] boolForKey:@"extra_debug"];
     if (extraDebug) {
         [WordPressAppDelegate setLogLevel:DDLogLevelVerbose];
     } else {

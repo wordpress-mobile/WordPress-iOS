@@ -40,6 +40,7 @@
     self.tableView.sectionFooterHeight = 0.0f;
     // Set this to 0 to avoid automattic sizing of cells and getting label cell to short.
     self.tableView.estimatedRowHeight = 0.0f;
+    self.view.tintColor = [UIColor murielEditorPrimary];
 
     self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
                                                            style:[WPStyleGuide barButtonStyleForDone]

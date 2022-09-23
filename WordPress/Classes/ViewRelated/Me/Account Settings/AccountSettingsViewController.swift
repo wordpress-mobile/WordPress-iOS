@@ -212,7 +212,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     func refreshAccountDetails(finished: @escaping () -> Void) {
-        guard let account = accountService.defaultWordPressComAccount() else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
             return
         }
         accountService.updateUserDetails(for: account, success: { () in
@@ -267,7 +267,8 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var hasAtomicSite: Bool {
-        return accountService.defaultWordPressComAccount()?.hasAtomicSite() ?? false
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        return account?.hasAtomicSite() ?? false
     }
 
     private func showCloseAccountAlert() {

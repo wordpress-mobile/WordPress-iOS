@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -89,9 +89,6 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
-
-/* About this app (information page title) */
-"About" = "Ynghylch";
 
 /* My Profile 'About me' label */
 "About Me" = "Amdanaf Fi";
@@ -283,8 +280,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Dyfyniad Bloc";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Blog's User Profile. Displayed when the name is empty! */
@@ -553,9 +549,6 @@
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Nid oes cysylltiad ar gael";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Cysylltiadau";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -734,23 +727,16 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Cau";
 
 /* Display Name label text.
@@ -1750,8 +1736,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Preifatrwydd";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Polisi Preifatrwydd";
 
 /* Name for the status of a post that is marked private.
@@ -1772,15 +1757,6 @@
 
 /* Insights 'Publicize' header */
 "Publicize" = "Publicize";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Methodd Publicize gydweddu eich cyhoeddusrwydd";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Methodd Publicize gydweddu eich cyhoeddusrwydd";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicize i %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -1817,9 +1793,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Barnwch ni yn yr App Store";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -2101,8 +2074,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Rhanwch eich stori yma...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Rhannu";
@@ -2237,8 +2209,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Trefnu yn ôl";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Cod Ffynhonnell";
 
 /* Button title for Spam comment state.
@@ -2313,8 +2284,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Dywedwch wrthym amdanoch eich hun.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
 
 /* Menu item label for linking a testimonial post. */
@@ -2549,8 +2519,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Ceisiwch Eto";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -2705,8 +2674,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Fersiwn";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */

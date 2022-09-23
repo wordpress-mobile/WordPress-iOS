@@ -12,7 +12,7 @@ class SupportTableViewController: UITableViewController {
     var showHelpFromViewController: UIViewController?
 
     private var tableHandler: ImmuTableViewHandler?
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults = UserPersistentStoreFactory.instance()
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.

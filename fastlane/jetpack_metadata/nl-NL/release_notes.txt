@@ -1,5 +1,3 @@
-We hebben de weergave van Inzichten bij de Statistieken van je site bijgewerkt. Zie in een oogopslag hoe je site presteert en vergelijk met slechts één tik de prestaties van verschillende periodes.
+Koppelingen in actiebladen (de pop-upmenu’s op je apparaat die extra opties tonen) zijn nu blauw in plaats van groen.
 
-Wil je verdergaan in de browser? Je kunt nu een QR-code in het menu Ik in de app scannen om je aan te melden.
-
-Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
+We hebben ook Jetpack Social beter zichtbaar gemaakt in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.

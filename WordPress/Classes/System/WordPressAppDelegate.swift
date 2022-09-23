@@ -90,6 +90,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        KeychainUtils.shared.copyKeychainToSharedKeychainIfNeeded()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
 
@@ -152,9 +154,20 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
+
+        copyToSharedDefaultsIfNeeded()
         return true
     }
 
+    private func copyToSharedDefaultsIfNeeded() {
+        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
+            let dict = UserDefaults.standard.dictionaryRepresentation()
+            for (key, value) in dict {
+                UserPersistentStore.standard.set(value, forKey: key)
+            }
+            UserPersistentStore.standard.isOneOffMigrationComplete = true
+        }
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
@@ -214,7 +227,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         let lastSavedStateVersionKey = "lastSavedStateVersionKey"
-        let defaults = UserDefaults.standard
+        let defaults = UserPersistentStoreFactory.instance()
 
         var shouldRestoreApplicationState = false
 
@@ -224,9 +237,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
                 shouldRestoreApplicationState = self.shouldRestoreApplicationState
             }
 
-            defaults.setValue(currentVersion, forKey: lastSavedStateVersionKey)
+            defaults.set(currentVersion, forKey: lastSavedStateVersionKey)
         }
-
         return shouldRestoreApplicationState
     }
 
@@ -425,9 +437,11 @@ extension WordPressAppDelegate {
         utility.register(section: "notifications", significantEventCount: 5)
         utility.systemWideSignificantEventCountRequiredForPrompt = 10
         utility.setVersion(version)
-        utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
-            DDLogError("Was unable to retrieve data about throttling")
-        })
+        if AppConfiguration.isWordPress {
+            utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
+                DDLogError("Was unable to retrieve data about throttling")
+            })
+        }
     }
 
     @objc func configureAppCenterSDK() {
@@ -510,7 +524,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressComApi() {
-        if let baseUrl = UserDefaults.standard.string(forKey: "wpcom-api-base-url") {
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url") {
             Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
         }
     }
@@ -644,9 +658,9 @@ extension WordPressAppDelegate {
         let unknown = "Unknown"
 
         let device = UIDevice.current
-        let crashCount = UserDefaults.standard.integer(forKey: "crashCount")
+        let crashCount = UserPersistentStoreFactory.instance().integer(forKey: "crashCount")
 
-        let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
+        let extraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug")
 
         let bundle = Bundle.main
         let detailedVersionNumber = bundle.detailedVersionNumber() ?? unknown
@@ -666,7 +680,7 @@ extension WordPressAppDelegate {
 
         let devicePlatform = UIDeviceHardware.platformString()
         let architecture = UIDeviceHardware.platform()
-        let languages = UserDefaults.standard.array(forKey: "AppleLanguages")
+        let languages = UserPersistentStoreFactory.instance().array(forKey: "AppleLanguages")
         let currentLanguage = languages?.first ?? unknown
         let udid = device.wordPressIdentifier() ?? unknown
 
@@ -685,25 +699,25 @@ extension WordPressAppDelegate {
         if !AccountHelper.isLoggedIn {
             // When there are no blogs in the app the settings screen is unavailable.
             // In this case, enable extra_debugging by default to help troubleshoot any issues.
-            guard UserDefaults.standard.object(forKey: "orig_extra_debug") == nil else {
+            guard UserPersistentStoreFactory.instance().object(forKey: "orig_extra_debug") == nil else {
                 // Already saved. Don't save again or we could loose the original value.
                 return
             }
 
-            let origExtraDebug = UserDefaults.standard.bool(forKey: "extra_debug") ? "YES" : "NO"
-            UserDefaults.standard.set(origExtraDebug, forKey: "orig_extra_debug")
-            UserDefaults.standard.set(true, forKey: "extra_debug")
+            let origExtraDebug = UserPersistentStoreFactory.instance().bool(forKey: "extra_debug") ? "YES" : "NO"
+            UserPersistentStoreFactory.instance().set(origExtraDebug, forKey: "orig_extra_debug")
+            UserPersistentStoreFactory.instance().set(true, forKey: "extra_debug")
             WordPressAppDelegate.setLogLevel(.verbose)
         } else {
-            guard let origExtraDebug = UserDefaults.standard.string(forKey: "orig_extra_debug") else {
+            guard let origExtraDebug = UserPersistentStoreFactory.instance().string(forKey: "orig_extra_debug") else {
                 return
             }
 
             let origExtraDebugValue = (origExtraDebug as NSString).boolValue
 
             // Restore the original setting and remove orig_extra_debug
-            UserDefaults.standard.set(origExtraDebugValue, forKey: "extra_debug")
-            UserDefaults.standard.removeObject(forKey: "orig_extra_debug")
+            UserPersistentStoreFactory.instance().set(origExtraDebugValue, forKey: "extra_debug")
+            UserPersistentStoreFactory.instance().removeObject(forKey: "orig_extra_debug")
 
             if origExtraDebugValue {
                 WordPressAppDelegate.setLogLevel(.verbose)
@@ -789,9 +803,8 @@ extension WordPressAppDelegate {
     // MARK: - Share Extension
 
     func setupShareExtensionToken() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             ShareExtensionService.configureShareExtensionToken(authToken)
             ShareExtensionService.configureShareExtensionUsername(account.username)
         }
@@ -809,9 +822,8 @@ extension WordPressAppDelegate {
     // MARK: - Notification Service Extension
 
     func configureNotificationExtension() {
-        let accountService = AccountService(managedObjectContext: mainContext)
 
-        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
             NotificationSupportService.insertContentExtensionToken(authToken)
             NotificationSupportService.insertContentExtensionUsername(account.username)
 
@@ -881,6 +893,17 @@ extension WordPressAppDelegate {
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
         WPActionBar.appearance().barBackgroundColor = .basicBackground
         WPActionBar.appearance().lineColor = .basicBackground
+
+        // Post Settings styles
+        UITableView.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).tintColor = .editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [AztecNavigationController.self]).onTintColor = .editorPrimary
+
+        /// Sets the `tintColor` for parent category selection within the Post Settings screen
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self]).tintColor = .editorPrimary
+
+        /// It's necessary to target `PostCategoriesViewController` a second time to "reset" the UI element's `tintColor` for use in the app's Site Settings screen.
+        UIView.appearance(whenContainedInInstancesOf: [PostCategoriesViewController.self, WPSplitViewController.self]).tintColor = .primary
+
     }
 }
 
@@ -899,8 +922,8 @@ extension WordPressAppDelegate {
         // Get the Apple User ID from the keychain
         let appleUserID: String
         do {
-            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
-                                                                  andServiceName: WPAppleIDKeychainServiceName)
+            appleUserID = try KeychainUtils.shared.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                          serviceName: WPAppleIDKeychainServiceName)
         } catch {
             DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
             return
@@ -952,8 +975,8 @@ extension WordPressAppDelegate {
 
     func removeAppleIDFromKeychain() {
         do {
-            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
-                                             andServiceName: WPAppleIDKeychainServiceName)
+            try KeychainUtils.shared.deleteItem(username: WPAppleIDKeychainUsernameKey,
+                                                serviceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")

@@ -16,8 +16,8 @@ extension WordPressComRestApi {
     @objc public static func defaultApi(in context: NSManagedObjectContext,
                                         userAgent: String? = WPUserAgent.wordPress(),
                                         localeKey: String = WordPressComRestApi.LocaleKeyDefault) -> WordPressComRestApi {
-        let accountService = AccountService(managedObjectContext: context)
-        let defaultAccount = accountService.defaultWordPressComAccount()
+
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,

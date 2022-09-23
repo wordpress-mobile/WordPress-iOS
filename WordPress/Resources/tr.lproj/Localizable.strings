@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-06-28 13:38:17+0000 */
+/* Translation-Revision-Date: 2022-09-07 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d görülmemiş yazı";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s, %2$s olarak dönüştürüldü";
@@ -371,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Bir \"daha fazla\" tuşu paylaşım araçlarını barındıran açılır menü içerir";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Bir WordPress.com hesabı mağaza kimlik bilgilerinize bağlandı. Devam etmek için yukarıdaki e-posta adresine bir doğrulama bağlantısı göndereceğiz.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Öne çıkan görsel ayarlandı. Değiştirmek için dokunun.";
 
@@ -434,9 +434,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRES";
 
-/* About this app (information page title) */
-"About" = "Hakkında";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "İOS için Jetpack hakkında";
 
@@ -445,9 +442,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "WordPress hakkında";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "iOS için WordPress hakkında";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -468,8 +462,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "Hesap kapatıldı";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Teşekkürler";
 
 /* Theme Activate action title */
@@ -740,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatif olarak, \"Normal bloklara dönüştür\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Alternatif olarak, bu hesabın şifresini girebilirsiniz.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternatif olarak:";
@@ -1169,8 +1165,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Bloklar, kodlama bilmenize gerek kalmadan ekleyebileceğiniz, yeniden düzenleyebileceğiniz ve stilini değiştirebileceğiniz içerik parçalarıdır. Bloklar, güzel düzenler oluşturmanın kolay ve modern bir yoludur.";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1364,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "İptal ediliyor...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Bu adresten siteye erişilemiyor. Lütfen tekrar kontrol edip yeniden deneyin.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Karar veremiyor musunuz? Temayı istediğiniz zaman değiştirebilirsiniz.";
 
@@ -1450,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Görüntülemelerinizi ve trafiğinizi artırmak için en iyi ipuçlarımıza göz atın";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Bu cihazda e-postanızı kontrol edin!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "E-postanızı bu cihazda kontrol edin ve WordPress.com’dan gelen e-postadaki bağlantıya tıklayın.";
@@ -1889,9 +1890,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Bağlantı uygun değil";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Bağlantılar";
-
 /* Support email label. */
 "Contact Email" = "İletişim e-postası";
 
@@ -1963,9 +1961,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "URL'yi panodan kopyalayın, %s";
-
-/* No comment provided by engineer. */
-"Copy block" = "Bloğu kopyala";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "Dosya adresini kopyala";
@@ -2470,23 +2465,16 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "Kapat";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -3559,6 +3547,9 @@ translators: Block name. %s: The localized block name */
 "Grabbing site URL" = "Site URL'sini alma";
 
 /* No comment provided by engineer. */
+"Gradient" = "Degrade";
+
+/* No comment provided by engineer. */
 "Gradient Type" = "Gradyan Türü";
 
 /* This is the text we display to the user after they've indicated they like the app */
@@ -3759,6 +3750,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Zaten bir siteniz varsa, ücretsiz Jetpack eklentisini yüklemeniz ve WordPress.com hesabınıza bağlamanız gerekir.";
+
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "E-postayı bulamıyorsanız, lütfen önemsiz veya istenmeyen e-posta klasörünüzü kontrol edin.";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Apple veya Google ile devam ederseniz ve bir WordPress.com hesabınız yoksa, bir hesap oluşturur ve _Hizmet Şartlarımızı kabul edersiniz.";
@@ -3967,7 +3961,13 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "Geçersiz adres, lütfen geçerli bir site adresi girip girmediğinizi kontrol edin.";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "Geçersiz URL.";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Geçersiz URL. Ses dosyası bulunamadı.";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "Geçersiz URL. Lütfen tekrar kontrol edip yeniden deneyin.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "Geçersiz URL. Lütfen geçerli bir URL girin.";
@@ -4060,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack ayarları";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social Bağlantıları";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Sosyal bağlantı senkronizasyonu başarısız oldu";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social hizmet senkronizasyonu başarısız oldu";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack şu anda yüklenemiyor.";
 
@@ -4068,6 +4080,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack yüklendi";
+
+/* No comment provided by engineer. */
+"Jetpack powered" = "Jetpack destekli";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack tespit edilen tüm aktif tehditleri düzeltecek.";
@@ -4130,8 +4145,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "Soyad";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "Geçen hafta %1$@ görüntüleme ve %2$@ yorum aldınız.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "Geçen hafta %1$@ görüntüleme ve %2$@ beğeni aldınız.";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "Geçen hafta %1$d görüntüleme, %2$d yorum ve %3$d beğeni aldınız.";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "Geçen hafta %1$@ görüntüleme, %2$@ yorum ve %3$@ beğeni aldınız.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "Geçen hafta %@ görüntüleme oldu.";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "En güncel yazı özeti";
@@ -4417,6 +4441,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "Giriş isteğinin süresi doldu";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Hesap şifresi ile oturum açın";
 
 /* No comment provided by engineer. */
 "Logs" = "Kütükler";
@@ -5286,6 +5313,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops!" = "Amanın!";
 
 /* No comment provided by engineer. */
+"Opacity" = "Opaklık";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "Blok eylemleri menüsünü aç";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -5349,6 +5379,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Veya _site adresinizi girerek_ oturum açın.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Veya sihirli bağlantı ile oturum açın";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Sıralı liste";
@@ -5907,8 +5940,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Gizlilik";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Gizlilik politikası";
 
 /* Register Domain - Privacy Protection section header title */
@@ -5928,7 +5960,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "Özel";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "Blok görüntülenirken bir sorun oluştu";
+"Problem displaying block. \nTap to attempt block recovery." = "Blok görüntülenirken bir sorun oluştu. \nBlok kurtarmayı denemek için dokunun. ";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "İçerik yükleme sorunu";
@@ -5965,15 +5997,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Insights 'Publicize' header */
 "Publicize" = "Duyuru";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Duyuru bağlantısı senkronizasyonu başarısız oldu";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Duyuru hizmeti senkronizasyonu başarısız oldu";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Şurada yayınla: %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -6052,9 +6075,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Bizi Değerlendirin";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "App Store üzerinden uygulamamızı derecelendirin";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Şurada oku";
@@ -6571,9 +6591,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "WordPressde ara";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Yazı veya site için\nWordPressde arayın";
-
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "Arama bloğu etiketi. Mevcut metin";
 
@@ -6798,6 +6815,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Test çökmesini gönder";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "E-posta doğrulama bağlantısı gönder";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Bildirimleri e-postayla gönder";
 
@@ -6879,10 +6899,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Paylaş";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Jetpack'i bir arkadaşınızla paylaşın";
+
 /* Label for action to share post. */
 "Share Post" = "Yazıyı paylaş";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "WordPress'i bir arkadaşınızla paylaşın";
 
 /* Informational text for Collect Information setting */
@@ -6894,6 +6917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bağlantıyı paylaş";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Gönderiyi %@ ile paylaş";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Arkadaşlarla paylaş";
 
@@ -6901,8 +6927,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Hikayenizi burada paylaşın...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Paylaşım";
@@ -7001,6 +7026,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "Üye ol";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Site kimlik bilgileriyle giriş yapın";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Üye ol";
@@ -7219,8 +7247,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "Sırala";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Kaynak kodu";
 
 /* Label for showing the available disk space quota available for media */
@@ -7555,8 +7582,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "Şartlar ve koşullar";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Hizmet şartları";
 
 /* Menu item label for linking a testimonial post. */
@@ -7564,9 +7590,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "Sadece metin";
-
-/* No comment provided by engineer. */
-"Text color" = "Metin rengi";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Bir metin bloku düzenlenirken, metin biçimlendirme kontrolleri klavyenin üzerindeki araç çubuğunda bulunur";
@@ -8240,8 +8263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Site bildirimleri açıldı";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8576,6 +8598,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Güncelleme odağı: Düğünler için VideoPress";
 
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "Ses yüklemek için paketinizi yükseltin";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "Video başlıkları kullanmak için paketinizi yükseltin";
+
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Ortam dosyası yükle";
 
@@ -8651,6 +8679,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Simge düğmesini kullan";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Oturum açmak için şifreyi kullanın";
+
 /* No comment provided by engineer. */
 "Use this site" = "Bu siteyi kullan";
 
@@ -8692,8 +8723,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "E-posta adresinizi doğrulayın - Talimatlar %@ adresinde gönderildi";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Sürüm";
 
 /* Description for the version label in the What's new page. */
@@ -8988,6 +9018,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "%@ adresine bir e-posta gönderdik. Lütfen posta uygulamanızı kontrol edin ve giriş yapmak için bağlantıya dokunun.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Az önce size sihirli bir bağlantı gönderdik";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Blok düzenleyicide büyük iyileştirmeler yaptık ve denemeye değer olduğunu düşünüyoruz!\n\nYeni yazılar ve sayfalar için etkinleştirdik, ancak klasik düzenleyiciye geçmek isterseniz, 'Sitem'> 'Site Ayarları'na gidin.";
 
@@ -9175,6 +9208,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Bu dosya ile ne yapmak istersiniz: yükleyip, yazınızın içine bir bağlantı olarak mı eklemek istersiniz yoksa içeriğini direkt yazınıza mı eklemek istersiniz?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "WordPress.com nedir?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Blok nedir?";
 
@@ -9190,8 +9226,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "Neler yeni";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Jetpack'teki yenilikler";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress'de neler yeni";
 
 /* Title of alert helping users understand their site address */
@@ -9762,6 +9800,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "bir yıl";
 
+/* Dismiss button title */
+"activityList.dismiss.title" = "Kapat";
+
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
 
@@ -9770,6 +9811,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Kapat";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Kapat";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Kapat";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Kapat";
 
 /* Used when displaying author of a plugin. */
 "by %@" = "%@ tarafından";
@@ -9796,6 +9849,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "takip et";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Kapat";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/benim-site-adresim (URL)";
@@ -9854,6 +9910,57 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Site Amacı Seçin";
 
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "Jetpack destekli";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Yeni Jetpack uygulamasını deneyin";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Yeni Jetpack uygulaması, WordPress'inizi daha iyi hale getiren İstatistikler, Okuyucu, Bildirimler gibi özellikleri ve daha fazlasını içerir.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress, Jetpack ile daha iyi";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Bir yazar ekleyin";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Bir site oluşturun";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Bildirimleri kontrol edin";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Facebook' da Paylaş";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Bir güvenlik sorununu düzeltin";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Bir fotoğraf yayınlayın";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Bir makale okuyun";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Yorumlara yanıt verin";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Bir yedeği geri yükleyin";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Eklenti arayın";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Gönderi veya site arayın";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "İstatistiklerinizi izleyin";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Blog yazın";
+
 /* Later today */
 "later today" = "bugün daha sonra";
 
@@ -9862,6 +9969,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "spam olarak işaretlendi";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Kapat";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Kapat";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Kapat";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = ",";
@@ -9899,6 +10018,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "Aktif Olmayan Kartlar";
 
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "Etkin olmayan kart kalmadı";
+
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "İptal";
 
@@ -9926,6 +10048,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Yeterli etkinlik yok. Sitenizin daha fazla ziyaretçisi olduğunda daha sonra tekrar kontrol edin!";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Kapat";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "Bu sohbette";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Site üyeleri";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
 
@@ -9949,6 +10080,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "belge sayfamızı ziyaret edin";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Kapat";
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Şuana kadar ki en iyi görüntülemeler";
@@ -10030,9 +10164,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Google ile giriş yap.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Alan adları";

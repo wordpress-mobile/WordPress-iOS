@@ -8,11 +8,13 @@ protocol ReferrerDetailsViewModelDelegate: AnyObject {
 final class ReferrerDetailsViewModel {
     private(set) var data: StatsTotalRowData
     private weak var delegate: ReferrerDetailsViewModelDelegate?
+    private weak var referrersDelegate: SiteStatsReferrerDelegate?
     private(set) var isLoading = false
 
-    init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate) {
+    init(data: StatsTotalRowData, delegate: ReferrerDetailsViewModelDelegate, referrersDelegate: SiteStatsReferrerDelegate?) {
         self.data = data
         self.delegate = delegate
+        self.referrersDelegate = referrersDelegate
     }
 }
 
@@ -62,14 +64,19 @@ private extension ReferrerDetailsViewModel {
 
         if let children = data.childRows, !children.isEmpty {
             for (index, child) in children.enumerated() {
-                guard let url = child.disclosureURL else {
-                    continue
+                if let url = child.disclosureURL {
+                    rows.append(ReferrerDetailsRow(action: action,
+                                                   isLast: index == children.count - 1,
+                                                   data: .init(name: child.name,
+                                                               url: url,
+                                                               views: child.data)))
+                } else if let childRows = child.childRows, !childRows.isEmpty {
+                    rows.append(DetailExpandableRow(rowData: child,
+                                                    referrerDelegate: referrersDelegate,
+                                                    hideIndentedSeparator: true,
+                                                    hideFullSeparator: index != children.count - 1,
+                                                    expanded: false))
                 }
-                rows.append(ReferrerDetailsRow(action: action,
-                                               isLast: index == children.count - 1,
-                                               data: .init(name: child.name,
-                                                           url: url,
-                                                           views: child.data)))
             }
         } else {
             guard let url = data.disclosureURL else {

@@ -257,13 +257,6 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func pushAbout() -> ImmuTableAction {
-        return { [weak self] row in
-            let controller = AboutViewController(style: .insetGrouped)
-            self?.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-
     func openPrivacySettings() -> ImmuTableAction {
         return { [weak self] _ in
             WPAnalytics.track(.privacySettingsOpened)
@@ -343,13 +336,15 @@ class AppSettingsViewController: UITableViewController {
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
             viewController?.onItemSelected = { (section: Any!) -> () in
+                let oldDefaultSection = MySiteSettings().defaultSection
                 guard let section = section as? Int,
-                    let defaultSection = MySiteViewController.Section(rawValue: section) else {
+                      let newDefaultSection = MySiteViewController.Section(rawValue: section),
+                      newDefaultSection != oldDefaultSection else {
                         return
                 }
 
-                WPAnalytics.track(.initialScreenChanged, properties: ["selected": defaultSection.analyticsDescription])
-                MySiteSettings().setDefaultSection(defaultSection)
+                WPAnalytics.track(.initialScreenChanged, properties: ["selected": newDefaultSection.analyticsDescription])
+                MySiteSettings().setDefaultSection(newDefaultSection)
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)
@@ -503,16 +498,7 @@ private extension AppSettingsViewController {
             action: openApplicationSettings()
         )
 
-        let aboutRow = NavigationItemRow(
-            title: AppConstants.Settings.aboutTitle,
-            action: pushAbout()
-        )
-
         var rows: [ImmuTableRow] = [settingsRow]
-
-        if FeatureFlag.aboutScreen.enabled == false {
-            rows.append(aboutRow)
-        }
 
         if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
@@ -532,8 +518,7 @@ private extension AppSettingsViewController {
         if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
-            let whatIsNewRow = NavigationItemRow(title: NSLocalizedString("What's New in WordPress",
-                                                                          comment: "Opens the What's New / Feature Announcement modal"),
+            let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
                                                  action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
@@ -546,5 +531,24 @@ private extension AppSettingsViewController {
             headerText: otherHeader,
             rows: rows,
             footerText: nil)
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension AppSettingsViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+              JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        let jetpackButton = JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+
+        return jetpackButton
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .appSettings)
     }
 }

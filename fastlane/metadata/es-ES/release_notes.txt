@@ -1,3 +1,1 @@
-Ahora, al previsualizar una entrada, puedes cambiar entre la orientación vertical y la horizontal sin cortar el contenido. Perfecto.
-
-El icono de la aplicación de WordPress vuelve a tener un tono azul apagado, pero no te preocupes, puedes poner un poco de color en tu vida. Ve a los ajustes de la aplicación y vuelve a seleccionar el icono del Orgullo.
+Esta actualización es breve y concisa: hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.

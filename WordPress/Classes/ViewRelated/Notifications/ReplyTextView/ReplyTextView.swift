@@ -8,6 +8,8 @@ import Gridicons
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 
     @objc optional func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController)
+
+    @objc optional func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?)
 }
 
 
@@ -171,14 +173,11 @@ import Gridicons
     }
 
     @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
-        guard let editViewController = FullScreenCommentReplyViewController.newEdit() else {
-            return
-        }
-
         guard let presenter = WPTabBarController.sharedInstance() else {
             return
         }
 
+        let editViewController = FullScreenCommentReplyViewController()
 
         // Inform any listeners
         let respondsToWillEnter = delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:willEnterFullScreen:))) ?? false
@@ -193,7 +192,7 @@ import Gridicons
         editViewController.content = textView.text
         editViewController.placeholder = placeholder
         editViewController.isModalInPresentation = true
-        editViewController.onExitFullscreen = { (shouldSave, updatedContent) in
+        editViewController.onExitFullscreen = { (shouldSave, updatedContent, lastSearchText) in
             self.text = updatedContent
 
             // If the user was editing before they entered fullscreen, then restore that state
@@ -210,8 +209,14 @@ import Gridicons
                 self.btnReplyPressed()
             }
 
-            //Dimiss the fullscreen view, once it has fully closed process the saving if needed
-            presenter.dismiss(animated: true)
+            // Dismiss the fullscreen view, once it has fully closed process the saving if needed
+            presenter.dismiss(animated: true) {
+                let respondsToDidExit = self.delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:didExitFullScreen:))) ?? false
+
+                if respondsToDidExit {
+                    self.delegate?.replyTextView?(self, didExitFullScreen: lastSearchText)
+                }
+            }
         }
 
         self.resignFirstResponder()

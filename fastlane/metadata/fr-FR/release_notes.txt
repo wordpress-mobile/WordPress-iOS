@@ -1,3 +1,1 @@
-Lorsque vous prévisualisez un article, vous pouvez maintenant passer de la vue Portrait à la vue Paysage et inversement, sans que cela masque une partie du contenu. Intéressant, non ?
-
-L’icône de votre application WordPress a repris sa couleur bleue habituelle, mais pas d’inquiétude : vous pouvez toujours mettre un peu de couleur dans votre vie. Il vous suffit de vous rendre dans les réglages de votre application et de sélectionner notre icône spéciale Mois des fiertés.
+Cette version est brève, mais efficace : nous avons amélioré la visibilité de Jetpack Social dans la section Partage des réglages de votre site, ainsi que dans vos réglages d’article. Optimisez la diffusion de votre contenu sur les réseaux sociaux !

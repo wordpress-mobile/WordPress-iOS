@@ -1,4 +1,1 @@
-Bir yazıya önizleme yaparken, herhangi bir içeriği kesmeden yatay ve dikey konumlandırma arasında geçiş yapabilirsiniz. Harika.
-
-WordPress uygulama simgeniz alıştığınız havalı maviye döndü, ama merak etmeyin—hayatınıza hala biraz renk barındırabilirsiniz. Uygulama ayarlarına gidin ve Pride temalı uygulama simgesini tekrar seçin.
-
+Bu sürüm kısa, öz ve çok güzel: Jetpack Social'ı site ayarlarınızın Paylaşım bölümünde ve gönderi ayarlarınızda daha belirgin hale getirdik. Haydi sosyalleşelim.

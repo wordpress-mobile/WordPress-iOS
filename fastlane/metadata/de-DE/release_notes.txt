@@ -1,3 +1,1 @@
-In der Beitragsvorschau kannst du ab sofort zwischen Hoch- und Querformat wechseln, ohne dass Inhalte abgeschnitten werden. Sehr gut.
-
-Dein WordPress-App-Icon erscheint wieder im gewohnten Blau, aber keine Sorge – du kannst trotzdem ein wenig Farbe reinbringen Öffne einfach die App-Einstellungen und wähle unser App-Icon in Pride-Farben erneut aus.
+Klein aber fein: In diesem Release haben wir dafür gesorgt, dass Jetpack Social im Teilen-Bereich deiner Website-Einstellungen sowie in deinen Beitragseinstellungen auffälliger angezeigt wird. Los geht's mit den sozialen Medien.

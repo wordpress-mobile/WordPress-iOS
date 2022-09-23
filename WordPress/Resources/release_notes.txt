@@ -1,3 +1,2 @@
-When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
-
-Your WordPress app icon has gone back to its usual cool blue, but not to worry—you can still keep a little color in your life. Just go into your app settings and choose our Pride-themed app icon again.
+We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
+We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.

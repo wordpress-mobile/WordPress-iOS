@@ -1,3 +1,1 @@
-Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
-
-Het pictogram van de WordPress-app is weer als vanouds blauw. Maar wil je nou toch wat meer kleur in je leven, dan kun je in de app-instellingen het app-pictogram weer het regenboogthema geven.
+Deze release is kort maar krachtig: Jetpack Social is nu beter zichtbaar in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.

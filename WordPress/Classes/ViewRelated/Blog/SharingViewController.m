@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
+static CGFloat const jetpackBadgePadding = 30;
 
 @interface SharingViewController ()
 
@@ -117,7 +118,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     switch (section) {
         case SharingPublicizeServices:
-            return NSLocalizedString(@"Connections", @"Section title for Publicize services in Sharing screen");
+            return NSLocalizedString(@"Jetpack Social Connections", @"Section title for Publicize services in Sharing screen");
         case SharingButtons:
             return NSLocalizedString(@"Sharing Buttons", @"Section title for the sharing buttons section in the Sharing screen");
         default:
@@ -249,6 +250,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == SharingButtons && [SharingViewController jetpackBrandingVisibile]) {
+        return [JetpackButton makeBadgeViewWithTopPadding:jetpackBadgePadding
+                                            bottomPadding:jetpackBadgePadding
+                                                   target:self
+                                                 selector:@selector(jetpackButtonTapped)];
+    }
+
+    return nil;
+}
+
 #pragma mark - JetpackModuleHelper
 
 - (void)jetpackModuleEnabled
@@ -323,7 +336,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {
-            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Jetpack Social service synchronization failed", @"Message to show when Publicize service synchronization failed")];
             [weakSelf refreshPublicizers];
         }
     }];
@@ -339,7 +352,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         if (!ReachabilityUtils.isInternetReachable) {
             [weakSelf showConnectionError];
         } else {
-            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Jetpack Social connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
             [weakSelf refreshPublicizers];
         }
     }];
@@ -357,6 +370,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
+}
+
+#pragma mark - Jetpack badge button
+
+- (void) jetpackButtonTapped
+{
+    [self presentJetpackOverlay];
 }
 
 @end

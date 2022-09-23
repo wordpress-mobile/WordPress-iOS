@@ -60,6 +60,31 @@ end
 
 
 ########################################################################
+# Group buildkite logs by action
+########################################################################
+
+# A module that defines methods to be used as overrides to `Fastlane::Actions`
+# module methods.
+module FastlaneActionLogGroup
+  def print_group(action_name)
+    return if %w[is_ci].include?(action_name)
+
+    puts "~~~ :fastlane: #{ENV.fetch('FASTLANE_LANE_NAME', '[root]')} >> #{action_name}"
+  end
+
+  def execute_action(action_name)
+    print_group(action_name)
+    super(action_name)
+  end
+end
+
+if ENV.key?('BUILDKITE')
+  Fastlane::Actions.singleton_class.class_eval do
+    prepend FastlaneActionLogGroup
+  end
+end
+
+########################################################################
 # Imports domain-specific lanes
 ########################################################################
 

@@ -1,5 +1,3 @@
-Nous avons mis à jour la section Tendances des statistiques de votre site. Découvrez les performances actuelles de votre site en un coup d’œil et comparez-les avec les résultats des périodes précédentes en quelques clics.
+Les liens dans les feuilles d’action (ces menus contextuels sur votre appareil qui font apparaître des options supplémentaires) ne sont plus verts, mais bleus.
 
-Vous avez besoin de passer à votre navigateur ? C’est désormais possible en scannant le QR code du menu Moi dans l’application.
-
-Lorsque vous prévisualisez un article, vous pouvez maintenant passer de la vue Portrait à la vue Paysage et inversement, sans que cela masque une partie du contenu. Intéressant, non ?
+Nous avons également amélioré la visibilité de Jetpack Social dans la section Partage des réglages de votre site, ainsi que dans vos réglages d’article. Optimisez la diffusion de votre contenu sur les réseaux sociaux !

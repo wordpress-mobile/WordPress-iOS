@@ -1,9 +1,8 @@
 #import "BlogToJetpackAccount.h"
-#import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
-static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToJetpackAccount
 
@@ -53,10 +52,10 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
         // Migrate passwords
         NSError *error;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
+        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:@"WordPress.com" accessGroup:nil error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:WPComXMLRPCUrl updateExisting:YES error:&error]) {
-                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:@"WordPress.com" error:&error];
+            if ([KeychainUtils.shared storeUsername:username password:password serviceName:WPComXMLRPCUrl accessGroup:nil updateExisting:YES error:&error]) {
+                [KeychainUtils.shared deleteItemWithUsername:username serviceName:@"WordPress.com" accessGroup:nil error:&error];
             }
         }
         if (error) {
@@ -106,13 +105,13 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 - (NSString *)jetpackUsernameForBlog:(NSManagedObject *)blog
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:[self jetpackDefaultsKeyForBlog:blog]];
+    return [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:[self jetpackDefaultsKeyForBlog:blog]];
 }
 
 - (NSString *)jetpackPasswordForBlog:(NSManagedObject *)blog
 {
     NSError *error = nil;
-    return [SFHFKeychainUtils getPasswordForUsername:[self jetpackUsernameForBlog:blog] andServiceName:@"WordPress.com" error:&error];
+    return [KeychainUtils.shared getPasswordForUsername:[self jetpackUsernameForBlog:blog] serviceName:@"WordPress.com" accessGroup:nil error:&error];
 }
 
 @end

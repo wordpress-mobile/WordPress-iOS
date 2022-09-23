@@ -19,15 +19,15 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext: self.managedObjectContext];
 
     // Keep a reference to the NSManagedObjectID (if it exists).
     // We'll use it to verify that the account did not change while fetching topics.
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
 
-        WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];
+        NSAssert(NSThread.isMainThread, @"This callback must be dispatched on the main thread");
+        WPAccount *reloadedAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
 
         // Make sure that we have the same account now that we did when we started.
         if ((!defaultAccount && !reloadedAccount) || [defaultAccount.objectID isEqual:reloadedAccount.objectID]) {
@@ -76,7 +76,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderAbstractTopic *)currentTopicFromSavedPath
 {
     ReaderAbstractTopic *topic;
-    NSString *topicPathString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicPathKey];
+    NSString *topicPathString = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:ReaderTopicCurrentTopicPathKey];
     if (topicPathString) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
         request.predicate = [NSPredicate predicateWithFormat:@"path = %@", topicPathString];
@@ -121,10 +121,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)setCurrentTopic:(ReaderAbstractTopic *)topic
 {
     if (!topic) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -668,8 +668,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  */
 - (WordPressComRestApi *)apiForRequest
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
         api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];

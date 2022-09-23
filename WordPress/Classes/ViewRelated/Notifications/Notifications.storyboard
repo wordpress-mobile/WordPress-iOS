@@ -23,17 +23,16 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="a0S-nk-6Lg">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vdx-hy-x4l">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
+                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vdx-hy-x4l">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableView>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fx7-Fo-KUl" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                    <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="750" id="fx7-Fo-KUl" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="NJ5-tg-zLZ"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -67,11 +66,11 @@
                                 <constraint firstAttribute="height" constant="100" placeholder="YES" id="pxu-yE-rHC"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rKm-gY-cFw" userLabel="Filters View">
+                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rKm-gY-cFw" userLabel="Filters View">
                             <rect key="frame" x="0.0" y="100" width="600" height="44"/>
                             <subviews>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XgY-0j-kFz" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XgY-0j-kFz" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="34"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
@@ -79,6 +78,7 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="XgY-0j-kFz" secondAttribute="trailing" priority="999" id="7Mp-Sv-zuM"/>
                                 <constraint firstItem="XgY-0j-kFz" firstAttribute="leading" secondItem="rKm-gY-cFw" secondAttribute="leading" priority="999" id="JVy-y6-rph"/>
+                                <constraint firstAttribute="height" priority="999" constant="44" id="dte-R2-ISl"/>
                                 <constraint firstAttribute="bottom" secondItem="XgY-0j-kFz" secondAttribute="bottom" constant="10" id="mxz-xp-47Y"/>
                                 <constraint firstItem="XgY-0j-kFz" firstAttribute="top" secondItem="rKm-gY-cFw" secondAttribute="top" id="udW-ag-i42"/>
                             </constraints>

@@ -45,11 +45,10 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v20.2-whats-new"
+msgctxt "v20.8-whats-new"
 msgid ""
-"When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.\n"
-"\n"
-"Your WordPress app icon has gone back to its usual cool blue, but not to worry—you can still keep a little color in your life. Just go into your app settings and choose our Pride-themed app icon again.\n"
+"We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.\n"
+"We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

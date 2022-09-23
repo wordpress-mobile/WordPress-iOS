@@ -80,7 +80,15 @@ extension WordPressAuthenticationManager {
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                return FeatureFlag.unifiedPrologueCarousel.enabled ? UnifiedPrologueViewController() : nil
+                if FeatureFlag.newLandingScreen.enabled {
+                    return SplashPrologueViewController()
+                }
+
+                if FeatureFlag.unifiedPrologueCarousel.enabled {
+                    return UnifiedPrologueViewController()
+                }
+
+                return nil
             }
 
             return viewController
@@ -102,8 +110,16 @@ extension WordPressAuthenticationManager {
             return image
         }()
 
-        let prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
-        let prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        var prologuePrimaryButtonStyle: NUXButtonStyle?
+        var prologueSecondaryButtonStyle: NUXButtonStyle?
+
+        if FeatureFlag.newLandingScreen.enabled {
+            prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
+            prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
+        } else {
+            prologuePrimaryButtonStyle = authenticationHandler?.prologuePrimaryButtonStyle
+            prologueSecondaryButtonStyle = authenticationHandler?.prologueSecondaryButtonStyle
+        }
 
         return WordPressAuthenticatorStyle(primaryNormalBackgroundColor: .primaryButtonBackground,
                                            primaryNormalBorderColor: nil,
@@ -180,8 +196,7 @@ extension WordPressAuthenticationManager {
     @objc
     class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
         return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
     }
@@ -268,8 +283,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// We allow to connect with WordPress.com account only if there is no default account connected already.
     var allowWPComLogin: Bool {
-        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
-        return accountService.defaultWordPressComAccount() == nil
+        (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)) == nil
     }
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
@@ -311,10 +325,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
-        if let authenticationHandler = authenticationHandler {
-            authenticationHandler.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: onCompletion)
-            return
-        }
 
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)
@@ -323,11 +333,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
-        if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentLoginEpilogue(in: navigationController, for: credentials),
-           authenticationHandler.presentLoginEpilogue(in: navigationController, for: credentials, windowManager: windowManager, onDismiss: onDismiss) {
-            return
-        }
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
@@ -394,11 +399,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
-        if let authenticationHandler = authenticationHandler,
-           authenticationHandler.willHandlePresentSignupEpilogue(in: navigationController, for: credentials, service: service) {
-            authenticationHandler.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
-            return
-        }
 
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
@@ -422,7 +422,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
             }
 
-            UserDefaults.standard.set(false, forKey: UserDefaults.standard.welcomeNotificationSeenKey)
+            UserPersistentStoreFactory.instance().set(false, forKey: UserPersistentStoreFactory.instance().welcomeNotificationSeenKey)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
@@ -453,9 +453,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let service = AccountService(managedObjectContext: context)
 
         let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
-        if service.defaultWordPressComAccount() == nil {
-            service.setDefaultWordPressComAccount(account)
-        }
+        service.setDefaultWordPressComAccount(account)
     }
 
     /// When an Apple account is used during the Auth flow, save the Apple user id to the keychain.
@@ -463,10 +461,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(WPAppleIDKeychainUsernameKey,
-                                                andPassword: appleUserID,
-                                                forServiceName: WPAppleIDKeychainServiceName,
-                                                updateExisting: true)
+            try KeychainUtils.shared.storeUsername(WPAppleIDKeychainUsernameKey,
+                                                   password: appleUserID,
+                                                   serviceName: WPAppleIDKeychainServiceName,
+                                                   updateExisting: true)
         } catch {
             DDLogInfo("Error while saving Apple User ID: \(error)")
         }
@@ -501,14 +499,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Tracks a given Analytics Event.
     ///
     func track(event: WPAnalyticsStat) {
-        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event)
     }
 
     /// Tracks a given Analytics Event, with the specified properties.
     ///
     func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
-        assignMySiteExperimentIfNeeded(event: event)
         WPAppAnalytics.track(event, withProperties: properties)
     }
 
@@ -517,38 +513,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
     }
-
-    // This is probably not the best place to put this assignment
-    // However, `signed_in` is tracked on WPAuthenticator pod
-    // (which is used by other apps)
-    // Here we capture the event in the case is triggered and assign it
-    // This should be removed once the experiment is done
-    //
-    private func assignMySiteExperimentIfNeeded(event: WPAnalyticsStat) {
-        if event == .signedIn || event == .createdAccount {
-            if FeatureFlag.mySiteDashboard.enabled {
-                let isTreatment = BlogDashboardAB.shared.variant == .treatment
-                MySiteSettings().setDefaultSection(isTreatment ? .dashboard : .siteMenu)
-            }
-        }
-    }
 }
 
 // MARK: - Blog Count Helpers
 private extension WordPressAuthenticationManager {
     private func numberOfBlogs() -> Int {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+        let numberOfBlogs = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.blogs?.count ?? 0
 
         return numberOfBlogs
     }
 
     private func firstBlog() -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()?.blogs?.first
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.blogs?.first
     }
 }
 

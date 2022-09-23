@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
-    case aboutScreen
     case mySiteDashboard
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
@@ -31,6 +30,12 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case qrLogin
     case betaSiteDesigns
     case featureHighlightTooltip
+    case jetpackPowered
+    case jetpackPoweredBottomSheet
+    case sharedUserDefaults
+    case sharedLogin
+    case newLandingScreen
+    case newCoreDataContext
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -73,8 +78,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .timeZoneSuggester:
             return true
-        case .aboutScreen:
-            return true
         case .mySiteDashboard:
             return true
         case .mediaPickerPermissionsNotice:
@@ -101,6 +104,18 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .featureHighlightTooltip:
             return true
+        case .jetpackPowered:
+            return true
+        case .jetpackPoweredBottomSheet:
+            return false
+        case .sharedUserDefaults:
+            return false
+        case .sharedLogin:
+            return false
+        case .newLandingScreen:
+            return false
+        case .newCoreDataContext:
+            return false
         }
     }
 
@@ -161,8 +176,6 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
-        case .aboutScreen:
-            return "New Unified About Screen"
         case .mySiteDashboard:
             return "My Site Dashboard"
         case .mediaPickerPermissionsNotice:
@@ -189,6 +202,18 @@ extension FeatureFlag {
             return "Fetch Beta Site Designs"
         case .featureHighlightTooltip:
             return "Feature Highlight Tooltip"
+        case .jetpackPowered:
+            return "Jetpack powered banners and badges"
+        case .jetpackPoweredBottomSheet:
+            return "Jetpack powered bottom sheet"
+        case .sharedUserDefaults:
+            return "Shared User Defaults"
+        case .sharedLogin:
+            return "Shared Login"
+        case .newLandingScreen:
+            return "Jetpack and WordPress new landing screens"
+        case .newCoreDataContext:
+            return "Use new Core Data context structure (Require app restart)"
         }
     }
 

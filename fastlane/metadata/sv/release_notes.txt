@@ -1,3 +1,1 @@
-När du förhandsgranskar ett inlägg kan du nu växla mellan horisontellt och vertikalt orienterad enhet utan att något innehåll tappas bort – det är väl trevligt!
-
-Ikonen för din WordPress-app har nu återgått till sin tuffa blå nyans. Men om du vill fortsätta att leva färgrikt kan du helt enkelt gå in i appens inställningar och där välja att appens ikon ska vara Pride-mönstrad.
+Den här versionen är koncis – vi har gjort Jetpack Social mer synligt i delningssektionen av dina webbplatsinställningar, samt i dina inläggsinställningar. Dags att vara social.

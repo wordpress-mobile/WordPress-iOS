@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.2 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -53,9 +53,6 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "ใช้งาน";
-
-/* About this app (information page title) */
-"About" = "เกี่ยวกับ";
 
 /* My Profile 'About me' label */
 "About Me" = "เกี่ยวกับฉัน";
@@ -177,8 +174,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "ปิดกั้นการโค้ดข้อความ";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress product blog */
 "Blog" = "บล็อก";
 
 /* Accessibility label for bold button on formatting toolbar.
@@ -481,23 +477,16 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Customize Insights button title
    Dismiss a view. Verb
-   Dismiss button title
    Dismiss button title.
-   Dismiss the AlertView
    Share extension error dialog cancel button label.
    Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
    Title for button that will dismiss the Grow Your Audience card.
    User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   User action to dismiss media options. */
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
@@ -1276,8 +1265,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "ส่วนตัว";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
 /* Name for the status of a post that is marked private.
@@ -1325,9 +1313,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "ให้คะแนนบนแอพสโตร์";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -1655,8 +1640,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "เรียงตาม";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "ซอร์สโค้ด";
 
 /* Button title for Spam comment state.
@@ -1720,8 +1704,7 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "ลำดับขั้น";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "เงื่อนไขการใช้บริการ";
 
 /* Message of alert when theme activation succeeds */
@@ -1898,8 +1881,7 @@
    Try to load the list of interests again. */
 "Try Again" = "ลองใหม่อีกครั้ง";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* URL text field placeholder */
@@ -2019,8 +2001,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "รุ่น";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */

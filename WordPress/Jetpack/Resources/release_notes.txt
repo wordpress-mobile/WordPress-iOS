@@ -1,3 +1,2 @@
-Need to switch over to your browser? You can now sign in by scanning a QR code in the app’s Me menu.
-
-When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
+We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
+We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.

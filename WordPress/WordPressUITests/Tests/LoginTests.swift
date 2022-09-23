@@ -6,15 +6,11 @@ class LoginTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         setUpTestSuite()
-
-        try LoginFlow.logoutIfNeeded()
     }
 
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
-        try? MySitesScreen().closeModalIfNeeded()
-        try LoginFlow.logoutIfNeeded()
-        try super.tearDownWithError()
+        removeApp()
     }
 
     // Unified email login/out
@@ -88,11 +84,6 @@ class LoginTests: XCTestCase {
 
             // Login flow returns MySites modal, which needs to be closed.
             .closeModal()
-
-            // TODO: rewrite logoutIfNeeded() to handle logging out of a self-hosted site and then WordPress.com account.
-            // Currently, logoutIfNeeded() cannot handle logging out of both self-hosted and WordPress.com during tearDown().
-            // So, we remove the self-hosted site before tearDown() starts.
-            .removeSelfHostedSite()
 
         XCTAssert(MySiteScreen.isLoaded())
     }

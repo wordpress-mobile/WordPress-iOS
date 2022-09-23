@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.55.0'
+  pod 'WordPressKit', '~> 4.58.0-beta.2'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.2.7'
+  pod 'Kanvas', '~> 1.4.3'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -99,6 +99,11 @@ def gutenberg(options)
 end
 
 def gutenberg_dependencies(options)
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
   dependencies = %w[
     FBLazyVector
     React
@@ -143,6 +148,7 @@ def gutenberg_dependencies(options)
     RNGestureHandler
     RNCMaskedView
     RNCClipboard
+    RNFastImage
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -169,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.78.1'
+  gutenberg tag: 'v1.82.1'
 
   ## Third party libraries
   ## =====================
@@ -189,7 +195,6 @@ abstract_target 'Apps' do
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries
@@ -201,7 +206,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.11.1'
+  pod 'Automattic-Tracks-iOS', '~> 0.13.0-beta.2'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -217,7 +222,7 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 2.0.0'
+  pod 'WordPressAuthenticator', '~> 2.3.0'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
@@ -237,7 +242,6 @@ abstract_target 'Apps' do
       inherit! :search_paths
 
       shared_test_pods
-      pod 'Nimble', '~> 9.0.0'
     end
   end
 
@@ -449,6 +453,19 @@ post_install do |installer|
       configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
     end
   end
+
+  # Fix a code signing issue in Xcode 14 beta.
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
+  # ====================================
+  #
+  # TODO: fix the linting issue if this workaround is still needed in Xcode 14 GM.
+  # rubocop:disable Style/CombinableLoops
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+    end
+  end
+  # rubocop:enable Style/CombinableLoops
 
   # Flag Alpha builds for Tracks
   # ============================

@@ -1,6 +1,6 @@
-import Foundation
-import XCTest
 import CoreData
+import Nimble
+import XCTest
 
 @testable import WordPress
 
@@ -41,7 +41,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest version
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
 
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
@@ -79,7 +79,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
         XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
@@ -106,7 +106,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Initialize 24 > 25 Migration
-        let contextManager = ContextManager(modelName: model25Name, store: storeURL)
+        let contextManager = ContextManager(modelName: model25Name, store: storeURL, contextFactory: nil)
         let secondContext = contextManager.mainContext
 
         // Test the existence of Post object after migration
@@ -139,6 +139,125 @@ class ContextManagerTests: XCTestCase {
         } catch let error as NSError {
             XCTAssertNil(error, "Setting authorAvatarURL shouldn't throw an error")
         }
+    }
+
+    func testSaveDerivedContextWithChangesInMainContext() throws {
+        let contextManager = ContextManagerMock()
+        let derivedContext = contextManager.newDerivedContext()
+
+        derivedContext.perform {
+            let account = WPAccount(context: derivedContext)
+            account.userID = 1
+            account.username = "First User"
+            contextManager.saveContextAndWait(derivedContext)
+        }
+
+        let findFirstUser: () throws -> WPAccount? = {
+            let firstUserQuery = NSFetchRequest<WPAccount>(entityName: "Account")
+            firstUserQuery.predicate = NSPredicate(format: "userID = 1")
+            return try contextManager.mainContext.fetch(firstUserQuery).first
+        }
+        expect(try findFirstUser()?.username).toEventually(equal("First User"))
+
+        // Change first user's user name
+        try findFirstUser()?.username = "First User (Updated)"
+
+        // Save another user
+        waitUntil { done in
+            derivedContext.perform {
+                let account = WPAccount(context: derivedContext)
+                account.userID = 2
+                account.username = "Second account"
+                contextManager.saveContextAndWait(derivedContext)
+                done()
+            }
+        }
+
+        // Discard the username change that's made above
+        contextManager.mainContext.reset()
+
+        XCTExpectFailure("Known issue: the mainContext is saved along with the `ContextManager.save` functions")
+        expect(try findFirstUser()?.username) == "First User"
+    }
+
+    func testSaveUsingBlock() async {
+        let contextManager = ContextManagerMock()
+        let numberOfAccounts: () -> Int = {
+            contextManager.mainContext.countObjects(ofType: WPAccount.self)
+        }
+        XCTAssertEqual(numberOfAccounts(), 0)
+
+        await contextManager.performAndSave { context in
+            let account = WPAccount(context: context)
+            account.userID = 1
+            account.username = "First User"
+        }
+        XCTAssertEqual(numberOfAccounts(), 1)
+
+        do {
+            try await contextManager.performAndSave { context in
+                let account = WPAccount(context: context)
+                account.userID = 100
+                account.username = "Unknown User"
+                throw NSError(domain: "save", code: 1)
+            }
+            XCTFail("The above call should throw")
+        } catch {
+            XCTAssertEqual((error as NSError).domain, "save")
+        }
+        XCTAssertEqual(numberOfAccounts(), 1)
+
+        // In the translated Swift API of `ContextManager`, there are two `save(_: (NSManagedContext) -> Void)`
+        // functions. The only difference between them is, one is async function, the other is not.
+        // When compiling statement `try save { context in doSomething(context) }`, Swift picks which overload to use
+        // based on the context—there is no syntax or keyword to explicitly pick one ourselves.
+        //
+        // From: https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md#overloading-and-overload-resolution
+        // > "In non-async functions, and closures without any await expression, the compiler selects the non-async overload"
+        let sync: () -> Void = {
+            contextManager.performAndSave { context in
+                let account = WPAccount(context: context)
+                account.userID = 2
+                account.username = "Second User"
+            }
+        }
+        sync()
+
+        XCTAssertEqual(numberOfAccounts(), 2)
+    }
+
+    func testSaveUsingBlockWithNestedCalls() {
+        let contextManager = ContextManagerMock()
+        let accounts: () -> Set<String> = {
+            let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
+            return Set(all.map { $0.username! })
+        }
+        XCTAssertTrue(accounts().isEmpty)
+
+        let saveOperations = [
+            self.expectation(description: "First User is saved"),
+            self.expectation(description: "Second User is saved"),
+        ]
+
+        contextManager.performAndSave {
+            let account = WPAccount(context: $0)
+            account.userID = 1
+            account.username = "First User"
+
+            contextManager.performAndSave {
+                let account = WPAccount(context: $0)
+                account.userID = 2
+                account.username = "Second User"
+            }
+            saveOperations[1].fulfill()
+
+            XCTAssertEqual(accounts(), ["Second User"])
+        } completion: {
+            saveOperations[0].fulfill()
+        }
+
+        wait(for: saveOperations, timeout: 0.1)
+        XCTAssertEqual(accounts(), ["First User", "Second User"])
     }
 
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {

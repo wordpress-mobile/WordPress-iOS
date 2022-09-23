@@ -171,21 +171,17 @@ class MeViewController: UITableViewController {
             .init(rows: {
                 var rows: [ImmuTableRow] = [helpAndSupportIndicator]
 
-                if isRecommendAppRowEnabled {
-                    rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
-                                                  icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
-                                                  accessoryType: accessoryType,
-                                                  action: displayShareFlow(),
-                                                  loading: sharePresenter.isLoading))
-                }
+                rows.append(NavigationItemRow(title: ShareAppContentPresenter.RowConstants.buttonTitle,
+                                              icon: ShareAppContentPresenter.RowConstants.buttonIconImage,
+                                              accessoryType: accessoryType,
+                                              action: displayShareFlow(),
+                                              loading: sharePresenter.isLoading))
 
-                if FeatureFlag.aboutScreen.enabled {
-                    rows.append(NavigationItemRow(title: RowTitles.about,
-                                                  icon: UIImage.gridicon(.mySites),
-                                                  accessoryType: .disclosureIndicator,
-                                                  action: pushAbout(),
-                                                  accessibilityIdentifier: "About"))
-                }
+                rows.append(NavigationItemRow(title: RowTitles.about,
+                                              icon: UIImage.gridicon(.mySites),
+                                              accessoryType: .disclosureIndicator,
+                                              action: pushAbout(),
+                                              accessibilityIdentifier: "About"))
 
                 return rows
             }()),
@@ -301,7 +297,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: .wordpress, in: self, source: .me, sourceView: selectedCell)
+            self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -368,10 +364,7 @@ class MeViewController: UITableViewController {
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
     // and initializing stuff with safer values like userID
     fileprivate func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
+        return try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     fileprivate func refreshAccountDetails() {
@@ -454,11 +447,6 @@ class MeViewController: UITableViewController {
     fileprivate func promptForLoginOrSignup() {
         WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
     }
-
-    /// Convenience property to determine whether the recomend app row should be displayed or not.
-        private var isRecommendAppRowEnabled: Bool {
-            !AppConfiguration.isJetpack
-        }
 
     private lazy var sharePresenter: ShareAppContentPresenter = {
         let presenter = ShareAppContentPresenter(account: defaultAccount())
@@ -553,10 +541,23 @@ private extension MeViewController {
 
 extension MeViewController: ShareAppContentPresenterDelegate {
     func didUpdateLoadingState(_ loading: Bool) {
-        guard isRecommendAppRowEnabled else {
-             return
-         }
-
         reloadViewModel()
+    }
+}
+
+// MARK: - Jetpack powered badge
+extension MeViewController {
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == handler.viewModel.sections.count - 1,
+              JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .me)
     }
 }

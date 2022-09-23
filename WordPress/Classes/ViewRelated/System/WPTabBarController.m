@@ -12,7 +12,6 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -556,8 +555,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 -(BOOL) welcomeNotificationSeen
 {
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
+    NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 

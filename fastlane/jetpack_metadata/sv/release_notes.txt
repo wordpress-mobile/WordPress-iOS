@@ -1,5 +1,3 @@
-Vi har uppdaterat vyn Insikter i din webbplatsstatistik. Du kan snabbt se hur din webbplats presterar och med ett klick jämföra resultatet med tidigare perioder.
+Länkar i åtgärdsblad (popup-menyerna på din enhet som visar ytterligare alternativ) är nu blåa istället för gröna.
 
-Behöver du växla till din webbläsare? Du kan nu logga in genom att skanna en QR-kod i appmenyn Jag.
-
-När du förhandsgranskar ett inlägg kan du nu växla mellan stående och liggande läge utan att något innehåll blir bortskuret. Skönt.
+Vi har också gjort Jetpack Social mer synligt i delningssektionen av dina webbplatsinställningar, samt i dina inläggsinställningar. Dags att vara social.

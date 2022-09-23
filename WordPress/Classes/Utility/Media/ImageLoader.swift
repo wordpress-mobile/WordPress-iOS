@@ -314,7 +314,7 @@ import AutomatticTracks
 // MARK: - Loading Media object
 
 extension ImageLoader {
-    @objc(loadImageFromMedia:preferredSize:placeholder:success:error:)
+    @objc(loadImageFromMedia:preferredSize:placeholder:isBlogAtomic:success:error:)
     /// Load an image from the given Media object. If it's a gif, it will animate it.
     /// For any other type of media, this will load the corresponding static image.
     ///
@@ -322,10 +322,16 @@ extension ImageLoader {
     ///   - media: The media object
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - size: The preferred size of the image to load.
+    ///   - isBlogAtomic: Whether the blog associated to the media item is Atomic or not
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
-    func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+    func loadImage(media: Media,
+                   preferredSize size: CGSize = .zero,
+                   placeholder: UIImage?,
+                   isBlogAtomic: Bool,
+                   success: ImageLoaderSuccessBlock?,
+                   error: ImageLoaderFailureBlock?) {
         guard let mediaId = media.mediaID?.stringValue else {
             let error = createError(description: "The Media id doesn't exist")
             callErrorHandler(with: error)
@@ -342,7 +348,7 @@ extension ImageLoader {
                     if let fetchedMedia = fetchedMedia,
                         let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
                         DispatchQueue.main.async {
-                            self?.loadImage(media: fetchedMedia, preferredSize: size, placeholder: placeholder, success: success, error: error)
+                            self?.loadImage(media: fetchedMedia, preferredSize: size, placeholder: placeholder, isBlogAtomic: isBlogAtomic, success: success, error: error)
                         }
                     } else {
                         self?.callErrorHandler(with: fetchedMediaError)
@@ -357,7 +363,7 @@ extension ImageLoader {
         }
 
         if url.isGif {
-            let host = MediaHost(with: media.blog) { error in
+            let host = MediaHost(with: media.blog, isAtomic: isBlogAtomic) { error in
                 // We'll log the error, so we know it's there, but we won't halt execution.
                 WordPressAppDelegate.crashLogging?.logError(error)
             }

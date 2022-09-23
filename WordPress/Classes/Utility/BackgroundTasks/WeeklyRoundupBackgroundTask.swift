@@ -218,11 +218,11 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         private let lastRunDateKey = "weeklyRoundup.lastExecutionDate"
 
         func getLastRunDate() -> Date? {
-            UserDefaults.standard.object(forKey: lastRunDateKey) as? Date
+            UserPersistentStoreFactory.instance().object(forKey: lastRunDateKey) as? Date
         }
 
         func setLastRunDate(_ date: Date) {
-            UserDefaults.standard.set(date, forKey: lastRunDateKey)
+            UserPersistentStoreFactory.instance().set(date, forKey: lastRunDateKey)
         }
     }
 
@@ -555,7 +555,7 @@ class WeeklyRoundupNotificationScheduler {
             }
 
         let title = notificationTitle(siteTitle)
-        let body = String(format: TextContent.dynamicNotificationBody, views, comments, likes)
+        let body = notificationBodyWith(views: views, comments: likes, likes: comments)
 
         // The dynamic notification date is defined by when the background task is run.
         // Since these lines of code execute when the BG Task is run, we can just schedule
@@ -585,6 +585,25 @@ class WeeklyRoundupNotificationScheduler {
                     completion(.failure(NotificationSchedulingError.dynamicNotificationSchedulingError(error: error)))
                 }
             }
+    }
+
+    func notificationBodyWith(views: Int, comments: Int, likes: Int) -> String {
+        var body = ""
+        let hideLikesCount = likes <= 0
+        let hideCommentsCount = comments <= 0
+
+        switch (hideLikesCount, hideCommentsCount) {
+        case (true, true):
+            body = String(format: TextContent.dynamicNotificationBodyViewsOnly, views.abbreviatedString())
+        case (false, true):
+            body = String(format: TextContent.dynamicNotificationBodyViewsAndLikes, views.abbreviatedString(), likes.abbreviatedString())
+        case (true, false):
+            body = String(format: TextContent.dynamicNotificationBodyViewsAndComments, views.abbreviatedString(), comments.abbreviatedString())
+        default:
+            body = String(format: TextContent.dynamicNotificationBodyAll, views.abbreviatedString(), comments.abbreviatedString(), likes.abbreviatedString())
+        }
+
+        return body
     }
 
     private func scheduleNotification(
@@ -664,6 +683,9 @@ class WeeklyRoundupNotificationScheduler {
         static let staticNotificationTitle = NSLocalizedString("Weekly Roundup", comment: "Title of Weekly Roundup push notification")
         static let dynamicNotificationTitle = NSLocalizedString("Weekly Roundup: %@", comment: "Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites.")
         static let staticNotificationBody = NSLocalizedString("Your weekly roundup is ready, tap here to see the details!", comment: "Prompt displayed as part of the stats Weekly Roundup push notification.")
-        static let dynamicNotificationBody = NSLocalizedString("Last week you had %1$d views, %2$d comments and %3$d likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes.")
+        static let dynamicNotificationBodyViewsOnly = NSLocalizedString("Last week you had %@ views.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views")
+        static let dynamicNotificationBodyViewsAndLikes = NSLocalizedString("Last week you had %1$@ views and %2$@ likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes.")
+        static let dynamicNotificationBodyViewsAndComments = NSLocalizedString("Last week you had %1$@ views and %2$@ comments.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments.")
+        static let dynamicNotificationBodyAll = NSLocalizedString("Last week you had %1$@ views, %2$@ comments and %3$@ likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes.")
     }
 }

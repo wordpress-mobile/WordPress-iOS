@@ -1,3 +1,1 @@
-When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
-
-Your WordPress app icon has gone back to its usual cool blue, but not to worry — you can still keep a little colour in your life. Just go into your app settings and choose our Pride-themed app icon again.
+This release is short and sweet: we’ve made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.

@@ -15,6 +15,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
+    private let accountService: AccountService
+
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
@@ -190,6 +192,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.comment = comment
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -201,6 +204,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -1070,6 +1074,11 @@ private extension CommentDetailViewController {
 
         let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
+        suggestionsView.prominentSuggestionsIds = SuggestionsTableView.prominentSuggestions(
+            fromPostAuthorId: comment.post?.authorID,
+            commentAuthorId: NSNumber(value: comment.authorID),
+            defaultAccountId: try? WPAccount.lookupDefaultWordPressComAccount(in: self.managedObjectContext)?.userID
+        )
         view.addSubview(suggestionsView)
 
         NSLayoutConstraint.activate([
@@ -1107,11 +1116,19 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
     }
 
     func replyTextView(_ replyTextView: ReplyTextView, willEnterFullScreen controller: FullScreenCommentReplyViewController) {
+        let lastSearchText = suggestionsTableView?.viewModel.searchText
         suggestionsTableView?.hideSuggestions()
 
         if let siteID = siteID {
-            controller.enableSuggestions(with: siteID)
+            controller.enableSuggestions(with: siteID, prominentSuggestionsIds: suggestionsTableView?.prominentSuggestionsIds, searchText: lastSearchText)
         }
+    }
+
+    func replyTextView(_ replyTextView: ReplyTextView, didExitFullScreen lastSearchText: String?) {
+        guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else {
+            return
+        }
+        suggestionsTableView?.showSuggestions(forWord: lastSearchText)
     }
 
 }

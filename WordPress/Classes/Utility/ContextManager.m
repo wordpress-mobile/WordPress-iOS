@@ -1,4 +1,5 @@
 #import "ContextManager.h"
+#import "LegacyContextFactory.h"
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 @import Foundation;
@@ -18,13 +19,14 @@ static ContextManager *_instance;
 
 @property (nonatomic, strong) NSPersistentStoreDescription *storeDescription;
 @property (nonatomic, strong) NSPersistentContainer *persistentContainer;
-@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *writerContext;
 @property (nonatomic, assign) BOOL migrationFailed;
 @property (nonatomic, strong) NSString *modelName;
 @property (nonatomic, strong) NSURL *storeURL;
+@property (nonatomic, strong) id<ManagedObjectContextFactory> contextFactory;
+@property (nonatomic, strong) NSOperationQueue *remoteChangeQueue;
+@property (nonatomic, strong) NSPersistentHistoryToken *historyToken;
+@property (nonatomic, strong) id updateUIObserver;
 
 @end
 
@@ -35,30 +37,40 @@ static ContextManager *_instance;
 
 - (instancetype)init
 {
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                        NSUserDomainMask,
-                                                                        YES) lastObject];
-    NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+    NSURL *storeURL;
+    if ([self isSharedLoginEnabled]) {
+        [self copyDatabaseToSharedDirectoryIfNeeded];
+        storeURL = [self sharedDatabasePath];
+    } else {
+        storeURL = [self localDatabasePath];
+    }
 
-    return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL];
+    return [self initWithModelName:ContextManagerModelNameCurrent storeURL:storeURL contextFactory:nil];
 }
 
-- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL
+- (instancetype)initWithModelName:(NSString *)modelName storeURL:(NSURL *)storeURL contextFactory:(Class)factory
 {
     self = [super init];
     if (self) {
+        if (factory == nil) {
+            factory = [Feature enabled:FeatureFlagNewCoreDataContext] ? [ContainerContextFactory class] : [LegacyContextFactory class];
+        }
+
         NSParameterAssert([modelName isEqualToString:ContextManagerModelNameCurrent] || [modelName hasPrefix:@"WordPress "]);
         NSParameterAssert([storeURL isFileURL]);
+        NSParameterAssert([factory conformsToProtocol:@protocol(ManagedObjectContextFactory)]);
 
         self.modelName = modelName;
         self.storeURL = storeURL;
 
         [NSValueTransformer registerCustomTransformers];
-        // Create `mainContext` and `writerContext` during initialisation to
-        // ensure they are only created once.
-        [self createWriterContext];
-        [self createMainContext];
-        [self startListeningToMainContextNotifications];
+        self.contextFactory = (id<ManagedObjectContextFactory>)[[factory alloc] initWithPersistentContainer:self.persistentContainer];
+        [[[NullBlogPropertySanitizer alloc] initWithContext:self.contextFactory.mainContext] sanitize];
+        
+        if ([self isSharedLoginEnabled]) {
+            [self pruneTransactionHistory];
+            [self observeStoreChanges];
+        }
     }
 
     return self;
@@ -81,120 +93,153 @@ static ContextManager *_instance;
 
 #pragma mark - Contexts
 
+- (NSManagedObjectContext *)mainContext
+{
+    return self.contextFactory.mainContext;
+}
+
 - (NSManagedObjectContext *const)newDerivedContext
 {
-    return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    return [self.contextFactory newDerivedContext];
 }
-
-- (void)createWriterContext
-{
-    NSAssert(self.writerContext == nil, @"%s should only be called once", __PRETTY_FUNCTION__);
-
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    context.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    self.writerContext = context;
-}
-
-- (void)createMainContext
-{
-    NSAssert(self.mainContext == nil, @"%s should only be called once", __PRETTY_FUNCTION__);
-
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    context.parentContext = self.writerContext;
-    self.mainContext = context;
-    [[[NullBlogPropertySanitizer alloc] initWithContext:context] sanitize];
-}
-
-- (NSManagedObjectContext *const)newChildContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType
-{
-    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc]
-                                            initWithConcurrencyType:concurrencyType];
-    childContext.parentContext = self.mainContext;
-    childContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
-    return childContext;
-}
-
 
 #pragma mark - Context Saving and Merging
 
 - (void)saveContextAndWait:(NSManagedObjectContext *)context
 {
-    [self saveContext:context andWait:YES withCompletionBlock:nil];
+    [self.contextFactory saveContext:context andWait:YES withCompletionBlock:nil];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context
 {
-    [self saveContext:context andWait:NO withCompletionBlock:nil];
+    [self.contextFactory saveContext:context andWait:NO withCompletionBlock:nil];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
 {
-    [self saveContext:context andWait:NO withCompletionBlock:completionBlock];
+    [self.contextFactory saveContext:context andWait:NO withCompletionBlock:completionBlock];
 }
 
-
-- (void)saveContext:(NSManagedObjectContext *)context andWait:(BOOL)wait withCompletionBlock:(void (^)(void))completionBlock
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock
 {
-    // Save derived contexts a little differently
-    if (context.parentContext == self.mainContext) {
-        [self saveDerivedContext:context andWait:wait withCompletionBlock:completionBlock];
-        return;
-    }
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlockAndWait:^{
+        aBlock(context);
 
-    if (wait) {
-        [context performBlockAndWait:^{
-            [self internalSaveContext:context withCompletionBlock:completionBlock];
-        }];
-    } else {
-        [context performBlock:^{
-            [self internalSaveContext:context withCompletionBlock:completionBlock];
-        }];
-    }
-}
-
-- (void)saveDerivedContext:(NSManagedObjectContext *)context andWait:(BOOL)wait withCompletionBlock:(void (^)(void))completionBlock
-{
-    if (wait) {
-        [context performBlockAndWait:^{
-            [self internalSaveContext:context];
-            [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
-        }];
-    } else {
-        [context performBlock:^{
-            [self internalSaveContext:context];
-            [self saveContext:self.mainContext andWait:wait withCompletionBlock:completionBlock];
-        }];
-    }
-}
-
-- (void)internalSaveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock
-{
-    [self internalSaveContext:context];
-
-    if (completionBlock) {
-        dispatch_async(dispatch_get_main_queue(), completionBlock);
-    }
-}
-
-- (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification
-{
-    [context performBlock:^{
-        // Fault-in updated objects before a merge to avoid any internal inconsistency errors later.
-        // Based on old solution referenced here: http://www.mlsite.net/blog/?p=518
-        NSSet* updates = [notification.userInfo objectForKey:NSUpdatedObjectsKey];
-        for (NSManagedObject *object in updates) {
-            NSManagedObject *objectInContext = [context existingObjectWithID:object.objectID error:nil];
-            if ([objectInContext isFault]) {
-                // Force a fault-in of the object's key-values
-                [objectInContext willAccessValueForKey:nil];
-            }
-        }
-        // Continue with the merge
-        [context mergeChangesFromContextDidSaveNotification:notification];
+        [self saveContextAndWait:context];
     }];
 }
 
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion
+{
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlock:^{
+        aBlock(context);
+
+        [self.contextFactory saveContext:context andWait:NO withCompletionBlock:completion];
+    }];
+}
+
+#pragma mark - Store Changes
+
+- (void)observeStoreChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleStoreChanges:)
+                                                 name:NSPersistentStoreRemoteChangeNotification
+                                               object:self.persistentContainer.persistentStoreCoordinator];
+}
+
+- (void)handleStoreChanges:(NSNotification *)notification
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.remoteChangeQueue addOperationWithBlock:^{
+        [weakSelf processRemoteChanges];
+    }];
+}
+
+- (void)processRemoteChanges
+{
+    // When changes are made to the database outside the app, a `NSPersistentStoreRemoteChangeNotification` notification
+    // will fire. When we receive one of these notifications, we need to check for database transactions made outside the
+    // current app and process them. We merge these transactions into the main context to sync it with the outside changes
+    // and then update the app's UI.
+    NSManagedObjectContext *context = [self newDerivedContext];
+    [context performBlockAndWait:^{
+        // Fetch all transactions after the last processed transaction or all if no history token is set
+        NSPersistentHistoryChangeRequest *historyChangeRequest = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:self.historyToken];
+        NSFetchRequest *fetchRequest = [NSPersistentHistoryTransaction fetchRequest];
+
+        // Filters the transactions based on the bundle ID. This is so we only fetch changes made outside the current
+        // running app
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"bundleID != %@", [[NSBundle mainBundle] bundleIdentifier]];
+        historyChangeRequest.fetchRequest = fetchRequest;
+
+        NSPersistentHistoryResult *result = [context executeRequest:historyChangeRequest error:nil];
+        NSArray<NSPersistentHistoryTransaction *> *transactions = result.result;
+
+        if (transactions.count > 0) {
+            // Transactions to the database were made outside the current app so we need to merge them into the main
+            // context of the current app
+            for (NSPersistentHistoryTransaction *transaction in transactions) {
+                NSDictionary *userInfo = transaction.objectIDNotification.userInfo;
+
+                if (userInfo) {
+                    // Merge the transaction into the main context
+                    [NSManagedObjectContext mergeChangesFromRemoteContextSave:userInfo
+                                                                 intoContexts:@[self.mainContext]];
+                }
+            }
+            [self saveContext:self.mainContext];
+            // Store the history token of the last transaction so we don't process the same ones again
+            self.historyToken = transactions.lastObject.token;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Force the app to update the current UI
+                [self handleUIUpdate];
+            });
+        }
+    }];
+}
+
+- (void)handleUIUpdate
+{
+    UIApplicationState state = UIApplication.sharedApplication.applicationState;
+    
+    void (^showUI)(void) = ^{
+        WordPressAppDelegate *delegate = (WordPressAppDelegate *) UIApplication.sharedApplication.delegate;
+        if (AccountHelper.isLoggedIn) {
+            [WPTabBarController.sharedInstance reloadSplitViewControllers];
+            [delegate.windowManager showAppUIFor:nil completion:nil];
+        } else {
+            [delegate.windowManager showFullscreenSignIn];
+        }
+    };
+    if (state == UIApplicationStateActive) {
+        showUI();
+    } else if (!self.updateUIObserver) {
+        __weak __typeof(self) weakSelf = self;
+        self.updateUIObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification
+                                                                                object:nil
+                                                                                 queue:[NSOperationQueue mainQueue]
+                                                                            usingBlock:^(NSNotification * _Nonnull note) {
+            showUI();
+            [[NSNotificationCenter defaultCenter] removeObserver:weakSelf.updateUIObserver];
+            weakSelf.updateUIObserver = nil;
+        }];
+    }
+}
+
+- (void)pruneTransactionHistory
+{
+    [self performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
+                                                                value:-7
+                                                               toDate:[NSDate date]
+                                                              options:0];
+        NSPersistentHistoryChangeRequest *deletionRequest = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:date];
+        [context executeRequest:deletionRequest error:nil];
+    }];
+}
 
 #pragma mark - Setup
 
@@ -212,6 +257,7 @@ static ContextManager *_instance;
 
     // Initialize the container
     NSPersistentContainer *persistentContainer = [[NSPersistentContainer alloc] initWithName:@"WordPress" managedObjectModel:self.managedObjectModel];
+    _persistentContainer = persistentContainer;
     persistentContainer.persistentStoreDescriptions = @[self.storeDescription];
     [persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
         if (error != nil) {
@@ -250,6 +296,12 @@ static ContextManager *_instance;
     NSPersistentStoreDescription *storeDescription = [[NSPersistentStoreDescription alloc] initWithURL:self.storeURL];
     storeDescription.shouldInferMappingModelAutomatically = true;
     storeDescription.shouldMigrateStoreAutomatically = true;
+    
+    if ([self isSharedLoginEnabled]) {
+        [storeDescription setOption:@YES forKey:NSPersistentHistoryTrackingKey];
+        [storeDescription setOption:@YES forKey:NSPersistentStoreRemoteChangeNotificationPostOptionKey];
+    }
+    
     return storeDescription;
 }
 
@@ -273,45 +325,41 @@ static ContextManager *_instance;
     return _managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+- (NSOperationQueue *)remoteChangeQueue
 {
-    return self.persistentContainer.persistentStoreCoordinator;
+    if (_remoteChangeQueue) {
+        return _remoteChangeQueue;
+    }
+    
+    _remoteChangeQueue = [[NSOperationQueue alloc] init];
+    _remoteChangeQueue.maxConcurrentOperationCount = 1;
+    return _remoteChangeQueue;
 }
 
-
-#pragma mark - Notification Helpers
-
-- (void)startListeningToMainContextNotifications
+- (void)setHistoryToken:(NSPersistentHistoryToken *)historyToken
 {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(mainContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:self.mainContext];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:historyToken
+                                         requiringSecureCoding:YES
+                                                         error:nil];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"transactionHistoryToken"];
 }
 
-- (void)mainContextDidSave:(NSNotification *)notification
+- (NSPersistentHistoryToken *)historyToken
 {
-    // Defer I/O to a BG Writer Context. Simperium 4ever!
-    //
-    [self.writerContext performBlock:^{
-        [self internalSaveContext:self.writerContext];
-    }];
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"transactionHistoryToken"];
+    if (data) {
+        NSPersistentHistoryToken *token = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSPersistentHistoryToken class]
+                                                                            fromData:data
+                                                                               error:nil];
+        return token;
+    }
+    
+    return nil;
 }
 
 
 #pragma mark - Private Helpers
-
-- (void)internalSaveContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert(context);
-    
-    NSError *error;
-    if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
-        DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
-    }
-    
-    if ([context hasChanges] && ![context save:&error]) {
-        [self handleSaveError:error inContext:context];
-    }
-}
 
 - (void)migrateDataModelsIfNecessary:(SentryStartupEvent *)sentryEvent
 {
@@ -360,6 +408,41 @@ static ContextManager *_instance;
 - (NSString *)modelPath
 {
     return [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
+}
+
+- (BOOL)isSharedLoginEnabled
+{
+   return [Feature enabled:FeatureFlagSharedLogin];
+}
+
+- (NSURL *)localDatabasePath
+{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+}
+
+- (NSURL *)sharedDatabasePath
+{
+    NSURL *sharedDirectory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.org.wordpress"];
+    return [sharedDirectory URLByAppendingPathComponent:@"WordPress.sqlite"];
+}
+
+- (void)copyDatabaseToSharedDirectoryIfNeeded
+{
+    BOOL sharedDatabaseExists = [[NSFileManager defaultManager] fileExistsAtPath:[[self sharedDatabasePath] absoluteString]];
+    if (![self isSharedLoginEnabled] || sharedDatabaseExists || AppConfiguration.isJetpack) {
+        return;
+    }
+    
+    NSString *shmLocalFilePath = [[[self localDatabasePath] absoluteString] stringByAppendingString:@"-shm"];
+    NSString *walLocalFilePath = [[[self localDatabasePath] absoluteString] stringByAppendingString:@"-wal"];
+    NSString *shmSharedFilePath = [[[self sharedDatabasePath] absoluteString] stringByAppendingString:@"-shm"];
+    NSString *walSharedFilePath = [[[self sharedDatabasePath] absoluteString] stringByAppendingString:@"-wal"];
+    [[NSFileManager defaultManager] copyItemAtURL:[self localDatabasePath] toURL:[self sharedDatabasePath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtURL:[NSURL URLWithString:shmLocalFilePath] toURL:[NSURL URLWithString:shmSharedFilePath] error:nil];
+    [[NSFileManager defaultManager] copyItemAtURL:[NSURL URLWithString:walLocalFilePath] toURL:[NSURL URLWithString:walSharedFilePath] error:nil];
 }
 
 @end

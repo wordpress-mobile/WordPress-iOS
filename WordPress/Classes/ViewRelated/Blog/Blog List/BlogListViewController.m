@@ -93,7 +93,7 @@ static NSInteger HideSearchMinSites = 3;
     self.addSiteButton.accessibilityIdentifier = @"add-site-button";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped)];
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"cancel-button";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"my-sites-cancel-button";
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -365,8 +365,7 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
 
     if (!defaultAccount) {
         [self handleSyncEnded];
@@ -914,8 +913,7 @@ static NSInteger HideSearchMinSites = 3;
 - (WPAccount *)defaultWordPressComAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    return [accountService defaultWordPressComAccount];
+    return [WPAccount lookupDefaultWordPressComAccountInContext:context];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
@@ -951,7 +949,7 @@ static NSInteger HideSearchMinSites = 3;
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
                                                                      [context performBlock:^{
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         WPAccount *account = [accountService defaultWordPressComAccount];
+                                                                         WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
                                                                          [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
                                                                          [[ContextManager sharedInstance] saveContext:context];
                                                                      }];

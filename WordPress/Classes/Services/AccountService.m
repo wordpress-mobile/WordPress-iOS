@@ -23,30 +23,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 ///------------------------------------
 
 /**
- Returns the default WordPress.com account
-
- The default WordPress.com account is the one used for Reader and Notifications
-
- @return the default WordPress.com account
- @see setDefaultWordPressComAccount:
- @see removeDefaultWordPressComAccount
- */
-- (WPAccount *)defaultWordPressComAccount
-{
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    if (uuid.length > 0) {
-        WPAccount *account = [self accountWithUUID:uuid];
-        if (account) {
-            return account;
-        }
-    }
-
-    // No account, or no default account set. Clear the defaults key.
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    return nil;
-}
-
-/**
  Sets the default WordPress.com account
 
  @param account the account to set as default for WordPress.com
@@ -58,11 +34,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSParameterAssert(account != nil);
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
-    if ([[self defaultWordPressComAccount] isEqual:account]) {
+    if ([account isDefaultWordPressComAccount]) {
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
@@ -94,7 +70,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     [[PushNotificationsManager shared] unregisterDeviceToken];
 
-    WPAccount *account = [self defaultWordPressComAccount];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     if (account == nil) {
         return;
     }
@@ -115,18 +91,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-}
-
-- (BOOL)isDefaultWordPressComAccount:(WPAccount *)account {
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    if (uuid.length == 0) {
-        return false;
-    }
-    return [account.uuid isEqualToString:uuid];
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
@@ -161,7 +129,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)requestVerificationEmail:(void (^)(void))success failure:(void (^)(NSError * _Nonnull))failure
 {
-    id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote requestVerificationEmailWithSucccess:^{
         if (success) {
             success();
@@ -180,7 +149,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
 {
-    WPAccount *account = [self findAccountWithUserID:remoteUser.userID];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     if (account) {
         // Even if we find an account via its userID we should still update
         // its authtoken, otherwise the Authenticator's authtoken fixer won't
@@ -209,7 +178,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
                                        authToken:(NSString *)authToken
 {
-    WPAccount *account = [self findAccountWithUsername:username];
+    WPAccount *account = [WPAccount lookupWithUsername:username context:self.managedObjectContext];
 
     if (!account) {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
@@ -219,7 +188,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.authToken = authToken;
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
-    if (![self defaultWordPressComAccount]) {
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    if (!defaultAccount) {
         [self setDefaultWordPressComAccount:account];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
@@ -294,7 +264,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)restoreDisassociatedAccountIfNecessary
 {
-    if ([self defaultWordPressComAccount]) {
+    if([WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] != nil) {
         return;
     }
 
@@ -304,7 +274,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
         // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     }
 }
 
@@ -322,26 +292,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         return account;
     }
     return nil;
-}
-
-- (WPAccount *)findAccountWithUsername:(NSString *)username
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"username =[c] %@ || email =[c] %@", username, username]];
-    [request setIncludesPendingChanges:YES];
-
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
-    return [results firstObject];
-}
-
-- (WPAccount *)findAccountWithUserID:(NSNumber *)userID
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"userID = %@", userID]];
-    [request setIncludesPendingChanges:YES];
-
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
-    return [results firstObject];
 }
 
 - (void)createOrUpdateAccountWithAuthToken:(NSString *)authToken
@@ -369,7 +319,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
-        WPAccount *fetchedAccount = [self findAccountWithUsername:username];
+        WPAccount *fetchedAccount = [WPAccount lookupWithUsername:username context:self.managedObjectContext];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
@@ -437,14 +387,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.defaultBlog = defaultBlog;
 
     // Update app extensions if needed.
-    if (account == [self defaultWordPressComAccount]) {
+    if ([account isDefaultWordPressComAccount]) {
         [self setupAppExtensionsWithDefaultAccount];
     }
 }
 
 - (void)setupAppExtensionsWithDefaultAccount
 {
-    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     Blog *defaultBlog   = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
@@ -512,7 +462,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSParameterAssert(account);
 
     BOOL purge = NO;
-    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     if ([account.blogs count] == 0
         && ![defaultAccount isEqual:account]) {
         purge = YES;
@@ -530,10 +480,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs
 {
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
     for (Blog *blog in blogs) {
         NSAssert(blog.dotComID.unsignedIntegerValue > 0, @"blog should have a wp.com ID");
-        NSAssert([blog.account isEqual:[self defaultWordPressComAccount]], @"blog should belong to the default account");
+        NSAssert([blog.account isEqual:defaultAccount], @"blog should belong to the default account");
         // This shouldn't happen, but just in case, let's not crash if
         // something tries to change visibility for a self hosted
         if (blog.dotComID) {
@@ -541,7 +492,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
         blog.visible = visible;
     }
-    AccountServiceRemoteREST *remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    AccountServiceRemoteREST *remote = [self remoteForAccount:defaultAccount];
     [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
         DDLogError(@"Error setting blog visibility: %@", error);
     }];

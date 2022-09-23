@@ -408,6 +408,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+
+        // Update the tint color for React Native modals when presented
+        let presentedView = presentedViewController?.view
+        presentedView?.tintColor = .editorPrimary
+    }
+
     // MARK: - Functions
 
     private var keyboardShowObserver: Any?
@@ -554,12 +562,16 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
+        view.tintColor = .editorPrimary
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
+
+        // Update the tint color of switches within React Native modals, as they require direct mutation
+        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
     }
 }
 
@@ -1158,6 +1170,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post is Page ? "page" : "post"
     }
 
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
@@ -1187,6 +1203,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
+            .shouldUseFastImage: !post.blog.isPrivate(),
             // Jetpack embeds
             .facebookEmbed: post.blog.supports(.facebookEmbed),
             .instagramEmbed: post.blog.supports(.instagramEmbed),
@@ -1321,7 +1338,11 @@ private extension GutenbergViewController {
 
     struct MediaAttachmentActionSheet {
         static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let dismissActionTitle = NSLocalizedString(
+            "gutenberg.mediaAttachmentActionSheet.dismiss",
+            value: "Dismiss",
+            comment: "User action to dismiss media options."
+        )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")

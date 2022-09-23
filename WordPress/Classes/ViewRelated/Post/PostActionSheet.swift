@@ -1,7 +1,7 @@
 import Foundation
 import AutomatticTracks
 
-@objc protocol PostActionSheetDelegate {
+protocol PostActionSheetDelegate: AnyObject {
     func showActionSheet(_ postCardStatusViewModel: PostCardStatusViewModel, from view: UIView)
 }
 

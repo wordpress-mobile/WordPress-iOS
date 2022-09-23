@@ -110,7 +110,7 @@ open class AppIconViewController: UITableViewController {
         // Prevent showing the custom icon upgrade alert to a user
         // who's just set an icon for the first time.
         // We'll remove this alert after a couple of releases.
-        UserDefaults.standard.hasShownCustomAppIconUpgradeAlert = true
+        UserPersistentStoreFactory.instance().hasShownCustomAppIconUpgradeAlert = true
 
         UIApplication.shared.setAlternateIconName(iconName, completionHandler: { [weak self] error in
             if error == nil {

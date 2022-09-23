@@ -24,6 +24,14 @@
 
 @end
 
+@interface MediaLibraryGroup()
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, assign) NSInteger itemsCount;
+@property (nonatomic, strong) NSManagedObjectID *imageMediaID;
+
+- (void)refreshImageMedia;
+@end
+
 @implementation MediaLibraryPickerDataSource
 
 - (instancetype)initWithBlog:(Blog *)blog
@@ -503,7 +511,9 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    if ([self.mediaChanged containsIndex:0] || [self.mediaInserted containsIndex:0] || [self.mediaRemoved containsIndex:0]) {
+    NSManagedObjectID *oldGroupMediaID = self.mediaGroup.imageMediaID;
+    [self.mediaGroup refreshImageMedia];
+    if (![oldGroupMediaID isEqual:self.mediaGroup.imageMediaID]) {
         [self notifyGroupObservers];
     }
     [self notifyObserversWithIncrementalChanges:YES
@@ -515,11 +525,6 @@
 
 @end
 
-@interface MediaLibraryGroup()
-    @property (nonatomic, strong) Blog *blog;
-    @property (nonatomic, assign) NSInteger itemsCount;
-@end
-
 @implementation MediaLibraryGroup
 
 - (instancetype)initWithBlog:(Blog *)blog
@@ -528,9 +533,18 @@
     if (self) {
         _blog = blog;
         _filter = WPMediaTypeAll;
-        _itemsCount = NSNotFound;        
+        _itemsCount = NSNotFound;
+        [self refreshImageMedia];
     }
     return self;
+}
+
+- (void)setFilter:(WPMediaType)filter {
+    if (_filter != filter) {
+        _filter = filter;
+
+        [self refreshImageMedia];
+    }
 }
 
 - (id)baseGroup
@@ -543,27 +557,38 @@
     return NSLocalizedString(@"WordPress Media", @"Name for the WordPress Media Library");
 }
 
-- (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
+- (void)refreshImageMedia
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
+    request.fetchLimit = 1;
     NSError *error;
     NSArray *mediaAssets = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
-    if (mediaAssets.count == 0)
-    {
-        if (completionHandler){
-            completionHandler(nil, nil);
-        }
-    }
     Media *media = [mediaAssets firstObject];
-    if (!media) {
+    self.imageMediaID = media.objectID;
+}
+
+- (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
+{
+    Media *media = nil;
+
+    if (self.imageMediaID == nil) {
+        [self refreshImageMedia];
+    }
+
+    if (self.imageMediaID != nil) {
+        media = [[[ContextManager sharedInstance] mainContext] existingObjectWithID:self.imageMediaID error:nil];
+    }
+
+    if (media == nil) {
         UIImage *placeholderImage = [UIImage imageNamed:@"WordPress-share"];
         completionHandler(placeholderImage, nil);
         return 0;
     }
+
     return [media imageWithSize:size completionHandler:completionHandler];
 }
 

@@ -131,9 +131,9 @@ private extension NotificationViewController {
     /// - Returns: the token if found; `nil` otherwise
     ///
     func readExtensionToken() -> String? {
-        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainTokenKey,
-                                                                           andServiceName: WPNotificationContentExtensionKeychainServiceName,
-                                                                           accessGroup: WPAppKeychainAccessGroup) else {
+        guard let oauthToken = try? KeychainUtils.shared.getPasswordForUsername(WPNotificationContentExtensionKeychainTokenKey,
+                                                                                serviceName: WPNotificationContentExtensionKeychainServiceName,
+                                                                                accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Content Extension OAuth token")
             return nil
         }
@@ -146,9 +146,9 @@ private extension NotificationViewController {
     /// - Returns: the username if found; `nil` otherwise
     ///
     func readExtensionUsername() -> String? {
-        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainUsernameKey,
-                                                                           andServiceName: WPNotificationContentExtensionKeychainServiceName,
-                                                                           accessGroup: WPAppKeychainAccessGroup) else {
+        guard let username = try? KeychainUtils.shared.getPasswordForUsername(WPNotificationContentExtensinoKeychainUsernameKey,
+                                                                              serviceName: WPNotificationContentExtensionKeychainServiceName,
+                                                                              accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Content Extension username")
             return nil
         }

@@ -18,20 +18,33 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     /// The completion block that is called when the view is exiting fullscreen
     /// - Parameter: Bool, whether or not the calling view should trigger a save
     /// - Parameter: String, the updated comment content
-    public var onExitFullscreen: ((Bool, String) -> ())?
+    /// - Parameter: String, the last search text used to show the suggestions list.
+    public var onExitFullscreen: ((Bool, String, String?) -> ())?
 
     /// The save/reply button that is displayed in the rightBarButtonItem position
     private(set) var replyButton: UIBarButtonItem!
 
     /// Reply Suggestions
-    ///
     private var siteID: NSNumber?
+    private var prominentSuggestionsIds: [NSNumber]?
     private var suggestionsTableView: SuggestionsTableView?
+    private var searchText: String?
+
+    private var viewModel: FullScreenCommentReplyViewModelType
 
     // Static margin between the suggestions view and the text cursor position
     private let suggestionViewMargin: CGFloat = 5
 
     public var placeholder = String()
+
+    init(viewModel: FullScreenCommentReplyViewModelType = FullScreenCommentReplyViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: Self.nibName(), bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View Methods
     public override func viewDidLoad() {
@@ -50,6 +63,7 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupSuggestionsTableViewIfNeeded()
+        showSuggestionsViewIfNeeded()
 
         WPAnalytics.track(.commentFullScreenEntered)
     }
@@ -58,24 +72,35 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
     /// Enables the @ mention suggestions while editing
     /// - Parameter siteID: The ID of the site to determine if suggestions are enabled or not
-    @objc func enableSuggestions(with siteID: NSNumber) {
+    /// - Parameter prominentSuggestionsIds: The suggestions ids to display at the top of the suggestions list.
+    /// - Parameter searchText: The last search text used to show the suggestions list.
+    @objc func enableSuggestions(with siteID: NSNumber, prominentSuggestionsIds: [NSNumber]?, searchText: String?) {
         self.siteID = siteID
+        self.prominentSuggestionsIds = prominentSuggestionsIds
+        self.searchText = searchText
     }
 
     /// Description
     private func setupSuggestionsTableViewIfNeeded() {
-        guard shouldShowSuggestions else {
+        guard let siteID = siteID, shouldShowSuggestions else {
             return
         }
 
-        guard let siteID = siteID else { return }
-        let tableView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
-        tableView.useTransparentHeader = true
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        suggestionsTableView = tableView
+        suggestionsTableView = viewModel.suggestionsTableView(
+            with: siteID,
+            useTransparentHeader: true,
+            prominentSuggestionsIds: prominentSuggestionsIds,
+            delegate: self
+        )
 
         attachSuggestionsViewIfNeeded()
+    }
+
+    private func showSuggestionsViewIfNeeded() {
+        guard let searchText = searchText, !searchText.isEmpty else {
+            return
+        }
+        suggestionsTableView?.showSuggestions(forWord: searchText)
     }
 
     // MARK: - UITextViewDelegate
@@ -193,12 +218,13 @@ public class FullScreenCommentReplyViewController: EditCommentViewController, Su
 
         let updatedText = textView.text ?? ""
 
-        completion(shouldSave, updatedText)
+        let lastSuggestionsSearchText = shouldSave ? nil : suggestionsTableView?.viewModel.searchText
+
+        completion(shouldSave, updatedText, lastSuggestionsSearchText)
         WPAnalytics.track(.commentFullScreenExited)
     }
 
     var suggestionsTop: NSLayoutConstraint!
-    var suggestionsBottom: NSLayoutConstraint!
 
     fileprivate var initialSuggestionsPosition: SuggestionsPosition = .hidden
     fileprivate var didChangeText: Bool = false
@@ -323,12 +349,7 @@ private extension FullScreenCommentReplyViewController {
 
     /// Determine if suggestions are enabled and visible for this site
     var shouldShowSuggestions: Bool {
-        guard let siteID = siteID,
-              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-                  return false
-              }
-
-        return SuggestionService.shared.shouldShowSuggestions(for: blog)
+        return viewModel.shouldShowSuggestions(with: siteID)
     }
 
     // This should be moved elsewhere

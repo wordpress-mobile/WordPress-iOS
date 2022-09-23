@@ -1,5 +1,3 @@
-Atualizamos a visualização de informações de estatísticas do seu site. Veja o desempenho do seu site de maneira rápida, e compare o desempenho atual com de períodos anteriores em apenas um toque.
+Links em janelas de opções (aqueles menus pop-up que exibem opções extra no seu dispositivo) agora são azuis em vez de verdes.
 
-Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
-
-Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.
+Também deixamos o Jetpack Social mais em destaque na seção Compartilhamento das configurações do seu site e do seu post. Vamos socializar!
