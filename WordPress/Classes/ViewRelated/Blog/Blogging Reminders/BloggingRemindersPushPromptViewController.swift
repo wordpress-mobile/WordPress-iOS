@@ -184,8 +184,8 @@ class BloggingRemindersPushPromptViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Metrics.edgeMargins.top),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: turnOnNotificationsButton.topAnchor, constant: Metrics.edgeMargins.bottom),
 
+            turnOnNotificationsButton.topAnchor.constraint(greaterThanOrEqualTo: stackView.bottomAnchor, constant: Metrics.edgeMargins.bottom),
             turnOnNotificationsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.turnOnButtonHeight),
             turnOnNotificationsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Metrics.edgeMargins.left),
             turnOnNotificationsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Metrics.edgeMargins.right),
