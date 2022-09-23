@@ -1027,6 +1027,9 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .moderation(let rows):
             switch rows[indexPath.row] {
             case .status(let statusType):
+                if commentStatus == statusType {
+                    break
+                }
                 commentStatus = statusType
                 tableView.reloadSections([1], with: .automatic)
                 notifyDelegateCommentModerated()
