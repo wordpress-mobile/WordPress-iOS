@@ -81,11 +81,10 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v20.7-whats-new"
+msgctxt "v20.8-whats-new"
 msgid ""
-"Links in action sheets (those pop-up menus on your device that bring up extra options) are now blue instead of green.\n"
-"\n"
-"We’ve also made Jetpack Social more noticeable in the Sharing section of your site settings, as well as in your post settings. Let’s get social.\n"
+"We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.\n"
+"We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
