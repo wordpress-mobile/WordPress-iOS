@@ -222,10 +222,10 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 2.3.0'
+  pod 'WordPressAuthenticator', '~> 3.2.0-beta'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2.1'
   # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
