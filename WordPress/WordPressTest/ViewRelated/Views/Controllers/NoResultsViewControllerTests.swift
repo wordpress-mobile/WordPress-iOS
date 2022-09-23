@@ -1,11 +1,3 @@
-//
-//  NoResultsViewControllerTests.swift
-//  WordPressTest
-//
-//  Created by Jack Chen on 2022/9/18.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
