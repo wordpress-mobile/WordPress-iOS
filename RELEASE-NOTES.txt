@@ -1,5 +1,6 @@
 20.9
 -----
+* [*] Stories: Fixed an issue where the keyboard would overlap with the publish dialog in landscape. [#19350]
 
 
 20.8
