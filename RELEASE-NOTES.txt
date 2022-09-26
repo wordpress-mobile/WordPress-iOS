@@ -1,6 +1,6 @@
 20.9
 -----
-
+* [*] Login Flow: Provide ability for user to cancel login flow from Me screen [#19349]
 
 20.8
 -----
