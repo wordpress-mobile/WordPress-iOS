@@ -13,7 +13,7 @@ common_params:
         repo: "wordpress-mobile/wordpress-ios/"
   # Common environment values to use with the `env` key.
   - &common_env
-    IMAGE_ID: xcode-13.4.1
+    IMAGE_ID: xcode-14
 
 steps:
 
