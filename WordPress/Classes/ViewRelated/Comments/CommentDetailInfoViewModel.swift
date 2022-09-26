@@ -5,7 +5,7 @@ protocol CommentDetailInfoViewModelInputs {
 }
 
 protocol CommentDetailInfoViewModelOutputs {
-    func fetchUserDetails() -> [CommentDetailInfoUserDetails]
+    var userDetails: [CommentDetailInfoUserDetails] { get }
 }
 
 typealias CommentDetailInfoViewModelType = CommentDetailInfoViewModelInputs & CommentDetailInfoViewModelOutputs
@@ -22,6 +22,8 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
     private let ipAddress: String?
     private let isAdmin: Bool
 
+    let userDetails: [CommentDetailInfoUserDetails]
+
     weak var view: CommentDetailInfoView?
 
     init(url: URL?, urlToDisplay: String?, email: String?, ipAddress: String?, isAdmin: Bool) {
@@ -30,9 +32,7 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
         self.email = email
         self.ipAddress = ipAddress
         self.isAdmin = isAdmin
-    }
 
-    func fetchUserDetails() -> [CommentDetailInfoUserDetails] {
         var details: [CommentDetailInfoUserDetails] = []
         // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
         if let urlToDisplay = urlToDisplay, !urlToDisplay.isEmpty {
@@ -50,12 +50,11 @@ final class CommentDetailInfoViewModel: CommentDetailInfoViewModelType {
                 details.append(CommentDetailInfoUserDetails(title: Strings.ipAddressLabelText, description: ipAddress))
             }
         }
-
-        return details
+        self.userDetails = details
     }
 
     func didSelectItem(at index: Int) {
-        guard fetchUserDetails()[index].title == Strings.addressLabelText, let url = url else {
+        guard userDetails[index].title == Strings.addressLabelText, let url = url else {
             return
         }
 

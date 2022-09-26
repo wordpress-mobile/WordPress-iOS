@@ -68,15 +68,14 @@ extension CommentDetailInfoViewController: CommentDetailInfoView {
 // MARK: - UITableViewDatasource
 extension CommentDetailInfoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.fetchUserDetails().count
+        viewModel.userDetails.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Self.cellReuseIdentifier)
         ?? .init(style: .subtitle, reuseIdentifier: Self.cellReuseIdentifier)
 
-        let userDetails = viewModel.fetchUserDetails()
-        let info = userDetails[indexPath.item]
+        let info = viewModel.userDetails[indexPath.item]
 
         cell.selectionStyle = .none
         cell.tintColor = .primary
