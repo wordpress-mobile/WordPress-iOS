@@ -53,12 +53,27 @@ platform :ios do
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for all variants
+  # Downloads all the required certificates and profiles (using `match`) for all variants
   #
   lane :update_certs_and_profiles do
+    update_wordpress_certs_and_profiles
+    update_jetpack_certs_and_profiles
+  end
+
+  # Downloads all the required certificates and profiles (using `match`) for all WordPress variants
+  #
+  lane :update_wordpress_certs_and_profiles do
     alpha_code_signing
     internal_code_signing
     appstore_code_signing
+  end
+
+  # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants
+  #
+  lane :update_jetpack_certs_and_profiles do
+    jetpack_alpha_code_signing
+    jetpack_internal_code_signing
+    jetpack_appstore_code_signing
   end
 
   ########################################################################
