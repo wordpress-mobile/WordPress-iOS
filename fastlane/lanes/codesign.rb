@@ -86,6 +86,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
     )
@@ -97,6 +98,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
     )
@@ -119,6 +121,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: 'com.jetpack.alpha'
     )
@@ -130,6 +133,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: 'com.jetpack.internal'
     )
