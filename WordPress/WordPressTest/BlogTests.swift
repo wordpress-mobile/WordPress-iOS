@@ -59,7 +59,7 @@ final class BlogTests: CoreDataTestCase {
             .set(blogOption: "foo", value: "bar")
             .build()
         let post = PostBuilder(context, blog: blog).build()
-        post.postID = 10
+        post.postID = NSNumber(value: Int64.max)
         contextManager.saveContextAndWait(context)
 
         XCTAssertIdentical(blog.lookupPost(withID: post.postID!, in: mainContext)?.managedObjectContext, mainContext)
