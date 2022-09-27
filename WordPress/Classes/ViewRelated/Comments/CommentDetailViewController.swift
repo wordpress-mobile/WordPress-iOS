@@ -310,7 +310,6 @@ private extension CommentDetailViewController {
         case header
         case content
         case replyIndicator
-        case text(title: String, detail: String, image: UIImage? = nil)
         case status(status: CommentStatusType)
         case deleteComment
     }
@@ -405,22 +404,10 @@ private extension CommentDetailViewController {
             rows.append(.replyIndicator)
         }
 
-        // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
-//        if comment.authorURL() != nil {
-//            rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
-//        }
-
         // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
         guard comment.allowsModeration() else {
             return rows
         }
-
-        // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-//        if !comment.author_email.isEmpty {
-//            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email, image: Style.externalIconImage))
-//        }
-
-//        rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
 
         if comment.deleteWillBePermanent() {
             rows.append(.deleteComment)
@@ -488,7 +475,7 @@ private extension CommentDetailViewController {
         }
 
         cell.accessoryButtonAction = { [weak self] senderView in
-            self?.shareCommentURL(senderView)
+            self?.presentUserInfoSheet(senderView)
         }
 
         cell.likeButtonAction = { [weak self] in
@@ -498,35 +485,6 @@ private extension CommentDetailViewController {
         cell.replyButtonAction = { [weak self] in
             self?.showReplyView()
         }
-    }
-
-    func configuredTextCell(for row: RowType) -> UITableViewCell {
-        guard case let .text(title, detail, image) = row else {
-            return .init()
-        }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
-
-        cell.selectionStyle = .none
-        cell.tintColor = Style.tintColor
-
-        cell.textLabel?.font = Style.secondaryTextFont
-        cell.textLabel?.textColor = Style.secondaryTextColor
-        cell.textLabel?.text = title
-
-        cell.detailTextLabel?.font = Style.textFont
-        cell.detailTextLabel?.textColor = Style.textColor
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
-
-        cell.accessoryView = {
-            guard let image = image else {
-                return nil
-            }
-            return UIImageView(image: image)
-        }()
-
-        return cell
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
@@ -743,25 +701,25 @@ private extension CommentDetailViewController {
         })
     }
 
-    func visitAuthorURL() {
-        guard let authorURL = comment.authorURL() else {
-            return
-        }
+    func presentUserInfoSheet(_ senderView: UIView) {
+        let viewModel = CommentDetailInfoViewModel(
+            url: comment.authorURL(),
+            urlToDisplay: comment.authorUrlForDisplay(),
+            email: comment.author_email,
+            ipAddress: comment.author_ip,
+            isAdmin: comment.allowsModeration()
+        )
+        let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        viewModel.view = viewController
+        let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
+        bottomSheet.show(from: self)
 
-        openWebView(for: authorURL)
-    }
-
-    func shareCommentURL(_ senderView: UIView) {
-        guard let commentURL = comment.commentURL() else {
-            return
-        }
-
-        // track share intent.
-        WPAnalytics.track(.siteCommentsCommentShared)
-
-        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = senderView
-        present(activityViewController, animated: true, completion: nil)
+//        // track share intent.
+//        WPAnalytics.track(.siteCommentsCommentShared)
+//
+//        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+//        activityViewController.popoverPresentationController?.sourceView = senderView
+//        present(activityViewController, animated: true, completion: nil)
     }
 }
 
@@ -779,8 +737,6 @@ private extension String {
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
-    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
-    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
 }
 
@@ -954,8 +910,8 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         let cell: UITableViewCell = {
             let rows: [RowType]
             switch sections[indexPath.section] {
-            case .content(let x), .moderation(let x):
-                rows = x
+            case .content(let sectionRows), .moderation(let sectionRows):
+                rows = sectionRows
             }
 
             switch rows[indexPath.row] {
@@ -969,15 +925,10 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
 
                 configureContentCell(cell, comment: comment)
-                //                    cell.moderationBar.delegate = self
-                //                    moderationBar = cell.moderationBar
                 return cell
 
             case .replyIndicator:
                 return replyIndicatorCell
-
-            case .text:
-                return configuredTextCell(for: rows[indexPath.row])
 
             case .deleteComment:
                 return deleteButtonCell
@@ -999,6 +950,12 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
     }
 
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = Style.tertiaryTextFont
+        header.textLabel?.textColor = UIColor.secondaryLabel
+    }
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Hide cell separator if it's positioned before the delete button cell.
         cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
@@ -1018,8 +975,8 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
             case .replyIndicator:
                 navigateToReplyComment()
-            case .text(let title, _, _) where title == .webAddressLabelText:
-                visitAuthorURL()
+//            case .text(let title, _, _) where title == .webAddressLabelText:
+//                visitAuthorURL()
             default:
                 break
             }

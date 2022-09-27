@@ -85,7 +85,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var isReplyHighlighted: Bool = false {
         didSet {
-            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.buttonTintColor
+            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor
             replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
             replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
         }
@@ -94,6 +94,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // MARK: Constants
 
     private let customBottomSpacing: CGFloat = 10
+    private let contentButtonsTopSpacing: CGFloat = 15
 
     // MARK: Outlets
 
@@ -235,11 +236,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 //        isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: contentContainerView)
+        containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
 
         // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
         // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
-        containerStackBottomConstraint.constant = (isReactionBarVisible /* || isModerationEnabled */) ? 0 : customBottomSpacing
+//        containerStackBottomConstraint.constant = customBottomSpacing
 
 //        if isModerationEnabled {
 //            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
@@ -298,12 +299,7 @@ private extension CommentContentTableViewCell {
     typealias Style = WPStyleGuide.CommentDetail.Content
 
     var accessoryButtonImage: UIImage? {
-        switch accessoryButtonType {
-        case .share:
-            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        case .ellipsis:
-            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        }
+        return .init(systemName: Style.infoIconImageName, withConfiguration: Style.accessoryIconConfiguration)
     }
 
     var likeButtonTitle: String {
@@ -340,7 +336,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        replyButton?.tintColor = Style.buttonTintColor
+        replyButton?.tintColor = Style.reactionButtonTextColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
         replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
         replyButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -350,7 +346,10 @@ private extension CommentContentTableViewCell {
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton?.flipInsetsForRightToLeftLayoutDirection()
         replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        adjustImageAndTitleEdgeInsets(for: replyButton)
+        replyButton?.sizeToFit()
 
+        likeButton?.tintColor = Style.reactionButtonTextColor
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.titleLabel?.adjustsFontSizeToFitWidth = true
         likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -358,8 +357,20 @@ private extension CommentContentTableViewCell {
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton?.flipInsetsForRightToLeftLayoutDirection()
         likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        adjustImageAndTitleEdgeInsets(for: likeButton)
         updateLikeButton(liked: false, numberOfLikes: 0)
+        likeButton?.sizeToFit()
     }
+
+    private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
+        guard let imageSize = button.imageView?.frame.size, let titleSize = button.titleLabel?.frame.size else {
+            return
+        }
+
+        let spacing: CGFloat = 3
+        button.titleEdgeInsets = .init(top: 0, left: -imageSize.width, bottom: -(imageSize.height + spacing), right: 0)
+        button.imageEdgeInsets = .init(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
+   }
 
     /// Configures the avatar image view with the provided URL.
     /// If the URL does not contain any image, the default placeholder image will be displayed.
@@ -408,9 +419,10 @@ private extension CommentContentTableViewCell {
         likeCount = numberOfLikes
 
         let onAnimationComplete = {
-            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
+            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.reactionButtonTextColor
             self.likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
             self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
+            self.likeButton.setTitleColor(liked ? Style.likedTintColor : Style.reactionButtonTextColor, for: .normal)
             completion?()
         }
 
