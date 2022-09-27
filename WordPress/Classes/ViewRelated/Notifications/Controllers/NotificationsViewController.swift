@@ -200,7 +200,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             reloadTableViewPreservingSelection()
         }
 
-        if !AccountHelper.isDotcomAvailable() {
+        if shouldDisplayJetpackPrompt {
             promptForJetpackCredentials()
         } else {
             jetpackLoginViewController?.view.removeFromSuperview()
