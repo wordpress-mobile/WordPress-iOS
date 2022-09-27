@@ -1558,7 +1558,11 @@ private extension NotificationsViewController {
             return
         }
 
-        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
+        // Don't attempt to resize the columns for full width.
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = .default
+        // The above line should be replace with the following line when the full width issue is resolved.
+        // let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
 
         if splitViewController.wpPrimaryColumnWidth != columnWidth {
             splitViewController.wpPrimaryColumnWidth = columnWidth
