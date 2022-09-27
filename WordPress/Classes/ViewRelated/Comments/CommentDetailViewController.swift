@@ -777,7 +777,6 @@ private extension String {
                                                           + "%1$@ is a placeholder for the comment author."
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
     static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
 }
@@ -1021,8 +1020,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
             case .replyIndicator:
                 navigateToReplyComment()
-//            case .text(let title, _, _) where title == .webAddressLabelText:
-//                visitAuthorURL()
             default:
                 break
             }
