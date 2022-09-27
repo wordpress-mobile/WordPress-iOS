@@ -34,8 +34,6 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
-- (nullable AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
-
 /**
  Sync a specific post from the API
 

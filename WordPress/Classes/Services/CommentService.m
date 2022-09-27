@@ -1365,8 +1365,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:[NSNumber numberWithInt:comment.postID] inBlog:comment.blog];
+        comment.post = [comment.blog lookupPostWithID:[NSNumber numberWithInt:comment.postID] inContext:self.managedObjectContext];
     }
 }
 

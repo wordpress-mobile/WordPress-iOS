@@ -127,7 +127,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                               return;
                           }
                           if (remotePost) {
-                              AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              AbstractPost *post = [blog lookupPostWithID:postID inContext:self.managedObjectContext];
                               
                               if (!post) {
                                   if ([remotePost.type isEqualToString:PostServiceTypePage]) {
@@ -706,7 +706,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:self.managedObjectContext];
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
@@ -768,13 +768,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     if (completion) {
         completion(posts);
     }
-}
-
-- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND original = NULL AND postID = %@", blog, postID];
-    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
-    return [posts firstObject];
 }
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
