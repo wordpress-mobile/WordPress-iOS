@@ -686,14 +686,14 @@ private extension NotificationsViewController {
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
-        guard isViewLoaded == true && view.window != nil else {
-            return
-        }
-
-        needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
         resetApplicationBadge()
+        guard isViewLoaded == true && view.window != nil else {
+            needsReloadResults = true
+            return
+        }
+        reloadResultsController()
         syncNewNotifications()
     }
 
@@ -1758,7 +1758,6 @@ private extension NotificationsViewController {
             selectedNotification = nil
             mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
-            tableView.reloadData()
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
