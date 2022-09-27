@@ -31,25 +31,15 @@ class MockBlogService: BlogService {
     }
 }
 
-class MockPostService: PostService {
-    var draftPostExpectation: XCTestExpectation?
-
-    override func createDraftPost(for blog: Blog) -> Post {
-        draftPostExpectation?.fulfill()
-        return Post(context: self.managedObjectContext)
-    }
-}
-
-
 class ReblogTestCase: CoreDataTestCase {
     var readerPost: ReaderPost?
     var blogService: MockBlogService?
-    var postService: MockPostService?
+    var postService: PostService?
 
     override func setUp() {
         readerPost = ReaderPost(context: self.mainContext)
         blogService = MockBlogService(managedObjectContext: self.mainContext)
-        postService = MockPostService(managedObjectContext: self.mainContext)
+        postService = PostService(managedObjectContext: self.mainContext)
     }
 
     override func tearDown() {
@@ -80,14 +70,17 @@ class ReaderReblogActionTests: ReblogTestCase {
 
 class ReblogPresenterTests: ReblogTestCase {
 
-    func testPresentEditorForOneSite() {
+    func testPresentEditorForOneSite() throws {
         // Given
-        postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
+        let draftPosts = NSFetchRequest<Post>(entityName: "Post")
+        draftPosts.predicate = NSPredicate(format: "status = %@", Post.Status.draft.rawValue)
+        try XCTAssertEqual(mainContext.count(for: draftPosts), 0)
         blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
         // Then
+        try XCTAssertEqual(mainContext.count(for: draftPosts), 1)
         waitForExpectations(timeout: 4) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
