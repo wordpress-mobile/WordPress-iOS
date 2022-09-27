@@ -554,4 +554,11 @@ class PostTests: CoreDataTestCase {
 
         XCTAssertFalse(revision.hasLocalChanges())
     }
+
+    func testCountLocalDrafts() {
+        let blog = BlogBuilder(mainContext).build()
+        let _ = blog.createDraftPost()
+
+        XCTAssertEqual(AbstractPost.countLocalPosts(using: mainContext), 1)
+    }
 }
