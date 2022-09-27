@@ -1000,10 +1000,9 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (void)updateCommentsForPost:(AbstractPost *)post
 {
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
-    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
-    [currentComments addObjectsFromArray:[allComments allObjects]];
+    NSSet *allComments = [post.blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
+    [currentComments unionSet:allComments];
 }
 
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
