@@ -70,7 +70,9 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
-    [self.viewModel reloadData];
+    if (self.superview) {
+        [self.viewModel reloadData];
+    }
 }
 
 #pragma mark Private methods
