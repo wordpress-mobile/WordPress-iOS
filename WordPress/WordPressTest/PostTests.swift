@@ -559,6 +559,6 @@ class PostTests: CoreDataTestCase {
         let blog = BlogBuilder(mainContext).build()
         let _ = blog.createDraftPost()
 
-        XCTAssertEqual(AbstractPost.countLocalPosts(using: mainContext), 1)
+        XCTAssertEqual(AbstractPost.countLocalPosts(in: mainContext), 1)
     }
 }
