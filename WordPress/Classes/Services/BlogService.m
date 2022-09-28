@@ -55,17 +55,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return blog;
 }
 
-- (Blog *)lastUsedOrFirstBlogThatSupports:(BlogFeature)feature
-{
-    Blog *blog = [self lastUsedOrPrimaryBlog];
-
-    if (![blog supports:feature]) {
-        blog = [self firstBlogThatSupports:feature];
-    }
-
-    return blog;
-}
-
 - (Blog *)lastUsedOrPrimaryBlog
 {
     Blog *blog = [self lastUsedBlog];
@@ -95,19 +84,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 - (Blog *)primaryBlog
 {
     return [[WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] defaultBlog];
-}
-
-- (Blog *)firstBlogThatSupports:(BlogFeature)feature
-{
-    NSPredicate *predicate = [self predicateForVisibleBlogs];
-    NSArray *results = [self blogsWithPredicate:predicate];
-
-    for (Blog *blog in results) {
-        if ([blog supports:feature]) {
-            return blog;
-        }
-    }
-    return nil;
 }
 
 - (Blog *)firstBlog
