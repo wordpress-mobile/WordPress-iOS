@@ -63,6 +63,7 @@ public extension Blog {
     ///
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id.
+    @objc
     func comment(withID id: NSNumber) -> Comment? {
         comment(withID: id.int32Value)
     }

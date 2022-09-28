@@ -374,7 +374,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 return;
             }
 
-            Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+            Comment *comment = [blog commentWithID:remoteComment.commentID];
             if (!comment) {
                 comment = [self createCommentForBlog:blog];
             }
@@ -417,7 +417,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 return;
             }
 
-            Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+            Comment *comment = [post commentWithID:remoteComment.commentID];
 
             if (!comment) {
                 comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
@@ -1036,7 +1036,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (RemoteComment *remoteComment in comments) {
-        Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+        Comment *comment = [blog commentWithID:remoteComment.commentID];
         if (!comment) {
             comment = [self createCommentForBlog:blog];
         }
@@ -1146,7 +1146,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // Find its parent comment (if it exists)
     Comment *parentComment;
     if (parentID.intValue != 0) {
-        parentComment = [self findCommentWithID:parentID fromPost:post];
+        parentComment = [post commentWithID:parentID];
     }
 
     // Update depth and hierarchy
@@ -1193,7 +1193,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     Comment *parentComment;
     if (comment.parentID != 0) {
         NSNumber *parentID = [NSNumber numberWithInt:comment.parentID];
-        parentComment = [self findCommentWithID:parentID fromPost:(ReaderPost *)comment.post];
+        parentComment = [(ReaderPost *)comment.post commentWithID:parentID];
     }
 
     // Update depth and hierarchy
@@ -1215,7 +1215,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSUInteger newCommentCount = 0;
 
     for (RemoteComment *remoteComment in comments) {
-        Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+        Comment *comment = [post commentWithID:remoteComment.commentID];
         if (!comment) {
             newCommentCount++;
             comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
