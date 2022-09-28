@@ -46,6 +46,17 @@ public extension Blog {
         try? lookup(withID: id.int64Value, in: context)
     }
 
+    /// Lookup a Blog by its hostname
+    ///
+    /// - Parameters:
+    ///   - hostname: The hostname of the blog.
+    ///   - context:  An `NSManagedObjectContext` containing the `Blog` object with the given `hostname`.
+    /// - Returns: The `Blog` object associated with the given `hostname`, if it exists.
+    @objc(lookupWithHostname:inContext:)
+    static func lookup(hostname: String, in context: NSManagedObjectContext) -> Blog? {
+        try? BlogQuery().hostname(hostname).blog(in: context)
+    }
+
     /// Lookup a Blog by WP.ORG Credentials
     ///
     /// - Parameters:

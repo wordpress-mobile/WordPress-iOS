@@ -15,9 +15,8 @@ extension NavigationAction {
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
 
-        if let blog = service.blog(byHostname: domain) {
+        if let blog = Blog.lookup(hostname: domain, in: context) {
             return blog
         }
 
