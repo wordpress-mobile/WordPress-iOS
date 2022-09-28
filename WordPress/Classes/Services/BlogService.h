@@ -38,11 +38,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (nullable Blog *)lastUsedBlog;
 
 /**
- Returns the first blog in an alphanumerically sorted list.
- */
-- (nullable Blog *)firstBlog;
-
-/**
  Returns the default WPCom blog.
  */
 - (nullable Blog *)primaryBlog;
