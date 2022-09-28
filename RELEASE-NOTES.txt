@@ -1,6 +1,6 @@
 20.9
 -----
-* [*] Login Flow: Provide ability for user to cancel login flow from Me screen [#19349]
+* [*] Login Flow: Provide ability for user to cancel login WP.com flow when already logged in to a self-hosted site [#19349]
 
 20.8
 -----
