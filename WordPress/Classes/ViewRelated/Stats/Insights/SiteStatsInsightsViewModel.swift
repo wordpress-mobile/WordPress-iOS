@@ -75,8 +75,6 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func startFetchingPeriodOverview() {
-        self.lastRequestedPeriod = StatsPeriodUnit.day
-
         periodReceipt = periodStore.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
         periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                 period: lastRequestedPeriod,
