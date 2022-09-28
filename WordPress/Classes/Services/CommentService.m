@@ -1065,12 +1065,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }];
 }
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog
-{
-    NSSet *comments = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
-    return [comments anyObject];
-}
-
 #pragma mark - Post centric methods
 
 - (NSMutableArray *)ancestorsForCommentWithParentID:(NSNumber *)parentID andCurrentAncestors:(NSArray *)currentAncestors
@@ -1331,13 +1325,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
     return [fetchedObjects lastObject];
 }
-
-- (Comment *)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post
-{
-    NSSet *comments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
-    return [comments anyObject];
-}
-
 
 #pragma mark - Transformations
 
