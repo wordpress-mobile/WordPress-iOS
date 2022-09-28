@@ -413,7 +413,7 @@ private extension ZendeskUtils {
 
         // 2. Use information from selected site.
 
-        guard let blog = Blog.lastUsedBlog(in: context) else {
+        guard let blog = Blog.lastUsed(in: context) else {
             // We have no user information.
             completion()
             return
@@ -629,7 +629,7 @@ private extension ZendeskUtils {
     }
 
     static func getCurrentSiteDescription() -> String {
-        guard let blog = Blog.lastUsedBlog(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = Blog.lastUsed(in: ContextManager.sharedInstance().mainContext) else {
             return Constants.noValue
         }
 
@@ -691,13 +691,13 @@ private extension ZendeskUtils {
 
 
         // Add gutenbergIsDefault tag
-        if let blog = Blog.lastUsedBlog(in: context) {
+        if let blog = Blog.lastUsed(in: context) {
             if blog.isGutenbergEnabled {
                 tags.append(Constants.gutenbergIsDefault)
             }
         }
 
-        if let currentSite = Blog.lastUsedOrFirstBlog(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
+        if let currentSite = Blog.lastUsedOrFirst(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
             tags.append(Constants.mobileSelfHosted)
         }
 
@@ -1042,7 +1042,7 @@ private extension ZendeskUtils {
 
     /// Provides the current site id to `getZendeskMetadata`, if it exists
     private static var currentSiteID: Int? {
-        guard let siteID = Blog.lastUsedOrFirstBlog(in: ContextManager.shared.mainContext)?.dotComID else {
+        guard let siteID = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)?.dotComID else {
             return nil
         }
         return Int(truncating: siteID)

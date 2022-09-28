@@ -158,7 +158,7 @@ class MySitesCoordinator: NSObject {
 
     func showCreateSheet(for blog: Blog?) {
         let context = ContextManager.shared.mainContext
-        guard let targetBlog = blog ?? Blog.lastUsedOrFirstBlog(in: context) else {
+        guard let targetBlog = blog ?? Blog.lastUsedOrFirst(in: context) else {
             return
         }
 
