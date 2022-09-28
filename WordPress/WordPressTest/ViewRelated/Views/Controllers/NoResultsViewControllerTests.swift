@@ -13,6 +13,7 @@ class NoResultsViewControllerTests: XCTestCase {
         static let iPhoneSeSize = CGSize(width: 320, height: 568)
         static let iPadProSize = CGSize(width: 1024, height: 1366)
         static let resultViewMaxWidth: CGFloat = 360
+        static let resultViewHorizontalMargin: CGFloat = 20
     }
 
     private var resultViewController: NoResultsViewController!
@@ -40,7 +41,7 @@ class NoResultsViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(resultViewController.titleLabel.text, title)
-        XCTAssertTrue(resultViewController.titleLabel.frame.width < parentViewSize.width)
+        XCTAssertTrue(resultViewController.titleLabel.frame.width + Constants.resultViewHorizontalMargin * 2 <= parentViewSize.width)
     }
 
     func testTitleLabelWidthForLongTextInLargeScreen() {
@@ -55,8 +56,8 @@ class NoResultsViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(resultViewController.titleLabel.text, title)
-        XCTAssertTrue(resultViewController.titleLabel.frame.width < parentViewSize.width)
-        XCTAssertTrue(resultViewController.titleLabel.frame.width < Constants.resultViewMaxWidth)
+        XCTAssertTrue(resultViewController.titleLabel.frame.width <= parentViewSize.width)
+        XCTAssertTrue(resultViewController.titleLabel.frame.width <= Constants.resultViewMaxWidth)
     }
 
     func testSubtitleLabelWidthForLongTextInSmallScreen() {
@@ -71,7 +72,7 @@ class NoResultsViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(resultViewController.subtitleTextView.text, subtitle)
-        XCTAssertTrue(resultViewController.subtitleTextView.frame.width < parentViewSize.width)
+        XCTAssertTrue(resultViewController.subtitleTextView.frame.width + Constants.resultViewHorizontalMargin * 2 <= parentViewSize.width)
     }
 
     func testSubtitleLabelWidthForLongTextInLargeScreen() {
@@ -86,8 +87,8 @@ class NoResultsViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(resultViewController.subtitleTextView.text, subtitle)
-        XCTAssertTrue(resultViewController.subtitleTextView.frame.width < parentViewSize.width)
-        XCTAssertTrue(resultViewController.subtitleTextView.frame.width < Constants.resultViewMaxWidth)
+        XCTAssertTrue(resultViewController.subtitleTextView.frame.width <= parentViewSize.width)
+        XCTAssertTrue(resultViewController.subtitleTextView.frame.width <= Constants.resultViewMaxWidth)
     }
 
 }
