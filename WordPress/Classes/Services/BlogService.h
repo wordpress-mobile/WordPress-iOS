@@ -27,23 +27,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (nullable Blog *)blogByHostname:(NSString *)hostname;
 
 /**
- Returns the blog currently flagged as the one last used, or the primary blog,
- or the first blog in an alphanumerically sorted list, whichever is found first.
- */
-- (nullable Blog *)lastUsedOrFirstBlog;
-
-/**
- Returns the blog currently flaged as the one last used.
- */
-- (nullable Blog *)lastUsedBlog;
-
-/**
- Returns the default WPCom blog.
- */
-- (nullable Blog *)primaryBlog;
-
-
-/**
  *  Sync all available blogs for an acccount
  *
  *  @param account the account for the associated blogs.

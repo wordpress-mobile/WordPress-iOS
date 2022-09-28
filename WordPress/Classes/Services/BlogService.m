@@ -44,54 +44,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [blogs firstObject];
 }
 
-- (Blog *)lastUsedOrFirstBlog
-{
-    Blog *blog = [self lastUsedOrPrimaryBlog];
-
-    if (!blog) {
-        blog = [self firstBlog];
-    }
-
-    return blog;
-}
-
-- (Blog *)lastUsedOrPrimaryBlog
-{
-    Blog *blog = [self lastUsedBlog];
-
-    if (!blog) {
-        blog = [self primaryBlog];
-    }
-
-    return blog;
-}
-
-- (Blog *)lastUsedBlog
-{
-    // Try to get the last used blog, if there is one.
-    RecentSitesService *recentSitesService = [RecentSitesService new];
-    NSString *url = [[recentSitesService recentSites] firstObject];
-    if (!url) {
-        return nil;
-    }
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    Blog *blog = [self blogWithPredicate:predicate];
-
-    return blog;
-}
-
-- (Blog *)primaryBlog
-{
-    return [[WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] defaultBlog];
-}
-
-- (Blog *)firstBlog
-{
-    NSPredicate *predicate = [self predicateForVisibleBlogs];
-    return [self blogWithPredicate:predicate];
-}
-
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
