@@ -446,8 +446,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     if (blog == nil) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog = [blogService lastUsedOrFirstBlog];
+        blog = [Blog lastUsedOrFirstBlogInContext: context];
     }
     
     return blog;

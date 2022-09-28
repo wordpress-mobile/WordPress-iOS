@@ -396,7 +396,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// - Returns:the main blog for an account (last selected, or first blog in list).
     ///
     private func mainBlog() -> Blog? {
-        return blogService.lastUsedOrFirstBlog()
+        return Blog.lastUsedOrFirstBlog(in: ContextManager.sharedInstance().mainContext)
     }
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
@@ -911,7 +911,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirstBlog(in: ContextManager.sharedInstance().mainContext) else {
             return
         }
 

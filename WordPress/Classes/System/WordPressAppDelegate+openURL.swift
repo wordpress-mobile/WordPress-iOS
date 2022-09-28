@@ -143,8 +143,7 @@ import AutomatticTracks
         let tags = params.value(of: NewPostKey.tags)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirstBlog(in: context) else {
             return false
         }
 
@@ -181,8 +180,7 @@ import AutomatticTracks
         let title = params.value(of: NewPostKey.title)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirstBlog(in: context) else {
             return false
         }
 

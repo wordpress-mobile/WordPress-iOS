@@ -700,7 +700,7 @@ private extension ZendeskUtils {
             }
         }
 
-        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
+        if let currentSite = Blog.lastUsedOrFirstBlog(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
             tags.append(Constants.mobileSelfHosted)
         }
 
@@ -1045,9 +1045,7 @@ private extension ZendeskUtils {
 
     /// Provides the current site id to `getZendeskMetadata`, if it exists
     private static var currentSiteID: Int? {
-        guard let siteID = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-                .lastUsedOrFirstBlog()?
-                .dotComID else {
+        guard let siteID = Blog.lastUsedOrFirstBlog(in: ContextManager.shared.mainContext)?.dotComID else {
             return nil
         }
         return Int(truncating: siteID)

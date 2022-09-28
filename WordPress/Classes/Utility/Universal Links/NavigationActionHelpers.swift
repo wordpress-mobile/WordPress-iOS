@@ -4,9 +4,7 @@ import WordPressFlux
 extension NavigationAction {
     func defaultBlog() -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.lastUsedOrFirstBlog()
+        return Blog.lastUsedOrFirstBlog(in: context)
     }
 
     func blog(from values: [String: String]?) -> Blog? {

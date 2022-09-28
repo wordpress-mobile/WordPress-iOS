@@ -39,7 +39,7 @@ class ReaderReblogPresenter {
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
         default:
-            guard let blog = blogService.lastUsedOrFirstBlog() else {
+            guard let blog = Blog.lastUsedOrFirstBlog(in: blogService.managedObjectContext) else {
                 return
             }
             presentBlogPicker(from: origin,
