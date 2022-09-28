@@ -1,3 +1,0 @@
-Koppelingen in actiebladen (de pop-upmenu’s op je apparaat die extra opties tonen) zijn nu blauw in plaats van groen.
-
-We hebben ook Jetpack Social beter zichtbaar gemaakt in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.
