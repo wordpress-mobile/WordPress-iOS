@@ -1,3 +1,2 @@
-Links em janelas de opções (aqueles menus pop-up que exibem opções extra no seu dispositivo) agora são azuis em vez de verdes.
-
-Também deixamos o Jetpack Social mais em destaque na seção Compartilhamento das configurações do seu site e do seu post. Vamos socializar!
+Fizemos algumas alterações nas menções ao usuário. Quando você responder a um post ou comentário marcando outro usuário, sua lista de usuários sugeridos começará com os nomes iniciados pelo que você digitou. Logo após, a lista continuará em ordem alfabética.
+Além disso, corrigimos um problema que sumia com a lista de usuários sugeridos após expandir ou recolher o campo do conteúdo da resposta. Chega de chá de sumiço.
