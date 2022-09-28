@@ -1,6 +1,7 @@
 20.9
 -----
 * [*] [Jetpack-only] Weekly roundup: Adds support for weekly roundup notifications to the Jetpack app. [#19364]
+* [*] Fix push prompt button overlapping on iPad. [#19304]
 
 20.8
 -----
