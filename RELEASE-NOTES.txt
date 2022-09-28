@@ -1,6 +1,6 @@
 20.9
 -----
-
+* [*] [WordPress-only] Powered by Jetpack banner: Fixed an edge case where some scroll views could momentarily become unresponsive to touch. [#19369]
 
 20.8
 -----
