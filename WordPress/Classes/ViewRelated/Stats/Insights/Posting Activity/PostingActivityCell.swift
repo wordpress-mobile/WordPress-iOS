@@ -45,7 +45,7 @@ class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
 
     override var accessibilityElements: [Any]? {
         get {
-            [headingLabel].compactMap { $0 } + monthsStackView.arrangedSubviews + [viewMoreButton].compactMap { $0 }
+            [headingLabel] + monthsStackView.arrangedSubviews + [viewMoreButton].compactMap { $0 }
         }
         set { }
     }
