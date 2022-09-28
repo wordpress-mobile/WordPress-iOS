@@ -1,7 +1,7 @@
 extension NotificationsViewController {
 
     func promptForJetpackCredentials() {
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = Blog.lastUsedBlog(in: managedObjectContext()) else {
             return
         }
 
@@ -36,13 +36,6 @@ extension NotificationsViewController {
                 controller?.updateMessageAndButton()
             }
         }
-    }
-
-
-    // MARK: - Private Computed Properties
-
-    fileprivate var blogService: BlogService {
-        return BlogService(managedObjectContext: managedObjectContext())
     }
 
 }

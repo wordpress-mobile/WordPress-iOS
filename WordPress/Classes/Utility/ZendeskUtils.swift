@@ -412,9 +412,8 @@ private extension ZendeskUtils {
         }
 
         // 2. Use information from selected site.
-        let blogService = BlogService(managedObjectContext: context)
 
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = Blog.lastUsedBlog(in: context) else {
             // We have no user information.
             completion()
             return
@@ -630,9 +629,7 @@ private extension ZendeskUtils {
     }
 
     static func getCurrentSiteDescription() -> String {
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = Blog.lastUsedBlog(in: ContextManager.sharedInstance().mainContext) else {
             return Constants.noValue
         }
 
@@ -694,7 +691,7 @@ private extension ZendeskUtils {
 
 
         // Add gutenbergIsDefault tag
-        if let blog = blogService.lastUsedBlog() {
+        if let blog = Blog.lastUsedBlog(in: context) {
             if blog.isGutenbergEnabled {
                 tags.append(Constants.gutenbergIsDefault)
             }
