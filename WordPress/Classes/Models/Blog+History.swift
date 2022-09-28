@@ -34,7 +34,7 @@ extension Blog {
         do {
             return try context.fetch(request).first
         } catch {
-            DDLogError("Couldn't fetch blogs with predicate \(predicate): \(error)");
+            DDLogError("Couldn't fetch blogs with predicate \(predicate): \(error)")
             return nil
         }
     }
