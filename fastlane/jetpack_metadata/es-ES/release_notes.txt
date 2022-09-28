@@ -1,3 +1,2 @@
-Ahora, los enlaces de las hojas de acción (es decir, los menús emergentes que aparecen en tu dispositivo y muestran opciones adicionales) son de color azul en lugar de verde.
-
-También hemos hecho que Jetpack Social sea más visible en la sección Compartir de los ajustes de tu sitio, así como en los ajustes de las entradas. Vamos a socializar.
+Hemos hecho algunos cambios en las menciones de usuario. Cuando respondas a una entrada o a un comentario y etiquetes a otro usuario, al principio de tu lista de usuarios sugeridos aparecerán los nombres con los que empiece tu consulta de búsqueda. Después, la lista aparecerá ordenada por orden alfabético.
+También hemos solucionado un problema por el que la lista de usuarios sugeridos se vaciaba tras expandir o contraer el campo del contenido de la respuesta. Listo, ya no volverán a desaparecer.
