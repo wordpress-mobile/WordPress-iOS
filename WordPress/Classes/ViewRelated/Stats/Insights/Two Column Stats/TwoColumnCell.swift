@@ -17,6 +17,14 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     private var dataRows = [StatsTwoColumnRowData]()
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
+    override var accessibilityElements: [Any]? {
+        get {
+            return [headingLabel, rowsStackView, viewMoreButton].compactMap { $0 }
+        }
+
+        set { }
+    }
+
     // MARK: - View
 
     override func awakeFromNib() {

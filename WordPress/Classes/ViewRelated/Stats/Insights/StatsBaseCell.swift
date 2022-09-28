@@ -104,7 +104,6 @@ class StatsBaseCell: UITableViewCell {
 
         let title = statSection?.title ?? ""
         headingLabel.text = title
-        accessibilityLabel = title
 
         if shouldShowDetailsButton() {
             showDetailsButton.isHidden = false
