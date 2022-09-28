@@ -31,12 +31,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [[BlogService alloc] initWithManagedObjectContext:context];
 }
 
-- (Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@ AND account.username = %@", blogID, username];
-    return [self blogWithPredicate:predicate];
-}
-
 - (Blog *)blogByHostname:(NSString *)hostname
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url CONTAINS %@", hostname];

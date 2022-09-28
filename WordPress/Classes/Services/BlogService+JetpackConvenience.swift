@@ -7,7 +7,7 @@ extension BlogService {
         if site.isSelfHostedWithoutJetpack, let xmlRPC = site.xmlRPC {
             blog = service.findBlog(withXmlrpc: xmlRPC, andUsername: site.username)
         } else {
-            blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
+            blog = try? BlogQuery().blogID(site.siteID).username(site.username).blog(in: context)
         }
 
         return blog
