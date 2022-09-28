@@ -69,6 +69,11 @@ public extension Blog {
 
         return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
     }
+
+    @objc(countInContext:)
+    static func count(in context: NSManagedObjectContext) -> Int {
+        BlogQuery().count(in: context)
+    }
 }
 
 struct BlogQuery {

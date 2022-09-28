@@ -128,11 +128,6 @@ class PostSignUpInterstitialViewController: UIViewController {
     }
 
     private class func numberOfBlogs() -> Int {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        let blogCount = blogService.blogCountForAllAccounts()
-
-        return blogCount
+        return Blog.count(in: ContextManager.sharedInstance().mainContext)
     }
 }

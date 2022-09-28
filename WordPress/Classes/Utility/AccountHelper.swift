@@ -32,9 +32,7 @@ import Foundation
 
     static var hasBlogs: Bool {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return blogService.blogCountForAllAccounts() > 0
+        return Blog.count(in: context) > 0
     }
 
     @objc static var noWordPressDotComAccount: Bool {

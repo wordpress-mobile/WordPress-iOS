@@ -159,8 +159,6 @@ extern NSString *const WPBlogUpdatedNotification;
 
 - (BOOL)hasAnyJetpackBlogs;
 
-- (NSInteger)blogCountForAllAccounts;
-
 - (NSInteger)blogCountSelfHosted;
 
 - (NSInteger)blogCountForWPComAccounts;

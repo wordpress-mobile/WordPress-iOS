@@ -323,9 +323,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     // Ignore taps on the post tab and instead show the modal.
-    if ([blogService blogCountForAllAccounts] == 0) {
+    if ([Blog countInContext:context] == 0) {
         [self.mySitesCoordinator showAddNewSite];
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
@@ -335,8 +334,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showPostTabForBlog:(Blog *)blog
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] == 0) {
+    if ([Blog countInContext:context] == 0) {
         [self.mySitesCoordinator showAddNewSite];
     } else {
         [self showPostTabAnimated:YES toMedia:NO blog:blog];

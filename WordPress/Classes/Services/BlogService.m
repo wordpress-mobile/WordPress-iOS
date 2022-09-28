@@ -464,11 +464,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [jetpackUnmanagedBlogs count] > 0;
 }
 
-- (NSInteger)blogCountForAllAccounts
-{
-    return [self blogCountWithPredicate:nil];
-}
-
 - (NSInteger)blogCountSelfHosted
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
