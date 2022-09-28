@@ -42,6 +42,7 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
             NSLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
+        viewMoreButton.accessibilityHint = NSLocalizedString("Opens a view with more details.", comment: "Accessibility hint for a button that opens a new view with more details.")
     }
 }
 
