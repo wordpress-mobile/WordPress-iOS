@@ -225,22 +225,22 @@ class StatsTotalInsightsCell: StatsBaseCell {
         guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
     }
 
-    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType?, guideURL: URL? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+    func configure(dataRow: StatsTotalInsightsData, guideURL: URL? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.guideURL = guideURL
 
         self.statSection = statSection
-        self.lastPostInsight = lastPostInsight
-        self.statsSummaryType = statsSummaryType
+        self.lastPostInsight = dataRow.lastPostInsight
+        self.statsSummaryType = dataRow.statsSummaryType
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
-        graphView.data = sparklineData ?? []
-        graphView.chartColor = chartColor(for: difference ?? 0)
+        graphView.data = dataRow.sparklineData ?? []
+        graphView.chartColor = chartColor(for: dataRow.difference ?? 0)
 
-        countLabel.text = count.abbreviatedString()
+        countLabel.text = dataRow.count.abbreviatedString()
 
         updateGuideView()
-        updateComparisonLabel(withCount: count, difference: difference, percentage: percentage)
+        updateComparisonLabel(withCount: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage)
     }
 
     private func updateGuideView() {
