@@ -1,6 +1,6 @@
 20.9
 -----
-
+* [*] [Jetpack-only] Weekly roundup: Adds support for weekly roundup notifications to the Jetpack app. [#19364]
 
 20.8
 -----
