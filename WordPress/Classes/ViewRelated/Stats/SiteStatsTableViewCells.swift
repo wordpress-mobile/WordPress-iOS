@@ -352,7 +352,7 @@ struct AddInsightRow: ImmuTableRow {
         cell.accessoryView = UIImageView(image: WPStyleGuide.Stats.imageForGridiconType(.plus, withTint: .darkGrey))
         cell.accessibilityTraits = .button
         cell.accessibilityLabel = StatSection.insightsAddInsight.title
-        cell.accessibilityHint = NSLocalizedString("Open a view to add new stats cards.", comment: "Accessibility hint for a button that opens a view that allows to add new stats cards.")
+        cell.accessibilityHint = NSLocalizedString("Tap to add new stats cards.", comment: "Accessibility hint for a button that opens a view that allows to add new stats cards.")
     }
 }
 
