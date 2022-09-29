@@ -11,6 +11,7 @@ struct JetpackPromptView: View {
             .bold()
             .lineLimit(Constants.lineLimit)
             .padding(Constants.textInsets)
+            .accessibility(hidden: true)
     }
 
     private func makeFont() -> Font {
