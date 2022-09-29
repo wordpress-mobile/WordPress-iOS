@@ -336,7 +336,7 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(dataRow: dataRow, guideURL: dataRow.guideURL, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(dataRow: dataRow, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

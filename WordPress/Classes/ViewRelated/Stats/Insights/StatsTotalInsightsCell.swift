@@ -225,8 +225,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
         guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
     }
 
-    func configure(dataRow: StatsTotalInsightsData, guideURL: URL? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
-        self.guideURL = guideURL
+    func configure(dataRow: StatsTotalInsightsData, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+        self.guideURL = dataRow.guideURL
 
         self.statSection = statSection
         self.lastPostInsight = dataRow.lastPostInsight
