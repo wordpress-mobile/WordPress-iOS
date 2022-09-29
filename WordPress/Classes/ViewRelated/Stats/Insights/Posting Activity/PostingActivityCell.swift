@@ -40,11 +40,12 @@ class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
             NSLocalizedString("View more", comment: "Accessibility label for viewing more posting activity.")
+        viewMoreButton.accessibilityHint = NSLocalizedString("Tap to view more details.", comment: "Accessibility hint for a button that opens a new view with more details.")
     }
 
     override var accessibilityElements: [Any]? {
         get {
-            monthsStackView.arrangedSubviews + [viewMoreButton].compactMap { $0 }
+            [headingLabel] + monthsStackView.arrangedSubviews + [viewMoreButton].compactMap { $0 }
         }
         set { }
     }
