@@ -106,7 +106,7 @@ class JetpackOverlayView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0),
+        backgroundColor = UIColor(light: .white,
                                   dark: .muriel(color: .jetpackGreen, .shade100))
         addSubview(dismissButton)
         addSubview(stackView)
