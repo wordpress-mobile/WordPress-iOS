@@ -1596,7 +1596,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayJetpackPrompt: Bool {
-        return AccountHelper.isDotcomAvailable() == false
+        return AccountHelper.isDotcomAvailable() == false && blogForJetpackPrompt != nil
     }
 
     var shouldDisplaySettingsButton: Bool {

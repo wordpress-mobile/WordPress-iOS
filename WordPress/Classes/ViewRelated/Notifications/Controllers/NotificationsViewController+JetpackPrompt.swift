@@ -1,7 +1,11 @@
 extension NotificationsViewController {
 
+    var blogForJetpackPrompt: Blog? {
+        return Blog.lastUsed(in: managedObjectContext())
+    }
+
     func promptForJetpackCredentials() {
-        guard let blog = Blog.lastUsed(in: managedObjectContext()) else {
+        guard let blog = blogForJetpackPrompt else {
             return
         }
 
