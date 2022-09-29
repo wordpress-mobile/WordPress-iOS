@@ -465,12 +465,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [self blogCountWithPredicate:predicate];
 }
 
-- (NSInteger)blogCountVisibleForAllAccounts
-{
-    NSPredicate *predicate = [self predicateForVisibleBlogs];
-    return [self blogCountWithPredicate:predicate];
-}
-
 - (NSArray *)blogsWithNoAccount
 {
     NSPredicate *predicate = [self predicateForNoAccount];
