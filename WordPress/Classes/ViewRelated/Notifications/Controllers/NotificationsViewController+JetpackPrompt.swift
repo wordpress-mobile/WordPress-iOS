@@ -27,6 +27,7 @@ extension NotificationsViewController {
             ])
             configureControllerCompletion(controller, withBlog: blog)
             jetpackLoginViewController = controller
+            controller.didMove(toParent: self)
         }
     }
 

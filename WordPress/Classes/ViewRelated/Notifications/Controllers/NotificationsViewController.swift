@@ -203,8 +203,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         if shouldDisplayJetpackPrompt {
             promptForJetpackCredentials()
         } else {
-            jetpackLoginViewController?.view.removeFromSuperview()
-            jetpackLoginViewController?.removeFromParent()
+            jetpackLoginViewController?.remove()
         }
 
         showNoResultsViewIfNeeded()
