@@ -461,8 +461,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (NSArray *)blogsWithNoAccount
 {
-    NSPredicate *predicate = [self predicateForNoAccount];
-    return [self blogsWithPredicate:predicate];
+    return [Blog selfHostedInContext:self.managedObjectContext];
 }
 
 ///--------------------
@@ -799,11 +798,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 - (NSPredicate *)predicateForVisibleBlogs
 {
     return [NSPredicate predicateWithFormat:@"visible = YES"];
-}
-
-- (NSPredicate *)predicateForNoAccount
-{
-    return [NSPredicate predicateWithFormat:@"account = NULL"];
 }
 
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName

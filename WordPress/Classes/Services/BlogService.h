@@ -157,10 +157,6 @@ extern NSString *const WPBlogUpdatedNotification;
 
 - (BOOL)hasAnyJetpackBlogs;
 
-- (NSArray *)blogsWithNoAccount;
-
-- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;
-
 - (void)removeBlog:(Blog *)blog;
 
 ///--------------------

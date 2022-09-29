@@ -79,6 +79,11 @@ public extension Blog {
     static func wpComBlogCount(in context: NSManagedObjectContext) -> Int {
         BlogQuery().hostedByWPCom(true).count(in: context)
     }
+
+    @objc(selfHostedInContext:)
+    static func selfHosted(in context: NSManagedObjectContext) -> [Blog] {
+        (try? BlogQuery().hostedByWPCom(false).blogs(in: context)) ?? []
+    }
 }
 
 struct BlogQuery {
