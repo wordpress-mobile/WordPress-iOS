@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-08-19 11:32:50+0000 */
+/* Translation-Revision-Date: 2022-09-27 10:13:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.2 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Një buton “Më tepër” përmban një menu hapmbyll që shfaq butona ndarjesh me të tjerët";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Me kredencialet tuaja për shitoren ka të përshoqëruar një llogari WordPress.com. Që të vazhdohet, do të dërgojmë një lidhje verifikimi te adresa email më sipër.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "U caktua një figurë e zgjedhur. Prekeni që ta ndryshoni.";
 
@@ -730,6 +733,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shndërroji në blloqe të rregullt”.";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Ndryshe:";
@@ -1353,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Po anulohet …";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "S’kapet dot sajt në këtë adresë. Ju lutemi, rikontrollojeni dhe riprovoni.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "S’e ndani dot mendjen? Temën mund ta ndryshoni kurdo.";
 
@@ -1439,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Shihni ndihmëzat tona kryesuese për shtim të parjeve dhe trafikut";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Shihni email-in tuaj në këtë pajisje!";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Kontrolloni email-in tuaj te kjo pajisje dhe prekni lidhjen te email-i që merrni prej WordPress.com-i.";
@@ -3733,6 +3745,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Keni tashmë një sajt, do t’ju duhet të instaloni shtojcën e lirë Jetpack dhe ta lidhni me llogarinë tuaj WordPress.com.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Nëse s’e gjeni dot email-in, ju lutemi, shihni te dosja juaj Hedhurina, ose ajo Të padëshiruar";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Nëse vazhdoni me Google apo Apple dhe s’keni ende një llogari WordPress.com, po krijoni një llogari dhe pajtoheni me _Kushtet tona të Shërbimit_.";
 
@@ -3945,6 +3960,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL e pavlefshme. S’u gjet kartelë audio.";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL e pavlefshme. Ju lutemi, rikontrollojeni dhe riprovoni.";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "URL e pavlefshme. Ju lutemi, jepni një URL të vlefshme.";
 
@@ -4035,6 +4053,18 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Rregullime Jetpack-u";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Lidhje Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Njëkohësimi i lidhjes për Jetpack Social dështoi";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Njëkohësimi me shërbimin Jetpack Social dështoi";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack-u s’u instalua dot këtë herë.";
@@ -4405,6 +4435,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "Kërkesa Për Hyrje Skadoi";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Hyrje me fjalëkalim llogarie";
 
 /* No comment provided by engineer. */
 "Logs" = "Regjistra";
@@ -5340,6 +5373,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Ose hyni _duke dhënë adresën e sajtit tuaj_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Ose hyni me lidhje magjike";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Listë e Renditur";
@@ -6767,6 +6803,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Dërgo Provë Vithisjeje";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Dërgo lidhje verifikimi email-i";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Dërgo njoftime me email";
 
@@ -6848,6 +6887,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Ndajeni me të tjerët";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Jepjani WordPress-in një shoku";
+
 /* Label for action to share post. */
 "Share Post" = "Ndajeni Postimin Me të Tjerët";
 
@@ -6862,6 +6904,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Ndajeni lidhjen me të tjerët";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Ndajeni postimin me të tjerë në %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Ndajeni me Shokët";
@@ -6969,6 +7014,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "Regjistrohuni";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Hyni me kredenciale sajti";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Regjistrohuni";
@@ -8616,6 +8664,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Përdor buton ikone";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Përdorni fjalëkalimin për hyrje";
+
 /* No comment provided by engineer. */
 "Use this site" = "Përdor këtë sajt";
 
@@ -8952,6 +9003,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Sapo dërguam me email një lidhje te %@. Ju lutemi, kontrolloni te aplikacioni juaj për email-e dhe prekni lidhjen që të bëni hyrjen.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Sapo dërguam një lidhje magjike te";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Kemi bërë përmirësime të mëdha te përpunuesi me blloqe dhe mendojmë se ia vlen të provohet!\n\nE kemi aktivizuar për postime dhe faqe të reja, por nëse doni ta këmbeni me përpunuesin klasik, kaloni te 'Sajti Im' > 'Rregullime Sajti'.";
 
@@ -9139,6 +9193,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Ç’është WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "Ç’është një bllok?";
 
@@ -9153,6 +9210,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Ç’ka të Re";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Ç’ka të Re në Jetpack";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Ç’ka të Re në WordPress";
@@ -9837,6 +9897,54 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Bazuar në Jetpack";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Provoni aplikacionin e ri Jetpack";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Aplikacioni i ri Jetpack ka Statistika, Lexues, Njoftime, etj, që e bëjnë më të mirë WordPress-in tuaj.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress-i është më i mirë me Jetpack-un";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Shtoni një autor";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Ndërtoni një sajt";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Shihni njoftimet";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Ndajeni me të tjerët në Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Ndreqni një problem sigurie";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Postoni një foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Lexoni një artikull";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Përgjigjuni komenteve";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Riktheni një kopjeruajtje";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Kërkoni për shtojca";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Kërkoni për postime ose sajte";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Shihni statistikat tuaja";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Shkruani një blog";
 
 /* Later today */
 "later today" = "më vonë, sot";

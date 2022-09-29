@@ -1,3 +1,2 @@
-Tautan pada lembar tindakan (menu pop-up pada perangkat Anda yang membuka opsi ekstra) sekarang berwarna biru, bukan hijau.
-
-Kami juga membuat Jetpack Social lebih mudah dikenali di bagian Berbagi pada pengaturan situs, serta pada pengaturan pos Anda. Mari berjejaring sosial.
+Kami menerapkan beberapa perubahan pada penyebutan pengguna. Saat membalas sebuah pos atau komentar, dan menyebut pengguna lain, daftar pengguna yang disarankan akan diawali dengan nama yang menyesuaikan kueri pencarian Anda. Kemudian, daftar akan dilanjutkan sesuai huruf abjad setelah nama paling atas.
+Kami juga memperbaiki masalah yang menyebabkan daftar pengguna yang disarankan hilang setelah memperluas atau menciutkan kolom untuk membalas konten. Daftar tidak lagi hilang tiba-tiba.

@@ -1128,6 +1128,7 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else {
             return
         }
+        suggestionsTableView?.viewModel.reloadData()
         suggestionsTableView?.showSuggestions(forWord: lastSearchText)
     }
 
