@@ -24,7 +24,7 @@ class BlogQueryTests: CoreDataTestCase {
     }
 
     func testQueryByHostname() {
-        let query = BlogQuery().hostname("example.com")
+        let query = BlogQuery().hostname(containing: "example.com")
         XCTAssertEqual(query.count(in: mainContext), 3)
     }
 

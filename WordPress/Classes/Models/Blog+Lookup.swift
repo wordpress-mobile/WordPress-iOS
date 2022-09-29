@@ -54,7 +54,7 @@ public extension Blog {
     /// - Returns: The `Blog` object associated with the given `hostname`, if it exists.
     @objc(lookupWithHostname:inContext:)
     static func lookup(hostname: String, in context: NSManagedObjectContext) -> Blog? {
-        try? BlogQuery().hostname(hostname).blog(in: context)
+        try? BlogQuery().hostname(containing: hostname).blog(in: context)
     }
 
     /// Lookup a Blog by WP.ORG Credentials
@@ -105,8 +105,12 @@ struct BlogQuery {
         and(NSPredicate(format: "account.username = %@", username))
     }
 
-    func hostname(_ hostname: String) -> Self {
+    func hostname(containing hostname: String) -> Self {
         and(NSPredicate(format: "url CONTAINS %@", hostname))
+    }
+
+    func hostname(matching hostname: String) -> Self {
+        and(NSPredicate(format: "url = %@", hostname))
     }
 
     func visible(_ flag: Bool) -> Self {
