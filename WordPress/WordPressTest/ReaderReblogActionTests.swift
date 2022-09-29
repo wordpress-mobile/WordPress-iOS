@@ -11,10 +11,6 @@ class MockReblogPresenter: ReaderReblogPresenter {
     }
 }
 
-class MockBlogService: BlogService {
-
-}
-
 class MockPostService: PostService {
     var draftPostExpectation: XCTestExpectation?
 
@@ -27,12 +23,12 @@ class MockPostService: PostService {
 
 class ReblogTestCase: CoreDataTestCase {
     var readerPost: ReaderPost?
-    var blogService: MockBlogService?
+    var blogService: BlogService?
     var postService: MockPostService?
 
     override func setUp() {
         readerPost = ReaderPost(context: self.mainContext)
-        blogService = MockBlogService(managedObjectContext: self.mainContext)
+        blogService = BlogService(managedObjectContext: self.mainContext)
         postService = MockPostService(managedObjectContext: self.mainContext)
     }
 
