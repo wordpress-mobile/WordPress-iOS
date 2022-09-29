@@ -2081,3 +2081,11 @@ extension NotificationsViewController: JPScrollViewDelegate {
         processJetpackBannerVisibility(scrollView)
     }
 }
+
+// MARK: - StoryboardLoadable
+
+extension NotificationsViewController: StoryboardLoadable {
+    static var defaultStoryboardName: String {
+        return "Notifications"
+    }
+}
