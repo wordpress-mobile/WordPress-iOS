@@ -1,3 +1,2 @@
-I link nei fogli delle azioni (quei menu di scelta rapida sul dispositivo che sono impiegati per opzioni extra) sono ora blu invece che verdi.
-
-Abbiamo anche reso Jetpack Social più chiaro nella sezione Condivisione delle impostazioni del sito, nonché in quelle dell'articolo. Diventa social.
+Abbiamo apportato alcune modifiche alle menzioni degli utenti. Quando rispondi a un articolo o a un commento e tagghi un altro utente, l'elenco degli utenti suggeriti inizierà con i nomi che iniziano con la query di ricerca. L'elenco continuerà quindi in ordine alfabetico.
+Abbiamo anche risolto un problema per cui l'elenco degli utenti suggeriti scompariva dopo aver espanso o compresso il campo per il contenuto della risposta. Presto, niente più sparizioni.

@@ -1,1 +1,2 @@
-Deze release is kort maar krachtig: Jetpack Social is nu beter zichtbaar in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.
+We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
+We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.

@@ -53,12 +53,27 @@ platform :ios do
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for all variants
+  # Downloads all the required certificates and profiles (using `match`) for all variants
   #
   lane :update_certs_and_profiles do
+    update_wordpress_certs_and_profiles
+    update_jetpack_certs_and_profiles
+  end
+
+  # Downloads all the required certificates and profiles (using `match`) for all WordPress variants
+  #
+  lane :update_wordpress_certs_and_profiles do
     alpha_code_signing
     internal_code_signing
     appstore_code_signing
+  end
+
+  # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants
+  #
+  lane :update_jetpack_certs_and_profiles do
+    jetpack_alpha_code_signing
+    jetpack_internal_code_signing
+    jetpack_appstore_code_signing
   end
 
   ########################################################################
@@ -71,6 +86,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
     )
@@ -82,6 +98,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
     )
@@ -104,6 +121,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: 'com.jetpack.alpha'
     )
@@ -115,6 +133,7 @@ platform :ios do
     match(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
       app_identifier: 'com.jetpack.internal'
     )

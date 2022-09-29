@@ -1,1 +1,2 @@
-Cette version est brève, mais efficace : nous avons amélioré la visibilité de Jetpack Social dans la section Partage des réglages de votre site, ainsi que dans vos réglages d’article. Optimisez la diffusion de votre contenu sur les réseaux sociaux !
+Nous avons apporté quelques modifications aux mentions utilisateur. Lorsque vous répondez à un article ou à un commentaire et que vous taguez un autre utilisateur, votre liste d’utilisateurs suggérés débutera par les noms qui commencent par votre requête. La liste est ensuite dans l’ordre alphabétique.
+Nous avons également résolu un problème où la liste d’utilisateurs suggérés disparaissait après le développement ou la réduction du champ de réponse au contenu. Et voilà, plus de disparition.
