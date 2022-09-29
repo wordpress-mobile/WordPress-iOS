@@ -29,7 +29,7 @@ struct GutenbergRollout {
     }
 
     private func atLeastOneSiteHasAztecEnabled() -> Bool {
-        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
+        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         return allBlogs.contains { $0.editor == .aztec }
     }
 }

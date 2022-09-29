@@ -40,8 +40,7 @@ import Foundation
     }
 
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
-        let blogService = BlogService(managedObjectContext: context)
-        let allBlogs = blogService.blogsForAllAccounts()
+        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         let blogsByAccount = Dictionary(grouping: allBlogs, by: { $0.account })
 
         let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)

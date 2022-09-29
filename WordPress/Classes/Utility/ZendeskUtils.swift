@@ -641,10 +641,7 @@ private extension ZendeskUtils {
     }
 
     static func getBlogInformation() -> String {
-
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        let allBlogs = blogService.blogsForAllAccounts()
+        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.sharedInstance().mainContext)) ?? []
         guard allBlogs.count > 0 else {
             return Constants.noValue
         }
@@ -663,7 +660,7 @@ private extension ZendeskUtils {
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        let allBlogs = blogService.blogsForAllAccounts()
+        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         var tags = [String]()
 
         // Add sourceTag
@@ -982,8 +979,7 @@ private extension ZendeskUtils {
         } else {
             // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
             // and compare the localized names
-            let blogService = BlogService(managedObjectContext: contextManager.mainContext)
-            let plans = Set(blogService.blogsForAllAccounts().compactMap { $0.planTitle })
+            let plans = Set(((try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []).compactMap { $0.planTitle })
 
             for availablePlan in availablePlans {
                 if plans.contains(availablePlan.name) {
