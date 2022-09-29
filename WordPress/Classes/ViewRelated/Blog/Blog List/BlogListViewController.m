@@ -874,8 +874,7 @@ static NSInteger HideSearchMinSites = 3;
 - (BOOL)shouldShowEditButton
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    return [blogService blogCountForWPComAccounts] > 0;
+    return [Blog wpComBlogCountInContext:context] > 0;
 }
 
 - (void)updateBarButtons
