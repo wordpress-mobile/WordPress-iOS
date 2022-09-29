@@ -465,21 +465,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [self blogsWithPredicate:predicate];
 }
 
-- (NSDictionary *)blogsForAllAccountsById
-{
-    NSMutableDictionary *blogMap = [NSMutableDictionary dictionary];
-    NSArray *allBlogs = [self blogsWithPredicate:nil];
-    
-    for (Blog *blog in allBlogs) {
-        if (blog.dotComID != nil) {
-            blogMap[blog.dotComID] = blog;
-        }
-    }
-    
-    return blogMap;
-}
-
-
 ///--------------------
 /// @name Blog creation
 ///--------------------
