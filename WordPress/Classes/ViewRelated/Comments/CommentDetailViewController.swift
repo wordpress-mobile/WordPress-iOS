@@ -43,6 +43,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                 approveComment()
             case .spam:
                 spamComment()
+            case .unapproved:
+                trashComment()
             default:
                 break
             }
@@ -117,12 +119,27 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                        normalColor: Constants.deleteButtonNormalColor,
                        highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
         cell.delegate = self
         return cell
     }()
+
+    private lazy var trashButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .trashButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                       normalColor: Constants.deleteButtonNormalColor,
+                       highlightedColor: Constants.trashButtonHighlightColor,
+                       borderColor: .clear,
+                       buttonInsets: Constants.deleteButtonInsets,
+                       backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.delegate = self
+        return cell
+    }()
+
 
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
@@ -199,6 +216,19 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                                target: self,
                                action: #selector(editButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
+        return button
+    }()
+
+    private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: comment.allowsModeration()
+            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
+            : UIImage(systemName: Style.Content.shareIconImageName),
+            style: .plain,
+            target: self,
+            action: #selector(shareCommentURL)
+        )
+        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
         return button
     }()
 
@@ -321,6 +351,8 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
+        static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
         static let notificationDetailSource = ["source": "notification_details"]
     }
 
@@ -373,9 +405,12 @@ private extension CommentDetailViewController {
     }
 
     func configureNavBarButton() {
+        var barItems: [UIBarButtonItem] = []
+        barItems.append(shareBarButtonItem)
         if comment.allowsModeration() {
-            navigationItem.setRightBarButton(editBarButtonItem, animated: false)
+            barItems.append(editBarButtonItem)
         }
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     func configureTable() {
@@ -404,15 +439,6 @@ private extension CommentDetailViewController {
             rows.append(.replyIndicator)
         }
 
-        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
-        guard comment.allowsModeration() else {
-            return rows
-        }
-
-        if comment.deleteWillBePermanent() {
-            rows.append(.deleteComment)
-        }
-
         return rows
     }
 
@@ -421,6 +447,9 @@ private extension CommentDetailViewController {
         rows.append(.status(status: .approved))
         rows.append(.status(status: .pending))
         rows.append(.status(status: .spam))
+
+        rows.append(.deleteComment)
+
         return rows
     }
 
@@ -428,7 +457,9 @@ private extension CommentDetailViewController {
         var sections: [SectionType] = []
 
         sections.append(.content(configureContentRows()))
-        sections.append(.moderation(configureModeratationRows()))
+        if comment.allowsModeration() {
+            sections.append(.moderation(configureModeratationRows()))
+        }
         self.sections = sections
     }
 
@@ -440,14 +471,18 @@ private extension CommentDetailViewController {
         tableView.reloadData()
     }
 
-
     /// Checks if the index path is positioned before the delete button cell.
     func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
-        guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+        switch sections[indexPath.section] {
+        case .content(_):
             return false
-        }
+        case .moderation(let rows):
+            guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+                return false
+            }
 
-        return indexPath.row == deleteCellIndex - 1
+            return indexPath.row == deleteCellIndex - 1
+        }
     }
 
     // MARK: Cell configuration
@@ -701,6 +736,19 @@ private extension CommentDetailViewController {
         })
     }
 
+    @objc func shareCommentURL(_ senderView: UIView) {
+        guard let commentURL = comment.commentURL() else {
+            return
+        }
+
+        // track share intent.
+        WPAnalytics.track(.siteCommentsCommentShared)
+
+        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = senderView
+        present(activityViewController, animated: true, completion: nil)
+    }
+
     func presentUserInfoSheet(_ senderView: UIView) {
         let viewModel = CommentDetailInfoViewModel(
             url: comment.authorURL(),
@@ -713,13 +761,6 @@ private extension CommentDetailViewController {
         viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
-
-//        // track share intent.
-//        WPAnalytics.track(.siteCommentsCommentShared)
-//
-//        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-//        activityViewController.popoverPresentationController?.sourceView = senderView
-//        present(activityViewController, animated: true, completion: nil)
     }
 }
 
@@ -736,8 +777,8 @@ private extension String {
                                                           + "%1$@ is a placeholder for the comment author."
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
+    static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
 }
 
 private extension CommentStatusType {
@@ -931,7 +972,11 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return replyIndicatorCell
 
             case .deleteComment:
-                return deleteButtonCell
+                if comment.deleteWillBePermanent() {
+                    return deleteButtonCell
+                } else {
+                    return trashButtonCell
+                }
 
             case .status(let statusType):
                 return configuredStatusCell(for: statusType)
@@ -946,7 +991,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         case .content:
             return nil
         case .moderation:
-            return "STATUS"
+            return NSLocalizedString("STATUS", comment: "Section title for the moderation section of the comment details screen.")
         }
     }
 
@@ -975,8 +1020,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
             case .replyIndicator:
                 navigateToReplyComment()
-//            case .text(let title, _, _) where title == .webAddressLabelText:
-//                visitAuthorURL()
             default:
                 break
             }
@@ -988,7 +1031,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                     break
                 }
                 commentStatus = statusType
-                tableView.reloadSections([1], with: .automatic)
                 notifyDelegateCommentModerated()
             default:
                 break
@@ -1192,7 +1234,11 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func buttonTapped() {
-        deleteButtonTapped()
+        if comment.deleteWillBePermanent() {
+            deleteButtonTapped()
+        } else {
+            commentStatus = .unapproved
+        }
     }
 
 }
