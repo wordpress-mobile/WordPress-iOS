@@ -12,12 +12,7 @@ class MockReblogPresenter: ReaderReblogPresenter {
 }
 
 class MockBlogService: BlogService {
-    var lastUsedOrFirstBlogExpectation: XCTestExpectation?
 
-    override func lastUsedOrFirstBlog() -> Blog? {
-        lastUsedOrFirstBlogExpectation?.fulfill()
-        return Blog(context: self.managedObjectContext)
-    }
 }
 
 class MockPostService: PostService {
@@ -91,11 +86,11 @@ class ReblogPresenterTests: ReblogTestCase {
         for _ in 1...2 {
             BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
         }
-
-        blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
         let presenter = ReaderReblogPresenter(postService: postService!)
+        let origin = MockViewController()
+        origin.presentExpectation = expectation(description: "blog selector is presented")
         // When
-        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: origin)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -138,4 +133,15 @@ class ReblogFormatterTests: XCTestCase {
                        "</figure>\n<!-- /wp:image -->",
                        wpImage)
     }
+}
+
+private class MockViewController: UIViewController {
+
+    var presentExpectation: XCTestExpectation?
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        presentExpectation?.fulfill()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+
 }

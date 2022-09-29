@@ -412,9 +412,8 @@ private extension ZendeskUtils {
         }
 
         // 2. Use information from selected site.
-        let blogService = BlogService(managedObjectContext: context)
 
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = Blog.lastUsed(in: context) else {
             // We have no user information.
             completion()
             return
@@ -630,9 +629,7 @@ private extension ZendeskUtils {
     }
 
     static func getCurrentSiteDescription() -> String {
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = Blog.lastUsed(in: ContextManager.sharedInstance().mainContext) else {
             return Constants.noValue
         }
 
@@ -691,13 +688,13 @@ private extension ZendeskUtils {
 
 
         // Add gutenbergIsDefault tag
-        if let blog = blogService.lastUsedBlog() {
+        if let blog = Blog.lastUsed(in: context) {
             if blog.isGutenbergEnabled {
                 tags.append(Constants.gutenbergIsDefault)
             }
         }
 
-        if let currentSite = blogService.lastUsedOrFirstBlog(), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
+        if let currentSite = Blog.lastUsedOrFirst(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
             tags.append(Constants.mobileSelfHosted)
         }
 
@@ -1041,9 +1038,7 @@ private extension ZendeskUtils {
 
     /// Provides the current site id to `getZendeskMetadata`, if it exists
     private static var currentSiteID: Int? {
-        guard let siteID = BlogService(managedObjectContext: ContextManager.shared.mainContext)
-                .lastUsedOrFirstBlog()?
-                .dotComID else {
+        guard let siteID = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext)?.dotComID else {
             return nil
         }
         return Int(truncating: siteID)

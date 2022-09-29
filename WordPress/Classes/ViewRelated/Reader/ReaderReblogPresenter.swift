@@ -39,11 +39,7 @@ class ReaderReblogPresenter {
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
         default:
-            guard let blog = blogService.lastUsedOrFirstBlog() else {
-                return
-            }
             presentBlogPicker(from: origin,
-                              blog: blog,
                               blogService: blogService,
                               readerPost: readerPost)
         }
@@ -55,7 +51,6 @@ class ReaderReblogPresenter {
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
     func presentBlogPicker(from origin: UIViewController,
-                           blog: Blog,
                            blogService: BlogService,
                            readerPost: ReaderPost) {
 
