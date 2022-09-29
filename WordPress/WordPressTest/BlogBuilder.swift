@@ -70,6 +70,12 @@ final class BlogBuilder {
         return self
     }
 
+    func with(visible: Bool) -> Self {
+        blog.visible = visible
+
+        return self
+    }
+
     func withAnAccount() -> Self {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount

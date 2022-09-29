@@ -459,12 +459,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [jetpackUnmanagedBlogs count] > 0;
 }
 
-- (NSInteger)blogCountVisibleForWPComAccounts
-{
-    NSPredicate *predicate = [self predicateForVisibleBlogsWPComAccounts];
-    return [self blogCountWithPredicate:predicate];
-}
-
 - (NSArray *)blogsWithNoAccount
 {
     NSPredicate *predicate = [self predicateForNoAccount];
@@ -474,12 +468,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 - (NSArray<Blog *> *)blogsForAllAccounts
 {
     return [self blogsWithPredicate:nil];
-}
-
-- (NSArray<Blog *> *)visibleBlogsForWPComAccounts
-{
-    NSPredicate *predicate = [self predicateForVisibleBlogsWPComAccounts];
-    return [self blogsWithPredicate:predicate];
 }
 
 - (NSDictionary *)blogsForAllAccountsById
@@ -831,18 +819,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 - (NSPredicate *)predicateForVisibleBlogs
 {
     return [NSPredicate predicateWithFormat:@"visible = YES"];
-}
-
-
-- (NSPredicate *)predicateForVisibleBlogsWPComAccounts
-{
-    NSArray *subpredicates = @[
-                            [self predicateForVisibleBlogs],
-                            [NSPredicate predicateWithFormat:@"account != NULL"],
-                            ];
-    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
-
-    return predicate;
 }
 
 - (NSPredicate *)predicateForNoAccount

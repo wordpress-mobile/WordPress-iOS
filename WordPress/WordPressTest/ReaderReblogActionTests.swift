@@ -12,19 +12,8 @@ class MockReblogPresenter: ReaderReblogPresenter {
 }
 
 class MockBlogService: BlogService {
-    var blogsForAllAccountsExpectation: XCTestExpectation?
     var lastUsedOrFirstBlogExpectation: XCTestExpectation?
 
-    var blogCount = 1
-
-    override func blogCountVisibleForWPComAccounts() -> Int {
-        return blogCount
-    }
-
-    override func visibleBlogsForWPComAccounts() -> [Blog] {
-        blogsForAllAccountsExpectation?.fulfill()
-        return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
-    }
     override func lastUsedOrFirstBlog() -> Blog? {
         lastUsedOrFirstBlogExpectation?.fulfill()
         return Blog(context: self.managedObjectContext)
@@ -82,8 +71,10 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForOneSite() {
         // Given
+        BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
         postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
-        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
+        // TODO: Replace this expectation with other ways to assert the `ReaderReblogPresenter.presentEditor` is called.
+//        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
@@ -97,8 +88,11 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForMultipleSites() {
         // Given
+        for _ in 1...2 {
+            BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+        }
+
         blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
-        blogService!.blogCount = 2
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
