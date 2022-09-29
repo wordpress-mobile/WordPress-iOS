@@ -13,6 +13,9 @@ struct AppIcon {
     /// by a newer style of icon, but are still provided for compatibility and for users who prefer them.
     let isLegacy: Bool
 
+    // Boolean indicating whether the icon is the default icon of the app.
+    let isPrimary: Bool
+
     var displayName: String {
         return name.replacingMatches(of: " Classic", with: "")
     }
@@ -45,11 +48,12 @@ struct AppIcon {
     }
 
     /// An `AppIcon` instance representing the default icon for the app.
-    static var defaultIcon: AppIcon {
+    static let defaultIcon: AppIcon = {
         return AppIcon(name: AppIcon.defaultIconName,
                        isBordered: false,
-                       isLegacy: false)
-    }
+                       isLegacy: false,
+                       isPrimary: true)
+    }()
 
     /// An array of `AppIcons` representing all possible custom icons that can be used by the app.
     static var allIcons: [AppIcon] {
@@ -65,7 +69,7 @@ struct AppIcon {
 
             let isBordered = value[Constants.infoPlistRequiresBorderKey] as? Bool == true
             let isLegacy = value[Constants.infoPlistLegacyIconKey] as? Bool == true
-            return AppIcon(name: key, isBordered: isBordered, isLegacy: isLegacy)
+            return AppIcon(name: key, isBordered: isBordered, isLegacy: isLegacy, isPrimary: false)
         }
 
         return [defaultIcon] + customIcons
@@ -93,6 +97,6 @@ struct AppIcon {
         static let imageBaseName              = "icon-app-60x60"
     }
 
-    static let defaultIconName = "Cool Blue"
-    static let defaultLegacyIconName = "WordPress"
+    static let defaultIconName = AppConfiguration.isJetpack ? "Cool Green" : "Cool Blue"
+    static let defaultLegacyIconName = AppConfiguration.isJetpack ? nil : "WordPress"
 }
