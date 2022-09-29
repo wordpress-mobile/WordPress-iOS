@@ -443,11 +443,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                failure:failure];
 }
 
-- (BOOL)hasVisibleWPComAccounts
-{
-    return [self blogCountVisibleForWPComAccounts] > 0;
-}
-
 - (BOOL)hasAnyJetpackBlogs
 {
     NSPredicate *jetpackManagedPredicate = [NSPredicate predicateWithFormat:@"account != NULL AND isHostedAtWPcom = NO"];

@@ -155,8 +155,6 @@ extern NSString *const WPBlogUpdatedNotification;
  */
 - (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
 
-- (BOOL)hasVisibleWPComAccounts;
-
 - (BOOL)hasAnyJetpackBlogs;
 
 - (NSInteger)blogCountVisibleForWPComAccounts;
