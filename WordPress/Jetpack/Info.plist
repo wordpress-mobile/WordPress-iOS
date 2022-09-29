@@ -8,8 +8,144 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleIcons</key>
 	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>Black</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>black-icon-app-60x60</string>
+					<string>black-icon-app-76x76</string>
+					<string>black-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Black Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>black-classic-icon-app-60x60</string>
+					<string>black-classic-icon-app-76x76</string>
+					<string>black-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Blue</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>blue-icon-app-60x60</string>
+					<string>blue-icon-app-76x76</string>
+					<string>blue-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Blue Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>blue-classic-icon-app-60x60</string>
+					<string>blue-classic-icon-app-76x76</string>
+					<string>blue-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Celadon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>celadon-icon-app-60x60</string>
+					<string>celadon-icon-app-76x76</string>
+					<string>celadon-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Celadon Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>celadon-classic-icon-app-60x60</string>
+					<string>celadon-classic-icon-app-76x76</string>
+					<string>celadon-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pink-icon-app-60x60</string>
+					<string>pink-icon-app-76x76</string>
+					<string>pink-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Pink Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>pink-classic-icon-app-60x60</string>
+					<string>pink-classic-icon-app-76x76</string>
+					<string>pink-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Spectrum</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-icon-app-60x60</string>
+					<string>spectrum-icon-app-76x76</string>
+					<string>spectrum-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum &apos;22</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-&apos;22-icon-app-60x60</string>
+					<string>spectrum-&apos;22-icon-app-76x76</string>
+					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum Classic</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-classic-icon-app-60x60</string>
+					<string>spectrum-classic-icon-app-76x76</string>
+					<string>spectrum-classic-icon-app-83.5x83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
@@ -20,8 +156,6 @@
 			<true/>
 		</dict>
 	</dict>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

@@ -2999,9 +2999,78 @@
 		F4426FD3287E08C300218003 /* SuggestionServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */; };
 		F4426FD9287F02FD00218003 /* SiteSuggestionsServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */; };
 		F4426FDB287F066400218003 /* site-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F4426FDA287F066400218003 /* site-suggestions.json */; };
+		F44293D228E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44293D128E3B18E00D340AF /* AppIconListViewModelType.swift */; };
+		F44293D328E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44293D128E3B18E00D340AF /* AppIconListViewModelType.swift */; };
+		F44293D628E3BA1700D340AF /* AppIconListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44293D528E3BA1700D340AF /* AppIconListViewModel.swift */; };
+		F44293DD28E45DBA00D340AF /* AppIconListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44293D528E3BA1700D340AF /* AppIconListViewModel.swift */; };
+		F44293DE28E4601700D340AF /* cool-blue-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F2512799BD52009BC263 /* cool-blue-icon-app-76x76@2x.png */; };
+		F44293DF28E4601700D340AF /* cool-blue-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24F2799BD52009BC263 /* cool-blue-icon-app-60x60@2x.png */; };
+		F44293E028E4601700D340AF /* cool-blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24E2799BD52009BC263 /* cool-blue-icon-app-60x60@3x.png */; };
+		F44293E128E4601700D340AF /* cool-blue-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F2502799BD52009BC263 /* cool-blue-icon-app-83.5x83.5@2x.png */; };
+		F44293E228E4601700D340AF /* cool-blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F24D2799BD52009BC263 /* cool-blue-icon-app-76x76.png */; };
+		F44293E328E461B500D340AF /* black-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D67261DDDF60047B163 /* black-icon-app-83.5x83.5@2x.png */; };
+		F44293E428E461B500D340AF /* black-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D63261DDDF50047B163 /* black-icon-app-60x60@2x.png */; };
+		F44293E528E461B500D340AF /* black-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D66261DDDF60047B163 /* black-icon-app-76x76@2x.png */; };
+		F44293E628E461B500D340AF /* black-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D64261DDDF50047B163 /* black-icon-app-60x60@3x.png */; };
+		F44293E728E461B500D340AF /* black-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D65261DDDF50047B163 /* black-icon-app-76x76.png */; };
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6CD287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CC287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
+		F465973028E4638D00D5F49A /* blue-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F2592799C2B0009BC263 /* blue-icon-app-83.5x83.5@2x.png */; };
+		F465973128E4638D00D5F49A /* blue-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D78261DDDF70047B163 /* blue-icon-app-60x60@3x.png */; };
+		F465973228E4638D00D5F49A /* blue-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F2582799C2B0009BC263 /* blue-icon-app-76x76@2x.png */; };
+		F465973328E4638D00D5F49A /* blue-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E5F2572799C2B0009BC263 /* blue-icon-app-76x76.png */; };
+		F465973428E4638D00D5F49A /* blue-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D79261DDDF70047B163 /* blue-icon-app-60x60@2x.png */; };
+		F465973528E4639600D5F49A /* celadon-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D4B261DDDF30047B163 /* celadon-icon-app-83.5x83.5@2x.png */; };
+		F465973628E4639600D5F49A /* celadon-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D4C261DDDF30047B163 /* celadon-icon-app-76x76.png */; };
+		F465973728E4639600D5F49A /* celadon-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D4D261DDDF30047B163 /* celadon-icon-app-76x76@2x.png */; };
+		F465973828E4639600D5F49A /* celadon-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D4E261DDDF30047B163 /* celadon-icon-app-60x60@2x.png */; };
+		F465973928E4639600D5F49A /* celadon-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D4F261DDDF30047B163 /* celadon-icon-app-60x60@3x.png */; };
+		F465973A28E4639C00D5F49A /* pink-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D60261DDDF50047B163 /* pink-icon-app-60x60@2x.png */; };
+		F465973B28E4639C00D5F49A /* pink-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D61261DDDF50047B163 /* pink-icon-app-83.5x83.5@2x.png */; };
+		F465973C28E4639C00D5F49A /* pink-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D5D261DDDF50047B163 /* pink-icon-app-76x76@2x.png */; };
+		F465973D28E4639C00D5F49A /* pink-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D5E261DDDF50047B163 /* pink-icon-app-76x76.png */; };
+		F465973E28E4639C00D5F49A /* pink-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D5F261DDDF50047B163 /* pink-icon-app-60x60@3x.png */; };
+		F465973F28E463A200D5F49A /* spectrum-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D70261DDDF70047B163 /* spectrum-icon-app-83.5x83.5@2x.png */; };
+		F465974028E463A200D5F49A /* spectrum-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D72261DDDF70047B163 /* spectrum-icon-app-76x76.png */; };
+		F465974128E463A200D5F49A /* spectrum-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D73261DDDF70047B163 /* spectrum-icon-app-60x60@2x.png */; };
+		F465974228E463A200D5F49A /* spectrum-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D71261DDDF70047B163 /* spectrum-icon-app-60x60@3x.png */; };
+		F465974328E463A200D5F49A /* spectrum-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D6F261DDDF70047B163 /* spectrum-icon-app-76x76@2x.png */; };
+		F465974428E463A900D5F49A /* spectrum-'22-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B52865C04E00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png */; };
+		F465974528E463A900D5F49A /* spectrum-'22-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B62865C04E00C78FD4 /* spectrum-'22-icon-app-76x76@2x.png */; };
+		F465974628E463A900D5F49A /* spectrum-'22-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B42865C04E00C78FD4 /* spectrum-'22-icon-app-76x76.png */; };
+		F465974728E463A900D5F49A /* spectrum-'22-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B72865C04F00C78FD4 /* spectrum-'22-icon-app-83.5x83.5@2x.png */; };
+		F465974828E463A900D5F49A /* spectrum-'22-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 172F06B82865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@2x.png */; };
+		F465974928E463B200D5F49A /* black-classic-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D53261DDDF40047B163 /* black-classic-icon-app-83.5x83.5@2x.png */; };
+		F465974A28E463B200D5F49A /* black-classic-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D54261DDDF40047B163 /* black-classic-icon-app-60x60@2x.png */; };
+		F465974B28E463B200D5F49A /* black-classic-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D52261DDDF40047B163 /* black-classic-icon-app-60x60@3x.png */; };
+		F465974C28E463B200D5F49A /* black-classic-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D55261DDDF40047B163 /* black-classic-icon-app-76x76.png */; };
+		F465974D28E463B200D5F49A /* black-classic-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D51261DDDF40047B163 /* black-classic-icon-app-76x76@2x.png */; };
+		F465974E28E463B900D5F49A /* blue-classic-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D58261DDDF40047B163 /* blue-classic-icon-app-60x60@2x.png */; };
+		F465974F28E463B900D5F49A /* blue-classic-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D59261DDDF40047B163 /* blue-classic-icon-app-76x76@2x.png */; };
+		F465975028E463B900D5F49A /* blue-classic-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D57261DDDF40047B163 /* blue-classic-icon-app-60x60@3x.png */; };
+		F465975128E463B900D5F49A /* blue-classic-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D5A261DDDF40047B163 /* blue-classic-icon-app-83.5x83.5@2x.png */; };
+		F465975228E463B900D5F49A /* blue-classic-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D5B261DDDF40047B163 /* blue-classic-icon-app-76x76.png */; };
+		F465975328E463BE00D5F49A /* celadon-classic-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D45261DDDF10047B163 /* celadon-classic-icon-app-76x76.png */; };
+		F465975428E463BE00D5F49A /* celadon-classic-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D49261DDDF10047B163 /* celadon-classic-icon-app-60x60@3x.png */; };
+		F465975528E463BE00D5F49A /* celadon-classic-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D48261DDDF10047B163 /* celadon-classic-icon-app-60x60@2x.png */; };
+		F465975628E463BE00D5F49A /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D47261DDDF10047B163 /* celadon-classic-icon-app-83.5x83.5@2x.png */; };
+		F465975728E463BE00D5F49A /* celadon-classic-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D46261DDDF10047B163 /* celadon-classic-icon-app-76x76@2x.png */; };
+		F465975828E463C300D5F49A /* pink-classic-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D6C261DDDF60047B163 /* pink-classic-icon-app-76x76.png */; };
+		F465975928E463C300D5F49A /* pink-classic-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D6D261DDDF60047B163 /* pink-classic-icon-app-60x60@3x.png */; };
+		F465975A28E463C300D5F49A /* pink-classic-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D6A261DDDF60047B163 /* pink-classic-icon-app-76x76@2x.png */; };
+		F465975B28E463C300D5F49A /* pink-classic-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D69261DDDF60047B163 /* pink-classic-icon-app-83.5x83.5@2x.png */; };
+		F465975C28E463C300D5F49A /* pink-classic-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D6B261DDDF60047B163 /* pink-classic-icon-app-60x60@2x.png */; };
+		F465975D28E463CA00D5F49A /* spectrum-classic-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D7E261DDDF80047B163 /* spectrum-classic-icon-app-83.5x83.5@2x.png */; };
+		F465975E28E463CA00D5F49A /* spectrum-classic-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D7F261DDDF80047B163 /* spectrum-classic-icon-app-60x60@2x.png */; };
+		F465975F28E463CA00D5F49A /* spectrum-classic-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D7C261DDDF80047B163 /* spectrum-classic-icon-app-76x76.png */; };
+		F465976028E463CA00D5F49A /* spectrum-classic-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D7D261DDDF80047B163 /* spectrum-classic-icon-app-60x60@3x.png */; };
+		F465976128E463CA00D5F49A /* spectrum-classic-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17222D7B261DDDF80047B163 /* spectrum-classic-icon-app-76x76@2x.png */; };
+		F465976E28E4669200D5F49A /* cool-green-icon-app-76x76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976928E4669200D5F49A /* cool-green-icon-app-76x76@2x.png */; };
+		F465976F28E4669200D5F49A /* cool-green-icon-app-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976A28E4669200D5F49A /* cool-green-icon-app-76x76.png */; };
+		F465977028E4669200D5F49A /* cool-green-icon-app-60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976B28E4669200D5F49A /* cool-green-icon-app-60x60@3x.png */; };
+		F465977128E4669200D5F49A /* cool-green-icon-app-60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976C28E4669200D5F49A /* cool-green-icon-app-60x60@2x.png */; };
+		F465977228E4669200D5F49A /* cool-green-icon-app-83.5x83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976D28E4669200D5F49A /* cool-green-icon-app-83.5x83.5@2x.png */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4D9AF4F288AD2E300803D40 /* SuggestionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */; };
@@ -7984,9 +8053,16 @@
 		F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionServiceMock.swift; sourceTree = "<group>"; };
 		F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSuggestionsServiceMock.swift; sourceTree = "<group>"; };
 		F4426FDA287F066400218003 /* site-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-suggestions.json"; sourceTree = "<group>"; };
+		F44293D128E3B18E00D340AF /* AppIconListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListViewModelType.swift; sourceTree = "<group>"; };
+		F44293D528E3BA1700D340AF /* AppIconListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListViewModel.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6CC287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsTableViewMockDelegate.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F465976928E4669200D5F49A /* cool-green-icon-app-76x76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76x76@2x.png"; sourceTree = "<group>"; };
+		F465976A28E4669200D5F49A /* cool-green-icon-app-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76x76.png"; sourceTree = "<group>"; };
+		F465976B28E4669200D5F49A /* cool-green-icon-app-60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60x60@3x.png"; sourceTree = "<group>"; };
+		F465976C28E4669200D5F49A /* cool-green-icon-app-60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60x60@2x.png"; sourceTree = "<group>"; };
+		F465976D28E4669200D5F49A /* cool-green-icon-app-83.5x83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-83.5x83.5@2x.png"; sourceTree = "<group>"; };
 		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionViewModelTests.swift; sourceTree = "<group>"; };
@@ -9752,8 +9828,8 @@
 		3F29EB6E240420C3005313DE /* App Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F44293D428E3B39400D340AF /* App Icons */,
 				3F29EB6824041F6D005313DE /* About */,
-				17E362EB22C40BE8000E0C79 /* AppIconViewController.swift */,
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
 				17E4CD0B238C33F300C56916 /* DebugMenuViewController.swift */,
 				E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */,
@@ -11946,6 +12022,7 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				175721152754D31F00DE38BC /* AppIcon.swift */,
 				8B85AED8259230C500ADBEC9 /* AB Testing */,
 				FA25FB242609B98E0005E08F /* App Configuration */,
 				F181EDE326B2AC3100C61241 /* BackgroundTasks */,
@@ -12015,7 +12092,6 @@
 				57C3D392235DFD8E00FE9CE6 /* ActionDispatcherFacade.swift */,
 				F582060123A85495005159A9 /* SiteDateFormatters.swift */,
 				17C64BD1248E26A200AF09D7 /* AppAppearance.swift */,
-				175721152754D31F00DE38BC /* AppIcon.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -15505,6 +15581,16 @@
 			path = WordPressIntents;
 			sourceTree = "<group>";
 		};
+		F44293D428E3B39400D340AF /* App Icons */ = {
+			isa = PBXGroup;
+			children = (
+				17E362EB22C40BE8000E0C79 /* AppIconViewController.swift */,
+				F44293D128E3B18E00D340AF /* AppIconListViewModelType.swift */,
+				F44293D528E3BA1700D340AF /* AppIconListViewModel.swift */,
+			);
+			path = "App Icons";
+			sourceTree = "<group>";
+		};
 		F44FB6C92878957E0001E3CE /* Mention */ = {
 			isa = PBXGroup;
 			children = (
@@ -15524,6 +15610,26 @@
 				F44FB6D02878A1020001E3CE /* user-suggestions.json */,
 			);
 			name = Suggestions;
+			sourceTree = "<group>";
+		};
+		F465976528E464DE00D5F49A /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				F465976828E4669200D5F49A /* cool-green */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+		F465976828E4669200D5F49A /* cool-green */ = {
+			isa = PBXGroup;
+			children = (
+				F465976928E4669200D5F49A /* cool-green-icon-app-76x76@2x.png */,
+				F465976A28E4669200D5F49A /* cool-green-icon-app-76x76.png */,
+				F465976B28E4669200D5F49A /* cool-green-icon-app-60x60@3x.png */,
+				F465976C28E4669200D5F49A /* cool-green-icon-app-60x60@2x.png */,
+				F465976D28E4669200D5F49A /* cool-green-icon-app-83.5x83.5@2x.png */,
+			);
+			path = "cool-green";
 			sourceTree = "<group>";
 		};
 		F504D2A925D60C5900A2764C /* Stories */ = {
@@ -15865,6 +15971,7 @@
 		FABB28482603068B00C8785C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F465976528E464DE00D5F49A /* Icons */,
 				FABB286B2603086900C8785C /* AppImages.xcassets */,
 				FABB28462603067C00C8785C /* Launch Screen.storyboard */,
 			);
@@ -17234,32 +17341,43 @@
 				FABB1FB02602FC2C00C8785C /* SignupEpilogueCell.xib in Resources */,
 				FABB1FB12602FC2C00C8785C /* JetpackScanViewController.xib in Resources */,
 				FABB1FB32602FC2C00C8785C /* NoteBlockActionsTableViewCell.xib in Resources */,
+				F465975828E463C300D5F49A /* pink-classic-icon-app-76x76.png in Resources */,
 				FABB1FB42602FC2C00C8785C /* Pacifico-Regular.ttf in Resources */,
 				FABB286C2603086900C8785C /* AppImages.xcassets in Resources */,
+				F44293E228E4601700D340AF /* cool-blue-icon-app-76x76.png in Resources */,
 				FABB1FB92602FC2C00C8785C /* RestoreStatusFailedView.xib in Resources */,
 				FABB1FBA2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				FABB1FBB2602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.xib in Resources */,
+				F465974C28E463B200D5F49A /* black-classic-icon-app-76x76.png in Resources */,
 				FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				C7234A452832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */,
 				FABB1FBC2602FC2C00C8785C /* PrepublishingHeaderView.xib in Resources */,
 				FABB1FBF2602FC2C00C8785C /* WPTableViewActivityCell.xib in Resources */,
+				F465974A28E463B200D5F49A /* black-classic-icon-app-60x60@2x.png in Resources */,
+				F465974F28E463B900D5F49A /* blue-classic-icon-app-76x76@2x.png in Resources */,
 				FABB1FC12602FC2C00C8785C /* defaultPostTemplate.html in Resources */,
 				FABB1FC32602FC2C00C8785C /* defaultPostTemplate_old.html in Resources */,
 				FABB1FC42602FC2C00C8785C /* ReaderInterestsCollectionViewCell.xib in Resources */,
 				836498CC2817301800A2C170 /* BloggingPromptsHeaderView.xib in Resources */,
+				F465975A28E463C300D5F49A /* pink-classic-icon-app-76x76@2x.png in Resources */,
 				FABB1FC52602FC2C00C8785C /* StatsGhostTopHeaderCell.xib in Resources */,
 				9856A38A261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
 				FABB1FC72602FC2C00C8785C /* RegisterDomainDetailsFooterView.xib in Resources */,
 				FABB1FC82602FC2C00C8785C /* EpilogueSectionHeaderFooter.xib in Resources */,
 				FE23EB4C26E7C91F005A1698 /* richCommentStyle.css in Resources */,
 				98517E5D28220475001FFD45 /* BloggingPromptTableViewCell.xib in Resources */,
+				F465975C28E463C300D5F49A /* pink-classic-icon-app-60x60@2x.png in Resources */,
 				FABB1FC92602FC2C00C8785C /* reader.css in Resources */,
 				FABB1FCB2602FC2C00C8785C /* AlertView.xib in Resources */,
 				FABB1FCC2602FC2C00C8785C /* SiteStatsTableHeaderView.xib in Resources */,
+				F465976128E463CA00D5F49A /* spectrum-classic-icon-app-76x76@2x.png in Resources */,
+				F465975D28E463CA00D5F49A /* spectrum-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB1FCD2602FC2C00C8785C /* Posts.storyboard in Resources */,
 				FABB1FCE2602FC2C00C8785C /* StatsChildRowsView.xib in Resources */,
+				F44293E328E461B500D340AF /* black-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB1FD02602FC2C00C8785C /* xhtml1-transitional.dtd in Resources */,
 				8BF281FA27CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */,
+				F465973128E4638D00D5F49A /* blue-icon-app-60x60@3x.png in Resources */,
 				FABB1FD22602FC2C00C8785C /* RestoreStatusView.xib in Resources */,
 				FABB1FD32602FC2C00C8785C /* PluginDetailViewHeaderCell.xib in Resources */,
 				FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */,
@@ -17272,33 +17390,46 @@
 				FABB1FDB2602FC2C00C8785C /* xhtmlValidatorTemplate.xhtml in Resources */,
 				FABB1FDC2602FC2C00C8785C /* PostingActivityDay.xib in Resources */,
 				FABB1FDD2602FC2C00C8785C /* reader-cards-success.json in Resources */,
+				F465973428E4638D00D5F49A /* blue-icon-app-60x60@2x.png in Resources */,
 				FABB1FDF2602FC2C00C8785C /* ReaderRelatedPostsCell.xib in Resources */,
 				FABB1FE52602FC2C00C8785C /* RevisionOperation.xib in Resources */,
 				FABB1FE82602FC2C00C8785C /* TitleBadgeDisclosureCell.xib in Resources */,
+				F465973B28E4639C00D5F49A /* pink-icon-app-83.5x83.5@2x.png in Resources */,
+				F44293DE28E4601700D340AF /* cool-blue-icon-app-76x76@2x.png in Resources */,
 				FABB1FE92602FC2C00C8785C /* TextWithAccessoryButtonCell.xib in Resources */,
+				F44293E528E461B500D340AF /* black-icon-app-76x76@2x.png in Resources */,
+				F465976E28E4669200D5F49A /* cool-green-icon-app-76x76@2x.png in Resources */,
 				FABB1FEA2602FC2C00C8785C /* SiteStatsDetailTableViewController.storyboard in Resources */,
+				F465975728E463BE00D5F49A /* celadon-classic-icon-app-76x76@2x.png in Resources */,
 				FABB1FED2602FC2C00C8785C /* InlineEditableNameValueCell.xib in Resources */,
 				FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */,
 				FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */,
 				FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */,
+				F465975F28E463CA00D5F49A /* spectrum-classic-icon-app-76x76.png in Resources */,
 				FABB1FF22602FC2C00C8785C /* ReaderSavedPostUndoCell.xib in Resources */,
 				FABB1FF32602FC2C00C8785C /* ReaderPostCardCell.xib in Resources */,
 				FABB1FF52602FC2C00C8785C /* RevisionsTableViewCell.xib in Resources */,
 				FABB1FF72602FC2C00C8785C /* Revisions.storyboard in Resources */,
 				FABB1FF82602FC2C00C8785C /* ActivityDetailViewController.storyboard in Resources */,
 				FABB1FF92602FC2C00C8785C /* ReaderDetailHeaderView.xib in Resources */,
+				F465974128E463A200D5F49A /* spectrum-icon-app-60x60@2x.png in Resources */,
 				FABB1FFA2602FC2C00C8785C /* ReaderTagsFooter.xib in Resources */,
 				FABB1FFB2602FC2C00C8785C /* PostingActivityLegend.xib in Resources */,
 				3F4D035428A5BFCE00F0A4FD /* JetpackWordPressLogoAnimation_ltr.json in Resources */,
+				F44293E628E461B500D340AF /* black-icon-app-60x60@3x.png in Resources */,
 				FABB1FFC2602FC2C00C8785C /* PostingActivityViewController.storyboard in Resources */,
 				FABB1FFD2602FC2C00C8785C /* TwoColumnCell.xib in Resources */,
+				F465973A28E4639C00D5F49A /* pink-icon-app-60x60@2x.png in Resources */,
 				FABB1FFE2602FC2C00C8785C /* Notifications.storyboard in Resources */,
 				FABB20022602FC2C00C8785C /* StatsTableFooter.xib in Resources */,
 				C7F7AC76261CF1F300CE547F /* JetpackLoginErrorViewController.xib in Resources */,
+				F465975028E463B900D5F49A /* blue-classic-icon-app-60x60@3x.png in Resources */,
 				FABB20052602FC2C00C8785C /* ThemeBrowserSectionHeaderView.xib in Resources */,
 				FABB20072602FC2C00C8785C /* SitePromptView.xib in Resources */,
 				FABB20082602FC2C00C8785C /* DeleteSite.storyboard in Resources */,
+				F465974028E463A200D5F49A /* spectrum-icon-app-76x76.png in Resources */,
 				FABB200A2602FC2C00C8785C /* Noticons.ttf in Resources */,
+				F465974B28E463B200D5F49A /* black-classic-icon-app-60x60@3x.png in Resources */,
 				FAE4CA6B2732C094003BFDFE /* QuickStartPromptViewController.xib in Resources */,
 				FABB200B2602FC2C00C8785C /* LoginEpilogue.storyboard in Resources */,
 				FABB200C2602FC2C00C8785C /* AddressCell.xib in Resources */,
@@ -17307,14 +17438,22 @@
 				FABB20102602FC2C00C8785C /* PostPost.storyboard in Resources */,
 				FABB20112602FC2C00C8785C /* SpaceMono-Bold.ttf in Resources */,
 				FABB20142602FC2C00C8785C /* CommentsList.storyboard in Resources */,
+				F465975E28E463CA00D5F49A /* spectrum-classic-icon-app-60x60@2x.png in Resources */,
 				FABB20162602FC2C00C8785C /* TabbedTotalsCell.xib in Resources */,
+				F465973228E4638D00D5F49A /* blue-icon-app-76x76@2x.png in Resources */,
 				FABB20172602FC2C00C8785C /* PageListTableViewCell.xib in Resources */,
 				8BE6F92E27EE27E10008BDC7 /* BlogDashboardPostCardGhostCell.xib in Resources */,
 				FABB20182602FC2C00C8785C /* NoteBlockImageTableViewCell.xib in Resources */,
 				FABB201B2602FC2C00C8785C /* SignupEpilogue.storyboard in Resources */,
+				F465975228E463B900D5F49A /* blue-classic-icon-app-76x76.png in Resources */,
 				FABB201D2602FC2C00C8785C /* PostStatsTitleCell.xib in Resources */,
+				F465975B28E463C300D5F49A /* pink-classic-icon-app-83.5x83.5@2x.png in Resources */,
+				F465975628E463BE00D5F49A /* celadon-classic-icon-app-83.5x83.5@2x.png in Resources */,
+				F465973928E4639600D5F49A /* celadon-icon-app-60x60@3x.png in Resources */,
 				FABB20212602FC2C00C8785C /* ReaderDetailToolbar.xib in Resources */,
+				F465974828E463A900D5F49A /* spectrum-'22-icon-app-60x60@2x.png in Resources */,
 				FABB20222602FC2C00C8785C /* RewindStatusTableViewCell.xib in Resources */,
+				F465974E28E463B900D5F49A /* blue-classic-icon-app-60x60@2x.png in Resources */,
 				FABB20232602FC2C00C8785C /* PageListSectionHeaderView.xib in Resources */,
 				98DCF4A8275945E00008630F /* ReaderDetailNoCommentCell.xib in Resources */,
 				FABB20242602FC2C00C8785C /* JetpackScanThreatDetailsViewController.xib in Resources */,
@@ -17325,19 +17464,26 @@
 				FABB20292602FC2C00C8785C /* JetpackScanHistoryViewController.xib in Resources */,
 				FABB202A2602FC2C00C8785C /* PostSignUpInterstitialViewController.xib in Resources */,
 				FABB202B2602FC2C00C8785C /* CollapsableHeaderViewController.xib in Resources */,
+				F465977228E4669200D5F49A /* cool-green-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB202C2602FC2C00C8785C /* ReaderRelatedPostsSectionHeaderView.xib in Resources */,
 				C77FC90C28009C7000726F00 /* OnboardingQuestionsPromptViewController.xib in Resources */,
 				FABB202D2602FC2C00C8785C /* PostingActivityMonth.xib in Resources */,
 				FABB202E2602FC2C00C8785C /* Menus.storyboard in Resources */,
+				F465975428E463BE00D5F49A /* celadon-classic-icon-app-60x60@3x.png in Resources */,
 				FABB202F2602FC2C00C8785C /* CountriesMapView.xib in Resources */,
+				F465974928E463B200D5F49A /* black-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB20302602FC2C00C8785C /* OverviewCell.xib in Resources */,
+				F465975128E463B900D5F49A /* blue-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB20322602FC2C00C8785C /* JetpackRemoteInstallStateView.xib in Resources */,
 				FABB20352602FC2C00C8785C /* TemplatePreviewViewController.xib in Resources */,
 				FABB20372602FC2C00C8785C /* NoResults.storyboard in Resources */,
 				FABB20392602FC2C00C8785C /* ActivityListSectionHeaderView.xib in Resources */,
+				F44293E728E461B500D340AF /* black-icon-app-76x76.png in Resources */,
 				FABB203D2602FC2C00C8785C /* Localizable.strings in Resources */,
 				17039226282E6D2F00F602E9 /* ViewsVisitorsLineChartCell.xib in Resources */,
+				F44293E028E4601700D340AF /* cool-blue-icon-app-60x60@3x.png in Resources */,
 				FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */,
+				F465973C28E4639C00D5F49A /* pink-icon-app-76x76@2x.png in Resources */,
 				FEC3B81A26C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				FABB203F2602FC2C00C8785C /* ReaderRecommendedSiteCardCell.xib in Resources */,
 				FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */,
@@ -17348,8 +17494,10 @@
 				FABB20452602FC2C00C8785C /* JetpackLoginViewController.xib in Resources */,
 				C77FC9122800CAC100726F00 /* OnboardingEnableNotificationsViewController.xib in Resources */,
 				FABB20472602FC2C00C8785C /* StatsNoDataRow.xib in Resources */,
+				F465973E28E4639C00D5F49A /* pink-icon-app-60x60@3x.png in Resources */,
 				FABB20482602FC2C00C8785C /* JetpackScanThreatCell.xib in Resources */,
 				FABB20492602FC2C00C8785C /* JetpackScanStatusCell.xib in Resources */,
+				F465977028E4669200D5F49A /* cool-green-icon-app-60x60@3x.png in Resources */,
 				FABB204A2602FC2C00C8785C /* ActivityTableViewCell.xib in Resources */,
 				FABB204C2602FC2C00C8785C /* StatsGhostTitleCell.xib in Resources */,
 				FABB204D2602FC2C00C8785C /* NoteBlockButtonTableViewCell.xib in Resources */,
@@ -17361,7 +17509,9 @@
 				FABB205A2602FC2C00C8785C /* PagedViewController.xib in Resources */,
 				FABB205C2602FC2C00C8785C /* StatsGhostChartCell.xib in Resources */,
 				FABB205D2602FC2C00C8785C /* ReaderGapMarkerCell.xib in Resources */,
+				F465973F28E463A200D5F49A /* spectrum-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB205E2602FC2C00C8785C /* postPreview.html in Resources */,
+				F465975328E463BE00D5F49A /* celadon-classic-icon-app-76x76.png in Resources */,
 				FABB205F2602FC2C00C8785C /* WidgetDifferenceCell.xib in Resources */,
 				FABB20602602FC2C00C8785C /* MediaSizeSliderCell.xib in Resources */,
 				FABB20622602FC2C00C8785C /* ReaderBlockedSiteCell.xib in Resources */,
@@ -17370,6 +17520,7 @@
 				FABB20662602FC2C00C8785C /* ReaderSiteStreamHeader.xib in Resources */,
 				FABB20692602FC2C00C8785C /* ReaderTopicsCardCell.xib in Resources */,
 				FABB206B2602FC2C00C8785C /* richEmbedTemplate.html in Resources */,
+				F465973D28E4639C00D5F49A /* pink-icon-app-76x76.png in Resources */,
 				FABB206D2602FC2C00C8785C /* NoteBlockUserTableViewCell.xib in Resources */,
 				FABB20702602FC2C00C8785C /* ReaderListStreamHeader.xib in Resources */,
 				FABB20722602FC2C00C8785C /* MyProfileHeaderView.xib in Resources */,
@@ -17377,15 +17528,19 @@
 				FABB20762602FC2C00C8785C /* WordPressShare.js in Resources */,
 				C7234A512832C47D0045C63F /* QRLoginVerifyAuthorizationViewController.xib in Resources */,
 				FE3E427926A868EC00C596CE /* ListTableHeaderView.xib in Resources */,
+				F465974728E463A900D5F49A /* spectrum-'22-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB20772602FC2C00C8785C /* world-map.svg in Resources */,
 				FABB20782602FC2C00C8785C /* NoteBlockTextTableViewCell.xib in Resources */,
 				C3234F4D27EB96A5004ADB29 /* IntentCell.xib in Resources */,
+				F465974428E463A900D5F49A /* spectrum-'22-icon-app-60x60@3x.png in Resources */,
 				9822A8562624D01800FD8A03 /* UserProfileSiteCell.xib in Resources */,
 				803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */,
 				FABB207D2602FC2C00C8785C /* RELEASE-NOTES.txt in Resources */,
+				F465975928E463C300D5F49A /* pink-classic-icon-app-60x60@3x.png in Resources */,
 				FABB207E2602FC2C00C8785C /* EpilogueUserInfoCell.xib in Resources */,
 				FABB207F2602FC2C00C8785C /* ReaderTagStreamHeader.xib in Resources */,
 				FABB20812602FC2C00C8785C /* PostCompactCell.xib in Resources */,
+				F465973028E4638D00D5F49A /* blue-icon-app-83.5x83.5@2x.png in Resources */,
 				FABB20832602FC2C00C8785C /* WidgetUnconfiguredCell.xib in Resources */,
 				FABB20862602FC2C00C8785C /* n.caf in Resources */,
 				FABB20882602FC2C00C8785C /* People.storyboard in Resources */,
@@ -17399,6 +17554,7 @@
 				FE3E427B26A8690A00C596CE /* ListSimpleOverlayView.xib in Resources */,
 				FABB20952602FC2C00C8785C /* StatsGhostPostingActivityCell.xib in Resources */,
 				FABB20962602FC2C00C8785C /* ColorPalette.xcassets in Resources */,
+				F44293DF28E4601700D340AF /* cool-blue-icon-app-60x60@2x.png in Resources */,
 				FABB20972602FC2C00C8785C /* RestoreCompleteView.xib in Resources */,
 				FABB20992602FC2C00C8785C /* RegisterDomain.storyboard in Resources */,
 				FABB209A2602FC2C00C8785C /* PostListFooterView.xib in Resources */,
@@ -17406,6 +17562,8 @@
 				FABB209B2602FC2C00C8785C /* acknowledgements.html in Resources */,
 				FABB209C2602FC2C00C8785C /* ReaderDetailViewController.storyboard in Resources */,
 				FA347AF026EB6E300096604B /* GrowAudienceCell.xib in Resources */,
+				F465973528E4639600D5F49A /* celadon-icon-app-83.5x83.5@2x.png in Resources */,
+				F465973628E4639600D5F49A /* celadon-icon-app-76x76.png in Resources */,
 				FABB209D2602FC2C00C8785C /* EditCommentViewController.xib in Resources */,
 				FA347AF326EB7A420096604B /* StatsGhostGrowAudienceCell.xib in Resources */,
 				FABB209E2602FC2C00C8785C /* GutenGhostView.xib in Resources */,
@@ -17415,10 +17573,12 @@
 				FABB20A42602FC2C00C8785C /* BlogDetailsSectionHeaderView.xib in Resources */,
 				FABB20A52602FC2C00C8785C /* CountriesMapCell.xib in Resources */,
 				FABB20A62602FC2C00C8785C /* WPWebViewController.xib in Resources */,
+				F465973328E4638D00D5F49A /* blue-icon-app-76x76.png in Resources */,
 				FABB20A72602FC2C00C8785C /* ReaderCrossPostCell.xib in Resources */,
 				FABB20A82602FC2C00C8785C /* StatsStackViewCell.xib in Resources */,
 				FABB20AA2602FC2C00C8785C /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
 				98BC522E27F62B6300D6E8C2 /* BloggingPromptsFeatureDescriptionView.xib in Resources */,
+				F44293E428E461B500D340AF /* black-icon-app-60x60@2x.png in Resources */,
 				98BAA7C226F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */,
 				FABB20AB2602FC2C00C8785C /* Pages.storyboard in Resources */,
 				FABB20AC2602FC2C00C8785C /* Shrikhand-Regular.ttf in Resources */,
@@ -17429,23 +17589,35 @@
 				FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */,
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
+				F44293E128E4601700D340AF /* cool-blue-icon-app-83.5x83.5@2x.png in Resources */,
+				F465974628E463A900D5F49A /* spectrum-'22-icon-app-76x76.png in Resources */,
 				FABB20B42602FC2C00C8785C /* WidgetUrlCell.xib in Resources */,
 				FABB20B52602FC2C00C8785C /* richEmbedScript.js in Resources */,
 				98E5D4932620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */,
 				FABB20B72602FC2C00C8785C /* PluginListCell.xib in Resources */,
+				F465973828E4639600D5F49A /* celadon-icon-app-60x60@2x.png in Resources */,
 				FABB20B82602FC2C00C8785C /* SiteStatsDashboard.storyboard in Resources */,
 				FABB20B92602FC2C00C8785C /* PostStatsTableViewController.storyboard in Resources */,
+				F465974328E463A200D5F49A /* spectrum-icon-app-76x76@2x.png in Resources */,
+				F465974228E463A200D5F49A /* spectrum-icon-app-60x60@3x.png in Resources */,
 				B0088A98283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib in Resources */,
 				FABB20BA2602FC2C00C8785C /* ReaderSelectInterestsViewController.xib in Resources */,
 				FABB20BB2602FC2C00C8785C /* StatsTwoColumnRow.xib in Resources */,
+				F465974528E463A900D5F49A /* spectrum-'22-icon-app-76x76@2x.png in Resources */,
+				F465975528E463BE00D5F49A /* celadon-classic-icon-app-60x60@2x.png in Resources */,
+				F465977128E4669200D5F49A /* cool-green-icon-app-60x60@2x.png in Resources */,
 				FABB20BC2602FC2C00C8785C /* StatsTotalRow.xib in Resources */,
 				FABB20BD2602FC2C00C8785C /* ViewMoreRow.xib in Resources */,
 				FABB20BE2602FC2C00C8785C /* SiteSegmentsWizardContent.xib in Resources */,
 				98F9FB2F270282C200ADF552 /* CommentModerationBar.xib in Resources */,
 				982D9A0126F922C100AA794C /* InlineEditableMultiLineCell.xib in Resources */,
+				F465973728E4639600D5F49A /* celadon-icon-app-76x76@2x.png in Resources */,
 				FABB20BF2602FC2C00C8785C /* DetailDataCell.xib in Resources */,
+				F465976028E463CA00D5F49A /* spectrum-classic-icon-app-60x60@3x.png in Resources */,
 				FABB20C02602FC2C00C8785C /* StatsGhostTwoColumnCell.xib in Resources */,
+				F465974D28E463B200D5F49A /* black-classic-icon-app-76x76@2x.png in Resources */,
 				17C1D6F626711ED0006C8970 /* Emoji.txt in Resources */,
+				F465976F28E4669200D5F49A /* cool-green-icon-app-76x76.png in Resources */,
 				8F228614F588222E57F2E8DE /* TimeZoneSearchHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -18871,6 +19043,7 @@
 				3234BB082530D7DC0068DA40 /* ReaderTopicService+SiteInfo.swift in Sources */,
 				B5326E6F203F554D007392C3 /* WordPressSupportSourceTag+Helpers.swift in Sources */,
 				FA4F383627D766020068AAF5 /* MySiteSettings.swift in Sources */,
+				F44293D228E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */,
 				9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */,
 				1759F1701FE017BF0003EC81 /* Queue.swift in Sources */,
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
@@ -19489,6 +19662,7 @@
 				7E929CD12110D4F200BCAD88 /* FormattableRangesFactory.swift in Sources */,
 				9815D0B326B49A0600DF7226 /* Comment+CoreDataProperties.swift in Sources */,
 				08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */,
+				F44293D628E3BA1700D340AF /* AppIconListViewModel.swift in Sources */,
 				02AC3092226FFFAA0018D23B /* BlogDetailsViewController+DomainCredit.swift in Sources */,
 				E60BD231230A3DD400727E82 /* KeyringAccountHelper.swift in Sources */,
 				FEDA1AD8269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */,
@@ -21193,6 +21367,7 @@
 				FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */,
 				FABB21DE2602FC2C00C8785C /* Accessible.swift in Sources */,
 				FABB21DF2602FC2C00C8785C /* PostingActivityCell.swift in Sources */,
+				F44293DD28E45DBA00D340AF /* AppIconListViewModel.swift in Sources */,
 				8B45C12727B2B08900EA3257 /* DashboardStatsCardCell.swift in Sources */,
 				FABB21E02602FC2C00C8785C /* SupportTableViewController.swift in Sources */,
 				FABB21E12602FC2C00C8785C /* DetailDataCell.swift in Sources */,
@@ -22423,6 +22598,7 @@
 				FABB25C12602FC2C00C8785C /* WPAppAnalytics.m in Sources */,
 				FABB25C22602FC2C00C8785C /* SettingsSelectionViewController.m in Sources */,
 				FABB25C32602FC2C00C8785C /* FormattableContentActionCommand.swift in Sources */,
+				F44293D328E3B18E00D340AF /* AppIconListViewModelType.swift in Sources */,
 				FABB25C42602FC2C00C8785C /* AuthorFilterViewController.swift in Sources */,
 				FABB25C52602FC2C00C8785C /* MenusSelectionItemView.m in Sources */,
 				FABB25C62602FC2C00C8785C /* TenorReponseParser.swift in Sources */,
