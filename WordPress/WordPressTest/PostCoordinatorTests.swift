@@ -25,7 +25,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
 
         postCoordinator.save(post)
 
@@ -35,7 +35,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testUploadAPostWithNoFailedMedia() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext)
             .with(image: "test.jpeg")
             .build()
@@ -47,7 +47,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testEventuallyMarkThePostRemoteStatusAsUploading() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext)
             .with(image: "test.jpeg")
             .build()
@@ -59,7 +59,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testAttemptCountIsIncrementedAfterFailingToAutomaticallyUpload() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext).build()
 
         postCoordinator.save(post, automatedRetry: true)
@@ -69,7 +69,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testAttemptCountIsResetWhenNotAutomaticallyUpload() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext).with(autoUploadAttemptsCount: 3).build()
 
         postCoordinator.save(post, automatedRetry: false)
@@ -79,7 +79,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testReturnPostWhenServiceSucceed() {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext).build()
         postServiceMock.returnPost = post
         var returnedPost: AbstractPost?
@@ -98,7 +98,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testReturnErrorWhenServiceFails() {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext).build()
         postServiceMock.returnError = NSError(domain: "", code: 1, userInfo: nil)
         var returnedError: Error?
@@ -122,7 +122,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: NSError()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
         var returnedError: Error?
 
         postCoordinator.save(post) { result in
@@ -139,7 +139,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         _ = PostBuilder(mainContext)
             .withRemote()
             .with(status: .draft)
@@ -156,7 +156,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         _ = PostBuilder(mainContext)
             .with(status: .publish)
             .with(remoteStatus: .failed)
@@ -179,7 +179,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testCancelAutoUploadOfAPost() {
         let post = PostBuilder(mainContext).confirmedAutoUpload().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.cancelAutoUploadOf(post)
 
@@ -193,7 +193,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .failed)
             .build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.cancelAutoUploadOf(post)
 
@@ -203,7 +203,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testChangeDraftToPublishWhenPublishing() {
         let post = PostBuilder(mainContext).drafted().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.publish(post)
 
@@ -213,7 +213,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testDoNotChangeDateCreatedForAScheduledPost() {
         let post = PostBuilder(mainContext).with(dateCreated: Date(timeIntervalSince1970: 50)).scheduled().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.publish(post)
 
@@ -223,7 +223,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testSetShouldAttemptAutoUploadToTrue() {
         let post = PostBuilder(mainContext).drafted().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.publish(post)
 
@@ -233,7 +233,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testCallPostCoordinatorToSaveAPost() {
         let post = PostBuilder(mainContext).drafted().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.publish(post)
 
@@ -243,7 +243,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testChangePostToDraftWhenMovingToDraft() {
         let post = PostBuilder(mainContext).published().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
         postCoordinator.moveToDraft(post)
 
@@ -253,7 +253,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testTracksAutoUploadPostInvoked() {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let interactor = PostAutoUploadInteractor()
         let post = PostBuilder(mainContext)
             .withRemote()
@@ -296,9 +296,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock,
-                                              backgroundService: postServiceMock,
-                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
@@ -335,9 +333,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock,
-                                              backgroundService: postServiceMock,
-                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
@@ -374,9 +370,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock,
-                                              backgroundService: postServiceMock,
-                                              mediaCoordinator: mediaCoordinatorMock,
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock,
                                               actionDispatcherFacade: actionDispatcherFacadeMock)
 
         // Act
@@ -415,9 +409,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock,
-                                              backgroundService: postServiceMock,
-                                              mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
 
         // Act
         var results = [Result<AbstractPost, Error>]()
@@ -434,7 +426,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testPostSavedButNotReturned() {
         let postServiceMock = PostServiceMock()
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, backgroundService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock)
         let post = PostBuilder(mainContext).build()
         postServiceMock.returnNilPost = true
         var returnedError: Error?

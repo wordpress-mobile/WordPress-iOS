@@ -13,8 +13,6 @@ class PostCoordinator: NSObject {
 
     private let coreDataStack: CoreDataStack
 
-    private let backgroundContext: NSManagedObjectContext
-
     private var mainContext: NSManagedObjectContext {
         coreDataStack.mainContext
     }
@@ -25,7 +23,6 @@ class PostCoordinator: NSObject {
 
     private let mediaCoordinator: MediaCoordinator
 
-    private let backgroundService: PostService
     private let mainService: PostService
     private let failedPostsFetcher: FailedPostsFetcher
 
@@ -34,21 +31,14 @@ class PostCoordinator: NSObject {
     // MARK: - Initializers
 
     init(mainService: PostService? = nil,
-         backgroundService: PostService? = nil,
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
-        let contextManager = ContextManager.sharedInstance()
-        self.coreDataStack = contextManager
+        self.coreDataStack = ContextManager.sharedInstance()
 
-        let mainContext = contextManager.mainContext
-        let backgroundContext = contextManager.newDerivedContext()
-        backgroundContext.automaticallyMergesChangesFromParent = true
-
-        self.backgroundContext = backgroundContext
+        let mainContext = self.coreDataStack.mainContext
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
-        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
