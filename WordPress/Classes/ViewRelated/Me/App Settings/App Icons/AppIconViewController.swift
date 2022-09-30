@@ -14,7 +14,7 @@ open class AppIconViewController: UITableViewController {
     // MARK: - Init
 
     public init() {
-        super.init(style: .grouped)
+        super.init(style: .insetGrouped)
     }
 
     required public init?(coder: NSCoder) {
@@ -75,6 +75,10 @@ open class AppIconViewController: UITableViewController {
         cell.accessoryType = iconIsSelected(for: indexPath) ? .checkmark : .none
 
         return cell
+    }
+
+    open override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 89
     }
 
     private func iconIsSelected(for indexPath: IndexPath) -> Bool {
