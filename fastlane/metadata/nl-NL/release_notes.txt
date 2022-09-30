@@ -1,2 +1,2 @@
-We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
-We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.
+We hebben wat wijzigingen aangebracht aan gebruikers vermelden. Wanneer je reageert op een bericht of opmerking en een andere gebruiker tagt, begint de lijst met voorgestelde gebruikers met namen die overeenkomen met je query. De lijst zal daarna op alfabetische volgorde verdergaan.
+We hebben ook een probleem verholpen waarbij de lijst van voorgestelde gebruikers verdween na het uit- of inklappen van het veld voor reactiecontent. Zo, geen verdwijntruc meer.
