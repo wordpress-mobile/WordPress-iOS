@@ -11,6 +11,16 @@ open class AppIconViewController: UITableViewController {
         return viewModel.icons
     }
 
+    // MARK: - Init
+
+    public init() {
+        super.init(style: .grouped)
+    }
+
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - View Lifecycle
 
     open override func viewDidLoad() {
