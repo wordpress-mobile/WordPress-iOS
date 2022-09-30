@@ -11,9 +11,13 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
+    private let coreDataStack: CoreDataStack
+
     private let backgroundContext: NSManagedObjectContext
 
-    private let mainContext: NSManagedObjectContext
+    private var mainContext: NSManagedObjectContext {
+        coreDataStack.mainContext
+    }
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -35,12 +39,12 @@ class PostCoordinator: NSObject {
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
         let contextManager = ContextManager.sharedInstance()
+        self.coreDataStack = contextManager
 
         let mainContext = contextManager.mainContext
         let backgroundContext = contextManager.newDerivedContext()
         backgroundContext.automaticallyMergesChangesFromParent = true
 
-        self.mainContext = mainContext
         self.backgroundContext = backgroundContext
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
@@ -228,7 +232,7 @@ class PostCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        backgroundService.refreshPostStatus()
+        Post.refreshStatus(with: coreDataStack)
     }
 
     private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
