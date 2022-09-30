@@ -14,135 +14,190 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>Black</key>
+			<key>Black on White</key>
 			<dict>
+				<key>WPRequiresBorder</key>
+				<true/>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-icon-app-60x60</string>
-					<string>black-icon-app-76x76</string>
-					<string>black-icon-app-83.5x83.5</string>
+					<string>black-on-white-icon-app-60</string>
+					<string>black-on-white-icon-app-76</string>
+					<string>black-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Black Classic</key>
+			<key>Blue on White</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>black-classic-icon-app-60x60</string>
-					<string>black-classic-icon-app-76x76</string>
-					<string>black-classic-icon-app-83.5x83.5</string>
+					<string>blue-on-white-icon-app-60</string>
+					<string>blue-on-white-icon-app-76</string>
+					<string>blue-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
-			<key>Blue</key>
+			<key>Pink on White</key>
 			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>blue-icon-app-60x60</string>
-					<string>blue-icon-app-76x76</string>
-					<string>blue-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Blue Classic</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>blue-classic-icon-app-60x60</string>
-					<string>blue-classic-icon-app-76x76</string>
-					<string>blue-classic-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
 				<key>WPRequiresBorder</key>
 				<true/>
-			</dict>
-			<key>Celadon</key>
-			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>celadon-icon-app-60x60</string>
-					<string>celadon-icon-app-76x76</string>
-					<string>celadon-icon-app-83.5x83.5</string>
+					<string>pink-on-white-icon-app-60</string>
+					<string>pink-on-white-icon-app-76</string>
+					<string>pink-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Celadon Classic</key>
+			<key>Celadon on White</key>
 			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>celadon-classic-icon-app-60x60</string>
-					<string>celadon-classic-icon-app-76x76</string>
-					<string>celadon-classic-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
 				<key>WPRequiresBorder</key>
 				<true/>
-			</dict>
-			<key>Pink</key>
-			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>pink-icon-app-60x60</string>
-					<string>pink-icon-app-76x76</string>
-					<string>pink-icon-app-83.5x83.5</string>
+					<string>celadon-on-white-icon-app-60</string>
+					<string>celadon-on-white-icon-app-76</string>
+					<string>celadon-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Pink Classic</key>
+			<key>Spectrum on White</key>
 			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>pink-classic-icon-app-60x60</string>
-					<string>pink-classic-icon-app-76x76</string>
-					<string>pink-classic-icon-app-83.5x83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
 				<key>WPRequiresBorder</key>
 				<true/>
-			</dict>
-			<key>Spectrum</key>
-			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-icon-app-60x60</string>
-					<string>spectrum-icon-app-76x76</string>
-					<string>spectrum-icon-app-83.5x83.5</string>
+					<string>spectrum-on-white-icon-app-60</string>
+					<string>spectrum-on-white-icon-app-76</string>
+					<string>spectrum-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum &apos;22</key>
+			<key>Jetpack Light</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-&apos;22-icon-app-60x60</string>
-					<string>spectrum-&apos;22-icon-app-76x76</string>
-					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+					<string>jetpack-light-icon-app-60</string>
+					<string>jetpack-light-icon-app-76</string>
+					<string>jetpack-light-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum Classic</key>
+			<key>Dark Green</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-classic-icon-app-60x60</string>
-					<string>spectrum-classic-icon-app-76x76</string>
-					<string>spectrum-classic-icon-app-83.5x83.5</string>
+					<string>dark-green-icon-app-60</string>
+					<string>dark-green-icon-app-76</string>
+					<string>dark-green-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
-				<key>WPRequiresBorder</key>
+			</dict>
+			<key>Neu Green</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>neu-green-icon-app-60</string>
+					<string>neu-green-icon-app-76</string>
+					<string>neu-green-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Neumorphic Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>neumorphic-dark-icon-app-60</string>
+					<string>neumorphic-dark-icon-app-76</string>
+					<string>neumorphic-dark-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Neumorphic Light</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>neumorphic-light-icon-app-60</string>
+					<string>neumorphic-light-icon-app-76</string>
+					<string>neumorphic-light-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Paper</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>paper-icon-app-60</string>
+					<string>paper-icon-app-76</string>
+					<string>paper-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum on Black</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-on-black-icon-app-60</string>
+					<string>spectrum-on-black-icon-app-76</string>
+					<string>spectrum-on-black-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Black</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-black-icon-app-60</string>
+					<string>white-on-black-icon-app-76</string>
+					<string>white-on-black-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Blue</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-blue-icon-app-60</string>
+					<string>white-on-blue-icon-app-76</string>
+					<string>white-on-blue-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Celadon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-celadon-icon-app-60</string>
+					<string>white-on-celadon-icon-app-76</string>
+					<string>white-on-celadon-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-pink-icon-app-60</string>
+					<string>white-on-pink-icon-app-76</string>
+					<string>white-on-pink-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
 		</dict>

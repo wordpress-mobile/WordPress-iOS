@@ -94,7 +94,7 @@ struct AppIcon {
         static let infoPlistIconFilesKey      = "CFBundleIconFiles"
         static let infoPlistRequiresBorderKey = "WPRequiresBorder"
         static let infoPlistLegacyIconKey     = "WPLegacyIcon"
-        static let imageBaseName              = "icon-app-60x60"
+        static let imageBaseName              = AppConfiguration.isWordPress ? "icon-app-60x60" : "icon-app-60"
     }
 
     static let defaultIconName = AppConfiguration.isJetpack ? "Cool Green" : "Cool Blue"
