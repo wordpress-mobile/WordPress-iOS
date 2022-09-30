@@ -29,7 +29,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         postCoordinator.save(post)
 
-        expect(postServiceMock.didCallMarkAsFailedAndDraftIfNeeded).toEventually(beTrue())
+        expect((try! self.mainContext.existingObject(with: post.objectID) as! Post).remoteStatus).toEventually(equal(.failed))
         expect(postServiceMock.didCallUploadPost).to(beFalse())
     }
 
@@ -458,7 +458,6 @@ class PostServiceMock: PostService {
         let forceDraftIfCreating: Bool
     }
 
-    private(set) var didCallMarkAsFailedAndDraftIfNeeded = false
     private(set) var didCallAutoSave = false
 
     private(set) var lastUploadPostInvocation: UploadPostInvocation?
@@ -497,10 +496,6 @@ class PostServiceMock: PostService {
 
     override func autoSave(_ post: AbstractPost, success: ((AbstractPost, String) -> Void)?, failure: @escaping (Error?) -> Void) {
         didCallAutoSave = true
-    }
-
-    override func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
-        didCallMarkAsFailedAndDraftIfNeeded = true
     }
 
     override func syncPosts(ofType postType: PostServiceType, with options: PostServiceSyncOptions, for blog: Blog, success: @escaping PostServiceSyncSuccess, failure: @escaping PostServiceSyncFailure) {

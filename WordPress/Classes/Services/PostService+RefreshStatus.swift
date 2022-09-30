@@ -16,7 +16,7 @@ extension PostService {
             do {
                 let postsPushing = try self.managedObjectContext.fetch(fetch)
                 for post in postsPushing {
-                    self.markAsFailedAndDraftIfNeeded(post: post)
+                    post.markAsFailedAndDraftIfNeeded()
                 }
 
                 ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
