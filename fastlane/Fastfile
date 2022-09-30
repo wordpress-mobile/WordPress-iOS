@@ -27,8 +27,8 @@ APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'
 
-APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
-EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
+WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
   WordPressDraftAction
   WordPressTodayWidget
@@ -38,9 +38,22 @@ EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressAllTimeWidget
   WordPressThisWeekWidget
   WordPressIntents
-].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
-ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
-JETPACK_APP_IDENTIFIER = 'com.automattic.jetpack'
+].map { |suffix| "#{WORDPRESS_BUNDLE_IDENTIFIER}.#{suffix}" }
+ALL_WORDPRESS_BUNDLE_IDENTIFIERS = [WORDPRESS_BUNDLE_IDENTIFIER, *WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
+
+JETPACK_BUNDLE_IDENTIFIER = 'com.automattic.jetpack'
+JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+  JetpackShare
+  JetpackDraftAction
+  JetpackTodayWidget
+  JetpackStatsWidgets
+  JetpackNotificationServiceExtension
+  JetpackNotificationContentExtension
+  JetpackAllTimeWidget
+  JetpackThisWeekWidget
+  JetpackIntents
+].map { |suffix| "#{JETPACK_BUNDLE_IDENTIFIER}.#{suffix}" }
+ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
 
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
