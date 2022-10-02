@@ -82,16 +82,18 @@ struct StatsTotalInsightsData {
         }
     }
 
-    private static var guideAttributes: StyledHTMLAttributes = [
-        .BodyAttribute: [
-            .font: UIFont.preferredFont(forTextStyle: .subheadline),
-            .foregroundColor: UIColor.text
-        ],
-        .ATagAttribute: [
-            .foregroundColor: UIColor.primary,
-            .underlineStyle: 0
+    private static var guideAttributes: StyledHTMLAttributes {
+        [
+            .BodyAttribute: [
+                .font: UIFont.preferredFont(forTextStyle: .subheadline),
+                .foregroundColor: UIColor.text
+            ],
+            .ATagAttribute: [
+                .foregroundColor: UIColor.primary,
+                .underlineStyle: 0
+            ]
         ]
-    ]
+    }
 
     private enum Constants {
         static let singularLikeCount = 1
