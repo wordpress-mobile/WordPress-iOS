@@ -199,6 +199,10 @@ extension WPStyleGuide {
             }
         }
 
+        // MARK: - Font Size
+
+        static let maximumChartAxisFontPointSize: CGFloat = 22
+
         // MARK: - Style Values
 
         static let defaultTextColor = UIColor.text
