@@ -17,6 +17,14 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     private var dataRows = [StatsTwoColumnRowData]()
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
+    override var accessibilityElements: [Any]? {
+        get {
+            return [headingLabel, rowsStackView, viewMoreButton].compactMap { $0 }
+        }
+
+        set { }
+    }
+
     // MARK: - View
 
     override func awakeFromNib() {
@@ -42,6 +50,7 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
             NSLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
+        viewMoreButton.accessibilityHint = NSLocalizedString("Tap to view more details.", comment: "Accessibility hint for a button that opens a new view with more details.")
     }
 }
 

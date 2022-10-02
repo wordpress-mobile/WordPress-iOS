@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-16 17:27:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.2 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -4376,7 +4376,7 @@ translators: Block name. %s: The localized block name */
    Text displayed in HUD while a media item is being loaded.
    Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
-"Loading..." = "Laddar...";
+"Loading..." = "Laddar in …";
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokala utkast";
