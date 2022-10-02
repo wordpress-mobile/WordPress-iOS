@@ -46,6 +46,7 @@ class StatsBaseCell: UITableViewCell {
     @IBOutlet var topConstraint: NSLayoutConstraint!
 
     private var headingBottomConstraint: NSLayoutConstraint?
+    private var headingWidthConstraint: NSLayoutConstraint?
 
     /// Finds the item from the top constraint that's not the content view itself.
     /// - Returns: `topConstraint`'s `firstItem` or `secondItem`, whichever is not this cell's content view.
@@ -85,7 +86,8 @@ class StatsBaseCell: UITableViewCell {
 
         stackView.addArrangedSubviews([headingLabel, showDetailsButton])
 
-        headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
+        headingWidthConstraint = headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5)
+        headingWidthConstraint?.isActive = true
         showDetailsButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
 
         if let anchor = topConstraintTargetView?.topAnchor {
@@ -122,8 +124,11 @@ class StatsBaseCell: UITableViewCell {
             default:
                 showDetailsButton.setTitle("", for: .normal)
             }
+
+            headingWidthConstraint?.isActive = true
         } else {
             showDetailsButton.isHidden = true
+            headingWidthConstraint?.isActive = false
         }
 
         let hasTitleOrButton = !title.isEmpty || !showDetailsButton.isHidden
