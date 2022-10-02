@@ -6,6 +6,8 @@ class StatsBaseCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
         return label
     }()
 
@@ -14,6 +16,7 @@ class StatsBaseCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = true
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tintColor = .secondaryLabel
         button.setTitleColor(.secondaryLabel, for: .normal)
         button.setImage(UIImage.gridicon(.chevronRight).withTintColor(UIColor(color: WPStyleGuide.greyLighten20())), for: .normal)
@@ -81,6 +84,9 @@ class StatsBaseCell: UITableViewCell {
         ])
 
         stackView.addArrangedSubviews([headingLabel, showDetailsButton])
+
+        headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
+        showDetailsButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
 
         if let anchor = topConstraintTargetView?.topAnchor {
             // Deactivate the existing top constraint of the cell
