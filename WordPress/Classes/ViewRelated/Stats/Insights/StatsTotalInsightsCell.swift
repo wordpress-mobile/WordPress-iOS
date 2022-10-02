@@ -198,6 +198,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.font = WPStyleGuide.Stats.insightsCountFont
         countLabel.textColor = .text
         countLabel.text = "0"
+        countLabel.adjustsFontForContentSizeCategory = true
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)
