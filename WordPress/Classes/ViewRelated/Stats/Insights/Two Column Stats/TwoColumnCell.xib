@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,12 +18,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="53U-Zk-ZGa" userLabel="Rows Stack View">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="351"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="350.5"/>
                     </stackView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfy-Hl-Mjq" userLabel="View More View">
+                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Cfy-Hl-Mjq" userLabel="View More View">
                         <rect key="frame" x="0.0" y="350.5" width="375" height="44"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1To-pb-uoT" userLabel="View More Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1To-pb-uoT" userLabel="View More Label">
                                 <rect key="frame" x="16" y="12" width="319" height="20"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
@@ -46,7 +46,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="44e-cc-T7y"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="44e-cc-T7y"/>
                             <constraint firstItem="uon-fL-Zcd" firstAttribute="leading" secondItem="Cfy-Hl-Mjq" secondAttribute="leading" id="KZ2-hk-YCD"/>
                             <constraint firstItem="1To-pb-uoT" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="top" constant="12" id="Qwi-ZL-iXt"/>
                             <constraint firstAttribute="trailing" secondItem="YNj-gn-f07" secondAttribute="trailing" constant="16" id="SYx-K1-v17"/>
@@ -78,24 +78,25 @@
                 <constraints>
                     <constraint firstItem="Cm8-Qw-O9e" firstAttribute="top" secondItem="Cfy-Hl-Mjq" secondAttribute="bottom" id="1qX-rv-2Jq"/>
                     <constraint firstAttribute="bottom" secondItem="Cm8-Qw-O9e" secondAttribute="bottom" id="3M7-TD-t69"/>
-                    <constraint firstAttribute="bottom" secondItem="53U-Zk-ZGa" secondAttribute="bottom" constant="44" id="5cr-Nz-ZDr"/>
                     <constraint firstItem="NTK-eu-Zrd" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="7Ya-0E-IUF"/>
                     <constraint firstItem="NTK-eu-Zrd" firstAttribute="top" secondItem="aea-rN-rAD" secondAttribute="top" id="ARx-Y7-BtJ"/>
                     <constraint firstItem="Cfy-Hl-Mjq" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="CW9-bq-3C0"/>
                     <constraint firstItem="53U-Zk-ZGa" firstAttribute="top" secondItem="aea-rN-rAD" secondAttribute="top" id="HeU-RZ-kPi"/>
                     <constraint firstAttribute="trailing" secondItem="53U-Zk-ZGa" secondAttribute="trailing" id="I9H-dB-FKj"/>
                     <constraint firstAttribute="trailing" secondItem="Cm8-Qw-O9e" secondAttribute="trailing" id="PzX-nO-5NH"/>
+                    <constraint firstItem="Cfy-Hl-Mjq" firstAttribute="top" secondItem="53U-Zk-ZGa" secondAttribute="bottom" id="S3E-t2-k5x"/>
                     <constraint firstItem="53U-Zk-ZGa" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="aWs-1X-FnG"/>
                     <constraint firstAttribute="trailing" secondItem="Cfy-Hl-Mjq" secondAttribute="trailing" id="bAa-4j-6TL"/>
                     <constraint firstAttribute="trailing" secondItem="NTK-eu-Zrd" secondAttribute="trailing" id="jHo-RQ-WZe"/>
                     <constraint firstItem="Cm8-Qw-O9e" firstAttribute="leading" secondItem="aea-rN-rAD" secondAttribute="leading" id="s6O-Ci-p80"/>
+                    <constraint firstAttribute="bottom" secondItem="53U-Zk-ZGa" secondAttribute="bottom" priority="999" id="u0B-il-n2p"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="5pF-Tt-Ldy"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="Cm8-Qw-O9e" id="aJ6-i9-r5U"/>
                 <outlet property="rowsStackView" destination="53U-Zk-ZGa" id="T8V-zp-KCA"/>
-                <outlet property="rowsStackViewBottomConstraint" destination="5cr-Nz-ZDr" id="gpX-JD-vtf"/>
+                <outlet property="rowsStackViewBottomConstraint" destination="S3E-t2-k5x" id="Cff-fI-QJ1"/>
                 <outlet property="topConstraint" destination="HeU-RZ-kPi" id="CE0-3v-hwp"/>
                 <outlet property="topSeparatorLine" destination="NTK-eu-Zrd" id="9Sq-Ea-hi8"/>
                 <outlet property="viewMoreButton" destination="uon-fL-Zcd" id="qrf-iG-gty"/>

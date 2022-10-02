@@ -85,7 +85,7 @@ private extension TwoColumnCell {
     func toggleViewMore() {
         let showViewMore = !dataRows.isEmpty && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
-        rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant : 0
+        rowsStackViewBottomConstraint?.isActive = showViewMore
     }
 
     @IBAction func didTapViewMore(_ sender: UIButton) {

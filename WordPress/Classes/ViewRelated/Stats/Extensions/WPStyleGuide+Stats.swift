@@ -83,6 +83,7 @@ extension WPStyleGuide {
 
         static func configureLabelAsCellRowTitle(_ label: UILabel) {
             label.textColor = defaultTextColor
+            label.numberOfLines = 0
         }
 
         static func configureLabelAsData(_ label: UILabel) {
