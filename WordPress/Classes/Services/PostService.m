@@ -92,26 +92,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return page;
 }
 
-
-- (void)getFailedPosts:(void (^)( NSArray<AbstractPost *>* posts))result {
-    [self.managedObjectContext performBlock:^{
-        NSString *entityName = NSStringFromClass([AbstractPost class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        
-        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", AbstractPostRemoteStatusFailed];
-        
-        NSError *error = nil;
-        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-        
-        if (!results) {
-            result(@[]);
-        } else {
-            result(results);
-        }
-    }];
-}
-
-
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
@@ -127,7 +107,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                               return;
                           }
                           if (remotePost) {
-                              AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              AbstractPost *post = [blog lookupPostWithID:postID inContext:self.managedObjectContext];
                               
                               if (!post) {
                                   if ([remotePost.type isEqualToString:PostServiceTypePage]) {
@@ -706,7 +686,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:self.managedObjectContext];
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
@@ -768,21 +748,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     if (completion) {
         completion(posts);
     }
-}
-
-- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND original = NULL AND postID = %@", blog, postID];
-    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
-    return [posts firstObject];
-}
-
-- (NSUInteger)countPostsWithoutRemote
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"postID = NULL OR postID <= 0"];
-
-    return [self.managedObjectContext countForFetchRequest:request error:nil];
 }
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
@@ -1015,10 +980,9 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (void)updateCommentsForPost:(AbstractPost *)post
 {
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
-    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
-    [currentComments addObjectsFromArray:[allComments allObjects]];
+    NSSet *allComments = [post.blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
+    [currentComments unionSet:allComments];
 }
 
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {

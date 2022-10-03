@@ -1,3 +1,2 @@
-Links in Action Sheets (die Pop-up-Menüs auf deinem Gerät, über die dir zusätzliche Optionen angezeigt werden) sind jetzt blau statt grün.
-
-Zudem haben wir dafür gesorgt, dass Jetpack Social im Teilen-Bereich deiner Website-Einstellungen sowie in deinen Beitrags-Einstellungen auffälliger angezeigt wird. Los geht's mit den sozialen Medien.
+Wir haben einige Änderungen an Benutzererwähnungen vorgenommen. Wenn du auf einen Beitrag oder Kommentar antwortest und einen anderen Benutzer markierst, werden ganz oben in der Liste der vorgeschlagenen Benutzer Namen angezeigt, die mit denselben Buchstaben wie deine Suchanfrage beginnen. Die Liste wird danach alphabetisch fortgeführt.
+Wir haben auch das Problem behoben, bei dem die Liste mit den vorgeschlagenen Benutzern verschwindet, sobald das Antwortfeld erweitert oder eingeklappt wird. Plötzlich verschwundene Listen gehören damit der Vergangenheit an.

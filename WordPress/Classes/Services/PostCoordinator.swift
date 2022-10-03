@@ -510,24 +510,22 @@ extension PostCoordinator: Uploader {
 extension PostCoordinator {
     /// Fetches failed posts that should be retried when there is an internet connection.
     class FailedPostsFetcher {
-        private let postService: PostService
-
-        init(_ postService: PostService) {
-            self.postService = postService
-        }
+        private let managedObjectContext: NSManagedObjectContext
 
         init(_ managedObjectContext: NSManagedObjectContext) {
-            postService = PostService(managedObjectContext: managedObjectContext)
+            self.managedObjectContext = managedObjectContext
         }
 
         func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
             let interactor = PostAutoUploadInteractor()
+            managedObjectContext.perform {
+                let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+                request.predicate = NSPredicate(format: "remoteStatusNumber == %d", AbstractPostRemoteStatus.failed.rawValue)
+                let posts = (try? self.managedObjectContext.fetch(request)) ?? []
 
-            postService.getFailedPosts { posts in
                 let postsAndActions = posts.reduce(into: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction]()) { result, post in
                     result[post] = interactor.autoUploadAction(for: post)
                 }
-
                 result(postsAndActions)
             }
         }

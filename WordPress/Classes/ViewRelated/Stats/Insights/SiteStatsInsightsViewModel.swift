@@ -90,6 +90,7 @@ class SiteStatsInsightsViewModel: Observable {
     ///
     func refreshInsights(forceRefresh: Bool = false) {
         ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
+        startFetchingPeriodOverview()
     }
 
     // MARK: - Table Model

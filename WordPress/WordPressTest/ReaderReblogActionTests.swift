@@ -13,7 +13,6 @@ class MockReblogPresenter: ReaderReblogPresenter {
 
 class MockBlogService: BlogService {
     var blogsForAllAccountsExpectation: XCTestExpectation?
-    var lastUsedOrFirstBlogExpectation: XCTestExpectation?
 
     var blogCount = 1
 
@@ -24,10 +23,6 @@ class MockBlogService: BlogService {
     override func visibleBlogsForWPComAccounts() -> [Blog] {
         blogsForAllAccountsExpectation?.fulfill()
         return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
-    }
-    override func lastUsedOrFirstBlog() -> Blog? {
-        lastUsedOrFirstBlogExpectation?.fulfill()
-        return Blog(context: self.managedObjectContext)
     }
 }
 
@@ -97,11 +92,12 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForMultipleSites() {
         // Given
-        blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
         blogService!.blogCount = 2
         let presenter = ReaderReblogPresenter(postService: postService!)
+        let origin = MockViewController()
+        origin.presentExpectation = expectation(description: "blog selector is presented")
         // When
-        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: origin)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -144,4 +140,15 @@ class ReblogFormatterTests: XCTestCase {
                        "</figure>\n<!-- /wp:image -->",
                        wpImage)
     }
+}
+
+private class MockViewController: UIViewController {
+
+    var presentExpectation: XCTestExpectation?
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        presentExpectation?.fulfill()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+
 }

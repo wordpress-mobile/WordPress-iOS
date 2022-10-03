@@ -85,12 +85,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
-- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"postID = %@", postID];
-    return [blog.comments filteredSetUsingPredicate:predicate];
-}
-
 #pragma mark Public methods
 
 #pragma mark Blog-centric methods
@@ -1365,8 +1359,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:[NSNumber numberWithInt:comment.postID] inBlog:comment.blog];
+        comment.post = [comment.blog lookupPostWithID:[NSNumber numberWithInt:comment.postID] inContext:self.managedObjectContext];
     }
 }
 

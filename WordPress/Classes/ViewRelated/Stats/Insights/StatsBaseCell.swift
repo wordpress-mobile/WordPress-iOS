@@ -2,7 +2,7 @@ import UIKit
 
 class StatsBaseCell: UITableViewCell {
 
-    private let headingLabel: UILabel = {
+    let headingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
