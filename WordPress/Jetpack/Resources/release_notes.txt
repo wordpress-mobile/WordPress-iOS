@@ -3,3 +3,4 @@
 * [*] Fixed an issue where the push notifications prompt button would overlap on iPad. [#19304]
 * [*] Story Post: Fixed an issue where deleting one image in a story draft would cause the following image not to load. [#16966]
 * [*] Fixed an issue where the no result label on the side menu is oversize on iPad. [#19305]
+* [*] [internal] Various low level database refactors around posts, pages, and comments. [#19353, #19363, #19386]
