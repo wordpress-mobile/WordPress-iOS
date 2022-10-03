@@ -63,7 +63,7 @@ PODS:
     - React-RCTImage (= 0.66.2)
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
-  - Kanvas (1.4.3)
+  - Kanvas (1.4.4)
   - libwebp (1.2.3):
     - libwebp/demux (= 1.2.3)
     - libwebp/mux (= 1.2.3)
@@ -491,7 +491,7 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (3.2.0-beta.3):
+  - WordPressAuthenticator (3.2.1):
     - Alamofire (~> 4.8)
     - CocoaLumberjack (~> 3.5)
     - GoogleSignIn (~> 6.0.1)
@@ -550,7 +550,7 @@ DEPENDENCIES:
   - Gridicons (~> 1.1.0)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.83.0`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (~> 1.4.3)
+  - Kanvas (~> 1.4.4)
   - MediaEditor (~> 1.2.1)
   - MRProgress (= 0.8.3)
   - NSObject-SafeExpectations (~> 0.0.4)
@@ -601,7 +601,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (~> 3.2.0-beta)
+  - WordPressAuthenticator (>= 3.2.1, ~> 3.2)
   - WordPressKit (~> 4.58.0-beta.2)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
@@ -806,7 +806,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Gutenberg: d1660692dcc51d1cb52c35dcbed1af851c060d62
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
-  Kanvas: 6355398addfc9856c27cc780cbf54df7cd822ab1
+  Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
   libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -864,7 +864,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: e6a801d25f4f178de5bdf475ffe29050d0148176
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 22f7e90b4f23d4fe5e9daf00ceee755d2eb6b3ef
+  WordPressAuthenticator: 6bbd2f757890c3e3b56a25b3176fd00c6db6d44f
   WordPressKit: 070962b249c486c09ca77900aee6e3bb36742de6
   WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
@@ -880,6 +880,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 36a29e3c75c440754d9ef1a66945b51419db0faf
+PODFILE CHECKSUM: 94977262d7e7fcd40e445977bb30d9e0250e64e3
 
 COCOAPODS: 1.11.2

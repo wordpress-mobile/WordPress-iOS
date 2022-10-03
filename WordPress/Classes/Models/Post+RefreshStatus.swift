@@ -1,4 +1,4 @@
-extension PostService {
+extension Post {
 
     /// This method checks the status of all post objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
@@ -7,27 +7,23 @@ extension PostService {
     ///   - onCompletion: block to invoke when status update is finished.
     ///   - onError: block to invoke if any error occurs while the update is being made.
     ///
-    func refreshPostStatus(onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
-        self.managedObjectContext.perform {
+    static func refreshStatus(with coreDataStack: CoreDataStack, onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
+        coreDataStack.performAndSave { context in
             let fetch = NSFetchRequest<Post>(entityName: Post.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
             fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
-            do {
-                let postsPushing = try self.managedObjectContext.fetch(fetch)
-                for post in postsPushing {
-                    self.markAsFailedAndDraftIfNeeded(post: post)
-                }
-
-                ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                    DispatchQueue.main.async {
-                        onCompletion?()
-                    }
-                })
-
-            } catch {
-                DDLogError("Error while attempting to update posts status: \(error.localizedDescription)")
-                DispatchQueue.main.async {
+            let postsPushing = try context.fetch(fetch)
+            for post in postsPushing {
+                post.markAsFailedAndDraftIfNeeded()
+            }
+        } completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    onCompletion?()
+                case let .failure(error):
+                    DDLogError("Error while attempting to update posts status: \(error.localizedDescription)")
                     onError?(error)
                 }
             }
