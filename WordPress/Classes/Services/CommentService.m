@@ -85,12 +85,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
-- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"postID = %@", postID];
-    return [blog.comments filteredSetUsingPredicate:predicate];
-}
-
 #pragma mark Public methods
 
 #pragma mark Blog-centric methods
