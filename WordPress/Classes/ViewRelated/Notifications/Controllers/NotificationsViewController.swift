@@ -56,7 +56,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     /// Indicates whether the view is required to reload results on viewWillAppear, or not
     ///
-    fileprivate var needsReloadResults = false
+    var needsReloadResults = false
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
@@ -136,6 +136,16 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
+
+    /// The last time when user seen notifications
+    var lastSeenTime: String? {
+        get {
+            return userDefaults.string(forKey: Settings.lastSeenTime)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
+        }
+    }
 
     // MARK: - View Lifecycle
 
@@ -1851,15 +1861,6 @@ private extension NotificationsViewController {
 
     var userDefaults: UserPersistentRepository {
         return UserPersistentStoreFactory.instance()
-    }
-
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
-        }
     }
 
     var filter: Filter {
