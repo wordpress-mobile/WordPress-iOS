@@ -77,10 +77,6 @@ open class AppIconViewController: UITableViewController {
         return cell
     }
 
-    open override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 89
-    }
-
     private func iconIsSelected(for indexPath: IndexPath) -> Bool {
         let currentIconName = UIApplication.shared.alternateIconName
 
@@ -126,7 +122,7 @@ open class AppIconViewController: UITableViewController {
     }
 
     private enum Constants {
-        static let rowHeight: CGFloat = 76.0
+        static let rowHeight: CGFloat = 89.0
         static let cornerRadius: CGFloat = 13.0
         static let iconBorderColor: UIColor? = UITableView().separatorColor
 
