@@ -39,7 +39,7 @@ extension Blog {
     @objc
     func createPost() -> Post {
         guard let context = managedObjectContext else {
-            fatalError("The `Blog` instance is not associated with a `NSManagedObjectContext`")
+            fatalError("The `Blog` instance is not associated with an `NSManagedObjectContext`")
         }
 
         let post = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(Post.self), into: context) as! Post
