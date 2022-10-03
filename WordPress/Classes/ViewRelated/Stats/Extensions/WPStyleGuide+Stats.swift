@@ -102,6 +102,8 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
             label.font = subTitleFont
             label.adjustsFontSizeToFitWidth = true
+            label.numberOfLines = 0
+            label.lineBreakMode = .byClipping
         }
 
         static func configureLabelAsPostingLegend(_ label: UILabel) {

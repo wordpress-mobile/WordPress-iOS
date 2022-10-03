@@ -43,18 +43,18 @@
                                 <constraint firstAttribute="height" constant="96" id="eO8-gx-Jfg"/>
                             </constraints>
                         </stackView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
-                            <rect key="frame" x="0.0" y="112" width="118" height="15"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
+                            <rect key="frame" x="0.0" y="112" width="118" height="16"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bwA-4h-vvH" secondAttribute="bottom" id="2yV-Bf-VnO"/>
                         <constraint firstItem="wsv-pN-Bz5" firstAttribute="top" secondItem="qkV-SQ-ZL4" secondAttribute="top" constant="8" id="8Mg-MB-iaf"/>
                         <constraint firstItem="wsv-pN-Bz5" firstAttribute="leading" secondItem="qkV-SQ-ZL4" secondAttribute="leading" constant="18" id="94x-51-F8V"/>
                         <constraint firstAttribute="width" constant="118" id="BFw-W2-SQ2"/>
-                        <constraint firstAttribute="bottom" secondItem="bwA-4h-vvH" secondAttribute="bottom" constant="8" id="JvY-b9-5gn"/>
                         <constraint firstAttribute="trailing" secondItem="wsv-pN-Bz5" secondAttribute="trailing" constant="18" id="MEW-Uq-uhm"/>
                         <constraint firstAttribute="trailing" secondItem="bwA-4h-vvH" secondAttribute="trailing" id="Mhg-F7-Uco"/>
                         <constraint firstAttribute="height" constant="135" id="iAl-XS-rHq"/>
