@@ -998,6 +998,8 @@
 		4A50668128B364CA00DD09F4 /* ContainerContextFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */; };
 		4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
 		4A82C43228D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
+		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
+		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
 		4AD5657028E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
 		4AFB8FBF2824999500A2F4B2 /* ContextManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB8FBE2824999400A2F4B2 /* ContextManagerMock.swift */; };
@@ -5969,6 +5971,7 @@
 		4A50667E28B3218800DD09F4 /* ManagedObjectContextFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedObjectContextFactory.h; sourceTree = "<group>"; };
 		4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerContextFactory.swift; sourceTree = "<group>"; };
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
+		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AFB8FBE2824999400A2F4B2 /* ContextManagerMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManagerMock.swift; sourceTree = "<group>"; };
 		4D520D4E22972BC9002F5924 /* acknowledgements.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = acknowledgements.html; path = "../Pods/Target Support Files/Pods-Apps-WordPress/acknowledgements.html"; sourceTree = "<group>"; };
@@ -9448,6 +9451,7 @@
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
 				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
 				745A41AF2065405600299D75 /* ReaderPost+Searchable.swift */,
+				4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */,
 				E6C09B3D1BF0FDEB003074CB /* ReaderCrossPostMeta.swift */,
 				5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */,
 				E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */,
@@ -19140,6 +19144,7 @@
 				02D75D9922793EA2003FF09A /* BlogDetailsSectionFooterView.swift in Sources */,
 				08E39B4528A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
 				C81CCD67243AECA200A83E27 /* TenorGIFCollection.swift in Sources */,
+				4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */,
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				9A1A67A622B2AD4E00FF8422 /* CountriesMap.swift in Sources */,
@@ -20997,6 +21002,7 @@
 				FABB212E2602FC2C00C8785C /* JetpackSettingsViewController.swift in Sources */,
 				982DDF95263238A6002B3904 /* LikeUserPreferredBlog+CoreDataClass.swift in Sources */,
 				FABB212F2602FC2C00C8785C /* PostingActivityViewController.swift in Sources */,
+				4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */,
 				FABB21302602FC2C00C8785C /* PostCardStatusViewModel.swift in Sources */,
 				03216EC7279946CA00D444CA /* SchedulingDatePickerViewController.swift in Sources */,
 				FAD2544226116CEA00EDAF88 /* AppStyleGuide.swift in Sources */,
