@@ -4,7 +4,6 @@ import Nimble
 
 @testable import WordPress
 
-/// Test cases for PostService.markAsFailedAndDraftIfNeeded()
 class PostServiceUploadingListTests: CoreDataTestCase {
 
     /// Returns true if a single post is added to the list

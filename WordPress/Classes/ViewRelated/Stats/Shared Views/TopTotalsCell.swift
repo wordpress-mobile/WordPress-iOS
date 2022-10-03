@@ -381,5 +381,9 @@ extension TopTotalsCell: Accessible {
                 accessibilityLabel = String(format: descriptionFormat, title)
             }
         }
+
+        if let sectionTitle = statSection?.title {
+            accessibilityLabel = "\(sectionTitle). \(accessibilityLabel ?? "")"
+        }
     }
 }
