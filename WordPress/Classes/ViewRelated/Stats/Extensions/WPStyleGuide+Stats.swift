@@ -101,10 +101,12 @@ extension WPStyleGuide {
         static func configureLabelAsPostingMonth(_ label: UILabel) {
             label.textColor = defaultTextColor
             label.font = subTitleFont
+            label.adjustsFontSizeToFitWidth = true
         }
 
         static func configureLabelAsPostingLegend(_ label: UILabel) {
             label.textColor = defaultTextColor
+            label.numberOfLines = 0
         }
 
         static func configureLabelAsPostingDate(_ label: UILabel) {
