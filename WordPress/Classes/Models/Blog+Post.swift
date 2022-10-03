@@ -47,7 +47,7 @@ extension Blog {
         post.remoteStatus = .sync
 
         if let categoryID = settings?.defaultCategoryID,
-            categoryID.intValue != PostCategoryUncategorized,
+           categoryID.intValue != PostCategoryUncategorized,
            let category = PostCategoryService(managedObjectContext: context).find(withBlogObjectID: objectID, andCategoryID: categoryID) {
             post.addCategoriesObject(category)
         }
