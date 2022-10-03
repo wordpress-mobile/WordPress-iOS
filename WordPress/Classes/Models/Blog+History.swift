@@ -17,16 +17,16 @@ extension Blog {
             return nil
         }
 
-        return try? BlogQuery()
+        return try? CoreDataQuery<Blog>.default()
             .visible(true)
             .hostname(matching: url)
-            .blog(in: context)
+            .first(in: context)
     }
 
     private static func firstBlog(in context: NSManagedObjectContext) -> Blog? {
-        try? BlogQuery()
+        try? CoreDataQuery<Blog>.default()
             .visible(true)
-            .blog(in: context)
+            .first(in: context)
     }
 
 }

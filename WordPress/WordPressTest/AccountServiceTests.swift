@@ -181,7 +181,7 @@ class AccountServiceTests: CoreDataTestCase {
         XCTAssertTrue(account2.isDeleted)
         XCTAssertTrue(account3.isDeleted)
 
-        let blogs = (try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []
+        let blogs = (try? CoreDataQuery<Blog>.default().result(in: contextManager.mainContext)) ?? []
         XCTAssertTrue(blogs.count == 6)
         XCTAssertTrue(account1.blogs.count == 6)
     }

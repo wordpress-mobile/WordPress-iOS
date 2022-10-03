@@ -129,7 +129,7 @@ extension PostEditor {
     }
 
     var currentBlogCount: Int {
-        return postIsReblogged ? BlogQuery().hostedByWPCom(true).count(in: mainContext) : Blog.count(in: mainContext)
+        return postIsReblogged ? CoreDataQuery<Blog>.default().hostedByWPCom(true).count(in: mainContext) : Blog.count(in: mainContext)
     }
 
     var isSingleSiteMode: Bool {

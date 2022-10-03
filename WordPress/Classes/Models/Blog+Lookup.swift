@@ -54,7 +54,7 @@ public extension Blog {
     /// - Returns: The `Blog` object associated with the given `hostname`, if it exists.
     @objc(lookupWithHostname:inContext:)
     static func lookup(hostname: String, in context: NSManagedObjectContext) -> Blog? {
-        try? BlogQuery().hostname(containing: hostname).blog(in: context)
+        try? CoreDataQuery<Blog>.default().hostname(containing: hostname).first(in: context)
     }
 
     /// Lookup a Blog by WP.ORG Credentials
@@ -72,16 +72,16 @@ public extension Blog {
 
     @objc(countInContext:)
     static func count(in context: NSManagedObjectContext) -> Int {
-        BlogQuery().count(in: context)
+        CoreDataQuery<Blog>.default().count(in: context)
     }
 
     @objc(wpComBlogCountInContext:)
     static func wpComBlogCount(in context: NSManagedObjectContext) -> Int {
-        BlogQuery().hostedByWPCom(true).count(in: context)
+        CoreDataQuery<Blog>.default().hostedByWPCom(true).count(in: context)
     }
 
     @objc(selfHostedInContext:)
     static func selfHosted(in context: NSManagedObjectContext) -> [Blog] {
-        (try? BlogQuery().hostedByWPCom(false).blogs(in: context)) ?? []
+        (try? CoreDataQuery<Blog>.default().hostedByWPCom(false).result(in: context)) ?? []
     }
 }

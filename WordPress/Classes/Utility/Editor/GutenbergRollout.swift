@@ -29,7 +29,7 @@ struct GutenbergRollout {
     }
 
     private func atLeastOneSiteHasAztecEnabled() -> Bool {
-        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
+        let allBlogs = (try? CoreDataQuery<Blog>.default().result(in: context)) ?? []
         return allBlogs.contains { $0.editor == .aztec }
     }
 }

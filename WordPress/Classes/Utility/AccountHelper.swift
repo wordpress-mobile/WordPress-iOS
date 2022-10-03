@@ -27,7 +27,7 @@ import Foundation
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return BlogQuery().hostedByWPCom(false).count(in: context) == 0 && blogService.hasAnyJetpackBlogs() == false
+        return CoreDataQuery<Blog>.default().hostedByWPCom(false).count(in: context) == 0 && blogService.hasAnyJetpackBlogs() == false
     }
 
     static var hasBlogs: Bool {
@@ -40,7 +40,7 @@ import Foundation
     }
 
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
-        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
+        let allBlogs = (try? CoreDataQuery<Blog>.default().result(in: context)) ?? []
         let blogsByAccount = Dictionary(grouping: allBlogs, by: { $0.account })
 
         let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context)

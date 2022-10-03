@@ -638,7 +638,7 @@ private extension ZendeskUtils {
     }
 
     static func getBlogInformation() -> String {
-        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.sharedInstance().mainContext)) ?? []
+        let allBlogs = (try? CoreDataQuery<Blog>.default().result(in: ContextManager.sharedInstance().mainContext)) ?? []
         guard allBlogs.count > 0 else {
             return Constants.noValue
         }
@@ -657,7 +657,7 @@ private extension ZendeskUtils {
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
+        let allBlogs = (try? CoreDataQuery<Blog>.default().result(in: context)) ?? []
         var tags = [String]()
 
         // Add sourceTag
@@ -976,7 +976,7 @@ private extension ZendeskUtils {
         } else {
             // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
             // and compare the localized names
-            let plans = Set(((try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []).compactMap { $0.planTitle })
+            let plans = Set(((try? CoreDataQuery<Blog>.default().result(in: contextManager.mainContext)) ?? []).compactMap { $0.planTitle })
 
             for availablePlan in availablePlans {
                 if plans.contains(availablePlan.name) {
