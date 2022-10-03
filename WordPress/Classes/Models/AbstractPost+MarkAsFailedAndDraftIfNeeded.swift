@@ -1,4 +1,4 @@
-@objc extension PostService {
+@objc extension AbstractPost {
 
     // MARK: - Updating the Remote Status
 
@@ -21,16 +21,16 @@
     ///     eventually be made private.
     /// - SeeAlso: PostCoordinator.resume
     ///
-    func markAsFailedAndDraftIfNeeded(post: AbstractPost) {
-        guard post.remoteStatus != .failed else {
+    func markAsFailedAndDraftIfNeeded() {
+        guard self.remoteStatus != .failed else {
             return
         }
 
-        post.remoteStatus = .failed
+        self.remoteStatus = .failed
 
-        if !post.hasRemote() && post is Page {
-            post.status = .draft
-            post.dateModified = Date()
+        if !self.hasRemote() && self is Page {
+            self.status = .draft
+            self.dateModified = Date()
         }
     }
 }

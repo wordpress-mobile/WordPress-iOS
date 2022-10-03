@@ -4,17 +4,16 @@ import Nimble
 
 @testable import WordPress
 
-/// Test cases for PostService.markAsFailedAndDraftIfNeeded()
-class PostServiceMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
+/// Test cases for Post.markAsFailedAndDraftIfNeeded()
+class PostMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
 
     func testMarkAPostAsFailedAndKeepItsStatus() {
         let post = PostBuilder(mainContext)
             .with(status: .pending)
             .withRemote()
             .build()
-        let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: post)
+        post.markAsFailedAndDraftIfNeeded()
 
         expect(post.remoteStatus).to(equal(.failed))
         expect(post.status).to(equal(.pending))
@@ -26,9 +25,8 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
             .with(status: .pending)
             .confirmedAutoUpload()
             .build()
-        let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: post)
+        post.markAsFailedAndDraftIfNeeded()
 
         expect(post.shouldAttemptAutoUpload).to(beTrue())
     }
@@ -39,9 +37,8 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
             .with(remoteStatus: .pushing)
             .with(dateModified: Date(timeIntervalSince1970: 0))
             .build()
-        let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        page.markAsFailedAndDraftIfNeeded()
 
         expect(page.remoteStatus).to(equal(.failed))
         expect(page.status).to(equal(.draft))
@@ -54,9 +51,8 @@ class PostServiceMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
             .with(remoteStatus: .pushing)
             .withRemote()
             .build()
-        let postService = PostService()
 
-        postService.markAsFailedAndDraftIfNeeded(post: page)
+        page.markAsFailedAndDraftIfNeeded()
 
         expect(page.status).to(equal(.scheduled))
         expect(page.remoteStatus).to(equal(.failed))

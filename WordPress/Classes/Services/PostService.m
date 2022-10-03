@@ -36,25 +36,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return self;
 }
 
-- (void)getFailedPosts:(void (^)( NSArray<AbstractPost *>* posts))result {
-    [self.managedObjectContext performBlock:^{
-        NSString *entityName = NSStringFromClass([AbstractPost class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        
-        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", AbstractPostRemoteStatusFailed];
-        
-        NSError *error = nil;
-        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-        
-        if (!results) {
-            result(@[]);
-        } else {
-            result(results);
-        }
-    }];
-}
-
-
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
@@ -267,7 +248,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                [self markAsFailedAndDraftIfNeededWithPost:postInContext];
+                [postInContext markAsFailedAndDraftIfNeeded];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
@@ -937,10 +918,9 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (void)updateCommentsForPost:(AbstractPost *)post
 {
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
-    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
-    [currentComments addObjectsFromArray:[allComments allObjects]];
+    NSSet *allComments = [post.blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
+    [currentComments unionSet:allComments];
 }
 
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {

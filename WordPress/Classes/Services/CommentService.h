@@ -34,9 +34,6 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 // Restore draft reply
 - (Comment * _Nullable)restoreReplyForComment:(Comment *)comment;
 
-// Find cached comments
-- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
-
 - (Comment * _Nullable)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog;
 
 - (Comment * _Nullable)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post;

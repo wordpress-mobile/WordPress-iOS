@@ -60,6 +60,13 @@ class TabbedTotalsCell: StatsBaseCell, NibLoadable {
     private var showTotalCount = false
     private var forDetails = false
 
+    override var accessibilityElements: [Any]? {
+            get {
+                return [headingLabel, filterTabBar, rowsStackView].compactMap { $0 }
+            }
+            set { }
+        }
+
     // MARK: - Configure
 
     func configure(tabsData: [TabData],
