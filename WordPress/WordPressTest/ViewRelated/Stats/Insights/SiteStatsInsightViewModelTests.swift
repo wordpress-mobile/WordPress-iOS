@@ -57,6 +57,45 @@ class SiteStatsInsightsViewModelTests: XCTestCase {
             }
         }
     }
+
+    /// The api result for a new user that has an incomplete dataset for this week and no data for prev week
+    /// we should pad forward days to represent the equivalent of the web period view
+    func testSummarySplitIntervalData4DaysPeriodWeekView() throws {
+        // Given statsSummaryTimeIntervalData with 4 days data
+        guard let statsSummaryTimeIntervalData = try! StatsMockDataLoader.createStatsSummaryTimeIntervalData(fileName: "stats-visits-day-4.json") else {
+            XCTFail(Constants.failCreateStatsSummaryTimeIntervalData)
+            return
+        }
+
+        let week = StatsPeriodHelper().weekIncludingDate(statsSummaryTimeIntervalData.periodEndDate)
+
+        guard let periodEndDateForWeek = week?.weekEnd else {
+            XCTFail("week EndDate not found")
+            return
+        }
+
+        // When splitting into thisWeek and prevWeek
+        let data = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(statsSummaryTimeIntervalData, periodEndDate: periodEndDateForWeek)
+        validateResultsPeriodWeekView(data)
+    }
+
+    func validateResultsPeriodWeekView(_ statsSummaryTimeIntervalDataAsAWeeks: [StatsSummaryTimeIntervalDataAsAWeek]) {
+        XCTAssertTrue(statsSummaryTimeIntervalDataAsAWeeks.count == 2)
+
+        // Then 14 days should be split into thisWeek and nextWeek evenly
+        statsSummaryTimeIntervalDataAsAWeeks.forEach { week in
+            switch week {
+            case .thisWeek(let thisWeek):
+                XCTAssertTrue(thisWeek.summaryData.count == 7)
+                XCTAssertEqual(thisWeek.summaryData.last?.periodStartDate, Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 2, day: 24)))
+                XCTAssertEqual(thisWeek.summaryData.first?.periodStartDate, Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 2, day: 18)))
+            case .prevWeek(let prevWeek):
+                XCTAssertTrue(prevWeek.summaryData.count == 7)
+                XCTAssertEqual(prevWeek.summaryData.last?.periodStartDate, Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 2, day: 17)))
+                XCTAssertEqual(prevWeek.summaryData.first?.periodStartDate, Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 2, day: 11)))
+            }
+        }
+    }
 }
 
 private extension SiteStatsInsightsViewModelTests {
