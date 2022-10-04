@@ -194,8 +194,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)refreshPostsForFollowedTopic
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     // Do all of this work on a background thread.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
+
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
         ReaderAbstractTopic *topic = [topicService topicForFollowedSites];

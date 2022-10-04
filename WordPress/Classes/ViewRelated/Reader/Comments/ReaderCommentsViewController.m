@@ -1000,7 +1000,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     self.failedToFetchComments = NO;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
+#pragma clang diagnostic pop
+
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
             success(hasMore);
@@ -1014,7 +1019,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     self.failedToFetchComments = NO;
     [self.activityFooter startAnimating];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
+#pragma clang diagnostic pop
+
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
     [service syncHierarchicalCommentsForPost:self.post page:page success:^(BOOL hasMore, NSNumber *totalComments) {
         if (success) {
