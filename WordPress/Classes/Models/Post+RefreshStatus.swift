@@ -6,26 +6,15 @@ extension Post {
     /// - Parameters:
     ///   - onCompletion: block to invoke when status update is finished.
     ///   - onError: block to invoke if any error occurs while the update is being made.
-    ///
-    static func refreshStatus(with coreDataStack: CoreDataStack, onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
+    static func refreshStatus(with coreDataStack: CoreDataStack) {
         coreDataStack.performAndSave { context in
             let fetch = NSFetchRequest<Post>(entityName: Post.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
             fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
-            let postsPushing = try context.fetch(fetch)
+            guard let postsPushing = try? context.fetch(fetch) else { return }
             for post in postsPushing {
                 post.markAsFailedAndDraftIfNeeded()
-            }
-        } completion: { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    onCompletion?()
-                case let .failure(error):
-                    DDLogError("Error while attempting to update posts status: \(error.localizedDescription)")
-                    onError?(error)
-                }
             }
         }
     }
