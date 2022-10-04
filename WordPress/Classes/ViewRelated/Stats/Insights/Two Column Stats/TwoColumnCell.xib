@@ -100,7 +100,6 @@
                 <outlet property="topConstraint" destination="HeU-RZ-kPi" id="CE0-3v-hwp"/>
                 <outlet property="topSeparatorLine" destination="NTK-eu-Zrd" id="9Sq-Ea-hi8"/>
                 <outlet property="viewMoreButton" destination="uon-fL-Zcd" id="qrf-iG-gty"/>
-                <outlet property="viewMoreHeightConstraint" destination="44e-cc-T7y" id="641-sy-IiJ"/>
                 <outlet property="viewMoreLabel" destination="1To-pb-uoT" id="nmB-Rf-6TI"/>
                 <outlet property="viewMoreView" destination="Cfy-Hl-Mjq" id="ljz-6d-bwT"/>
             </connections>

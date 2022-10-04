@@ -11,7 +11,6 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var viewMoreHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
