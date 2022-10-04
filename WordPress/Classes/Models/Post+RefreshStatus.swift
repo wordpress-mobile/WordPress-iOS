@@ -12,7 +12,7 @@ extension Post {
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
             fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
-            let postsPushing = (try? context.fetch(fetch)) ?? []
+            guard let postsPushing = try? context.fetch(fetch) else { return }
             for post in postsPushing {
                 post.markAsFailedAndDraftIfNeeded()
             }
