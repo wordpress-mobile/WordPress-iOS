@@ -86,9 +86,9 @@ class StatsBaseCell: UITableViewCell {
 
         stackView.addArrangedSubviews([headingLabel, showDetailsButton])
 
-        headingWidthConstraint = headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5)
+        headingWidthConstraint = headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.55)
         headingWidthConstraint?.isActive = true
-        showDetailsButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5).isActive = true
+        showDetailsButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.35).isActive = true
 
         if let anchor = topConstraintTargetView?.topAnchor {
             // Deactivate the existing top constraint of the cell
