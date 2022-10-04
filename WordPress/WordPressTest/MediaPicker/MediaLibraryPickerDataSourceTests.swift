@@ -5,26 +5,18 @@ import Nimble
 
 class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
 
-    fileprivate var context: NSManagedObjectContext!
     fileprivate var dataSource: MediaLibraryPickerDataSource!
     fileprivate var blog: Blog!
     fileprivate var post: Post!
 
     override func setUp() {
         super.setUp()
-        context = contextManager.newDerivedContext()
-        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
+        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as? Blog
         blog.url = "http://wordpress.com"
         blog.xmlrpc = "http://wordpress.com"
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as? Post
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as? Post
         post.blog = blog
         dataSource = MediaLibraryPickerDataSource(blog: blog)
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-        context.rollback()
     }
 
     func testMediaPixelSize() {
@@ -86,29 +78,29 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
         }
 
         // Adding a video does not change the album cover.
-        let video = MediaBuilder(context).build()
+        let video = MediaBuilder(mainContext).build()
         video.remoteStatus = .sync
         video.blog = self.blog
         video.mediaType = .video
-        contextManager.saveContextAndWait(context)
+        contextManager.saveContextAndWait(mainContext)
         expect(changes).toNever(beGreaterThan(0))
 
         // Adding a newly created image changes the album cover.
-        let newImage = MediaBuilder(context).build()
+        let newImage = MediaBuilder(mainContext).build()
         newImage.remoteStatus = .sync
         newImage.blog = self.blog
         newImage.mediaType = .image
         newImage.creationDate = Date()
-        contextManager.saveContextAndWait(context)
+        contextManager.saveContextAndWait(mainContext)
         expect(changes).toEventually(equal(1))
 
         // Adding an old image does not change the album cover.
-        let oldImage = MediaBuilder(context).build()
+        let oldImage = MediaBuilder(mainContext).build()
         oldImage.remoteStatus = .sync
         oldImage.blog = self.blog
         oldImage.mediaType = .image
         oldImage.creationDate = Date().advanced(by: -60)
-        contextManager.saveContextAndWait(context)
+        contextManager.saveContextAndWait(mainContext)
         expect(changes).toNever(beGreaterThan(1))
     }
 
@@ -127,7 +119,7 @@ class MediaLibraryPickerDataSourceTests: CoreDataTestCase {
             return nil
         }
 
-        let mediaService = MediaService(managedObjectContext: context)
+        let mediaService = MediaService(managedObjectContext: mainContext)
         let expect = self.expectation(description: "Media should be create with success")
         mediaService.createMedia(with: url as NSURL, blog: blog, post: post, progress: nil, thumbnailCallback: { (media, url) in
         }, completion: { (media, error) in

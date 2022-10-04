@@ -4,21 +4,17 @@ import XCTest
 @testable import WordPress
 
 class PostCoordinatorFailedPostsFetcherTests: CoreDataTestCase {
-    private var context: NSManagedObjectContext!
-
     private var fetcher: PostCoordinator.FailedPostsFetcher!
 
     override func setUp() {
         super.setUp()
 
-        context = contextManager.newDerivedContext()
-        fetcher = PostCoordinator.FailedPostsFetcher(context)
+        fetcher = PostCoordinator.FailedPostsFetcher(mainContext)
     }
 
     override func tearDown() {
         super.tearDown()
         fetcher = nil
-        context = nil
     }
 
     func testItReturnsPostsThatCanBeAutoUploadedOrAutoSaved() {
@@ -59,7 +55,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
                     remoteStatus: AbstractPostRemoteStatus = .failed,
                     hasRemote: Bool = false,
                     blog: Blog? = nil) -> Post {
-        let post = Post(context: context)
+        let post = Post(context: mainContext)
         post.status = status
         post.remoteStatus = remoteStatus
 
@@ -77,7 +73,7 @@ private extension PostCoordinatorFailedPostsFetcherTests {
     }
 
     func createBlog(supportsWPComAPI: Bool) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as! Blog
 
         if supportsWPComAPI {
             blog.supportsWPComAPI()
