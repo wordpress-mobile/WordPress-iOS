@@ -230,15 +230,25 @@ class NotificationTests: CoreDataTestCase {
     }
 
     func testNotificationCacheIsInvalidated() throws {
-        let note = try utility.loadCommentNotification()
+        let commentNotificationId = "44444"
+        let _ = try utility.loadCommentNotification()
+        contextManager.saveContextAndWait(mainContext)
+
+        let fetchRequest = NSFetchRequest<WordPress.Notification>(entityName: WordPress.Notification.entityName())
+        fetchRequest.predicate = NSPredicate(format: "notificationId == %@", commentNotificationId)
+
+        let note = try XCTUnwrap(mainContext.fetch(fetchRequest).first)
         XCTAssertEqual(note.timestamp, "2015-03-10T18:57:37+00:00")
         XCTAssertEqual(note.timestampAsDate.timeIntervalSince1970, 1426013857)
 
         note.timestamp = "2015-03-10T18:57:38+00:00"
         XCTAssertEqual(note.timestampAsDate.timeIntervalSince1970, 1426013858)
 
+        mainContext.reset()
+
         contextManager.performAndSave { context in
-            let notification = try? Notification.fixture(fromFile: "notifications-replied-comment.json", insertInto: context)
+            let notification = (try? context.fetch(fetchRequest))?.first
+            XCTAssertNotNil(notification)
             XCTAssertEqual(notification?.timestampAsDate.timeIntervalSince1970, 1426013857)
 
             XCTExpectFailure("""
