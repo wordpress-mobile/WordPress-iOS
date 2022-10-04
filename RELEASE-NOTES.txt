@@ -1,6 +1,6 @@
 21.0
 -----
-
+* [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
 
 20.9
 -----
