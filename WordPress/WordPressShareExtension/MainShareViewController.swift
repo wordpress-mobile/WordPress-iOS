@@ -40,7 +40,7 @@ class MainShareViewController: UIViewController {
         // The problem with the original expression is that it didn't account for the bundle ID being different in
         // different build configurations (debug, internal, release).
         //
-        let isSaveAsDraftAction = Bundle.main.bundleIdentifier?.hasSuffix("WordPressDraftAction") ?? false
+        let isSaveAsDraftAction = Bundle.main.bundleIdentifier?.contains("DraftAction") ?? false
 
         if isSaveAsDraftAction {
             origination = .saveToDraft
