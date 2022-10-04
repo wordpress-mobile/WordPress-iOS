@@ -229,7 +229,27 @@ class NotificationTests: CoreDataTestCase {
         XCTAssertEqual(note.headerAndBodyContentGroups.count, totalGroupsCount)
     }
 
+    func testNotificationCacheIsInvalidated() throws {
+        let note = try utility.loadCommentNotification()
+        XCTAssertEqual(note.timestamp, "2015-03-10T18:57:37+00:00")
+        XCTAssertEqual(note.timestampAsDate.timeIntervalSince1970, 1426013857)
 
+        note.timestamp = "2015-03-10T18:57:38+00:00"
+        XCTAssertEqual(note.timestampAsDate.timeIntervalSince1970, 1426013858)
+
+        contextManager.performAndSave { context in
+            let notification = try? Notification.fixture(fromFile: "notifications-replied-comment.json", insertInto: context)
+            XCTAssertEqual(notification?.timestampAsDate.timeIntervalSince1970, 1426013857)
+
+            XCTExpectFailure("""
+                This assertion failure is problematic.
+                When timestamp (or any other cached attribute) is changed, the cache still should be invalidated
+                even though the notification is associated with a non-main context.
+                """)
+            note.timestamp = "2015-03-10T18:57:38+00:00"
+            XCTAssertEqual(notification?.timestampAsDate.timeIntervalSince1970, 1426013858)
+        }
+    }
 
     // MARK: - Helpers
 

@@ -81,9 +81,28 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
+    private let cachedAttributesObserver: NotificationCachedAttributesObserver? = nil
+
     /// Array that contains the Cached Property Names
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
+
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
+
+        cachedAttributesObserver = NotificationCachedAttributesObserver()
+        for attr in Notification.cachedAttributes {
+            addObserver(cachedAttributesObserver!, forKeyPath: attr, context: nil)
+        }
+    }
+
+    deinit {
+        if let observer = cachedAttributesObserver {
+            for attr in Notification.cachedAttributes {
+                removeObserver(observer, forKeyPath: attr)
+            }
+        }
+    }
 
     func renderSubject() -> NSAttributedString? {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
@@ -97,26 +116,6 @@ class Notification: NSManagedObject {
             return nil
         }
         return formatter.render(content: snippetContent, with: SnippetsContentStyles())
-    }
-
-    /// When needed, nukes cached attributes
-    ///
-    override func willChangeValue(forKey key: String) {
-        super.willChangeValue(forKey: key)
-
-        // Note:
-        // Cached Attributes are only consumed on the main thread, when initializing UI elements.
-        // As an optimization, we'll only reset those attributes when we're running on the main thread.
-        //
-        guard managedObjectContext?.concurrencyType == .mainQueueConcurrencyType else {
-            return
-        }
-
-        guard Swift.type(of: self).cachedAttributes.contains(key) else {
-            return
-        }
-
-        resetCachedAttributes()
     }
 
     /// Nukes any cached values.
@@ -410,5 +409,23 @@ extension Notification {
 extension Notification: Notifiable {
     var notificationIdentifier: String {
         return notificationId
+    }
+}
+
+private class NotificationCachedAttributesObserver: NSObject {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let keyPath, let notification = object as? Notification, Notification.cachedAttributes.contains(keyPath) else {
+            return
+        }
+
+        // Note:
+        // Cached Attributes are only consumed on the main thread, when initializing UI elements.
+        // As an optimization, we'll only reset those attributes when we're running on the main thread.
+        //
+        guard notification.managedObjectContext?.concurrencyType == .mainQueueConcurrencyType else {
+            return
+        }
+
+        notification.resetCachedAttributes()
     }
 }
