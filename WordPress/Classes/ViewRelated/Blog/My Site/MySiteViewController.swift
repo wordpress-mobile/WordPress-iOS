@@ -410,11 +410,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             showNoSites()
             return
         }
-
-        showSitePicker(for: mainBlog)
-        showBlogDetails(for: mainBlog)
-        updateNavigationTitle(for: mainBlog)
-        updateSegmentedControl(for: mainBlog, switchTabsIfNeeded: true)
+        self.blog = mainBlog
     }
 
     @objc
