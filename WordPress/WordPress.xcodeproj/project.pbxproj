@@ -2123,6 +2123,7 @@
 		AB2211F425ED6E7A00BF72FC /* CommentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2211F325ED6E7A00BF72FC /* CommentServiceTests.swift */; };
 		AB758D9E25EFDF9C00961C0B /* LikesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB758D9D25EFDF9C00961C0B /* LikesListController.swift */; };
 		ACACE3AE28D729FA000992F9 /* NoResultsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACACE3AD28D729FA000992F9 /* NoResultsViewControllerTests.swift */; };
+		AC68C9CA28E5DF14009030A9 /* NotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC68C9C928E5DF14009030A9 /* NotificationsViewControllerTests.swift */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		AE2F3125270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2F3124270B6DA000B2A9C2 /* Scanner+QuotedText.swift */; };
@@ -7034,6 +7035,7 @@
 		AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressScreenshotGeneration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB758D9D25EFDF9C00961C0B /* LikesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesListController.swift; sourceTree = "<group>"; };
 		ACACE3AD28D729FA000992F9 /* NoResultsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultsViewControllerTests.swift; sourceTree = "<group>"; };
+		AC68C9C928E5DF14009030A9 /* NotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		ADE06D6829F9044164BBA5AB /* Pods-WordPressIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressIntents.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressIntents/Pods-WordPressIntents.release.xcconfig"; sourceTree = "<group>"; };
@@ -13325,6 +13327,22 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		AC68C9C728E5DEB1009030A9 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				AC68C9C828E5DEE0009030A9 /* Controllers */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		AC68C9C828E5DEE0009030A9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AC68C9C928E5DF14009030A9 /* NotificationsViewControllerTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		B0088A8F283D68B1008C9676 /* Stats Revamp v2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -14078,6 +14096,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				AC68C9C728E5DEB1009030A9 /* Notification */,
 				C3C2F84428AC8B9E00937E45 /* Jetpack */,
 				F44FB6C92878957E0001E3CE /* Mention */,
 				8B69F0E2255C2BC0006B1CEF /* Activity */,
@@ -20794,6 +20813,7 @@
 				9A9D34FF2360A4E200BC95A3 /* StatsPeriodAsyncOperationTests.swift in Sources */,
 				8BE9AB8827B6B5A300708E45 /* BlogDashboardPersistenceTests.swift in Sources */,
 				B5EFB1C91B333C5A007608A3 /* NotificationSettingsServiceTests.swift in Sources */,
+				AC68C9CA28E5DF14009030A9 /* NotificationsViewControllerTests.swift in Sources */,
 				F44FB6CD287897F90001E3CE /* SuggestionsTableViewMockDelegate.swift in Sources */,
 				179501CD27A01D4100882787 /* PublicizeAuthorizationURLComponentsTests.swift in Sources */,
 				4089C51422371EE30031CE78 /* TodayStatsTests.swift in Sources */,

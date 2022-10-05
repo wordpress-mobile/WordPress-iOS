@@ -481,9 +481,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.25.1):
-    - Sentry/Core (= 7.25.1)
-  - Sentry/Core (7.25.1)
+  - Sentry (7.27.0):
+    - Sentry/Core (= 7.27.0)
+  - Sentry/Core (7.27.0)
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
@@ -536,7 +536,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 4.1)
   - AppCenter/Distribute (~> 4.1)
-  - Automattic-Tracks-iOS (~> 0.13.0-beta.2)
+  - Automattic-Tracks-iOS (~> 0.13)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.83.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.83.0/third-party-podspecs/BVLinearGradient.podspec.json`)
   - CocoaLumberjack (~> 3.0)
@@ -862,7 +862,7 @@ SPEC CHECKSUMS:
   RNTAztecView: 7fc0e222041067701b6a4474e9064d4d351e1bde
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: dd29c18c32b0af9269949f079cf631d581ca76ca
+  Sentry: 026b36fdc09531604db9279e55f047fe652e3f4a
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -885,6 +885,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 2bd989274e24cc30ebe848c97329bcf4863cdcb7
+PODFILE CHECKSUM: 54ab3e68d98adc25715b6e431831051cd61729fa
 
 COCOAPODS: 1.11.2

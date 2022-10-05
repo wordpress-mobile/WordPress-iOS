@@ -236,7 +236,10 @@
 
 - (void)syncBlogs
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
     
     [context performBlock:^{
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
