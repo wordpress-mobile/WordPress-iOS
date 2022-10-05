@@ -81,18 +81,20 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
-    private let cachedAttributesObserver: NotificationCachedAttributesObserver? = nil
+    private var cachedAttributesObserver: NotificationCachedAttributesObserver? = nil
 
     /// Array that contains the Cached Property Names
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
+    override func awakeFromFetch() {
+        super.awakeFromFetch()
 
-        cachedAttributesObserver = NotificationCachedAttributesObserver()
-        for attr in Notification.cachedAttributes {
-            addObserver(cachedAttributesObserver!, forKeyPath: attr, context: nil)
+        if cachedAttributesObserver == nil {
+            cachedAttributesObserver = NotificationCachedAttributesObserver()
+            for attr in Notification.cachedAttributes {
+                addObserver(cachedAttributesObserver!, forKeyPath: attr, context: nil)
+            }
         }
     }
 
