@@ -54,11 +54,14 @@ struct StatsSegmentedControlData {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
-        return String.localizedStringWithFormat(stringFormat,
-                difference < 0 ? "" : "+",
-                difference.abbreviatedString(),
-                differencePercent.abbreviatedString())
+        let stringFormatValue = differencePercent != 0 ? "%@%@ (%@%%)" : "%@%@"
+        let stringFormat = NSLocalizedString(stringFormatValue, comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
+        return String.localizedStringWithFormat(
+            stringFormat,
+            difference < 0 ? "" : "+",
+            difference.abbreviatedString(),
+            differencePercent.abbreviatedString()
+        )
     }
 
     var differenceTextColor: UIColor {
