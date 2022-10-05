@@ -81,7 +81,7 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
-    private var cachedAttributesObserver: NotificationCachedAttributesObserver? = nil
+    private var cachedAttributesObserver: NotificationCachedAttributesObserver?
 
     /// Array that contains the Cached Property Names
     ///
@@ -91,10 +91,11 @@ class Notification: NSManagedObject {
         super.awakeFromFetch()
 
         if cachedAttributesObserver == nil {
-            cachedAttributesObserver = NotificationCachedAttributesObserver()
+            let observer = NotificationCachedAttributesObserver()
             for attr in Notification.cachedAttributes {
-                addObserver(cachedAttributesObserver!, forKeyPath: attr, options: [.prior], context: nil)
+                addObserver(observer, forKeyPath: attr, options: [.prior], context: nil)
             }
+            cachedAttributesObserver = observer
         }
     }
 
