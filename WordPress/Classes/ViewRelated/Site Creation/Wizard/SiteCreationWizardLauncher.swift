@@ -51,10 +51,7 @@ final class SiteCreationWizardLauncher {
         guard let wizardContent = wizard.content else {
             return nil
         }
-
-        wizardContent.modalPresentationStyle = .pageSheet
-        wizardContent.isModalInPresentation = true
-
+        wizardContent.modalPresentationStyle = .fullScreen
         return wizardContent
     }()
 
