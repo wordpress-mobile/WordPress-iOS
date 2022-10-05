@@ -99,6 +99,6 @@ import Foundation
         NSUserActivity.deleteAllSavedUserActivities {}
 
         // Refresh Remote Feature Flags
-        WordPressAppDelegate.shared?.updateFeatureFlags(forced: true)
+        WordPressAppDelegate.shared?.updateFeatureFlags()
     }
 }

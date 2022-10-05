@@ -684,7 +684,7 @@ private extension WordPressAuthenticationManager {
             NotificationCenter.default.post(name: notification, object: account)
 
             // Refresh Remote Feature Flags
-            WordPressAppDelegate.shared?.updateFeatureFlags(forced: true)
+            WordPressAppDelegate.shared?.updateFeatureFlags()
 
             onCompletion()
 
