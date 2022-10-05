@@ -723,17 +723,17 @@ private extension SiteStatsInsightsViewModel {
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalComments,
                                                    leftColumnData: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.commentsPerPost,
-                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()))
+                                                   rightColumnData: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString()))
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalLikes,
                                                    leftColumnData: annualInsights.annualInsightsTotalLikesCount.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.likesPerPost,
-                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()))
+                                                   rightColumnData: annualInsights.annualInsightsAverageLikesCount.abbreviatedString()))
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalWords,
                                                    leftColumnData: annualInsights.annualInsightsTotalWordsCount.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.wordsPerPost,
-                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString()))
+                                                   rightColumnData: annualInsights.annualInsightsAverageWordsCount.abbreviatedString()))
 
         return dataRows
 
