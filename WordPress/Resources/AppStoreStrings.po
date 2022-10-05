@@ -45,10 +45,15 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v20.8-whats-new"
+msgctxt "v20.9-whats-new"
 msgid ""
-"We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.\n"
-"We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.\n"
+"You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.\n"
+"\n"
+"We also squashed several bugs in this latest update.\n"
+"\n"
+"- Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.\n"
+"- On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.\n"
+"- Content above the Powered by Jetpack banner now stays visible and responsive while you’re scrolling. Up, up, and away.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
