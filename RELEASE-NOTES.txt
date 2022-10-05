@@ -1,3 +1,7 @@
+21.0
+-----
+* [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
+
 20.9
 -----
 * [*] Login Flow: Provide ability for user to cancel login WP.com flow when already logged in to a self-hosted site [#19349]
@@ -6,6 +10,7 @@
 * [*] Fixed an issue where the push notifications prompt button would overlap on iPad. [#19304]
 * [*] Story Post: Fixed an issue where deleting one image in a story draft would cause the following image not to load. [#16966]
 * [*] Fixed an issue where the no result label on the side menu is oversize on iPad. [#19305]
+* [*] [internal] Various low level database refactors around posts, pages, and comments. [#19353, #19363, #19386]
 
 20.8
 -----

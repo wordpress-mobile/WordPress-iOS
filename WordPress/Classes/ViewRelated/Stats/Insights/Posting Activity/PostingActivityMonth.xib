@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,18 +43,18 @@
                                 <constraint firstAttribute="height" constant="96" id="eO8-gx-Jfg"/>
                             </constraints>
                         </stackView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
-                            <rect key="frame" x="0.0" y="112" width="118" height="15"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
+                            <rect key="frame" x="0.0" y="112" width="118" height="16"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bwA-4h-vvH" secondAttribute="bottom" id="2yV-Bf-VnO"/>
                         <constraint firstItem="wsv-pN-Bz5" firstAttribute="top" secondItem="qkV-SQ-ZL4" secondAttribute="top" constant="8" id="8Mg-MB-iaf"/>
                         <constraint firstItem="wsv-pN-Bz5" firstAttribute="leading" secondItem="qkV-SQ-ZL4" secondAttribute="leading" constant="18" id="94x-51-F8V"/>
                         <constraint firstAttribute="width" constant="118" id="BFw-W2-SQ2"/>
-                        <constraint firstAttribute="bottom" secondItem="bwA-4h-vvH" secondAttribute="bottom" constant="8" id="JvY-b9-5gn"/>
                         <constraint firstAttribute="trailing" secondItem="wsv-pN-Bz5" secondAttribute="trailing" constant="18" id="MEW-Uq-uhm"/>
                         <constraint firstAttribute="trailing" secondItem="bwA-4h-vvH" secondAttribute="trailing" id="Mhg-F7-Uco"/>
                         <constraint firstAttribute="height" constant="135" id="iAl-XS-rHq"/>
@@ -65,12 +63,12 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="qkV-SQ-ZL4" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="glC-LU-7v4"/>
                 <constraint firstItem="qkV-SQ-ZL4" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="l9n-Ps-l0h"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="monthLabel" destination="bwA-4h-vvH" id="bgh-pj-R3H"/>
                 <outlet property="viewWidthConstraint" destination="BFw-W2-SQ2" id="8xg-H6-zUA"/>

@@ -82,16 +82,18 @@ struct StatsTotalInsightsData {
         }
     }
 
-    private static var guideAttributes: StyledHTMLAttributes = [
-        .BodyAttribute: [
-            .font: UIFont.preferredFont(forTextStyle: .subheadline),
-            .foregroundColor: UIColor.text
-        ],
-        .ATagAttribute: [
-            .foregroundColor: UIColor.primary,
-            .underlineStyle: 0
+    private static var guideAttributes: StyledHTMLAttributes {
+        [
+            .BodyAttribute: [
+                .font: UIFont.preferredFont(forTextStyle: .subheadline),
+                .foregroundColor: UIColor.text
+            ],
+            .ATagAttribute: [
+                .foregroundColor: UIColor.primary,
+                .underlineStyle: 0
+            ]
         ]
-    ]
+    }
 
     private enum Constants {
         static let singularLikeCount = 1
@@ -196,6 +198,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.font = WPStyleGuide.Stats.insightsCountFont
         countLabel.textColor = .text
         countLabel.text = "0"
+        countLabel.adjustsFontForContentSizeCategory = true
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)

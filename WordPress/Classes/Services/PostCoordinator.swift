@@ -33,8 +33,9 @@ class PostCoordinator: NSObject {
     init(mainService: PostService? = nil,
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
-         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
-        self.coreDataStack = ContextManager.sharedInstance()
+         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
+         coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
+        self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
 

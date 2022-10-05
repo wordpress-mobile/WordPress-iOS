@@ -4,11 +4,9 @@ import XCTest
 class BlogTitleTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var context: NSManagedObjectContext!
 
     override func setUp() {
-        context = contextManager.newDerivedContext()
-        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
+        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as? Blog
         blog.url = Constants.blogURL
         blog.xmlrpc = Constants.blogURL
     }
@@ -44,7 +42,7 @@ class BlogTitleTests: CoreDataTestCase {
     // MARK: - Private Helpers
     fileprivate func newSettings() -> BlogSettings {
         let name = BlogSettings.classNameWithoutNamespaces()
-        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: mainContext)
 
         return entity as! BlogSettings
     }
