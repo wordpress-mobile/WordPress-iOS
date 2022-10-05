@@ -134,6 +134,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         setupTable()
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
         loadHeaderView()
+        configureHeaderStyling()
         addAddressHintView()
     }
 
@@ -191,6 +192,14 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         let cellCount = hasExactMatch ? data.count : data.count + 1
         let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
+    }
+
+    // MARK: UI Setup
+
+    private func configureHeaderStyling() {
+        largeTitleView.textAlignment = .natural
+        promptView.textAlignment = .natural
+        headerStackView.alignment = .leading
     }
 
     // MARK: Private behavior

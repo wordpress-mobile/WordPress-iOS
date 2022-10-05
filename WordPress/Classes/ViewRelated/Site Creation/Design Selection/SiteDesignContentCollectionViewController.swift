@@ -209,6 +209,8 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureHeaderStyling() {
+        largeTitleView.textAlignment = .natural
+        headerStackView.alignment = .leading
         headerView.backgroundColor = .systemBackground
         hideHeaderVisualEffects()
     }

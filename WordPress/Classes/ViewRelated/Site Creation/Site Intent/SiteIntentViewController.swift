@@ -53,6 +53,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureHeadingStyling()
         configureNavigationBar()
         configureTable()
 
@@ -73,6 +74,11 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     // MARK: UI Setup
 
+    private func configureHeadingStyling() {
+        largeTitleView.textAlignment = .natural
+        headerStackView.alignment = .leading
+    }
+
     private func configureNavigationBar() {
         // Title
         navigationItem.backButtonTitle = Strings.backButtonTitle
@@ -83,7 +89,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
                                                             action: #selector(skipButtonTapped))
         // Cancel button
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle,
-                                                           style: .done,
+                                                           style: .plain,
                                                            target: self,
                                                            action: #selector(closeButtonTapped))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "site-intent-cancel-button"

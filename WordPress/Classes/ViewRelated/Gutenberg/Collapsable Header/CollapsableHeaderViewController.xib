@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -47,13 +47,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmP-bw-ceT" userLabel="Child Container">
-                    <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                    <rect key="frame" x="0.0" y="92" width="414" height="804"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qq-k5-kWr">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="355.5"/>
                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999998807907104" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JJ1-pb-5F1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="355.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <accessibility key="accessibilityConfiguration">
@@ -64,10 +64,10 @@
                     <blurEffect style="regular"/>
                 </visualEffectView>
                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LGN-fD-c9Q" userLabel="Header View" customClass="CollapsableHeaderView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="88" width="414" height="231"/>
+                    <rect key="frame" x="0.0" y="92" width="414" height="263.5"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IMu-iA-0ck" userLabel="Header Stack View">
-                            <rect key="frame" x="16" y="10" width="382" height="85"/>
+                            <rect key="frame" x="16" y="10" width="382" height="89"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0kG-vy-JxR" userLabel="Header Image View">
                                     <rect key="frame" x="171" y="0.0" width="40" height="40"/>
@@ -78,7 +78,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Choose a Layout" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nio-Wp-Ebw" userLabel="Large Title">
-                                    <rect key="frame" x="79" y="48" width="224" height="37"/>
+                                    <rect key="frame" x="68.5" y="48" width="245" height="41"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -87,23 +87,20 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxz-wi-I73" userLabel="Prompt">
-                            <rect key="frame" x="16" y="107" width="382" height="36"/>
-                            <constraints>
-                                <constraint firstAttribute="width" priority="750" constant="600" id="Wga-Tr-jFk"/>
-                            </constraints>
+                            <rect key="frame" x="16" y="111" width="382" height="64.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" systemColor="secondaryLabelColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE5-R9-8tB" userLabel="Accessory Bar">
-                            <rect key="frame" x="0.0" y="163" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="195.5" width="414" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Eej-Tm-ddy"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-KC-2W9" userLabel="Seperator">
-                            <rect key="frame" x="0.0" y="230.5" width="414" height="0.5"/>
+                            <rect key="frame" x="0.0" y="263" width="414" height="0.5"/>
                             <color key="backgroundColor" systemColor="separatorColor"/>
                             <accessibility key="accessibilityConfiguration">
                                 <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -115,16 +112,15 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="16" id="21t-vd-2bd"/>
+                        <constraint firstItem="bxz-wi-I73" firstAttribute="leading" secondItem="LGN-fD-c9Q" secondAttribute="leading" constant="16" id="21t-vd-2bd"/>
                         <constraint firstItem="IMu-iA-0ck" firstAttribute="top" secondItem="LGN-fD-c9Q" secondAttribute="top" constant="10" id="Cym-Zp-9He"/>
                         <constraint firstAttribute="trailing" secondItem="IMu-iA-0ck" secondAttribute="trailing" constant="16" id="KV9-tA-ybQ"/>
                         <constraint firstItem="DE5-R9-8tB" firstAttribute="top" secondItem="bxz-wi-I73" secondAttribute="bottom" constant="20" id="LOU-MU-PJx"/>
                         <constraint firstAttribute="bottom" secondItem="DE5-R9-8tB" secondAttribute="bottom" priority="750" constant="24" id="MbU-Zk-mLK"/>
-                        <constraint firstItem="bxz-wi-I73" firstAttribute="centerX" secondItem="LGN-fD-c9Q" secondAttribute="centerX" id="ROI-Gz-ami"/>
                         <constraint firstItem="9w9-KC-2W9" firstAttribute="leading" secondItem="LGN-fD-c9Q" secondAttribute="leading" id="X3f-jY-uff"/>
                         <constraint firstAttribute="trailing" secondItem="DE5-R9-8tB" secondAttribute="trailing" id="a3z-v1-Ujv"/>
                         <constraint firstAttribute="trailing" secondItem="9w9-KC-2W9" secondAttribute="trailing" id="bqi-CI-mnl"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bxz-wi-I73" secondAttribute="trailing" constant="16" id="csW-Aq-EvI"/>
+                        <constraint firstAttribute="trailing" secondItem="bxz-wi-I73" secondAttribute="trailing" constant="16" id="csW-Aq-EvI"/>
                         <constraint firstAttribute="height" constant="250" id="dks-Bz-gRQ"/>
                         <constraint firstAttribute="bottom" secondItem="9w9-KC-2W9" secondAttribute="bottom" id="ntw-Of-ryN"/>
                         <constraint firstItem="bxz-wi-I73" firstAttribute="top" secondItem="IMu-iA-0ck" secondAttribute="bottom" constant="12" id="ojs-jr-NYN"/>
@@ -261,7 +257,7 @@
             <color red="0.78823529411764703" green="0.20784313725490197" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
