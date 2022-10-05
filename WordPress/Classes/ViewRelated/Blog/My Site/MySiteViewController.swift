@@ -122,7 +122,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 showBlogDetailsForMainBlogOrNoSites()
                 return
             }
-
+            RecentSitesService().touch(blog: newBlog)
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateNavigationTitle(for: newBlog)
