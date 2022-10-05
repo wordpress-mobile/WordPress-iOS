@@ -35,7 +35,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
             scrollableView: tableView,
             mainTitle: Strings.mainTitle,
             navigationBarTitle: Strings.navigationBarTitle,
-            prompt: Strings.prompt,
+            prompt: nil,
             primaryActionTitle: Strings.primaryAction,
             accessoryView: searchBar
         )
