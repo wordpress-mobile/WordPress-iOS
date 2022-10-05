@@ -1,9 +1,2 @@
-Yukarı, yukarı ve ileri! Artık Jetpack uygulamasında kullanıcı tarafından barındırılan siteler ekleyebilir ve giriş yapabilirsiniz.
-
-Yenilikler özelliği modellerinde uygulamadaki yenilikleri görün. Meta hakkında konuşun.
-
-Sıcak kalın dostlar—bir sayfanın öne çıkan görseli GIF olduğunda, sayfa listesi artık donmayacak.
-
-Dosya İndirme istatistikleri, kullanıcı tarafından barındırılan Jetpack sitelerinde desteklenmez, bu nedenle o bölümü artık İstatistikler bölümünüzde görmezsiniz.
-
-Jetpack kullanmayı seviyor musunuz? Arkadaşlarınıza ondan bahsedin. Artık Hakkında ve Ben ekranları aracılığıyla uygulamayı paylaşabilirsiniz.
+Kullanıcı bahsetmelerinde bazı değişiklikler yaptık. Bir gönderiye veya yoruma yanıt verip başka bir kullanıcıyı etiketlediğinizde, önerilen kullanıcılar listeniz arama sorgunuzla başlayan adlarla başlayacaktır. Liste bundan sonra alfabetik olarak devam edecektir.
+Ayrıca yanıt içeriği alanını genişlettikten veya daralttıktan sonra önerilen kullanıcılar listesinin kaybolmasına neden olan bir sorun da düzeltilmiştir. Presto'da artık ortadan kaybolmak yok.

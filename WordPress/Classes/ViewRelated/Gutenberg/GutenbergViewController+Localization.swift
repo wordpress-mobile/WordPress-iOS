@@ -11,7 +11,7 @@ extension GutenbergViewController {
             forResource: Localization.fileName,
             withExtension: "strings",
             subdirectory: nil,
-            localization: currentLProjFolderName()
+            localization: currentLProjFolderName(in: bundle)
             ) else {
                 return nil
         }
@@ -25,11 +25,16 @@ extension GutenbergViewController {
         return nil
     }
 
-    private func currentLProjFolderName() -> String? {
-        var lProjFolderName = Locale.current.identifier
-        if let identifierWithoutRegion = Locale.current.identifier.split(separator: "_").first {
-            lProjFolderName = String(identifierWithoutRegion)
-        }
-        return lProjFolderName
+    private func currentLProjFolderName(in bundle: Bundle) -> String? {
+        // Localizable.strings file path use dashes for languages and regions (e.g. pt-BR)
+        // We cannot use Locale.current.identifier directly because it uses underscores
+        // Bundle.preferredLocalizations matches what NS-LocalizedString uses
+        // and is safer than parsing and converting identifiers ourselves.
+        //
+        // Notice the - in the NSLocalized... method. There seem to be a bug in genstrings where
+        // it tries to parse lines coming from comments, too:
+        //
+        // genstrings: error: bad entry in file WordPress/Classes/ViewRelated/Gutenberg/GutenbergViewController+Localization.swift (line = 31): Argument is not a literal string.
+        return bundle.preferredLocalizations.first
     }
 }

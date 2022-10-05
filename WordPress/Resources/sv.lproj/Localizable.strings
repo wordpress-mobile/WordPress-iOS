@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-08-24 20:10:50+0000 */
+/* Translation-Revision-Date: 2022-09-16 17:27:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1889,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Anslutning är inte tillgänglig";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Anslutningar";
 
 /* Support email label. */
 "Contact Email" = "E-post för kontakt";
@@ -4063,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-inställningar";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social-anslutningar";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Synkroniseringen av Jetpack Social-anslutningen misslyckades";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Synkroniseringen av Jetpack Social-tjänsten misslyckades";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Det gick inte att installera Jetpack nu.";
 
@@ -4367,7 +4376,7 @@ translators: Block name. %s: The localized block name */
    Text displayed in HUD while a media item is being loaded.
    Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
-"Loading..." = "Laddar...";
+"Loading..." = "Laddar in …";
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokala utkast";
@@ -5989,15 +5998,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Offentliggör";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Synkroniseringen av publiceringsanknytningen misslyckades";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Synkroniseringen av publiceringstjänsten misslyckades";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicera i %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6917,6 +6917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Dela länken";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Dela inlägg till %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Dela med vänner";
 
@@ -6924,8 +6927,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Berätta din historia här ...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Delning";
@@ -9919,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress är bättre med Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Lägg till en författare";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Bygg en webbplats";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Kontrollera aviseringar";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Dela på Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Åtgärda ett säkerhetsproblem";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Publicera ett foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Läs en artikel";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Svara på kommentarer";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Återställ en säkerhetskopia";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Sök efter tillägg";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Sök efter inlägg eller webbplatser";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Kolla din statistik";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Skriv en blogg";
 
 /* Later today */
 "later today" = "senare idag";

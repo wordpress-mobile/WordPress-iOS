@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.57.1'
+  pod 'WordPressKit', '~> 4.58.0-beta.2'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -175,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.82.0'
+  gutenberg tag: 'v1.82.1'
 
   ## Third party libraries
   ## =====================
@@ -206,7 +206,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.12'
+  pod 'Automattic-Tracks-iOS', '~> 0.13.0-beta.2'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -222,10 +222,10 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 2.3.0'
+  pod 'WordPressAuthenticator', '~> 3.2.0-beta'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2.1'
   # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
@@ -453,6 +453,19 @@ post_install do |installer|
       configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
     end
   end
+
+  # Fix a code signing issue in Xcode 14 beta.
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
+  # ====================================
+  #
+  # TODO: fix the linting issue if this workaround is still needed in Xcode 14 GM.
+  # rubocop:disable Style/CombinableLoops
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+    end
+  end
+  # rubocop:enable Style/CombinableLoops
 
   # Flag Alpha builds for Tracks
   # ============================

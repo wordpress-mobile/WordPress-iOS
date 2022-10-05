@@ -1,4 +1,2 @@
-Ya no hace falta abrigarse. La lista de páginas ya no se quedará congelada cuando la imagen destacada de una página es un GIF.
-
-Las estadísticas de descarga de archivos no son compatibles con los sitios autoalojados de Jetpack, por lo que no podrás consultar esa sección en la sección Estadísticas nunca más.
-
+Hemos hecho algunos cambios en las menciones de usuario. Cuando respondas a una entrada o a un comentario y etiquetes a otro usuario, al principio de tu lista de usuarios sugeridos aparecerán los nombres con los que empiece tu consulta de búsqueda. Después, la lista aparecerá ordenada por orden alfabético.
+También hemos solucionado un problema por el que la lista de usuarios sugeridos se vaciaba tras expandir o contraer el campo del contenido de la respuesta. Listo, ya no volverán a desaparecer.

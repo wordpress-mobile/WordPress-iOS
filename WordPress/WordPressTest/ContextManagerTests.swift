@@ -194,6 +194,19 @@ class ContextManagerTests: XCTestCase {
         }
         XCTAssertEqual(numberOfAccounts(), 1)
 
+        do {
+            try await contextManager.performAndSave { context in
+                let account = WPAccount(context: context)
+                account.userID = 100
+                account.username = "Unknown User"
+                throw NSError(domain: "save", code: 1)
+            }
+            XCTFail("The above call should throw")
+        } catch {
+            XCTAssertEqual((error as NSError).domain, "save")
+        }
+        XCTAssertEqual(numberOfAccounts(), 1)
+
         // In the translated Swift API of `ContextManager`, there are two `save(_: (NSManagedContext) -> Void)`
         // functions. The only difference between them is, one is async function, the other is not.
         // When compiling statement `try save { context in doSomething(context) }`, Swift picks which overload to use

@@ -9704,6 +9704,10 @@
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "WordPress.org Plugin Page";
 
+/* Caption displayed during the login flow. */
+"wordpress.prologue.splash.caption" = "Write, edit, and publish
+from anywhere.";
+
 /* Title for the card displaying draft posts. */
 "Work on a draft post" = "Work on a draft post";
 

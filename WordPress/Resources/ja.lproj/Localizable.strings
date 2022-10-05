@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-08-30 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-09-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1889,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "接続が利用できません";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "連携";
 
 /* Support email label. */
 "Contact Email" = "連絡先メールアドレス";
@@ -4063,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack ソーシャル";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack ソーシャル連携";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack ソーシャルの連携の同期に失敗しました";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack ソーシャルのサービスの同期に失敗しました";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack は現在インストールできません。";
 
@@ -5989,15 +5998,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "パブリサイズ共有 ";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "パブリサイズ連携の同期に失敗しました";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "パブリサイズサービスの同期に失敗しました";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "%@ にパブリサイズ";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6917,6 +6917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "リンクを共有";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "投稿を %@ にシェア";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "友達と共有";
 
@@ -6924,8 +6927,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "ここに文章を入力…";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共有";
@@ -9919,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress が Jetpack でパワーアップ";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "投稿者を追加";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "サイトを構築";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "通知を確認";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Facebook で共有";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "セキュリティの問題を修正";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "写真を投稿";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "記事を読む";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "コメントに返信";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "バックアップから復元";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "プラグインを検索";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "投稿またはサイトを検索";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "統計情報を見る";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "ブログに投稿";
 
 /* Later today */
 "later today" = "今日あとで";

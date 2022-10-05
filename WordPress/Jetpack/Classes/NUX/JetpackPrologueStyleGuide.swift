@@ -8,10 +8,14 @@ struct JetpackPrologueStyleGuide {
     // Background colors
     // old
     static let oldBackgroundColor = UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
-    // new
-    static let newBackgroundColor = UIColor(light: .muriel(color: .jetpackGreen, .shade5), dark: .muriel(color: .jetpackGreen, .shade100))
     // combined
-    static let backgroundColor = FeatureFlag.newLandingScreen.enabled ? newBackgroundColor : oldBackgroundColor
+    static let backgroundColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldBackgroundColor
+
+    // Gradient overlay colors
+    // new
+    static let newGradientColor = UIColor(light: .muriel(color: .jetpackGreen, .shade5), dark: .muriel(color: .jetpackGreen, .shade100))
+    // combined
+    static let gradientColor = FeatureFlag.newLandingScreen.enabled ? newGradientColor : oldBackgroundColor
 
     // Continue with WordPress button colors
     // old
@@ -41,6 +45,11 @@ struct JetpackPrologueStyleGuide {
 
     // Color used in both old and versions
     static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)
+
+    // Background image with gradient for the new Jetpack prologue screen
+    static let prologueBackgroundImage: UIImage? = FeatureFlag.newLandingScreen.enabled ? UIImage(named: "JPBackground") : nil
+    // Blur effect for the prologue buttons
+    static let prologueButtonsBlurEffect: UIBlurEffect?  = FeatureFlag.newLandingScreen.enabled ? UIBlurEffect(style: .regular) : nil
 
 
 

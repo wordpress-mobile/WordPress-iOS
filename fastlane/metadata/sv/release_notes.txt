@@ -1,3 +1,2 @@
-En trevlig nyhet – listan över sidor låser sig inte längre om någon sida har en GIF som utvald bild.
-
-För webbhotellbaserade webbplatser med Jetpack saknas stöd för statistik över nedladdningar. Därför visas inte längre denna sektion i statistiken i dessa fall.
+Vi har gjort några ändringar rörande användaromnämnanden. När du svarar på ett inlägg eller kommenterar och taggar en annan användare börjar listan över föreslagna användare med namn som inleds med din sökfråga. Listan fortsätter därefter alfabetiskt.
+Vi har också åtgärdat ett problem som gjorde att listan över föreslagna användare kunde försvinna om fältet med svarsinnehållet expanderas eller minimerades. Klart. Inget mer försvinnande.

@@ -1,3 +1,2 @@
-Kein Grund mehr zu zittern — die Seitenliste friert jetzt nicht mehr ein, wenn das Beitragsbild einer Seite ein GIF ist.
-
-Da selbst gehostete Jetpack-Websites keine Statistiken zu Dateidownloads unterstützen, wird dir dieser Bereich nicht mehr in den Statistiken angezeigt.
+Wir haben einige Änderungen an Benutzererwähnungen vorgenommen. Wenn du auf einen Beitrag oder Kommentar antwortest und einen anderen Benutzer markierst, werden ganz oben in der Liste der vorgeschlagenen Benutzer Namen angezeigt, die mit denselben Buchstaben wie deine Suchanfrage beginnen. Die Liste wird danach alphabetisch fortgeführt.
+Wir haben auch das Problem behoben, bei dem die Liste mit den vorgeschlagenen Benutzern verschwindet, sobald das Antwortfeld erweitert oder eingeklappt wird. Plötzlich verschwundene Listen gehören damit der Vergangenheit an.

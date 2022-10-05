@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-08-23 21:21:03+0000 */
+/* Translation-Revision-Date: 2022-09-12 09:08:12+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1889,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Conectare indisponibilă";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Conexiuni";
 
 /* Support email label. */
 "Contact Email" = "Email de contact";
@@ -4052,16 +4049,28 @@ translators: Block name. %s: The localized block name */
 "Jetpack Scan will resolve the threat." = "Scanarea Jetpack va înlătura amenințarea.";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va derula înapoi fișierul afectat la o versiune mai veche (curată).";
+"Jetpack Scan will rollback the affected file to an older (clean) version." = "Scanarea Jetpack va restaura fișierul afectat la o versiune mai veche (curată).";
 
 /* Description that explains how we will fix the threat */
-"Jetpack Scan will rollback the affected file to the version from %1$@." = "Scanarea Jetpack va derula înapoi fișierul afectat la versiunea din %1$@.";
+"Jetpack Scan will rollback the affected file to the version from %1$@." = "Scanarea Jetpack va restaura fișierul afectat la versiunea din %1$@.";
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Scanarea Jetpack va fi actualizată la o versiune mai nouă.";
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Setări Jetpack";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Conexiuni la Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Sincronizarea conexiunii la Jetpack Social a eșuat";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Sincronizarea serviciului Jetpack Social a eșuat";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack nu a putut fi instalat în acest moment.";
@@ -5989,15 +5998,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Publicitate";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Conexiunea de sincronizare pentru a face publicitate a eșuat";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Sincronizarea serviciului de publicitate a eșuat";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Fă publicitate pe %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6917,6 +6917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Partajează legătura";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Partajează articolul pe %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Partajează cu prietenii";
 
@@ -6924,8 +6927,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Distribuie-ți povestea aici...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partajare";
@@ -9919,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress este mai bun cu Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Adaugi un autor";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Construiești un site";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Vezi notificările";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Partajezi pe Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Corectezi o problemă de securitate";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Publici o fotografie";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Citești un articol";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Răspunzi la comentarii";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Restaurezi o copie de siguranță";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Cauți module";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Cauți articole sau site-uri";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Urmărești statisticile";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Scrii un blog";
 
 /* Later today */
 "later today" = "azi, mai târziu";

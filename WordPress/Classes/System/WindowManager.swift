@@ -55,7 +55,7 @@ class WindowManager: NSObject {
 
     /// Shows the UI for authenticated users.
     ///
-    func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
+    @objc func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
         show(WPTabBarController.sharedInstance(), completion: completion)
 

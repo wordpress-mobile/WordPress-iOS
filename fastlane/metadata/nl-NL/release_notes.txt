@@ -1,3 +1,2 @@
-Blijf lekker warm: de pagina's bevriezen niet meer wanneer de uitgelichte afbeelding van een pagina een GIF is.
-
-Statistieken voor bestandsdownloads worden niet ondersteund voor zelf-gehoste Jetpack-sites, dus je ziet dat onderdeel niet meer in het onderdeel Statistieken.
+We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.
+We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.

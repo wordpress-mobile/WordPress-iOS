@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-08-25 08:54:08+0000 */
+/* Translation-Revision-Date: 2022-09-06 15:18:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1889,9 +1889,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Koneksi tidak tersedia";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Koneksi";
 
 /* Support email label. */
 "Contact Email" = "Hubungi via Email";
@@ -4063,6 +4060,18 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Pengaturan Jetpack";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Koneksi Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Sinkronisasi koneksi Jetpack Sosial gagal";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Sinkronisasi layanan Jetpack Sosial gagal";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack tidak dapat diinstal untuk saat ini.";
 
@@ -5989,15 +5998,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Insights 'Publicize' header */
 "Publicize" = "Publikasikan";
 
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Sinkronisasi koneksi publikasikan gagal";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Sinkronisasi layanan publikasikan gagal";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publikasikan ke %@";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6917,6 +6917,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Bagikan tautan";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Bagikan pos ke %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Bagikan dengan Teman";
 
@@ -6924,8 +6927,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Bagikan kisah Anda di sini...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Berbagi";
@@ -9919,6 +9921,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress berfungsi lebih baik dengan Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Tambah penulis";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Buat situs web";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Periksa pemberitahuan";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Bagikan di Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Perbaiki masalah keamanan";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Posting foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Baca artikel";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Tanggapi komentar";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Pulihkan cadangan";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Cari plugin";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Cari pos atau situs";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Periksa statistik Anda";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Tulis blog";
 
 /* Later today */
 "later today" = "belakangan hari ini";
