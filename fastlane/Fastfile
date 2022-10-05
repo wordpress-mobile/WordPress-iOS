@@ -48,7 +48,6 @@ JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   JetpackTodayWidget
   JetpackStatsWidgets
   JetpackNotificationServiceExtension
-  JetpackNotificationContentExtension
   JetpackAllTimeWidget
   JetpackThisWeekWidget
   JetpackIntents
