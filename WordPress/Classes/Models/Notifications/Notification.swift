@@ -93,7 +93,7 @@ class Notification: NSManagedObject {
         if cachedAttributesObserver == nil {
             cachedAttributesObserver = NotificationCachedAttributesObserver()
             for attr in Notification.cachedAttributes {
-                addObserver(cachedAttributesObserver!, forKeyPath: attr, context: nil)
+                addObserver(cachedAttributesObserver!, forKeyPath: attr, options: [.prior], context: nil)
             }
         }
     }
@@ -417,6 +417,10 @@ extension Notification: Notifiable {
 private class NotificationCachedAttributesObserver: NSObject {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let keyPath, let notification = object as? Notification, Notification.cachedAttributes.contains(keyPath) else {
+            return
+        }
+
+        guard (change?[.notificationIsPriorKey] as? NSNumber)?.boolValue == true else {
             return
         }
 
