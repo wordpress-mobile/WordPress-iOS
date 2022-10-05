@@ -321,6 +321,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     }
 
     // MARK: - Format Nav Bar
+
     /*
      * To allow more flexibility in the navigation bar's header items, we keep the navigation bar available.
      * However, that space is also essential to a uniform design of the header. This function updates the design of the
@@ -558,7 +559,17 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         visualEffects.forEach { (visualEffect) in
             visualEffect.isHidden = true
         }
-        navigationController?.navigationBar.backgroundColor = .systemBackground
+        let standard = UINavigationBarAppearance()
+        standard.configureWithOpaqueBackground()
+        let scrollEdge = UINavigationBarAppearance()
+        scrollEdge.configureWithTransparentBackground()
+        navigationItem.standardAppearance = standard
+        navigationItem.scrollEdgeAppearance = scrollEdge
+        navigationItem.compactAppearance = standard
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = scrollEdge
+        }
+        setNeedsStatusBarAppearanceUpdate()
     }
 
     /// In scenarios where the content offset before content changes doesn't align with the available space after the content changes then the offset can be lost. In
