@@ -4,12 +4,9 @@ import SwiftUI
 
 class JetpackPromptsViewModel: ObservableObject {
 
-    // duration of the animation that shifts the views
-    private static let animationDuration: CGFloat = 1
-
     @Published var rotation: CGFloat = 0
 
-    private var timer: Timer?
+    private var displayLink: CADisplayLink?
 
     var configuration: JetpackPromptsConfiguration? {
         didSet {
@@ -22,34 +19,26 @@ class JetpackPromptsViewModel: ObservableObject {
 
     init(configuration: JetpackPromptsConfiguration? = nil) {
         self.configuration = configuration
+        displayLink = CADisplayLink(target: self, selector: #selector(step))
     }
 
-    func startAnimation() {
-
+    @objc
+    func step() {
         guard let configuration = configuration else {
             return
         }
-        // reset any existing timers
-        timer?.invalidate()
-        timer = nil
-        rotation = 0
 
-        timer = Timer.scheduledTimer(withTimeInterval: Self.animationDuration, repeats: true) { [weak self] _ in
-
-            guard let self = self else {
-                return
-            }
-
-            if self.rotation == configuration.totalHeight {
-                self.rotation = 0
-            }
-
-            withAnimation(.linear(duration: Self.animationDuration)) {
-                self.rotation += configuration.frameHeight * Self.animationDuration
-                // multiplying by animationDuration will keep the movement at the speed of 1 row per second.
-                // Can be tweaked if needed (e.g. if we want to use the accelerometer)
-            }
+        if self.rotation == configuration.totalHeight {
+            self.rotation = 0
         }
+
+        // Can be tweaked if needed (e.g. if we want to use the accelerometer)
+        self.rotation += 1
+    }
+
+    func startAnimation() {
+        displayLink?.add(to: .current, forMode: .default)
+        rotation = 0
     }
 
     var prompts: [JetpackPrompt] {
