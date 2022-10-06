@@ -45,21 +45,12 @@ class PostNoticeViewModelTests: CoreDataTestCase {
         }
     }
 
-    private var context: NSManagedObjectContext!
-
     // MARK: - Test Setup
 
     override func setUp() {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        context = contextManager.newDerivedContext()
-    }
-
-    override func tearDown() {
-        context = nil
-
-        super.tearDown()
     }
 
     // MARK: - Expectations
@@ -227,13 +218,13 @@ class PostNoticeViewModelTests: CoreDataTestCase {
 
     func testFailedPublishedPostsCancelButtonWillCancelAutoUpload() {
         // Given
-        let post = PostBuilder(context)
+        let post = PostBuilder(mainContext)
             .published()
             .with(title: "Dr. Ed Simonis")
             .with(remoteStatus: .failed)
             .confirmedAutoUpload()
             .build()
-        try! context.save()
+        try! mainContext.save()
 
         let postCoordinator = MockPostCoordinator()
         let notice = PostNoticeViewModel(post: post, postCoordinator: postCoordinator).notice
@@ -247,13 +238,13 @@ class PostNoticeViewModelTests: CoreDataTestCase {
 
     func testFailedPublishedUploadedDraftPostsPublishButtonWillMarkForAutoUpload() {
         // Given
-        let post = PostBuilder(contextManager.mainContext)
+        let post = PostBuilder(mainContext)
             .drafted()
             .with(title: "I've been drafted!")
             .withRemote()
             .with(remoteStatus: .sync)
             .build()
-        try! context.save()
+        try! mainContext.save()
 
         let postCoordinator = MockPostCoordinator()
         let notice = PostNoticeViewModel(post: post, postCoordinator: postCoordinator).notice
@@ -266,7 +257,7 @@ class PostNoticeViewModelTests: CoreDataTestCase {
     }
 
     private func createPost(_ status: BasePost.Status, hasRemote: Bool = false, autoUploadAttemptsCount: Int = 0) -> Post {
-        var builder = PostBuilder(context)
+        var builder = PostBuilder(mainContext)
             .with(title: UUID().uuidString)
             .with(status: status)
             .with(remoteStatus: .failed)

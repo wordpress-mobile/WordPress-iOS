@@ -474,7 +474,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshNoResultsView];
     
     __typeof(self) __weak weakSelf = self;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
+
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
 
@@ -515,7 +520,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     __typeof(self) __weak weakSelf = self;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
+
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
     

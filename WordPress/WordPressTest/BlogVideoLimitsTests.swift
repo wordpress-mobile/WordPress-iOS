@@ -3,11 +3,9 @@ import XCTest
 class BlogVideoLimitsTests: CoreDataTestCase {
 
     private var blog: Blog!
-    private var context: NSManagedObjectContext!
 
     override func setUpWithError() throws {
-        context = contextManager.newDerivedContext()
-        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as? Blog
+        blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: mainContext) as? Blog
         blog.url = Constants.blogURL
         blog.xmlrpc = Constants.blogURL
     }
