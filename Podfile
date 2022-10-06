@@ -372,6 +372,14 @@ target 'WordPressNotificationServiceExtension' do
   wordpress_ui
 end
 
+target 'JetpackNotificationServiceExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
+end
+
 ## Screenshot Generation
 ## ===================
 ##
