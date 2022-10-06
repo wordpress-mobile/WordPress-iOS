@@ -18,9 +18,8 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         remoteServiceMock = DashboardServiceRemoteMock()
         persistenceMock = BlogDashboardPersistenceMock()
-        context = contextManager.newDerivedContext()
-        postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: context)
-        service = BlogDashboardService(managedObjectContext: context, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
+        postsParserMock = BlogDashboardPostsParserMock(managedObjectContext: mainContext)
+        service = BlogDashboardService(managedObjectContext: mainContext, remoteService: remoteServiceMock, persistence: persistenceMock, postsParser: postsParserMock)
     }
 
     override func tearDown() {
@@ -31,7 +30,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testCallServiceWithCorrectIDAndCards() {
         let expect = expectation(description: "Request the correct ID")
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.remoteServiceMock.didCallWithBlogID, self.wpComID)
@@ -46,7 +45,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             let draftPostsCardItem = cards.first(where: {$0.cardType == .draftPosts})
@@ -84,7 +83,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             let todaysStatsItem = cards.first(where: {$0.cardType == .todaysStats})
@@ -108,7 +107,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Parse todays stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { snapshot in
             XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
@@ -124,7 +123,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testFetchCardsFromPersistence() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         let cards = service.fetchLocal(blog: blog)
 
@@ -142,7 +141,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     func testDontReturnGhostCardsWhenFetchingFromTheAPI() {
         let expect = expectation(description: "Parse drafts and scheduled")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
-        let blog = newTestBlog(id: 10, context: context)
+        let blog = newTestBlog(id: 10, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             let hasGhost = cards.contains(where: {$0.cardType == .ghost})
@@ -158,7 +157,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     ///
     func testDontReturnGhostCardsWhenFetchingFromCachedData() {
         persistenceMock.respondWith = dictionary(from: "dashboard-200-with-drafts-and-scheduled.json")!
-        let blog = newTestBlog(id: 11, context: context)
+        let blog = newTestBlog(id: 11, context: mainContext)
 
         let cards = service.fetchLocal(blog: blog)
 
@@ -171,7 +170,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     ///
     func testReturnGhostCardsWhenNoCachedData() {
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: 12, context: context)
+        let blog = newTestBlog(id: 12, context: mainContext)
 
         let cards = service.fetchLocal(blog: blog)
 
@@ -187,7 +186,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Show error card")
         remoteServiceMock.respondWith = .error
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: 13, context: context)
+        let blog = newTestBlog(id: 13, context: mainContext)
 
         service.fetch(blog: blog) { _ in } failure: { cards in
             let hasError = cards.contains(where: {$0.cardType == .failure})
@@ -206,7 +205,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         let expect = expectation(description: "Show error card")
         remoteServiceMock.respondWith = .error
         persistenceMock.respondWith = nil
-        let blog = newTestBlog(id: 14, context: context)
+        let blog = newTestBlog(id: 14, context: mainContext)
 
         /// Call it once and fails
         service.fetch(blog: blog) { _ in } failure: { cards in
@@ -235,7 +234,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         remoteServiceMock.respondWith = .withoutPosts
         postsParserMock.hasDraftsAndScheduled = true
 
-        let blog = newTestBlog(id: wpComID, context: context)
+        let blog = newTestBlog(id: wpComID, context: mainContext)
 
         service.fetch(blog: blog) { cards in
             let hasDrafts = cards.contains(where: {$0.cardType == .draftPosts})
@@ -256,7 +255,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     }
 
     private func newTestBlog(id: Int, context: NSManagedObjectContext) -> Blog {
-        let blog = ModelTestHelper.insertDotComBlog(context: context)
+        let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.dotComID = id as NSNumber
         return blog
     }

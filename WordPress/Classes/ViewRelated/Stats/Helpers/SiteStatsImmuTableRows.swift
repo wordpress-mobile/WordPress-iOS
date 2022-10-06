@@ -5,10 +5,16 @@ import Foundation
 ///
 class SiteStatsImmuTableRows {
 
-    static func viewVisitorsImmuTableRows(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, periodDate: Date, statsLineChartViewDelegate: StatsLineChartViewDelegate?, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) -> [ImmuTableRow] {
+    /// Helper method to create the rows for the Views and Visitors section
+    ///
+    static func viewVisitorsImmuTableRows(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?,
+                                          periodDate: Date,
+                                          periodEndDate: Date? = nil,
+                                          statsLineChartViewDelegate: StatsLineChartViewDelegate?,
+                                          siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        let viewsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .views)
+        let viewsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .views, periodEndDate: periodEndDate)
         let viewsSegmentData = StatsSegmentedControlData(segmentTitle: StatSection.periodOverviewViews.tabTitle,
                 segmentData: viewsData.count,
                 segmentPrevData: viewsData.prevCount,
@@ -20,7 +26,7 @@ class SiteStatsImmuTableRows {
                 accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint,
                 differencePercent: viewsData.percentage)
 
-        let visitorsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .visitors)
+        let visitorsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .visitors, periodEndDate: periodEndDate)
         let visitorsSegmentData = StatsSegmentedControlData(segmentTitle: StatSection.periodOverviewVisitors.tabTitle,
                 segmentData: visitorsData.count,
                 segmentPrevData: visitorsData.prevCount,
@@ -36,7 +42,7 @@ class SiteStatsImmuTableRows {
         var lineChartStyling = [LineChartStyling]()
 
         if let chartData = statsSummaryTimeIntervalData {
-            let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData)
+            let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(chartData, periodEndDate: periodEndDate)
             let viewsChart = InsightsLineChart(data: splitSummaryTimeIntervalData, filterDimension: .views)
             lineChartData.append(contentsOf: viewsChart.lineChartData)
             lineChartStyling.append(contentsOf: viewsChart.lineChartStyling)

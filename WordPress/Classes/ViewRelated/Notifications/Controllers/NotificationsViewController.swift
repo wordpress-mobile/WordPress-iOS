@@ -56,7 +56,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     /// Indicates whether the view is required to reload results on viewWillAppear, or not
     ///
-    fileprivate var needsReloadResults = false
+    var needsReloadResults = false
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
@@ -137,6 +137,16 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
+    /// The last time when user seen notifications
+    var lastSeenTime: String? {
+        get {
+            return userDefaults.string(forKey: Settings.lastSeenTime)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
+        }
+    }
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -200,11 +210,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             reloadTableViewPreservingSelection()
         }
 
-        if !AccountHelper.isDotcomAvailable() {
+        if shouldDisplayJetpackPrompt {
             promptForJetpackCredentials()
         } else {
-            jetpackLoginViewController?.view.removeFromSuperview()
-            jetpackLoginViewController?.removeFromParent()
+            jetpackLoginViewController?.remove()
         }
 
         showNoResultsViewIfNeeded()
@@ -686,14 +695,14 @@ private extension NotificationsViewController {
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
-        guard isViewLoaded == true && view.window != nil else {
-            return
-        }
-
-        needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
         resetApplicationBadge()
+        guard isViewLoaded == true && view.window != nil else {
+            needsReloadResults = true
+            return
+        }
+        reloadResultsController()
         syncNewNotifications()
     }
 
@@ -1558,7 +1567,11 @@ private extension NotificationsViewController {
             return
         }
 
-        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
+        // Don't attempt to resize the columns for full width.
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = .default
+        // The above line should be replace with the following line when the full width issue is resolved.
+        // let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
 
         if splitViewController.wpPrimaryColumnWidth != columnWidth {
             splitViewController.wpPrimaryColumnWidth = columnWidth
@@ -1592,7 +1605,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayJetpackPrompt: Bool {
-        return AccountHelper.isDotcomAvailable() == false
+        return AccountHelper.isDotcomAvailable() == false && blogForJetpackPrompt != nil
     }
 
     var shouldDisplaySettingsButton: Bool {
@@ -1758,7 +1771,6 @@ private extension NotificationsViewController {
             selectedNotification = nil
             mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
-            tableView.reloadData()
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
@@ -1849,15 +1861,6 @@ private extension NotificationsViewController {
 
     var userDefaults: UserPersistentRepository {
         return UserPersistentStoreFactory.instance()
-    }
-
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
-        }
     }
 
     var filter: Filter {
@@ -2077,5 +2080,13 @@ extension NotificationsViewController: WPScrollableViewController {
 extension NotificationsViewController: JPScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         processJetpackBannerVisibility(scrollView)
+    }
+}
+
+// MARK: - StoryboardLoadable
+
+extension NotificationsViewController: StoryboardLoadable {
+    static var defaultStoryboardName: String {
+        return "Notifications"
     }
 }
