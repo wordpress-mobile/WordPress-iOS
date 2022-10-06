@@ -69,8 +69,7 @@ extension PostEditor {
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
         let shouldCreatePage = post is Page
-        let postService = PostService(managedObjectContext: mainContext)
-        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
+        let newPost = shouldCreatePage ? blog.createDraftPage() : blog.createDraftPost()
         // if it's a reblog, use the existing content and don't strip the image
         newPost.content = postIsReblogged ? post.content : contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle

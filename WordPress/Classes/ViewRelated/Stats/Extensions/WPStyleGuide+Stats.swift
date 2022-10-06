@@ -83,6 +83,7 @@ extension WPStyleGuide {
 
         static func configureLabelAsCellRowTitle(_ label: UILabel) {
             label.textColor = defaultTextColor
+            label.numberOfLines = 0
         }
 
         static func configureLabelAsData(_ label: UILabel) {
@@ -100,10 +101,14 @@ extension WPStyleGuide {
         static func configureLabelAsPostingMonth(_ label: UILabel) {
             label.textColor = defaultTextColor
             label.font = subTitleFont
+            label.adjustsFontSizeToFitWidth = true
+            label.numberOfLines = 0
+            label.lineBreakMode = .byClipping
         }
 
         static func configureLabelAsPostingLegend(_ label: UILabel) {
             label.textColor = defaultTextColor
+            label.numberOfLines = 0
         }
 
         static func configureLabelAsPostingDate(_ label: UILabel) {
@@ -198,6 +203,10 @@ extension WPStyleGuide {
                 filterTabBar.deselectedTabColor = UIColor(light: .neutral(.shade20), dark: .neutral(.shade50))
             }
         }
+
+        // MARK: - Font Size
+
+        static let maximumChartAxisFontPointSize: CGFloat = 22
 
         // MARK: - Style Values
 

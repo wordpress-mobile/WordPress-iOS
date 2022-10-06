@@ -6,7 +6,7 @@ class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
 
     @IBOutlet weak var monthsStackView: UIStackView!
     @IBOutlet weak var viewMoreLabel: UILabel!
-    @IBOutlet weak var legendView: UIView!
+    @IBOutlet weak var legendView: UIStackView!
 
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -66,7 +66,7 @@ private extension PostingActivityCell {
 
     func addLegend() {
         let legend = PostingActivityLegend.loadFromNib()
-        legendView.addSubview(legend)
+        legendView.addArrangedSubview(legend)
     }
 
     func addMonths(monthsData: [[PostingStreakEvent]]) {
