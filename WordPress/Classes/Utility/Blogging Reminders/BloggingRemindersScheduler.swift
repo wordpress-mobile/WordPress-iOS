@@ -141,6 +141,59 @@ class BloggingRemindersScheduler {
             .appendingPathComponent(defaultDataFileName)
     }
 
+    private static func sharedDataFileURL() -> URL? {
+        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.org.wordpress")
+        return sharedDirectory?.appendingPathComponent(defaultDataFileName)
+    }
+
+    static func handleRemindersMigration() {
+        guard FeatureFlag.sharedLogin.enabled else {
+            return
+        }
+
+        if AppConfiguration.isWordPress {
+            copyStoreToSharedFile()
+        } else if AppConfiguration.isJetpack {
+            copyStoreToLocalFile()
+        }
+    }
+
+    private static func copyStoreToSharedFile() {
+        guard !UserDefaults.standard.bool(forKey: "reminders-copied"),
+              let store = try? defaultStore(),
+              let fileUrl = try? defaultDataFileURL(),
+              let sharedFileUrl = sharedDataFileURL() else {
+            return
+        }
+
+        // Only copy the file if we have at least one reminder schedule
+        if store.configuration.count > 0 {
+            try? FileManager.default.copyItem(at: fileUrl, to: sharedFileUrl)
+        }
+
+        UserDefaults.standard.set(true, forKey: "reminders-copied")
+    }
+
+    private static func copyStoreToLocalFile() {
+        guard !UserDefaults.standard.bool(forKey: "shared-reminders-copied"),
+              let localStore = try? defaultStore(),
+              let sharedFileUrl = sharedDataFileURL(),
+              FileManager.default.fileExists(at: sharedFileUrl),
+              let sharedStore = try? BloggingRemindersStore(dataFileURL: sharedFileUrl) else {
+            return
+        }
+
+        // Only copy if the existing local store contains no schedules
+        if localStore.configuration.count == 0 {
+            for blogIdentifier in sharedStore.configuration.keys {
+                let schedule = sharedStore.scheduledReminders(for: blogIdentifier)
+                try? localStore.save(scheduledReminders: schedule, for: blogIdentifier)
+            }
+        }
+
+        UserDefaults.standard.set(true, forKey: "shared-reminders-copied")
+    }
+
     // MARK: - Initializers
 
     /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
