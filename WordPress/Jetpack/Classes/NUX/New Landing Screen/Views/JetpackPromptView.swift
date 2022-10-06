@@ -1,14 +1,11 @@
-
 import SwiftUI
 
 struct JetpackPromptView: View {
-    let data: JetpackPrompt
-    let fontSize: CGFloat
+    let text: String
+
     var body: some View {
-        Text(data.text)
+        Text(text)
             .font(makeFont())
-            .foregroundColor(data.color)
-            .bold()
             .lineLimit(Constants.lineLimit)
             .padding(Constants.textInsets)
             .accessibility(hidden: true)
@@ -16,18 +13,15 @@ struct JetpackPromptView: View {
 
     private func makeFont() -> Font {
         if #available(iOS 14.0, *) {
-            return .system(size: fontSize, weight: .bold).leading(.tight)
+            return .system(size: Constants.fontSize, weight: .bold)
         } else {
-            return .system(size: fontSize, weight: .bold)
+            return .system(size: Constants.fontSize, weight: .bold)
         }
     }
 
     private enum Constants {
         static let lineLimit = 2
         static let textInsets = EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
+        static let fontSize: CGFloat = 45
     }
-
-    /// Used to determine the available width and height for the text in this view
-    static let totalHorizontalPadding = Constants.textInsets.leading + Constants.textInsets.trailing
-    static let totalVerticalPadding = Constants.textInsets.top + Constants.textInsets.bottom
 }
