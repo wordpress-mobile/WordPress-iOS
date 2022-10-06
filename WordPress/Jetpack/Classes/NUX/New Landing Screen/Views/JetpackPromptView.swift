@@ -13,7 +13,7 @@ struct JetpackPromptView: View {
 
     private func makeFont() -> Font {
         if #available(iOS 14.0, *) {
-            return .system(size: Constants.fontSize, weight: .bold)
+            return .system(size: Constants.fontSize, weight: .bold).leading(.tight)
         } else {
             return .system(size: Constants.fontSize, weight: .bold)
         }
