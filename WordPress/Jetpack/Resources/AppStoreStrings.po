@@ -81,10 +81,15 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v20.8-whats-new"
+msgctxt "v20.9-whats-new"
 msgid ""
-"We made some changes to user mentions. When you reply to a post or comment and tag another user, your list of suggested users will begin with names that start with your search query. The list will then continue alphabetically after that.\n"
-"We also fixed a problem where the list of suggested users would vanish after expanding or collapsing the field for reply content. Presto, no more disappearing act.\n"
+"You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.\n"
+"\n"
+"The Jetpack app can run weekly roundups in the background while you’re using other apps. Up, up, and away.\n"
+"\n"
+"On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.\n"
+"\n"
+"Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

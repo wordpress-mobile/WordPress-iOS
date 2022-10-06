@@ -2,10 +2,12 @@ import UIKit
 
 class StatsBaseCell: UITableViewCell {
 
-    private let headingLabel: UILabel = {
+    let headingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
         return label
     }()
 
@@ -14,6 +16,7 @@ class StatsBaseCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = true
         button.addTarget(self, action: #selector(detailsButtonTapped), for: .touchUpInside)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tintColor = .secondaryLabel
         button.setTitleColor(.secondaryLabel, for: .normal)
         button.setImage(UIImage.gridicon(.chevronRight).withTintColor(UIColor(color: WPStyleGuide.greyLighten20())), for: .normal)
@@ -43,6 +46,7 @@ class StatsBaseCell: UITableViewCell {
     @IBOutlet var topConstraint: NSLayoutConstraint!
 
     private var headingBottomConstraint: NSLayoutConstraint?
+    private var headingWidthConstraint: NSLayoutConstraint?
 
     /// Finds the item from the top constraint that's not the content view itself.
     /// - Returns: `topConstraint`'s `firstItem` or `secondItem`, whichever is not this cell's content view.
@@ -82,6 +86,10 @@ class StatsBaseCell: UITableViewCell {
 
         stackView.addArrangedSubviews([headingLabel, showDetailsButton])
 
+        headingWidthConstraint = headingLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.55)
+        headingWidthConstraint?.isActive = true
+        showDetailsButton.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.35).isActive = true
+
         if let anchor = topConstraintTargetView?.topAnchor {
             // Deactivate the existing top constraint of the cell
             let constant = topConstraint.constant
@@ -116,8 +124,11 @@ class StatsBaseCell: UITableViewCell {
             default:
                 showDetailsButton.setTitle("", for: .normal)
             }
+
+            headingWidthConstraint?.isActive = true
         } else {
             showDetailsButton.isHidden = true
+            headingWidthConstraint?.isActive = false
         }
 
         let hasTitleOrButton = !title.isEmpty || !showDetailsButton.isHidden
