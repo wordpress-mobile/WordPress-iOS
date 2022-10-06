@@ -1,10 +1,10 @@
 21.0
 -----
 * [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
+* [*] Update launch screen. [#19341]
 
 20.9
 -----
-* [*] Update launch screen. [#19341]
 * [*] Login Flow: Provide ability for user to cancel login WP.com flow when already logged in to a self-hosted site [#19349]
 * [*] [WordPress-only] Powered by Jetpack banner: Fixed an edge case where some scroll views could momentarily become unresponsive to touch. [#19369]
 * [*] [Jetpack-only] Weekly roundup: Adds support for weekly roundup notifications to the Jetpack app. [#19364]
