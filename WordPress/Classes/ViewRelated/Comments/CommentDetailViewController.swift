@@ -122,7 +122,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         guard let parentID = notification?.metaParentID,
               let siteID = notification?.metaSiteID,
               let blog = Blog.lookup(withID: siteID, in: managedObjectContext),
-              let parentComment = commentService.findComment(withID: parentID, in: blog) else {
+              let parentComment = blog.comment(withID: parentID) else {
                   return nil
               }
 
@@ -135,12 +135,12 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         }
 
         if let blog = comment.blog {
-            return commentService.findComment(withID: NSNumber(value: comment.parentID), in: blog)
+            return blog.comment(withID: comment.parentID)
 
         }
 
         if let post = comment.post as? ReaderPost {
-            return commentService.findComment(withID: NSNumber(value: comment.parentID), from: post)
+            return post.comment(withID: comment.parentID)
         }
 
         return nil
@@ -1128,6 +1128,7 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
         guard let lastSearchText = lastSearchText, !lastSearchText.isEmpty else {
             return
         }
+        suggestionsTableView?.viewModel.reloadData()
         suggestionsTableView?.showSuggestions(forWord: lastSearchText)
     }
 

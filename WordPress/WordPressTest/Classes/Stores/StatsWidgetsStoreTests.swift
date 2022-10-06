@@ -9,7 +9,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
 
     override func setUpWithError() throws {
         deleteHomeWidgetData()
-        blogService = BlogServiceMock(managedObjectContext: contextManager.newDerivedContext())
+        blogService = BlogServiceMock(managedObjectContext: mainContext)
         sut = StatsWidgetsStore(blogService: blogService)
     }
 

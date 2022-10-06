@@ -1,3 +1,2 @@
-Länkar i åtgärdsblad (popup-menyerna på din enhet som visar ytterligare alternativ) är nu blåa istället för gröna.
-
-Vi har också gjort Jetpack Social mer synligt i delningssektionen av dina webbplatsinställningar, samt i dina inläggsinställningar. Dags att vara social.
+Vi har gjort några ändringar rörande användaromnämnanden. När du svarar på ett inlägg eller kommenterar och taggar en annan användare börjar listan över föreslagna användare med namn som inleds med din sökfråga. Listan fortsätter därefter alfabetiskt.
+Vi har också åtgärdat ett problem som gjorde att listan över föreslagna användare kunde försvinna om fältet med svarsinnehållet expanderas eller minimerades. Klart. Inget mer försvinnande.

@@ -107,7 +107,6 @@ extension Blog {
                 : homepageType == .posts ? homepagePostsPageID
                 : nil else { return nil }
         let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        return postService.findPost(withID: NSNumber(value: pageID), in: self) as? Page
+        return lookupPost(withID: Int64(pageID), in: context) as? Page
     }
 }

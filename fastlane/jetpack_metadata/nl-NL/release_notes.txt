@@ -1,3 +1,2 @@
-Koppelingen in actiebladen (de pop-upmenu’s op je apparaat die extra opties tonen) zijn nu blauw in plaats van groen.
-
-We hebben ook Jetpack Social beter zichtbaar gemaakt in je berichtinstellingen en het gedeelte Delen van je site-instellingen. Laten we sociaal zijn.
+We hebben wat wijzigingen aangebracht aan gebruikers vermelden. Wanneer je reageert op een bericht of opmerking en een andere gebruiker tagt, begint de lijst met voorgestelde gebruikers met namen die overeenkomen met je query. De lijst zal daarna op alfabetische volgorde verdergaan.
+We hebben ook een probleem verholpen waarbij de lijst van voorgestelde gebruikers verdween na het uit- of inklappen van het veld voor reactiecontent. Zo, geen verdwijntruc meer.
