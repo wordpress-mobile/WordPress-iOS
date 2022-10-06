@@ -17,7 +17,7 @@ struct StatsTwoColumnRowData {
     }
 }
 
-class StatsTwoColumnRow: UIView, NibLoadable {
+class StatsTwoColumnRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -41,6 +41,11 @@ class StatsTwoColumnRow: UIView, NibLoadable {
         rightDataLabel.accessibilityLabel = rowData.rightColumnData.accessibilityLabel
 
         applyStyles()
+        prepareForVoiceOver()
+    }
+
+    func prepareForVoiceOver() {
+        accessibilityElements = [leftItemLabel, leftDataLabel, rightItemLabel, rightDataLabel].compactMap { $0 }
     }
 }
 

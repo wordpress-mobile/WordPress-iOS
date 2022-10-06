@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -20,16 +20,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="firstBaseline" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="x1C-Id-ZI7" userLabel="Labels Stack View">
-                        <rect key="frame" x="16" y="0.0" width="453" height="81"/>
+                        <rect key="frame" x="16" y="0.0" width="453" height="55.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ixA-Gi-hnf" userLabel="Latest Stack View">
-                                <rect key="frame" x="0.0" y="31" width="218.5" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="218.5" height="55.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4Uk-lj-DxU">
-                                        <rect key="frame" x="0.0" y="0.0" width="82" height="23"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="94" height="26"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMK-6y-Fis">
-                                                <rect key="frame" x="0.0" y="10.5" width="16" height="2"/>
+                                                <rect key="frame" x="0.0" y="12" width="16" height="2"/>
                                                 <color key="backgroundColor" name="Blue50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="Jwb-Vz-94g"/>
@@ -37,7 +37,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REr-p6-Zpx">
-                                                <rect key="frame" x="21" y="3.5" width="61" height="16"/>
+                                                <rect key="frame" x="21" y="3" width="73" height="19.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" name="Blue50"/>
                                                 <nil key="highlightedColor"/>
@@ -45,16 +45,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="sN4-14-EVP" userLabel="Latest Data Stack View">
-                                        <rect key="frame" x="0.0" y="27" width="106" height="23"/>
+                                        <rect key="frame" x="0.0" y="30" width="122.5" height="25.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xed-0k-ydb" userLabel="Latest Data">
-                                                <rect key="frame" x="0.0" y="0.0" width="61.5" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="71.5" height="25.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                 <color key="textColor" name="Blue50"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBU-da-7eZ" userLabel="Latest Label">
-                                                <rect key="frame" x="69.5" y="4.5" width="36.5" height="17"/>
+                                                <rect key="frame" x="79.5" y="5" width="43" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" name="Blue50"/>
                                                 <nil key="highlightedColor"/>
@@ -64,13 +64,13 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QOk-kP-Qa8" userLabel="Previous Stack View">
-                                <rect key="frame" x="234.5" y="31" width="218.5" height="50"/>
+                                <rect key="frame" x="234.5" y="0.0" width="218.5" height="55.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="uHn-21-lgo">
-                                        <rect key="frame" x="0.0" y="0.0" width="108.5" height="23"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="125.5" height="26"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Hd-Kb-1Mj">
-                                                <rect key="frame" x="0.0" y="10.5" width="16" height="2"/>
+                                                <rect key="frame" x="0.0" y="12" width="16" height="2"/>
                                                 <color key="backgroundColor" systemColor="quaternaryLabelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="2" id="WeE-O1-WG9"/>
@@ -78,7 +78,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1Q-7d-3Iy">
-                                                <rect key="frame" x="21" y="3.5" width="87.5" height="16"/>
+                                                <rect key="frame" x="21" y="3" width="104.5" height="19.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -86,16 +86,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ATH-b0-dbd" userLabel="Previous Data Stack View">
-                                        <rect key="frame" x="0.0" y="27" width="105.5" height="23"/>
+                                        <rect key="frame" x="0.0" y="30" width="121.5" height="25.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20,000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ioU-Rf-QHS" userLabel="Previous Data">
-                                                <rect key="frame" x="0.0" y="0.0" width="61" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="70.5" height="25.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0X9-R8-oX7" userLabel="Previous Label">
-                                                <rect key="frame" x="69" y="4.5" width="36.5" height="17"/>
+                                                <rect key="frame" x="78.5" y="5" width="43" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
@@ -105,19 +105,23 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="ixA-Gi-hnf" firstAttribute="width" relation="lessThanOrEqual" secondItem="x1C-Id-ZI7" secondAttribute="width" multiplier="0.5" id="Ata-AK-ciC"/>
+                            <constraint firstItem="QOk-kP-Qa8" firstAttribute="width" relation="lessThanOrEqual" secondItem="x1C-Id-ZI7" secondAttribute="width" multiplier="0.5" id="YKW-We-kef"/>
+                        </constraints>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4jQ-Ow-Etk" userLabel="Chart View">
-                        <rect key="frame" x="16" y="97" width="453" height="190"/>
+                        <rect key="frame" x="16" y="71.5" width="453" height="190"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="190" id="rjY-cD-mbj"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Quw-Zj-bJ3">
-                        <rect key="frame" x="16" y="303" width="453" height="17"/>
+                        <rect key="frame" x="16" y="277.5" width="453" height="42.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Your last week's views are +8(36%) higher than the previous week." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0W-0V-Nuo" userLabel="Difference Label">
-                                <rect key="frame" x="0.0" y="0.0" width="453" height="17"/>
+                                <rect key="frame" x="0.0" y="0.0" width="453" height="42.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
@@ -181,7 +185,7 @@
             <color red="0.023529411764705882" green="0.45882352941176469" blue="0.7686274509803922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="quaternaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.17999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.17647058823529413" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

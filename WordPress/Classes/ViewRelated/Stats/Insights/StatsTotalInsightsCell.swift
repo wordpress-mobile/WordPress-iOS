@@ -12,6 +12,9 @@ struct StatsTotalInsightsData {
     // Used to allow a URL to be displayed in response to a guide being tapped
     var guideURL: URL? = nil
 
+    var lastPostInsight: StatsLastPostInsight? = nil
+    var statsSummaryType: StatsSummaryType? = nil
+
     public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
@@ -35,10 +38,10 @@ struct StatsTotalInsightsData {
 
         let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
         let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
-        let guideText = makeTotalInsightsGuideText(insightsStore: insightsStore, statsSummaryType: statsSummaryType)
+        let guideText = makeTotalInsightsGuideText(lastPostInsight: insightsStore.getLastPostInsight(), statsSummaryType: statsSummaryType)
         let guideURL: URL? = statsSummaryType == .likes ? insightsStore.getLastPostInsight()?.url : nil
 
-        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText, guideURL: guideURL)
+        return StatsTotalInsightsData(count: data.count, difference: data.difference, percentage: data.percentage, sparklineData: sparklineData, guideText: guideText, guideURL: guideURL, lastPostInsight: insightsStore.getLastPostInsight(), statsSummaryType: statsSummaryType)
     }
 
     static func makeSparklineData(countKey: KeyPath<StatsSummaryData, Int>, splitSummaryTimeIntervalData: [StatsSummaryTimeIntervalDataAsAWeek]) -> [Int] {
@@ -57,10 +60,10 @@ struct StatsTotalInsightsData {
         return sparklineData
     }
 
-    public static func makeTotalInsightsGuideText(insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
+    public static func makeTotalInsightsGuideText(lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
         switch statsSummaryType {
         case .likes:
-            guard let summary = insightsStore.getLastPostInsight() else {
+            guard let summary = lastPostInsight else {
                 return nil
             }
 
@@ -79,16 +82,18 @@ struct StatsTotalInsightsData {
         }
     }
 
-    private static var guideAttributes: StyledHTMLAttributes = [
-        .BodyAttribute: [
-            .font: UIFont.preferredFont(forTextStyle: .subheadline),
-            .foregroundColor: UIColor.text
-        ],
-        .ATagAttribute: [
-            .foregroundColor: UIColor.primary,
-            .underlineStyle: 0
+    private static var guideAttributes: StyledHTMLAttributes {
+        [
+            .BodyAttribute: [
+                .font: UIFont.preferredFont(forTextStyle: .subheadline),
+                .foregroundColor: UIColor.text
+            ],
+            .ATagAttribute: [
+                .foregroundColor: UIColor.primary,
+                .underlineStyle: 0
+            ]
         ]
-    ]
+    }
 
     private enum Constants {
         static let singularLikeCount = 1
@@ -104,6 +109,7 @@ struct StatsTotalInsightsData {
 class StatsTotalInsightsCell: StatsBaseCell {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var lastPostInsight: StatsLastPostInsight?
+    private var statsSummaryType: StatsSummaryType?
     private var guideURL: URL? = nil
 
     private let outerStackView = UIStackView()
@@ -135,6 +141,12 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         guideViewLabel.text = ""
         guideView.removeFromSuperview()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateGuideView()
     }
 
     private func configureView() {
@@ -186,6 +198,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.font = WPStyleGuide.Stats.insightsCountFont
         countLabel.textColor = .text
         countLabel.text = "0"
+        countLabel.adjustsFontForContentSizeCategory = true
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)
@@ -215,24 +228,27 @@ class StatsTotalInsightsCell: StatsBaseCell {
         guideView.pinSubviewToAllEdges(guideViewLabel, insets: UIEdgeInsets(allEdges: 16.0), priority: .required)
     }
 
-    func configure(count: Int, difference: Int? = nil, percentage: Int? = nil, sparklineData: [Int]? = nil, guideText: NSAttributedString? = nil, guideURL: URL? = nil, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
-        self.guideURL = guideURL
+    func configure(dataRow: StatsTotalInsightsData, statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+        self.guideURL = dataRow.guideURL
 
         self.statSection = statSection
+        self.lastPostInsight = dataRow.lastPostInsight
+        self.statsSummaryType = dataRow.statsSummaryType
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
-        graphView.data = sparklineData ?? []
-        graphView.chartColor = chartColor(for: difference ?? 0)
+        graphView.data = dataRow.sparklineData ?? []
+        graphView.chartColor = chartColor(for: dataRow.difference ?? 0)
 
-        countLabel.text = count.abbreviatedString()
+        countLabel.text = dataRow.count.abbreviatedString()
 
-        updateGuideView(withGuideText: guideText)
-        updateComparisonLabel(withCount: count, difference: difference, percentage: percentage)
+        updateGuideView()
+        updateComparisonLabel(withCount: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage)
     }
 
-    private func updateGuideView(withGuideText guideText: NSAttributedString?) {
-        if let guideText = guideText,
+    private func updateGuideView() {
+        if let statsSummaryType = statsSummaryType,
+           let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType),
            guideText.string.isEmpty == false {
             outerStackView.addArrangedSubview(guideView)
 

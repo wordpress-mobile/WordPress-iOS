@@ -4,27 +4,19 @@ import XCTest
 
 class BlogDashboardPostsParserTests: CoreDataTestCase {
 
-    private var context: NSManagedObjectContext!
-
     private var parser: BlogDashboardPostsParser!
 
     override func setUp() {
         super.setUp()
 
-        context = contextManager.newDerivedContext()
-        parser = BlogDashboardPostsParser(managedObjectContext: context)
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
+        parser = BlogDashboardPostsParser(managedObjectContext: mainContext)
     }
 
     /// When the API return no drafts, but there are local drafts
     /// Return one local draft
     func testReturnLocalDraftWhenItExists() {
-        let blog = BlogBuilder(context).build()
-        _ = PostBuilder(context, blog: blog).drafted().build()
+        let blog = BlogBuilder(mainContext).build()
+        _ = PostBuilder(mainContext, blog: blog).drafted().build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithoutPosts["posts"] as! NSDictionary,
                                                  for: blog)
@@ -35,7 +27,7 @@ class BlogDashboardPostsParserTests: CoreDataTestCase {
     /// When the API return no drafts, and there are no local drafts
     /// Return zero drafts
     func testReturnZeroDraftsWhenNothingLocal() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithoutPosts["posts"] as! NSDictionary,
                                                  for: blog)
@@ -45,7 +37,7 @@ class BlogDashboardPostsParserTests: CoreDataTestCase {
 
     /// When the API return drafts, keep the amount returned
     func testReturnDraftsTrimmedEvenWithZeroLocalDrafts() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithPosts["posts"] as! NSDictionary,
                                                  for: blog)
@@ -56,8 +48,8 @@ class BlogDashboardPostsParserTests: CoreDataTestCase {
     /// When the API return no scheduled, but there are local scheduled posts
     /// Return one scheduled post
     func testReturnLocalScheduledWhenItExists() {
-        let blog = BlogBuilder(context).build()
-        _ = PostBuilder(context, blog: blog).scheduled().withRemote().build()
+        let blog = BlogBuilder(mainContext).build()
+        _ = PostBuilder(mainContext, blog: blog).scheduled().withRemote().build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithoutPosts["posts"] as! NSDictionary,
                                                  for: blog)
@@ -68,7 +60,7 @@ class BlogDashboardPostsParserTests: CoreDataTestCase {
     /// When the API return no scheduled, and there are no
     /// local scheduled posts, return zero scheduled posts
     func testReturnZeroScheduledWhenNothingLocal() {
-        let blog = BlogBuilder(context).build()
+        let blog = BlogBuilder(mainContext).build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithoutPosts["posts"] as! NSDictionary,
                                                  for: blog)
@@ -78,8 +70,8 @@ class BlogDashboardPostsParserTests: CoreDataTestCase {
 
     /// When the API return scheduled posts, keep the amount returned
     func testReturnScheduledAsItIsEvenWhenLocalScheduledExists() {
-        let blog = BlogBuilder(context).build()
-        _ = PostBuilder(context, blog: blog).scheduled().withRemote().build()
+        let blog = BlogBuilder(mainContext).build()
+        _ = PostBuilder(mainContext, blog: blog).scheduled().withRemote().build()
 
         let postsWithLocalContent = parser.parse(cardsResponseWithPosts["posts"] as! NSDictionary,
                                                  for: blog)

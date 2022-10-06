@@ -91,7 +91,7 @@ class MediaSettings: NSObject {
     }
 
     convenience override init() {
-        self.init(database: UserDefaults() as KeyValueDatabase)
+        self.init(database: UserPersistentStoreFactory.instance() as KeyValueDatabase)
     }
 
     // MARK: Public accessors
