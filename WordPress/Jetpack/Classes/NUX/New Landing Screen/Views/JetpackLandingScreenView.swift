@@ -16,8 +16,7 @@ struct JetpackLandingScreenView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(0..<prompts.count, id: \.hashValue) { index in
-                JetpackPromptView(text: prompts[index])
-                    .foregroundColor(colorForIndex(index))
+                JetpackPromptView(text: prompts[index], color: colorForIndex(index))
             }
         }
     }

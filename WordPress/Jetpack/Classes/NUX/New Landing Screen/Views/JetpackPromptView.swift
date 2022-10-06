@@ -2,10 +2,12 @@ import SwiftUI
 
 struct JetpackPromptView: View {
     let text: String
+    let color: Color
 
     var body: some View {
         Text(text)
             .font(makeFont())
+            .foregroundColor(color)
             .lineLimit(Constants.lineLimit)
             .padding(Constants.textInsets)
             .accessibility(hidden: true)
