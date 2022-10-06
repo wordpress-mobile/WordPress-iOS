@@ -1639,9 +1639,6 @@
 		80F6D04928EE866A00953C1A /* RemoteNotificationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EDC709212E5D6700E5E3ED /* RemoteNotificationStyles.swift */; };
 		80F6D04B28EE866A00953C1A /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A297CCB53FCF6851D79331 /* Pods_WordPressNotificationServiceExtension.framework */; };
 		80F6D04D28EE866A00953C1A /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
-		80F6D05A28EE86F800953C1A /* Info-Alpha.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80F6D05728EE86F800953C1A /* Info-Alpha.plist */; };
-		80F6D05B28EE86F800953C1A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80F6D05828EE86F800953C1A /* Info.plist */; };
-		80F6D05C28EE86F800953C1A /* Info-Internal.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80F6D05928EE86F800953C1A /* Info-Internal.plist */; };
 		80F6D05D28EE88FC00953C1A /* JetpackNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 80F6D05428EE866A00953C1A /* JetpackNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
 		80F8DAC2282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8DAC0282B6546007434A0 /* WPAnalytics+QuickStart.swift */; };
@@ -17421,9 +17418,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				80F6D04D28EE866A00953C1A /* Noticons.ttf in Resources */,
-				80F6D05A28EE86F800953C1A /* Info-Alpha.plist in Resources */,
-				80F6D05B28EE86F800953C1A /* Info.plist in Resources */,
-				80F6D05C28EE86F800953C1A /* Info-Internal.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
