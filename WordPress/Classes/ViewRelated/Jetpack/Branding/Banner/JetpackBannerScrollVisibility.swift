@@ -5,7 +5,9 @@ struct JetpackBannerScrollVisibility {
     static func shouldHide(_ scrollView: UIScrollView) -> Bool {
         return Self.shouldHide(
             contentHeight: scrollView.contentSize.height,
-            frameHeight: scrollView.frame.height,
+            /// We default to the superview's (UIStackView) frame height because it's unaffected by the banner's visibility, unlike the UIScrollView's frame.
+            /// This prevents a looping edge case where hiding the banner causes the content height to be less than the frame height, and vice versa.
+            frameHeight: scrollView.superview?.frame.height ?? scrollView.frame.height,
             verticalContentOffset: scrollView.contentOffset.y + scrollView.adjustedContentInset.top
         )
     }

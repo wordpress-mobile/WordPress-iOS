@@ -398,7 +398,7 @@ class MeViewController: UITableViewController {
 
     private var logOutAlertTitle: String {
         let context = ContextManager.sharedInstance().mainContext
-        let count = AbstractPost.countLocalPosts(using: context)
+        let count = AbstractPost.countLocalPosts(in: context)
 
         guard count > 0 else {
             return LogoutAlert.defaultTitle

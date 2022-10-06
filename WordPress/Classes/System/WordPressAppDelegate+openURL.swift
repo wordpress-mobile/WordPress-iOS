@@ -143,15 +143,14 @@ import AutomatticTracks
         let tags = params.value(of: NewPostKey.tags)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirst(in: context) else {
             return false
         }
 
         // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        let post = blog.createDraftPost()
         post.postTitle = title
         post.content = contentEscaped
         post.tags = tags
@@ -181,8 +180,7 @@ import AutomatticTracks
         let title = params.value(of: NewPostKey.title)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirst(in: context) else {
             return false
         }
 

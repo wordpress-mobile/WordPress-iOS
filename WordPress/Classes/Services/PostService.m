@@ -36,82 +36,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return self;
 }
 
-- (Post *)createPostForBlog:(Blog *)blog {
-    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
-    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
-    post.blog = blog;
-    post.remoteStatus = AbstractPostRemoteStatusSync;
-    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-
-    if (blog.settings.defaultCategoryID && blog.settings.defaultCategoryID.integerValue != PostCategoryUncategorized) {
-        PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
-        if (category) {
-            [post addCategoriesObject:category];
-        }
-    }
-
-    post.postFormat = blog.settings.defaultPostFormat;
-    post.postType = Post.typeDefaultIdentifier;
-
-    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
-    post.authorID = author.userID;
-    post.author = author.displayName;
-
-    [blog.managedObjectContext obtainPermanentIDsForObjects:@[post] error:nil];
-    NSAssert(![post.objectID isTemporaryID], @"The new post for this blog must have a permanent ObjectID");
-
-    return post;
-}
-
-- (Post *)createDraftPostForBlog:(Blog *)blog {
-    Post *post = [self createPostForBlog:blog];
-    [self initializeDraft:post];
-    return post;
-}
-
-- (Page *)createPageForBlog:(Blog *)blog {
-    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
-    Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
-    page.blog = blog;
-    page.date_created_gmt = [NSDate date];
-    page.remoteStatus = AbstractPostRemoteStatusSync;
-
-    BlogAuthor *author = [blog getAuthorWithId:blog.userID];
-    page.authorID = author.userID;
-    page.author = author.displayName;
-
-    [blog.managedObjectContext obtainPermanentIDsForObjects:@[page] error:nil];
-    NSAssert(![page.objectID isTemporaryID], @"The new page for this blog must have a permanent ObjectID");
-
-    return page;
-}
-
-- (Page *)createDraftPageForBlog:(Blog *)blog {
-    Page *page = [self createPageForBlog:blog];
-    [self initializeDraft:page];
-    return page;
-}
-
-
-- (void)getFailedPosts:(void (^)( NSArray<AbstractPost *>* posts))result {
-    [self.managedObjectContext performBlock:^{
-        NSString *entityName = NSStringFromClass([AbstractPost class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        
-        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", AbstractPostRemoteStatusFailed];
-        
-        NSError *error = nil;
-        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-        
-        if (!results) {
-            result(@[]);
-        } else {
-            result(results);
-        }
-    }];
-}
-
-
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
@@ -131,9 +55,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                               
                               if (!post) {
                                   if ([remotePost.type isEqualToString:PostServiceTypePage]) {
-                                      post = [self createPageForBlog:blog];
+                                      post = [blog createPage];
                                   } else {
-                                      post = [self createPostForBlog:blog];
+                                      post = [blog createPost];
                                   }
                               }
                               
@@ -324,7 +248,7 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
         [self.managedObjectContext performBlock:^{
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                [self markAsFailedAndDraftIfNeededWithPost:postInContext];
+                [postInContext markAsFailedAndDraftIfNeeded];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
@@ -690,12 +614,6 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 #pragma mark - Helpers
 
-- (void)initializeDraft:(AbstractPost *)post {
-    post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.dateModified = [NSDate date];
-    post.status = PostStatusDraft;
-}
-
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
             ofType:(NSString *)syncPostType
       withStatuses:(NSArray *)statuses
@@ -710,10 +628,10 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
-                post = [self createPageForBlog:blog];
+                post = [blog createPage];
             } else {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
-                post = [self createPostForBlog:blog];
+                post = [blog createPost];
             }
         }
         [self updatePost:post withRemotePost:remotePost];
@@ -1000,10 +918,9 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (void)updateCommentsForPost:(AbstractPost *)post
 {
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
-    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
-    [currentComments addObjectsFromArray:[allComments allObjects]];
+    NSSet *allComments = [post.blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
+    [currentComments unionSet:allComments];
 }
 
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
