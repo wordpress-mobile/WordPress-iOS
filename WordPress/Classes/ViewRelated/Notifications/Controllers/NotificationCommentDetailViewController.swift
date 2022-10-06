@@ -235,11 +235,11 @@ private extension NotificationCommentDetailViewController {
         }
 
         if let blog = blog {
-            return commentService.findComment(withID: commentID, in: blog)
+            return blog.comment(withID: commentID)
         }
 
         if let post = post {
-            return commentService.findComment(withID: commentID, from: post)
+            return post.comment(withID: commentID)
         }
 
         return nil

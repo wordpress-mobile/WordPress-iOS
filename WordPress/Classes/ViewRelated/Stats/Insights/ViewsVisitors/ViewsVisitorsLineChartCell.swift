@@ -188,10 +188,17 @@ private extension ViewsVisitorsLineChartCell {
 
     func styleLabels() {
         latestData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        latestData.adjustsFontSizeToFitWidth = true
+        latestLabel.adjustsFontSizeToFitWidth = true
+
         previousData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        previousData.adjustsFontSizeToFitWidth = true
+        previousLabel.adjustsFontSizeToFitWidth = true
 
         legendLatestLabel.text = NSLocalizedString("This week", comment: "This week legend label")
+        legendLatestLabel.adjustsFontSizeToFitWidth = true
         legendPreviousLabel.text = NSLocalizedString("Previous week", comment: "Previous week legend label")
+        legendPreviousLabel.adjustsFontSizeToFitWidth = true
     }
 
     func updateLabels() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,33 +13,42 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="242" id="KGk-i7-Jjw" customClass="PostingActivityCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="342" height="242"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="342" height="242"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="BVC-pc-qhM" userLabel="Months Stack View">
+                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="BVC-pc-qhM" userLabel="Months Stack View">
                         <rect key="frame" x="20" y="8" width="302" height="135"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="135" id="Gdi-iJ-OMR"/>
                         </constraints>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNM-OS-iwT" userLabel="Legend View">
-                        <rect key="frame" x="0.0" y="151" width="342" height="44"/>
+                        <rect key="frame" x="0.0" y="151" width="342" height="46.5"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MY1-06-Ewu">
+                                <rect key="frame" x="0.0" y="0.0" width="342" height="46.5"/>
+                            </stackView>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="mRd-EA-DY4"/>
+                            <constraint firstItem="MY1-06-Ewu" firstAttribute="leading" secondItem="MNM-OS-iwT" secondAttribute="leading" id="PMd-w4-ZBW"/>
+                            <constraint firstAttribute="trailing" secondItem="MY1-06-Ewu" secondAttribute="trailing" id="jDu-fT-YXj"/>
+                            <constraint firstAttribute="bottom" secondItem="MY1-06-Ewu" secondAttribute="bottom" id="jSj-9I-9fX"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="mRd-EA-DY4"/>
+                            <constraint firstItem="MY1-06-Ewu" firstAttribute="top" secondItem="MNM-OS-iwT" secondAttribute="top" id="v5x-n5-YyM"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A6f-g5-v7s" userLabel="View More View">
-                        <rect key="frame" x="0.0" y="195" width="342" height="44"/>
+                        <rect key="frame" x="0.0" y="197.5" width="342" height="44.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7G-gg-9QM" userLabel="View More Label">
-                                <rect key="frame" x="16" y="12" width="286" height="20"/>
+                                <rect key="frame" x="16" y="12" width="286" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="T5g-sS-mGT" userLabel="Disclosure Image">
-                                <rect key="frame" x="318" y="15.5" width="8" height="13"/>
+                                <rect key="frame" x="318" y="16" width="8" height="13"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="13" id="Mdf-mA-WPT"/>
                                     <constraint firstAttribute="width" constant="8" id="THc-DV-57t"/>
@@ -51,14 +60,14 @@
                             <constraint firstItem="D7G-gg-9QM" firstAttribute="top" secondItem="A6f-g5-v7s" secondAttribute="top" constant="12" id="0GN-so-rhg"/>
                             <constraint firstItem="D7G-gg-9QM" firstAttribute="leading" secondItem="A6f-g5-v7s" secondAttribute="leading" constant="16" id="63L-Sx-Txn"/>
                             <constraint firstItem="T5g-sS-mGT" firstAttribute="leading" secondItem="D7G-gg-9QM" secondAttribute="trailing" constant="16" id="HpU-7v-ggz"/>
-                            <constraint firstAttribute="height" constant="44" id="PwU-dj-XrK"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="PwU-dj-XrK"/>
                             <constraint firstAttribute="trailing" secondItem="T5g-sS-mGT" secondAttribute="trailing" constant="16" id="d8o-Dz-AGa"/>
                             <constraint firstAttribute="bottom" secondItem="D7G-gg-9QM" secondAttribute="bottom" constant="12" id="duR-t9-5Tn"/>
                             <constraint firstItem="T5g-sS-mGT" firstAttribute="centerY" secondItem="A6f-g5-v7s" secondAttribute="centerY" id="jy0-ih-OB7"/>
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhD-aG-GxJ" userLabel="View More Button">
-                        <rect key="frame" x="0.0" y="195" width="342" height="44"/>
+                        <rect key="frame" x="0.0" y="197.5" width="342" height="44.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
                             <action selector="didTapViewMoreButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="U1p-3L-m3M"/>
@@ -72,7 +81,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5q-Qa-Pnh" userLabel="Bottom Seperator Line">
-                        <rect key="frame" x="0.0" y="239" width="342" height="0.5"/>
+                        <rect key="frame" x="0.0" y="241.5" width="342" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="Ebs-qL-BEp"/>
@@ -88,7 +97,6 @@
                     <constraint firstItem="MNM-OS-iwT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KRO-SV-yPt"/>
                     <constraint firstItem="BVC-pc-qhM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="OWn-0r-61f"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="bottom" secondItem="A6f-g5-v7s" secondAttribute="bottom" id="Or8-T0-83W"/>
-                    <constraint firstItem="K5q-Qa-Pnh" firstAttribute="top" secondItem="A6f-g5-v7s" secondAttribute="bottom" placeholder="YES" id="S3M-pg-jE1"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="top" secondItem="MNM-OS-iwT" secondAttribute="bottom" id="Sns-td-yrm"/>
                     <constraint firstAttribute="trailing" secondItem="BVC-pc-qhM" secondAttribute="trailing" constant="20" id="bCQ-sr-6gB"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="c2q-6v-gHN"/>
@@ -109,7 +117,7 @@
             </constraints>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="K5q-Qa-Pnh" id="y35-PR-cqI"/>
-                <outlet property="legendView" destination="MNM-OS-iwT" id="3sj-wa-JnR"/>
+                <outlet property="legendView" destination="MY1-06-Ewu" id="ocU-dZ-FRp"/>
                 <outlet property="monthsStackView" destination="BVC-pc-qhM" id="IlC-oK-tm8"/>
                 <outlet property="topConstraint" destination="OWn-0r-61f" id="P96-ck-qph"/>
                 <outlet property="topSeparatorLine" destination="SrM-6z-hC1" id="AGS-zl-lmo"/>

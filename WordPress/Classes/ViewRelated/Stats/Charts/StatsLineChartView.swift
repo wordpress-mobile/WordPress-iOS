@@ -221,7 +221,7 @@ private extension StatsLineChartView {
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
         xAxis.labelTextColor = styling.labelColor
-        xAxis.labelFont = UIFont.preferredFont(forTextStyle: .footnote)
+        xAxis.labelFont = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: [], maximumPointSize: WPStyleGuide.Stats.maximumChartAxisFontPointSize)
         xAxis.setLabelCount(Constants.horizontalAxisLabelCount, force: true)
 
         let dateValueFormattter = DateValueFormatter()
@@ -250,7 +250,7 @@ private extension StatsLineChartView {
         yAxis.drawZeroLineEnabled = true
         yAxis.gridColor = styling.lineColor
         yAxis.labelTextColor = styling.labelColor
-        yAxis.labelFont = UIFont.preferredFont(forTextStyle: .footnote)
+        yAxis.labelFont = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: [], maximumPointSize: WPStyleGuide.Stats.maximumChartAxisFontPointSize)
         yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         yAxis.valueFormatter = styling.yAxisValueFormatter
         yAxis.zeroLineColor = styling.lineColor

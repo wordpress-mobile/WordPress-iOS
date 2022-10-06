@@ -14,7 +14,7 @@ FOUNDATION_EXTERN NSString * const ContextManagerModelNameCurrent;
 
 @protocol CoreDataStack
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainContext;
-- (NSManagedObjectContext *const)newDerivedContext;
+- (NSManagedObjectContext *const)newDerivedContext DEPRECATED_MSG_ATTRIBUTE("Use `performAndSave` instead");
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
