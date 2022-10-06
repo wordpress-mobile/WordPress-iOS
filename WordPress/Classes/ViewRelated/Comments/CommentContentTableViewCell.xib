@@ -204,6 +204,7 @@
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>
                 <outlet property="replyButton" destination="VoI-YI-Qgc" id="Z9J-Tp-bur"/>
+                <outlet property="separatorView" destination="qId-Th-B9r" id="VEc-Bb-Zi6"/>
             </connections>
             <point key="canvasLocation" x="153.62318840579712" y="329.46428571428572"/>
         </tableViewCell>

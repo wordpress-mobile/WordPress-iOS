@@ -53,6 +53,7 @@ extension NSNotification.Name {
         cell.indentationWidth = Constants.indentationWidth
         cell.indentationLevel = min(Constants.maxIndentationLevel, Int(comment.depth))
         cell.accessoryButtonType = isModerationMenuEnabled(for: comment) ? .ellipsis : .share
+//        cell.shouldHideSeparator = true
 
         // if the comment can be moderated, show the context menu when tapping the accessory button.
         // Note that accessoryButtonAction will be ignored when the menu is assigned.
