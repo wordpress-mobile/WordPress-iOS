@@ -63,11 +63,6 @@ class ReblogPresenterTests: ReblogTestCase {
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
         // Then
         try XCTAssertEqual(mainContext.count(for: draftPosts), 1)
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
     }
 
     func testPresentEditorForMultipleSites() {
