@@ -13,7 +13,7 @@ struct JetpackPrologueStyleGuide {
 
     // Gradient overlay colors
     // new
-    static let newGradientColor = UIColor(light: .muriel(color: .jetpackGreen, .shade5), dark: .muriel(color: .jetpackGreen, .shade100))
+    static let newGradientColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0), dark: .muriel(color: .jetpackGreen, .shade100))
     // combined
     static let gradientColor = FeatureFlag.newLandingScreen.enabled ? newGradientColor : oldBackgroundColor
 
@@ -21,27 +21,30 @@ struct JetpackPrologueStyleGuide {
     // old
     static let oldContinueHighlightedFillColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.90)
     // new
-    static let newContinueFillColor = UIColor.muriel(color: .jetpackGreen, .shade50)
-    static let newContinueHighlightedFillColor = UIColor.muriel(color: .jetpackGreen, .shade90)
+    static let newContinueFillColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50), dark: .white)
+    static let newContinueHighlightedFillColor = UIColor(light: .muriel(color: .jetpackGreen, .shade90), dark: whiteWithAlpha07)
+    static let newContinueTextColor = UIColor(light: .white, dark: .muriel(color: .jetpackGreen, .shade80))
 
     // combined
     static let continueFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueFillColor : .white
     static let continueHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueHighlightedFillColor : oldContinueHighlightedFillColor
-    static let continueTextColor = FeatureFlag.newLandingScreen.enabled ? .white : oldBackgroundColor
+    static let continueTextColor = FeatureFlag.newLandingScreen.enabled ? newContinueTextColor : oldBackgroundColor
     static let continueHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
 
 
     // Enter your site address button
     // old
     static let oldSiteBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.40)
+    static let newSiteTextColor = UIColor(light: .muriel(color: .jetpackGreen, .shade90), dark: .white)
+    static let newSiteHighlightedTextColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50), dark: whiteWithAlpha07)
     static let oldSiteHighlightedBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20)
     // combined
-    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .white : oldBackgroundColor
-    static let siteBorderColor = FeatureFlag.newLandingScreen.enabled ? .white : oldSiteBorderColor
-    static let siteTextColor = FeatureFlag.newLandingScreen.enabled ? UIColor.black : UIColor.white
+    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldBackgroundColor
+    static let siteBorderColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldSiteBorderColor
+    static let siteTextColor = FeatureFlag.newLandingScreen.enabled ? newSiteTextColor : UIColor.white
     static let siteHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
     static let siteHighlightedBorderColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldSiteHighlightedBorderColor
-    static let siteHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? .black : whiteWithAlpha07
+    static let siteHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? newSiteHighlightedTextColor : whiteWithAlpha07
 
     // Color used in both old and versions
     static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)
