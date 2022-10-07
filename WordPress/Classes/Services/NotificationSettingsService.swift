@@ -177,7 +177,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     fileprivate func settingsFromRemote(_ remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
         var parsed       = [NotificationSettings]()
-        let blogs        = ((try? BlogQuery().blogs(in: managedObjectContext)) ?? []).filter { $0.dotComID != nil }
+        let blogs        = ((try? CoreDataQuery<Blog>.default().result(in: managedObjectContext)) ?? []).filter { $0.dotComID != nil }
         let blogMap      = Dictionary(blogs.map { ($0.dotComID!.intValue, $0) }, uniquingKeysWith: { _, new in new })
 
         for remoteSetting in remoteSettings {

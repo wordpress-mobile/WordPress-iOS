@@ -81,7 +81,7 @@ class GutenbergSettings {
     }
 
     private func setGutenbergEnabledForAllSites() {
-        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
+        let allBlogs = (try? CoreDataQuery<Blog>.default().result(in: context)) ?? []
         allBlogs.forEach { blog in
             if blog.editor == .aztec {
                 setShowPhase2Dialog(true, for: blog)

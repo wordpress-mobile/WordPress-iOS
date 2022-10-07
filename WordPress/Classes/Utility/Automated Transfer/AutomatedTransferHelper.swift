@@ -271,7 +271,7 @@ class AutomatedTransferHelper {
 
         let service = BlogService.withMainContext()
 
-        guard let blog = try? BlogQuery().blogID(site.siteID).username(site.username).blog(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = try? CoreDataQuery<Blog>.default().blogID(site.siteID).username(site.username).first(in: ContextManager.sharedInstance().mainContext) else {
             DDLogInfo("[AT] Couldn't find a blog with provided JetpackSiteRef. This definitely shouldn't have happened. Bailing.")
 
             SVProgressHUD.dismiss()
