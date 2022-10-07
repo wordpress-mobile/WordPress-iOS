@@ -10,7 +10,6 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     @IBOutlet weak var viewMoreLabel: UILabel!
     @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
-    @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
@@ -84,7 +83,6 @@ private extension TwoColumnCell {
     func toggleViewMore() {
         let showViewMore = !dataRows.isEmpty && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
-        rowsStackViewBottomConstraint?.isActive = showViewMore
     }
 
     @IBAction func didTapViewMore(_ sender: UIButton) {
