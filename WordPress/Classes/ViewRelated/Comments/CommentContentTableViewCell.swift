@@ -30,13 +30,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc weak var richContentDelegate: WPRichContentViewDelegate? = nil
 
-    /// When set to true, the cell will always hide the moderation bar regardless of the user's moderating capabilities.
-    var hidesModerationBar: Bool = false {
-        didSet {
-            updateModerationBarVisibility()
-        }
-    }
-
     /// Encapsulate the accessory button image assignment through an enum, to apply a standardized image configuration.
     /// See `accessoryIconConfiguration` in `WPStyleGuide+CommentDetail`.
     var accessoryButtonType: AccessoryButtonType = .share {
@@ -85,7 +78,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     @objc var isReplyHighlighted: Bool = false {
         didSet {
-            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.buttonTintColor
+            replyButton?.tintColor = isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor
             replyButton?.setTitleColor(isReplyHighlighted ? Style.highlightedReplyButtonTintColor : Style.reactionButtonTextColor, for: .normal)
             replyButton?.setImage(isReplyHighlighted ? Style.highlightedReplyIconImage : Style.replyIconImage, for: .normal)
         }
@@ -94,6 +87,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     // MARK: Constants
 
     private let customBottomSpacing: CGFloat = 10
+    private let contentButtonsTopSpacing: CGFloat = 15
 
     // MARK: Outlets
 
@@ -116,11 +110,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
-    // This is public so its delegate can be set directly.
-    @IBOutlet private(set) weak var moderationBar: CommentModerationBar!
-    @IBOutlet private weak var moderationBarView: UIView!
-
     @IBOutlet private weak var highlightBarView: UIView!
+    @IBOutlet private weak var separatorView: UIView!
 
     // MARK: Private Properties
 
@@ -169,15 +160,14 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
     }
 
-    /// Controls the visibility of the moderation bar view.
-    private var isModerationEnabled: Bool = false {
-        didSet {
-            updateModerationBarVisibility()
-        }
-    }
-
     private var isReactionBarVisible: Bool {
         return isCommentReplyEnabled || isCommentLikesEnabled
+    }
+
+    var shouldHideSeparator = false {
+        didSet {
+            separatorView.isHidden = shouldHideSeparator
+        }
     }
 
     // MARK: Lifecycle
@@ -236,18 +226,9 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isCommentReplyEnabled = comment.canReply()
         isCommentLikesEnabled = comment.canLike()
         isAccessoryButtonEnabled = comment.isApproved()
-        isModerationEnabled = comment.allowsModeration()
 
         // When reaction bar is hidden, add some space between the webview and the moderation bar.
-        containerStackView.setCustomSpacing(isReactionBarVisible ? 0 : customBottomSpacing, after: contentContainerView)
-
-        // When both reaction bar and moderation bar is hidden, the custom spacing for the webview won't be applied since it's at the bottom of the stack view.
-        // The reaction bar and the moderation bar have their own spacing, unlike the webview. Therefore, additional bottom spacing is needed.
-        containerStackBottomConstraint.constant = (isReactionBarVisible || isModerationEnabled) ? 0 : customBottomSpacing
-
-        if isModerationEnabled {
-            moderationBar.commentStatus = CommentStatusType.typeForStatus(comment.status)
-        }
+        containerStackView.setCustomSpacing(contentButtonsTopSpacing, after: contentContainerView)
 
         // Configure content renderer.
         self.onContentLoaded = onContentLoaded
@@ -262,7 +243,6 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(with: comment, onContentLoaded: onContentLoaded)
 
-        hidesModerationBar = true
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
         isAccessoryButtonEnabled = false
@@ -302,12 +282,7 @@ private extension CommentContentTableViewCell {
     typealias Style = WPStyleGuide.CommentDetail.Content
 
     var accessoryButtonImage: UIImage? {
-        switch accessoryButtonType {
-        case .share:
-            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        case .ellipsis:
-            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
-        }
+        return .init(systemName: Style.infoIconImageName, withConfiguration: Style.accessoryIconConfiguration)
     }
 
     var likeButtonTitle: String {
@@ -344,7 +319,7 @@ private extension CommentContentTableViewCell {
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
-        replyButton?.tintColor = Style.buttonTintColor
+        replyButton?.tintColor = Style.reactionButtonTextColor
         replyButton?.titleLabel?.font = Style.reactionButtonFont
         replyButton?.titleLabel?.adjustsFontSizeToFitWidth = true
         replyButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -354,7 +329,10 @@ private extension CommentContentTableViewCell {
         replyButton?.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton?.flipInsetsForRightToLeftLayoutDirection()
         replyButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        adjustImageAndTitleEdgeInsets(for: replyButton)
+        replyButton?.sizeToFit()
 
+        likeButton?.tintColor = Style.reactionButtonTextColor
         likeButton?.titleLabel?.font = Style.reactionButtonFont
         likeButton?.titleLabel?.adjustsFontSizeToFitWidth = true
         likeButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -362,8 +340,20 @@ private extension CommentContentTableViewCell {
         likeButton?.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton?.flipInsetsForRightToLeftLayoutDirection()
         likeButton?.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        adjustImageAndTitleEdgeInsets(for: likeButton)
         updateLikeButton(liked: false, numberOfLikes: 0)
+        likeButton?.sizeToFit()
     }
+
+    private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
+        guard let imageSize = button.imageView?.frame.size, let titleSize = button.titleLabel?.frame.size else {
+            return
+        }
+
+        let spacing: CGFloat = 3
+        button.titleEdgeInsets = .init(top: 0, left: -titleSize.width, bottom: -(imageSize.height + spacing), right: 0)
+        button.imageEdgeInsets = .init(top: -(titleSize.height + spacing), left: imageSize.width/2, bottom: 0, right: 0)
+   }
 
     /// Configures the avatar image view with the provided URL.
     /// If the URL does not contain any image, the default placeholder image will be displayed.
@@ -389,10 +379,6 @@ private extension CommentContentTableViewCell {
         avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
     }
 
-    func updateModerationBarVisibility() {
-        moderationBarView.isHidden = !isModerationEnabled || hidesModerationBar
-    }
-
     func updateContainerLeadingConstraint() {
         containerStackLeadingConstraint?.constant = (indentationWidth * CGFloat(indentationLevel)) + defaultLeadingMargin
     }
@@ -411,10 +397,16 @@ private extension CommentContentTableViewCell {
         isLiked = liked
         likeCount = numberOfLikes
 
-        let onAnimationComplete = {
-            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.buttonTintColor
+        let onAnimationComplete = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.likeButton.tintColor = liked ? Style.likedTintColor : Style.reactionButtonTextColor
             self.likeButton.setImage(liked ? Style.likedIconImage : Style.unlikedIconImage, for: .normal)
             self.likeButton.setTitle(self.likeButtonTitle, for: .normal)
+            self.adjustImageAndTitleEdgeInsets(for: self.likeButton)
+            self.likeButton.setTitleColor(liked ? Style.likedTintColor : Style.reactionButtonTextColor, for: .normal)
             completion?()
         }
 

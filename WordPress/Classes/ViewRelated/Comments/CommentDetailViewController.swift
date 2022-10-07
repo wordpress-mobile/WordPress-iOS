@@ -32,8 +32,24 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var comment: Comment
     private var isLastInList = true
     private var managedObjectContext: NSManagedObjectContext
+    private var sections = [SectionType] ()
     private var rows = [RowType]()
-    private var moderationBar: CommentModerationBar?
+    private var commentStatus: CommentStatusType? {
+        didSet {
+            switch commentStatus {
+            case .pending:
+                unapproveComment()
+            case .approved:
+                approveComment()
+            case .spam:
+                spamComment()
+            case .unapproved:
+                trashComment()
+            default:
+                break
+            }
+        }
+    }
     private var notification: Notification?
 
     private var isNotificationComment: Bool {
@@ -96,15 +112,34 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
+    private lazy var moderationCell: UITableViewCell = {
+        return $0
+    }(UITableViewCell())
+
     private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
         let cell = BorderedButtonTableViewCell()
         cell.configure(buttonTitle: .deleteButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                        normalColor: Constants.deleteButtonNormalColor,
                        highlightedColor: Constants.deleteButtonHighlightColor,
                        buttonInsets: Constants.deleteButtonInsets)
         cell.delegate = self
         return cell
     }()
+
+    private lazy var trashButtonCell: BorderedButtonTableViewCell = {
+        let cell = BorderedButtonTableViewCell()
+        cell.configure(buttonTitle: .trashButtonText,
+                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+                       normalColor: Constants.deleteButtonNormalColor,
+                       highlightedColor: Constants.trashButtonHighlightColor,
+                       borderColor: .clear,
+                       buttonInsets: Constants.deleteButtonInsets,
+                       backgroundColor: Constants.trashButtonBackgroundColor)
+        cell.delegate = self
+        return cell
+    }()
+
 
     private lazy var commentService: CommentService = {
         return .init(managedObjectContext: managedObjectContext)
@@ -184,12 +219,26 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return button
     }()
 
+    private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: comment.allowsModeration()
+            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
+            : UIImage(systemName: Style.Content.shareIconImageName),
+            style: .plain,
+            target: self,
+            action: #selector(shareCommentURL)
+        )
+        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
+        return button
+    }()
+
     // MARK: Initialization
 
     @objc init(comment: Comment,
                isLastInList: Bool,
                managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
+        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
         self.accountService = AccountService(managedObjectContext: managedObjectContext)
@@ -201,6 +250,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
+        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
@@ -222,7 +272,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         configureSuggestionsView()
         configureNavigationBar()
         configureTable()
-        configureRows()
+        configureSections()
         refreshCommentReplyIfNeeded()
     }
 
@@ -281,11 +331,16 @@ private extension CommentDetailViewController {
 
     typealias Style = WPStyleGuide.CommentDetail
 
+    enum SectionType: Equatable {
+        case content([RowType])
+        case moderation([RowType])
+    }
+
     enum RowType: Equatable {
         case header
         case content
         case replyIndicator
-        case text(title: String, detail: String, image: UIImage? = nil)
+        case status(status: CommentStatusType)
         case deleteComment
     }
 
@@ -296,6 +351,8 @@ private extension CommentDetailViewController {
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
         static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
         static let deleteButtonHighlightColor: UIColor = .white
+        static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
+        static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
         static let notificationDetailSource = ["source": "notification_details"]
     }
 
@@ -348,9 +405,12 @@ private extension CommentDetailViewController {
     }
 
     func configureNavBarButton() {
+        var barItems: [UIBarButtonItem] = []
+        barItems.append(shareBarButtonItem)
         if comment.allowsModeration() {
-            navigationItem.setRightBarButton(editBarButtonItem, animated: false)
+            barItems.append(editBarButtonItem)
         }
+        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     func configureTable() {
@@ -371,56 +431,58 @@ private extension CommentDetailViewController {
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
     }
 
-    func configureRows() {
+    func configureContentRows() -> [RowType] {
         // Header and content cells should always be visible, regardless of user roles.
         var rows: [RowType] = [.header, .content]
-
-        defer {
-            self.rows = rows
-        }
 
         if isCommentReplied {
             rows.append(.replyIndicator)
         }
 
-        // Author URL is publicly visible, but let's hide the row if it's empty or contains invalid URL.
-        if comment.authorURL() != nil {
-            rows.append(.text(title: .webAddressLabelText, detail: comment.authorUrlForDisplay(), image: Style.externalIconImage))
-        }
+        return rows
+    }
 
-        // Email address and IP address fields are only visible for Editor or Administrator roles, i.e. when user is allowed to moderate the comment.
-        guard comment.allowsModeration() else {
-            return
-        }
+    func configureModeratationRows() -> [RowType] {
+        var rows: [RowType] = []
+        rows.append(.status(status: .approved))
+        rows.append(.status(status: .pending))
+        rows.append(.status(status: .spam))
 
-        // If the comment is submitted anonymously, the email field may be empty. In this case, let's hide it. Ref: https://git.io/JzKIt
-        if !comment.author_email.isEmpty {
-            rows.append(.text(title: .emailAddressLabelText, detail: comment.author_email))
-        }
+        rows.append(.deleteComment)
 
-        rows.append(.text(title: .ipAddressLabelText, detail: comment.author_ip))
+        return rows
+    }
 
-        if comment.deleteWillBePermanent() {
-            rows.append(.deleteComment)
+    func configureSections() {
+        var sections: [SectionType] = []
+
+        sections.append(.content(configureContentRows()))
+        if comment.allowsModeration() {
+            sections.append(.moderation(configureModeratationRows()))
         }
+        self.sections = sections
     }
 
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
         configureNavBarButton()
-        configureRows()
+        configureSections()
         tableView.reloadData()
     }
 
-
     /// Checks if the index path is positioned before the delete button cell.
     func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
-        guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+        switch sections[indexPath.section] {
+        case .content(_):
             return false
-        }
+        case .moderation(let rows):
+            guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
+                return false
+            }
 
-        return indexPath.row == deleteCellIndex - 1
+            return indexPath.row == deleteCellIndex - 1
+        }
     }
 
     // MARK: Cell configuration
@@ -448,7 +510,7 @@ private extension CommentDetailViewController {
         }
 
         cell.accessoryButtonAction = { [weak self] senderView in
-            self?.shareCommentURL(senderView)
+            self?.presentUserInfoSheet(senderView)
         }
 
         cell.likeButtonAction = { [weak self] in
@@ -460,31 +522,18 @@ private extension CommentDetailViewController {
         }
     }
 
-    func configuredTextCell(for row: RowType) -> UITableViewCell {
-        guard case let .text(title, detail, image) = row else {
-            return .init()
-        }
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: .textCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .textCellIdentifier)
+    func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: .moderationCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .moderationCellIdentifier)
 
         cell.selectionStyle = .none
         cell.tintColor = Style.tintColor
 
-        cell.textLabel?.font = Style.secondaryTextFont
-        cell.textLabel?.textColor = Style.secondaryTextColor
-        cell.textLabel?.text = title
-
         cell.detailTextLabel?.font = Style.textFont
         cell.detailTextLabel?.textColor = Style.textColor
         cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.text = detail.isEmpty ? " " : detail // prevent the cell from collapsing due to empty label text.
+        cell.detailTextLabel?.text = status.title
 
-        cell.accessoryView = {
-            guard let image = image else {
-                return nil
-            }
-            return UIImageView(image: image)
-        }()
+        cell.accessoryView = status == commentStatus ? UIImageView(image: .gridicon(.checkmark)) : nil
 
         return cell
     }
@@ -523,7 +572,7 @@ private extension CommentDetailViewController {
         // If there is a reply, add reply indicator if it is not being shown.
         if replyID > 0 && !rows.contains(.replyIndicator) {
             // Update the rows first so replyIndicator is present in `rows`.
-            configureRows()
+            configureSections()
             guard let replyIndicatorRow = rows.firstIndex(of: .replyIndicator) else {
                 tableView.reloadData()
                 return
@@ -540,7 +589,7 @@ private extension CommentDetailViewController {
                 return
             }
 
-            configureRows()
+            configureSections()
             tableView.deleteRows(at: [IndexPath(row: replyIndicatorRow, section: .zero)], with: .fade)
         }
     }
@@ -687,15 +736,7 @@ private extension CommentDetailViewController {
         })
     }
 
-    func visitAuthorURL() {
-        guard let authorURL = comment.authorURL() else {
-            return
-        }
-
-        openWebView(for: authorURL)
-    }
-
-    func shareCommentURL(_ senderView: UIView) {
+    @objc func shareCommentURL(_ senderView: UIView) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -708,6 +749,19 @@ private extension CommentDetailViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 
+    func presentUserInfoSheet(_ senderView: UIView) {
+        let viewModel = CommentDetailInfoViewModel(
+            url: comment.authorURL(),
+            urlToDisplay: comment.authorUrlForDisplay(),
+            email: comment.author_email,
+            ipAddress: comment.author_ip,
+            isAdmin: comment.allowsModeration()
+        )
+        let viewController = CommentDetailInfoViewController(viewModel: viewModel)
+        viewModel.view = viewController
+        let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
+        bottomSheet.show(from: self)
+    }
 }
 
 // MARK: - Strings
@@ -716,37 +770,28 @@ private extension String {
     // MARK: Constants
     static let replyIndicatorCellIdentifier = "replyIndicatorCell"
     static let textCellIdentifier = "textCell"
+    static let moderationCellIdentifier = "moderationCell"
 
     // MARK: Localization
     static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
                                                           + "%1$@ is a placeholder for the comment author."
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let webAddressLabelText = NSLocalizedString("Web address", comment: "Describes the web address section in the comment detail screen.")
-    static let emailAddressLabelText = NSLocalizedString("Email address", comment: "Describes the email address section in the comment detail screen.")
-    static let ipAddressLabelText = NSLocalizedString("IP address", comment: "Describes the IP address section in the comment detail screen.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
+    static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
 }
 
-
-// MARK: - CommentModerationBarDelegate
-
-extension CommentDetailViewController: CommentModerationBarDelegate {
-    func statusChangedTo(_ commentStatus: CommentStatusType) {
-
-        notifyDelegateCommentModerated()
-
-        switch commentStatus {
+private extension CommentStatusType {
+    var title: String? {
+        switch self {
         case .pending:
-            unapproveComment()
+            return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
         case .approved:
-            approveComment()
+            return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
         case .spam:
-            spamComment()
-        case .unapproved:
-            trashComment()
+            return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
         default:
-            break
+            return nil
         }
     }
 }
@@ -754,7 +799,6 @@ extension CommentDetailViewController: CommentModerationBarDelegate {
 // MARK: - Comment Moderation Actions
 
 private extension CommentDetailViewController {
-
     func unapproveComment() {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
                                                      withProperties: Constants.notificationDetailSource,
@@ -766,7 +810,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.pendingFail)
-            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -781,7 +825,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.approveFail)
-            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -794,7 +838,7 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.spamFail)
-            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
     }
 
@@ -807,7 +851,8 @@ private extension CommentDetailViewController {
             self?.refreshData()
         }, failure: { [weak self] error in
             self?.displayNotice(title: ModerationMessages.trashFail)
-            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+
         })
     }
 
@@ -821,7 +866,6 @@ private extension CommentDetailViewController {
         }, failure: { [weak self] error in
             self?.deleteButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.deleteFail)
-            self?.moderationBar?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             completion?(false)
         })
     }
@@ -887,11 +931,16 @@ private extension CommentDetailViewController {
 extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows.count
+        switch sections[section] {
+        case .content(let rows):
+            return rows.count
+        case .moderation(let rows):
+            return rows.count
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -899,9 +948,14 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = rows[indexPath.row]
         let cell: UITableViewCell = {
-            switch row {
+            let rows: [RowType]
+            switch sections[indexPath.section] {
+            case .content(let sectionRows), .moderation(let sectionRows):
+                rows = sectionRows
+            }
+
+            switch rows[indexPath.row] {
             case .header:
                 configureHeaderCell()
                 return headerCell
@@ -912,22 +966,39 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
 
                 configureContentCell(cell, comment: comment)
-                cell.moderationBar.delegate = self
-                moderationBar = cell.moderationBar
                 return cell
 
             case .replyIndicator:
                 return replyIndicatorCell
 
-            case .text:
-                return configuredTextCell(for: row)
-
             case .deleteComment:
-                return deleteButtonCell
+                if comment.deleteWillBePermanent() {
+                    return deleteButtonCell
+                } else {
+                    return trashButtonCell
+                }
+
+            case .status(let statusType):
+                return configuredStatusCell(for: statusType)
             }
         }()
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch sections[section] {
+        case .content:
+            return nil
+        case .moderation:
+            return NSLocalizedString("STATUS", comment: "Section title for the moderation section of the comment details screen.")
+        }
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = Style.tertiaryTextFont
+        header.textLabel?.textColor = UIColor.secondaryLabel
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -938,20 +1009,34 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        switch rows[indexPath.row] {
-        case .header:
-            if isNotificationComment {
-                navigateToNotificationComment()
-            } else {
-                comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+        switch sections[indexPath.section] {
+        case .content(let rows):
+            switch rows[indexPath.row] {
+            case .header:
+                if isNotificationComment {
+                    navigateToNotificationComment()
+                } else {
+                    comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
+                }
+            case .replyIndicator:
+                navigateToReplyComment()
+            default:
+                break
             }
-        case .replyIndicator:
-            navigateToReplyComment()
-        case .text(let title, _, _) where title == .webAddressLabelText:
-            visitAuthorURL()
-        default:
-            break
+
+        case .moderation(let rows):
+            switch rows[indexPath.row] {
+            case .status(let statusType):
+                if commentStatus == statusType {
+                    break
+                }
+                commentStatus = statusType
+                notifyDelegateCommentModerated()
+            default:
+                break
+            }
         }
+
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -1150,7 +1235,11 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func buttonTapped() {
-        deleteButtonTapped()
+        if comment.deleteWillBePermanent() {
+            deleteButtonTapped()
+        } else {
+            commentStatus = .unapproved
+        }
     }
 
 }
