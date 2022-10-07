@@ -125,15 +125,18 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
         let topLabel = UILabel()
         topLabel.textColor = .text
         topLabel.font = .preferredFont(forTextStyle: .body)
+        topLabel.numberOfLines = 0
 
         let middleLabel = UILabel()
         middleLabel.textColor = .text
         middleLabel.font = WPStyleGuide.Stats.insightsCountFont
-        middleLabel.adjustsFontSizeToFitWidth = true
+        middleLabel.adjustsFontForContentSizeCategory = true
+        middleLabel.numberOfLines = 0
 
         let bottomLabel = UILabel()
         bottomLabel.textColor = .textSubtle
         bottomLabel.font = .preferredFont(forTextStyle: .body)
+        bottomLabel.numberOfLines = 0
 
         verticalStackView.spacing = Metrics.verticalStackViewSpacing
         verticalStackView.addArrangedSubviews([topLabel, middleLabel, bottomLabel])

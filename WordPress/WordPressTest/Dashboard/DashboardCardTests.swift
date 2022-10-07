@@ -11,20 +11,17 @@ class MockDefaultSectionProvider: DefaultSectionProvider {
 
 class DashboardCardTests: CoreDataTestCase {
 
-    private var context: NSManagedObjectContext!
     private var blog: Blog!
 
     override func setUp() {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        context = contextManager.newDerivedContext()
-        blog = BlogBuilder(context).build()
+        blog = BlogBuilder(mainContext).build()
     }
 
     override func tearDown() {
         QuickStartTourGuide.shared.remove(from: blog)
-        context = nil
         blog = nil
         super.tearDown()
     }

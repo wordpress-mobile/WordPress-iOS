@@ -150,7 +150,7 @@ import AutomatticTracks
         // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        let post = blog.createDraftPost()
         post.postTitle = title
         post.content = contentEscaped
         post.tags = tags
