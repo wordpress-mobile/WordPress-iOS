@@ -43,7 +43,7 @@ class JetpackPrologueViewController: UIViewController {
         [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
         [startColor.cgColor, endColor.cgColor]
 
-        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.2, 0.5, 1.0] : [0.0, 0.9]
+        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
 
         return gradientLayer
     }
