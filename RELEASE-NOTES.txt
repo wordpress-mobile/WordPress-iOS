@@ -1,6 +1,7 @@
 21.0
 -----
 * [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
+* [**] [Jetpack-only] Added a share extension. Now users can share content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19383]
 
 20.9
 -----
