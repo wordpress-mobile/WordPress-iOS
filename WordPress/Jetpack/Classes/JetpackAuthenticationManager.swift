@@ -1,22 +1,13 @@
 import WordPressAuthenticator
+import UIKit
 
 struct JetpackAuthenticationManager: AuthenticationHandler {
-    var statusBarStyle: UIStatusBarStyle = FeatureFlag.newLandingScreen.enabled ? .default : .lightContent
-    var prologueViewController: UIViewController? = JetpackPrologueViewController()
-    var buttonViewTopShadowImage: UIImage? = UIImage()
-    var prologueButtonsBackgroundColor: UIColor? = JetpackPrologueStyleGuide.backgroundColor
-
-    var prologuePrimaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.continueButtonStyle
-    var prologueSecondaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.siteAddressButtonStyle
-
-    // MARK: - Private: Helpers
-    private func isValidJetpack(for site: WordPressComSiteInfo) -> Bool {
-        return site.hasJetpack &&
-            site.isJetpackConnected &&
-            site.isJetpackActive
-    }
-
-    private func errorViewController(with model: JetpackErrorViewModel) -> JetpackLoginErrorViewController {
-        return JetpackLoginErrorViewController(viewModel: model)
-    }
+    let statusBarStyle: UIStatusBarStyle = FeatureFlag.newLandingScreen.enabled ? .default : .lightContent
+    let prologueViewController: UIViewController? = JetpackPrologueViewController()
+    let buttonViewTopShadowImage: UIImage? = UIImage()
+    let prologueButtonsBackgroundColor: UIColor? = JetpackPrologueStyleGuide.backgroundColor
+    let prologueButtonsBlurEffect: UIBlurEffect? = JetpackPrologueStyleGuide.prologueButtonsBlurEffect
+    let prologuePrimaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.continueButtonStyle
+    let prologueSecondaryButtonStyle: NUXButtonStyle? = JetpackPrologueStyleGuide.siteAddressButtonStyle
+    let prologueBackgroundImage = JetpackPrologueStyleGuide.prologueBackgroundImage
 }

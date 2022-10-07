@@ -6,23 +6,10 @@ import Nimble
 
 class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
 
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-
-        context = contextManager.newDerivedContext()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-    }
-
     func testMediaUploadErrorsWillShowAnErrorMessageAndOverlay() {
         // Arrange
-        let media = Media(context: context)
-        let post = Fixtures.createPost(context: context, with: media)
+        let media = Media(context: mainContext)
+        let post = Fixtures.createPost(context: mainContext, with: media)
         let vc = Fixtures.createAztecPostViewController(with: post)
 
         let attachment = vc.findAttachment(withUploadID: media.uploadID)!
@@ -41,8 +28,8 @@ class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
 
     func testRestartingOfMediaUploadsWillClearErrorMessageAndOverlay() {
         // Arrange
-        let media = Media(context: context)
-        let post = Fixtures.createPost(context: context, with: media)
+        let media = Media(context: mainContext)
+        let post = Fixtures.createPost(context: mainContext, with: media)
         let vc = Fixtures.createAztecPostViewController(with: post)
 
         let attachment = vc.findAttachment(withUploadID: media.uploadID)!
@@ -63,8 +50,8 @@ class AztecPostViewControllerAttachmentTests: CoreDataTestCase {
 
     func testUpdatePostContentAfterAMediaThumbnailUpdate() {
         // Arrange
-        let media = Media(context: context)
-        let post = Fixtures.createPost(context: context, with: media)
+        let media = Media(context: mainContext)
+        let post = Fixtures.createPost(context: mainContext, with: media)
         let vc = Fixtures.createAztecPostViewController(with: post)
 
         // Act

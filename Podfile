@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.57.1'
+  pod 'WordPressKit', '~> 4.58'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.4.3'
+  pod 'Kanvas', '~> 1.4.4'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -175,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.82.1'
+  gutenberg tag: 'v1.83.0'
 
   ## Third party libraries
   ## =====================
@@ -206,7 +206,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.13.0-beta.2'
+  pod 'Automattic-Tracks-iOS', '~> 0.13'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -222,10 +222,10 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 2.3.0'
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.1'
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/showcancel'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2.1'
   # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'

@@ -1,4 +1,7 @@
-* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
-* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
-* [***] [internal] Update Sentry, our crash monitoring tool, to its latest major version [#19315]
+You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.
 
+We also squashed several bugs in this latest update.
+
+- Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.
+- On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.
+- Content above the Powered by Jetpack banner now stays visible and responsive while you’re scrolling. Up, up, and away.

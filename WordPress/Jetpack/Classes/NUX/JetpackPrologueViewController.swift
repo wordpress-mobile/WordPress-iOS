@@ -34,16 +34,16 @@ class JetpackPrologueViewController: UIViewController {
 
         // Start color is the background color with no alpha because if we use clear it will fade to black
         // instead of just disappearing
-        let startColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0)
-        let midTopColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.9)
-        let midBottomColor = JetpackPrologueStyleGuide.backgroundColor.withAlphaComponent(0.2)
-        let endColor = JetpackPrologueStyleGuide.backgroundColor
+        let startColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0)
+        let midTopColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.9)
+        let midBottomColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.2)
+        let endColor = JetpackPrologueStyleGuide.gradientColor
 
         gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
         [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
         [startColor.cgColor, endColor.cgColor]
 
-        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.2, 0.5, 1.0] : [0.0, 0.9]
+        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
 
         return gradientLayer
     }
@@ -64,10 +64,7 @@ class JetpackPrologueViewController: UIViewController {
         // hide old view unused elements
         stackView.isHidden = true
         titleLabel.isHidden = true
-        // complex gradient background
-        if let backgroundImage = UIImage(named: "JPBackground") {
-            view.layer.contents = backgroundImage.cgImage
-        }
+
         // animated view
 
         view.addSubview(jetpackAnimatedView)

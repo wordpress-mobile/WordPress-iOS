@@ -10,12 +10,18 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     @IBOutlet weak var viewMoreLabel: UILabel!
     @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
-    @IBOutlet weak var rowsStackViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var viewMoreHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+
+    override var accessibilityElements: [Any]? {
+        get {
+            return [headingLabel, rowsStackView, viewMoreButton].compactMap { $0 }
+        }
+
+        set { }
+    }
 
     // MARK: - View
 
@@ -42,6 +48,7 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     func prepareForVoiceOver() {
         viewMoreButton.accessibilityLabel =
             NSLocalizedString("View more", comment: "Accessibility label for View more button in Stats.")
+        viewMoreButton.accessibilityHint = NSLocalizedString("Tap to view more details.", comment: "Accessibility hint for a button that opens a new view with more details.")
     }
 }
 
@@ -76,7 +83,6 @@ private extension TwoColumnCell {
     func toggleViewMore() {
         let showViewMore = !dataRows.isEmpty && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
-        rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant : 0
     }
 
     @IBAction func didTapViewMore(_ sender: UIButton) {

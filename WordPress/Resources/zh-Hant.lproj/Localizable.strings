@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-09-15 22:15:13+0000 */
+/* Translation-Revision-Date: 2022-09-29 16:30:57+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.2 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -10031,7 +10031,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.management.savePrompt.message" = "你已變更啟用中的洞察報告資訊卡。";
 
 /* Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
-"stats.insights.management.savePrompt.saveButton" = "儲存變更";
+"stats.insights.management.savePrompt.saveButton" = "儲存設定";
 
 /* Prompt displayed on the Stats Insights management screen telling the user to tap a row to add it to their list of active cards. */
 "stats.insights.management.selectCardsPrompt" = "從下方清單選取資訊卡";
