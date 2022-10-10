@@ -250,9 +250,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     var dismissActionEnabled: Bool {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
 
-        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable() || Blog.count(in: context) > 0
     }
 
     /// Indicates whether if the Support Action should be enabled, or not.

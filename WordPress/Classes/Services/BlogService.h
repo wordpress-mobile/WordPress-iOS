@@ -17,16 +17,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
 
 /**
- Returns the blog that matches with a given blogID and account.username
- */
-- (nullable Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username;
-
-/**
- Returns the blog that matches with a given hostname
- */
-- (nullable Blog *)blogByHostname:(NSString *)hostname;
-
-/**
  *  Sync all available blogs for an acccount
  *
  *  @param account the account for the associated blogs.
@@ -136,32 +126,7 @@ extern NSString *const WPBlogUpdatedNotification;
  */
 - (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
 
-- (BOOL)hasVisibleWPComAccounts;
-
 - (BOOL)hasAnyJetpackBlogs;
-
-- (NSInteger)blogCountForAllAccounts;
-
-- (NSInteger)blogCountSelfHosted;
-
-- (NSInteger)blogCountForWPComAccounts;
-
-- (NSInteger)blogCountVisibleForWPComAccounts;
-
-- (NSInteger)blogCountVisibleForAllAccounts;
-
-- (NSArray<Blog *> *)blogsForAllAccounts;
-
-- (NSArray<Blog *> *)visibleBlogsForWPComAccounts;
-
-- (NSArray *)blogsWithNoAccount;
-
-- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;
-
-/**
- Returns every stored blog, arranged in a Dictionary by blogId.
- */
-- (NSDictionary *)blogsForAllAccountsById;
 
 - (void)removeBlog:(Blog *)blog;
 

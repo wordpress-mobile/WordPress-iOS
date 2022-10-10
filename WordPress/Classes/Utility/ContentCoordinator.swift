@@ -161,8 +161,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     private func jetpackSiteReff(with slug: String) -> JetpackSiteRef? {
-        let service = BlogService(managedObjectContext: mainContext)
-        guard let blog = service.blog(byHostname: slug), let jetpack = JetpackSiteRef(blog: blog) else {
+        guard let blog = Blog.lookup(hostname: slug, in: mainContext), let jetpack = JetpackSiteRef(blog: blog) else {
             return nil
         }
         return jetpack

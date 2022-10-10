@@ -78,7 +78,7 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     fileprivate func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
-        if blogService.blogCountForAllAccounts() > 1 {
+        if Blog.count(in: mainContext) > 1 {
             defaultBlogName = Blog.lastUsedOrFirst(in: mainContext)?.settings?.name
         }
 
@@ -162,6 +162,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func hasBlog() -> Bool {
-        return blogService.blogCountForAllAccounts() > 0
+        return Blog.count(in: mainContext) > 0
     }
 }
