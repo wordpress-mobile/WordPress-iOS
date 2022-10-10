@@ -290,6 +290,17 @@ target 'WordPressDraftActionExtension' do
   wordpress_ui
 end
 
+target 'JetpackDraftActionExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
 ## Today Widget
 ## ============
 ##

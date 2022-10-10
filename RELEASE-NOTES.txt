@@ -3,6 +3,7 @@
 * [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
 * [**] [Jetpack-only] Added a share extension. Now users can share content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19383]
 * [*] Update launch screen. [#19341]
+* [**] [Jetpack-only] Added a "Save as Draft" extension. Now users can save content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19414]
 * [*] Reader: Comment Details have been redesigned. [#19387]
 
 20.9
