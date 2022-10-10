@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 /// A scroll view that produces an infinite scrolling effect.
