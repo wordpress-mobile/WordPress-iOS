@@ -474,7 +474,7 @@ private extension CommentDetailViewController {
     /// Checks if the index path is positioned before the delete button cell.
     func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
         switch sections[indexPath.section] {
-        case .content(_):
+        case .content:
             return false
         case .moderation(let rows):
             guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {

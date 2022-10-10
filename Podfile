@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58'
+  pod 'WordPressKit', '~> 4.58.1-beta.1'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -265,10 +265,32 @@ target 'WordPressShareExtension' do
   wordpress_ui
 end
 
+target 'JetpackShareExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
 ## DraftAction Extension
 ## =====================
 ##
 target 'WordPressDraftActionExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
+target 'JetpackDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_extension_pods
@@ -343,6 +365,14 @@ end
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
+end
+
+target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_kit

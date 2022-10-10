@@ -4,7 +4,6 @@ class BlogServiceMock: BlogService {
 
     var syncAuthorsCalled = false
     var syncShouldSucceed = true
-    var visibleBlogsForWPComAccountsValue: [Blog] = []
 
     override func syncAuthors(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         syncAuthorsCalled = true
@@ -19,7 +18,4 @@ class BlogServiceMock: BlogService {
 
     }
 
-    override func visibleBlogsForWPComAccounts() -> [Blog] {
-        return visibleBlogsForWPComAccountsValue
-    }
 }
