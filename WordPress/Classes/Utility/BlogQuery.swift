@@ -1,5 +1,10 @@
 import Foundation
 
+/// A helper to query `Blog` from given `NSManagedObjectContext`.
+///
+/// Note: the implementation here isn't meant to be a standard way to perform query. But it might be valuable
+/// to explore a standard way to perform query. https://github.com/wordpress-mobile/WordPress-iOS/pull/19394 made
+/// an attempt, but still has lots of unknowns.
 struct BlogQuery {
     private var predicates = [NSPredicate]()
 
