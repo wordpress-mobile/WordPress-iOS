@@ -1,8 +1,8 @@
 import Foundation
 import XCTest
-import WordPress
 import OHHTTPStubs
 
+@testable import WordPress
 
 // MARK: - NotificationSettingsServiceTests
 //
@@ -26,8 +26,7 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         super.setUp()
 
         remoteApi           = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
-                                                           wordPressComRestApi: remoteApi)
+        service             = NotificationSettingsService(coreDataStack: contextManager, wordPressComRestApi: remoteApi)
 
         stub(condition: { request in
             return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
