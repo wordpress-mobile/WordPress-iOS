@@ -537,10 +537,15 @@ class WeeklyRoundupNotificationScheduler {
         comments: Int,
         likes: Int,
         periodEndDate: Date,
-        completion: @escaping (Result<Void, Error>) -> Void) {
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        var siteTitle: String?
+        var dotComID: Int?
 
-        let siteTitle = site.title
-        let dotComID = site.dotComID?.intValue
+        site.managedObjectContext?.performAndWait {
+            siteTitle = site.title
+            dotComID = site.dotComID?.intValue
+        }
 
         guard let dotComID = dotComID else {
             // Error
