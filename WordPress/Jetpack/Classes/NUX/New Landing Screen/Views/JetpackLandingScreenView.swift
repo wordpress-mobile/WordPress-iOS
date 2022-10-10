@@ -1,22 +1,28 @@
 import SwiftUI
 
 struct JetpackLandingScreenView: View {
-    /// If the view should start with the even color, set to `true`.
-    let startWithEvenColor: Bool
 
     private let prompts = JetpackPromptsConfiguration.Constants.basePrompts
     private let evenColor = JetpackPromptsConfiguration.Constants.evenColor
     private let oddColor = JetpackPromptsConfiguration.Constants.oddColor
 
-    func colorForIndex(_ index: Int) -> Color {
-        let colorOffset = startWithEvenColor ? 0 : 1
-        return (index + colorOffset) % 2 == 0 ? evenColor : oddColor
+    private var loopCount: Int {
+        if prompts.count % 2 == 0 {
+            return prompts.count
+        }
+
+        /// The number of prompts is odd so we loop twice
+        /// to prevent the same color from occurring when the view repeats.
+        return prompts.count * 2
     }
 
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(0..<prompts.count, id: \.hashValue) { index in
-                JetpackPromptView(text: prompts[index], color: colorForIndex(index))
+            ForEach(0..<loopCount, id: \.hashValue) { index in
+                JetpackPromptView(
+                    text: prompts[index % prompts.count],
+                    color: index % 2 == 0 ? evenColor : oddColor
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -13,9 +13,8 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
-        let jetpackAnimatedView = InfiniteScrollerView { index in
-            let startWithEvenColor = index % 2 == 0
-            return UIView.embedSwiftUIView(JetpackLandingScreenView(startWithEvenColor: startWithEvenColor))
+        let jetpackAnimatedView = InfiniteScrollerView {
+            UIView.embedSwiftUIView(JetpackLandingScreenView())
         }
 
         jetpackAnimatedView.scrollerDelegate = self
