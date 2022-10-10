@@ -48,20 +48,6 @@
 #pragma mark - Misc
 
 /**
- *  @brief      Call this method to know if there are hosted blogs.
- *
- *  @returns    YES if there are hosted blogs, NO otherwise.
- */
-- (BOOL)noSelfHostedBlogs
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    NSInteger blogCount = [blogService blogCountSelfHosted];
-    return blogCount == 0;
-}
-
-/**
  *  @brief      Call this method to know if the local installation of WPiOS has the authToken issue
  *              this class was designed to solve.
  *

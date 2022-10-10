@@ -5,6 +5,7 @@
 * [*] Update launch screen. [#19341]
 * [**] [Jetpack-only] Added a "Save as Draft" extension. Now users can save content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19414]
 * [**] [Jetpack-only] Enables Rich Notifications for the Jetpack app. Now we display more details on most of the push notifications. This was previously only available on the WordPress app. [#19415]
+* [*] Reader: Comment Details have been redesigned. [#19387]
 
 20.9
 -----

@@ -1,4 +1,5 @@
 import WordPressShared
+import UIKit
 /// This class groups all of the styles used by the comment detail screen.
 ///
 extension WPStyleGuide {
@@ -12,7 +13,7 @@ extension WPStyleGuide {
         static let secondaryTextFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let secondaryTextColor = UIColor.textSubtle
 
-        static let tertiaryTextFont = WPStyleGuide.fontForTextStyle(.footnote)
+        static let tertiaryTextFont = WPStyleGuide.fontForTextStyle(.caption2)
 
         public struct Header {
             static let font = CommentDetail.tertiaryTextFont
@@ -36,8 +37,8 @@ extension WPStyleGuide {
             static let dateFont = CommentDetail.tertiaryTextFont
             static let dateTextColor = CommentDetail.secondaryTextColor
 
-            static let reactionButtonFont = CommentDetail.secondaryTextFont
-            static let reactionButtonTextColor = CommentDetail.secondaryTextColor
+            static let reactionButtonFont = WPStyleGuide.fontForTextStyle(.caption1)
+            static let reactionButtonTextColor = UIColor.label
 
             // highlighted state
             static let highlightedBackgroundColor = UIColor(light: .muriel(name: .blue, .shade0), dark: .muriel(name: .blue, .shade100)).withAlphaComponent(0.5)
@@ -46,13 +47,15 @@ extension WPStyleGuide {
 
             static let placeholderImage = UIImage.gravatarPlaceholderImage
 
-            private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .medium)
+            private static let reactionIconConfiguration = UIImage.SymbolConfiguration(font: reactionButtonFont, scale: .large)
             static let unlikedIconImage = UIImage(systemName: "star", withConfiguration: reactionIconConfiguration)
             static let likedIconImage = UIImage(systemName: "star.fill", withConfiguration: reactionIconConfiguration)
 
-            static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .large)
+            static let accessoryIconConfiguration = UIImage.SymbolConfiguration(font: CommentDetail.tertiaryTextFont, scale: .medium)
             static let shareIconImageName = "square.and.arrow.up"
             static let ellipsisIconImageName = "ellipsis.circle"
+            static let infoIconImageName = "info.circle"
+
 
             static var replyIconImage: UIImage? {
                 // this symbol is only available in iOS 14 and above. For iOS 13, we need to use the backported image in our assets.
