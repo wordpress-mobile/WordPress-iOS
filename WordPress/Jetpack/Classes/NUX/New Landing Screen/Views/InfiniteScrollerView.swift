@@ -11,7 +11,7 @@ import UIKit
 /// than its frame.
 class InfiniteScrollerView: UIScrollView {
     /// Delegate to poll for the speed and direction of the scrolling offset. Polled at the default rate of `CADisplayLink`.
-    var scrollerDelegate: InfiniteScrollerViewDelegate?
+    weak var scrollerDelegate: InfiniteScrollerViewDelegate?
 
     private var displayLink: CADisplayLink?
 

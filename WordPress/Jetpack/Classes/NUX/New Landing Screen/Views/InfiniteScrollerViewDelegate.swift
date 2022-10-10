@@ -1,6 +1,6 @@
 import Foundation
 
-protocol InfiniteScrollerViewDelegate {
+protocol InfiniteScrollerViewDelegate: AnyObject {
     /// Called on every step of `CADisplayLink` to adjust the `InfiniteScrollerView`'s offset.
     ///
     /// A negative value scrolls downward.
