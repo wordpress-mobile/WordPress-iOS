@@ -17,8 +17,8 @@ final class BlogBuilder {
 
         // Non-null properties in Core Data
         blog.dotComID = NSNumber(value: arc4random_uniform(UInt32.max))
-        blog.url = "https://example.com"
-        blog.xmlrpc = "https://example.com/xmlrpc.php"
+        blog.url = "https://\(blog.dotComID!).example.com"
+        blog.xmlrpc = "https://\(blog.dotComID!).example.com/xmlrpc.php"
     }
 
     func with(atomic: Bool) -> Self {
@@ -70,10 +70,17 @@ final class BlogBuilder {
         return self
     }
 
-    func withAnAccount() -> Self {
+    func with(visible: Bool) -> Self {
+        blog.visible = visible
+
+        return self
+    }
+
+    func withAnAccount(username: String = "test_user") -> Self {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.displayName = "displayName"
+        account.username = username
         blog.account = account
 
         return self
@@ -93,6 +100,12 @@ final class BlogBuilder {
 
     func with(modules: [String]) -> Self {
         set(blogOption: "active_modules", value: modules)
+    }
+
+    func with(blogID: Int) -> Self {
+        blog.blogID = blogID as NSNumber
+
+        return self
     }
 
     @discardableResult

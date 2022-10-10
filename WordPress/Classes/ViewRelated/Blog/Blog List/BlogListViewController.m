@@ -383,7 +383,10 @@ static NSInteger HideSearchMinSites = 3;
         });
     };
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     [context performBlock:^{
@@ -874,8 +877,7 @@ static NSInteger HideSearchMinSites = 3;
 - (BOOL)shouldShowEditButton
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    return [blogService blogCountForWPComAccounts] > 0;
+    return [Blog wpComBlogCountInContext:context] > 0;
 }
 
 - (void)updateBarButtons
@@ -946,7 +948,10 @@ static NSInteger HideSearchMinSites = 3;
             UIAlertAction *hideAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
                                                                    style:UIAlertActionStyleDestructive
                                                                  handler:^(UIAlertAction *action){
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
                                                                      [context performBlock:^{
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                                                                          WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];

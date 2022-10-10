@@ -12,7 +12,7 @@ platform :ios do
   lane :register_new_device do |options|
     device_name = UI.input('Device Name: ') if options[:device_name].nil?
     device_id = UI.input('Device ID: ') if options[:device_id].nil?
-    all_bundle_ids = ALL_BUNDLE_IDENTIFIERS + [JETPACK_APP_IDENTIFIER]
+    all_bundle_ids = ALL_WORDPRESS_BUNDLE_IDENTIFIERS + ALL_JETPACK_BUNDLE_IDENTIFIERS
 
     UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
     all_bundle_ids.each do |identifier|
@@ -88,7 +88,7 @@ platform :ios do
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
+      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
     )
   end
 
@@ -100,7 +100,7 @@ platform :ios do
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS.map { |id| id.sub(APP_STORE_VERSION_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
+      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
     )
   end
 
@@ -111,7 +111,7 @@ platform :ios do
       type: 'appstore',
       team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: ALL_BUNDLE_IDENTIFIERS
+      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS
     )
   end
 
@@ -123,7 +123,7 @@ platform :ios do
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
-      app_identifier: 'com.jetpack.alpha'
+      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') }
     )
   end
 
@@ -135,7 +135,7 @@ platform :ios do
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
       readonly: true,
-      app_identifier: 'com.jetpack.internal'
+      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.internal') }
     )
   end
 
@@ -146,7 +146,7 @@ platform :ios do
       type: 'appstore',
       team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       readonly: true,
-      app_identifier: JETPACK_APP_IDENTIFIER
+      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS
     )
   end
 end

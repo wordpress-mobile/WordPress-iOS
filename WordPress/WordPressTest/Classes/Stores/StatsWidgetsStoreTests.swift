@@ -5,11 +5,11 @@ import XCTest
 
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
-    private var blogService: BlogServiceMock!
+    private var blogService: BlogService!
 
     override func setUpWithError() throws {
         deleteHomeWidgetData()
-        blogService = BlogServiceMock(managedObjectContext: contextManager.newDerivedContext())
+        blogService = BlogService(managedObjectContext: mainContext)
         sut = StatsWidgetsStore(blogService: blogService)
     }
 
@@ -20,8 +20,11 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
     }
 
     func testStatsWidgetsDataInitializedAfterSignDidFinish() {
-        let blog = blogService.createBlog()
-        blogService.visibleBlogsForWPComAccountsValue = [blog]
+        BlogBuilder(blogService.managedObjectContext)
+            .with(visible: true)
+            .withAnAccount()
+            .isHostedAtWPcom()
+            .build()
         XCTAssertFalse(statsWidgetsHaveData())
 
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
@@ -30,8 +33,11 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
     }
 
     func testStatsWidgetsDeletedAfterDefaultWPAccountRemoved() {
-        let blog = blogService.createBlog()
-        blogService.visibleBlogsForWPComAccountsValue = [blog]
+        BlogBuilder(blogService.managedObjectContext)
+            .with(visible: true)
+            .withAnAccount()
+            .isHostedAtWPcom()
+            .build()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
         NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)

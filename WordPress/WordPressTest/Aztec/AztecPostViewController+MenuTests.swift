@@ -18,21 +18,10 @@ class AztecPostViewController_MenuTests: CoreDataTestCase {
     }
 
     private var aztecPostViewController: Mock!
-    private var context: NSManagedObjectContext!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        context = contextManager.newDerivedContext()
-    }
-
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
-        context = nil
-    }
 
     private func blogPost(with content: String?) -> Post {
-        let blog = ModelTestHelper.insertSelfHostedBlog(context: context)
-        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
+        let blog = ModelTestHelper.insertSelfHostedBlog(context: mainContext)
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
         post.blog = blog
         post.content = content
         let settings = GutenbergSettings(database: EphemeralKeyValueDatabase())

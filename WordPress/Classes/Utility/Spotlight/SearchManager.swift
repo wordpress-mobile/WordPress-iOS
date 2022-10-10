@@ -272,11 +272,9 @@ fileprivate extension SearchManager {
                              onSuccess: @escaping (_ post: AbstractPost) -> Void,
                              onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
-            let blog = selfHostedBlogs.filter({ $0.xmlrpc == blogXMLRpcString }).first else {
-                onFailure()
-                return
+        guard let blog = Blog.selfHosted(in: context).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
+            onFailure()
+            return
         }
 
         let postService = PostService(managedObjectContext: context)
@@ -303,11 +301,9 @@ fileprivate extension SearchManager {
                              onSuccess: @escaping (_ blog: Blog) -> Void,
                              onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
-            let blog = selfHostedBlogs.filter({ $0.xmlrpc == blogXMLRpcString }).first else {
-                onFailure()
-                return
+        guard let blog = Blog.selfHosted(in: context).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
+            onFailure()
+            return
         }
         onSuccess(blog)
     }

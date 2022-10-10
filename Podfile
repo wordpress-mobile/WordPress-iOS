@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58.0-beta.2'
+  pod 'WordPressKit', '~> 4.58.1-beta.1'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -206,7 +206,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.13.0-beta.2'
+  pod 'Automattic-Tracks-iOS', '~> 0.13'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -222,8 +222,8 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 3.2.0-beta'
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.1'
+  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/showcancel'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
@@ -265,10 +265,32 @@ target 'WordPressShareExtension' do
   wordpress_ui
 end
 
+target 'JetpackShareExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
 ## DraftAction Extension
 ## =====================
 ##
 target 'WordPressDraftActionExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
+target 'JetpackDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_extension_pods
@@ -343,6 +365,14 @@ end
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
+end
+
+target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_kit

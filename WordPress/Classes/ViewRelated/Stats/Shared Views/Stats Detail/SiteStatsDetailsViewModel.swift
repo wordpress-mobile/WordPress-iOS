@@ -578,15 +578,15 @@ private extension SiteStatsDetailsViewModel {
                 StatsTotalRowData(name: AnnualSiteStats.totalComments,
                                   data: annualInsights.totalCommentsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                  data: Int(round(annualInsights.averageCommentsCount)).abbreviatedString()),
+                                  data: annualInsights.averageCommentsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.totalLikes,
                                   data: annualInsights.totalLikesCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                  data: Int(round(annualInsights.averageLikesCount)).abbreviatedString()),
+                                  data: annualInsights.averageLikesCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.totalWords,
                                   data: annualInsights.totalWordsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                  data: Int(round(annualInsights.averageWordsCount)).abbreviatedString())]
+                                  data: annualInsights.averageWordsCount.abbreviatedString())]
     }
 
     // MARK: - Posts and Pages

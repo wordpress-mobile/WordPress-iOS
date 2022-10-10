@@ -100,7 +100,7 @@ class StoryEditor: CameraController {
     static func editor(blog: Blog,
                        context: NSManagedObjectContext,
                        updated: @escaping (UpdateResult) -> Void) throws -> StoryEditor {
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        let post = blog.createDraftPost()
         return try editor(post: post, mediaFiles: nil, publishOnCompletion: true, updated: updated)
     }
 

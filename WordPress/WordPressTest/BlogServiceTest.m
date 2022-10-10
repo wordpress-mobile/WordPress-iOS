@@ -62,20 +62,6 @@
     [super tearDown];
 }
 
-- (void)testHasVisibleWPComAccountsWithVisibleWPComAccounts
-{
-    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(1);
-
-    XCTAssertTrue([self.blogService hasVisibleWPComAccounts]);
-}
-
-- (void)testHasVisibleWPComAccountsWithNoVisibleWPComAccounts
-{
-    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(0);
-
-    XCTAssertFalse([self.blogService hasVisibleWPComAccounts]);
-}
-
 - (void)cleanUpNSUserDefaultValues
 {
     [UserSettings setDefaultDotComUUID:nil];

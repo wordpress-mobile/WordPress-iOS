@@ -615,7 +615,11 @@
         [mediaTypes addObject:@(MediaTypeAudio)];
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
+#pragma clang diagnostic pop
+
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
     NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
                                                   forMediaTypes:mediaTypes];

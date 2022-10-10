@@ -54,11 +54,14 @@ struct StatsSegmentedControlData {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
-        return String.localizedStringWithFormat(stringFormat,
-                difference < 0 ? "" : "+",
-                difference.abbreviatedString(),
-                differencePercent.abbreviatedString())
+        let stringFormatValue = differencePercent != 0 ? "%@%@ (%@%%)" : "%@%@"
+        let stringFormat = NSLocalizedString(stringFormatValue, comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
+        return String.localizedStringWithFormat(
+            stringFormat,
+            difference < 0 ? "" : "+",
+            difference.abbreviatedString(),
+            differencePercent.abbreviatedString()
+        )
     }
 
     var differenceTextColor: UIColor {
@@ -188,10 +191,17 @@ private extension ViewsVisitorsLineChartCell {
 
     func styleLabels() {
         latestData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        latestData.adjustsFontSizeToFitWidth = true
+        latestLabel.adjustsFontSizeToFitWidth = true
+
         previousData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        previousData.adjustsFontSizeToFitWidth = true
+        previousLabel.adjustsFontSizeToFitWidth = true
 
         legendLatestLabel.text = NSLocalizedString("This week", comment: "This week legend label")
+        legendLatestLabel.adjustsFontSizeToFitWidth = true
         legendPreviousLabel.text = NSLocalizedString("Previous week", comment: "Previous week legend label")
+        legendPreviousLabel.adjustsFontSizeToFitWidth = true
     }
 
     func updateLabels() {
