@@ -410,10 +410,10 @@
                 return NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
             }
         }
-        static let likesTotals = NSLocalizedString("Likes Total", comment: "Insights 'Likes Total' header")
-        static let commentsTotals = NSLocalizedString("Comments Total", comment: "Insights 'Comments Total' header")
-        static let followerTotals = NSLocalizedString("Followers Total", comment: "Insights 'Followers Total' header")
-        static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
+        static let likesTotals = NSLocalizedString("Total Likes", comment: "Insights 'Total Likes' header")
+        static let commentsTotals = NSLocalizedString("Total Comments", comment: "Insights 'Total Comments' header")
+        static let followerTotals = NSLocalizedString("Total Followers", comment: "Insights 'Total Followers' header")
+        static let publicize = NSLocalizedString("Jetpack Social Connections", comment: "Insights 'Jetpack Social Connections' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let posts = NSLocalizedString("Posts", comment: "Insights 'Posts' header")
