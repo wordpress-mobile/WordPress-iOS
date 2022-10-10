@@ -14,13 +14,11 @@ struct JetpackLandingScreenView: View {
     }
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                ForEach(0..<prompts.count, id: \.hashValue) { index in
-                    JetpackPromptView(text: prompts[index], color: colorForIndex(index))
-                }
+        VStack(alignment: .leading) {
+            ForEach(0..<prompts.count, id: \.hashValue) { index in
+                JetpackPromptView(text: prompts[index], color: colorForIndex(index))
             }
-            Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
