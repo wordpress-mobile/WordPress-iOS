@@ -40,10 +40,7 @@ class InfiniteScrollerView: UIScrollView {
         let stackView = setupStackView()
         addSubview(stackView)
 
-        stackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        pinSubviewToAllEdges(stackView)
         stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
 
         self.stackView = stackView
