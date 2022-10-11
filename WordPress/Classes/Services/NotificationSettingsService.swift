@@ -4,7 +4,7 @@ import WordPressKit
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
-open class NotificationSettingsService: LocalCoreDataService {
+class NotificationSettingsService {
     // MARK: - Aliases
     public typealias Channel    = NotificationSettings.Channel
     public typealias Stream     = NotificationSettings.Stream
@@ -14,14 +14,17 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     /// - Parameter managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
     ///
-    public override init(managedObjectContext context: NSManagedObjectContext) {
-        super.init(managedObjectContext: context)
+    public convenience init(coreDataStack: CoreDataStack) {
+        var remoteApi: WordPressComRestApi? = nil
 
-        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
+        if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
             defaultAccount.authToken != nil,
-            let restApi = defaultAccount.wordPressComRestApi {
-            remoteApi = restApi.hasCredentials() ? restApi : nil
+            let restApi = defaultAccount.wordPressComRestApi,
+            restApi.hasCredentials() {
+            remoteApi = restApi
         }
+
+        self.init(coreDataStack: coreDataStack, wordPressComRestApi: remoteApi)
     }
 
     /// Convenience Initializer. Useful for Unit Testing
@@ -30,8 +33,8 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///     - managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    @objc public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComRestApi: WordPressComRestApi) {
-        self.init(managedObjectContext: context)
+    public init(coreDataStack: CoreDataStack, wordPressComRestApi: WordPressComRestApi?) {
+        self.coreDataStack = coreDataStack
         self.remoteApi = wordPressComRestApi
     }
 
@@ -177,7 +180,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     fileprivate func settingsFromRemote(_ remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
         var parsed       = [NotificationSettings]()
-        let blogs        = ((try? BlogQuery().blogs(in: managedObjectContext)) ?? []).filter { $0.dotComID != nil }
+        let blogs        = ((try? BlogQuery().blogs(in: coreDataStack.mainContext)) ?? []).filter { $0.dotComID != nil }
         let blogMap      = Dictionary(blogs.map { ($0.dotComID!.intValue, $0) }, uniquingKeysWith: { _, new in new })
 
         for remoteSetting in remoteSettings {
@@ -305,7 +308,7 @@ open class NotificationSettingsService: LocalCoreDataService {
 
     // MARK: - Private Properties
     fileprivate var remoteApi: WordPressComRestApi?
-
+    private let coreDataStack: CoreDataStack
 
     // MARK: - Private Computed Properties
     fileprivate var notificationsServiceRemote: NotificationSettingsServiceRemote? {
@@ -314,10 +317,6 @@ open class NotificationSettingsService: LocalCoreDataService {
         }
 
         return NotificationSettingsServiceRemote(wordPressComRestApi: remoteApi)
-    }
-
-    fileprivate var blogService: BlogService {
-        return BlogService(managedObjectContext: managedObjectContext)
     }
 
     fileprivate var deviceId: String {
