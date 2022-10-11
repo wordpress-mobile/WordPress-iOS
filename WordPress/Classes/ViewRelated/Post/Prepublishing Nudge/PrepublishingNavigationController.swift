@@ -5,6 +5,13 @@ protocol PrepublishingDismissible {
 }
 
 class PrepublishingNavigationController: LightNavigationController {
+
+    private let shouldDisplayPortrait: Bool
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        shouldDisplayPortrait ? .portrait : .all
+    }
+
     // We are using intrinsicHeight as the view's collapsedHeight which is calculated from the preferredContentSize.
     override public var preferredContentSize: CGSize {
         set {
@@ -32,6 +39,15 @@ class PrepublishingNavigationController: LightNavigationController {
         transition()
 
         return viewController
+    }
+
+    init(rootViewController: UIViewController, shouldDisplayPortrait: Bool) {
+        self.shouldDisplayPortrait = shouldDisplayPortrait
+        super.init(rootViewController: rootViewController)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func transition() {
