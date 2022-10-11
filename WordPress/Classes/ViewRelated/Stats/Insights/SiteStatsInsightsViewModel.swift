@@ -834,7 +834,9 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func updateMostRecentChartData(_ periodSummary: StatsSummaryTimeIntervalData?) {
-        if mostRecentChartData == nil {
+        if mostRecentChartData == nil,
+           let periodSummary = periodSummary,
+           periodSummary.periodEndDate >= lastRequestedDate.normalizedDate() {
             mostRecentChartData = periodSummary
         } else if let mostRecentChartData = mostRecentChartData,
                   let periodSummary = periodSummary,
