@@ -606,16 +606,10 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        let periodSummary = periodStore.getSummary()
-        updateMostRecentChartData(periodSummary)
-
         return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        let periodSummary = periodStore.getSummary()
-        updateMostRecentChartData(periodSummary)
-
         return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
     }
 
