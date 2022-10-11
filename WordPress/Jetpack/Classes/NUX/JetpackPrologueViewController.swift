@@ -1,4 +1,5 @@
 import UIKit
+import CoreMotion
 
 class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
@@ -10,6 +11,12 @@ class JetpackPrologueViewController: UIViewController {
         let view = StarFieldView(with: config)
         view.layer.masksToBounds = true
         return view
+    }()
+
+    private lazy var motion: CMMotionManager = {
+        let manager = CMMotionManager()
+        manager.deviceMotionUpdateInterval = Self.Constants.deviceMotionUpdateInterval
+        return manager
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
@@ -61,6 +68,19 @@ class JetpackPrologueViewController: UIViewController {
             return
         }
         loadNewPrologueView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if FeatureFlag.newLandingScreen.enabled, motion.isGyroAvailable {
+            motion.startDeviceMotionUpdates()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        motion.stopDeviceMotionUpdates()
     }
 
     private func loadNewPrologueView() {
@@ -150,12 +170,38 @@ class JetpackPrologueViewController: UIViewController {
         static let parallaxAmount: CGFloat = 30
         static let starLayerPosition: CGFloat = -100
         static let gradientLayerPosition: CGFloat = -99
+
+        /// New landing screen
+
+        /// Rate that the device is polled for motion updates
+        static let deviceMotionUpdateInterval: Double = 1 / 10
+        /// Angle to use for the scroll rate when a device can't supply motion data
+        static let defaultPitchAngleDegrees: Double = 30.0
+        /// Uniform multiplier used to tweak the rate generated from an angle
+        static let angleRateMultiplier: CGFloat = 1.3
     }
 }
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
+    /// Provides rate in points per second for a given device pitch angle.
+    ///
+    /// Assumptions:
+    /// - 90 degrees is perpendicular to the ground in portrait orientation
+    /// - 0 degrees is parallel to the ground (flat on a surface)
+    /// - -90 degrees is perpendicular to the ground in portrait orientation, upside down
+    ///
+    /// - Parameter angle: Angle in degrees
+    /// - Returns: Points per second
+    private func rateForPitchAngle(angle: Double) -> CGFloat {
+        return -angle * Self.Constants.angleRateMultiplier
+    }
+
     func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
-        /// points per second
-        return -60
+        guard let pitch = motion.deviceMotion?.attitude.pitch else {
+            return rateForPitchAngle(angle: Self.Constants.defaultPitchAngleDegrees)
+        }
+
+        let pitchDegrees = pitch * 180 / .pi
+        return rateForPitchAngle(angle: pitchDegrees)
     }
 }
