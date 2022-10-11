@@ -7,6 +7,7 @@
 * [**] [Jetpack-only] Enables Rich Notifications for the Jetpack app. Now we display more details on most of the push notifications. This was previously only available on the WordPress app. [#19415]
 * [*] Reader: Comment Details have been redesigned. [#19387]
 * [*] [internal] A refactor in weekly roundup notification scheduler. [#19422]
+* [*] [internal] A low level database refactor around fetching cards in the Reader tab. [#19427]
 
 20.9
 -----
