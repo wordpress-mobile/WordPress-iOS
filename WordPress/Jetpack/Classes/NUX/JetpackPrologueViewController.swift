@@ -154,7 +154,7 @@ class JetpackPrologueViewController: UIViewController {
 }
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
-    var rate: CGFloat {
+    func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
         return -1
     }
 }

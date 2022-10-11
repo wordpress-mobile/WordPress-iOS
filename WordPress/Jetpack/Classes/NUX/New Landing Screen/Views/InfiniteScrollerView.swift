@@ -89,14 +89,19 @@ class InfiniteScrollerView: UIScrollView {
     @objc private func step() {
         guard
             let scrollerDelegate = self.scrollerDelegate,
-            let singleViewHeight = self.singleViewHeight,
-            // the rate shouldn't be higher than the size of the view
-            scrollerDelegate.rate < singleViewHeight
+            let singleViewHeight = self.singleViewHeight
         else {
             return
         }
 
-        contentOffset.y += scrollerDelegate.rate
+        let rate = scrollerDelegate.rate(for: self)
+
+        // the rate shouldn't be higher than the size of the view
+        guard rate < singleViewHeight else {
+            return
+        }
+
+        contentOffset.y += rate
     }
 }
 
