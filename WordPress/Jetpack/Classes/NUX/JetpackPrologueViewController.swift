@@ -155,6 +155,7 @@ class JetpackPrologueViewController: UIViewController {
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
     func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
-        return -1
+        /// points per second
+        return -60
     }
 }

@@ -98,8 +98,11 @@ class InfiniteScrollerView: UIScrollView {
     }
 
     /// Called on each `CADisplayLink` frame and sets the vertical content offset if a scroller delegate is set.
-    @objc private func step() {
+    @objc private func step(displayLink: CADisplayLink) {
+        let deviceFps = 1 / (displayLink.targetTimestamp - displayLink.timestamp)
+
         guard
+            deviceFps > 0,
             let scrollerDelegate = self.scrollerDelegate,
             let singleViewHeight = self.singleViewHeight
         else {
@@ -109,11 +112,11 @@ class InfiniteScrollerView: UIScrollView {
         let rate = scrollerDelegate.rate(for: self)
 
         // the rate shouldn't be higher than the size of the view
-        guard rate < singleViewHeight else {
+        guard abs(rate) < singleViewHeight else {
             return
         }
 
-        contentOffset.y += rate
+        contentOffset.y += rate / deviceFps
     }
 }
 
