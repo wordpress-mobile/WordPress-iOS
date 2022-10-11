@@ -15,6 +15,14 @@ class InfiniteScrollerView: UIScrollView {
 
     private var displayLink: CADisplayLink?
 
+    /// Note: We use this property to store the vertical offset due to limitations of UIKit losing small deltas.
+    /// This allows us to continously shift the contents by sub-point values.
+    private var verticalOffset: Double = 0 {
+        didSet {
+            contentOffset.y = verticalOffset
+        }
+    }
+
     /// Closure used to repeat a view to populate a `UIStackView` for scrolling.
     private var viewBuilder: (() -> UIView)?
     private var stackView: UIStackView?
@@ -99,10 +107,7 @@ class InfiniteScrollerView: UIScrollView {
 
     /// Called on each `CADisplayLink` frame and sets the vertical content offset if a scroller delegate is set.
     @objc private func step(displayLink: CADisplayLink) {
-        let deviceFps = 1 / (displayLink.targetTimestamp - displayLink.timestamp)
-
         guard
-            deviceFps > 0,
             let scrollerDelegate = self.scrollerDelegate,
             let singleViewHeight = self.singleViewHeight
         else {
@@ -116,7 +121,7 @@ class InfiniteScrollerView: UIScrollView {
             return
         }
 
-        contentOffset.y += rate / deviceFps
+        verticalOffset += rate * (displayLink.targetTimestamp - displayLink.timestamp)
     }
 }
 
@@ -126,12 +131,12 @@ extension InfiniteScrollerView: UIScrollViewDelegate {
             return
         }
 
-        let yOffset = contentOffset.y
+        verticalOffset = scrollView.contentOffset.y
 
-        if yOffset >= singleViewHeight * 2 {
-            contentOffset.y -= singleViewHeight
-        } else if yOffset <= 0 {
-            contentOffset.y += singleViewHeight
+        if verticalOffset >= singleViewHeight * 2 {
+            verticalOffset -= singleViewHeight
+        } else if verticalOffset <= 0 {
+            verticalOffset += singleViewHeight
         }
     }
 }
