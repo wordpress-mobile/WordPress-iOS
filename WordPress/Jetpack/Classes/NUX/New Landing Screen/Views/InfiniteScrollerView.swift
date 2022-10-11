@@ -31,10 +31,18 @@ class InfiniteScrollerView: UIScrollView {
         return stackView.arrangedSubviews[0].frame.size.height
     }
 
+    override init(frame: CGRect) {
+        guard viewBuilder != nil else {
+            fatalError("this class must be initialized using init(frame:viewBuilder:)")
+        }
+
+        super.init(frame: frame)
+    }
+
     /// Initializes a view that produces an infinite scrolling effect.
     /// - Parameter viewBuilder: Closure that generates a `UIView`. Repeatedly called to fill a `UIStackView` that will be scrolled.
-    convenience init(_ viewBuilder: @escaping (() -> UIView)) {
-        self.init()
+    init(frame: CGRect = .zero, _ viewBuilder: @escaping (() -> UIView)) {
+        super.init(frame: frame)
         self.viewBuilder = viewBuilder
         displayLink = CADisplayLink(target: self, selector: #selector(step))
 
@@ -49,6 +57,10 @@ class InfiniteScrollerView: UIScrollView {
         addViewsToStackView()
 
         displayLink?.add(to: .current, forMode: .default)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func addViewsToStackView() {
