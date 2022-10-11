@@ -548,8 +548,7 @@ class WeeklyRoundupNotificationScheduler {
         }
 
         guard let dotComID = dotComID else {
-            // Error
-            return
+            fatalError("The argument site is not a WordPress.com site. Site: \(site)")
         }
 
         let title = notificationTitle(siteTitle)
