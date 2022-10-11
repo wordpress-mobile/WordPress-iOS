@@ -116,7 +116,7 @@ class NotificationSettingsViewController: UIViewController {
     // MARK: - Service Helpers
 
     fileprivate func reloadSettings() {
-        let service = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         let dispatchGroup = DispatchGroup()
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)

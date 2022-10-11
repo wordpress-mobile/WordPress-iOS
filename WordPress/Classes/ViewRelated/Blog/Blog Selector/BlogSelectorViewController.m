@@ -236,19 +236,13 @@
 
 - (void)syncBlogs
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-#pragma clang diagnostic pop
-    
-    [context performBlock:^{
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-
         if (!defaultAccount) {
             return;
         }
-        
+
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
 }
