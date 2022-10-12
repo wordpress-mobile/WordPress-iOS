@@ -176,32 +176,54 @@ class JetpackPrologueViewController: UIViewController {
         /// Rate that the device is polled for motion updates
         static let deviceMotionUpdateInterval: Double = 1 / 10
         /// Angle to use for the scroll rate when a device can't supply motion data
-        static let defaultPitchAngleDegrees: Double = 30.0
+        static let defaultAngleDegrees: Double = 30.0
         /// Uniform multiplier used to tweak the rate generated from an angle
         static let angleRateMultiplier: CGFloat = 1.3
     }
 }
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
-    /// Provides rate in points per second for a given device pitch angle.
+    /// Provides rate in points per second for a given angle in degrees.
     ///
-    /// Assumptions:
-    /// - 90 degrees is perpendicular to the ground in portrait orientation
-    /// - 0 degrees is parallel to the ground (flat on a surface)
-    /// - -90 degrees is perpendicular to the ground in portrait orientation, upside down
-    ///
-    /// - Parameter angle: Angle in degrees
-    /// - Returns: Points per second
-    private func rateForPitchAngle(angle: Double) -> CGFloat {
+    /// - Returns: Points per second.
+    private func rateForAngle(angle: Double) -> CGFloat {
         return -angle * Self.Constants.angleRateMultiplier
     }
 
-    func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
-        guard let pitch = motion.deviceMotion?.attitude.pitch else {
-            return rateForPitchAngle(angle: Self.Constants.defaultPitchAngleDegrees)
+    /// Returns the angle in degrees of the device independently of the view's orientation.
+    ///
+    /// Assuming the view is in the normal, upright position when displayed on the device:
+    /// - +90 degrees is perpendicular to the ground, facing the user.
+    /// - 0 degrees is parallel to the ground (flat on a surface).
+    /// - -90 degrees is perpendicular to the ground and upside down, facing away from the user.
+    ///
+    /// - Returns: Angle in degrees, or `nil` if the device didn't supply motion data.
+    private func angleForDeviceOrientation() -> Double? {
+        guard let attitude = motion.deviceMotion?.attitude else {
+            return nil
         }
 
-        let pitchDegrees = pitch * 180 / .pi
-        return rateForPitchAngle(angle: pitchDegrees)
+        let angleRad: Double
+
+        switch UIApplication.shared.currentStatusBarOrientation {
+        case .portrait:
+            angleRad = attitude.pitch
+        case .portraitUpsideDown:
+            angleRad = -attitude.pitch
+        case .landscapeLeft:
+            angleRad = attitude.roll
+        case .landscapeRight:
+            angleRad = -attitude.roll
+        default:
+            angleRad = 0
+        }
+
+        /// Convert radians to degrees
+        return angleRad * 180 / .pi
+    }
+
+    func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
+        let deviceAngle = angleForDeviceOrientation() ?? Self.Constants.defaultAngleDegrees
+        return rateForAngle(angle: deviceAngle)
     }
 }
