@@ -621,8 +621,7 @@
 #pragma clang diagnostic pop
 
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                  forMediaTypes:mediaTypes];
+    NSInteger count = [self.blog mediaLibraryCountForTypes:mediaTypes];
     // If we have a count diferent of zero assume it's correct but sync with the server always in the background
     if (count != 0) {
         self.itemsCount = count;
