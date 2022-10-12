@@ -13,8 +13,11 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
-        let viewModel = JetpackPromptsViewModel()
-        let jetpackAnimatedView = UIView.embedSwiftUIView(JetpackLandingScreenView(viewModel: viewModel))
+        let jetpackAnimatedView = InfiniteScrollerView {
+            UIView.embedSwiftUIView(JetpackLandingScreenView())
+        }
+
+        jetpackAnimatedView.scrollerDelegate = self
         jetpackAnimatedView.translatesAutoresizingMaskIntoConstraints = false
         return jetpackAnimatedView
     }()
@@ -147,5 +150,12 @@ class JetpackPrologueViewController: UIViewController {
         static let parallaxAmount: CGFloat = 30
         static let starLayerPosition: CGFloat = -100
         static let gradientLayerPosition: CGFloat = -99
+    }
+}
+
+extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
+    func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
+        /// points per second
+        return -60
     }
 }
