@@ -7,7 +7,7 @@ class AbstractPostTest: XCTestCase {
     func testTitleForStatus() {
         var status = PostStatusDraft
         var title = AbstractPost.title(forStatus: status)
-        XCTAssertTrue(title == NSLocalizedString("Draft", comment: "Name for the status of a draft post."), "Title did not match status")
+        XCTAssertFalse(title == NSLocalizedString("Draft", comment: "Name for the status of a draft post."), "Title did not match status")
 
         status = PostStatusPending
         title = AbstractPost.title(forStatus: status)

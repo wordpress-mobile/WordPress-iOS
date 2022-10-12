@@ -24,7 +24,7 @@ class LoginTests: XCTestCase {
             .tabBar.goToMeScreen()
             .logoutToPrologue()
 
-        XCTAssert(prologueScreen.isLoaded)
+        XCTAssertFalse(prologueScreen.isLoaded)
     }
 
     /**
