@@ -198,12 +198,17 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
-              !insightsTableViewController.isGrowAudienceShowing else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
             return
         }
 
         let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+
+        guard !insightsTableViewController.isGrowAudienceShowing else {
+            UserPersistentStoreFactory.instance().set(StatsPeriodType.insights.rawValue, forKey: key)
+            return
+        }
+
         UserPersistentStoreFactory.instance().set(currentSelectedPeriod.rawValue, forKey: key)
     }
 
