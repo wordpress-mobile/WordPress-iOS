@@ -1,2 +1,0 @@
-We hebben wat wijzigingen aangebracht aan gebruikers vermelden. Wanneer je reageert op een bericht of opmerking en een andere gebruiker tagt, begint de lijst met voorgestelde gebruikers met namen die overeenkomen met je query. De lijst zal daarna op alfabetische volgorde verdergaan.
-We hebben ook een probleem verholpen waarbij de lijst van voorgestelde gebruikers verdween na het uit- of inklappen van het veld voor reactiecontent. Zo, geen verdwijntruc meer.
