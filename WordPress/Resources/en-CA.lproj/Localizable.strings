@@ -698,9 +698,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt Text";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\".";
-
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternatively:";
 

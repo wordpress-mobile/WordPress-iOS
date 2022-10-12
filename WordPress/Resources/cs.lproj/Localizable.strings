@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-09 07:58:03+0000 */
+/* Translation-Revision-Date: 2022-10-04 18:11:57+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -702,7 +702,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Alternativní text";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Alternativní způsoby přihlášení:";
