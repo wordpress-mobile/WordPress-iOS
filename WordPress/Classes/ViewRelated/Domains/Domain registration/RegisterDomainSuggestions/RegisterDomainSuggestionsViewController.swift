@@ -11,7 +11,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     private var constraintsInitialized = false
 
     private var site: Blog!
-    private var domainPurchasedCallback: ((String) -> Void)!
+    var domainPurchasedCallback: ((String) -> Void)!
 
     private var domain: FullyQuotedDomainSuggestion?
     private var siteName: String?
@@ -46,7 +46,7 @@ class RegisterDomainSuggestionsViewController: UIViewController {
     static func instance(site: Blog,
                          domainType: DomainType = .registered,
                          includeSupportButton: Bool = true,
-                         domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
+                         domainPurchasedCallback: ((String) -> Void)? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: Constants.storyboardIdentifier, bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: Constants.viewControllerIdentifier) as! RegisterDomainSuggestionsViewController
         controller.site = site
