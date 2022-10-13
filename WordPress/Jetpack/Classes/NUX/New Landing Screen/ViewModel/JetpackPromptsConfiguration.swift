@@ -10,15 +10,21 @@ struct JetpackPromptsConfiguration {
                                             dark: .muriel(color: .jetpackGreen, .shade20)))
 
         static let basePrompts = [
+            NSLocalizedString("jetpack.prologue.prompt.updatePlugin",
+                              value: "Update a plugin",
+                              comment: "Update a plugin prompt for the jetpack prologue"),
+            NSLocalizedString("jetpack.prologue.prompt.buildSite",
+                              value: "Build a site",
+                              comment: "Build a site prompt for the jetpack prologue"),
+            NSLocalizedString("jetpack.prologue.prompt.writeBlog",
+                              value: "Write a blog",
+                              comment: "Write a blog prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.watchStats",
                               value: "Watch your stats",
                               comment: "Watch your stats prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.checkNotifications",
                               value: "Check notifications",
                               comment: "Check notifications prompt for the jetpack prologue"),
-            NSLocalizedString("jetpack.prologue.prompt.buildSite",
-                              value: "Build a site",
-                              comment: "Build a site prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.respondComments",
                               value: "Respond to comments",
                               comment: "Respond to comments prompt for the jetpack prologue"),
@@ -39,16 +45,7 @@ struct JetpackPromptsConfiguration {
                               comment: "Post a photo prompt for the jetpack prologue"),
             NSLocalizedString("jetpack.prologue.prompt.addAuthor",
                               value: "Add an author",
-                              comment: "Add an author prompt for the jetpack prologue"),
-            NSLocalizedString("jetpack.prologue.prompt.searchPosts",
-                              value: "Search for posts or sites",
-                              comment: "Search for posts or sites prompt for the jetpack prologue"),
-            NSLocalizedString("jetpack.prologue.prompt.writeBlog",
-                              value: "Write a blog",
-                              comment: "Write a blog prompt for the jetpack prologue"),
-            NSLocalizedString("jetpack.prologue.prompt.readArticle",
-                              value: "Read an article",
-                              comment: "Read an article prompt for the jetpack prologue")
+                              comment: "Add an author prompt for the jetpack prologue")
         ]
     }
 }
