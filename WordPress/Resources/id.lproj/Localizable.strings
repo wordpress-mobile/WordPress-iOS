@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-06 15:18:04+0000 */
+/* Translation-Revision-Date: 2022-10-05 23:06:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -732,7 +732,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Teks Alt";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Selain itu, blok ini bisa dilepas lalu disunting secara terpisah dengan mengetuk \"Ubah ke blok reguler\".";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Selain itu, blok ini bisa dilepas lalu diedit secara terpisah dengan mengetuk “Ubah ke blok reguler”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Atau, Anda bisa memasukkan kata sandi untuk akun ini.";
@@ -4274,6 +4274,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "Nama Tautan";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Link Rel";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Pengaturan Tautan";
 
@@ -7497,6 +7500,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Ketuk di sini untuk menampilkan bantuan";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Ketuk untuk menambahkan kartu statistik baru.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Ketuk untuk membatalkan unggahan.";
 
@@ -7554,6 +7560,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Ketuk untuk melihat media dalam layar penuh";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Ketuk untuk melihat detail selengkapnya.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Ketuk untuk melihat statistik lengkap minggu ini";

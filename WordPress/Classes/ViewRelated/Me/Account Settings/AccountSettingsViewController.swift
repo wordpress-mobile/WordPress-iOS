@@ -112,7 +112,7 @@ private class AccountSettingsController: SettingsController {
         // If the primary site has no Site Title, then show the displayURL.
         if primarySiteName.isEmpty {
             let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.sharedInstance().mainContext)
-            primarySiteName = account?.defaultBlog.displayURL as String? ?? ""
+            primarySiteName = account?.defaultBlog?.displayURL as String? ?? ""
         }
 
         let primarySite = EditableTextRow(

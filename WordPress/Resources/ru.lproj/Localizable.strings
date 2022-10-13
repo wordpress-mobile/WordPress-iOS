@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-15 22:14:30+0000 */
+/* Translation-Revision-Date: 2022-10-06 11:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ru */
@@ -732,7 +732,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Атрибут alt";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Альтернативным вариантом вы можете рассоединить и отредактировать эти блоки по отдельности, нажав на \"преобразовать в обычные блоки\".";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Альтернативным вариантом вы можете рассоединить и отредактировать эти блоки по отдельности, нажав на \"преобразовать в обычные блоки\".";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "В качестве альтернативы можно ввести пароль для этой учётной записи.";
@@ -4274,6 +4274,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "Имя ссылки";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Link rel";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Настройки ссылки";
 
@@ -7497,6 +7500,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Нажмите тут для показа справки";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Коснитесь, чтобы добавить новые карточки статистики.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Нажмите, чтобы отменить загрузку.";
 
@@ -7554,6 +7560,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Нажмите для просмотра медиафайла на полном экране";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Коснитесь, чтобы увидеть больше сведений.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Нажмите, чтобы открыть подробную статистику за эту неделю";

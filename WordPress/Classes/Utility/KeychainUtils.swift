@@ -48,7 +48,6 @@ class KeychainUtils: NSObject {
         }
 
         guard shouldUseSharedKeychain(),
-              AppConfiguration.isWordPress,
               !defaults.bool(forKey: "keychain-copied"),
               let items = try? keychainUtils.getAllPasswords(forAccessGroup: nil) else {
             return

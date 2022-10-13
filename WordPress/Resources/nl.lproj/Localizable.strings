@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-15 22:16:41+0000 */
+/* Translation-Revision-Date: 2022-10-06 17:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -732,7 +732,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Alt-tekst";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Als alternatief, kun je deze blokken ook losmaken en afzonderlijk bewerken door op \"Converteren naar normale blokken\" te tikken.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Als alternatief, kun je deze blokken ook losmaken en afzonderlijk bewerken door op 'Converteren naar normale blokken' te tikken.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
@@ -3623,22 +3623,22 @@ translators: Block name. %s: The localized block name */
 "Header 6" = "Koptekst 6";
 
 /* H1 Aztec Style */
-"Heading 1" = "Heading 1";
+"Heading 1" = "Koptekst 1";
 
 /* H2 Aztec Style */
-"Heading 2" = "Heading 2";
+"Heading 2" = "Koptekst 2";
 
 /* H3 Aztec Style */
-"Heading 3" = "Heading 3";
+"Heading 3" = "Koptekst 3";
 
 /* H4 Aztec Style */
-"Heading 4" = "Heading 4";
+"Heading 4" = "Koptekst 4";
 
 /* H5 Aztec Style */
-"Heading 5" = "Heading 5";
+"Heading 5" = "Koptekst 5";
 
 /* H6 Aztec Style */
-"Heading 6" = "Heading 6";
+"Heading 6" = "Koptekst 6";
 
 /* Health site intent topic */
 "Health" = "Gezondheid";
@@ -5651,7 +5651,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please enter a valid email address for a WordPress.com account." = "Vul een geldig e-mailadres in voor een WordPress.com account.";
 
 /* Error message displayed when the user attempts use an invalid email address. */
-"Please enter a valid email address." = "Een geldig e-mailadres invoeren.";
+"Please enter a valid email address." = "Geef een geldig e-mailadres op.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Voer een geldig telefoonnummer in";
@@ -7497,6 +7497,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tik hier om help te tonen";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Tik hier om nieuwe statistiekenkaarten toe te voegen.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tik om het uploaden te annuleren.";
 
@@ -7554,6 +7557,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Klik om media op volledig scherm te bekijken";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Tik hier voor meer informatie.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Tikken om meer statistieken voor deze week te bekijken";

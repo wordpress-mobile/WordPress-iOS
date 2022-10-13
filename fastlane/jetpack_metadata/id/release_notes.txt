@@ -1,2 +1,7 @@
-Kami menerapkan beberapa perubahan pada penyebutan pengguna. Saat membalas sebuah pos atau komentar, dan menyebut pengguna lain, daftar pengguna yang disarankan akan diawali dengan nama yang menyesuaikan kueri pencarian Anda. Kemudian, daftar akan dilanjutkan sesuai huruf abjad setelah nama paling atas.
-Kami juga memperbaiki masalah yang menyebabkan daftar pengguna yang disarankan hilang setelah memperluas atau menciutkan kolom untuk membalas konten. Daftar tidak lagi hilang tiba-tiba.
+Kini Anda dapat membatalkan login WordPress.com saat sudah login ke situs yang dihosting sendiri—tidak ada lagi masalah di layar login jika Anda berubah pikiran.
+
+Aplikasi Jetpack dapat menjalankan ringkasan mingguan di latar belakang ketika Anda menggunakan aplikasi. Lancar tanpa masalah.
+
+Di tampilan iPad, tombol “Aktifkan pemberitahuan” tidak lagi muncul di atas instruksi untuk mengaktifkan pemberitahuan push. Teks menu samping “Tidak ada hasil” kini juga muncul di layar.
+
+Kami pernah menyelesaikan masalah pemuatan gambar berikutnya di cerita karena satu gambar di konsep Pos Cerita dihapus. Dan semua orang bahagia selamanya.

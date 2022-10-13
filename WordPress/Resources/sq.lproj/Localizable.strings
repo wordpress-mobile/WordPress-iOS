@@ -731,9 +731,6 @@ translators: Block name. %s: The localized block name */
    Label for the alt for a media asset (image) */
 "Alt Text" = "Tekst Alternativ";
 
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shndërroji në blloqe të rregullt”.";
-
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
 
