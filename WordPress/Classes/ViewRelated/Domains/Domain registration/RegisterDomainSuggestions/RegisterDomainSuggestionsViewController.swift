@@ -289,16 +289,8 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
         let domainRegistrationSucceeded = newURL.absoluteString.starts(with: Self.checkoutSuccessURLPrefix)
 
         if domainRegistrationSucceeded {
-
-            let registerDomainService = RegisterDomainDetailsServiceProxy()
-
-            registerDomainService.recordDomainPurchase(
-                siteID: siteID,
-                domain: domain,
-                isPrimaryDomain: false)
-
             onSuccess(domain)
-            return
+
         }
     }
 
