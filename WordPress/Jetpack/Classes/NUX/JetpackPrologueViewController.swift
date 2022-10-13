@@ -13,10 +13,13 @@ class JetpackPrologueViewController: UIViewController {
         return view
     }()
 
-    private lazy var motion: CMMotionManager = {
-        let manager = CMMotionManager()
-        manager.deviceMotionUpdateInterval = Self.Constants.deviceMotionUpdateInterval
-        return manager
+    private let motion: CMMotionManager? = {
+        guard FeatureFlag.newLandingScreen.enabled else {
+            return nil
+        }
+        let motion = CMMotionManager()
+        motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
+        return motion
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
@@ -73,14 +76,14 @@ class JetpackPrologueViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if FeatureFlag.newLandingScreen.enabled, motion.isGyroAvailable {
+        if let motion = motion, motion.isGyroAvailable {
             motion.startDeviceMotionUpdates()
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        motion.stopDeviceMotionUpdates()
+        motion?.stopDeviceMotionUpdates()
     }
 
     private func loadNewPrologueView() {
@@ -199,7 +202,7 @@ extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
     ///
     /// - Returns: Angle in degrees, or `nil` if the device didn't supply motion data.
     private func angleForDeviceOrientation() -> Double? {
-        guard let attitude = motion.deviceMotion?.attitude else {
+        guard let attitude = motion?.deviceMotion?.attitude else {
             return nil
         }
 
