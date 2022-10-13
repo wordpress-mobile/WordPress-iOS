@@ -23,7 +23,7 @@ struct JetpackPromptView: View {
 
     private enum Constants {
         static let lineLimit = 2
-        static let textInsets = EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
-        static let fontSize: CGFloat = 45
+        static let textInsets = EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        static let fontSize: CGFloat = 40
     }
 }
