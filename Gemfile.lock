@@ -101,6 +101,9 @@ GEM
       no_proxy_fix
       octokit (~> 4.7)
       terminal-table (>= 1, < 4)
+    danger-junit (1.0.2)
+      danger (> 2.0)
+      ox (~> 2.0)
     danger-rubocop (0.10.0)
       danger
       rubocop (~> 1.0)
@@ -290,6 +293,7 @@ GEM
     options (2.3.2)
     optparse (0.1.1)
     os (1.1.4)
+    ox (2.14.11)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -382,6 +386,7 @@ DEPENDENCIES
   cocoapods (~> 1.11)
   commonmarker
   danger (~> 8.6)
+  danger-junit (~> 1.0)
   danger-rubocop (~> 0.10)
   dotenv
   fastlane (~> 2.174)
@@ -396,4 +401,4 @@ DEPENDENCIES
   xcpretty-travis-formatter
 
 BUNDLED WITH
-   2.3.23
+   2.3.22
