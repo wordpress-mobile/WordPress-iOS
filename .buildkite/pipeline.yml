@@ -124,5 +124,8 @@ steps:
       # That is, it outwardly only mentions RuboCop, not Danger
       - label: ":rubocop: Lint Ruby Tooling"
         command: .buildkite/commands/rubocop-via-danger.sh
-        env: *common_env
-        plugins: *common_plugins
+        plugins:
+          - docker#v3.8.0:
+              image: "ruby:2.7"
+        agents:
+          queue: "default"
