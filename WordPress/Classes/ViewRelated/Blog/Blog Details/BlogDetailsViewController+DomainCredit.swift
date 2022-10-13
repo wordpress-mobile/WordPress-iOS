@@ -31,7 +31,15 @@ extension BlogDetailsViewController {
     }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
-        let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
+        let controller = DomainCreditRedemptionSuccessViewController(domain: domain) { [weak self] _ in
+            self?.dismiss(animated: true) {
+                guard let email = self?.accountEmail() else {
+                    return
+                }
+                let title = String(format: NSLocalizedString("Verify your email address - instructions sent to %@", comment: "Notice displayed after domain credit redemption success."), email)
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+            }
+        }
         present(controller, animated: true) { [weak self] in
             self?.updateTableView {
                 guard
@@ -42,18 +50,6 @@ extension BlogDetailsViewController {
                 }
                 parent.sitePickerViewController?.blogDetailHeaderView.blog = blog
             }
-        }
-    }
-}
-
-extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewControllerDelegate {
-    func continueButtonPressed(domain: String) {
-        dismiss(animated: true) { [weak self] in
-            guard let email = self?.accountEmail() else {
-                return
-            }
-            let title = String(format: NSLocalizedString("Verify your email address - instructions sent to %@", comment: "Notice displayed after domain credit redemption success."), email)
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
         }
     }
 
