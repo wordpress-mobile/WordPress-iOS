@@ -3,33 +3,25 @@ import WordPressShared
 
 open class AppIconViewController: UITableViewController {
 
-    private enum Section: Int {
-        case currentColorfulBackground
-        case currentLightBackground
-        // Legacy icons are our v1 custom icons,
-        // which will be removed at some point in the future.
-        case legacy
+    // MARK: - Data
 
-        var title: String? {
-            switch self {
-            case .currentColorfulBackground:
-                return NSLocalizedString("Colorful backgrounds", comment: "Title displayed for selection of custom app icons that have colorful backgrounds.")
-            case .currentLightBackground:
-                return NSLocalizedString("Light backgrounds", comment: "Title displayed for selection of custom app icons that have white backgrounds.")
-            case .legacy:
-                return NSLocalizedString("Legacy Icons", comment: "Title displayed for selection of custom app icons that may be removed in a future release of the app.")
-            }
-        }
+    private let viewModel: AppIconListViewModelType = AppIconListViewModel()
+
+    private var icons: [AppIconListSection] {
+        return viewModel.icons
     }
 
-    private var icons = [[AppIcon]]()
-    private var borderedIcons = [String]()
+    // MARK: - Init
 
-    convenience init() {
-        self.init(style: .grouped)
-
-        loadIcons()
+    public init() {
+        super.init(style: .insetGrouped)
     }
+
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,11 +49,11 @@ open class AppIconViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Section(rawValue: section)?.title
+        return icons[section].title
     }
 
     open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return icons[section].count
+        return icons[section].items.count
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -126,44 +118,11 @@ open class AppIconViewController: UITableViewController {
     }
 
     private func isOriginalIcon(at indexPath: IndexPath) -> Bool {
-        return indexPath.section == Section.currentColorfulBackground.rawValue && indexPath.row == 0
-    }
-
-    // MARK: - Private helpers
-
-    private func loadIcons() {
-        let allIcons = AppIcon.allIcons
-
-        // Produces a closure which sorts alphabetically, giving priority to items
-        // beginning with the specified prefix.
-        func sortWithPriority(toItemsWithPrefix prefix: String) -> ((AppIcon, AppIcon) -> Bool) {
-            return { (first, second) in
-                let firstIsDefault = first.name.hasPrefix(prefix)
-                let secondIsDefault = second.name.hasPrefix(prefix)
-
-                if firstIsDefault && !secondIsDefault {
-                    return true
-                } else if !firstIsDefault && secondIsDefault {
-                    return false
-                }
-
-                return first.name < second.name
-            }
-        }
-
-        // Filter out the current and legacy icon groups, with the Blue icons sorted to the top.
-        let currentColorfulIcons = allIcons.filter({ $0.isLegacy == false && $0.isBordered == false })
-                                           .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultIconName))
-        let currentLightIcons = allIcons.filter({ $0.isLegacy == false && $0.isBordered == true })
-                                        .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultIconName))
-        let legacyIcons = allIcons.filter({ $0.isLegacy == true })
-                                  .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultLegacyIconName))
-
-        self.icons = [currentColorfulIcons, currentLightIcons, legacyIcons]
+        return icons[indexPath.section][indexPath.row].isPrimary
     }
 
     private enum Constants {
-        static let rowHeight: CGFloat = 76.0
+        static let rowHeight: CGFloat = 89.0
         static let cornerRadius: CGFloat = 13.0
         static let iconBorderColor: UIColor? = UITableView().separatorColor
 
