@@ -1,2 +1,7 @@
-Wir haben einige Änderungen an Benutzererwähnungen vorgenommen. Wenn du auf einen Beitrag oder Kommentar antwortest und einen anderen Benutzer markierst, werden ganz oben in der Liste der vorgeschlagenen Benutzer Namen angezeigt, die mit denselben Buchstaben wie deine Suchanfrage beginnen. Die Liste wird danach alphabetisch fortgeführt.
-Wir haben auch das Problem behoben, bei dem die Liste mit den vorgeschlagenen Benutzern verschwindet, sobald das Antwortfeld erweitert oder eingeklappt wird. Plötzlich verschwundene Listen gehören damit der Vergangenheit an.
+Du kannst jetzt eine WordPress.com-Anmeldung stornieren, während du bereits bei einer selbst gehosteten Website angemeldet bist – damit bleibst du nicht mehr auf dem Anmeldebildschirm hängen, wenn du es dir anders überlegst.
+
+Die Jetpack-App kann wöchentliche Zusammenfassungen im Hintergrund ausführen, während du andere Apps verwendest. Auf, auf und davon.
+
+Auf iPad-Displays liegt der Button „Benachrichtigungen aktivieren“ nicht mehr über den Anweisungen zum Aktivieren von Push-Benachrichtigungen. Der Seitenmenü-Text „Kein Ergebnis“ passt jetzt auch auf den Bildschirm.
+
+Wir haben einmal ein Problem behoben, bei dem das Löschen eines Bildes in einem Entwurf eines Story-Beitrags das Laden des nächsten Bildes in der Story verhinderte. Und alle lebten danach glücklich und zufrieden.

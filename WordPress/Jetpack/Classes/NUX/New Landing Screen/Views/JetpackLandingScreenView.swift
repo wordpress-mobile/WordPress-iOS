@@ -7,7 +7,7 @@ struct JetpackLandingScreenView: View {
     private let oddColor = JetpackPromptsConfiguration.Constants.oddColor
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(0..<prompts.count * 2, id: \.hashValue) { index in
                 JetpackPromptView(
                     text: prompts[index % prompts.count],

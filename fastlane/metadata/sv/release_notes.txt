@@ -1,2 +1,7 @@
-Vi har gjort några ändringar rörande användaromnämnanden. När du svarar på ett inlägg eller kommenterar och taggar en annan användare börjar listan över föreslagna användare med namn som inleds med din sökfråga. Listan fortsätter därefter alfabetiskt.
-Vi har också åtgärdat ett problem som gjorde att listan över föreslagna användare kunde försvinna om fältet med svarsinnehållet expanderas eller minimerades. Klart. Inget mer försvinnande.
+Nu kan du avbryta en inloggning via WordPress.com om du redan är inloggad till en webhotellsbaserad webbplats. Du riskerar inte längre att fastna på inloggningssidan om du skulle ändra dig.
+
+I den senaste utgåvan har vi även korrigerat en rad mindre fel.
+
+- Vid ett tillfälle rättade vi ett fel där nästa bild i en berättelse inte lästes in på rätt sätt om man raderat föregående bild. Därefter levde alla lyckligt i alla sina dagar.
+- På iPad-skärmar täcker inte längre knappen ”aktivera aviseringar” instruktionerna för hur man aktiverar pushmeddelanden. Dessutom ryms nu hela texten i sidopanelsmenyn för ”Inga sökresultat” på skärmen.
+- Innehåll ovanför bannern ”Drivs med Jetpack” är nu synligt och åtkomligt även när du skrollar. Ett verkligt lyft!

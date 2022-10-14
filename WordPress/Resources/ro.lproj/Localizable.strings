@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-29 08:35:29+0000 */
+/* Translation-Revision-Date: 2022-10-04 08:06:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -732,7 +732,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Text alternativ";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ca alternativă, poți să introduci parola pentru acest cont.";
@@ -4274,6 +4274,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "Nume legătură";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Legătură rel";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Setări legătură";
 
@@ -7497,6 +7500,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Atinge aici pentru a afișa ajutorul";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Atinge pentru a adăuga carduri noi cu statistici.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Atinge pentru anularea încărcării.";
 
@@ -7554,6 +7560,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Atinge pentru a vizualiza elementul media pe ecran complet";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Atinge pentru a vedea mai multe detalii.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Atinge pentru a vedea mai multe statistici din această săptămână";
@@ -8436,7 +8445,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Unapproves a Comment
    Unapproves a comment */
-"Unapprove" = "Neaprobat";
+"Unapprove" = "Anulează aprobarea";
 
 /* Unapproves a Comment */
 "Unapprove Comment" = "Dezaprobă comentariul";

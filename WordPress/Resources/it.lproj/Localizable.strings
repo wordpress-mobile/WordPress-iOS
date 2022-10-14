@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-15 22:14:53+0000 */
+/* Translation-Revision-Date: 2022-10-05 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: it */
@@ -732,7 +732,7 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Testo Alt (alternativo)";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "In alternativa, puoi staccare e modificare questi blocchi separatamente toccando \"Converti in blocchi regolari\".";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "In alternativa, puoi staccare e modificare questi blocchi separatamente toccando “Converti in blocchi regolari”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "In alternativa, puoi inserire la password per questo account.";
@@ -7497,6 +7497,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tocca qui per mostrare la guida in linea";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Tocca per aggiungere nuove schede delle statistiche.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Fai tap per cancellare il caricamento.";
 
@@ -7554,6 +7557,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Tocca per visualizzare l'elemento multimediale a schermo intero";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Tocca per mostrare più dettagli.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Tocca per visualizzare più statistiche relative a questa settimana";
