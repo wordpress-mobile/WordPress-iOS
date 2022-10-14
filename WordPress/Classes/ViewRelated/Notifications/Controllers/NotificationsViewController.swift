@@ -627,17 +627,20 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController {
 
-    /// Called on view load to determine whether the Jetpack banner should be shown on the view
+    /// Called on viewDidLoad/defaultAccountDidChange to determine whether the Jetpack banner should be shown on the view
     /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
     func configureJetpackBanner() {
-        guard JetpackBrandingVisibility.all.enabled else {
+        guard isViewLoaded else {
+            return
+        }
+        jetpackBannerView.isHidden = !JetpackBrandingVisibility.all.enabled
+        guard jetpackBannerView.buttonAction == nil else {
             return
         }
         jetpackBannerView.buttonAction = { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
         }
-        jetpackBannerView.isHidden = false
         addTranslationObserver(jetpackBannerView)
     }
 }
@@ -698,6 +701,7 @@ private extension NotificationsViewController {
         resetNotifications()
         resetLastSeenTime()
         resetApplicationBadge()
+        configureJetpackBanner()
         guard isViewLoaded == true && view.window != nil else {
             needsReloadResults = true
             return
