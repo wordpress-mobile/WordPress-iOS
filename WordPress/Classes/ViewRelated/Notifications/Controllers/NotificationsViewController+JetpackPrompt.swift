@@ -17,6 +17,7 @@ extension NotificationsViewController {
             let controller = JetpackLoginViewController(blog: blog)
             controller.promptType = .notifications
             addChild(controller)
+            tableView.setContentOffset(.zero, animated: false)
             tableView.addSubview(withFadeAnimation: controller.view)
             controller.view.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([

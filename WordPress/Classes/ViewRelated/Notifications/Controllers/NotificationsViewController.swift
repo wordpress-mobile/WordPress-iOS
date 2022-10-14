@@ -1543,6 +1543,7 @@ private extension NotificationsViewController {
 
     func addNoResultsToView() {
         addChild(noResultsViewController)
+        tableView.setContentOffset(.zero, animated: false)
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
         setupNoResultsViewConstraints()
