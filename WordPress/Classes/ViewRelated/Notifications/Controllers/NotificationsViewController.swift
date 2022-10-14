@@ -2083,6 +2083,9 @@ extension NotificationsViewController: WPScrollableViewController {
 //
 extension NotificationsViewController: JPScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
         processJetpackBannerVisibility(scrollView)
     }
 }
