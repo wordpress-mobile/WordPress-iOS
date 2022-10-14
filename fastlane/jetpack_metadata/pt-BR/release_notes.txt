@@ -1,2 +1,7 @@
-Fizemos algumas alterações nas menções ao usuário. Quando você responder a um post ou comentário marcando outro usuário, sua lista de usuários sugeridos começará com os nomes iniciados pelo que você digitou. Logo após, a lista continuará em ordem alfabética.
-Além disso, corrigimos um problema que sumia com a lista de usuários sugeridos após expandir ou recolher o campo do conteúdo da resposta. Chega de chá de sumiço.
+Agora você pode cancelar um login no WordPress.com enquanto está conectado em um site auto-hospedado. Assim, você não precisa mais ficar esperando na tela de login se mudar de ideia.
+
+O Jetpack pode executar resumos semanais em segundo plano enquanto você está usando outros aplicativos. Ao infinito e além!
+
+Nos displays de iPad, o botão "Ativar notificações" não fica mais acima das instruções para ativar as notificações por push. O texto do menu lateral "Nenhum resultado" agora também cabe na tela.
+
+Era uma vez um problema em que apagar uma imagem em um rascunho de um post de story impedia que a próxima imagem do story fosse carregada. Um dia ele foi resolvido. E todos viveram felizes para sempre.

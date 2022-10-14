@@ -17,26 +17,16 @@ extension Blog {
             return nil
         }
 
-        return blog(with: NSPredicate(format: "visible = YES AND url = %@", url), in: context)
+        return try? BlogQuery()
+            .visible(true)
+            .hostname(matching: url)
+            .blog(in: context)
     }
 
     private static func firstBlog(in context: NSManagedObjectContext) -> Blog? {
-        blog(with: NSPredicate(format: "visible = YES"), in: context)
-    }
-
-    private static func blog(with predicate: NSPredicate, in context: NSManagedObjectContext) -> Blog? {
-        let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
-        request.includesSubentities = false
-        request.predicate = predicate
-        request.fetchLimit = 1
-        request.sortDescriptors = [NSSortDescriptor(key: "settings.name", ascending: true)]
-
-        do {
-            return try context.fetch(request).first
-        } catch {
-            DDLogError("Couldn't fetch blogs with predicate \(predicate): \(error)")
-            return nil
-        }
+        try? BlogQuery()
+            .visible(true)
+            .blog(in: context)
     }
 
 }

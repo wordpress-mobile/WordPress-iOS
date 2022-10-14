@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-29 16:30:57+0000 */
+/* Translation-Revision-Date: 2022-10-12 04:33:17+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -730,9 +730,6 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文字";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "你可以改為點選「轉換為一般區塊」，然後分別移除並編輯這些區塊。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "或者你也可以輸入此帳號的密碼。";
@@ -4274,6 +4271,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "連結名稱";
 
+/* No comment provided by engineer. */
+"Link Rel" = "鏈結 Rel";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "連結設定";
 
@@ -4815,13 +4815,13 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Navigates to the previous content sheet" = "瀏覽至上一個內容表";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
-"Need Help?" = "需要幫助嗎？";
+"Need Help?" = "需要協助？";
 
 /* A button title. */
 "Need help finding your site address?" = "需要幫你找網站位址嗎？";
 
 /* Takes the user to get help */
-"Need help?" = "需要協助嗎？";
+"Need help?" = "需要協助？";
 
 /* Title of the more help button on alert helping users understand their site address */
 "Need more help?" = "需要更多協助嗎？";
@@ -5522,7 +5522,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Password changed successfully" = "密碼已成功變更";
 
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "此篇受密碼保護";
+"Password protected" = "受密碼保護";
 
 /* No comment provided by engineer. */
 "Paste URL" = "貼上 URL";
@@ -5693,7 +5693,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Please wait til the current fetch completes." = "請等待目前的擷取作業完成。";
 
 /* Link to a plugin's home page */
-"Plugin Homepage" = "外掛程式首頁";
+"Plugin Homepage" = "外掛首頁";
 
 /* Error displayed when trying to install a plugin on a site for the first time. */
 "Plugin cannot be installed due to disk space limitations." = "由於磁碟空間的限制，無法安裝外掛程式。";
@@ -7497,6 +7497,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "點選此處顯示說明";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Tap to add new stats cards.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "點選以取消上傳";
 
@@ -7554,6 +7557,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "點選以全螢幕檢視媒體";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Tap to view more details.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "點選檢視更多本週的統計資料。";

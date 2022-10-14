@@ -395,12 +395,8 @@ extension PeopleService {
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
     func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        let context = ContextManager.shared.newDerivedContext()
-        context.perform {
-            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
-                DispatchQueue.main.async {
-                    onComplete()
-                }
+        ContextManager.shared.performAndSave { context in
+            guard let blog = try Blog.lookup(withID: siteID, in: context) else {
                 return
             }
 
@@ -414,11 +410,9 @@ extension PeopleService {
             for remoteInvite in remoteInvites {
                 createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
             }
-
-            ContextManager.shared.save(context) {
-                DispatchQueue.main.async {
-                    onComplete()
-                }
+        } completion: { _ in
+            DispatchQueue.main.async {
+                onComplete()
             }
         }
     }
@@ -431,9 +425,7 @@ extension PeopleService {
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
     func deleteInviteLinks(keys: [String], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        let context = ContextManager.shared.newDerivedContext()
-        context.perform {
-
+        ContextManager.shared.performAndSave { context in
             let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
             request.predicate = NSPredicate(format: "inviteKey IN %@ AND blog.blogID = %@", keys, NSNumber(value: siteID))
 
@@ -445,11 +437,9 @@ extension PeopleService {
             } catch {
                 DDLogError("Error fetching stale invite links: \(error)")
             }
-
-            ContextManager.shared.save(context) {
-                DispatchQueue.main.async {
-                    onComplete()
-                }
+        } completion: {
+            DispatchQueue.main.async {
+                onComplete()
             }
         }
     }

@@ -1383,8 +1383,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // Try to find the Blog locally first, as it should exist if the user has a role on the site.
     if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
         ReaderPost *readerPost = (ReaderPost *)comment.post;
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        return [self remoteForBlog:[blogService blogByHostname:readerPost.blogURL]];
+        return [self remoteForBlog:[Blog lookupWithHostname:readerPost.blogURL inContext:self.managedObjectContext]];
     }
 
     return [self remoteForBlog:comment.blog];

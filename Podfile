@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58'
+  pod 'WordPressKit', '~> 4.58.1-beta.1'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -177,7 +177,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg commit: 'bc8805197ddd8d27277d62009e34a3ef20986a8b'
+  gutenberg commit: '8e1f7bbbd3419ae9781c68aee4bdc665daa69e6b'
 
   ## Third party libraries
   ## =====================
@@ -267,10 +267,32 @@ target 'WordPressShareExtension' do
   wordpress_ui
 end
 
+target 'JetpackShareExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
 ## DraftAction Extension
 ## =====================
 ##
 target 'WordPressDraftActionExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
+target 'JetpackDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_extension_pods
@@ -345,6 +367,14 @@ end
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
+end
+
+target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_kit

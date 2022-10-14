@@ -1,2 +1,7 @@
-We hebben wat wijzigingen aangebracht aan gebruikers vermelden. Wanneer je reageert op een bericht of opmerking en een andere gebruiker tagt, begint de lijst met voorgestelde gebruikers met namen die overeenkomen met je query. De lijst zal daarna op alfabetische volgorde verdergaan.
-We hebben ook een probleem verholpen waarbij de lijst van voorgestelde gebruikers verdween na het uit- of inklappen van het veld voor reactiecontent. Zo, geen verdwijntruc meer.
+Je kan nu het inloggen op WordPress.com annuleren als je al ingelogd bent op een zelf-gehoste site. Zo kom je niet meer vast te zitten op het inlogscherm als je van gedachten verandert.
+
+De Jetpack-app kan nu in de achtergrond wekelijkse overzichten uitvoeren terwijl je andere apps gebruikt. Daar gaan we.
+
+De knop 'Meldingen inschakelen' wordt op iPads niet meer bovenop de instructies voor het inschakelen van pushmeldingen weergegeven. De tekst 'Geen resultaten' in het menu aan de zijkant past nu ook op het scherm.
+
+Er was eens een probleem waarbij het verwijderen van een afbeelding in een concept van een verhaalbericht het laden van de volgende afbeelding zou voorkomen. Dat probleem hebben we nu opgelost. En iedereen leefde nog lang en gelukkig.

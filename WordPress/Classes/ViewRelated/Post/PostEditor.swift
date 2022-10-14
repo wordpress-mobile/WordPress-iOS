@@ -129,8 +129,7 @@ extension PostEditor {
     }
 
     var currentBlogCount: Int {
-        let service = BlogService(managedObjectContext: mainContext)
-        return postIsReblogged ? service.blogCountForWPComAccounts() : service.blogCountForAllAccounts()
+        return postIsReblogged ? BlogQuery().hostedByWPCom(true).count(in: mainContext) : Blog.count(in: mainContext)
     }
 
     var isSingleSiteMode: Bool {
