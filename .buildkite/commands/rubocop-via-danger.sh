@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 echo "--- :rubygems: Setting up Gems"
-bundle install
+install_gems
 
 echo "--- :rubocop: Run Rubocop via Danger"
 bundle exec danger --fail-on-errors=true

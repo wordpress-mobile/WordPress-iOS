@@ -120,11 +120,6 @@ steps:
       # That is, it outwardly only mentions RuboCop, not Danger
       - label: ":rubocop: Lint Ruby Tooling"
         command: .buildkite/commands/rubocop-via-danger.sh
-        plugins:
-          - docker#v3.8.0:
-              image: "ruby:2.7"
-              propagate-environment: true
-              environment:
-                - "DANGER_GITHUB_API_TOKEN"
+        plugins: *common_plugins
         agents:
-          queue: "default"
+          queue: "android"
