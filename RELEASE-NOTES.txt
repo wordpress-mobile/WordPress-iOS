@@ -9,6 +9,7 @@
 * [*] Reader: Comment Details have been redesigned. [#19387]
 * [*] [internal] A refactor in weekly roundup notification scheduler. [#19422]
 * [*] Stories: Fixed an issue where the keyboard would overlap with the publish dialog in landscape. [#19350]
+* [*] Fixed an issue where the navigation bar becomes invisible when swiping back to Login Prologue screen.  [#19461]
 
 20.9
 -----
