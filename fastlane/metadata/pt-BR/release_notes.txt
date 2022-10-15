@@ -1,0 +1,7 @@
+Agora você pode cancelar um login no WordPress.com enquanto está conectado em um site auto-hospedado. Assim, você não precisa mais ficar esperando na tela de login se mudar de ideia.
+
+Nós também eliminamos vários bugs nesta última atualização.
+
+- Era uma vez um problema em que apagar uma imagem em um rascunho de um post de story impedia que a próxima imagem do story fosse carregada. Um dia ele foi resolvido. E todos viveram felizes para sempre.
+- Nos displays de iPad, o botão "Ativar notificações" não fica mais acima das instruções para ativar as notificações por push. O texto do menu lateral "Nenhum resultado" agora também cabe na tela.
+- O conteúdo acima do banner Com tecnologia Jetpack agora permanece visível e responsivo enquanto você está rolando a tela. Ao infinito e além!
