@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-08 13:54:08+0000 */
+/* Translation-Revision-Date: 2022-10-06 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -730,9 +730,6 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Texte alternatif";
-
-/* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "Vous pouvez également détacher et modifier ces blocs séparément en appuyant sur « Convertir en blocs normaux ».";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Vous pouvez également saisir le mot de passe de ce compte.";
@@ -4274,6 +4271,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "Nom du lien";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Attribut « Rel » du lien";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Réglages du lien";
 
@@ -7497,6 +7497,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toucher ici pour voir l’aide";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Appuyez pour ajouter de nouvelles cartes de statistiques.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Touchez pour annuler le téléversement.";
 
@@ -7554,6 +7557,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Appuyer pour voir le média en plein écran";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Appuyez pour afficher plus de détails.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Appuyer pour voir plus de statistiques pour cette semaine";

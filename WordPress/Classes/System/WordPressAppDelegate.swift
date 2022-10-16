@@ -105,7 +105,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureReachability()
         configureSelfHostedChallengeHandler()
-        remoteFeatureFlagStore.update()
+        updateFeatureFlags()
 
         window?.makeKeyAndVisible()
 
@@ -156,6 +156,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
         copyToSharedDefaultsIfNeeded()
+        BloggingRemindersScheduler.handleRemindersMigration()
         return true
     }
 
@@ -206,6 +207,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("\(self) \(#function)")
 
         uploadsManager.resume()
+        updateFeatureFlags()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -647,6 +649,18 @@ extension WordPressAppDelegate {
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
+        }
+    }
+
+    /// Updates the remote feature flags using an authenticated remote if an account exists, or using an anonymous remote if no account exists.
+    func updateFeatureFlags() {
+        do {
+            let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
+            let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
+            let remote = FeatureFlagRemote(wordPressComRestApi: api)
+            remoteFeatureFlagStore.updateIfNeeded(using: remote)
+        } catch {
+            DDLogError("Error fetching default user account: \(error)")
         }
     }
 }

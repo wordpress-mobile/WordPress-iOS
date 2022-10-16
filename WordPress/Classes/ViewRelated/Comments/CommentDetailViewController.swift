@@ -845,14 +845,16 @@ private extension CommentDetailViewController {
     func trashComment() {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: notification?.metaSiteID) :
                                 CommentAnalytics.trackCommentTrashed(comment: comment)
+        trashButtonCell.isLoading = true
 
         commentService.trashComment(comment, success: { [weak self] in
+            self?.trashButtonCell.isLoading = false
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
             self?.refreshData()
         }, failure: { [weak self] error in
+            self?.trashButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.trashFail)
             self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-
         })
     }
 
@@ -1032,6 +1034,13 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 }
                 commentStatus = statusType
                 notifyDelegateCommentModerated()
+
+                guard let cell = tableView.cellForRow(at: indexPath) else {
+                    return
+                }
+                let activityIndicator = UIActivityIndicatorView(style: .medium)
+                cell.accessoryView = activityIndicator
+                activityIndicator.startAnimating()
             default:
                 break
             }

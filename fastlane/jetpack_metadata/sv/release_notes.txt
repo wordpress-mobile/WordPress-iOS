@@ -1,2 +1,7 @@
-Vi har gjort några ändringar rörande användaromnämnanden. När du svarar på ett inlägg eller kommenterar och taggar en annan användare börjar listan över föreslagna användare med namn som inleds med din sökfråga. Listan fortsätter därefter alfabetiskt.
-Vi har också åtgärdat ett problem som gjorde att listan över föreslagna användare kunde försvinna om fältet med svarsinnehållet expanderas eller minimerades. Klart. Inget mer försvinnande.
+Du kan nu avbryta en WordPress.com-inloggning när du redan är inloggad på en webbplats som drivs på egen server – utan att fastna på inloggningsskärmen om du ändrar dig.
+
+Jetpack-appen kan köra veckosammanfattningar i bakgrunden medan du använder andra appar. Upp, upp och iväg.
+
+Knappen "Slå på notiser" visas inte längre över instruktionerna för att aktivera push-notiser på iPad-skärmar. Sidomenytexten "Inget resultat" får dessutom plats på skärmen nu.
+
+En gång i tiden åtgärdade vi ett problem som hindrade nästa bild i en berättelse från att laddas om man tog bort en bild i ett berättelseinläggsutkast. Och alla levde lyckliga i alla sina dagar.

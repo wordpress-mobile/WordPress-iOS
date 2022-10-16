@@ -1,19 +1,20 @@
-
 import SwiftUI
 
 struct JetpackLandingScreenView: View {
 
-    let viewModel: JetpackPromptsViewModel
+    private let prompts = JetpackPromptsConfiguration.Constants.basePrompts
+    private let evenColor = JetpackPromptsConfiguration.Constants.evenColor
+    private let oddColor = JetpackPromptsConfiguration.Constants.oddColor
 
     var body: some View {
-        GeometryReader { proxy in
-            makeJetpackPromptsView(size: CGSize(width: proxy.size.width - JetpackPromptView.totalHorizontalPadding,
-                                                height: proxy.size.height))
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(0..<prompts.count * 2, id: \.hashValue) { index in
+                JetpackPromptView(
+                    text: prompts[index % prompts.count],
+                    color: index % 2 == 0 ? evenColor : oddColor
+                )
+            }
         }
-    }
-
-    private func makeJetpackPromptsView(size: CGSize) -> some View {
-        viewModel.configuration = JetpackPromptsConfiguration(size: size)
-        return JetpackPromptsView(viewModel: viewModel)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

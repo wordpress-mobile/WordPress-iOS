@@ -58,6 +58,8 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
         view.addSubview(loadingBackgroundView)
         view.pinSubviewToAllEdges(loadingBackgroundView)
+        loadingBackgroundView.backgroundColor = buttonBackgroundColor
+        loadingBackgroundView.layer.cornerRadius = 8
 
         view.addSubview(activityIndicator)
         view.pinSubviewAtCenter(activityIndicator)

@@ -3,11 +3,14 @@
 * [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
 * [**] [Jetpack-only] Added a share extension. Now users can share content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19383]
 * [*] Update launch screen. [#19341]
+* [*] [Jetpack-only] Add ability to set custom app icon for Jetpack app. [#19378]
 * [**] [Jetpack-only] Added a "Save as Draft" extension. Now users can save content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19414]
 * [**] [Jetpack-only] Enables Rich Notifications for the Jetpack app. Now we display more details on most of the push notifications. This was previously only available on the WordPress app. [#19415]
 * [*] Reader: Comment Details have been redesigned. [#19387]
 * [*] [internal] A refactor in weekly roundup notification scheduler. [#19422]
 * [*] [internal] A low level database refactor around fetching cards in the Reader tab. [#19427]
+* [*] Stories: Fixed an issue where the keyboard would overlap with the publish dialog in landscape. [#19350]
+* [*] Fixed an issue where the navigation bar becomes invisible when swiping back to Login Prologue screen.  [#19461]
 
 20.9
 -----

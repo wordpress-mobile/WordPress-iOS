@@ -682,6 +682,9 @@ private extension WordPressAuthenticationManager {
             let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
 
+            // Refresh Remote Feature Flags
+            WordPressAppDelegate.shared?.updateFeatureFlags()
+
             onCompletion()
 
         }, onFailure: { _ in
