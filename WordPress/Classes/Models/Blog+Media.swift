@@ -12,7 +12,7 @@ extension Blog {
             return 0
         }
 
-        var count: Int?
+        var count = 0
         context.performAndWait {
             var predicate = NSPredicate(format: "blog == %@", self)
 
@@ -31,7 +31,7 @@ extension Blog {
 
             count = context.countObjects(ofType: Media.self, matching: predicate)
         }
-        return count ?? 0
+        return count
     }
 
 }
