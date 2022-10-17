@@ -3984,11 +3984,14 @@
 /* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
 "Insights update" = "Insights update";
 
+/* Difference label for Insights Overview stat, indicating change from previous period, including percentage value, when the change is 0 or less. Example: 99.9K (5%) */
+"insights.visitorsLineChartCell.differenceLabelNotPosiviteWithPercentage" = "%1$@ (%2$@%%)";
+
 /* Difference label for Insights Overview stat, indicating change from previous period. Example: +99.9K */
-"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+"insights.visitorsLineChartCell.differenceLabelPosiviteWithoutPercentage" = "+%@";
 
 /* Difference label for Insights Overview stat, indicating change from previous period, including percentage value. Example: +99.9K (5%) */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+"insights.visitorsLineChartCell.differenceLabelPosiviteWithPercentage" = "+%1$@ (%2$@%%)";
 
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
