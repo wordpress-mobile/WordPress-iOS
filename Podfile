@@ -21,7 +21,6 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
   pod 'WordPressShared', '~> 1.18.0'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -37,14 +36,12 @@ end
 
 def wordpress_ui
   pod 'WordPressUI', '~> 1.12.5'
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
 def wordpress_kit
   pod 'WordPressKit', '~> 4.58', '>= 4.58.2-beta.1'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
@@ -205,19 +202,16 @@ abstract_target 'Apps' do
   # Production
 
   pod 'Automattic-Tracks-iOS', '~> 0.13'
-  # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
 
   pod 'WPMediaPicker', '~> 1.8.4'
-  # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   pod 'Gridicons', '~> 1.1.0'
 
   pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/prologue-nav-bar'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
