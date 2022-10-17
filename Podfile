@@ -21,7 +21,6 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
   pod 'WordPressShared', '~> 1.18.0'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
@@ -32,14 +31,12 @@ def aztec
   ## When using a commit number (during development) you should provide the same commit number for both pods.
   ##
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
-  # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', tag: ''
   # pod 'WordPress-Editor-iOS', path: '../AztecEditor-iOS'
   pod 'WordPress-Editor-iOS', '~> 1.19.8'
 end
 
 def wordpress_ui
   pod 'WordPressUI', '~> 1.12.5'
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
@@ -47,7 +44,6 @@ end
 
 def wordpress_kit
   pod 'WordPressKit', '~> 4.58', '>= 4.58.2-beta.1'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -55,7 +51,6 @@ end
 
 def kanvas
   pod 'Kanvas', '~> 1.4.4'
-  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
   # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', commit: ''
   # pod 'Kanvas', path: '../Kanvas-iOS'
 end
@@ -216,7 +211,6 @@ abstract_target 'Apps' do
   pod 'NSURL+IDN', '~> 0.4'
 
   pod 'WPMediaPicker', '~> 1.8.4'
-  # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', tag: '1.7.0'
   # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
