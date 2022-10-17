@@ -94,5 +94,8 @@ import Foundation
 
         // Delete donated user activities (e.g., for Siri Shortcuts)
         NSUserActivity.deleteAllSavedUserActivities {}
+
+        // Refresh Remote Feature Flags
+        WordPressAppDelegate.shared?.updateFeatureFlags()
     }
 }

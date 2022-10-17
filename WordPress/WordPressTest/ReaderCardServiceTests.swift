@@ -135,6 +135,10 @@ class ReaderCardServiceTests: CoreDataTestCase {
         }, failure: {_ in })
 
         waitForExpectations(timeout: 5, handler: nil)
+
+        service.clean()
+        let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
+        expect(cards?.count).to(equal(0))
     }
 }
 

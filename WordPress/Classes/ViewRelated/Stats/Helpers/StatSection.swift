@@ -34,37 +34,41 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights = FeatureFlag.statsNewInsights.enabled  ?
-                                    [StatSection.insightsViewsVisitors,
-                                     .insightsLatestPostSummary,
-                                     .insightsAllTime,
-                                     .insightsLikesTotals,
-                                     .insightsCommentsTotals,
-                                     .insightsFollowerTotals,
-                                     .insightsMostPopularTime,
-                                     .insightsTagsAndCategories,
-                                     .insightsAnnualSiteStats,
-                                     .insightsCommentsAuthors,
-                                     .insightsCommentsPosts,
-                                     .insightsFollowersWordPress,
-                                     .insightsFollowersEmail,
-                                     .insightsTodaysStats,
-                                     .insightsPostingActivity,
-                                     .insightsPublicize] :
-                                    [StatSection.insightsLatestPostSummary,
-                                    .insightsAllTime,
-                                    .insightsFollowerTotals,
-                                    .insightsMostPopularTime,
-                                    .insightsTagsAndCategories,
-                                    .insightsAnnualSiteStats,
-                                    .insightsCommentsAuthors,
-                                    .insightsCommentsPosts,
-                                    .insightsFollowersWordPress,
-                                    .insightsFollowersEmail,
-                                    .insightsTodaysStats,
-                                    .insightsPostingActivity,
-                                    .insightsPublicize,
-                                    .insightsAddInsight]
+    static var allInsights: [StatSection] {
+        if FeatureFlag.statsNewInsights.enabled {
+            return [StatSection.insightsViewsVisitors,
+                    .insightsLatestPostSummary,
+                    .insightsAllTime,
+                    .insightsLikesTotals,
+                    .insightsCommentsTotals,
+                    .insightsFollowerTotals,
+                    .insightsMostPopularTime,
+                    .insightsTagsAndCategories,
+                    .insightsAnnualSiteStats,
+                    .insightsCommentsAuthors,
+                    .insightsCommentsPosts,
+                    .insightsFollowersWordPress,
+                    .insightsFollowersEmail,
+                    .insightsTodaysStats,
+                    .insightsPostingActivity,
+                    .insightsPublicize]
+        } else {
+            return [StatSection.insightsLatestPostSummary,
+                    .insightsAllTime,
+                    .insightsFollowerTotals,
+                    .insightsMostPopularTime,
+                    .insightsTagsAndCategories,
+                    .insightsAnnualSiteStats,
+                    .insightsCommentsAuthors,
+                    .insightsCommentsPosts,
+                    .insightsFollowersWordPress,
+                    .insightsFollowersEmail,
+                    .insightsTodaysStats,
+                    .insightsPostingActivity,
+                    .insightsPublicize,
+                    .insightsAddInsight]
+        }
+    }
 
     static let allPeriods = [StatSection.periodOverviewViews,
                              .periodOverviewVisitors,

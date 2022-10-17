@@ -175,7 +175,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.83.0'
+  gutenberg tag: 'v1.84.0'
 
   ## Third party libraries
   ## =====================
@@ -222,8 +222,8 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.1'
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'fix/showcancel'
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2-beta.1'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/prologue-nav-bar'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
