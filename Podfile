@@ -211,16 +211,13 @@ abstract_target 'Apps' do
   # Production
 
   pod 'Automattic-Tracks-iOS', '~> 0.13'
-  # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
-  # Local Development
   # pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
 
   pod 'WPMediaPicker', '~> 1.8.4'
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
-  ## while PR is in review:
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
   # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
 
