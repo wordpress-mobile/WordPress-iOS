@@ -54,14 +54,34 @@ struct StatsSegmentedControlData {
     }
 
     var differenceLabel: String {
-        let stringFormatValue = differencePercent != 0 ? "%@%@ (%@%%)" : "%@%@"
-        let stringFormat = NSLocalizedString(stringFormatValue, comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
-        return String.localizedStringWithFormat(
-            stringFormat,
-            difference < 0 ? "" : "+",
-            difference.abbreviatedString(),
-            differencePercent.abbreviatedString()
-        )
+        // We want to show something like "+1.2K (5%)" if we have a percentage difference and "1.2K" if we don't.
+        // Because localized strings need to be strings literal, we cannot embed any conditional logic in the `localizedString...` call.
+        // We therefore need to generate different string literals base on the state.
+        let differenceSign = difference < 0 ? "" : "+"
+        if differencePercent != 0 {
+            let stringFormat = NSLocalizedString(
+                "insights.visitorsLineChartCell.differenceLabelWithPercentage",
+                value: "%@%@ (%@%%)",
+                comment: "Difference label for Insights Overview stat, indicating change from previous period, including percentage value. Example: +99.9K (5%)"
+            )
+            return String.localizedStringWithFormat(
+                stringFormat,
+                differenceSign,
+                difference.abbreviatedString(),
+                differencePercent.abbreviatedString()
+            )
+        } else {
+            let stringFormat = NSLocalizedString(
+                "insights.visitorsLineChartCell.differenceLabelWithoutPercentage",
+                value: "%@%@",
+                comment: "Difference label for Insights Overview stat, indicating change from previous period. Example: +99.9K"
+            )
+            return String.localizedStringWithFormat(
+                stringFormat,
+                differenceSign,
+                difference.abbreviatedString()
+            )
+        }
     }
 
     var differenceTextColor: UIColor {
