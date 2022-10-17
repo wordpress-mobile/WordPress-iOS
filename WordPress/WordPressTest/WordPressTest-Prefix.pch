@@ -9,5 +9,6 @@
 	#import <SystemConfiguration/SystemConfiguration.h>
 	#import <MobileCoreServices/MobileCoreServices.h>
 #import "Constants.h"
+#import "AppConstants.h"
 #import "WordPress-Swift.h"
 #endif
