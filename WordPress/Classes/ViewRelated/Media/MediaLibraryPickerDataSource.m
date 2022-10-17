@@ -616,7 +616,7 @@
     }
 
     NSInteger count = [self.blog mediaLibraryCountForTypes:mediaTypes];
-    // If we have a count diferent of zero assume it's correct but sync with the server always in the background
+    // If we have a count difference of zero, we assume it's correct. But we still sync with the server in the background.
     if (count != 0) {
         self.itemsCount = count;
     }
