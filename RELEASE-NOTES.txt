@@ -1,3 +1,7 @@
+21.1
+-----
+* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
+
 21.0
 -----
 * [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
