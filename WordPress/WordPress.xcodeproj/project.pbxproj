@@ -748,6 +748,7 @@
 		3FEC241525D73E8B007AFE63 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEC241425D73E8B007AFE63 /* ConfettiView.swift */; };
 		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
 		3FFA5ED22876152E00830E28 /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
+		3FFE3C0828FE00D10021BB96 /* StatsSegmentedControlDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
 		400A2C772217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */; };
@@ -6091,6 +6092,7 @@
 		3FEC241425D73E8B007AFE63 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ReaderTabNavigation.swift"; sourceTree = "<group>"; };
 		3FFA5ED12876152E00830E28 /* JetpackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackButton.swift; sourceTree = "<group>"; };
+		3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSegmentedControlDataTests.swift; sourceTree = "<group>"; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400A2C752217A8A0000A8A59 /* VisitsSummaryStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitsSummaryStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -10957,9 +10959,12 @@
 				40F50B7F221310D400CBBB73 /* FollowersStatsRecordValueTests.swift */,
 				40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */,
 				40EE948122132F5800CD264F /* PublicizeConectionStatsRecordValueTests.swift */,
+				938466B82683CA0E00A538DC /* ReferrerDetailsViewModelTests.swift */,
 				400A2C922217B463000A8A59 /* ReferrerStatsRecordValueTests.swift */,
 				40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */,
+				3FDDFE9527C8178C00606933 /* SiteStatsInformationTests.swift */,
 				40E7FEC42211DF790032834E /* StatsRecordTests.swift */,
+				3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */,
 				40F50B81221310F000CBBB73 /* StatsTestCase.swift */,
 				931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */,
 				4054F4632214F94D00D261AB /* StreakStatsRecordValueTests.swift */,
@@ -10969,8 +10974,6 @@
 				40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */,
 				400A2C942217B68D000A8A59 /* TopViewedVideoStatsRecordValueTests.swift */,
 				400A2C962217B883000A8A59 /* VisitsSummaryStatsRecordValueTests.swift */,
-				938466B82683CA0E00A538DC /* ReferrerDetailsViewModelTests.swift */,
-				3FDDFE9527C8178C00606933 /* SiteStatsInformationTests.swift */,
 			);
 			name = Stats;
 			sourceTree = "<group>";
@@ -22204,6 +22207,7 @@
 				C738CB0F28626466001BE107 /* QRLoginScanningCoordinatorTests.swift in Sources */,
 				8B6214E627B1B446001DF7B6 /* BlogDashboardServiceTests.swift in Sources */,
 				C856749A243F4292001A995E /* TenorMockDataHelper.swift in Sources */,
+				3FFE3C0828FE00D10021BB96 /* StatsSegmentedControlDataTests.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				C3439B5F27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift in Sources */,
