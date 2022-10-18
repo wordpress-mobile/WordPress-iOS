@@ -102,10 +102,10 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 72),
+            logoImageView.widthAnchor.constraint(equalToConstant: 68),
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
         ])
     }
 

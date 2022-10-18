@@ -14,6 +14,7 @@ struct SplashPrologueView: View {
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .padding(.trailing, 20)
                     .foregroundColor(Color(SplashPrologueStyleGuide.BrushStroke.color))
+                    .accessibility(hidden: true)
             }
 
             VStack {
@@ -21,6 +22,7 @@ struct SplashPrologueView: View {
                     .resizable()
                     .frame(width: 50, height: 50)
                     .padding(10)
+                    .accessibility(hidden: true)
                 Text(Self.caption)
                     .multilineTextAlignment(.center)
                     .font(SplashPrologueStyleGuide.Title.font)

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-08-19 07:59:53+0000 */
+/* Translation-Revision-Date: 2022-10-13 19:04:20+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pt_BR */
@@ -368,6 +368,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Um botão \"mais\" contém uma lista suspensa que mostra botões de compartilhamento";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Uma conta do WordPress.com está conectada às credenciais da sua loja. Para continuar, enviaremos um link de verificação para o endereço de e-mail acima.";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "Uma imagem destacada está configurada. Toque para alterá-la.";
 
@@ -727,6 +730,12 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Texto alternativo";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Como alternativa, você pode desanexar e editar os blocos separadamente tocando em \"Converter em blocos comuns\".";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Se preferir, insira a senha para esta conta.";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Ou:";
@@ -1350,6 +1359,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Cancelando...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Não é possível acessar o site com este endereço. Verifique novamente e tente outra vez.";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Não consegue decidir? Você pode mudar o tema a qualquer momento.";
 
@@ -1436,6 +1448,9 @@ translators: Block name. %s: The localized block name */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Confira nossas principais dicas para aumentar suas visualizações e tráfego";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Verifique seu e-mail neste dispositivo.";
 
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Verifique seu e-mail neste dispositivo e toque no link que você recebeu do WordPress.com.";
@@ -3736,6 +3751,9 @@ translators: Block name. %s: The localized block name */
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "Se você já tiver um site, precisará instalar o plugin gratuito Jetpack e conectá-lo à sua conta do WordPress.com.";
 
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Caso você não encontre o e-mail, verifique seu lixo eletrônico ou spam";
+
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Se você continuar com o Google ou Apple e ainda não tiver uma conta no WordPress.com, você criará uma conta e concordará com nossos _Termos de Serviços_.";
 
@@ -3948,6 +3966,9 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL inválido. Arquivo de áudio não encontrado.";
 
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL inválido. Verifique novamente e tente outra vez.";
+
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "URL inválido. Digite um URL válido.";
 
@@ -4038,6 +4059,18 @@ translators: Block name. %s: The localized block name */
 
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Configurações do Jetpack";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Conexões do Jetpack Social";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Falha na sincronização da conexão do Jetpack Social";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Falha na sincronização do serviço do Jetpack Social";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Não foi possível instalar o Jetpack no momento.";
@@ -4241,6 +4274,9 @@ translators: Block name. %s: The localized block name */
 /* Link name field placeholder */
 "Link Name" = "Texto do link";
 
+/* No comment provided by engineer. */
+"Link Rel" = "Rel do link";
+
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Configurações do link";
 
@@ -4408,6 +4444,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "Solicitação de login expirada";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Fazer login com a senha da conta";
 
 /* No comment provided by engineer. */
 "Logs" = "Logs";
@@ -5343,6 +5382,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Ou acesse  _informando o endereço do seu site_.";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Ou fazer login pelo link mágico";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Lista ordenada";
@@ -6776,6 +6818,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Enviar um teste de falha";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Enviar link de verificação de e-mail";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Enviar notificações por e-mail";
 
@@ -6857,6 +6902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Compartilhar";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Compartilhe o Jetpack com amigos";
+
 /* Label for action to share post. */
 "Share Post" = "Compartilhar post";
 
@@ -6871,6 +6919,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Compartilhar link";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Compartilhar post com %@";
 
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Compartilhe com seus amigos";
@@ -6978,6 +7029,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "Registrar-se";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Fazer login com as credenciais do site";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "Registre-se";
@@ -7446,6 +7500,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toque aqui para mostrar ajuda";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Toque para adicionar novos cartões de estatísticas.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Toque para cancelar o upload.";
 
@@ -7503,6 +7560,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Toque para ver a mídia em tela cheia";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Toque para visualizar mais detalhes.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Toque para ver mais estatísticas desta semana";
@@ -8628,6 +8688,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "Usar ícone de botão";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Usar senha para fazer login";
+
 /* No comment provided by engineer. */
 "Use this site" = "Usar este site";
 
@@ -8964,6 +9027,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Enviamos um link para o e-mail %@. Confira seu aplicativo de e-mail e acesse o link para fazer login.";
 
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Acabamos de enviar um link mágico para";
+
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "Fizemos grandes melhorias no editor de blocos e achamos que vale a pena testá-lo.\n\nO editor de blocos foi ativado para novos posts e páginas mas, caso você queira voltar ao editor clássico, é possível fazer a alteração em Meu site > Configurações do site.";
 
@@ -9151,6 +9217,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "O que você quer fazer com este arquivo: enviá-lo para o site e adicionar um link para o arquivo no seu post ou adicionar o conteúdo do arquivo diretamente no post?";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "O que é o WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "O que é um bloco?";
 
@@ -9165,6 +9234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "O que há de novo?";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Novidades do Jetpack";
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "O que há de novo no WordPress";
@@ -9849,6 +9921,54 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Com tecnologia Jetpack";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Experimente o novo aplicativo do Jetpack";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "O novo aplicativo do Jetpack tem Estatísticas, Leitor, Notificações e muito mais para aprimorar seu WordPress.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "O WordPress é ainda melhor com o Jetpack";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Adicionar um autor";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Criar um site";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Conferir notificações";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Compartilhar no Facebook";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Corrigir um problema de segurança";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Publicar uma foto";
+
+/* Read an article prompt for the jetpack prologue */
+"jetpack.prologue.prompt.readArticle" = "Ler um artigo";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Responder aos comentários";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Restaurar um backup";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Pesquisar plugins";
+
+/* Search for posts or sites prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPosts" = "Pesquisar posts ou sites";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Monitorar suas estatísticas";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Escrever em um blog";
 
 /* Later today */
 "later today" = "mais tarde hoje";
