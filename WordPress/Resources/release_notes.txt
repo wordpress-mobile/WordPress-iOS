@@ -1,7 +1,8 @@
-You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.
-
-We also squashed several bugs in this latest update.
-
-- Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.
-- On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.
-- Content above the Powered by Jetpack banner now stays visible and responsive while you’re scrolling. Up, up, and away.
+* [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
+* [*] Update launch screen. [#19341]
+* [*] Reader: Comment Details have been redesigned. [#19387]
+* [*] [internal] A refactor in weekly roundup notification scheduler. [#19422]
+* [*] [internal] A low level database refactor around fetching cards in the Reader tab. [#19427]
+* [*] Stories: Fixed an issue where the keyboard would overlap with the publish dialog in landscape. [#19350]
+* [*] [internal] A refactor in fetch Reader posts and their comments. [#19458]
+* [*] Fixed an issue where the navigation bar becomes invisible when swiping back to Login Prologue screen.  [#19461]
