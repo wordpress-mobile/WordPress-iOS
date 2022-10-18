@@ -1,2 +1,7 @@
-Hemos hecho algunos cambios en las menciones de usuario. Cuando respondas a una entrada o a un comentario y etiquetes a otro usuario, al principio de tu lista de usuarios sugeridos aparecerán los nombres con los que empiece tu consulta de búsqueda. Después, la lista aparecerá ordenada por orden alfabético.
-También hemos solucionado un problema por el que la lista de usuarios sugeridos se vaciaba tras expandir o contraer el campo del contenido de la respuesta. Listo, ya no volverán a desaparecer.
+Ahora puedes cancelar un acceso a WordPress.com cuando ya hayas accedido a un sitio con alojamiento propio: ya no te quedarás atascado en la pantalla de acceso si cambias de opinión.
+
+También hemos resuelto varios errores en esta última actualización.
+
+- En su día, solucionamos un problema por el que la eliminación de una imagen en el borrador de una publicación de una historia impedía que se cargara la siguiente imagen de la historia. Y todos vivieron felices para siempre.
+- En las pantallas del iPad, el botón «Activar notificaciones» ya no está encima de las instrucciones para activar las notificaciones push. El texto del menú lateral «Sin resultados» ahora también cabe en la pantalla.
+- El contenido sobre el banner de «Funciona gracias a Jetpack» ahora permanece visible y se adapta mientras te desplazas. Hacia arriba, hacia arriba, y hacia fuera.

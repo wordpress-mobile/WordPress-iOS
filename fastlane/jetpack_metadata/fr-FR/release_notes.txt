@@ -1,2 +1,7 @@
-Nous avons apporté quelques modifications aux mentions utilisateur. Lorsque vous répondez à un article ou à un commentaire et que vous taguez un autre utilisateur, votre liste d’utilisateurs suggérés débutera par les noms qui commencent par votre requête. La liste est ensuite dans l’ordre alphabétique.
-Nous avons également résolu un problème où la liste d’utilisateurs suggérés disparaissait après le développement ou la réduction du champ de réponse au contenu. Et voilà, plus de disparition.
+Vous pouvez désormais annuler une connexion WordPress.com tout en étant déjà connecté à un site auto-hébergé. Vous ne resterez ainsi plus bloqué à l’écran de connexion si vous changez d’avis.
+
+L’application Jetpack peut exécuter des résumés hebdomadaires en arrière-plan pendant que vous utilisez d’autres applications. Toujours plus haut, toujours plus loin
+
+Sur les écrans d’iPad, le bouton « Activer les notifications » ne se situe désormais plus au-dessus des instructions indiquant comment activer les notifications push. Le texte du menu latéral « Aucun résultat » s’affiche lui aussi désormais à l’écran.
+
+Il nous est arrivé de corriger une erreur qui, lors de la suppression d’une image dans un brouillon de publication de story, empêchait le chargement de l’image suivante de la story. Et tout s’est bien passé par la suite.

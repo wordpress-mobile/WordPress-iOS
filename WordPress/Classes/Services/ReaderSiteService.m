@@ -167,13 +167,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-#pragma clang diagnostic pop
-
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+        [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
+    }];
 }
 
 - (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure

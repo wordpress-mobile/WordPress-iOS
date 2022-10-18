@@ -1,2 +1,7 @@
-Abbiamo apportato alcune modifiche alle menzioni degli utenti. Quando rispondi a un articolo o a un commento e tagghi un altro utente, l'elenco degli utenti suggeriti inizierà con i nomi che iniziano con la query di ricerca. L'elenco continuerà quindi in ordine alfabetico.
-Abbiamo anche risolto un problema per cui l'elenco degli utenti suggeriti scompariva dopo aver espanso o compresso il campo per il contenuto della risposta. Presto, niente più sparizioni.
+Ora puoi annullare un accesso a WordPress.com mentre sei già connesso a un sito ospitato personalmente, senza rimanere più bloccato nella schermata di accesso se cambi idea.
+
+In questo ultimo aggiornamento, abbiamo anche eliminato diversi bug.
+
+- Tanto tempo fa, abbiamo risolto un problema per cui l'eliminazione di un'immagine in una bozza dell'articolo Storia impediva il caricamento dell'immagine successiva nella storia. Poi, vissero tutti felici e contenti.
+- Sui display dell'iPad, il pulsante "Attiva notifiche" non si trova più sopra le istruzioni per attivare le notifiche push. Anche il testo del menu laterale "Nessun risultato" ora si adatta allo schermo.
+- Il contenuto sopra il banner Powered by Jetpack ora rimane visibile e reattivo mentre scorri. Spicchiamo il volo.

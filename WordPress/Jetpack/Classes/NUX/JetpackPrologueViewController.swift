@@ -1,4 +1,5 @@
 import UIKit
+import CoreMotion
 
 class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
@@ -10,6 +11,15 @@ class JetpackPrologueViewController: UIViewController {
         let view = StarFieldView(with: config)
         view.layer.masksToBounds = true
         return view
+    }()
+
+    private let motion: CMMotionManager? = {
+        guard FeatureFlag.newLandingScreen.enabled else {
+            return nil
+        }
+        let motion = CMMotionManager()
+        motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
+        return motion
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
@@ -63,6 +73,19 @@ class JetpackPrologueViewController: UIViewController {
         loadNewPrologueView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let motion = motion, motion.isGyroAvailable {
+            motion.startDeviceMotionUpdates()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        motion?.stopDeviceMotionUpdates()
+    }
+
     private func loadNewPrologueView() {
         // hide old view unused elements
         stackView.isHidden = true
@@ -79,10 +102,10 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 72),
+            logoImageView.widthAnchor.constraint(equalToConstant: 68),
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
         ])
     }
 
@@ -150,12 +173,60 @@ class JetpackPrologueViewController: UIViewController {
         static let parallaxAmount: CGFloat = 30
         static let starLayerPosition: CGFloat = -100
         static let gradientLayerPosition: CGFloat = -99
+
+        /// New landing screen
+
+        /// Rate that the device is polled for motion updates
+        static let deviceMotionUpdateInterval: Double = 1 / 10
+        /// Angle to use for the scroll rate when a device can't supply motion data
+        static let defaultAngleDegrees: Double = 30.0
+        /// Uniform multiplier used to tweak the rate generated from an angle
+        static let angleRateMultiplier: CGFloat = 1.3
     }
 }
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
+    /// Provides rate in points per second for a given angle in degrees.
+    ///
+    /// - Returns: Points per second.
+    private func rateForAngle(angle: Double) -> CGFloat {
+        return -angle * Self.Constants.angleRateMultiplier
+    }
+
+    /// Returns the angle in degrees of the device independently of the view's orientation.
+    ///
+    /// Assuming the view is in the normal, upright position when displayed on the device:
+    /// - +90 degrees is perpendicular to the ground, facing the user.
+    /// - 0 degrees is parallel to the ground (flat on a surface).
+    /// - -90 degrees is perpendicular to the ground and upside down, facing away from the user.
+    ///
+    /// - Returns: Angle in degrees, or `nil` if the device didn't supply motion data.
+    private func angleForDeviceOrientation() -> Double? {
+        guard let attitude = motion?.deviceMotion?.attitude else {
+            return nil
+        }
+
+        let angleRad: Double
+
+        switch UIApplication.shared.currentStatusBarOrientation {
+        case .portrait:
+            angleRad = attitude.pitch
+        case .portraitUpsideDown:
+            angleRad = -attitude.pitch
+        case .landscapeLeft:
+            angleRad = attitude.roll
+        case .landscapeRight:
+            angleRad = -attitude.roll
+        default:
+            angleRad = 0
+        }
+
+        /// Convert radians to degrees
+        return angleRad * 180 / .pi
+    }
+
     func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
-        /// points per second
-        return -60
+        let deviceAngle = angleForDeviceOrientation() ?? Self.Constants.defaultAngleDegrees
+        return rateForAngle(angle: deviceAngle)
     }
 }

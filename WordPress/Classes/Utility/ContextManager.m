@@ -432,7 +432,7 @@ static ContextManager *_instance;
 - (void)copyDatabaseToSharedDirectoryIfNeeded
 {
     BOOL sharedDatabaseExists = [[NSFileManager defaultManager] fileExistsAtPath:[[self sharedDatabasePath] absoluteString]];
-    if (![self isSharedLoginEnabled] || sharedDatabaseExists || AppConfiguration.isJetpack) {
+    if (![self isSharedLoginEnabled] || sharedDatabaseExists) {
         return;
     }
     

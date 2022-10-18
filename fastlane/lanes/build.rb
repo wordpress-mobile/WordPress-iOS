@@ -6,6 +6,13 @@ SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
 
+# Shared options to use when invoking `gym` / `build_app`.
+#
+# - `manageAppVersionAndBuildNumber: false` prevents `xcodebuild` from bumping
+#   the build number when extracting an archive into an IPA file. We want to
+#   use the build number we set!
+COMMON_EXPORT_OPTIONS = { manageAppVersionAndBuildNumber: false }.freeze
+
 # https://buildkite.com/docs/test-analytics/ci-environments
 TEST_ANALYTICS_ENVIRONMENT = %w[
   BUILDKITE_ANALYTICS_TOKEN
@@ -120,7 +127,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      export_options: { method: 'app-store' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     testflight(
@@ -170,7 +177,7 @@ platform :ios do
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
-      export_options: { method: 'app-store' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     testflight(
@@ -212,7 +219,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
@@ -261,7 +268,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
@@ -314,7 +321,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
