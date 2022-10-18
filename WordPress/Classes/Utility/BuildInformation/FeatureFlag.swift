@@ -34,7 +34,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackPoweredBottomSheet
     case sharedUserDefaults
     case sharedLogin
-    case newLandingScreen
+    case newJetpackLandingScreen
+    case newWordPressLandingScreen
     case newCoreDataContext
 
     /// Returns a boolean indicating if the feature is enabled
@@ -112,7 +113,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .sharedLogin:
             return false
-        case .newLandingScreen:
+        case .newJetpackLandingScreen:
+            return true
+        case .newWordPressLandingScreen:
             return false
         case .newCoreDataContext:
             return false
@@ -210,8 +213,10 @@ extension FeatureFlag {
             return "Shared User Defaults"
         case .sharedLogin:
             return "Shared Login"
-        case .newLandingScreen:
-            return "Jetpack and WordPress new landing screens"
+        case .newJetpackLandingScreen:
+            return "New Jetpack landing screen"
+        case .newWordPressLandingScreen:
+            return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
         }
