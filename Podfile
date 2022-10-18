@@ -370,6 +370,15 @@ target 'WordPressIntents' do
   wordpress_ui
 end
 
+target 'JetpackIntents' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
 ## Notification Service Extension
 ## ==============================
 ##
