@@ -1,6 +1,6 @@
 21.1
 -----
-
+* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
 
 21.0
 -----
