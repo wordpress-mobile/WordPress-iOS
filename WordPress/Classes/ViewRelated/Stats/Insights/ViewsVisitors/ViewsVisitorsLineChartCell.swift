@@ -54,31 +54,35 @@ struct StatsSegmentedControlData {
     }
 
     var differenceLabel: String {
-        // We want to show something like "+1.2K (5%)" if we have a percentage difference and "1.2K" if we don't.
-        // Because localized strings need to be strings literal, we cannot embed any conditional logic in the `localizedString...` call.
-        // We therefore need to generate different string literals based on the state.
-        let differenceSign = difference < 0 ? "" : "+"
+        // We want to show something like "+10.2K (+5%)" if we have a percentage difference and "1.2K" if we don't.
+        //
+        // Negative cases automatically appear with a negative sign "-10.2K (-5%)" by using `abbreviatedString()`.
+        // `abbreviatedString()` also handles formatting big numbers, i.e. 10,200 will become 10.2K.
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        let plusSign = difference <= 0 ? "" : "\(formatter.plusSign ?? "")"
+
         if differencePercent != 0 {
             let stringFormat = NSLocalizedString(
                 "insights.visitorsLineChartCell.differenceLabelWithPercentage",
-                value: "%@%@ (%@%%)",
-                comment: "Difference label for Insights Overview stat, indicating change from previous period, including percentage value. Example: +99.9K (5%)"
+                value: "%1$@%2$@ (%3$@%%)",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
-                differenceSign,
+                plusSign,
                 difference.abbreviatedString(),
                 differencePercent.abbreviatedString()
             )
         } else {
             let stringFormat = NSLocalizedString(
                 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage",
-                value: "%@%@",
-                comment: "Difference label for Insights Overview stat, indicating change from previous period. Example: +99.9K"
+                value: "%1$@%2$@",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
-                differenceSign,
+                plusSign,
                 difference.abbreviatedString()
             )
         }
