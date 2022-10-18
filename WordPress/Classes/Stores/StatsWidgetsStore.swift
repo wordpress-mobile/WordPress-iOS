@@ -9,6 +9,7 @@ class StatsWidgetsStore {
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
+        observeApplicationLaunched()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -302,6 +303,38 @@ private extension StatsWidgetsStore {
                                                queue: nil) { [weak self] _ in
             self?.initializeStatsWidgetsIfNeeded()
         }
+    }
+
+    /// Observes applicationLaunchCompleted notification and runs migration.
+    func observeApplicationLaunched() {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.applicationLaunchCompleted,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.handleJetpackWidgetsMigration()
+        }
+    }
+}
+
+private extension StatsWidgetsStore {
+
+    /// Handles migration to a Jetpack app version that started supporting Stats widgets.
+    /// The required flags in shared UserDefaults are set and widgets are initialized.
+    func handleJetpackWidgetsMigration() {
+        // If user is logged in but defaultSiteIdKey is not set
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: blogService.managedObjectContext),
+              let siteId = account.defaultBlog?.dotComID,
+              let userDefaults = UserDefaults(suiteName: WPAppGroupName),
+                userDefaults.value(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) == nil else {
+            return
+        }
+
+        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+        userDefaults.setValue(siteId, forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey)
+        initializeStatsWidgetsIfNeeded()
     }
 }
 
