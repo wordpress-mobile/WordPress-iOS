@@ -633,21 +633,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
 }
 
-- (NSInteger)getMediaLibraryCountForBlog:(Blog *)blog
-                           forMediaTypes:(NSSet *)mediaTypes
-{
-    __block NSInteger assetsCount;
-    [self.managedObjectContext performBlockAndWait:^{
-        NSString *entityName = NSStringFromClass([Media class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [self predicateForMediaTypes:mediaTypes blog:blog];
-        NSError *error;
-        NSArray *mediaAssets = [self.managedObjectContext executeFetchRequest:request error:&error];
-        assetsCount = mediaAssets.count;
-    }];
-    return assetsCount;
-}
-
 - (void)getMediaLibraryServerCountForBlog:(Blog *)blog
                             forMediaTypes:(NSSet *)mediaTypes
                                   success:(void (^)(NSInteger count))success
@@ -752,26 +737,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     MediaType filter = (MediaType)[mediaType intValue];
     NSString *mimeType = [Media stringFromMediaType:filter];
     return mimeType;
-}
-
-- (NSPredicate *)predicateForMediaTypes:(NSSet *)mediaTypes blog:(Blog *)blog
-{
-    NSMutableArray * filters = [NSMutableArray array];
-    [mediaTypes enumerateObjectsUsingBlock:^(NSNumber *obj, BOOL *stop){
-        MediaType filter = (MediaType)[obj intValue];
-        NSString *filterString = [Media stringFromMediaType:filter];
-        [filters addObject:[NSString stringWithFormat:@"mediaTypeString == \"%@\"", filterString]];
-    }];
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", blog];
-    if (filters.count > 0) {
-        NSString *mediaFilters = [filters componentsJoinedByString:@" || "];
-        NSPredicate *mediaPredicate = [NSPredicate predicateWithFormat:mediaFilters];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:
-                     @[predicate, mediaPredicate]];
-    }
-
-    return predicate;
 }
 
 #pragma mark - Media helpers
