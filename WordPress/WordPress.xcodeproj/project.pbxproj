@@ -29057,8 +29057,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/automattic/AutomatticAbout-swift";
 			requirement = {
-				branch = "fix/remove-wp-logo";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
 			};
 		};
 		3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */ = {

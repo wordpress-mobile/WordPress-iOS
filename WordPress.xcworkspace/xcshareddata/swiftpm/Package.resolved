@@ -5,9 +5,9 @@
         "package": "AutomatticAbout",
         "repositoryURL": "https://github.com/automattic/AutomatticAbout-swift",
         "state": {
-          "branch": "fix/remove-wp-logo",
-          "revision": "541213b81f08c1fcd052e5fa0ea197d67913db7f",
-          "version": null
+          "branch": null,
+          "revision": "0f784591b324e5d3ddc5771808ef8eca923e3de2",
+          "version": "1.1.2"
         }
       },
       {
