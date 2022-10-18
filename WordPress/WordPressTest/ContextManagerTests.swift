@@ -176,7 +176,13 @@ class ContextManagerTests: XCTestCase {
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
-//        XCTExpectFailure("Known issue of `LegacyContextFactory`: the mainContext is saved along with the `ContextManager.save` functions")
+        // It's not great to be accessing global state here, but ContextManager accesses this
+        // feature flag under the hood and injecting it is out of scope at this point in time.
+        if FeatureFlag.newCoreDataContext.enabled == false {
+            // ContextManagerMock subclasses ContextManager, which uses LegacyContextFactory unless
+            // the newCoreDataContext feature flag is on.
+            XCTExpectFailure("Known issue of `LegacyContextFactory`: the `mainContext` is saved along with the `ContextManager.save` functions")
+        }
         expect(try findFirstUser()?.username) == "First User"
     }
 
