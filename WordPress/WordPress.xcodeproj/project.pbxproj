@@ -29065,7 +29065,7 @@
 			repositoryURL = "https://github.com/automattic/AutomatticAbout-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.1.2;
 			};
 		};
 		3F2B62DA284F4E0B0008CD59 /* XCRemoteSwiftPackageReference "Charts" */ = {
