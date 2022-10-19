@@ -5328,21 +5328,7 @@
 			remoteGlobalIDString = 0107E0B128F97D5000DE87DB;
 			remoteInfo = JetpackStatsWidgets;
 		};
-		0107E0EF28F97E6A00DE87DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0107E0B128F97D5000DE87DB;
-			remoteInfo = JetpackStatsWidgets;
-		};
 		0107E15628FEA03800DE87DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0107E13828FE9DB200DE87DB;
-			remoteInfo = JetpackIntents;
-		};
-		0107E15A28FEB10E00DE87DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
@@ -17627,8 +17613,6 @@
 				8096212728E5411400940A5D /* PBXTargetDependency */,
 				8096219028E55F8600940A5D /* PBXTargetDependency */,
 				80F6D05F28EE88FC00953C1A /* PBXTargetDependency */,
-				0107E0F028F97E6A00DE87DB /* PBXTargetDependency */,
-				0107E15B28FEB10E00DE87DB /* PBXTargetDependency */,
 			);
 			name = Jetpack;
 			packageProductDependencies = (
@@ -24502,20 +24486,10 @@
 			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
 			targetProxy = 0107E0EC28F97E6100DE87DB /* PBXContainerItemProxy */;
 		};
-		0107E0F028F97E6A00DE87DB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
-			targetProxy = 0107E0EF28F97E6A00DE87DB /* PBXContainerItemProxy */;
-		};
 		0107E15728FEA03800DE87DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 			targetProxy = 0107E15628FEA03800DE87DB /* PBXContainerItemProxy */;
-		};
-		0107E15B28FEB10E00DE87DB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
-			targetProxy = 0107E15A28FEB10E00DE87DB /* PBXContainerItemProxy */;
 		};
 		096A92FD26E2A0AE00448C68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -24848,7 +24822,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = Jetpack/JetpackRelease.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgets.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -24900,7 +24874,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Internal.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgetsRelease-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -24953,7 +24927,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Jetpack/JetpackRelease-Alpha.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgetsRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -25004,7 +24978,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgets.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressIntents/Supporting Files/WordPressIntents.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -25057,7 +25031,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgets.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressIntents/Supporting Files/WordPressIntents.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -25107,7 +25081,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgetsRelease-Internal.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressIntents/Supporting Files/WordPressIntentsRelease-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -25158,7 +25132,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "WordPressStatsWidgets/Supporting Files/WordPressStatsWidgetsRelease-Alpha.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WordPressIntents/Supporting Files/WordPressIntentsRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
