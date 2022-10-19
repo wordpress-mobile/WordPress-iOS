@@ -25183,7 +25183,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jetpac.alpha.JetpackIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.JetpackIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackIntents";
 				SKIP_INSTALL = YES;
