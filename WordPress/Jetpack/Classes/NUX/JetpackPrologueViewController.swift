@@ -14,7 +14,7 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private let motion: CMMotionManager? = {
-        guard FeatureFlag.newLandingScreen.enabled else {
+        guard FeatureFlag.newJetpackLandingScreen.enabled else {
             return nil
         }
         let motion = CMMotionManager()
@@ -52,11 +52,11 @@ class JetpackPrologueViewController: UIViewController {
         let midBottomColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.2)
         let endColor = JetpackPrologueStyleGuide.gradientColor
 
-        gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
+        gradientLayer.colors = FeatureFlag.newJetpackLandingScreen.enabled ?
         [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
         [startColor.cgColor, endColor.cgColor]
 
-        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
+        gradientLayer.locations = FeatureFlag.newJetpackLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
 
         return gradientLayer
     }
@@ -66,7 +66,7 @@ class JetpackPrologueViewController: UIViewController {
 
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
 
-        guard FeatureFlag.newLandingScreen.enabled else {
+        guard FeatureFlag.newJetpackLandingScreen.enabled else {
             loadOldPrologueView()
             return
         }
@@ -102,10 +102,10 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 72),
+            logoImageView.widthAnchor.constraint(equalToConstant: 68),
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
         ])
     }
 
@@ -133,7 +133,7 @@ class JetpackPrologueViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard FeatureFlag.newLandingScreen.enabled,
+        guard FeatureFlag.newJetpackLandingScreen.enabled,
         previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
             updateLabel(for: traitCollection)
             return
@@ -145,7 +145,7 @@ class JetpackPrologueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if !FeatureFlag.newLandingScreen.enabled {
+        if !FeatureFlag.newJetpackLandingScreen.enabled {
             starFieldView.frame = view.bounds
         }
         gradientLayer.frame = view.bounds

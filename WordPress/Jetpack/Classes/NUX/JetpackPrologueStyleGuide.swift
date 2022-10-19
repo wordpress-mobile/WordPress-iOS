@@ -9,13 +9,13 @@ struct JetpackPrologueStyleGuide {
     // old
     static let oldBackgroundColor = UIColor(red: 0.00, green: 0.11, blue: 0.18, alpha: 1.00)
     // combined
-    static let backgroundColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldBackgroundColor
+    static let backgroundColor = FeatureFlag.newJetpackLandingScreen.enabled ? .clear : oldBackgroundColor
 
     // Gradient overlay colors
     // new
     static let newGradientColor = UIColor(light: .muriel(color: .jetpackGreen, .shade0), dark: .muriel(color: .jetpackGreen, .shade100))
     // combined
-    static let gradientColor = FeatureFlag.newLandingScreen.enabled ? newGradientColor : oldBackgroundColor
+    static let gradientColor = FeatureFlag.newJetpackLandingScreen.enabled ? newGradientColor : oldBackgroundColor
 
     // Continue with WordPress button colors
     // old
@@ -26,10 +26,10 @@ struct JetpackPrologueStyleGuide {
     static let newContinueTextColor = UIColor(light: .white, dark: .muriel(color: .jetpackGreen, .shade80))
 
     // combined
-    static let continueFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueFillColor : .white
-    static let continueHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? newContinueHighlightedFillColor : oldContinueHighlightedFillColor
-    static let continueTextColor = FeatureFlag.newLandingScreen.enabled ? newContinueTextColor : oldBackgroundColor
-    static let continueHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
+    static let continueFillColor = FeatureFlag.newJetpackLandingScreen.enabled ? newContinueFillColor : .white
+    static let continueHighlightedFillColor = FeatureFlag.newJetpackLandingScreen.enabled ? newContinueHighlightedFillColor : oldContinueHighlightedFillColor
+    static let continueTextColor = FeatureFlag.newJetpackLandingScreen.enabled ? newContinueTextColor : oldBackgroundColor
+    static let continueHighlightedTextColor = FeatureFlag.newJetpackLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
 
 
     // Enter your site address button
@@ -39,20 +39,20 @@ struct JetpackPrologueStyleGuide {
     static let newSiteHighlightedTextColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50), dark: whiteWithAlpha07)
     static let oldSiteHighlightedBorderColor = UIColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.20)
     // combined
-    static let siteFillColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldBackgroundColor
-    static let siteBorderColor = FeatureFlag.newLandingScreen.enabled ? .clear : oldSiteBorderColor
-    static let siteTextColor = FeatureFlag.newLandingScreen.enabled ? newSiteTextColor : UIColor.white
-    static let siteHighlightedFillColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
-    static let siteHighlightedBorderColor = FeatureFlag.newLandingScreen.enabled ? whiteWithAlpha07 : oldSiteHighlightedBorderColor
-    static let siteHighlightedTextColor = FeatureFlag.newLandingScreen.enabled ? newSiteHighlightedTextColor : whiteWithAlpha07
+    static let siteFillColor = FeatureFlag.newJetpackLandingScreen.enabled ? .clear : oldBackgroundColor
+    static let siteBorderColor = FeatureFlag.newJetpackLandingScreen.enabled ? .clear : oldSiteBorderColor
+    static let siteTextColor = FeatureFlag.newJetpackLandingScreen.enabled ? newSiteTextColor : UIColor.white
+    static let siteHighlightedFillColor = FeatureFlag.newJetpackLandingScreen.enabled ? whiteWithAlpha07 : oldBackgroundColor
+    static let siteHighlightedBorderColor = FeatureFlag.newJetpackLandingScreen.enabled ? whiteWithAlpha07 : oldSiteHighlightedBorderColor
+    static let siteHighlightedTextColor = FeatureFlag.newJetpackLandingScreen.enabled ? newSiteHighlightedTextColor : whiteWithAlpha07
 
     // Color used in both old and versions
     static let whiteWithAlpha07 = UIColor.white.withAlphaComponent(0.7)
 
     // Background image with gradient for the new Jetpack prologue screen
-    static let prologueBackgroundImage: UIImage? = FeatureFlag.newLandingScreen.enabled ? UIImage(named: "JPBackground") : nil
+    static let prologueBackgroundImage: UIImage? = FeatureFlag.newJetpackLandingScreen.enabled ? UIImage(named: "JPBackground") : nil
     // Blur effect for the prologue buttons
-    static let prologueButtonsBlurEffect: UIBlurEffect?  = FeatureFlag.newLandingScreen.enabled ? UIBlurEffect(style: .regular) : nil
+    static let prologueButtonsBlurEffect: UIBlurEffect?  = FeatureFlag.newJetpackLandingScreen.enabled ? UIBlurEffect(style: .regular) : nil
 
 
 

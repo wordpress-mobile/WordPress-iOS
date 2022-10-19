@@ -168,13 +168,13 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 struct LatestPostSummaryRow: ImmuTableRow {
 
-    static let cell: ImmuTableCell = {
+    static var cell: ImmuTableCell {
         if FeatureFlag.statsNewInsights.enabled {
             return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
         } else {
             return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
         }
-    }()
+    }
 
     let summaryData: StatsLastPostInsight?
     let chartData: StatsPostDetails?

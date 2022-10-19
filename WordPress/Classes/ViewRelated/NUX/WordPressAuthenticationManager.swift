@@ -80,7 +80,7 @@ extension WordPressAuthenticationManager {
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
         let prologueVC: UIViewController? = {
             guard let viewController = authenticationHandler?.prologueViewController else {
-                if FeatureFlag.newLandingScreen.enabled {
+                if FeatureFlag.newWordPressLandingScreen.enabled {
                     return SplashPrologueViewController()
                 }
 
@@ -113,7 +113,7 @@ extension WordPressAuthenticationManager {
         var prologuePrimaryButtonStyle: NUXButtonStyle?
         var prologueSecondaryButtonStyle: NUXButtonStyle?
 
-        if FeatureFlag.newLandingScreen.enabled, AppConfiguration.isWordPress {
+        if FeatureFlag.newWordPressLandingScreen.enabled, AppConfiguration.isWordPress {
             prologuePrimaryButtonStyle = SplashPrologueStyleGuide.primaryButtonStyle
             prologueSecondaryButtonStyle = SplashPrologueStyleGuide.secondaryButtonStyle
         } else {
@@ -681,6 +681,9 @@ private extension WordPressAuthenticationManager {
             ///
             let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
+
+            // Refresh Remote Feature Flags
+            WordPressAppDelegate.shared?.updateFeatureFlags()
 
             onCompletion()
 

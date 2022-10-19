@@ -1,7 +1,9 @@
-You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.
+Welcome to version 21! In honor of the occasion, we added extensions so you can save content as a draft and share content to Jetpack using your device’s built-in menus. You’ll also get more detailed push notifications on your device.
 
-The Jetpack app can run weekly roundups in the background while you’re using other apps. Up, up, and away.
+We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view. You can also change your Jetpack app icon using a range of colorful options in the App Settings menu.
 
-On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.
+Finally, we fixed a handful of bugs.
 
-Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.
+- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
+- Cached notifications no longer appear on screen after you log out of your WordPress.com account.
+- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.
