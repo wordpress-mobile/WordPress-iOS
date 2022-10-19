@@ -10,13 +10,12 @@ struct SplashPrologueView: View {
                     .frame(minWidth: 0, maxWidth: .infinity)
                 Image("splashBrushStroke")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .aspectRatio(contentMode: .fit)
                     .padding(.trailing, 20)
+                    .padding(.vertical, -20)
                     .foregroundColor(Color(SplashPrologueStyleGuide.BrushStroke.color))
                     .accessibility(hidden: true)
             }
-
             VStack {
                 Image("splashLogo")
                     .resizable()
@@ -29,6 +28,7 @@ struct SplashPrologueView: View {
                     .foregroundColor(Color(SplashPrologueStyleGuide.Title.textColor))
             }
         }
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
