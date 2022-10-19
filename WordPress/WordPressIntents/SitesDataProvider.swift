@@ -59,7 +59,7 @@ class SitesDataProvider {
 
     private var defaultSiteID: Int? {
 
-        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) as? Int
+        return UserDefaults(suiteName: WPAppGroupName)?.object(forKey: AppConfiguration.Widget.statsHomeWidgetsUserDefaultsSiteIdKey) as? Int
     }
 
     var defaultSite: Site? {

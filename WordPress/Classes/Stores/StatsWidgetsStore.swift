@@ -20,7 +20,7 @@ class StatsWidgetsStore {
             HomeWidgetTodayData.write(items: newTodayData)
 
             if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetTodayKind)
             }
         }
 
@@ -28,7 +28,7 @@ class StatsWidgetsStore {
             HomeWidgetAllTimeData.write(items: newAllTimeData)
 
             if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetAllTimeKind)
             }
         }
 
@@ -36,7 +36,7 @@ class StatsWidgetsStore {
             HomeWidgetThisWeekData.write(items: newThisWeekData)
 
             if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetThisWeekKind)
             }
         }
     }
@@ -49,19 +49,19 @@ class StatsWidgetsStore {
         if HomeWidgetTodayData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetTodayKind)
         }
 
         if HomeWidgetThisWeekData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetThisWeekKind)
         }
 
         if HomeWidgetAllTimeData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetAllTimeKind)
         }
     }
 
@@ -91,7 +91,7 @@ class StatsWidgetsStore {
         var widgetKind = ""
         if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
 
-            widgetKind = WPHomeWidgetTodayKind
+            widgetKind = AppConfiguration.Widget.homeWidgetTodayKind
 
             homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
                                                                    siteName: blog.title ?? oldData.siteName,
@@ -102,7 +102,7 @@ class StatsWidgetsStore {
 
 
         } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
-            widgetKind = WPHomeWidgetAllTimeKind
+            widgetKind = AppConfiguration.Widget.homeWidgetAllTimeKind
 
             homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
                                                                      siteName: blog.title ?? oldData.siteName,
@@ -256,7 +256,7 @@ extension StatsWidgetsStore {
             let stats = ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData))
             StoreContainer.shared.statsWidgets.storeHomeWidgetData(widgetType: HomeWidgetThisWeekData.self, stats: stats)
         case .week:
-            WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetThisWeekKind)
         default:
             break
         }
@@ -277,16 +277,16 @@ private extension StatsWidgetsStore {
                                                object: nil,
                                                queue: nil) { notification in
 
-            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
+            UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.statsHomeWidgetsUserDefaultsLoggedInKey)
 
             if !AccountHelper.isLoggedIn {
                 HomeWidgetTodayData.delete()
                 HomeWidgetThisWeekData.delete()
                 HomeWidgetAllTimeData.delete()
 
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetTodayKind)
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetThisWeekKind)
-                WidgetCenter.shared.reloadTimelines(ofKind: WPHomeWidgetAllTimeKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetTodayKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetThisWeekKind)
+                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.homeWidgetAllTimeKind)
             }
         }
     }
@@ -328,12 +328,12 @@ private extension StatsWidgetsStore {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: blogService.managedObjectContext),
               let siteId = account.defaultBlog?.dotComID,
               let userDefaults = UserDefaults(suiteName: WPAppGroupName),
-                userDefaults.value(forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey) == nil else {
+                userDefaults.value(forKey: AppConfiguration.Widget.statsHomeWidgetsUserDefaultsSiteIdKey) == nil else {
             return
         }
 
-        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: WPStatsHomeWidgetsUserDefaultsLoggedInKey)
-        userDefaults.setValue(siteId, forKey: WPStatsHomeWidgetsUserDefaultsSiteIdKey)
+        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.statsHomeWidgetsUserDefaultsLoggedInKey)
+        userDefaults.setValue(siteId, forKey: AppConfiguration.Widget.statsHomeWidgetsUserDefaultsSiteIdKey)
         initializeStatsWidgetsIfNeeded()
     }
 }
