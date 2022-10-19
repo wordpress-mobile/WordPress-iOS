@@ -32,7 +32,3 @@ struct RemoteConfigParameter<T> {
         return defaultValue
     }
 }
-
-extension RemoteConfigStore {
-    static let jetpackDeadline = RemoteConfigParameter<String>(key: "jp-deadline", defaultValue: nil)
-}
