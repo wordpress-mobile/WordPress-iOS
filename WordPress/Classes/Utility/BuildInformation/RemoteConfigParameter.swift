@@ -1,5 +1,8 @@
 import Foundation
 
+/// Represents a single remote parameter. Each parameter has a default value and a server value.
+/// We fallback to the default value if the server value cannot be retrieved.
+/// All remote parameters should be added to ``RemoteConfig``
 struct RemoteConfigParameter<T> {
 
     // MARK: Private Variables
