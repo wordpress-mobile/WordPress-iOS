@@ -130,6 +130,12 @@
 		0107E17028FFEF4F00DE87DB /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
 		0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E1842900059300DE87DB /* LocalizationConfiguration.swift */; };
 		0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E1862900065400DE87DB /* LocalizationConfiguration.swift */; };
+		0107E18A29000E1500DE87DB /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
+		0107E18B29000E1700DE87DB /* MurielColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326191422FCB9DC003C7642 /* MurielColor.swift */; };
+		0107E18C29000E2A00DE87DB /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2544126116CEA00EDAF88 /* AppStyleGuide.swift */; };
+		0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
+		0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
+		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
 		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
@@ -5500,9 +5506,7 @@
 /* Begin PBXFileReference section */
 		0075A07B739C4EDB5EC613B8 /* Pods_WordPressAllTimeWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressAllTimeWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		0107E0EB28F97D5100DE87DB /* WordPressStatsWidgets copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPressStatsWidgets copy-Info.plist"; path = "/Users/povilasstaskus/Projects/WordPress-iOS/WordPress/WordPressStatsWidgets copy-Info.plist"; sourceTree = "<absolute>"; };
 		0107E15428FE9DB200DE87DB /* JetpackIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		0107E15528FE9DB300DE87DB /* WordPressIntents copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPressIntents copy2-Info.plist"; path = "/Users/povilasstaskus/Projects/WordPress-iOS/WordPress/WordPressIntents copy2-Info.plist"; sourceTree = "<absolute>"; };
 		0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
 		0107E16328FFED1800DE87DB /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
 		0107E1812900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -9955,8 +9959,6 @@
 				FF37F90822385C9F00AFA3DB /* RELEASE-NOTES.txt */,
 				B565D41C3DB27630CD503F9A /* Pods */,
 				F5E156B425DDD53A00EEEDFB /* Recovered References */,
-				0107E0EB28F97D5100DE87DB /* WordPressStatsWidgets copy-Info.plist */,
-				0107E15528FE9DB300DE87DB /* WordPressIntents copy2-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -18891,13 +18893,17 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JetpackStatsWidgets/Pods-JetpackStatsWidgets-resources.sh",
+				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gridicons.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressShared.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressUIResources.bundle",
 			);
@@ -19041,13 +19047,17 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPressStatsWidgets/Pods-WordPressStatsWidgets-resources.sh",
+				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_ROOT}/FormatterKit/FormatterKit/FormatterKit.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/Gridicons.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FormatterKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Gridicons.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressShared.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPressUIResources.bundle",
 			);
@@ -20001,6 +20011,7 @@
 				0107E0B428F97D5000DE87DB /* Constants.m in Sources */,
 				0107E0B528F97D5000DE87DB /* StatsWidgetEntry.swift in Sources */,
 				0107E0B628F97D5000DE87DB /* HomeWidgetCache.swift in Sources */,
+				0107E18C29000E2A00DE87DB /* AppStyleGuide.swift in Sources */,
 				0107E0B728F97D5000DE87DB /* ListStatsView.swift in Sources */,
 				0107E0B828F97D5000DE87DB /* KeychainUtils.swift in Sources */,
 				0107E0B928F97D5000DE87DB /* BuildConfiguration.swift in Sources */,
@@ -20020,6 +20031,7 @@
 				0107E0C528F97D5000DE87DB /* GroupedViewData.swift in Sources */,
 				0107E0C628F97D5000DE87DB /* FeatureFlag.swift in Sources */,
 				0107E0C728F97D5000DE87DB /* StatsWidgets.swift in Sources */,
+				0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */,
 				0107E0C828F97D5000DE87DB /* StatsValueView.swift in Sources */,
 				0107E0C928F97D5000DE87DB /* SiteListProvider.swift in Sources */,
 				0107E0CA28F97D5000DE87DB /* HomeWidgetThisWeekData.swift in Sources */,
@@ -20027,6 +20039,7 @@
 				0107E0CC28F97D5000DE87DB /* KeyValueDatabase.swift in Sources */,
 				0107E0CD28F97D5000DE87DB /* CocoaLumberjack.swift in Sources */,
 				0107E0CE28F97D5000DE87DB /* ListRow.swift in Sources */,
+				0107E18A29000E1500DE87DB /* MurielColor.swift in Sources */,
 				0107E0D028F97D5000DE87DB /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				0107E0D128F97D5000DE87DB /* SingleStatView.swift in Sources */,
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
@@ -21762,6 +21775,7 @@
 				3F1FD30D2548B0A80060C53A /* Constants.m in Sources */,
 				3F63B93C258179D100F581BE /* StatsWidgetEntry.swift in Sources */,
 				3FA53E9D256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
+				0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */,
 				3FCF66E925CAF8C50047F337 /* ListStatsView.swift in Sources */,
 				83A1B19A28AFE47C00E737AC /* KeychainUtils.swift in Sources */,
 				3F6BC06D25B24787007369D3 /* BuildConfiguration.swift in Sources */,
@@ -21781,6 +21795,7 @@
 				3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */,
 				3F8EEC4E25B4817000EC9DAE /* StatsWidgets.swift in Sources */,
 				3FA59B9A258289E30073772F /* StatsValueView.swift in Sources */,
+				0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */,
 				3F8EEC7025B4849A00EC9DAE /* SiteListProvider.swift in Sources */,
 				3F8B136D25D08F34004FAC0A /* HomeWidgetThisWeekData.swift in Sources */,
 				3F5C86C025CA197500BABE64 /* WordPressHomeWidgetAllTime.swift in Sources */,
@@ -21788,6 +21803,7 @@
 				3F1FD27B2548AE900060C53A /* CocoaLumberjack.swift in Sources */,
 				3FCF66FB25CAF8E00047F337 /* ListRow.swift in Sources */,
 				8323789828526E6D003F4443 /* AppConfiguration.swift in Sources */,
+				0107E18B29000E1700DE87DB /* MurielColor.swift in Sources */,
 				3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,

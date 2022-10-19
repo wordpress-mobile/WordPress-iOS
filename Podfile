@@ -345,6 +345,7 @@ target 'WordPressStatsWidgets' do
 
   shared_with_all_pods
   shared_with_networking_pods
+  shared_with_extension_pods
 
   wordpress_ui
 end
@@ -354,6 +355,7 @@ target 'JetpackStatsWidgets' do
 
   shared_with_all_pods
   shared_with_networking_pods
+  shared_with_extension_pods
 
   wordpress_ui
 end
