@@ -1432,6 +1432,7 @@
 		803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */; };
 		803DE81628FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
 		803DE81728FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
+		803DE81928FFB7B5007D4E9C /* RemoteConfigParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6757,6 +6758,7 @@
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStore.swift; sourceTree = "<group>"; };
 		803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameter.swift; sourceTree = "<group>"; };
+		803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameterTests.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -12458,6 +12460,7 @@
 				80EF92922810FA5A0064A971 /* QuickStartFactoryTests.swift */,
 				4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */,
 				4A266B8E282B05210089CF3D /* JSONObjectTests.swift */,
+				803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -21980,6 +21983,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DA0EE02807062600DA3250 /* SiteCreationNameTracksEventTests.swift in Sources */,
+				803DE81928FFB7B5007D4E9C /* RemoteConfigParameterTests.swift in Sources */,
 				73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */,
 				73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */,
 				4A266B8F282B05210089CF3D /* JSONObjectTests.swift in Sources */,
