@@ -1428,6 +1428,10 @@
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
 		803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
+		803DE81328FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */; };
+		803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */; };
+		803DE81628FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
+		803DE81728FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6751,6 +6755,8 @@
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
+		803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStore.swift; sourceTree = "<group>"; };
+		803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameter.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -8489,7 +8495,6 @@
 		F465980528E66A5A00D5F49A /* white-on-blue-icon-app-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-on-blue-icon-app-60@3x.png"; sourceTree = "<group>"; };
 		F465980628E66A5A00D5F49A /* white-on-blue-icon-app-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-on-blue-icon-app-60@2x.png"; sourceTree = "<group>"; };
 		F465980728E66A5B00D5F49A /* white-on-blue-icon-app-83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-on-blue-icon-app-83.5@2x.png"; sourceTree = "<group>"; };
-		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4D9AF4E288AD2E300803D40 /* SuggestionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionViewModelTests.swift; sourceTree = "<group>"; };
 		F4D9AF50288AE23500803D40 /* SuggestionTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewTests.swift; sourceTree = "<group>"; };
@@ -12507,7 +12512,6 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				175721152754D31F00DE38BC /* AppIcon.swift */,
 				8B85AED8259230C500ADBEC9 /* AB Testing */,
 				FA25FB242609B98E0005E08F /* App Configuration */,
 				F181EDE326B2AC3100C61241 /* BackgroundTasks */,
@@ -15779,6 +15783,7 @@
 				08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */,
 				08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */,
 				0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */,
+				803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -16083,6 +16088,7 @@
 				F1D690141F828FF000200E30 /* BuildConfiguration.swift */,
 				F1D690151F828FF000200E30 /* FeatureFlag.swift */,
 				17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */,
+				803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */,
 			);
 			path = BuildInformation;
 			sourceTree = "<group>";
@@ -18418,7 +18424,6 @@
 				17039226282E6D2F00F602E9 /* ViewsVisitorsLineChartCell.xib in Resources */,
 				FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */,
 				F465978F28E65F8A00D5F49A /* celadon-on-white-icon-app-60@2x.png in Resources */,
-				FEC3B81A26C2915A00A395C7 /* SingleButtonTableViewCell.xib in Resources */,
 				FABB203F2602FC2C00C8785C /* ReaderRecommendedSiteCardCell.xib in Resources */,
 				FE23EB4A26E7C91F005A1698 /* richCommentTemplate.html in Resources */,
 				FABB20402602FC2C00C8785C /* Nunito-Bold.ttf in Resources */,
@@ -19716,6 +19721,7 @@
 				F580C3C123D22E2D0038E243 /* PreviewDeviceLabel.swift in Sources */,
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
 				40C403F62215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
+				803DE81628FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */,
 				82FC61251FA8ADAD00A1757E /* BaseActivityListViewController.swift in Sources */,
 				F15272FF243B28B700C8DC7A /* RequestAuthenticator.swift in Sources */,
 				E66E2A651FE4311300788F22 /* SettingsTitleSubtitleController.swift in Sources */,
@@ -20414,6 +20420,7 @@
 				4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */,
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
+				803DE81328FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */,
 				9A1A67A622B2AD4E00FF8422 /* CountriesMap.swift in Sources */,
 				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
 				40F46B6A22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,
@@ -23419,6 +23426,7 @@
 				FABB24382602FC2C00C8785C /* ReaderCommentAction.swift in Sources */,
 				FABB24392602FC2C00C8785C /* JetpackBackupStatusFailedViewController.swift in Sources */,
 				FABB243A2602FC2C00C8785C /* CircularImageView.swift in Sources */,
+				803DE81728FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */,
 				FABB243B2602FC2C00C8785C /* GravatarButtonView.swift in Sources */,
 				B0CD27D0286F8858009500BF /* JetpackBannerView.swift in Sources */,
 				AE2F3126270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
@@ -23527,6 +23535,7 @@
 				FABB248D2602FC2C00C8785C /* PostCoordinator.swift in Sources */,
 				FABB248E2602FC2C00C8785C /* AztecAttachmentDelegate.swift in Sources */,
 				FABB248F2602FC2C00C8785C /* Memoize.swift in Sources */,
+				803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */,
 				FA98A2512833F1DC003B9233 /* QuickStartChecklistConfigurable.swift in Sources */,
 				931F312D2714302A0075433B /* PublicizeServicesState.swift in Sources */,
 				FABB24902602FC2C00C8785C /* StatsPeriodAsyncOperation.swift in Sources */,
