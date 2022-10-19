@@ -5503,6 +5503,8 @@
 		0107E15528FE9DB300DE87DB /* WordPressIntents copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPressIntents copy2-Info.plist"; path = "/Users/povilasstaskus/Projects/WordPress-iOS/WordPress/WordPressIntents copy2-Info.plist"; sourceTree = "<absolute>"; };
 		0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
 		0107E16328FFED1800DE87DB /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
+		0107E1812900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0107E1832900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
@@ -9221,6 +9223,22 @@
 			name = Jetpack;
 			sourceTree = "<group>";
 		};
+		0107E1802900043200DE87DB /* JetpackIntents */ = {
+			isa = PBXGroup;
+			children = (
+				0107E1812900043200DE87DB /* Info.plist */,
+			);
+			path = JetpackIntents;
+			sourceTree = "<group>";
+		};
+		0107E1822900043200DE87DB /* JetpackStatsWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				0107E1832900043200DE87DB /* Info.plist */,
+			);
+			path = JetpackStatsWidgets;
+			sourceTree = "<group>";
+		};
 		027AC51F2278982D0033E56E /* DomainCredit */ = {
 			isa = PBXGroup;
 			children = (
@@ -9907,6 +9925,8 @@
 				FABB1F8E2602FC0100C8785C /* Jetpack */,
 				8096218728E55CB800940A5D /* JetpackDraftActionExtension */,
 				80F6D05628EE869900953C1A /* JetpackNotificationServiceExtension */,
+				0107E1802900043200DE87DB /* JetpackIntents */,
+				0107E1822900043200DE87DB /* JetpackStatsWidgets */,
 				8096212828E5535E00940A5D /* JetpackShareExtension */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				733F36072126197800988727 /* WordPressNotificationContentExtension */,
