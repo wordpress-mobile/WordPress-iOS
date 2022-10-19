@@ -13,20 +13,14 @@ struct UnconfiguredView: View {
     }
 
     var unconfiguredMessage: LocalizedString {
-        switch (widgetKind, AppConfiguration.isJetpack) {
-        case (.today, false):
-            return LocalizableStrings.unconfiguredViewTodayTitle
-        case (.allTime, false):
-            return LocalizableStrings.unconfiguredViewAllTimeTitle
-        case (.thisWeek, false):
-            return LocalizableStrings.unconfiguredViewThisWeekTitle
-        case (.today, true):
-            return LocalizableStrings.unconfiguredViewJetpackTodayTitle
-        case (.allTime, true):
-            return LocalizableStrings.unconfiguredViewJetpackAllTimeTitle
-        case (.thisWeek, true):
-            return LocalizableStrings.unconfiguredViewJetpackThisWeekTitle
-        case (.noStats, _):
+        switch widgetKind {
+        case .today:
+            return AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
+        case .allTime:
+            return AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
+        case .thisWeek:
+            return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
+        case .noStats:
             return LocalizableStrings.noDataViewTitle
         }
     }

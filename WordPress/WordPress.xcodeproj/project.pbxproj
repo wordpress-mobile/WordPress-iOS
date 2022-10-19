@@ -128,6 +128,8 @@
 		0107E16E28FFEF3700DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		0107E16F28FFEF4500DE87DB /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25FA332609AAAA0005E08F /* AppConfiguration.swift */; };
 		0107E17028FFEF4F00DE87DB /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
+		0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E1842900059300DE87DB /* LocalizationConfiguration.swift */; };
+		0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E1862900065400DE87DB /* LocalizationConfiguration.swift */; };
 		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
 		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */; };
@@ -5505,6 +5507,8 @@
 		0107E16328FFED1800DE87DB /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
 		0107E1812900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0107E1832900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0107E1842900059300DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
+		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
@@ -9235,6 +9239,7 @@
 			isa = PBXGroup;
 			children = (
 				0107E1832900043200DE87DB /* Info.plist */,
+				0107E1842900059300DE87DB /* LocalizationConfiguration.swift */,
 			);
 			path = JetpackStatsWidgets;
 			sourceTree = "<group>";
@@ -10404,6 +10409,7 @@
 		3F26569F25AF4DBF0073A832 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
+				0107E1862900065400DE87DB /* LocalizationConfiguration.swift */,
 				3FE77C8225B0CA89007DE9E5 /* LocalizableStrings.swift */,
 			);
 			path = Localization;
@@ -20024,6 +20030,7 @@
 				0107E0D028F97D5000DE87DB /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				0107E0D128F97D5000DE87DB /* SingleStatView.swift in Sources */,
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
+				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
 				0107E0D428F97D5000DE87DB /* HomeWidgetData.swift in Sources */,
 				0107E0D528F97D5000DE87DB /* HomeWidgetTodayData.swift in Sources */,
@@ -21784,6 +21791,7 @@
 				3F8B138F25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift in Sources */,
 				3F5689F0254209790048A9E4 /* SingleStatView.swift in Sources */,
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
+				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
 				3FA53ED62565860900F4D9A2 /* HomeWidgetData.swift in Sources */,
 				3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */,
