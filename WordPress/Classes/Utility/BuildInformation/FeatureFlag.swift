@@ -115,7 +115,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newLandingScreen:
             return false
         case .newCoreDataContext:
-            return false
+            return true
         }
     }
 

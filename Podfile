@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 4.58.1-beta.1'
+  # pod 'WordPressKit', '~> 4.58', '>= 4.58.1'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'task/19445-remote-config'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -222,7 +222,7 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2-beta.1'
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/prologue-nav-bar'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
