@@ -35,6 +35,12 @@ import WordPressKit
 // MARK: - Localized Strings
 extension AppConstants {
 
+    struct AboutScreen {
+        static let blogName = NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress.com blog")
+        static let workWithUs = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
+        static let workWithUsURL = "https://automattic.com/work-with-us"
+    }
+
     struct PostSignUpInterstitial {
         static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
     }
