@@ -118,7 +118,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newWordPressLandingScreen:
             return false
         case .newCoreDataContext:
-            return false
+            return true
         }
     }
 
