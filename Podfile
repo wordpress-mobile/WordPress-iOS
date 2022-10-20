@@ -238,6 +238,8 @@ abstract_target 'Apps' do
   wordpress_shared
   wordpress_ui
 
+  # NSURL+IDN is a wordpress-mobile pod, but one that sees little to no activity.
+  # As such, it's declared inline here.
   pod 'NSURL+IDN', '~> 0.4'
 
   ## WordPress App iOS
