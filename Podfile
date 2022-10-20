@@ -228,21 +228,17 @@ abstract_target 'Apps' do
   ## Automattic libraries
   ## ====================
   ##
-  wordpress_kit
-  wordpress_shared
+  aztec
   kanvas
+  media_editor
+  media_picker
   tracks
   wordpress_authenticator
-  media_picker
-  media_editor
-
-  # Production
-
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
 
   pod 'NSURL+IDN', '~> 0.4'
-
-  aztec
-  wordpress_ui
 
   ## WordPress App iOS
   ## =================
