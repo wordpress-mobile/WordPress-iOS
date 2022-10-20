@@ -26,11 +26,17 @@ def wordpress_shared
 end
 
 def aztec
-  ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
-  ## When using a commit number (during development) you should provide the same commit number for both pods.
-  ##
+  # Aztec is the codename for the editor before Gutenberg.
+  #
+  # Currently, this "legacy" editor comes via the WordPress-Editor-iOS pod.
+  # WordPress-Editor-iOS lists WordPress-Aztec-iOS as a dependency.
+  #
+  # Both Editor and Aztec live in the same repository.
+  # Because of that, when fetching via commit or branch, we need to get both pods from the same source.
+  # But when fetching a stable, published version, we only need Editor.
+  #
+  # pod 'WordPress-Aztec-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
-  # pod 'WordPress-Editor-iOS', path: '../AztecEditor-iOS'
   pod 'WordPress-Editor-iOS', '~> 1.19.8'
 end
 
