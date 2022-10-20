@@ -241,8 +241,6 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'Gridicons', '~> 1.1.0'
-
   aztec
   wordpress_ui
 
