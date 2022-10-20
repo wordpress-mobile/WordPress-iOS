@@ -313,6 +313,15 @@ target 'WordPressTodayWidget' do
   wordpress_ui
 end
 
+target 'JetpackTodayWidget' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
 ## All Time Widget
 ## ============
 ##
@@ -325,10 +334,28 @@ target 'WordPressAllTimeWidget' do
   wordpress_ui
 end
 
+target 'JetpackAllTimeWidget' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
 ## This Week Widget
 ## ============
 ##
 target 'WordPressThisWeekWidget' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
+target 'JetpackThisWeekWidget' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods
