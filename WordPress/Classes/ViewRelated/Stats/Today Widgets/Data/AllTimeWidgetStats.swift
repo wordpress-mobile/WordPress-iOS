@@ -67,7 +67,7 @@ extension AllTimeWidgetStats {
         }
     }
 
-    private static var dataFileName = "AllTimeData.plist"
+    private static var dataFileName = AppConfiguration.Widget.todayWidgetAllTimeFilename
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {

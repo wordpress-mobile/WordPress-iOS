@@ -61,7 +61,7 @@ private extension WidgetUnconfiguredCell {
         }()
 
         configureLabel.font = widgetType.configureLabelFont
-        actionLabel.text = widgetType == .loadingFailed ? LocalizedText.retry : LocalizedText.openWordPress
+        actionLabel.text = widgetType == .loadingFailed ? LocalizedText.retry : LocalizedText.openApp
         configureLabel.textColor = WidgetStyles.primaryTextColor
         actionLabel.textColor = WidgetStyles.primaryTextColor
         WidgetStyles.configureSeparator(separatorLine)
@@ -69,10 +69,10 @@ private extension WidgetUnconfiguredCell {
     }
 
     enum LocalizedText {
-        static let configureToday = AppLocalizedString("Display your site stats for today here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats today widget helper text")
-        static let configureAllTime = AppLocalizedString("Display your all-time site stats here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats all-time widget helper text")
-        static let configureThisWeek = AppLocalizedString("Display your site stats for this week here. Configure in the WordPress app in your site stats.", comment: "Unconfigured stats this week widget helper text")
-        static let openWordPress = AppLocalizedString("Open WordPress", comment: "Today widget label to launch WP app")
+        static let configureToday = AppConfiguration.Widget.Localization.configureToday
+        static let configureAllTime = AppConfiguration.Widget.Localization.configureAllTime
+        static let configureThisWeek = AppConfiguration.Widget.Localization.configureThisWeek
+        static let openApp = AppConfiguration.Widget.Localization.openApp
         static let loadingFailed = AppLocalizedString("Couldn't load data", comment: "Message displayed when a Stats widget failed to load data.")
         static let retry = AppLocalizedString("Retry", comment: "Stats widgets label to reload the widget.")
     }

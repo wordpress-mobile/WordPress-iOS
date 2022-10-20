@@ -68,7 +68,7 @@ extension TodayWidgetStats {
         }
     }
 
-    private static var dataFileName = "TodayData.plist"
+    private static var dataFileName = AppConfiguration.Widget.todayWidgetTodayFilename
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {

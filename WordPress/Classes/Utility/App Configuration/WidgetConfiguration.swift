@@ -23,5 +23,10 @@ import Foundation
         @objc static let homeWidgetTodayFilename = "HomeWidgetTodayData.plist"
         @objc static let homeWidgetAllTimeFilename = "HomeWidgetAllTimeData.plist"
         @objc static let homeWidgetThisWeekFilename = "HomeWidgetThisWeekData.plist"
+
+        // iOS13 Widgets
+        @objc static let todayWidgetTodayFilename = "TodayData.plist"
+        @objc static let todayWidgetThisWeekFilename = "ThisWeekData.plist"
+        @objc static let todayWidgetAllTimeFilename = "AllTimeData.plist"
     }
 }
