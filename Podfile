@@ -86,6 +86,33 @@ def shared_style_pods
   pod 'Gridicons', '~> 1.1.0'
 end
 
+## Other Internal Pods
+##
+## Unlike the ones above, these pods are not shared, but it's nevertheless
+## convenient to define them in isolation up here to help discoverability.
+
+def tracks
+  pod 'Automattic-Tracks-iOS', '~> 0.13'
+  # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
+end
+
+def media_picker
+  pod 'WPMediaPicker', '~> 1.8.4'
+  # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
+end
+
+def wordpress_authenticator
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
+  # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
+end
+
+def media_editor
+  pod 'MediaEditor', '~> 1.2.1'
+  # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
+  # pod 'MediaEditor', path: '../MediaEditor-iOS'
+end
+
 def gutenberg(options)
   options[:git] = 'https://github.com/wordpress-mobile/gutenberg-mobile.git'
   options[:submodules] = true
@@ -204,26 +231,17 @@ abstract_target 'Apps' do
   wordpress_kit
   wordpress_shared
   kanvas
+  tracks
+  wordpress_authenticator
+  media_picker
+  media_editor
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.13'
-  # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.4'
-  # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
-
   pod 'Gridicons', '~> 1.1.0'
-
-  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
-  # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
-
-  pod 'MediaEditor', '~> 1.2.1'
-  # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-  # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
   aztec
   wordpress_ui
