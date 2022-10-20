@@ -10,8 +10,23 @@ final class JetpackLandingScreenView: UIView {
     private let font: UIFont = UIFont.systemFont(ofSize: 40, weight: .bold)
     private let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
-    private lazy var body: UIView = {
+    init() {
+        super.init(frame: .zero)
+        self.setup()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setup() {
         let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.alignment = .leading
         stackView.axis = .vertical
         stackView.spacing = self.interitemSpacing
@@ -22,18 +37,8 @@ final class JetpackLandingScreenView: UIView {
             )
             stackView.addArrangedSubview(view)
         }
-        return stackView
-    }()
-
-    init() {
-        super.init(frame: .zero)
-        self.body.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(body)
-        self.pinSubviewToAllEdges(body, insets: insets)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.addSubview(stackView)
+        self.pinSubviewToAllEdges(stackView, insets: insets)
     }
 
     private func promptView(text: String, color: UIColor) -> UIView {
