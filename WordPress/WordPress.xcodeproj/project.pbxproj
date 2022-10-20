@@ -7578,7 +7578,6 @@
 		98E54FF1265C972900B4BE9A /* ReaderDetailLikesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesView.swift; sourceTree = "<group>"; };
 		98E55018265C977E00B4BE9A /* ReaderDetailLikesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderDetailLikesView.xib; sourceTree = "<group>"; };
 		98E58A2E2360D23400E5534B /* TodayWidgetStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWidgetStats.swift; sourceTree = "<group>"; };
-		98E58A412361017500E5534B /* Pods_WordPressTodayWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_WordPressTodayWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E5D4912620C2B40074A56A /* UserProfileSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileSectionHeader.xib; sourceTree = "<group>"; };
 		98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+Model.swift"; sourceTree = "<group>"; };
 		98ED5962265EBD0000A0B33E /* ReaderDetailLikesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDetailLikesListController.swift; sourceTree = "<group>"; };
@@ -25388,6 +25387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25444,6 +25444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25496,6 +25497,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25549,6 +25551,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25600,6 +25603,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 87A8AC8362510EB42708E5B3 /* Pods-JetpackIntents.debug.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25653,6 +25657,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 549D51B99FF59CBE21A37CBF /* Pods-JetpackIntents.release.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25703,6 +25708,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4391027D80CFEDF45B8712A3 /* Pods-JetpackIntents.release-internal.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25754,6 +25760,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B124AFFFB3F0204107FD33D0 /* Pods-JetpackIntents.release-alpha.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -25808,6 +25815,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_SCHEME = Jetpack;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -25847,7 +25855,7 @@
 				INFOPLIST_FILE = JetpackTodayWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackTodayWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Today Widget";
 				SKIP_INSTALL = YES;
@@ -25866,6 +25874,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_SCHEME = Jetpack;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -25904,7 +25913,7 @@
 				INFOPLIST_FILE = JetpackTodayWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.automattic.jetpack.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackTodayWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.automattic.jetpack.JetpackTodayWidget";
 				SKIP_INSTALL = YES;
@@ -25922,6 +25931,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_SCHEME = Jetpack;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -25961,7 +25971,7 @@
 				INFOPLIST_FILE = "JetpackTodayWidget/Info-Internal.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.internal.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.internal.JetpackTodayWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.internal.JetpackTodayWidget";
 				SKIP_INSTALL = YES;
@@ -25979,6 +25989,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_SCHEME = Jetpack;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = "$(inherited)";
@@ -26018,7 +26029,7 @@
 				INFOPLIST_FILE = "JetpackTodayWidget/Info-Alpha.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jetpack.alpha.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jetpack.alpha.JetpackTodayWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.jetpack.alpha.JetpackTodayWidget";
 				SKIP_INSTALL = YES;
@@ -26033,6 +26044,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F491073967BACE80BD7D714E /* Pods-JetpackAllTimeWidget.debug.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26089,6 +26101,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C499E72A8B0FF0A805565A9B /* Pods-JetpackAllTimeWidget.release.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26140,6 +26153,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 47F54E7057CF601E8F224BAE /* Pods-JetpackAllTimeWidget.release-internal.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26192,6 +26206,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A944E445230B6FBC179AB25 /* Pods-JetpackAllTimeWidget.release-alpha.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26244,6 +26259,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A06952470E97BCC9217597C1 /* Pods-JetpackThisWeekWidget.debug.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26298,6 +26314,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E47408A4BF76F66F486C3FF /* Pods-JetpackThisWeekWidget.release.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26349,6 +26366,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 13FC3D8DEB1786CE5959F945 /* Pods-JetpackThisWeekWidget.release-internal.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -26401,6 +26419,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 533D075171EF28B0DEF681FB /* Pods-JetpackThisWeekWidget.release-alpha.xcconfig */;
 			buildSettings = {
+				BUILD_SCHEME = Jetpack;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
