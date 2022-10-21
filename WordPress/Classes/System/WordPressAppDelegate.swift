@@ -106,6 +106,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureReachability()
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
+        updateRemoteConfig()
 
         window?.makeKeyAndVisible()
 
@@ -208,6 +209,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         uploadsManager.resume()
         updateFeatureFlags()
+        updateRemoteConfig()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -662,6 +664,10 @@ extension WordPressAppDelegate {
         } catch {
             DDLogError("Error fetching default user account: \(error)")
         }
+    }
+
+    func updateRemoteConfig() {
+        RemoteConfigStore.shared.update()
     }
 }
 
