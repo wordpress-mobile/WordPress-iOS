@@ -20,7 +20,11 @@ import WordPressKit
     #if INTERNAL_BUILD
     static let pushNotificationAppId = "com.jetpack.internal"
     #else
+    #if ALPHA_BUILD
+    static let pushNotificationAppId = "com.jetpack.alpha"
+    #else
     static let pushNotificationAppId = "com.jetpack.appstore"
+    #endif
     #endif
     #endif
 }

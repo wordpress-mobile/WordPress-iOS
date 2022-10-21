@@ -26,8 +26,13 @@ NSString *const WPComDomain                                         = @"wordpres
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
 NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.internal";
 #else
+#if ALPHA_BUILD
+NSString *const WPAppGroupName                                      = @"group.org.wordpress.alpha";
+NSString *const WPAppKeychainAccessGroup                            = @"99KV9Z6BKV.org.wordpress.alpha";
+#else
 NSString *const WPAppGroupName                                      = @"group.org.wordpress";
 NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
+#endif
 #endif
 
 /// Notification Content Extension Constants
