@@ -5,8 +5,8 @@ import WordPressAuthenticator
     static let itunesAppID = "335703880"
     static let productTwitterHandle = "@WordPressiOS"
     static let productTwitterURL = "https://twitter.com/WordPressiOS"
-    static let productBlogURL = "https://blog.wordpress.com"
-    static let productBlogDisplayURL = "blog.wordpress.com"
+    static let productBlogURL = "https://wordpress.org/news/"
+    static let productBlogDisplayURL = "wordpress.org/news"
     static let zendeskSourcePlatform = "mobile_-_ios"
     static let shareAppName: ShareAppName = .wordpress
     static let mobileAnnounceAppId = "2"
@@ -38,6 +38,12 @@ import WordPressAuthenticator
 
 // MARK: - Localized Strings
 extension AppConstants {
+
+    struct AboutScreen {
+        static let blogName = NSLocalizedString("News", comment: "Title of a button that displays the WordPress.org blog")
+        static let workWithUs = NSLocalizedString("Contribute", comment: "Title of button that displays the WordPress.org contributor page")
+        static let workWithUsURL = "https://make.wordpress.org/mobile/handbook"
+    }
 
     struct PostSignUpInterstitial {
         static let welcomeTitleText = NSLocalizedString("Welcome to WordPress", comment: "Post Signup Interstitial Title Text for WordPress iOS")
