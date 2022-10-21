@@ -77,12 +77,17 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
+  gutenberg_pods
 end
 
 def shared_with_extension_pods
   pod 'Gridicons', '~> 1.1.0'
   pod 'ZIPFoundation', '~> 0.9.8'
   pod 'Down', '~> 0.6.6'
+end
+
+def gutenberg_pods
+  gutenberg commit: 'd77a68b14bbf33f162df4f043d467ae90a77dad1'
 end
 
 def gutenberg(options)
@@ -177,7 +182,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg commit: '5e55c49a51288b266ceb47a8cb34e7483eb2d802'
+  gutenberg_pods
 
   ## Third party libraries
   ## =====================
