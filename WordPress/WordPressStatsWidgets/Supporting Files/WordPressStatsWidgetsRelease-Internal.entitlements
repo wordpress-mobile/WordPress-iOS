@@ -8,7 +8,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>99KV9Z6BKV.org.wordpress.internal</string>
+		<string>$(AppIdentifierPrefix)99KV9Z6BKV.org.wordpress.internal</string>
 	</array>
 </dict>
 </plist>
