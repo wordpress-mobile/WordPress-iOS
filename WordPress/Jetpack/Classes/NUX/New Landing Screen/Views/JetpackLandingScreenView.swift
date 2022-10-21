@@ -60,7 +60,7 @@ final class JetpackLandingScreenView: UIView {
             .foregroundColor: color,
             .font: font
         ]
-        attributedString.addAttributes(attributes, range: NSMakeRange(0, text.count))
+        attributedString.addAttributes(attributes, range: NSMakeRange(0, text.utf16.count))
         textView.attributedText = attributedString
 
         return textView
