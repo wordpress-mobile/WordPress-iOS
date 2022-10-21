@@ -6,7 +6,7 @@ struct JetpackPromptsConfiguration {
     enum Constants {
         // alternate colors in rows
         static let evenColor = UIColor.muriel(color: .jetpackGreen, .shade50)
-        static let oddColor = UIColor(light: .muriel(color: .jetpackGreen, .shade30),
+        static let oddColor = UIColor(light: .muriel(color: .jetpackGreen, .shade50).withAlphaComponent(0.5),
                                       dark: .muriel(color: .jetpackGreen, .shade20))
 
         static let basePrompts = [

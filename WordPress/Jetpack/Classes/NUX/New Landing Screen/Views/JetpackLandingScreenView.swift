@@ -5,8 +5,8 @@ final class JetpackLandingScreenView: UIView {
     private let prompts = JetpackPromptsConfiguration.Constants.basePrompts
     private let evenColor = JetpackPromptsConfiguration.Constants.evenColor
     private let oddColor = JetpackPromptsConfiguration.Constants.oddColor
-    private let lineSpacing: CGFloat = -8
-    private let interitemSpacing: CGFloat = 0
+    private let lineSpacing: CGFloat = -6
+    private let interitemSpacing: CGFloat = -2
     private let font: UIFont = UIFont.systemFont(ofSize: 40, weight: .bold)
     private let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
@@ -43,6 +43,7 @@ final class JetpackLandingScreenView: UIView {
 
     private func promptView(text: String, color: UIColor) -> UIView {
         let textView = UITextView()
+        textView.accessibilityElementsHidden = true
         textView.isSelectable = false
         textView.isEditable = false
         textView.isScrollEnabled = false
