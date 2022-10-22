@@ -41,27 +41,22 @@ final class JetpackLandingScreenView: UIView {
     // MARK: - Subviews Factory
 
     private static func promptView(text: String, color: UIColor) -> UIView {
-        let textView = UITextView()
-        textView.accessibilityElementsHidden = true
-        textView.isSelectable = false
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = .zero
-        textView.backgroundColor = .clear
+        let label = UILabel()
+        label.accessibilityElementsHidden = true
+        label.numberOfLines = 0
 
         let attributedString = NSMutableAttributedString(string: text)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Constants.lineSpacing
+        paragraphStyle.lineHeightMultiple = Constants.lineHeightMultiple
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
             .foregroundColor: color,
             .font: Constants.font
         ]
         attributedString.addAttributes(attributes, range: NSMakeRange(0, text.utf16.count))
-        textView.attributedText = attributedString
+        label.attributedText = attributedString
 
-        return textView
+        return label
     }
 
     // MARK: - Constants
@@ -70,9 +65,9 @@ final class JetpackLandingScreenView: UIView {
         static let prompts = JetpackPromptsConfiguration.Constants.basePrompts
         static let evenColor = JetpackPromptsConfiguration.Constants.evenColor
         static let oddColor = JetpackPromptsConfiguration.Constants.oddColor
-        static let lineSpacing: CGFloat = -6
-        static let interitemSpacing: CGFloat = -2
+        static let lineHeightMultiple: CGFloat = 0.8
+        static let interitemSpacing: CGFloat = 8
         static let font: UIFont = UIFont.systemFont(ofSize: 40, weight: .bold)
-        static let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let insets = UIEdgeInsets(top: Self.interitemSpacing, left: 16, bottom: 0, right: 16)
     }
 }
