@@ -253,11 +253,11 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
                                phaseFour: Bool,
                                phaseNewUsers: Bool) -> [WordPressKit.FeatureFlag] {
         return [
-            .init(title: FeatureFlag.jetpackBrandingPhaseOne.remoteKey ?? "", value: phaseOne),
-            .init(title: FeatureFlag.jetpackBrandingPhaseTwo.remoteKey ?? "", value: phaseTwo),
-            .init(title: FeatureFlag.jetpackBrandingPhaseThree.remoteKey ?? "", value: phaseThree),
-            .init(title: FeatureFlag.jetpackBrandingPhaseFour.remoteKey ?? "", value: phaseFour),
-            .init(title: FeatureFlag.jetpackBrandingPhaseNewUsers.remoteKey ?? "", value: phaseNewUsers),
+            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseOne.remoteKey ?? "", value: phaseOne),
+            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey ?? "", value: phaseTwo),
+            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey ?? "", value: phaseThree),
+            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey ?? "", value: phaseFour),
+            .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey ?? "", value: phaseNewUsers),
         ]
     }
 }
