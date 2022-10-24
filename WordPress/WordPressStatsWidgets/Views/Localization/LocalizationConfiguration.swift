@@ -1,5 +1,3 @@
-import Foundation
-
 extension AppConfiguration.Widget {
     struct Localization {
         static let unconfiguredViewTodayTitle = LocalizableStrings.unconfiguredViewTodayTitle
