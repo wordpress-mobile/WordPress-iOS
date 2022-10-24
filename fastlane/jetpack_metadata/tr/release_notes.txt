@@ -1,0 +1,7 @@
+Artık bağımsız olarak barındırılan bir sitede oturum açmış durumdayken bir WordPress.com oturum açma işlemini iptal edebilirsiniz; fikrinizi değiştirirseniz oturum açma ekranında takılıp kalmazsınız.
+
+Jetpack uygulaması, siz diğer uygulamaları kullanırken arka planda haftalık özetler çalıştırabilir. Uçma zamanı.
+
+iPad ekranlarında “Bildirimleri aç” düğmesi artık anlık bildirimleri açma talimatlarının üzerinde yer almıyor. "Sonuç yok" yan menü metni artık ekrana sığıyor.
+
+Bir varmış bir yokmuş, Öykü Yayını taslağındaki bir resim silindiğinde öyküdeki bir sonraki resmin yüklenmesini engelleyen bir sorunu düzeltmişiz. Ve herkes sonsuza kadar mutlu yaşamış.

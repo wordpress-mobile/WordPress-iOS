@@ -1,4 +1,5 @@
 import UIKit
+import CoreMotion
 
 class JetpackPrologueViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
@@ -10,6 +11,15 @@ class JetpackPrologueViewController: UIViewController {
         let view = StarFieldView(with: config)
         view.layer.masksToBounds = true
         return view
+    }()
+
+    private let motion: CMMotionManager? = {
+        guard FeatureFlag.newJetpackLandingScreen.enabled else {
+            return nil
+        }
+        let motion = CMMotionManager()
+        motion.deviceMotionUpdateInterval = Constants.deviceMotionUpdateInterval
+        return motion
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
@@ -42,11 +52,11 @@ class JetpackPrologueViewController: UIViewController {
         let midBottomColor = JetpackPrologueStyleGuide.gradientColor.withAlphaComponent(0.2)
         let endColor = JetpackPrologueStyleGuide.gradientColor
 
-        gradientLayer.colors = FeatureFlag.newLandingScreen.enabled ?
+        gradientLayer.colors = FeatureFlag.newJetpackLandingScreen.enabled ?
         [endColor.cgColor, midTopColor.cgColor, midBottomColor.cgColor, startColor.cgColor] :
         [startColor.cgColor, endColor.cgColor]
 
-        gradientLayer.locations = FeatureFlag.newLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
+        gradientLayer.locations = FeatureFlag.newJetpackLandingScreen.enabled ? [0.0, 0.4, 0.6, 1.0] : [0.0, 0.9]
 
         return gradientLayer
     }
@@ -56,11 +66,24 @@ class JetpackPrologueViewController: UIViewController {
 
         view.backgroundColor = JetpackPrologueStyleGuide.backgroundColor
 
-        guard FeatureFlag.newLandingScreen.enabled else {
+        guard FeatureFlag.newJetpackLandingScreen.enabled else {
             loadOldPrologueView()
             return
         }
         loadNewPrologueView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let motion = motion, motion.isGyroAvailable {
+            motion.startDeviceMotionUpdates()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        motion?.stopDeviceMotionUpdates()
     }
 
     private func loadNewPrologueView() {
@@ -79,10 +102,10 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 72),
+            logoImageView.widthAnchor.constraint(equalToConstant: 68),
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 72)
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
         ])
     }
 
@@ -110,7 +133,7 @@ class JetpackPrologueViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard FeatureFlag.newLandingScreen.enabled,
+        guard FeatureFlag.newJetpackLandingScreen.enabled,
         previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
             updateLabel(for: traitCollection)
             return
@@ -122,7 +145,7 @@ class JetpackPrologueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if !FeatureFlag.newLandingScreen.enabled {
+        if !FeatureFlag.newJetpackLandingScreen.enabled {
             starFieldView.frame = view.bounds
         }
         gradientLayer.frame = view.bounds
@@ -150,12 +173,60 @@ class JetpackPrologueViewController: UIViewController {
         static let parallaxAmount: CGFloat = 30
         static let starLayerPosition: CGFloat = -100
         static let gradientLayerPosition: CGFloat = -99
+
+        /// New landing screen
+
+        /// Rate that the device is polled for motion updates
+        static let deviceMotionUpdateInterval: Double = 1 / 10
+        /// Angle to use for the scroll rate when a device can't supply motion data
+        static let defaultAngleDegrees: Double = 30.0
+        /// Uniform multiplier used to tweak the rate generated from an angle
+        static let angleRateMultiplier: CGFloat = 1.3
     }
 }
 
 extension JetpackPrologueViewController: InfiniteScrollerViewDelegate {
+    /// Provides rate in points per second for a given angle in degrees.
+    ///
+    /// - Returns: Points per second.
+    private func rateForAngle(angle: Double) -> CGFloat {
+        return -angle * Self.Constants.angleRateMultiplier
+    }
+
+    /// Returns the angle in degrees of the device independently of the view's orientation.
+    ///
+    /// Assuming the view is in the normal, upright position when displayed on the device:
+    /// - +90 degrees is perpendicular to the ground, facing the user.
+    /// - 0 degrees is parallel to the ground (flat on a surface).
+    /// - -90 degrees is perpendicular to the ground and upside down, facing away from the user.
+    ///
+    /// - Returns: Angle in degrees, or `nil` if the device didn't supply motion data.
+    private func angleForDeviceOrientation() -> Double? {
+        guard let attitude = motion?.deviceMotion?.attitude else {
+            return nil
+        }
+
+        let angleRad: Double
+
+        switch UIApplication.shared.currentStatusBarOrientation {
+        case .portrait:
+            angleRad = attitude.pitch
+        case .portraitUpsideDown:
+            angleRad = -attitude.pitch
+        case .landscapeLeft:
+            angleRad = attitude.roll
+        case .landscapeRight:
+            angleRad = -attitude.roll
+        default:
+            angleRad = 0
+        }
+
+        /// Convert radians to degrees
+        return angleRad * 180 / .pi
+    }
+
     func rate(for infiniteScrollerView: InfiniteScrollerView) -> CGFloat {
-        /// points per second
-        return -60
+        let deviceAngle = angleForDeviceOrientation() ?? Self.Constants.defaultAngleDegrees
+        return rateForAngle(angle: deviceAngle)
     }
 }

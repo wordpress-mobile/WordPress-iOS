@@ -615,26 +615,23 @@
         [mediaTypes addObject:@(MediaTypeAudio)];
     }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
-#pragma clang diagnostic pop
-
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                  forMediaTypes:mediaTypes];
-    // If we have a count diferent of zero assume it's correct but sync with the server always in the background
+    NSInteger count = [self.blog mediaLibraryCountForTypes:mediaTypes];
+    // If we have a count difference of zero, we assume it's correct. But we still sync with the server in the background.
     if (count != 0) {
         self.itemsCount = count;
     }
+
     __weak __typeof__(self) weakSelf = self;
-    [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
-        weakSelf.itemsCount = count;
-        completionHandler(count, nil);
-    } failure:^(NSError * _Nonnull error) {
-        DDLogError(@"%@", [error localizedDescription]);
-        weakSelf.itemsCount = count;
-        completionHandler(count, error);
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
+        [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
+            weakSelf.itemsCount = count;
+            completionHandler(count, nil);
+        } failure:^(NSError * _Nonnull error) {
+            DDLogError(@"%@", [error localizedDescription]);
+            weakSelf.itemsCount = count;
+            completionHandler(count, error);
+        }];
     }];
 
     return self.itemsCount;

@@ -3,12 +3,14 @@ import XCTest
 
 class RemoteFeatureFlagTests: XCTestCase {
 
+    private var mockUserDefaults: InMemoryUserDefaults!
+
     override func setUp() {
-        UserDefaults.standard.removeObject(forKey: RemoteFeatureFlagStore.Constants.CachedFlagsKey)
-        UserDefaults.standard.removeObject(forKey: RemoteFeatureFlagStore.Constants.DeviceIdKey)
+        mockUserDefaults = InMemoryUserDefaults()
     }
 
     func testThatDeviceIdIsTheSameForEveryInstanceOfTheStore() {
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let mock = MockFeatureFlagRemote()
         var deviceId = ""
 
@@ -20,14 +22,14 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        RemoteFeatureFlagStore(remote: mock).update()
-        RemoteFeatureFlagStore(remote: mock).update()
+        store.updateIfNeeded(using: mock)
+        store.updateIfNeeded(using: mock)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     func testThatStoreReturnsCorrectCompileTimeDefaultForColdCache() {
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyDisabledLocallyEnabledFeature))
         XCTAssertTrue(store.value(for: MockFeatureFlag.remotelyUndefinedLocallyEnabledFeature))
@@ -37,16 +39,16 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatStoreDoesNotHaveValueForColdCache() {
-        let store = RemoteFeatureFlagStore()
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flag = FeatureFlag.allCases.first!
         XCTAssertFalse(store.hasValue(for: flag))
     }
 
     func testThatUpdateCachesNewFlags() {
         let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
-        let store = RemoteFeatureFlagStore(remote: mock)
-        store.update()
+        store.updateIfNeeded(using: mock)
 
         // All of the remotely defined values should be present
         XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))

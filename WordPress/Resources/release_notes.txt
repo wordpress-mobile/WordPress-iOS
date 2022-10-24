@@ -1,7 +1,7 @@
-You can now cancel a WordPress.com login while you’re already logged in to a self-hosted site—no more getting stuck on the login screen if you change your mind.
+Welcome to version 21! We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view.
 
-We also squashed several bugs in this latest update.
+We also fixed a handful of bugs.
 
-- Once upon a time, we fixed an issue where deleting one image in a Story Post draft would prevent the next image in the story from loading. And everyone lived happily ever after.
-- On iPad displays, the “Turn on notifications” button no longer sits overtop the instructions for turning on push notifications. The “No result” side menu text now fits on screen, too.
-- Content above the Powered by Jetpack banner now stays visible and responsive while you’re scrolling. Up, up, and away.
+- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
+- Cached notifications no longer appear on screen after you log out of your WordPress.com account.
+- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.

@@ -8,10 +8,6 @@ class ReaderCardService {
     private let followedInterestsService: ReaderFollowedInterestsService
     private let siteInfoService: ReaderSiteInfoService
 
-    private lazy var syncContext: NSManagedObjectContext = {
-        return coreDataStack.newDerivedContext()
-    }()
-
     /// An string used to retrieve the next page
     private var pageHandle: String?
 
@@ -47,17 +43,16 @@ class ReaderCardService {
 
                                 self.pageHandle = pageHandle
 
-                                self.syncContext.perform {
-
+                                self.coreDataStack.performAndSave { context in
                                     if isFirstPage {
                                         self.pageNumber = 1
-                                        self.removeAllCards()
+                                        self.removeAllCards(in: context)
                                     } else {
                                         self.pageNumber += 1
                                     }
 
                                     cards.enumerated().forEach { index, remoteCard in
-                                        let card = ReaderCard(context: self.syncContext, from: remoteCard)
+                                        let card = ReaderCard(context: context, from: remoteCard)
 
                                         // Assign each interest an endpoint
                                         card?
@@ -84,9 +79,7 @@ class ReaderCardService {
                                         // To keep the API order
                                         card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
                                     }
-                                }
-
-                                self.coreDataStack.save(self.syncContext) {
+                                } completion: {
                                     let hasMore = pageHandle != nil
                                     success(cards.count, hasMore)
                                 }
@@ -99,19 +92,20 @@ class ReaderCardService {
 
     /// Remove all cards and saves the context
     func clean() {
-        removeAllCards()
-        coreDataStack.save(syncContext)
+        coreDataStack.performAndSave { context in
+            self.removeAllCards(in: context)
+        }
     }
 
-    private func removeAllCards() {
+    private func removeAllCards(in context: NSManagedObjectContext) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderCard.classNameWithoutNamespaces())
         fetchRequest.returnsObjectsAsFaults = false
 
         do {
-            let results = try syncContext.fetch(fetchRequest)
+            let results = try context.fetch(fetchRequest)
             for object in results {
                 guard let objectData = object as? NSManagedObject else { continue }
-                syncContext.delete(objectData)
+                context.delete(objectData)
             }
         } catch let error {
             print("Clean card error:", error)
