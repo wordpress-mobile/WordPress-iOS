@@ -84,7 +84,7 @@ In order to login to WordPress.com with the app you need to create an account ov
 After you create an account you can create an application on the [WordPress.com applications manager](https://developer.wordpress.com/apps/).
 
 When creating your application, you should select "Native client" for the application type.
-The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields are required but not used for the mobile apps. Just use "**[https://localhost](https://localhost)**".
+The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields are required but not used for the mobile apps. Just use `https://localhost`.
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 
