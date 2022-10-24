@@ -25,19 +25,19 @@ class JetpackFeaturesRemovalCoordinator {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseNewUsers) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
             return .newUsers
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseFour) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
             return .four
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseThree) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree) {
             return .three
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseTwo) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo) {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseOne) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
             return .one
         }
 
@@ -49,13 +49,13 @@ class JetpackFeaturesRemovalCoordinator {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseNewUsers)
-            || featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseFour) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers)
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseThree)
-            || featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseTwo)
-            || featureFlagStore.value(for: FeatureFlag.jetpackBrandingPhaseOne) {
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree)
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo)
+            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
             return .one
         }
 
