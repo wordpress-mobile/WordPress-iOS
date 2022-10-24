@@ -80,11 +80,11 @@ extension Tracks {
 
         static func widgetUpdated(for key: String) -> ExtensionEvents {
             switch key {
-            case AppConfiguration.Widget.homeWidgetTodayProperties:
+            case AppConfiguration.Widget.Stats.todayProperties:
                 return .todayWidgetUpdated
-            case AppConfiguration.Widget.homeWidgetAllTimeProperties:
+            case AppConfiguration.Widget.Stats.allTimeProperties:
                 return .allTimeWidgetUpdated
-            case AppConfiguration.Widget.homeWidgetThisWeekProperties:
+            case AppConfiguration.Widget.Stats.thisWeekProperties:
                 return .thisWeekWidgetUpdated
             default:
                 return .noEvent

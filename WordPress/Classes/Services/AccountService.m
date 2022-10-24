@@ -417,9 +417,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
         // For the Today Extensions, if the user has set a non-primary site, use that.
         NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-        NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteIdKey];
-        NSString *todayExtensionBlogName = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteNameKey];
-        NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteUrlKey];
+        NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+        NSString *todayExtensionBlogName = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
+        NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
 
         Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.managedObjectContext];
         NSTimeZone *timeZone = [todayExtensionBlog timeZone];
@@ -433,7 +433,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
         dispatch_async(dispatch_get_main_queue(), ^{
             // set the default site ID for iOS 14 Stats Widgets
-            [sharedDefaults setObject:siteId forKey:AppConfigurationWidget.statsHomeWidgetsUserDefaultsSiteIdKey];
+            [sharedDefaults setObject:siteId forKey:AppConfigurationWidgetStats.userDefaultsSiteIdKey];
 
             TodayExtensionService *service = [TodayExtensionService new];
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID

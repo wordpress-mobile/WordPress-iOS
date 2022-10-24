@@ -17,7 +17,7 @@ struct WordPressHomeWidgetAllTime: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.homeWidgetAllTimeKind,
+            kind: AppConfiguration.Widget.Stats.allTimeKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetAllTimeData>(service: StatsWidgetsService(),
                                                               placeholderContent: placeholderContent,
@@ -26,8 +26,8 @@ struct WordPressHomeWidgetAllTime: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.homeWidgetAllTimeKind,
-                                                  widgetCountKey: AppConfiguration.Widget.homeWidgetAllTimeProperties)
+                                                  widgetKind: AppConfiguration.Widget.Stats.allTimeKind,
+                                                  widgetCountKey: AppConfiguration.Widget.Stats.allTimeProperties)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

@@ -7,5 +7,5 @@ struct HomeWidgetAllTimeData: HomeWidgetData {
     let timeZone: TimeZone
     let date: Date
     let stats: AllTimeWidgetStats
-    static let filename = AppConfiguration.Widget.homeWidgetAllTimeFilename
+    static let filename = AppConfiguration.Widget.Stats.allTimeFilename
 }

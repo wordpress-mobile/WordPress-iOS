@@ -6,22 +6,34 @@ import Foundation
 
     @objc(AppConfigurationWidget)
     class Widget: NSObject {
-        @objc static let statsTodayWidgetKeychainTokenKey = "OAuth2Token"
-        @objc static let statsTodayWidgetKeychainServiceName = "JetpackTodayWidget"
-        @objc static let statsTodayWidgetUserDefaultsSiteIdKey = "JetpackTodayWidgetSiteId"
-        @objc static let statsHomeWidgetsUserDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
-        @objc static let statsHomeWidgetsUserDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
-        @objc static let statsTodayWidgetUserDefaultsSiteNameKey = "JetpackTodayWidgetSiteName"
-        @objc static let statsTodayWidgetUserDefaultsSiteUrlKey = "JetpackTodayWidgetSiteUrl"
-        @objc static let statsTodayWidgetUserDefaultsSiteTimeZoneKey = "JetpackTodayWidgetTimeZone"
-        @objc static let homeWidgetTodayKind = "JetpackHomeWidgetToday"
-        @objc static let homeWidgetAllTimeKind = "JetpackHomeWidgetAllTime"
-        @objc static let homeWidgetThisWeekKind = "JetpackHomeWidgetThisWeek"
-        @objc static let homeWidgetTodayProperties = "JetpackHomeWidgetTodayProperties"
-        @objc static let homeWidgetAllTimeProperties = "JetpackHomeWidgetAllTimeProperties"
-        @objc static let homeWidgetThisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
-        @objc static let homeWidgetTodayFilename = "JetpackHomeWidgetTodayData.plist"
-        @objc static let homeWidgetAllTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
-        @objc static let homeWidgetThisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+        @objc(AppConfigurationWidgetStats)
+        class Stats: NSObject {
+            @objc static let keychainTokenKey = "OAuth2Token"
+            @objc static let keychainServiceName = "JetpackTodayWidget"
+            @objc static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
+            @objc static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
+            @objc static let todayKind = "JetpackHomeWidgetToday"
+            @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
+            @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"
+            @objc static let todayProperties = "JetpackHomeWidgetTodayProperties"
+            @objc static let allTimeProperties = "JetpackHomeWidgetAllTimeProperties"
+            @objc static let thisWeekProperties = "JetpackHomeWidgetThisWeekProperties"
+            @objc static let todayFilename = "JetpackHomeWidgetTodayData.plist"
+            @objc static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
+            @objc static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+        }
+
+
+        // iOS13 Stats Today Widgets
+        @objc(AppConfigurationWidgetStatsToday)
+        class StatsToday: NSObject {
+            @objc static let userDefaultsSiteIdKey = "JetpackTodayWidgetSiteId"
+            @objc static let userDefaultsSiteNameKey = "JetpackTodayWidgetSiteName"
+            @objc static let userDefaultsSiteUrlKey = "JetpackTodayWidgetSiteUrl"
+            @objc static let userDefaultsSiteTimeZoneKey = "JetpackTodayWidgetTimeZone"
+            @objc static let todayFilename = "JetpackTodayData.plist"
+            @objc static let thisWeekFilename = "JetpackThisWeekData.plist"
+            @objc static let allTimeFilename = "JetpackAllTimeData.plist"
+        }
     }
 }

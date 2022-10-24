@@ -17,7 +17,7 @@ struct WordPressHomeWidgetToday: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(
-            kind: AppConfiguration.Widget.homeWidgetTodayKind,
+            kind: AppConfiguration.Widget.Stats.todayKind,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(service: StatsWidgetsService(),
                                                             placeholderContent: placeholderContent,
@@ -26,8 +26,8 @@ struct WordPressHomeWidgetToday: Widget {
 
             defer {
                 tracks.trackWidgetUpdatedIfNeeded(entry: entry,
-                                                  widgetKind: AppConfiguration.Widget.homeWidgetTodayKind,
-                                                  widgetCountKey: AppConfiguration.Widget.homeWidgetTodayProperties)
+                                                  widgetKind: AppConfiguration.Widget.Stats.todayKind,
+                                                  widgetCountKey: AppConfiguration.Widget.Stats.todayProperties)
             }
 
             return StatsWidgetsView(timelineEntry: entry)

@@ -6,22 +6,33 @@ import Foundation
 
     @objc(AppConfigurationWidget)
     class Widget: NSObject {
-        @objc static let statsTodayWidgetKeychainTokenKey = "OAuth2Token"
-        @objc static let statsTodayWidgetKeychainServiceName = "TodayWidget"
-        @objc static let statsTodayWidgetUserDefaultsSiteIdKey = "WordPressTodayWidgetSiteId"
-        @objc static let statsHomeWidgetsUserDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
-        @objc static let statsHomeWidgetsUserDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
-        @objc static let statsTodayWidgetUserDefaultsSiteNameKey = "WordPressTodayWidgetSiteName"
-        @objc static let statsTodayWidgetUserDefaultsSiteUrlKey = "WordPressTodayWidgetSiteUrl"
-        @objc static let statsTodayWidgetUserDefaultsSiteTimeZoneKey = "WordPressTodayWidgetTimeZone"
-        @objc static let homeWidgetTodayKind = "WordPressHomeWidgetToday"
-        @objc static let homeWidgetAllTimeKind = "WordPressHomeWidgetAllTime"
-        @objc static let homeWidgetThisWeekKind = "WordPressHomeWidgetThisWeek"
-        @objc static let homeWidgetTodayProperties = "WordPressHomeWidgetTodayProperties"
-        @objc static let homeWidgetAllTimeProperties = "WordPressHomeWidgetAllTimeProperties"
-        @objc static let homeWidgetThisWeekProperties = "WordPressHomeWidgetThisWeekProperties"
-        @objc static let homeWidgetTodayFilename = "HomeWidgetTodayData.plist"
-        @objc static let homeWidgetAllTimeFilename = "HomeWidgetAllTimeData.plist"
-        @objc static let homeWidgetThisWeekFilename = "HomeWidgetThisWeekData.plist"
+        @objc(AppConfigurationWidgetStats)
+        class Stats: NSObject {
+            @objc static let keychainTokenKey = "OAuth2Token"
+            @objc static let keychainServiceName = "TodayWidget"
+            @objc static let userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
+            @objc static let userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
+            @objc static let todayKind = "WordPressHomeWidgetToday"
+            @objc static let allTimeKind = "WordPressHomeWidgetAllTime"
+            @objc static let thisWeekKind = "WordPressHomeWidgetThisWeek"
+            @objc static let todayProperties = "WordPressHomeWidgetTodayProperties"
+            @objc static let allTimeProperties = "WordPressHomeWidgetAllTimeProperties"
+            @objc static let thisWeekProperties = "WordPressHomeWidgetThisWeekProperties"
+            @objc static let todayFilename = "HomeWidgetTodayData.plist"
+            @objc static let allTimeFilename = "HomeWidgetAllTimeData.plist"
+            @objc static let thisWeekFilename = "HomeWidgetThisWeekData.plist"
+        }
+
+        // iOS13 Stats Today Widgets
+        @objc(AppConfigurationWidgetStatsToday)
+        class StatsToday: NSObject {
+            @objc static let userDefaultsSiteIdKey = "WordPressTodayWidgetSiteId"
+            @objc static let userDefaultsSiteNameKey = "WordPressTodayWidgetSiteName"
+            @objc static let userDefaultsSiteUrlKey = "WordPressTodayWidgetSiteUrl"
+            @objc static let userDefaultsSiteTimeZoneKey = "WordPressTodayWidgetTimeZone"
+            @objc static let todayFilename = "TodayData.plist"
+            @objc static let thisWeekFilename = "ThisWeekData.plist"
+            @objc static let allTimeFilename = "AllTimeData.plist"
+        }
     }
 }
