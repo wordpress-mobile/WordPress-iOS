@@ -16,7 +16,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -30,7 +30,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -44,7 +44,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: true)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -58,7 +58,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -72,7 +72,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -86,7 +86,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -100,7 +100,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -114,7 +114,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -128,7 +128,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -142,7 +142,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
@@ -158,7 +158,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
         let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
 
         // When
         let phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
@@ -174,7 +174,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         var flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -183,7 +183,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: true, phaseThree: false, phaseFour: false, phaseNewUsers: false)
         remote.flags = flags
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -192,7 +192,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: true, phaseFour: false, phaseNewUsers: false)
         remote.flags = flags
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -206,7 +206,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         var flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: true, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -215,7 +215,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: true)
         remote.flags = flags
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -229,7 +229,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         var flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: true, phaseNewUsers: false)
         let remote = MockFeatureFlagRemote(flags: flags)
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         var phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
@@ -238,7 +238,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         // When
         flags = generateFlags(phaseOne: true, phaseTwo: true, phaseThree: true, phaseFour: false, phaseNewUsers: true)
         remote.flags = flags
-        store.updateIfNeeded(using: remote)
+        store.update(using: remote)
         phase = JetpackFeaturesRemovalCoordinator.siteCreationPhase(featureFlagStore: store)
 
         // Then
