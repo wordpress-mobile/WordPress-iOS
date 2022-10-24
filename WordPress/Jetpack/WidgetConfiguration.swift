@@ -23,5 +23,6 @@ import Foundation
         @objc static let homeWidgetTodayFilename = "JetpackHomeWidgetTodayData.plist"
         @objc static let homeWidgetAllTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
         @objc static let homeWidgetThisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
+        @objc static let newValueOnlyInJetpack = "test"
     }
 }

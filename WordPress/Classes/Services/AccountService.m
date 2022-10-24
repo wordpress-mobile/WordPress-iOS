@@ -420,6 +420,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteIdKey];
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteNameKey];
         NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:AppConfigurationWidget.statsTodayWidgetUserDefaultsSiteUrlKey];
+        NSString *worksInJetpackButNotInWordPress = [sharedDefaults objectForKey:AppConfigurationWidget.newValueOnlyInJetpack];
 
         Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.managedObjectContext];
         NSTimeZone *timeZone = [todayExtensionBlog timeZone];
