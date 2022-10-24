@@ -45,7 +45,7 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatUpdateCachesNewFlags() {
-        let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
+        let mock = MockFeatureFlagRemote(mockFlags: MockFeatureFlag.remoteCases)
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
         store.updateIfNeeded(using: mock)
@@ -75,9 +75,14 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
     var flags: FeatureFlagList
     var deviceIdCallback: ((String) -> Void)?
 
-    init(flags: [MockFeatureFlag] = [], shouldSucceed: Bool = true) {
-        self.flags = flags
+    init(mockFlags: [MockFeatureFlag] = []) {
+        self.flags = mockFlags
             .compactMap { $0.toFeatureFlag }
+        super.init()
+    }
+
+    init(flags: [WordPressKit.FeatureFlag]) {
+        self.flags = flags
         super.init()
     }
 
