@@ -37,6 +37,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
+    case jetpackBrandingPhaseOne
+    case jetpackBrandingPhaseTwo
+    case jetpackBrandingPhaseThree
+    case jetpackBrandingPhaseFour
+    case jetpackBrandingPhaseNewUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -119,6 +124,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .newCoreDataContext:
             return true
+        case .jetpackBrandingPhaseOne:
+            return false
+        case .jetpackBrandingPhaseTwo:
+            return false
+        case .jetpackBrandingPhaseThree:
+            return false
+        case .jetpackBrandingPhaseFour:
+            return false
+        case .jetpackBrandingPhaseNewUsers:
+            return false
         }
     }
 
@@ -129,6 +144,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
+        case .jetpackBrandingPhaseOne:
+            return "jp_removal_one"
+        case .jetpackBrandingPhaseTwo:
+            return "jp_removal_two"
+        case .jetpackBrandingPhaseThree:
+            return "jp_removal_three"
+        case .jetpackBrandingPhaseFour:
+            return "jp_removal_four"
+        case .jetpackBrandingPhaseNewUsers:
+            return "jp_removal_new_users"
             default:
                 return nil
         }
@@ -219,6 +244,16 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
+        case .jetpackBrandingPhaseOne:
+            return "Jetpack Branding Phase One"
+        case .jetpackBrandingPhaseTwo:
+            return "Jetpack Branding Phase Two"
+        case .jetpackBrandingPhaseThree:
+            return "Jetpack Branding Phase Three"
+        case .jetpackBrandingPhaseFour:
+            return "Jetpack Branding Phase Four"
+        case .jetpackBrandingPhaseNewUsers:
+            return "Jetpack Branding Phase For New Users"
         }
     }
 
