@@ -1441,6 +1441,7 @@
 		803DE81F290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */; };
 		803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
 		803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
+		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -1590,7 +1591,6 @@
 		8096217328E55C9400940A5D /* AppExtensionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */; };
 		8096217428E55C9400940A5D /* ExtensionPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74402F2D2005344700A1D4A2 /* ExtensionPresentationAnimator.swift */; };
 		8096217828E55C9400940A5D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
-		8096217928E55C9400940A5D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 099D768127D14B8E00F77EDE /* InfoPlist.strings */; };
 		8096217A28E55C9400940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096217B28E55C9400940A5D /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		8096217C28E55C9400940A5D /* NoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B33C87202283860071E1E2 /* NoResults.storyboard */; };
@@ -6772,6 +6772,7 @@
 		803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinatorTests.swift; sourceTree = "<group>"; };
 		803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinator.swift; sourceTree = "<group>"; };
+		8058730C28F7B70B00340C11 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -12307,6 +12308,7 @@
 				8096218A28E55D2400940A5D /* Info-Alpha.plist */,
 				8096218928E55D2400940A5D /* Info-Internal.plist */,
 				8096218828E55D2400940A5D /* Info.plist */,
+				8058730D28F7B70B00340C11 /* InfoPlist.strings */,
 			);
 			path = JetpackDraftActionExtension;
 			sourceTree = "<group>";
@@ -18096,11 +18098,11 @@
 			files = (
 				8096219428E561A800940A5D /* AppImages.xcassets in Resources */,
 				8096217828E55C9400940A5D /* MainInterface.storyboard in Resources */,
-				8096217928E55C9400940A5D /* InfoPlist.strings in Resources */,
 				8096217A28E55C9400940A5D /* WordPressShare.js in Resources */,
 				8096217B28E55C9400940A5D /* ShareExtension.storyboard in Resources */,
 				8096217C28E55C9400940A5D /* NoResults.storyboard in Resources */,
 				8096217D28E55C9400940A5D /* AppImages.xcassets in Resources */,
+				8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */,
 				8096217E28E55C9400940A5D /* ColorPalette.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -24292,6 +24294,14 @@
 				24AD675025FC262F0056102C /* cy */,
 			);
 			name = Sites.intentdefinition;
+			sourceTree = "<group>";
+		};
+		8058730D28F7B70B00340C11 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8058730C28F7B70B00340C11 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		931DF4D818D09A2F00540BDD /* InfoPlist.strings */ = {
