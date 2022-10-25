@@ -201,8 +201,9 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self getAddressForLocation:location];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager
 {
+    CLAuthorizationStatus status = manager.authorizationStatus;
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         [self serviceFailed:[NSError errorWithDomain:LocationServiceErrorDomain code:LocationServiceErrorPermissionDenied userInfo:nil]];
     }
