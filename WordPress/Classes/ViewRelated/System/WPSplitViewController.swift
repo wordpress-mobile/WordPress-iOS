@@ -204,7 +204,7 @@ class WPSplitViewController: UISplitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if hasHorizontallyCompactView() && preferredDisplayMode == .primaryHidden {
+        if hasHorizontallyCompactView() && preferredDisplayMode == .secondaryOnly {
             setPrimaryViewControllerHidden(false, animated: false)
         }
     }
@@ -377,7 +377,7 @@ class WPSplitViewController: UISplitViewController {
         }
 
         let updateDisplayMode = {
-            self.preferredDisplayMode = (hidden) ? .primaryHidden : .oneBesideSecondary
+            self.preferredDisplayMode = (hidden) ? .secondaryOnly : .oneBesideSecondary
         }
 
         if animated {
