@@ -8,13 +8,7 @@ class WidgetStyles: NSObject {
     static let headlineFont = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
     static let footnoteNote = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
 
-    static var separatorColor: UIColor = {
-        if #available(iOS 13, *) {
-            return .separator
-        } else {
-            return .divider
-        }
-    }()
+    static var separatorColor: UIColor = .separator
 
     static var separatorVibrancyEffect: UIVibrancyEffect = {
         if #available(iOS 13, *) {

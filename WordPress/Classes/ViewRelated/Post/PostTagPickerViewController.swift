@@ -145,9 +145,7 @@ class PostTagPickerViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 13, *) {
-            textViewContainer.layer.borderColor = UIColor.divider.cgColor
-        }
+        textViewContainer.layer.borderColor = UIColor.divider.cgColor
     }
 
     @objc func doneButtonPressed() {

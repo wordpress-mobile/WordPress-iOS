@@ -36,13 +36,7 @@ class ReaderInterestsStyleGuide {
     }
 
     // MARK: - Next Button
-    public class var buttonContainerViewBackgroundColor: UIColor {
-        if #available(iOS 13, *) {
-            return .tertiarySystemBackground
-        }
-
-        return .white
-    }
+    public static var buttonContainerViewBackgroundColor: UIColor = .tertiarySystemBackground
 
     public class func applyNextButtonStyle(button: FancyButton) {
         let disabledBackgroundColor: UIColor

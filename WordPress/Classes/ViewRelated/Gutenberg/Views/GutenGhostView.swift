@@ -93,12 +93,7 @@ class GutenGhostView: UIView {
 }
 
 private extension UIColor {
-    static var ghostToolbarBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
-        }
-        return .clear
-    }
+    static var ghostToolbarBackground: UIColor = UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
 
     static var ghostBlockBackground: UIColor {
         return UIColor(light: .clear, dark: .systemGray5)
