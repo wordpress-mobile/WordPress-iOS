@@ -58,7 +58,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (BOOL)locationServicesDenied
 {
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    CLAuthorizationStatus status = self.locationManager.authorizationStatus;
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         return YES;
     }
