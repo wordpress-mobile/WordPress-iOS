@@ -23,10 +23,7 @@ class JetpackPrologueViewController: UIViewController {
     }()
 
     private lazy var jetpackAnimatedView: UIView = {
-        let jetpackAnimatedView = InfiniteScrollerView {
-            UIView.embedSwiftUIView(JetpackLandingScreenView())
-        }
-
+        let jetpackAnimatedView = InfiniteScrollerView { JetpackLandingScreenView() }
         jetpackAnimatedView.scrollerDelegate = self
         jetpackAnimatedView.translatesAutoresizingMaskIntoConstraints = false
         return jetpackAnimatedView
