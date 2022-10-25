@@ -101,7 +101,7 @@ class WPSplitViewController: UISplitViewController {
         super.viewDidLoad()
 
         delegate = self
-        preferredDisplayMode = .allVisible
+        preferredDisplayMode = .oneBesideSecondary
 
         extendedLayoutIncludesOpaqueBars = true
     }
@@ -377,7 +377,7 @@ class WPSplitViewController: UISplitViewController {
         }
 
         let updateDisplayMode = {
-            self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
+            self.preferredDisplayMode = (hidden) ? .primaryHidden : .oneBesideSecondary
         }
 
         if animated {
@@ -564,7 +564,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
 
         let hasFullscreenViewControllersInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count > 0
-        let isCurrentlyFullscreen = preferredDisplayMode != .allVisible
+        let isCurrentlyFullscreen = preferredDisplayMode != .oneBesideSecondary
 
         // Handle popping from fullscreen view controllers
         //
