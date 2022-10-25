@@ -178,7 +178,7 @@ class MeViewController: UITableViewController {
                                               loading: sharePresenter.isLoading))
 
                 rows.append(NavigationItemRow(title: RowTitles.about,
-                                              icon: UIImage.gridicon(.mySites),
+                                              icon: UIImage.gridicon(AppConfiguration.isJetpack ? .plans : .mySites),
                                               accessoryType: .disclosureIndicator,
                                               action: pushAbout(),
                                               accessibilityIdentifier: "About"))

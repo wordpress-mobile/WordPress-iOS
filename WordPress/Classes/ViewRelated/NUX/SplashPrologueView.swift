@@ -5,18 +5,16 @@ struct SplashPrologueView: View {
     var body: some View {
         ZStack {
             Color(SplashPrologueStyleGuide.backgroundColor)
-            HStack {
-                Spacer()
-                    .frame(minWidth: 0, maxWidth: .infinity)
+            GeometryReader { proxy in
                 Image("splashBrushStroke")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .padding(.trailing, 20)
+                    .scaledToFill()
+                    .frame(width: Constants.splashBrushWidth)
+                    .offset(x: (proxy.size.width - Constants.splashBrushWidth)/2)
+                    .offset(x: Constants.splashBrushOffset.x, y: Constants.splashBrushOffset.y)
                     .foregroundColor(Color(SplashPrologueStyleGuide.BrushStroke.color))
                     .accessibility(hidden: true)
             }
-
             VStack {
                 Image("splashLogo")
                     .resizable()
@@ -29,6 +27,12 @@ struct SplashPrologueView: View {
                     .foregroundColor(Color(SplashPrologueStyleGuide.Title.textColor))
             }
         }
+        .edgesIgnoringSafeArea(.all)
+    }
+
+    private struct Constants {
+        static let splashBrushWidth: CGFloat = 179.3
+        static let splashBrushOffset: CGPoint = .init(x: 98, y: -71)
     }
 }
 
