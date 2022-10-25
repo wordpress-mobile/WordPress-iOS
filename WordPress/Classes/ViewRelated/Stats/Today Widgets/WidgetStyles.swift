@@ -16,13 +16,16 @@ class WidgetStyles: NSObject {
         }
     }()
 
-    static var separatorVibrancyEffect: UIVibrancyEffect = {
-        if #available(iOS 13, *) {
-            return .widgetEffect(forVibrancyStyle: .separator)
-        } else {
-            return .widgetSecondary()
-        }
-    }()
+    // Note: Before supporting only iOS 14+, this used to be:
+    //
+    // - .widgetEffect(forVibrancyStyle: .separator) in iOS 13+
+    // - .widgetSecondary() in previous versions
+    //
+    // Hopefully this information is useful if the current implementation is not visually satisfying.
+    static var separatorVibrancyEffect = UIVibrancyEffect(
+        blurEffect: UIBlurEffect(style: .regular),
+        style: .separator
+    )
 
     static func configureSeparator(_ separator: UIView) {
         // Both colors are need for the vibrancy effect.
