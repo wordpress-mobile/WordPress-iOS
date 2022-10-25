@@ -39,6 +39,11 @@ class JetpackPrologueViewController: UIViewController {
         makeGradientLayer()
     }()
 
+    private lazy var logoWidthConstraint: NSLayoutConstraint = {
+        let width = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
+        return logoImageView.widthAnchor.constraint(equalToConstant: width)
+    }()
+
     private func makeGradientLayer() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
 
@@ -99,7 +104,7 @@ class JetpackPrologueViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
         // constraints
         NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 68),
+            logoWidthConstraint,
             logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 68)
@@ -129,9 +134,13 @@ class JetpackPrologueViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        guard FeatureFlag.newJetpackLandingScreen.enabled else {
+            return
+        }
 
-        guard FeatureFlag.newJetpackLandingScreen.enabled,
-        previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
+        logoWidthConstraint.constant = Constants.logoWidth(for: traitCollection.horizontalSizeClass)
+
+        guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else {
             updateLabel(for: traitCollection)
             return
         }
@@ -179,6 +188,10 @@ class JetpackPrologueViewController: UIViewController {
         static let defaultAngleDegrees: Double = 30.0
         /// Uniform multiplier used to tweak the rate generated from an angle
         static let angleRateMultiplier: CGFloat = 1.3
+        ///
+        static func logoWidth(for sizeClass: UIUserInterfaceSizeClass) -> CGFloat {
+            return sizeClass == .compact ? 68 : 78
+        }
     }
 }
 
