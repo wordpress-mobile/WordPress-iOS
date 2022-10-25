@@ -305,18 +305,6 @@ target 'JetpackDraftActionExtension' do
   wordpress_ui
 end
 
-## Today Widget
-## ============
-##
-target 'WordPressTodayWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
 ## All Time Widget
 ## ============
 ##

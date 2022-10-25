@@ -491,8 +491,6 @@
 	<array>
 		<string>Noticons.ttf</string>
 	</array>
-	<key>UIApplicationShortcutWidget</key>
-	<string>org.wordpress.alpha.WordPressTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

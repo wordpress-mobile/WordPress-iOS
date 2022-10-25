@@ -31,7 +31,6 @@ WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
   WordPressDraftAction
-  WordPressTodayWidget
   WordPressStatsWidgets
   WordPressNotificationServiceExtension
   WordPressNotificationContentExtension
