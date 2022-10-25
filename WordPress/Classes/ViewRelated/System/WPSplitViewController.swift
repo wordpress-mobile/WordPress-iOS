@@ -146,9 +146,7 @@ class WPSplitViewController: UISplitViewController {
         // This is to work around an apparent bug in iOS 13 where the detail view is assuming the system is in dark
         // mode when switching out of the app and then back in. Here we ensure the overridden user interface style
         // traits are replaced with the correct current traits before we use them.
-        if #available(iOS 12.0, *) {
-            traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
-        }
+        traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
 
         return UITraitCollection(traitsFrom: traits)
     }
