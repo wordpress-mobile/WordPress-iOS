@@ -61,7 +61,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         return item
     }()
 
-    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
+    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingDatePickerViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
