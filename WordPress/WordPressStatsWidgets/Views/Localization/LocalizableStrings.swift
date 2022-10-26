@@ -52,6 +52,18 @@ enum LocalizableStrings {
     static let unconfiguredViewThisWeekTitle = AppLocalizedString("widget.thisweek.unconfigured.view.title",
                                                                   value: "Log in to WordPress to see this week's stats.",
                                                                   comment: "Title of the unconfigured view in this week widget")
+
+    static let unconfiguredViewJetpackTodayTitle = AppLocalizedString("widget.jetpack.today.unconfigured.view.title",
+                                                                      value: "Log in to Jetpack to see today's stats.",
+                                                                      comment: "Title of the unconfigured view in today widget")
+
+    static let unconfiguredViewJetpackAllTimeTitle = AppLocalizedString("widget.jetpack.alltime.unconfigured.view.title",
+                                                                        value: "Log in to Jetpack to see all time stats.",
+                                                                        comment: "Title of the unconfigured view in all time widget")
+
+    static let unconfiguredViewJetpackThisWeekTitle = AppLocalizedString("widget.jetpack.thisweek.unconfigured.view.title",
+                                                                         value: "Log in to Jetpack to see this week's stats.",
+                                                                         comment: "Title of the unconfigured view in this week widget")
     // No data view
     static let noDataViewTitle = AppLocalizedString("widget.today.nodata.view.title",
                                                     value: "Unable to load site stats.",

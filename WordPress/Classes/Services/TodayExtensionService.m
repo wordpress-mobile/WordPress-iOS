@@ -19,22 +19,23 @@
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     
     // If the widget site has changed, clear the widgets saved data.
-    NSNumber *previousSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    NSNumber *previousSiteID = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
     if (siteID != previousSiteID) {
         [StatsDataHelper clearWidgetsData];
         [WPAnalytics track:WPAnalyticsStatWidgetActiveSiteChanged];
     }
 
     // Save the site information to shared user defaults for use in the today widgets.
-    [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults setObject:blogUrl forKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
+    [sharedDefaults setObject:timeZone.name forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteTimeZoneKey];
+    [sharedDefaults setObject:siteID forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    [sharedDefaults setObject:blogName forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
+    [sharedDefaults setObject:blogUrl forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
     
     NSError *error;
-    [KeychainUtils.shared storeUsername:WPStatsTodayWidgetKeychainTokenKey
+    
+    [KeychainUtils.shared storeUsername:AppConfigurationWidgetStats.keychainTokenKey
                                password:oauth2Token
-                            serviceName:WPStatsTodayWidgetKeychainServiceName
+                            serviceName:AppConfigurationWidgetStats.keychainServiceName
                             accessGroup:WPAppKeychainAccessGroup
                          updateExisting:YES
                                   error:&error];
@@ -47,13 +48,13 @@
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
 
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteTimeZoneKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
     
-    [KeychainUtils.shared deleteItemWithUsername:WPStatsTodayWidgetKeychainTokenKey
-                                     serviceName:WPStatsTodayWidgetKeychainServiceName
+    [KeychainUtils.shared deleteItemWithUsername:AppConfigurationWidgetStats.keychainTokenKey
+                                     serviceName:AppConfigurationWidgetStats.keychainServiceName
                                      accessGroup:WPAppKeychainAccessGroup
                                            error:nil];
 }
@@ -61,9 +62,9 @@
 - (BOOL)widgetIsConfigured
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-    NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [KeychainUtils.shared getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
-                                                             serviceName:WPStatsTodayWidgetKeychainServiceName
+    NSString *siteId = [sharedDefaults stringForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    NSString *oauth2Token = [KeychainUtils.shared getPasswordForUsername:AppConfigurationWidgetStats.keychainTokenKey
+                                                             serviceName:AppConfigurationWidgetStats.keychainServiceName
                                                              accessGroup:WPAppKeychainAccessGroup
                                                                    error:nil];
     

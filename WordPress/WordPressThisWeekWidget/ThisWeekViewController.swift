@@ -241,11 +241,11 @@ private extension ThisWeekViewController {
             return
         }
 
-        siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteUrl = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteUrlKey) ?? Constants.noDataLabel
+        siteID = sharedDefaults.object(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteIdKey) as? NSNumber
+        siteUrl = sharedDefaults.string(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteUrlKey) ?? Constants.noDataLabel
         oauthToken = fetchOAuthBearerToken()
 
-        if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
+        if let timeZoneName = sharedDefaults.string(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteTimeZoneKey) {
             timeZone = TimeZone(identifier: timeZoneName)
         }
 
@@ -253,7 +253,7 @@ private extension ThisWeekViewController {
     }
 
     func fetchOAuthBearerToken() -> String? {
-        let oauth2Token = try? KeychainUtils.shared.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey, serviceName: WPStatsTodayWidgetKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
+        let oauth2Token = try? KeychainUtils.shared.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey, serviceName: AppConfiguration.Widget.Stats.keychainServiceName, accessGroup: WPAppKeychainAccessGroup)
 
         return oauth2Token as String?
     }

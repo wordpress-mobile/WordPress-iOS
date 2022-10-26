@@ -80,11 +80,11 @@ extension Tracks {
 
         static func widgetUpdated(for key: String) -> ExtensionEvents {
             switch key {
-            case WPHomeWidgetTodayProperties:
+            case AppConfiguration.Widget.Stats.todayProperties:
                 return .todayWidgetUpdated
-            case WPHomeWidgetAllTimeProperties:
+            case AppConfiguration.Widget.Stats.allTimeProperties:
                 return .allTimeWidgetUpdated
-            case WPHomeWidgetThisWeekProperties:
+            case AppConfiguration.Widget.Stats.thisWeekProperties:
                 return .thisWeekWidgetUpdated
             default:
                 return .noEvent
