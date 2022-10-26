@@ -36,6 +36,49 @@
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Continue Button"/>
                 </button>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TTg-Z6-h4X" userLabel="Content Stack View">
+                    <rect key="frame" x="30" y="231.99999999999997" width="330" height="280.33333333333326"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUe-f2-zzc" userLabel="Icon Super View">
+                            <rect key="frame" x="0.0" y="0.0" width="330" height="65"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="overlay-stats-Icon" translatesAutoresizingMaskIntoConstraints="NO" id="Tal-Zu-gb4" userLabel="Icon Image View">
+                                    <rect key="frame" x="0.0" y="0.0" width="126" height="65"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="Tal-Zu-gb4" firstAttribute="top" secondItem="bUe-f2-zzc" secondAttribute="top" id="7H0-74-fSQ"/>
+                                <constraint firstItem="Tal-Zu-gb4" firstAttribute="leading" secondItem="bUe-f2-zzc" secondAttribute="leading" id="QQJ-dj-nsx"/>
+                                <constraint firstAttribute="height" constant="65" id="rkG-mx-sfc"/>
+                                <constraint firstAttribute="bottom" secondItem="Tal-Zu-gb4" secondAttribute="bottom" id="x21-GX-GmU"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EqD-nO-Q6T">
+                            <rect key="frame" x="0.0" y="95" width="330" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6H-KY-dMw">
+                            <rect key="frame" x="0.0" y="145.33333333333331" width="330" height="20.333333333333343"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Footnote Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1l4-qY-6ZA">
+                            <rect key="frame" x="0.0" y="195.66666666666669" width="330" height="20.333333333333343"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
+                            <rect key="frame" x="0.0" y="246.00000000000003" width="330" height="34.333333333333343"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Learn More Button"/>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -43,14 +86,18 @@
                 <constraint firstItem="hPW-8A-Di4" firstAttribute="top" secondItem="VGE-FS-gsd" secondAttribute="bottom" constant="8" id="0ZF-eU-dpd"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VGE-FS-gsd" secondAttribute="trailing" priority="750" constant="30" id="8s5-j2-NSZ"/>
                 <constraint firstItem="hPW-8A-Di4" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OMk-gu-N8Q"/>
+                <constraint firstItem="TTg-Z6-h4X" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-50" id="Ot3-4o-b4V"/>
                 <constraint firstItem="VGE-FS-gsd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="PHf-6B-tBW"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="VGE-FS-gsd" secondAttribute="bottom" constant="115" id="bZ7-wk-JZG"/>
+                <constraint firstItem="TTg-Z6-h4X" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="npF-Mb-xZV"/>
                 <constraint firstItem="VGE-FS-gsd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="750" constant="30" id="pr7-OX-3q3"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" constant="30" id="tOb-5o-rho"/>
             </constraints>
             <point key="canvasLocation" x="-5" y="21"/>
         </view>
     </objects>
     <resources>
+        <image name="overlay-stats-Icon" width="126" height="71.333335876464844"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
