@@ -59,6 +59,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupContent()
         setupColors()
         setupFonts()
+        setupButtonInsets()
     }
 
     // MARK: Helpers
@@ -109,6 +110,27 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     }
 
+    private func setupButtonInsets() {
+        if #available(iOS 15.0, *) {
+            // Continue Button
+            var continueButtonConfig: UIButton.Configuration = .plain()
+            continueButtonConfig.contentInsets = Constants.continueButtonContentInsets
+            continueButton.configuration = continueButtonConfig
+
+            // Learn More Button
+            var learnMoreButtonConfig: UIButton.Configuration = .plain()
+            learnMoreButtonConfig.contentInsets = Constants.learnMoreButtonContentInsets
+            learnMoreButton.configuration = learnMoreButtonConfig
+        } else {
+            // Continue Button
+            continueButton.contentEdgeInsets = Constants.continueButtonContentEdgeInsets
+
+            // Learn More Button
+            learnMoreButton.contentEdgeInsets = Constants.learnMoreButtonContentEdgeInsets
+            learnMoreButton.flipInsetsForRightToLeftLayoutDirection()
+        }
+    }
+
     // MARK: Actions
 
     @objc private func closeButtonPressed(sender: UIButton) {
@@ -125,5 +147,9 @@ private extension JetpackFullscreenOverlayViewController {
     enum Constants {
         static let closeButtonRadius: CGFloat = 30
         static let closeButtonSymbolSize: CGFloat = 16
+        static let continueButtonContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
+        static let continueButtonContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
+        static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
     }
 }

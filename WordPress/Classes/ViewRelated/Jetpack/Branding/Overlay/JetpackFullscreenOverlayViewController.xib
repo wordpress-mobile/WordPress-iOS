@@ -28,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TTg-Z6-h4X" userLabel="Content Stack View">
-                    <rect key="frame" x="30" y="235.99999999999997" width="333" height="280.33333333333326"/>
+                    <rect key="frame" x="30" y="215.99999999999997" width="333" height="320.33333333333326"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUe-f2-zzc" userLabel="Icon Super View">
                             <rect key="frame" x="0.0" y="0.0" width="333" height="65"/>
@@ -63,11 +63,22 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
-                            <rect key="frame" x="0.0" y="246.00000000000003" width="333" height="34.333333333333343"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Learn More Button"/>
-                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z9-x4-AgY" userLabel="Learn More Super View">
+                            <rect key="frame" x="0.0" y="246.00000000000003" width="333" height="74.333333333333343"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
+                                    <rect key="frame" x="0.0" y="0.0" width="165.33333333333334" height="74.333333333333329"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Learn More Button"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="n55-iX-u43" firstAttribute="leading" secondItem="0z9-x4-AgY" secondAttribute="leading" id="Nmm-lY-pyp"/>
+                                <constraint firstAttribute="bottom" secondItem="n55-iX-u43" secondAttribute="bottom" id="YeY-ye-Dpy"/>
+                                <constraint firstItem="n55-iX-u43" firstAttribute="top" secondItem="0z9-x4-AgY" secondAttribute="top" id="smu-t8-a6s"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="uu4-8l-rc8"/>
