@@ -18,8 +18,35 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGE-FS-gsd">
+                    <rect key="frame" x="30" y="645" width="330" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="93l-ng-h5B"/>
+                        <constraint firstAttribute="height" constant="50" id="DD0-7r-C5O"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Switch Button"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
+                    <rect key="frame" x="121.33333333333333" y="703" width="147.66666666666669" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cH2-GJ-f7z"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Continue Button"/>
+                </button>
+            </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="hPW-8A-Di4" firstAttribute="top" secondItem="VGE-FS-gsd" secondAttribute="bottom" constant="8" id="0ZF-eU-dpd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VGE-FS-gsd" secondAttribute="trailing" priority="750" constant="30" id="8s5-j2-NSZ"/>
+                <constraint firstItem="hPW-8A-Di4" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OMk-gu-N8Q"/>
+                <constraint firstItem="VGE-FS-gsd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="PHf-6B-tBW"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="VGE-FS-gsd" secondAttribute="bottom" constant="115" id="bZ7-wk-JZG"/>
+                <constraint firstItem="VGE-FS-gsd" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="750" constant="30" id="pr7-OX-3q3"/>
+            </constraints>
             <point key="canvasLocation" x="-5" y="21"/>
         </view>
     </objects>
