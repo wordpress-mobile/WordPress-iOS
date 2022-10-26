@@ -33,6 +33,25 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        applyStyles()
+        setupContent()
+    }
+
+    // MARK: Helpers
+
+    private func applyStyles() {
+        iconImageView.clipsToBounds = false
+    }
+
+    private func setupContent() {
+        iconImageView.image = config.icon
+        titleLabel.text = config.title
+        subtitleLabel.text = config.subtitle
+        footnoteLabel.text = config.footnote
+        switchButton.setTitle(config.switchButtonText, for: .normal)
+        continueButton.setTitle(config.continueButtonText, for: .normal)
+        footnoteLabel.isHidden = config.footnoteIsHidden
+        learnMoreButton.isHidden = config.learnMoreButtonIsHidden
+        continueButton.isHidden = config.continueButtonIsHidden
     }
 }
