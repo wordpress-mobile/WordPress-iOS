@@ -4,4 +4,4 @@ We also fixed a handful of bugs.
 
 - Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
 - Cached notifications no longer appear on screen after you log out of your WordPress.com account.
-- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.
+- We investigated the case of the vanishing navigation bar during the log-in process. It now stays visible from start to finish. Mystery solved.

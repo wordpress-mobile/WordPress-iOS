@@ -1,7 +1,0 @@
-Vous pouvez désormais annuler une connexion WordPress.com tout en étant déjà connecté à un site auto-hébergé. Vous ne resterez ainsi plus bloqué à l’écran de connexion si vous changez d’avis.
-
-Nous avons également éliminé plusieurs bogues dans cette toute dernière mise à jour.
-
-- Il nous est arrivé de corriger une erreur qui, lors de la suppression d’une image dans un brouillon de publication de story, empêchait le chargement de l’image suivante de la story. Et tout s’est bien passé par la suite.
-- Sur les écrans d’iPad, le bouton « Activer les notifications » ne se situe désormais plus au-dessus des instructions indiquant comment activer les notifications push. Le texte du menu latéral « Aucun résultat » s’affiche lui aussi désormais à l’écran.
-- Le contenu figurant au-dessus de la bannière « Optimisé par Jetpack » reste désormais visible et réactif pendant le défilement. Toujours plus haut, toujours plus loin
