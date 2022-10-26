@@ -1453,6 +1453,8 @@
 		8091019429078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */; };
 		8091019529078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */; };
 		8091019629078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */; };
+		809101982908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809101972908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift */; };
+		809101992908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809101972908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift */; };
 		809620D228E540D700940A5D /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		809620D328E540D700940A5D /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
@@ -6781,6 +6783,7 @@
 		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
 		8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullscreenOverlayViewController.swift; sourceTree = "<group>"; };
 		8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackFullscreenOverlayViewController.xib; sourceTree = "<group>"; };
+		809101972908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullscreenOverlayConfig.swift; sourceTree = "<group>"; };
 		8096212328E540D700940A5D /* JetpackShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8096212928E553A500940A5D /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		8096212A28E553A500940A5D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -10529,6 +10532,7 @@
 				3F4370402893207C00475B6E /* JetpackOverlayView.swift */,
 				8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */,
 				8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */,
+				809101972908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -21186,6 +21190,7 @@
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				469CE06D24BCED75003BDC8B /* CategorySectionTableViewCell.swift in Sources */,
+				809101982908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift in Sources */,
 				9A034CEB237DB8660047B41B /* StatsForegroundObservable.swift in Sources */,
 				8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
@@ -22643,6 +22648,7 @@
 				FABB219A2602FC2C00C8785C /* EventLoggingDataProvider.swift in Sources */,
 				FABB219B2602FC2C00C8785C /* PageListSectionHeaderView.swift in Sources */,
 				FABB219C2602FC2C00C8785C /* InviteLinks+CoreDataClass.swift in Sources */,
+				809101992908DE8500FCB4EA /* JetpackFullscreenOverlayConfig.swift in Sources */,
 				FABB219D2602FC2C00C8785C /* Page+CoreDataProperties.swift in Sources */,
 				FABB219E2602FC2C00C8785C /* FollowersStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB219F2602FC2C00C8785C /* RegisterDomainSectionHeaderView.swift in Sources */,
