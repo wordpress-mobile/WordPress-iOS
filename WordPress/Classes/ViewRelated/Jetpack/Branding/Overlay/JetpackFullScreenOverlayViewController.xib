@@ -11,6 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackFullScreenOverlayViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="contentStackView" destination="TTg-Z6-h4X" id="rbe-WF-3kb"/>
+                <outlet property="continueButton" destination="hPW-8A-Di4" id="fym-yu-QBz"/>
+                <outlet property="footnoteLabel" destination="1l4-qY-6ZA" id="Szg-6d-q2E"/>
+                <outlet property="iconImageView" destination="Tal-Zu-gb4" id="ioK-1F-OKK"/>
+                <outlet property="learnMoreButton" destination="n55-iX-u43" id="xmI-UK-MhK"/>
+                <outlet property="subtitleLabel" destination="n6H-KY-dMw" id="mA3-01-Yg4"/>
+                <outlet property="switchButton" destination="VGE-FS-gsd" id="FEz-5f-kSS"/>
+                <outlet property="titleLabel" destination="n6H-KY-dMw" id="Yo5-oU-Z4A"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,23 +27,6 @@
             <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGE-FS-gsd">
-                    <rect key="frame" x="30" y="645" width="330" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="93l-ng-h5B"/>
-                        <constraint firstAttribute="height" constant="50" id="DD0-7r-C5O"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Switch Button"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
-                    <rect key="frame" x="121.33333333333333" y="703" width="147.66666666666669" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="cH2-GJ-f7z"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Continue Button"/>
-                </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TTg-Z6-h4X" userLabel="Content Stack View">
                     <rect key="frame" x="30" y="231.99999999999997" width="330" height="280.33333333333326"/>
                     <subviews>
@@ -72,13 +63,30 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
                             <rect key="frame" x="0.0" y="246.00000000000003" width="330" height="34.333333333333343"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Learn More Button"/>
                         </button>
                     </subviews>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGE-FS-gsd">
+                    <rect key="frame" x="30" y="645" width="330" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="93l-ng-h5B"/>
+                        <constraint firstAttribute="height" constant="50" id="DD0-7r-C5O"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Switch Button"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
+                    <rect key="frame" x="121.33333333333333" y="703" width="147.66666666666669" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cH2-GJ-f7z"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Continue Button"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
