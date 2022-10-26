@@ -3,10 +3,6 @@ import Foundation
 extension ValueTransformer {
     @objc
     static func registerCustomTransformers() {
-        guard #available(iOS 12.0, *) else {
-            return
-        }
-
         CoordinateValueTransformer.register()
         NSErrorValueTransformer.register()
         SetValueTransformer.register()
