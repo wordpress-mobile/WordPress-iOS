@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-09-06 21:47:52+0000 */
+/* Translation-Revision-Date: 2022-10-20 10:58:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: en_GB */
@@ -149,8 +149,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ was reconnected.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -730,6 +729,9 @@ translators: Block name. %s: The localized block name */
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt Text";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
@@ -1729,9 +1731,6 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Comments";
-
-/* Insights 'Comments Total' header */
-"Comments Total" = "Comments Total";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "Comments are closed";
@@ -3328,9 +3327,6 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Followers";
 
-/* Insights 'Followers Total' header */
-"Followers Total" = "Followers Total";
-
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4060,7 +4056,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Sharing section in post Settings. Should be the same as WP core. */
 "Jetpack Social" = "Jetpack Social";
 
-/* Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social Connections";
 
 /* Message to show when Publicize connection synchronization failed */
@@ -4234,9 +4231,6 @@ translators: Block name. %s: The localized block name */
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
 
-/* Insights 'Likes Total' header */
-"Likes Total" = "Likes Total";
-
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "Likes on my comments";
 
@@ -4270,6 +4264,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link name field placeholder */
 "Link Name" = "Link Name";
+
+/* No comment provided by engineer. */
+"Link Rel" = "Link Rel";
 
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Link Settings";
@@ -4732,6 +4729,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -5992,9 +5990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text for privacy settings: Public */
 "Public" = "Public";
 
-/* Insights 'Publicize' header */
-"Publicize" = "Publicise";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6456,6 +6451,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS Sent";
 
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "STATUS";
+
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
 
@@ -6904,6 +6902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Share WordPress with a friend";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "Share comment";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Share information with our analytics tool about your use of services while logged in to your WordPress.com account.";
@@ -7494,6 +7495,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tap here to show help";
 
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Tap to add new stats cards.";
+
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tap to cancel uploading.";
 
@@ -7551,6 +7555,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "Tap to view media in full screen";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Tap to view more details.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "Tap to view more stats for this week";
@@ -8142,13 +8149,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "Total";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "Total Comments";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Total Email Followers: %@";
 
-/* 'This Year' label for total number of likes. */
+/* Insights 'Total Followers' header */
+"Total Followers" = "Total Followers";
+
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "Total Likes";
 
 /* 'This Year' label for the total number of posts. */
@@ -9880,6 +9892,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "To add photos or videos to your posts.";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organisation, even if they received the link from somebody else, so make sure that you share it with trusted people.";
 
@@ -9937,9 +9955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post a photo prompt for the jetpack prologue */
 "jetpack.prologue.prompt.postPhoto" = "Post a photo";
 
-/* Read an article prompt for the jetpack prologue */
-"jetpack.prologue.prompt.readArticle" = "Read an article";
-
 /* Respond to comments prompt for the jetpack prologue */
 "jetpack.prologue.prompt.respondComments" = "Respond to comments";
 
@@ -9949,8 +9964,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search for plugins prompt for the jetpack prologue */
 "jetpack.prologue.prompt.searchPlugins" = "Search for plugins";
 
-/* Search for posts or sites prompt for the jetpack prologue */
-"jetpack.prologue.prompt.searchPosts" = "Search for posts or sites";
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "Update a plugin";
 
 /* Watch your stats prompt for the jetpack prologue */
 "jetpack.prologue.prompt.watchStats" = "Watch your stats";

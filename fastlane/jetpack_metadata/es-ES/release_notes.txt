@@ -1,7 +1,0 @@
-Ahora puedes cancelar un acceso a WordPress.com cuando ya hayas accedido a un sitio autoalojado, así ya no te atascarás en la pantalla de acceso si cambias de opinión.
-
-La aplicación de Jetpack puede ejecutar resúmenes semanales en segundo plano mientras usas otras aplicaciones. ¡Hasta el infinito!
-
-En las pantallas de iPad, el botón “Activar notificaciones” ya no se solapa con las instrucciones para activar las notificaciones push. Además, el texto del menú lateral “No hay resultados” ahora cabe en la pantalla.
-
-Érase una vez un problema por el que, al eliminar una imagen del borrador de una entrada de historia, la siguiente imagen de la historia no se cargaba. Por suerte, pudimos solucionarlo y todos fueron felices para siempre.

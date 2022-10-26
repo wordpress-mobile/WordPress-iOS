@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-06 17:54:07+0000 */
+/* Translation-Revision-Date: 2022-10-21 08:02:49+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -149,8 +149,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@에 다시 연결되었습니다.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@(%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -1732,9 +1731,6 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "댓글";
-
-/* Insights 'Comments Total' header */
-"Comments Total" = "전체 댓글";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "댓글이 닫혔습니다.";
@@ -3331,9 +3327,6 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "팔로워";
 
-/* Insights 'Followers Total' header */
-"Followers Total" = "전체 팔로워";
-
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4063,7 +4056,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Sharing section in post Settings. Should be the same as WP core. */
 "Jetpack Social" = "젯팩 소셜";
 
-/* Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "젯팩 소셜 연결";
 
 /* Message to show when Publicize connection synchronization failed */
@@ -4236,9 +4230,6 @@ translators: Block name. %s: The localized block name */
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "좋아요";
-
-/* Insights 'Likes Total' header */
-"Likes Total" = "전체 좋아요";
 
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "내 댓글의 좋아요";
@@ -4738,6 +4729,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -5998,9 +5990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text for privacy settings: Public */
 "Public" = "공개";
 
-/* Insights 'Publicize' header */
-"Publicize" = "배포 기능";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6462,6 +6451,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS 전송됨";
 
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "상태";
+
 /* Button label to open web page in Safari */
 "Safari" = "사파리";
 
@@ -6910,6 +6902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "친구와 WordPress 공유";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "댓글 공유";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "워드프레스닷컴 계정에 로그인되어 있는 동안 이용하는 서비스에 대한 정보를 워드프레스의 분석 도구와 공유합니다.";
@@ -8154,13 +8149,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "총";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "전체 댓글";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "총 이메일 팔로워: %@";
 
-/* 'This Year' label for total number of likes. */
+/* Insights 'Total Followers' header */
+"Total Followers" = "총 팔로워 수";
+
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "총 좋아요 클릭 수";
 
 /* 'This Year' label for the total number of posts. */
@@ -9892,6 +9892,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "글에 사진이나 비디오를 추가";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@(%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "이 링크를 활용하면 일일이 한 명씩 초대하지 않아도 여러 팀원이 팀에 참여할 수 있게 됩니다. 이 URL을 방문하는 사람은 누구나 조직에 가입할 수 있습니다. 다른 사람을 통해서 이 링크를 전달받은 사람도 가입할 수 있기 때문에 신뢰할 수 있는 사람에게만 공유하세요.";
 
@@ -9949,9 +9955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post a photo prompt for the jetpack prologue */
 "jetpack.prologue.prompt.postPhoto" = "사진 게시";
 
-/* Read an article prompt for the jetpack prologue */
-"jetpack.prologue.prompt.readArticle" = "글 읽기";
-
 /* Respond to comments prompt for the jetpack prologue */
 "jetpack.prologue.prompt.respondComments" = "댓글 응답";
 
@@ -9961,8 +9964,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search for plugins prompt for the jetpack prologue */
 "jetpack.prologue.prompt.searchPlugins" = "플러그인 검색";
 
-/* Search for posts or sites prompt for the jetpack prologue */
-"jetpack.prologue.prompt.searchPosts" = "글 또는 사이트 검색";
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "플러그인 업데이트";
 
 /* Watch your stats prompt for the jetpack prologue */
 "jetpack.prologue.prompt.watchStats" = "별 보기";

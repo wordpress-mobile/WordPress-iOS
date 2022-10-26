@@ -1,7 +1,9 @@
-Ora puoi annullare un accesso a WordPress.com mentre sei già connesso a un sito ospitato personalmente, senza rimanere più bloccato nella schermata di accesso se cambi idea.
+Benvenuti alla versione 21! Per l'occasione, abbiamo aggiunto estensioni che ti consentono di salvare i contenuti come bozza e di condividerli su Jetpack utilizzando i menu integrati del tuo dispositivo. Riceverai anche notifiche push più dettagliate sul tuo dispositivo.
 
-L'app Jetpack può eseguire raccolte settimanali in background mentre utilizzi altre app. Spicchiamo il volo.
+Abbiamo aggiornato la schermata di avvio dell'app con un design semplice ed elegante e apportato alcuni aggiornamenti di design intuitivi alla visualizzazione Dettagli commento. Puoi anche cambiare l'icona dell'app Jetpack utilizzando una gamma di opzioni colorate nel menu Impostazioni app.
 
-Sui display dell'iPad, il pulsante "Attiva notifiche" non si trova più sopra le istruzioni per attivare le notifiche push. Anche il testo del menu laterale "Nessun risultato" ora si adatta allo schermo.
+Infine, abbiamo corretto una serie di bug.
 
-Tanto tempo fa, abbiamo risolto un problema per cui l'eliminazione di un'immagine in una bozza dell'articolo Storia impediva il caricamento dell'immagine successiva nella storia. Poi, vissero tutti felici e contenti.
+- Il testo del blog non verrà visualizzato quando stai lavorando a un articolo o a una pagina in modalità orizzontale, ma solo verticale. Niente più sovrapposizioni di tastiere.
+- Le notifiche memorizzate nella cache non vengono più visualizzate sullo schermo dopo la disconnessione dall'ccount WordPress.com.
+- Abbiamo esaminato il caso della barra di navigazione che scompare durante il processo di accesso. Ora resta visibile dall'inizio alla fine. Mistero risolto.
