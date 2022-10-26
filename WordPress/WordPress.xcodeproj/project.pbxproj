@@ -1449,6 +1449,10 @@
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		808C578F27C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
 		808C579027C7FB1A0099A92C /* ButtonScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */; };
+		8091019329078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091019129078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift */; };
+		8091019429078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091019129078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift */; };
+		8091019529078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8091019229078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib */; };
+		8091019629078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8091019229078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib */; };
 		809620D228E540D700940A5D /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		809620D328E540D700940A5D /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		809620D428E540D700940A5D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
@@ -6775,6 +6779,8 @@
 		8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryUserDefaults.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
 		808C578E27C7FB1A0099A92C /* ButtonScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonScrollView.swift; sourceTree = "<group>"; };
+		8091019129078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullScreenOverlayViewController.swift; sourceTree = "<group>"; };
+		8091019229078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackFullScreenOverlayViewController.xib; sourceTree = "<group>"; };
 		8096212328E540D700940A5D /* JetpackShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8096212928E553A500940A5D /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		8096212A28E553A500940A5D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -10521,6 +10527,8 @@
 			children = (
 				3F43703E2893201400475B6E /* JetpackOverlayViewController.swift */,
 				3F4370402893207C00475B6E /* JetpackOverlayView.swift */,
+				8091019129078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift */,
+				8091019229078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -17810,6 +17818,7 @@
 				467D3E0C25E4436D00EB9CB0 /* SitePromptView.xib in Resources */,
 				17222D8F261DDDF90047B163 /* blue-classic-icon-app-60x60@3x.png in Resources */,
 				746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */,
+				8091019529078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib in Resources */,
 				F5A34D1225DF2F7F00C9654B /* Noticons.ttf in Resources */,
 				B51AD77B2056C31100A6C545 /* LoginEpilogue.storyboard in Resources */,
 				D82253E6219956540014D0E2 /* AddressCell.xib in Resources */,
@@ -18404,6 +18413,7 @@
 				FABB20212602FC2C00C8785C /* ReaderDetailToolbar.xib in Resources */,
 				FABB20222602FC2C00C8785C /* RewindStatusTableViewCell.xib in Resources */,
 				FABB20232602FC2C00C8785C /* PageListSectionHeaderView.xib in Resources */,
+				8091019629078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.xib in Resources */,
 				98DCF4A8275945E00008630F /* ReaderDetailNoCommentCell.xib in Resources */,
 				FABB20242602FC2C00C8785C /* JetpackScanThreatDetailsViewController.xib in Resources */,
 				F41E4E9F28F20AB8001880C6 /* white-on-celadon-icon-app-76@2x.png in Resources */,
@@ -19716,6 +19726,7 @@
 				C7AFF874283C0ADC000E01DF /* UIApplication+Helpers.swift in Sources */,
 				D853723A21952DAF0076F461 /* WebAddressStep.swift in Sources */,
 				B5F67AC71DB7D81300482C62 /* NotificationSyncMediator.swift in Sources */,
+				8091019329078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift in Sources */,
 				FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */,
 				9874767321963D330080967F /* SiteStatsInformation.swift in Sources */,
 				738B9A5821B85CF20005062B /* TitleSubtitleHeader.swift in Sources */,
@@ -23254,6 +23265,7 @@
 				FABB238E2602FC2C00C8785C /* NotificationSettingsService.swift in Sources */,
 				FABB238F2602FC2C00C8785C /* WPButtonForNavigationBar.m in Sources */,
 				FABB23902602FC2C00C8785C /* WidgetDifferenceCell.swift in Sources */,
+				8091019429078CFE00FCB4EA /* JetpackFullScreenOverlayViewController.swift in Sources */,
 				FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FABB23912602FC2C00C8785C /* WidgetTwoColumnCell.swift in Sources */,
 				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,
