@@ -992,6 +992,8 @@
 		46F584B82624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */; };
 		46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F584B72624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift */; };
 		46F58501262605930010A723 /* BlockEditorSettingsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F58500262605930010A723 /* BlockEditorSettingsServiceTests.swift */; };
+		4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
+		4A072CD329093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
 		4A17C1A4281A823E0001FFE5 /* NSManagedObject+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */; };
 		4A2172F828EAACFF0006F4F1 /* BlogQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */; };
 		4A2172F928EAACFF0006F4F1 /* BlogQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */; };
@@ -6324,6 +6326,7 @@
 		46F58500262605930010A723 /* BlockEditorSettingsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockEditorSettingsServiceTests.swift; sourceTree = "<group>"; };
 		46F84612185A8B7E009D0DA5 /* PostContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentProvider.h; sourceTree = "<group>"; };
 		49E3445F1B568603958DA79D /* Pods-JetpackNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackNotificationServiceExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackNotificationServiceExtension/Pods-JetpackNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		4A072CD129093704006235BE /* AsyncBlockOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperation.swift; sourceTree = "<group>"; };
 		4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Fixture.swift"; sourceTree = "<group>"; };
 		4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQuery.swift; sourceTree = "<group>"; };
 		4A2172FD28F688890006F4F1 /* Blog+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Media.swift"; sourceTree = "<group>"; };
@@ -13802,6 +13805,7 @@
 			isa = PBXGroup;
 			children = (
 				9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */,
+				4A072CD129093704006235BE /* AsyncBlockOperation.swift */,
 				9AA0ADB2235F11DC0027AB5D /* StatsPeriodAsyncOperation.swift */,
 			);
 			path = Operation;
@@ -19983,6 +19987,7 @@
 				577C2AB422943FEC00AD1F03 /* PostCompactCell.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				E1222B631F877FD700D23173 /* WebProgressView.swift in Sources */,
+				4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */,
 				E185042F1EE6ABD9005C234C /* Restorer.swift in Sources */,
 				02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */,
 				984B138E21F65F870004B6A2 /* SiteStatsPeriodTableViewController.swift in Sources */,
@@ -23785,6 +23790,7 @@
 				FABB25422602FC2C00C8785C /* AnimatedImageCache.swift in Sources */,
 				FABB25432602FC2C00C8785C /* PostListFilterSettings.swift in Sources */,
 				FABB25442602FC2C00C8785C /* FooterTextContent.swift in Sources */,
+				4A072CD329093704006235BE /* AsyncBlockOperation.swift in Sources */,
 				FABB25452602FC2C00C8785C /* Blog+Interface.swift in Sources */,
 				FABB25462602FC2C00C8785C /* PostFeaturedImageCell.m in Sources */,
 				FABB25472602FC2C00C8785C /* WPException.m in Sources */,
