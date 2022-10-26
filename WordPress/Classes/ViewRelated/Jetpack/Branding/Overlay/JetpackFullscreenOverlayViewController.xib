@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackFullScreenOverlayViewController" customModule="WordPress" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackFullscreenOverlayViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="contentStackView" destination="TTg-Z6-h4X" id="rbe-WF-3kb"/>
                 <outlet property="continueButton" destination="hPW-8A-Di4" id="fym-yu-QBz"/>

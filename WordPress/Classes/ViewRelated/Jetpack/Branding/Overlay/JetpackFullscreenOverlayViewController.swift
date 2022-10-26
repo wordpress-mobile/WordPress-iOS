@@ -1,6 +1,6 @@
 import UIKit
 
-class JetpackFullScreenOverlayViewController: UIViewController {
+class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Outlets
 
