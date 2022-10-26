@@ -42,7 +42,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     self?.tracker.buttonPressed(.twitter)
                     self?.webViewPresenter.present(for: Links.twitter, context: context)
                 }),
-                AboutItem(title: TextContent.blog, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
+                AboutItem(title: AppConstants.AboutScreen.blogName, subtitle: AppConstants.productBlogDisplayURL, cellStyle: .value1, action: { [weak self] context in
                     self?.tracker.buttonPressed(.blog)
                     self?.webViewPresenter.present(for: Links.blog, context: context)
                 })
@@ -53,20 +53,21 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     context.showSubmenu(title: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
+            AppConfiguration.isJetpack ?
             [
                 AboutItem(title: TextContent.automatticFamily, accessoryType: .disclosureIndicator, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
                     self?.webViewPresenter.present(for: Links.automattic, context: context)
                 }),
                 AboutItem(title: "", cellStyle: .appLogos, accessoryType: .none)
-            ],
+            ] : nil,
             [
-                AboutItem(title: TextContent.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
+                AboutItem(title: AppConstants.AboutScreen.workWithUs, subtitle: TextContent.workWithUsSubtitle, cellStyle: .subtitle, accessoryType: .disclosureIndicator, action: { [weak self] context in
                     self?.tracker.buttonPressed(.workWithUs)
                     self?.webViewPresenter.present(for: Links.workWithUs, context: context)
                 }),
             ]
-        ]
+        ].compactMap { $0 }
     }()
 
     func dismissScreen(_ actionContext: AboutItemActionContext) {
@@ -89,17 +90,15 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
         static let rateUs             = NSLocalizedString("Rate Us", comment: "Title for button allowing users to rate the app in the App Store")
         static let share              = NSLocalizedString("Share with Friends", comment: "Title for button allowing users to share information about the app with friends, such as via Messages")
         static let twitter            = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
-        static let blog               = NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress product blog")
         static let legalAndMore       = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
         static let automatticFamily   = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
-        static let workWithUs         = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
-        static let workWithUsSubtitle = NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
+        static var workWithUsSubtitle = AppConfiguration.isJetpack ? NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world") : nil
     }
 
     private enum Links {
         static let twitter    = URL(string: AppConstants.productTwitterURL)!
         static let blog       = URL(string: AppConstants.productBlogURL)!
-        static let workWithUs = URL(string: "https://automattic.com/work-with-us")!
+        static let workWithUs = URL(string: AppConstants.AboutScreen.workWithUsURL)!
         static let automattic = URL(string: "https://automattic.com")!
     }
 }

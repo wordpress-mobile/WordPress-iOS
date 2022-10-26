@@ -168,14 +168,6 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
 - (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
                  preferredSize:(CGSize)preferredSize
                     completion:(nonnull void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion;
-/**
- *  Get the number of items in a blog media library that are of a certain type.
- *
- *  @param blog from what blog to count the media items.
- *  @param mediaTypes set of media type values to be considered in the counting.
- */
-- (NSInteger)getMediaLibraryCountForBlog:(nonnull Blog *)blog
-                           forMediaTypes:(nonnull NSSet *)mediaTypes;
 
 - (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
                             forMediaTypes:(nonnull NSSet *)mediaTypes

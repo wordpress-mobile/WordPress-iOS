@@ -103,13 +103,10 @@ extension SearchableActivityConvertable where Self: UIViewController {
 
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = false
+        activity.isEligibleForPrediction = true
 
-        if #available(iOS 12.0, *) {
-            activity.isEligibleForPrediction = true
-
-            if let wpActivityType = WPActivityType(rawValue: activityType) {
-                activity.suggestedInvocationPhrase = wpActivityType.suggestedInvocationPhrase
-            }
+        if let wpActivityType = WPActivityType(rawValue: activityType) {
+            activity.suggestedInvocationPhrase = wpActivityType.suggestedInvocationPhrase
         }
 
         // Set the UIViewController's userActivity property, which is defined in UIResponder. Doing this allows

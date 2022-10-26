@@ -188,10 +188,6 @@ private extension SignupEpilogueCell {
     }
 
     func configureTextContentTypeIfNeeded(for cellType: EpilogueCellType) {
-        guard #available(iOS 12, *) else {
-            return
-        }
-
         switch cellType {
         case .displayName:
             cellField.textContentType = .name
