@@ -30,8 +30,8 @@ class StatsWidgetsService {
         state = .loading
 
         do {
-            let token = try KeychainUtils.shared.getPasswordForUsername(WPStatsTodayWidgetKeychainTokenKey,
-                                                                        serviceName: WPStatsTodayWidgetKeychainServiceName,
+            let token = try KeychainUtils.shared.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
+                                                                        serviceName: AppConfiguration.Widget.Stats.keychainServiceName,
                                                                         accessGroup: WPAppKeychainAccessGroup)
 
             let wpApi = WordPressComRestApi(oAuthToken: token)
