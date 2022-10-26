@@ -314,7 +314,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation{ [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
             contextManager.performAndSave { context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
@@ -349,7 +349,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
-        Self.operationQueue.addOperation(AsyncBlockOperation{ [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
             contextManager.performAndSave { context in
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
@@ -373,7 +373,7 @@ private extension NotificationSyncMediator {
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation{ [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
             contextManager.performAndSave { context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
