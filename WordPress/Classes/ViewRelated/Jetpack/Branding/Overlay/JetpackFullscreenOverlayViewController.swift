@@ -100,6 +100,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         footnoteLabel.isHidden = config.footnoteIsHidden
         learnMoreButton.isHidden = config.learnMoreButtonIsHidden
         continueButton.isHidden = config.continueButtonIsHidden
+        setupLearnMoreButton()
     }
 
     private func setupColors() {
@@ -131,6 +132,16 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         }
     }
 
+    private func setupLearnMoreButton() {
+        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.externalIconSize).withTintColor(.primary))
+        externalAttachment.bounds = Constants.externalIconBounds
+        let attachmentString = NSAttributedString(attachment: externalAttachment)
+
+        let learnMoreText = NSMutableAttributedString(string: "\(Strings.learnMoreButtonText) \u{FEFF}")
+        learnMoreText.append(attachmentString)
+        learnMoreButton.setAttributedTitle(learnMoreText, for: .normal)
+    }
+
     // MARK: Actions
 
     @objc private func closeButtonPressed(sender: UIButton) {
@@ -142,6 +153,9 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
 private extension JetpackFullscreenOverlayViewController {
     enum Strings {
+        static let learnMoreButtonText = NSLocalizedString("jetpack.fullscreen.overlay.learnMore",
+                                                           value: "Learn more at jetpack.com",
+                                                           comment: "Title of a button that displays a blog post in a web view.")
     }
 
     enum Constants {
@@ -151,5 +165,7 @@ private extension JetpackFullscreenOverlayViewController {
         static let continueButtonContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
+        static let externalIconSize = CGSize(width: 16, height: 16)
+        static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
     }
 }
