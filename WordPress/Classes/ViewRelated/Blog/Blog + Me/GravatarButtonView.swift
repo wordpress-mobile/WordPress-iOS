@@ -66,7 +66,7 @@ extension GravatarButtonView {
 extension GravatarButtonView {
 
     private struct StandardBorder {
-        static var color: UIColor = .separator
+        static let color: UIColor = .separator
 
         static let width = CGFloat(0.5)
     }

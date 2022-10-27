@@ -36,7 +36,7 @@ class ReaderInterestsStyleGuide {
     }
 
     // MARK: - Next Button
-    public static var buttonContainerViewBackgroundColor: UIColor = .tertiarySystemBackground
+    public static let buttonContainerViewBackgroundColor: UIColor = .tertiarySystemBackground
 
     public class func applyNextButtonStyle(button: FancyButton) {
         let disabledBackgroundColor: UIColor
