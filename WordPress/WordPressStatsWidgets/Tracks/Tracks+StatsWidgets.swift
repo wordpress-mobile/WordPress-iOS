@@ -65,10 +65,6 @@ extension Tracks {
     // MARK: - Private Enums
 
     fileprivate enum ExtensionEvents: String {
-        // User taps widget to view Stats in the app
-        case statsLaunched  = "today_home_extension_stats_launched"
-        // User taps widget to login to the app
-        case loginLaunched  = "today_home_extension_login_launched"
         // User installs an instance of the today widget
         case todayWidgetUpdated = "today_home_extension_widget_updated"
         // User installs an instance of the all time widget
