@@ -108,13 +108,23 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func setupFonts() {
-
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+        continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 
     private func setupButtonInsets() {
         if #available(iOS 15.0, *) {
             // Continue Button
             var continueButtonConfig: UIButton.Configuration = .plain()
+            continueButtonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
+                var outgoing = incoming
+                outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
+                return outgoing
+            })
             continueButtonConfig.contentInsets = Constants.continueButtonContentInsets
             continueButton.configuration = continueButtonConfig
 

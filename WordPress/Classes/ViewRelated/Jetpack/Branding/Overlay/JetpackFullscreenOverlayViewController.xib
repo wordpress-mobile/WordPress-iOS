@@ -67,9 +67,9 @@
                             <rect key="frame" x="0.0" y="246.00000000000003" width="333" height="74.333333333333343"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
-                                    <rect key="frame" x="0.0" y="0.0" width="165.33333333333334" height="74.333333333333329"/>
-                                    <state key="normal" title="Button"/>
-                                    <buttonConfiguration key="configuration" style="plain" title="Learn More Button"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="128" height="74.333333333333329"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Learn More Button"/>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -90,16 +90,16 @@
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="93l-ng-h5B"/>
                         <constraint firstAttribute="height" constant="50" id="DD0-7r-C5O"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Switch Button"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Switch Button"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
-                    <rect key="frame" x="122.66666666666667" y="711" width="147.66666666666663" height="50"/>
+                    <rect key="frame" x="140.66666666666666" y="711" width="112" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="cH2-GJ-f7z"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Continue Button"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Continue Button"/>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
