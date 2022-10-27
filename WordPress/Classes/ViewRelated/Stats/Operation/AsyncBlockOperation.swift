@@ -1,5 +1,3 @@
-import Foundation
-
 class AsyncBlockOperation: AsyncOperation {
 
     private let block: (@escaping () -> Void) -> Void
