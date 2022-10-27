@@ -324,12 +324,12 @@ private extension NotificationSyncMediator {
                     localHashes[note.notificationId] = note.notificationHash ?? ""
                 }
 
-                let filtered = remoteHashes.filter { remote in
-                    let localHash = localHashes[remote.notificationId]
-                    return localHash == nil || localHash != remote.notificationHash
-                }
-
-                let outdatedIds = filtered.map { $0.notificationId }
+                let outdatedIds = remoteHashes
+                    .filter { remote in
+                        let localHash = localHashes[remote.notificationId]
+                        return localHash == nil || localHash != remote.notificationHash
+                    }
+                    .map { $0.notificationId }
 
                 DispatchQueue.main.async {
                     completion(outdatedIds)
