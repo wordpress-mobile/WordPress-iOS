@@ -60,10 +60,11 @@ final class InteractiveNotificationsManager: NSObject {
         let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: options) { (allowed, _)  in
+        notificationCenter.requestAuthorization(options: options) { [weak self] (allowed, _)  in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
+                    self?.disableWPNotificationsIfNeeded()
                 } else {
                     WPAnalytics.track(.pushNotificationOSAlertDenied)
                 }
@@ -685,5 +686,15 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
         MeNavigationAction.notificationSettings.perform(router: UniversalLinkRouter.shared)
+    }
+}
+
+private extension InteractiveNotificationsManager {
+    /// A temporary setting to allow controling WordPress notifications when they are disabled after Jetpack installation
+    /// Disable WordPress notifications when they are enabled on Jetpack
+    func disableWPNotificationsIfNeeded() {
+        if FeatureFlag.allowDisablingWPNotifications.enabled, AppConfiguration.isJetpack {
+            UserDefaults(suiteName: WPAppGroupName)?.set(AppConfiguration.isWordPress, forKey: WPNotificationsEnabledKey)
+        }
     }
 }
