@@ -88,6 +88,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func applyStyles() {
         iconImageView.clipsToBounds = false
+        switchButton.layer.cornerRadius = Constants.switchButtonCornerRadius
     }
 
     private func setupContent() {
@@ -182,6 +183,7 @@ private extension JetpackFullscreenOverlayViewController {
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
+        static let switchButtonCornerRadius: CGFloat = 6
     }
 
     enum Colors {
