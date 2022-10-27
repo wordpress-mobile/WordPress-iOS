@@ -36,11 +36,7 @@ class FloatingActionButton: UIButton {
         layer.shadowColor = Constants.shadowColor.cgColor
         layer.shadowOffset = .zero
         layer.shadowRadius = Constants.shadowRadius
-        if #available(iOS 12.0, *) {
-            layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 1 : 0
-        } else {
-            layer.shadowOpacity = 1
-        }
+        layer.shadowOpacity = traitCollection.userInterfaceStyle == .light ? 1 : 0
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

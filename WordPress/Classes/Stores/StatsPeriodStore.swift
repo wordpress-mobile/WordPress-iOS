@@ -1435,7 +1435,7 @@ private extension PeriodStoreState {
 
     func widgetUsingCurrentSite() -> Bool {
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
-            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            let widgetSiteID = sharedDefaults.object(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
                 return false
         }

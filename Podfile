@@ -81,13 +81,17 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-  pod 'Gridicons', '~> 1.1.0'
+  shared_style_pods
   pod 'ZIPFoundation', '~> 0.9.8'
   pod 'Down', '~> 0.6.6'
 end
 
+def shared_style_pods
+  pod 'Gridicons', '~> 1.1.0'
+end
+
 def gutenberg_pods
-  gutenberg commit: 'd77a68b14bbf33f162df4f043d467ae90a77dad1'
+  gutenberg commit: '9271ca3711f5dc45d147a58ac6962f69c0dda080'
 end
 
 def gutenberg(options)
@@ -221,7 +225,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.4'
+  pod 'WPMediaPicker', '~> 1.8.6'
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
   ## while PR is in review:
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
@@ -344,7 +348,7 @@ target 'WordPressThisWeekWidget' do
   wordpress_ui
 end
 
-## iOS 14 Today Widget
+## Home Screen Widgets
 ## ============
 ##
 target 'WordPressStatsWidgets' do
@@ -352,6 +356,17 @@ target 'WordPressStatsWidgets' do
 
   shared_with_all_pods
   shared_with_networking_pods
+  shared_style_pods
+
+  wordpress_ui
+end
+
+target 'JetpackStatsWidgets' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+  shared_style_pods
 
   wordpress_ui
 end
@@ -360,6 +375,15 @@ end
 ## ============
 ##
 target 'WordPressIntents' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
+target 'JetpackIntents' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods

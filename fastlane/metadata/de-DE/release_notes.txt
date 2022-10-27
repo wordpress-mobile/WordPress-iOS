@@ -1,7 +1,7 @@
-Du kannst jetzt eine WordPress.com-Anmeldung stornieren, während du bereits bei einer selbst gehosteten Website angemeldet bist – damit bleibst du nicht mehr auf dem Anmeldebildschirm hängen, wenn du es dir anders überlegst.
+Willkommen zu Version 21! Wir haben den Startbildschirm mit einem einfachen, eleganten Design aktualisiert und die Ansicht mit den Kommentardetails benutzerfreundlicher gestaltet.
 
-Wir haben in diesem neuesten Update auch mehrere Fehler behoben.
+Außerdem haben wir einige Bugs behoben.
 
-– Wir haben einmal ein Problem behoben, bei dem das Löschen eines Bildes in einem Entwurf eines Story-Beitrags das Laden des nächsten Bildes in der Story verhinderte. Und alle lebten danach glücklich und zufrieden.
-– Auf iPad-Displays liegt der Button „Benachrichtigungen aktivieren“ nicht mehr über den Anweisungen zum Aktivieren von Push-Benachrichtigungen. Der Seitenmenü-Text „Kein Ergebnis“ passt jetzt auch auf den Bildschirm.
-– Inhalte über dem Banner „Bereitgestellt von Jetpack“ bleiben jetzt während des Scrollens sichtbar und responsiv. Auf, auf und davon.
+- Veröffentlichte Texte werden nicht angezeigt, wenn du an einem Beitrag oder einer Seite im Querformat arbeitest, sondern nur im Hochformat. Es gibt jetzt kein Überlappen der Tastatur mehr.
+- Benachrichtigungen im Cache werden nicht mehr auf dem Bildschirm angezeigt, nachdem du dich von deinem WordPress.com-Konto abgemeldet hast.
+- Wir haben untersucht, warum die Navigationsleiste bei der Anmeldung verschwinden kann. Sie bleibt jetzt von Anfang bis Ende sichtbar. Rätsel gelöst!

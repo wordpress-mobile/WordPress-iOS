@@ -20,7 +20,11 @@ import WordPressAuthenticator
     #if INTERNAL_BUILD
     static let pushNotificationAppId = "org.wordpress.internal"
     #else
+    #if ALPHA_BUILD
+    static let pushNotificationAppId = "org.wordpress.alpha"
+    #else
     static let pushNotificationAppId = "org.wordpress.appstore"
+    #endif
     #endif
     #endif
 }

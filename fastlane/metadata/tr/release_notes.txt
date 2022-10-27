@@ -1,7 +1,0 @@
-Artık kendi kendine barındırılan bir sitede oturum açmış durumdayken bir WordPress.com oturum açma işlemini iptal edebilirsiniz; fikrinizi değiştirirseniz oturum açma ekranında takılıp kalmazsınız.
-
-Ayrıca bu son güncellemede birkaç hatayı da ortadan kaldırdık.
-
-- Bir varmış bir yokmuş, Öykü Yayını taslağındaki bir resim silindiğinde öyküdeki bir sonraki resmin yüklenmesini engelleyen bir sorunu düzeltmişiz. Ve herkes sonsuza kadar mutlu yaşamış.
-- iPad ekranlarında “Bildirimleri aç” düğmesi artık anlık bildirimleri açma talimatlarının üzerinde yer almıyor. "Sonuç yok" yan menü metni artık ekrana sığıyor.
-- Jetpack tarafından desteklenmektedir başlığının üzerindeki içerik artık siz kaydırırken görünür ve duyarlı kalır. Uçma zamanı.

@@ -1,7 +1,0 @@
-Je kan nu het inloggen op WordPress.com annuleren als je al ingelogd bent op een zelf-gehoste site. Zo kom je niet meer vast te zitten op het inlogscherm als je van gedachten verandert.
-
-We hebben in deze nieuwste update ook wat bugs verholpen.
-
-- Er was eens een probleem waarbij het verwijderen van een afbeelding in een concept van een verhaalbericht het laden van de volgende afbeelding zou voorkomen. Dat probleem hebben we nu opgelost. En iedereen leefde nog lang en gelukkig.
-- De knop 'Meldingen inschakelen' wordt op iPads niet meer bovenop de instructies voor het inschakelen van pushmeldingen weergegeven. De tekst 'Geen resultaten' in het menu aan de zijkant past nu ook op het scherm.
-- Content bovenop de banner Mogelijk gemaakt door Jetpack blijft nu zichtbaar en blijft reageren tijdens het scrollen. Daar gaan we.

@@ -1,7 +1,7 @@
-Ahora puedes cancelar un acceso a WordPress.com cuando ya hayas accedido a un sitio con alojamiento propio: ya no te quedarás atascado en la pantalla de acceso si cambias de opinión.
+¡Te damos la bienvenida a la versión 21! Hemos actualizado la pantalla de inicio de la aplicación con un diseño sencillo y elegante y hemos realizado algunas mejoras en el diseño de la vista de detalles de los comentarios.
 
-También hemos resuelto varios errores en esta última actualización.
+También hemos corregido un puñado de errores.
 
-- En su día, solucionamos un problema por el que la eliminación de una imagen en el borrador de una publicación de una historia impedía que se cargara la siguiente imagen de la historia. Y todos vivieron felices para siempre.
-- En las pantallas del iPad, el botón «Activar notificaciones» ya no está encima de las instrucciones para activar las notificaciones push. El texto del menú lateral «Sin resultados» ahora también cabe en la pantalla.
-- El contenido sobre el banner de «Funciona gracias a Jetpack» ahora permanece visible y se adapta mientras te desplazas. Hacia arriba, hacia arriba, y hacia fuera.
+- El texto de publicación no aparecerá cuando trabajes en una publicación o página en modo horizontal, sólo en modo vertical. Ya no se superponen los teclados.
+- Las notificaciones en caché ya no aparecen en pantalla después de cerrar la sesión de tu cuenta de WordPress.com.
+- Hemos investigado el caso de la barra de navegación que desaparecía durante el proceso de acceso. Ahora permanece visible de principio a fin. Misterio resuelto.
