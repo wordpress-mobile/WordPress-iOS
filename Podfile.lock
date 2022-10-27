@@ -547,11 +547,11 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.2.0)
   - glog (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.84.1/third-party-podspecs/glog.podspec.json`)
-  - Gridicons (~> 1.1.0)
+  - Gridicons (~> 1.1)
   - Gutenberg (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.84.1`)
   - JTAppleCalendar (~> 8.0.2)
-  - Kanvas (~> 1.4.4)
-  - MediaEditor (~> 1.2.1)
+  - Kanvas (>= 1.4.4, ~> 1.4)
+  - MediaEditor (>= 1.2.1, ~> 1.2)
   - MRProgress (= 0.8.3)
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
@@ -600,12 +600,12 @@ DEPENDENCIES:
   - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.84.1`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.19.8)
+  - WordPress-Editor-iOS (>= 1.19.8, ~> 1.19)
   - WordPressAuthenticator (>= 3.2.2, ~> 3.2)
   - WordPressKit (>= 4.58.2-beta.1, ~> 4.58)
-  - WordPressShared (~> 1.18.0)
-  - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.4)
+  - WordPressShared (~> 1.18)
+  - WordPressUI (>= 1.12.5, ~> 1.12)
+  - WPMediaPicker (>= 1.8.4, ~> 1.8)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.84.1/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -880,6 +880,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 87c9f17d76466ac472a16489e0b6eb50e37a1615
+PODFILE CHECKSUM: 7b6e3c25bab7943734af25c5801e369685ab4e5e
 
 COCOAPODS: 1.11.2

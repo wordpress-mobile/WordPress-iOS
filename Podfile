@@ -20,7 +20,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 1.18.0'
+  pod 'WordPressShared', '~> 1.18'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -37,11 +37,11 @@ def aztec
   #
   # pod 'WordPress-Aztec-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
-  pod 'WordPress-Editor-iOS', '~> 1.19.8'
+  pod 'WordPress-Editor-iOS', '~> 1.19', '>= 1.19.8'
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.12.5'
+  pod 'WordPressUI', '~> 1.12', '>= 1.12.5'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
@@ -53,7 +53,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.4.4'
+  pod 'Kanvas', '~> 1.4', '>= 1.4.4'
   # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', commit: ''
   # pod 'Kanvas', path: '../Kanvas-iOS'
 end
@@ -83,7 +83,7 @@ def shared_with_extension_pods
 end
 
 def shared_style_pods
-  pod 'Gridicons', '~> 1.1.0'
+  pod 'Gridicons', '~> 1.1'
 end
 
 ## Other Internal Pods
@@ -97,7 +97,7 @@ def tracks
 end
 
 def media_picker
-  pod 'WPMediaPicker', '~> 1.8.4'
+  pod 'WPMediaPicker', '~> 1.8', '>= 1.8.4'
   # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 end
 
@@ -108,7 +108,7 @@ def wordpress_authenticator
 end
 
 def media_editor
-  pod 'MediaEditor', '~> 1.2.1'
+  pod 'MediaEditor', '~> 1.2', '>= 1.2.1'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
   # pod 'MediaEditor', path: '../MediaEditor-iOS'
 end
