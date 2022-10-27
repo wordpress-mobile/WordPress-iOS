@@ -2176,8 +2176,6 @@
 		98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98880A4922B2E5E400464538 /* TwoColumnCell.xib */; };
 		988AC37522F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988AC37422F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift */; };
 		988AC37922F10E2C00BC1433 /* FileDownloadsStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988AC37822F10E2C00BC1433 /* FileDownloadsStatsRecordValue+CoreDataClass.swift */; };
-		988F073523D0CE8800AC67A6 /* WidgetUrlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */; };
-		988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */; };
 		988FD74A279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FD749279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift */; };
 		988FD74B279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FD749279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift */; };
 		98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF621372E12004949AA /* MediaCoordinator.swift */; };
@@ -3677,7 +3675,6 @@
 		FABB20AF2602FC2C00C8785C /* StatsGhostTabbedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */; };
 		FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE06C24BCED75003BDC8B /* CategorySectionTableViewCell.xib */; };
 		FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4034FDED2007D4F700153B87 /* ExpandableCell.xib */; };
-		FABB20B42602FC2C00C8785C /* WidgetUrlCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */; };
 		FABB20B52602FC2C00C8785C /* richEmbedScript.js in Resources */ = {isa = PBXBuildFile; fileRef = E61507E32220A13B00213D33 /* richEmbedScript.js */; };
 		FABB20B72602FC2C00C8785C /* PluginListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 401A3D012027DBD80099A127 /* PluginListCell.xib */; };
 		FABB20B82602FC2C00C8785C /* SiteStatsDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */; };
@@ -4053,7 +4050,6 @@
 		FABB22372602FC2C00C8785C /* JetpackRestoreStatusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8AB5E25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift */; };
 		FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F913BB0D24B3C58B00C19032 /* EventLoggingDelegate.swift */; };
 		FABB22392602FC2C00C8785C /* TodayStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4089C50E22371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift */; };
-		FABB223A2602FC2C00C8785C /* WidgetUrlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */; };
 		FABB223B2602FC2C00C8785C /* AbstractPost+Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74729CAD205722E300D1394D /* AbstractPost+Searchable.swift */; };
 		FABB223C2602FC2C00C8785C /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		FABB223D2602FC2C00C8785C /* ThisWeekWidgetStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F93181239AF64800E4E96E /* ThisWeekWidgetStats.swift */; };
@@ -7201,8 +7197,6 @@
 		988AC37422F10DD900BC1433 /* FileDownloadsStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileDownloadsStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		988AC37822F10E2C00BC1433 /* FileDownloadsStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileDownloadsStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		988AD63726B089CE003552B4 /* WordPress 128.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 128.xcdatamodel"; sourceTree = "<group>"; };
-		988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUrlCell.swift; sourceTree = "<group>"; };
-		988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WidgetUrlCell.xib; sourceTree = "<group>"; };
 		988FD749279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCommentDetailCoordinator.swift; sourceTree = "<group>"; };
 		98921EF621372E12004949AA /* MediaCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
 		9895401026C1F39300EDEB5A /* EditCommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommentTableViewController.swift; sourceTree = "<group>"; };
@@ -13303,8 +13297,6 @@
 		9890650C237CC1E700218CD2 /* Shared Views */ = {
 			isa = PBXGroup;
 			children = (
-				988F073323D0CE8800AC67A6 /* WidgetUrlCell.swift */,
-				988F073423D0CE8800AC67A6 /* WidgetUrlCell.xib */,
 				98712D1923DA1C7E00555316 /* WidgetNoConnectionCell.swift */,
 				98712D1A23DA1C7E00555316 /* WidgetNoConnectionCell.xib */,
 			);
@@ -17804,7 +17796,6 @@
 				469CE06E24BCED75003BDC8B /* CategorySectionTableViewCell.xib in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
 				1761F18026209AEE000815EF /* jetpack-green-icon-app-76x76.png in Resources */,
-				988F073623D0CE8800AC67A6 /* WidgetUrlCell.xib in Resources */,
 				98F9FB2E270282C200ADF552 /* CommentModerationBar.xib in Resources */,
 				B0088A97283D6FBC008C9676 /* StatsRevampV2FeatureDescriptionView.xib in Resources */,
 				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
@@ -18350,7 +18341,6 @@
 				FABB20B02602FC2C00C8785C /* CategorySectionTableViewCell.xib in Resources */,
 				FABB20B22602FC2C00C8785C /* ExpandableCell.xib in Resources */,
 				F465977C28E6598900D5F49A /* black-on-white-icon-app-60@2x.png in Resources */,
-				FABB20B42602FC2C00C8785C /* WidgetUrlCell.xib in Resources */,
 				F41E4EED28F247D3001880C6 /* white-on-green-icon-app-60@3x.png in Resources */,
 				FABB20B52602FC2C00C8785C /* richEmbedScript.js in Resources */,
 				98E5D4932620C2B40074A56A /* UserProfileSectionHeader.xib in Resources */,
@@ -19932,7 +19922,6 @@
 				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
 				DC772AF5282009BA00664C02 /* StatsLineChartView.swift in Sources */,
-				988F073523D0CE8800AC67A6 /* WidgetUrlCell.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				98F93182239AF64800E4E96E /* ThisWeekWidgetStats.swift in Sources */,
@@ -22563,7 +22552,6 @@
 				FABB22372602FC2C00C8785C /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */,
 				FABB22392602FC2C00C8785C /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
-				FABB223A2602FC2C00C8785C /* WidgetUrlCell.swift in Sources */,
 				FABB223B2602FC2C00C8785C /* AbstractPost+Searchable.swift in Sources */,
 				FAA9084D27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				FABB223C2602FC2C00C8785C /* EditCommentViewController.m in Sources */,
