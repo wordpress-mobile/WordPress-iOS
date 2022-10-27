@@ -179,7 +179,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.84.1'
+  gutenberg tag: 'v1.85.0'
 
   ## Third party libraries
   ## =====================
