@@ -24,6 +24,18 @@ class NotificationService: UNNotificationServiceExtension {
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        UserDefaults(suiteName: WPAppGroupName)?.synchronize()
+        if shouldFilterNotification() {
+            // TODO
+            /// Once com.apple.developer.usernotifications.filtering we can pass empty content to silence notifications
+            /// https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_usernotifications_filtering
+            let content = UNMutableNotificationContent()
+            content.title = "Filtered"
+            content.body =  "This notication won't appear"
+            contentHandler(content)
+            return
+        }
+
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
@@ -330,4 +342,20 @@ private extension NotificationService {
     }
 
     static let viewMilestoneTitle = AppLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
+}
+
+// MARK: - Notification Filtering
+private extension NotificationService {
+
+    /// Temporarily filter WordPress notifications which were disabled when Jetpack is installed
+    func shouldFilterNotification() -> Bool {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName),
+              userDefaults.value(forKey: WPNotificationsEnabledKey) != nil else {
+            return false
+        }
+
+        return FeatureFlag.allowDisablingWPNotifications.enabled
+            && AppConfiguration.isWordPress
+            && !userDefaults.bool(forKey: WPNotificationsEnabledKey)
+    }
 }
