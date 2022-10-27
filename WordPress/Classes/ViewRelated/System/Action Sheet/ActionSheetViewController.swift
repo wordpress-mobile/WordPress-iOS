@@ -148,14 +148,7 @@ class ActionSheetViewController: UIViewController {
     }
 
     private func createButton(_ handler: @escaping () -> Void) -> UIButton {
-        let button: UIButton
-        if #available(iOS 14.0, *) {
-            button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in handler() }))
-        } else {
-            button = ClosureButton(frame: .zero, closure: {
-                handler()
-            })
-        }
+        let button = UIButton(type: .custom, primaryAction: UIAction(handler: { _ in handler() }))
 
         button.titleLabel?.font = Constants.Button.font
         button.setTitleColor(Constants.Button.textColor, for: .normal)

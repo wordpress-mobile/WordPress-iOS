@@ -60,8 +60,7 @@ class WPMediaPickerForKanvas: WPNavigationMediaPickerViewController, MediaPicker
         photoPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         photoPicker.tabBarItem = UITabBarItem(title: Constants.photosTabBarTitle, image: Constants.photosTabBarIcon, tag: 0)
 
-        if #available(iOS 14.0, *),
-           FeatureFlag.mediaPickerPermissionsNotice.enabled {
+        if FeatureFlag.mediaPickerPermissionsNotice.enabled {
             photoPicker.mediaPicker.registerClass(forCustomHeaderView: DeviceMediaPermissionsHeader.self)
         }
 
@@ -182,8 +181,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard #available(iOS 14.0, *),
-              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+        guard FeatureFlag.mediaPickerPermissionsNotice.enabled,
               picker.dataSource is WPPHAssetDataSource else {
             return false
         }
@@ -192,10 +190,6 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
-        guard #available(iOS 14.0, *) else {
-            return .zero
-        }
-
         let header = DeviceMediaPermissionsHeader()
         header.translatesAutoresizingMaskIntoConstraints = false
 
@@ -203,8 +197,7 @@ class MediaPickerDelegate: NSObject, WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
-        guard #available(iOS 14.0, *),
-              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+        guard let headerView = headerView as? DeviceMediaPermissionsHeader else {
             return
         }
 

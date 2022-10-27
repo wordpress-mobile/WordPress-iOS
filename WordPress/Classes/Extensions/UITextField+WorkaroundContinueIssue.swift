@@ -9,11 +9,10 @@ extension UITextField {
     /// Once we drop support for iOS 14, we could remove this extension entirely.
     ///
     public class func shouldActivateWorkaroundForBulgarianKeyboardCrash() -> Bool {
-        if #available(iOS 14.0, *) {
-            return true
-        }
-
-        return false
+        // FIXME: Do _all_ versions above iOS 14 require the workaround?
+        //
+        // This code was changed to `true` at the time of making iOS 14 the minimum target.
+        true
     }
 
     /// We're swizzling `UITextField.becomeFirstResponder()` so that we can fix an issue with

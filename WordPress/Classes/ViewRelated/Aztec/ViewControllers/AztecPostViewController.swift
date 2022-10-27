@@ -636,8 +636,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Required to work around an issue present in iOS 14 beta 2
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if #available(iOS 14.0, *),
-            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
             dismiss(animated: true)
         }
     }
@@ -1326,8 +1325,7 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        if #available(iOS 14.0, *),
-            let button = navigationBarManager.moreBarButtonItem.customView {
+        if let button = navigationBarManager.moreBarButtonItem.customView {
             // Required to work around an issue present in iOS 14 beta 2
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
             alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)

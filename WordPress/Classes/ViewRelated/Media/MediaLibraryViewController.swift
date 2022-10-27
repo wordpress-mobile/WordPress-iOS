@@ -573,8 +573,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerShouldShowCustomHeaderView(_ picker: WPMediaPickerViewController) -> Bool {
-        guard #available(iOS 14.0, *),
-              FeatureFlag.mediaPickerPermissionsNotice.enabled,
+        guard FeatureFlag.mediaPickerPermissionsNotice.enabled,
               picker != self else {
             return false
         }
@@ -584,10 +583,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerReferenceSize(forCustomHeaderView picker: WPMediaPickerViewController) -> CGSize {
-        guard #available(iOS 14.0, *) else {
-            return .zero
-        }
-
         let header = DeviceMediaPermissionsHeader()
         header.translatesAutoresizingMaskIntoConstraints = false
 
@@ -595,8 +590,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, configureCustomHeaderView headerView: UICollectionReusableView) {
-        guard #available(iOS 14.0, *),
-              let headerView = headerView as? DeviceMediaPermissionsHeader else {
+        guard let headerView = headerView as? DeviceMediaPermissionsHeader else {
             return
         }
 
