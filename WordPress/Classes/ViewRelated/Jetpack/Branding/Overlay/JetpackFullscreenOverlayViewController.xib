@@ -37,7 +37,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="126" height="65"/>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="Tal-Zu-gb4" firstAttribute="top" secondItem="bUe-f2-zzc" secondAttribute="top" id="7H0-74-fSQ"/>
                                 <constraint firstItem="Tal-Zu-gb4" firstAttribute="leading" secondItem="bUe-f2-zzc" secondAttribute="leading" id="QQJ-dj-nsx"/>
@@ -72,7 +72,7 @@
                                     <state key="normal" title="Learn More Button"/>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="n55-iX-u43" firstAttribute="leading" secondItem="0z9-x4-AgY" secondAttribute="leading" id="Nmm-lY-pyp"/>
                                 <constraint firstAttribute="bottom" secondItem="n55-iX-u43" secondAttribute="bottom" id="YeY-ye-Dpy"/>

@@ -68,7 +68,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         addCloseButtonIfNeeded()
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemBackground
+        appearance.backgroundColor = Colors.backgroundColor
         appearance.shadowColor = .clear
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
@@ -104,7 +104,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func setupColors() {
-
+        view.backgroundColor = Colors.backgroundColor
+        footnoteLabel.textColor = Colors.footnoteTextColor
+        learnMoreButton.tintColor = Colors.learnMoreButtonTextColor
+        switchButton.backgroundColor = Colors.switchButtonBackgroundColor
+        switchButton.tintColor = Colors.switchButtonTextColor
+        continueButton.tintColor = Colors.continueButtonTextColor
     }
 
     private func setupFonts() {
@@ -143,7 +148,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func setupLearnMoreButton() {
-        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.externalIconSize).withTintColor(.primary))
+        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.externalIconSize).withTintColor(Colors.learnMoreButtonTextColor))
         externalAttachment.bounds = Constants.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)
 
@@ -177,5 +182,23 @@ private extension JetpackFullscreenOverlayViewController {
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
+    }
+
+    enum Colors {
+        private static let jetpackGreen50 = UIColor.muriel(color: .jetpackGreen, .shade50).lightVariant()
+        private static let jetpackGreen30 = UIColor.muriel(color: .jetpackGreen, .shade30).lightVariant()
+
+        static let backgroundColor = UIColor(light: .systemBackground, dark: .muriel(color: .jetpackGreen, .shade100))
+        static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50), dark: .muriel(color: .gray, .shade5))
+        static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
+        static let switchButtonBackgroundColor = jetpackGreen50
+        static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
+        static let switchButtonTextColor = UIColor.white
+    }
+}
+
+fileprivate extension UIColor {
+    func lightVariant() -> UIColor {
+        return self.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
     }
 }
