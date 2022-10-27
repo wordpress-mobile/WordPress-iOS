@@ -17,4 +17,16 @@ class JetpackBrandingCoordinator {
     static func makeJetpackOverlayView(redirectAction: (() -> Void)? = nil) -> UIView {
         JetpackOverlayView(buttonAction: redirectAction)
     }
+
+    static func shouldShowBannerForJetpackDependentFeatures() -> Bool {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
+        switch phase {
+        case .two:
+            fallthrough
+        case .three:
+            return true
+        default:
+            return false
+        }
+    }
 }

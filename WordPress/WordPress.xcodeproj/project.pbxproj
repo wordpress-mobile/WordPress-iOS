@@ -1531,6 +1531,9 @@
 		803DE81928FFB7B5007D4E9C /* RemoteConfigParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */; };
 		803DE81B28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */; };
 		803DE81C28FFC0B7007D4E9C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */; };
+		803DE81F290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */; };
+		803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
+		803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */; };
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
@@ -6888,6 +6891,8 @@
 		803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameter.swift; sourceTree = "<group>"; };
 		803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameterTests.swift; sourceTree = "<group>"; };
 		803DE81A28FFC0B7007D4E9C /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
+		803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinatorTests.swift; sourceTree = "<group>"; };
+		803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFeaturesRemovalCoordinator.swift; sourceTree = "<group>"; };
 		8058730C28F7B70B00340C11 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
@@ -10716,6 +10721,7 @@
 			isa = PBXGroup;
 			children = (
 				3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */,
+				803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -12462,6 +12468,14 @@
 				7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */,
 			);
 			path = Groups;
+			sourceTree = "<group>";
+		};
+		803DE81D29063689007D4E9C /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */,
+			);
+			name = Jetpack;
 			sourceTree = "<group>";
 		};
 		8096212828E5535E00940A5D /* JetpackShareExtension */ = {
@@ -15668,6 +15682,7 @@
 				E1C9AA541C1041E600732665 /* Extensions */,
 				FF9A6E6F21F9359200D36D14 /* Gutenberg */,
 				32110548250BFC5A0048446F /* Image Dimension Parser */,
+				803DE81D29063689007D4E9C /* Jetpack */,
 				FF7C89A11E3A1029000472A8 /* MediaPicker */,
 				5D7A577D1AFBFD7C0097C028 /* Models */,
 				85F8E1991B017A8E000859BB /* Networking */,
@@ -20312,6 +20327,7 @@
 				B0A3A6D9283D778E0019C530 /* StatsRevampV2IntroductionPresenter.swift in Sources */,
 				F5E63129243BC8190088229D /* FilterSheetView.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
+				803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
 				17C1D67C2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
 				FEA7949026DF7F3700CEC520 /* WPStyleGuide+CommentDetail.swift in Sources */,
@@ -22506,6 +22522,7 @@
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				8B69F0E4255C2C3F006B1CEF /* ActivityListViewModelTests.swift in Sources */,
 				8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */,
+				803DE81F290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift in Sources */,
 				937250EE267A492D0086075F /* StatsPeriodStoreTests.swift in Sources */,
 				F1B1E7A324098FA100549E2A /* BlogTests.swift in Sources */,
 				57889AB823589DF100DAE56D /* PageBuilder.swift in Sources */,
@@ -23094,6 +23111,7 @@
 				FABB21AE2602FC2C00C8785C /* NotificationSettingStreamsViewController.swift in Sources */,
 				FABB21AF2602FC2C00C8785C /* SiteDesignPreviewViewController.swift in Sources */,
 				FABB21B02602FC2C00C8785C /* ReaderReblogFormatter.swift in Sources */,
+				803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
 				FABB21B12602FC2C00C8785C /* Array.swift in Sources */,
 				FABB21B22602FC2C00C8785C /* NotificationActionParser.swift in Sources */,
 				FABB21B32602FC2C00C8785C /* SiteTagsViewController.swift in Sources */,

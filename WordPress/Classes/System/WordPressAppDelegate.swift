@@ -660,7 +660,7 @@ extension WordPressAppDelegate {
             let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
             let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
             let remote = FeatureFlagRemote(wordPressComRestApi: api)
-            remoteFeatureFlagStore.updateIfNeeded(using: remote)
+            remoteFeatureFlagStore.update(using: remote)
         } catch {
             DDLogError("Error fetching default user account: \(error)")
         }
