@@ -34,7 +34,6 @@ WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressStatsWidgets
   WordPressNotificationServiceExtension
   WordPressNotificationContentExtension
-  WordPressThisWeekWidget
   WordPressIntents
 ].map { |suffix| "#{WORDPRESS_BUNDLE_IDENTIFIER}.#{suffix}" }
 ALL_WORDPRESS_BUNDLE_IDENTIFIERS = [WORDPRESS_BUNDLE_IDENTIFIER, *WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
