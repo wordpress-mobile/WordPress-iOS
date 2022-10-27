@@ -167,6 +167,24 @@ platform :ios do
     branch = options[:branch] || release_branch_name
     trigger_buildkite_release_build(branch: branch, beta: false)
   end
+
+  lane :update_internal_pods do
+    internal_pods = %w(
+      Automattic-Tracks-iOS
+      Gridicons
+      Kanvas
+      MediaEditor
+      NSURL+IDN
+      WPMediaPicker
+      WordPress-Editor-iOS
+      WordPressAuthenticator
+      WordPressKit
+      WordPressShared
+      WordPressUI
+    )
+
+    system("bundle exec pod update #{internal_pods.join(' ')}")
+  end
 end
 
 #################################################
