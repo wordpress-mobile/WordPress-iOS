@@ -6,9 +6,6 @@ final class JetpackLandingScreenView: UIView {
 
     private var labels: [UILabel] = []
 
-    private var compactConstraints = [NSLayoutConstraint]()
-    private var regularConstraints = [NSLayoutConstraint]()
-
     // MARK: - Init
 
     init() {
@@ -45,30 +42,16 @@ final class JetpackLandingScreenView: UIView {
         let insets = Constants.insets
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
+            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: insets.leading),
+            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -insets.trailing)
         ])
-        self.compactConstraints = [
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
-        ]
-        self.regularConstraints = [
-            stackView.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.maxWidth),
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor)
-        ]
     }
 
     // MARK: - Layout Lifecycle
 
-    override func updateConstraints() {
-        super.updateConstraints()
-        let isCompactSizeClass = traitCollection.horizontalSizeClass == .compact
-        self.compactConstraints.forEach { $0.isActive = isCompactSizeClass }
-        self.regularConstraints.forEach { $0.isActive = !isCompactSizeClass }
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        self.setNeedsUpdateConstraints()
         self.updateLabelsTextAttributes()
     }
 
@@ -118,7 +101,7 @@ final class JetpackLandingScreenView: UIView {
         static let oddColor = JetpackPromptsConfiguration.Constants.oddColor
 
         static let interitemSpacing: CGFloat = 8
-        static let insets = UIEdgeInsets(top: Self.interitemSpacing, left: 16, bottom: 0, right: 16)
+        static let insets = NSDirectionalEdgeInsets(top: Self.interitemSpacing, leading: 16, bottom: 0, trailing: 16)
         static let maxWidth: CGFloat = 579
 
         static let lineHeightMultiple: CGFloat = 0.8
