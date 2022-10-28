@@ -96,8 +96,10 @@ private extension MainShareViewController {
 
         let shareNavController = UINavigationController(rootViewController: editorController)
 
-        // We need to make sure we don't end up with stacked modal view controllers by using this:
-        shareNavController.modalPresentationStyle = .overFullScreen
+        if editorController.originatingExtension == .saveToDraft {
+            // We need to make sure we don't end up with stacked modal view controllers by using this:
+            shareNavController.modalPresentationStyle = .overFullScreen
+        }
 
         present(shareNavController, animated: true)
     }
