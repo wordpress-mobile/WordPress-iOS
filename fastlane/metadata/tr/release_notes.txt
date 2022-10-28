@@ -1,0 +1,7 @@
+21 sürümüne hoş geldiniz! Uygulamanın başlatma ekranını basit, şık bir tasarımla güncelledik ve Yorum Ayrıntıları görünümünde kullanıcı dostu bazı tasarım geliştirmeleri yaptık.
+
+Ayrıca birkaç hatayı da düzelttik.
+
+- Yatay modda bir Gönderi veya Sayfa üzerinde çalışırken yayın metni görünmez, yalnızca dikey modda görünür. Artık klavye çakışması yaşamayacaksınız.
+- Önbelleğe alınmış bildirimler artık WordPress.com hesabınızdan çıkış yaptıktan sonra ekranda görünmeyecek.
+- Oturum açma işlemi sırasında kaybolan gezinme çubuğunun da durumunu araştırdık. Artık baştan sona görünür durumda. Gizem çözüldü.
