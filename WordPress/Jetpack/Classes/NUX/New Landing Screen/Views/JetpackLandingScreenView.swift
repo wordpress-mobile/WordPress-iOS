@@ -91,6 +91,8 @@ final class JetpackLandingScreenView: UIView {
         for (index, label) in labels.enumerated() {
             label.attributedText = Self.attributedTextForLabel(atIndex: index, text: label.text, traits: traitCollection)
         }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
     }
 
     // MARK: - Constants
