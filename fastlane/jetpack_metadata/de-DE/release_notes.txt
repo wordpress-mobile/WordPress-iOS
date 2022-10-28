@@ -1,4 +1,4 @@
-Willkommen zu Version 21! Zur Feier dieses Releases haben wir Erweiterungen hinzugefügt, mit denen du über die integrierten Menüs deines Geräts Inhalte als Entwurf speichern und in Jetpack teilen kannst. Und du erhältst detailliertere Push-Benachrichtigungen auf dein Gerät.
+Willkommen zu Version 21! Zur Feier dieses Release haben wir Erweiterungen hinzugefügt, mit denen du über die integrierten Menüs deines Geräts Inhalte als Entwurf speichern und in Jetpack teilen kannst. Außerdem erhältst du detailliertere Push-Benachrichtigungen auf dein Gerät.
 
 Wir haben den Startbildschirm mit einem einfachen, eleganten Design aktualisiert und die Ansicht mit den Kommentardetails benutzerfreundlicher gestaltet. Außerdem kannst du beim Icon für die Jetpack-App aus einer Vielzahl an Farben wählen. Das geht ganz einfach im Menü „App-Einstellungen“.
 
