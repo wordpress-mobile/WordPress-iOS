@@ -188,7 +188,7 @@ class JetpackPrologueViewController: UIViewController {
         static let defaultAngleDegrees: Double = 30.0
         /// Uniform multiplier used to tweak the rate generated from an angle
         static let angleRateMultiplier: CGFloat = 1.3
-        ///
+        /// Returns the Jetpack logo width depending on the given size class
         static func logoWidth(for sizeClass: UIUserInterfaceSizeClass) -> CGFloat {
             return sizeClass == .compact ? 68 : 78
         }

@@ -102,7 +102,6 @@ final class JetpackLandingScreenView: UIView {
 
         static let interitemSpacing: CGFloat = 8
         static let insets = NSDirectionalEdgeInsets(top: Self.interitemSpacing, leading: 16, bottom: 0, trailing: 16)
-        static let maxWidth: CGFloat = 579
 
         static let lineHeightMultiple: CGFloat = 0.8
 
