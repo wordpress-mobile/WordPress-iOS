@@ -509,6 +509,7 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
+        cell.accessoryButtonType = .info
         cell.accessoryButtonAction = { [weak self] senderView in
             self?.presentUserInfoSheet(senderView)
         }
