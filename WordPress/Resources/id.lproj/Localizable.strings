@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-21 08:01:17+0000 */
+/* Translation-Revision-Date: 2022-10-27 20:36:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -6450,6 +6450,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS Terkirim";
+
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "STATUS";
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";

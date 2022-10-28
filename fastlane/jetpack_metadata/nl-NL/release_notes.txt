@@ -1,0 +1,9 @@
+Welkom bij versie 21! Ter ere van deze gelegenheid hebben we extensies toegevoegd waarmee je met de geïntegreerde menu’s van de apparaat je content als een concept op kan slaan en met Jetpack kan delen. Je krijgt ook uitgebreidere pushmeldingen op je apparaat.
+
+We hebben het startscherm van de app bijgewerkt met een simpel, strak ontwerp en een aantal gebruiksvriendelijke designupgrades doorgevoerd voor de weergave van informatie bij reacties. Je kan in het menu app-instellingen ook het pictogram van de Jetpack-app wijzigen met een breed aanbod kleurrijke opties.
+
+- Tot slot hebben we een klein aantal bugs verholpen.
+
+- Publiceer-tekst zal niet meer verschijnen wanneer je in de landschapsmodus aan een bericht of pagina werkt, alleen in de portretmodus. Geen toetsenbordoverlap meer.
+- Meldingen in cache verschijnen niet meer op het scherm nadat je bent uitgelogd bij WordPress.com.
+- We hebben de zaak van de verdwijnende navigatiebalk tijden het inlogproces onderzocht. Hij blijft nu van begin tot eind zichtbaar. Het mysterie is ontrafeld.
