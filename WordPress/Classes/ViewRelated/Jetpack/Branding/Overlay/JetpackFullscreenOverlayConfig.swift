@@ -9,6 +9,7 @@ struct JetpackFullscreenOverlayConfig {
     let switchButtonText: String
     let continueButtonText: String?
     let shouldShowCloseButton: Bool
+    let analyticsSource: String
 }
 
 extension JetpackFullscreenOverlayConfig {

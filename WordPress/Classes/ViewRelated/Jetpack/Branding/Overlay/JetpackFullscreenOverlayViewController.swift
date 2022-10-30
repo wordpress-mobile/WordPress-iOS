@@ -163,6 +163,25 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @objc private func closeButtonPressed(sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
+
+
+    @IBAction func switchButtonPressed(_ sender: Any) {
+    }
+
+    @IBAction func continueButtonPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func learnMoreButtonPressed(_ sender: Any) {
+        guard let url = URL(string: Constants.learnMoreURLString) else {
+            return
+        }
+
+        let source = "jetpack_overlay_\(config.analyticsSource)"
+        let webViewController = WebViewControllerFactory.controller(url: url, source: source)
+        let navController = UINavigationController(rootViewController: webViewController)
+        present(navController, animated: true)
+    }
 }
 
 // MARK: Constants
@@ -184,6 +203,9 @@ private extension JetpackFullscreenOverlayViewController {
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let switchButtonCornerRadius: CGFloat = 6
+
+        // TODO: Update link
+        static let learnMoreURLString = "https://jetpack.com/blog/"
     }
 
     enum Colors {

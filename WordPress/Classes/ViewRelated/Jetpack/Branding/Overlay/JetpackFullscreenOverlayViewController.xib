@@ -35,6 +35,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Switch Button"/>
+                    <connections>
+                        <action selector="switchButtonPressed:" destination="-1" eventType="touchUpInside" id="Uk1-44-IEW"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
                     <rect key="frame" x="140.66666666666666" y="738" width="112" height="50"/>
@@ -43,6 +46,9 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Continue Button"/>
+                    <connections>
+                        <action selector="continueButtonPressed:" destination="-1" eventType="touchUpInside" id="cuM-YO-Ih2"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HB5-va-Hyc">
                     <rect key="frame" x="19.666666666666657" y="59" width="354" height="621"/>
@@ -90,6 +96,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="74.333333333333329"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" title="Learn More Button"/>
+                                            <connections>
+                                                <action selector="learnMoreButtonPressed:" destination="-1" eventType="touchUpInside" id="sWE-LZ-Gma"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
