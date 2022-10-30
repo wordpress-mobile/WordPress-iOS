@@ -1,10 +1,18 @@
 import UIKit
+import Lottie
 
 class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Variables
 
     private let config: JetpackFullscreenOverlayConfig
+
+    /// Sets the animation based on the language orientation
+    private var animation: Animation? {
+        traitCollection.layoutDirection == .leftToRight ?
+        Animation.named(config.animationLtr) :
+        Animation.named(config.animationRtl)
+    }
 
     // MARK: Lazy Views
 
@@ -37,7 +45,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var animationView: AnimationView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var footnoteLabel: UILabel!
@@ -67,6 +75,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupColors()
         setupFonts()
         setupButtonInsets()
+        animationView.play()
     }
 
     // MARK: Helpers
@@ -94,12 +103,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func applyStyles() {
-        iconImageView.clipsToBounds = false
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
     }
 
     private func setupContent() {
-        iconImageView.image = config.icon
+        animationView.animation = animation
         titleLabel.text = config.title
         subtitleLabel.text = config.subtitle
         footnoteLabel.text = config.footnote

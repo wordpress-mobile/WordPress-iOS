@@ -3,7 +3,8 @@ import Foundation
 struct JetpackFullscreenOverlayConfig {
     let title: String
     let subtitle: String
-    let icon: UIImage?
+    let animationLtr: String
+    let animationRtl: String
     let footnote: String?
     let shouldShowLearnMoreButton: Bool
     let switchButtonText: String
