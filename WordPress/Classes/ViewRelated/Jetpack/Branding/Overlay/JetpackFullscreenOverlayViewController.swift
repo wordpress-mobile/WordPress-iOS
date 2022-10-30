@@ -8,19 +8,26 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Lazy Views
 
-    private lazy var closeButtonItem: UIBarButtonItem = {
-        let closeButton = UIButton()
+    private var closeButtonImage: UIImage {
+        let fontForSystemImage = UIFont.systemFont(ofSize: Metrics.closeButtonRadius)
+        let configuration = UIImage.SymbolConfiguration(font: fontForSystemImage)
 
-        let configuration = UIImage.SymbolConfiguration(pointSize: Constants.closeButtonSymbolSize, weight: .bold)
-        closeButton.setImage(UIImage(systemName: "xmark", withConfiguration: configuration), for: .normal)
-        closeButton.tintColor = .secondaryLabel
-        closeButton.backgroundColor = .quaternarySystemFill
+        // fallback to the gridicon if for any reason the system image fails to render
+        return UIImage(systemName: Constants.closeButtonSystemName, withConfiguration: configuration) ??
+        UIImage.gridicon(.crossCircle, size: CGSize(width: Metrics.closeButtonRadius, height: Metrics.closeButtonRadius))
+    }
+
+    private lazy var closeButtonItem: UIBarButtonItem = {
+        let closeButton = CircularImageButton()
+
+        closeButton.setImage(closeButtonImage, for: .normal)
+        closeButton.tintColor = Colors.closeButtonTintColor
+        closeButton.setImageBackgroundColor(UIColor(light: .black, dark: .white))
 
         NSLayoutConstraint.activate([
-            closeButton.widthAnchor.constraint(equalToConstant: Constants.closeButtonRadius),
+            closeButton.widthAnchor.constraint(equalToConstant: Metrics.closeButtonRadius),
             closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor)
         ])
-        closeButton.layer.cornerRadius = Constants.closeButtonRadius * 0.5
 
         closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
 
@@ -88,7 +95,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func applyStyles() {
         iconImageView.clipsToBounds = false
-        switchButton.layer.cornerRadius = Constants.switchButtonCornerRadius
+        switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
     }
 
     private func setupContent() {
@@ -131,26 +138,26 @@ class JetpackFullscreenOverlayViewController: UIViewController {
                 outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
                 return outgoing
             })
-            continueButtonConfig.contentInsets = Constants.continueButtonContentInsets
+            continueButtonConfig.contentInsets = Metrics.continueButtonContentInsets
             continueButton.configuration = continueButtonConfig
 
             // Learn More Button
             var learnMoreButtonConfig: UIButton.Configuration = .plain()
-            learnMoreButtonConfig.contentInsets = Constants.learnMoreButtonContentInsets
+            learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
             learnMoreButton.configuration = learnMoreButtonConfig
         } else {
             // Continue Button
-            continueButton.contentEdgeInsets = Constants.continueButtonContentEdgeInsets
+            continueButton.contentEdgeInsets = Metrics.continueButtonContentEdgeInsets
 
             // Learn More Button
-            learnMoreButton.contentEdgeInsets = Constants.learnMoreButtonContentEdgeInsets
+            learnMoreButton.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
             learnMoreButton.flipInsetsForRightToLeftLayoutDirection()
         }
     }
 
     private func setupLearnMoreButton() {
-        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Constants.externalIconSize).withTintColor(Colors.learnMoreButtonTextColor))
-        externalAttachment.bounds = Constants.externalIconBounds
+        let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Metrics.externalIconSize).withTintColor(Colors.learnMoreButtonTextColor))
+        externalAttachment.bounds = Metrics.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)
 
         let learnMoreText = NSMutableAttributedString(string: "\(Strings.learnMoreButtonText) \u{FEFF}")
@@ -194,9 +201,8 @@ private extension JetpackFullscreenOverlayViewController {
                                                            comment: "Title of a button that displays a blog post in a web view.")
     }
 
-    enum Constants {
+    enum Metrics {
         static let closeButtonRadius: CGFloat = 30
-        static let closeButtonSymbolSize: CGFloat = 16
         static let continueButtonContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
         static let continueButtonContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
@@ -204,21 +210,28 @@ private extension JetpackFullscreenOverlayViewController {
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let switchButtonCornerRadius: CGFloat = 6
+    }
 
+    enum Constants {
         // TODO: Update link
         static let learnMoreURLString = "https://jetpack.com/blog/"
+        static let closeButtonSystemName = "xmark.circle.fill"
     }
 
     enum Colors {
         private static let jetpackGreen50 = UIColor.muriel(color: .jetpackGreen, .shade50).lightVariant()
         private static let jetpackGreen30 = UIColor.muriel(color: .jetpackGreen, .shade30).lightVariant()
 
-        static let backgroundColor = UIColor(light: .systemBackground, dark: .muriel(color: .jetpackGreen, .shade100))
-        static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50), dark: .muriel(color: .gray, .shade5))
+        static let backgroundColor = UIColor(light: .systemBackground,
+                                             dark: .muriel(color: .jetpackGreen, .shade100))
+        static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50),
+                                               dark: .muriel(color: .gray, .shade5))
         static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
         static let switchButtonBackgroundColor = jetpackGreen50
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
         static let switchButtonTextColor = UIColor.white
+        static let closeButtonTintColor = UIColor(light: .muriel(color: .gray, .shade5),
+                                                  dark: .muriel(color: .jetpackGreen, .shade90))
     }
 }
 
