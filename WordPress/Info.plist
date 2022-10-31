@@ -550,8 +550,6 @@
 		<string>Nunito-Bold.ttf</string>
 		<string>EBGaramond-Regular.ttf</string>
 	</array>
-	<key>UIApplicationShortcutWidget</key>
-	<string>org.wordpress.WordPressTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
