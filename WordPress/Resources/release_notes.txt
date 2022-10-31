@@ -1,7 +1,6 @@
-Welcome to version 21! We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view.
+* [**] [Jetpack-only] We added a new landing screen with a cool animation that responds to device motion! [#19251, #19264, #19277, #19381, #19404, #19410, #19432, #19434, #19442, #19443, #19468, #19469]
+* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
+* [***] [Jetpack-only] Widgets are now on Jetpack. Find Today, This Week, and All Time Widgets to display your Stats on your home screen. [#19479]
+* [*] Block Editor: Fixed iOS Voice Control support within Image block captions. [https://github.com/WordPress/gutenberg/pull/44850]
+* [***] Dropped support for iOS 13. Now supporting iOS 14.0 and above. [#19509]
 
-We also fixed a handful of bugs.
-
-- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
-- Cached notifications no longer appear on screen after you log out of your WordPress.com account.
-- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.
