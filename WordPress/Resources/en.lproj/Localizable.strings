@@ -1153,8 +1153,7 @@
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Best Hour";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best views ever";
 
 /* Text for related post cell preview */
@@ -1207,7 +1206,7 @@
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1565,9 +1564,6 @@
    Title of a Quick Start Tour */
 "Choose a theme" = "Choose a theme";
 
-/* Label for Publish time picker */
-"Choose a time" = "Choose a time";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Choose a topic from the list below or type your own.";
 
@@ -1775,7 +1771,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1992,6 +1987,9 @@
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuing with Apple";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Contribute";
+
 /* No comment provided by engineer. */
 "Convert to link" = "Convert to link";
 
@@ -2094,9 +2092,6 @@
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem.";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "Couldn't load data";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
@@ -2539,15 +2534,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Display Name";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Display your all-time site stats here. Configure in the WordPress app in your site stats.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Display your site stats for this week here. Configure in the WordPress app in your site stats.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Display your site stats for today here. Configure in the WordPress app in your site stats.";
 
 /* DIY site intent topic */
 "DIY" = "DIY";
@@ -4379,7 +4365,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -5029,12 +5014,12 @@
 /* Sort Order */
 "Newest first" = "Newest first";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "News";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Next";
@@ -5189,9 +5174,6 @@
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "No network available";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "No new topics to follow";
@@ -5521,9 +5503,6 @@
 
 /* Accessibility hint the Me button in My Site. */
 "Open the Me Section" = "Open the Me Section";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Open WordPress";
 
 /* Accessibility hint to open web page in Safari */
 "Opens the web page in Safari" = "Opens the web page in Safari";
@@ -6014,7 +5993,6 @@
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Posts";
@@ -6576,7 +6554,6 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -7474,9 +7451,6 @@
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Stats not loaded";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Stats will be updated next time you're online";
-
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comments";
 
@@ -8350,7 +8324,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Today";
 
@@ -9085,7 +9058,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -9126,7 +9098,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -9556,6 +9527,15 @@
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Log in to Jetpack to see all time stats.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Log in to Jetpack to see this week's stats.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Log in to Jetpack to see today's stats.";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Stay up to date with this week activity on your WordPress site.";
@@ -10181,6 +10161,14 @@ from anywhere.";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Save as Draft";
+
+/* MARK: - InfoPlist.strings */
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Save to Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Save to Jetpack";
 
 /* MARK: - Sites.strings */
 
