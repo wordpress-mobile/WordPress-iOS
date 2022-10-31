@@ -99,6 +99,9 @@ private extension MainShareViewController {
         if editorController.originatingExtension == .saveToDraft {
             // We need to make sure we don't end up with stacked modal view controllers by using this:
             shareNavController.modalPresentationStyle = .overFullScreen
+        } else {
+            shareNavController.transitioningDelegate = extensionTransitioningManager
+            shareNavController.modalPresentationStyle = .custom
         }
 
         present(shareNavController, animated: true)
