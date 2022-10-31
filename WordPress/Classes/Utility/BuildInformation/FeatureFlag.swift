@@ -37,6 +37,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
+    case jetpackFeaturesRemovalPhaseOne
+    case jetpackFeaturesRemovalPhaseTwo
+    case jetpackFeaturesRemovalPhaseThree
+    case jetpackFeaturesRemovalPhaseFour
+    case jetpackFeaturesRemovalPhaseNewUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -119,6 +124,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .newCoreDataContext:
             return true
+        case .jetpackFeaturesRemovalPhaseOne:
+            return false
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return false
+        case .jetpackFeaturesRemovalPhaseThree:
+            return false
+        case .jetpackFeaturesRemovalPhaseFour:
+            return false
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return false
         }
     }
 
@@ -129,6 +144,16 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
+        case .jetpackFeaturesRemovalPhaseOne:
+            return "jp_removal_one"
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return "jp_removal_two"
+        case .jetpackFeaturesRemovalPhaseThree:
+            return "jp_removal_three"
+        case .jetpackFeaturesRemovalPhaseFour:
+            return "jp_removal_four"
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return "jp_removal_new_users"
             default:
                 return nil
         }
@@ -219,6 +244,16 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
+        case .jetpackFeaturesRemovalPhaseOne:
+            return "Jetpack Features Removal Phase One"
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return "Jetpack Features Removal Phase Two"
+        case .jetpackFeaturesRemovalPhaseThree:
+            return "Jetpack Features Removal Phase Three"
+        case .jetpackFeaturesRemovalPhaseFour:
+            return "Jetpack Features Removal Phase Four"
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return "Jetpack Features Removal Phase For New Users"
         }
     }
 

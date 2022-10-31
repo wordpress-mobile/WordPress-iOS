@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-05 23:06:55+0000 */
+/* Translation-Revision-Date: 2022-10-27 20:36:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -149,8 +149,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ dihubungkan.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -1732,9 +1731,6 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Komentar-komentar";
-
-/* Insights 'Comments Total' header */
-"Comments Total" = "Total Komentar";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "Komentar ditutup";
@@ -3331,9 +3327,6 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Pengikut";
 
-/* Insights 'Followers Total' header */
-"Followers Total" = "Total Follower";
-
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4063,7 +4056,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Sharing section in post Settings. Should be the same as WP core. */
 "Jetpack Social" = "Jetpack Social";
 
-/* Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Koneksi Jetpack Social";
 
 /* Message to show when Publicize connection synchronization failed */
@@ -4236,9 +4230,6 @@ translators: Block name. %s: The localized block name */
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Suka";
-
-/* Insights 'Likes Total' header */
-"Likes Total" = "Total Suka";
 
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "Suka pada komentar saya";
@@ -4738,6 +4729,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -5998,9 +5990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text for privacy settings: Public */
 "Public" = "Publik";
 
-/* Insights 'Publicize' header */
-"Publicize" = "Publikasikan";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6462,6 +6451,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "SMS Terkirim";
 
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "STATUS";
+
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
 
@@ -6910,6 +6902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Bagikan WordPress dengan teman";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "Bagikan komentar";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Berbagi informasi dengan alat analitik kami tentang penggunaan layanan Anda saat sudah login ke akun WordPress.com Anda.";
@@ -8154,13 +8149,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "Total";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "Total Komentar";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Total Pengikut Email: %@";
 
-/* 'This Year' label for total number of likes. */
+/* Insights 'Total Followers' header */
+"Total Followers" = "Total Pengikut";
+
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "Total Suka";
 
 /* 'This Year' label for the total number of posts. */
@@ -9892,6 +9892,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Untuk menambahkan foto atau video ke artikel Anda.";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Gunakan tautan ini untuk mendaftarkan anggota tim Anda tanpa harus mengundang mereka satu per satu. Siapa pun yang mengunjungi URL berikut akan dapat mendaftar ke organisasi Anda, meski pun mereka menerima tautan dari orang lain, jadi pastikan Anda membagikannya dengan orang tepercaya.";
 
@@ -9949,9 +9955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post a photo prompt for the jetpack prologue */
 "jetpack.prologue.prompt.postPhoto" = "Posting foto";
 
-/* Read an article prompt for the jetpack prologue */
-"jetpack.prologue.prompt.readArticle" = "Baca artikel";
-
 /* Respond to comments prompt for the jetpack prologue */
 "jetpack.prologue.prompt.respondComments" = "Tanggapi komentar";
 
@@ -9961,8 +9964,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search for plugins prompt for the jetpack prologue */
 "jetpack.prologue.prompt.searchPlugins" = "Cari plugin";
 
-/* Search for posts or sites prompt for the jetpack prologue */
-"jetpack.prologue.prompt.searchPosts" = "Cari pos atau situs";
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "Perbarui plugin";
 
 /* Watch your stats prompt for the jetpack prologue */
 "jetpack.prologue.prompt.watchStats" = "Periksa statistik Anda";

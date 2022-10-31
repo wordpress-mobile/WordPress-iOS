@@ -7,5 +7,5 @@ struct HomeWidgetTodayData: HomeWidgetData {
     let timeZone: TimeZone
     let date: Date
     let stats: TodayWidgetStats
-    static let filename = "HomeWidgetTodayData.plist"
+    static let filename = AppConfiguration.Widget.Stats.todayFilename
 }

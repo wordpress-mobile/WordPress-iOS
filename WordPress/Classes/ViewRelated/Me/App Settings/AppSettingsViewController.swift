@@ -287,9 +287,7 @@ class AppSettingsViewController: UITableViewController {
 
             tableView?.deselectSelectedRowWithAnimation(true)
 
-            if #available(iOS 12.0, *) {
-                NSUserActivity.deleteAllSavedUserActivities {}
-            }
+            NSUserActivity.deleteAllSavedUserActivities {}
 
             let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", value: "Successfully cleared Siri Shortcut Suggestions", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -460,14 +458,12 @@ private extension AppSettingsViewController {
             spotlightClearCacheRow
         ]
 
-        if #available(iOS 12.0, *) {
-            let siriClearCacheRow = BrandedNavigationRow(
-                title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
-                action: clearSiriActivityDonations(),
-                accessibilityIdentifier: "spotlightClearCacheButton")
+        let siriClearCacheRow = BrandedNavigationRow(
+            title: NSLocalizedString("Siri Reset Prompt", value: "Clear Siri Shortcut Suggestions", comment: "Label for button that clears user activities donated to Siri."),
+            action: clearSiriActivityDonations(),
+            accessibilityIdentifier: "spotlightClearCacheButton")
 
-            tableRows.append(siriClearCacheRow)
-        }
+        tableRows.append(siriClearCacheRow)
 
         tableRows.append(mediaRemoveLocation)
         let removeLocationFooterText = NSLocalizedString("Removes location metadata from photos before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded media.")

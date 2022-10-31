@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-06 17:54:07+0000 */
+/* Translation-Revision-Date: 2022-10-21 08:01:45+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -149,8 +149,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ is verbonden.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -1732,9 +1731,6 @@ translators: Block name. %s: The localized block name */
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Reacties";
-
-/* Insights 'Comments Total' header */
-"Comments Total" = "Totaal reacties";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "Reacties zijn gesloten";
@@ -3331,9 +3327,6 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Volgers";
 
-/* Insights 'Followers Total' header */
-"Followers Total" = "Totaal aantal volgers";
-
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4063,7 +4056,8 @@ translators: Block name. %s: The localized block name */
 /* Label for the Sharing section in post Settings. Should be the same as WP core. */
 "Jetpack Social" = "Jetpack Social";
 
-/* Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social-verbindingen";
 
 /* Message to show when Publicize connection synchronization failed */
@@ -4237,9 +4231,6 @@ translators: Block name. %s: The localized block name */
    Today's Stats 'Likes' label */
 "Likes" = "Vind-ik-leuks";
 
-/* Insights 'Likes Total' header */
-"Likes Total" = "Totaal vind-ik-leuks";
-
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "Vind-ik-leuks voor mijn reacties";
 
@@ -4273,6 +4264,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link name field placeholder */
 "Link Name" = "Link naam";
+
+/* No comment provided by engineer. */
+"Link Rel" = "Linkrelatie";
 
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Link-instellingen";
@@ -4735,6 +4729,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -5995,9 +5990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text for privacy settings: Public */
 "Public" = "Openbaar";
 
-/* Insights 'Publicize' header */
-"Publicize" = "Publicize";
-
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
@@ -6459,6 +6451,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "Sms verzonden";
 
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "STATUS";
+
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
 
@@ -6907,6 +6902,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Deel WordPress met een vriend";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "Reactie delen";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Deel informatie met onze analysetool over hoe je services gebruikt terwijl je bent ingelogd op je WordPress.com-account.";
@@ -8151,13 +8149,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "Totaal";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "Totaal aantal reacties";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Totaal aantal e-mailvolgers: %@";
 
-/* 'This Year' label for total number of likes. */
+/* Insights 'Total Followers' header */
+"Total Followers" = "Totaal aantal e-mailvolgers";
+
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "Totaal aantal vind-ik-leuks";
 
 /* 'This Year' label for the total number of posts. */
@@ -9889,6 +9892,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Voor het toevoegen van foto's of video's aan je berichten.";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
@@ -9946,9 +9955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post a photo prompt for the jetpack prologue */
 "jetpack.prologue.prompt.postPhoto" = "Plaats een foto";
 
-/* Read an article prompt for the jetpack prologue */
-"jetpack.prologue.prompt.readArticle" = "Lees een artikel";
-
 /* Respond to comments prompt for the jetpack prologue */
 "jetpack.prologue.prompt.respondComments" = "Reageer op reacties";
 
@@ -9958,8 +9964,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Search for plugins prompt for the jetpack prologue */
 "jetpack.prologue.prompt.searchPlugins" = "Zoek naar plugins";
 
-/* Search for posts or sites prompt for the jetpack prologue */
-"jetpack.prologue.prompt.searchPosts" = "Zoek naar berichten of sites";
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "Een plugin bijwerken";
 
 /* Watch your stats prompt for the jetpack prologue */
 "jetpack.prologue.prompt.watchStats" = "Bekijk je statistieken";

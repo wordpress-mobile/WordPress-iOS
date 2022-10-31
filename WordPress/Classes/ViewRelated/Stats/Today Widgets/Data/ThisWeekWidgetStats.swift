@@ -107,7 +107,7 @@ extension ThisWeekWidgetStats {
         return days
     }
 
-    private static var dataFileName = "ThisWeekData.plist"
+    private static var dataFileName = AppConfiguration.Widget.StatsToday.thisWeekFilename
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {

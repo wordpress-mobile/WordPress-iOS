@@ -1,7 +1,9 @@
-Artık bağımsız olarak barındırılan bir sitede oturum açmış durumdayken bir WordPress.com oturum açma işlemini iptal edebilirsiniz; fikrinizi değiştirirseniz oturum açma ekranında takılıp kalmazsınız.
+21 sürümüne hoş geldiniz! Bu vesileyle, içeriği taslak olarak kaydedebilmeniz ve cihazınızın yerleşik menülerini kullanarak Jetpack'te içerik paylaşabilmeniz için uzantılar ekledik. Ayrıca cihazınızda daha ayrıntılı anlık bildirimler alacaksınız.
 
-Jetpack uygulaması, siz diğer uygulamaları kullanırken arka planda haftalık özetler çalıştırabilir. Uçma zamanı.
+Uygulamanın başlatma ekranını basit, şık bir tasarımla güncelledik ve Yorum Ayrıntıları görünümünde kullanıcı dostu bazı tasarım geliştirmeleri yaptık. Ayrıca, Uygulama Ayarları menüsündeki bir dizi renkli seçeneği kullanarak Jetpack uygulamanızın simgesini değiştirebilirsiniz.
 
-iPad ekranlarında “Bildirimleri aç” düğmesi artık anlık bildirimleri açma talimatlarının üzerinde yer almıyor. "Sonuç yok" yan menü metni artık ekrana sığıyor.
+Ayrıca birkaç hatayı da düzelttik.
 
-Bir varmış bir yokmuş, Öykü Yayını taslağındaki bir resim silindiğinde öyküdeki bir sonraki resmin yüklenmesini engelleyen bir sorunu düzeltmişiz. Ve herkes sonsuza kadar mutlu yaşamış.
+- Yatay modda bir Gönderi veya Sayfa üzerinde çalışırken yayın metni görünmez, yalnızca dikey modda görünür. Artık klavye çakışması yaşamayacaksınız.
+- Önbelleğe alınmış bildirimler artık WordPress.com hesabınızdan çıkış yaptıktan sonra ekranda görünmeyecek.
+- Oturum açma işlemi sırasında kaybolan gezinme çubuğunun da durumunu araştırdık. Artık baştan sona görünür durumda. Gizem çözüldü.
