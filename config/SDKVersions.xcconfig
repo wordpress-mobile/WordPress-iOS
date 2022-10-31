@@ -7,3 +7,4 @@ SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) $(WP_IOS_SDK)
 
 // TODO: Move to dedicated file
 WARNING_CFLAGS = -Wno-nullability-completeness
+IPHONEOS_DEPLOYMENT_TARGET = 14.0
