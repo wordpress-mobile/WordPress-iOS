@@ -8,10 +8,7 @@ class TimeSelectionView: UIView {
     private lazy var timePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
 
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-        }
-
+        datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .time
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.setDate(selectedTime, animated: false)
