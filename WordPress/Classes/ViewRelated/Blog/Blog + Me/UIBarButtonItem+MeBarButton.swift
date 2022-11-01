@@ -3,23 +3,39 @@ import UIKit
 
 /// Add a UIBarButtonItem to the navigation bar that  presents the Me scene.
 extension UIViewController {
-    @objc
-    func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+
+    @objc func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter? = nil) {
+        let rightBarButtonItem = UIBarButtonItem(
             email: email,
             action: { [weak self] in
                 guard let self = self else {
                     return
                 }
 
-                meScenePresenter.present(on: self, animated: true, completion: nil)
+                meScenePresenter?.present(on: self, animated: true, completion: nil)
             })
+        rightBarButtonItem.isEnabled = meScenePresenter != nil
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 }
 
-/// methods to set the gravatar image on the me button
-private extension UIBarButtonItem {
+extension UIBarButtonItem {
     typealias TapAction = () -> Void
+
+    /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
+     convenience init(
+        email: String?,
+        style: UIBarButtonItem.Style = .plain,
+        action: TapAction? = nil) {
+
+        self.init()
+        makeMeButtonAccessible()
+        customView = makeGravatarTappableView(with: email, action: action)
+     }
+}
+
+/// Methods to set the gravatar image on the me button
+fileprivate extension UIBarButtonItem {
 
     /// gravatar configuration parameters
     struct GravatarConfiguration {
@@ -30,20 +46,9 @@ private extension UIBarButtonItem {
         static let fallBackImage = UIImage.gridicon(.userCircle)
     }
 
-    /// Assign the gravatar CircularImageView to the customView property and attach the passed target/action.
-     convenience init(
-        email: String?,
-        style: UIBarButtonItem.Style = .plain,
-        action: @escaping TapAction) {
-
-        self.init()
-        makeMeButtonAccessible()
-        customView = makeGravatarTappableView(with: email, action: action)
-     }
-
     /// Create the gravatar CircluarImageView with a fade animation on tap.
     /// If no valid email is provided, fall back to the circled user icon
-    func makeGravatarTappableView(with email: String?, action: @escaping TapAction) -> UIView {
+    func makeGravatarTappableView(with email: String?, action: TapAction? = nil) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
 
         gravatarImageView.adjustView = { [weak self] view in
@@ -68,8 +73,10 @@ private extension UIBarButtonItem {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }
 
-        let tapRecognizer = BindableTapGestureRecognizer(action: { _ in action() })
-        gravatarImageView.addGestureRecognizer(tapRecognizer)
+        if let action = action {
+            let tapRecognizer = BindableTapGestureRecognizer(action: { _ in action() })
+            gravatarImageView.addGestureRecognizer(tapRecognizer)
+        }
 
         return embedInView(gravatarImageView)
     }
