@@ -8,10 +8,10 @@ open class ShareExtensionService: NSObject {
     ///
     @objc class func configureShareExtensionToken(_ oauth2Token: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
+            try SFHFKeychainUtils.storeUsername(
                 WPShareExtensionKeychainTokenKey,
-                password: oauth2Token,
-                serviceName: WPShareExtensionKeychainServiceName,
+                andPassword: oauth2Token,
+                forServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -26,10 +26,10 @@ open class ShareExtensionService: NSObject {
     ///
     @objc class func configureShareExtensionUsername(_ username: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
+            try SFHFKeychainUtils.storeUsername(
                 WPShareExtensionKeychainUsernameKey,
-                password: username,
-                serviceName: WPShareExtensionKeychainServiceName,
+                andPassword: username,
+                forServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -98,9 +98,9 @@ open class ShareExtensionService: NSObject {
     ///
     @objc class func removeShareExtensionConfiguration() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                username: WPShareExtensionKeychainTokenKey,
-                serviceName: WPShareExtensionKeychainServiceName,
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: WPShareExtensionKeychainTokenKey,
+                andServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -108,9 +108,9 @@ open class ShareExtensionService: NSObject {
         }
 
         do {
-            try KeychainUtils.shared.deleteItem(
-                username: WPShareExtensionKeychainUsernameKey,
-                serviceName: WPShareExtensionKeychainServiceName,
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: WPShareExtensionKeychainUsernameKey,
+                andServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -130,9 +130,9 @@ open class ShareExtensionService: NSObject {
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
     @objc class func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? KeychainUtils.shared.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
-                                                                                 serviceName: WPShareExtensionKeychainServiceName,
-                                                                                 accessGroup: WPAppKeychainAccessGroup) else {
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
+                                                                              andServiceName: WPShareExtensionKeychainServiceName,
+                                                                              accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
 
@@ -142,9 +142,9 @@ open class ShareExtensionService: NSObject {
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
     @objc class func retrieveShareExtensionUsername() -> String? {
-        guard let oauth2Token = try? KeychainUtils.shared.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
-                                                                                 serviceName: WPShareExtensionKeychainServiceName,
-                                                                                 accessGroup: WPAppKeychainAccessGroup) else {
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
+                                                                              andServiceName: WPShareExtensionKeychainServiceName,
+                                                                              accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
 

@@ -52,10 +52,10 @@ static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 
         // Migrate passwords
         NSError *error;
-        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:@"WordPress.com" accessGroup:nil error:&error];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" accessGroup:nil error:nil];
         if (password) {
-            if ([KeychainUtils.shared storeUsername:username password:password serviceName:WPComXMLRPCUrl accessGroup:nil updateExisting:YES error:&error]) {
-                [KeychainUtils.shared deleteItemWithUsername:username serviceName:@"WordPress.com" accessGroup:nil error:&error];
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:WPComXMLRPCUrl accessGroup:nil updateExisting:YES error:&error]) {
+                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:@"WordPress.com" accessGroup:nil error:&error];
             }
         }
         if (error) {
@@ -111,7 +111,7 @@ static NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 - (NSString *)jetpackPasswordForBlog:(NSManagedObject *)blog
 {
     NSError *error = nil;
-    return [KeychainUtils.shared getPasswordForUsername:[self jetpackUsernameForBlog:blog] serviceName:@"WordPress.com" accessGroup:nil error:&error];
+    return [SFHFKeychainUtils getPasswordForUsername:[self jetpackUsernameForBlog:blog] andServiceName:@"WordPress.com" accessGroup:nil error:&error];
 }
 
 @end

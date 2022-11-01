@@ -4,7 +4,7 @@ protocol CredentialsProvider {
 
 struct KeychainCredentialsProvider: CredentialsProvider {
     func getPassword(username: String, service: String) -> String? {
-        return try? KeychainUtils.shared.getPasswordForUsername(username, serviceName: service)
+        return try? SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: service)
     }
 }
 
