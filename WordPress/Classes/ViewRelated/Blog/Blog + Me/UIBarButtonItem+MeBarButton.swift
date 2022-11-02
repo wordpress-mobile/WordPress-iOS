@@ -5,16 +5,16 @@ import UIKit
 extension UIViewController {
 
     @objc func addMeButtonToNavigationBar(email: String?, meScenePresenter: ScenePresenter? = nil) {
-        let rightBarButtonItem = UIBarButtonItem(
-            email: email,
-            action: { [weak self] in
+        var action: UIBarButtonItem.TapAction?
+        if let meScenePresenter {
+            action = { [weak self] in
                 guard let self = self else {
                     return
                 }
-
-                meScenePresenter?.present(on: self, animated: true, completion: nil)
-            })
-        rightBarButtonItem.isEnabled = meScenePresenter != nil
+                meScenePresenter.present(on: self, animated: true, completion: nil)
+            }
+        }
+        let rightBarButtonItem = UIBarButtonItem(email: email, action: action)
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 }
@@ -46,7 +46,7 @@ fileprivate extension UIBarButtonItem {
         static let fallBackImage = UIImage.gridicon(.userCircle)
     }
 
-    /// Create the gravatar CircluarImageView with a fade animation on tap.
+    /// Create the gravatar CircluarImageView with a fade animation on tap if an action is provided.
     /// If no valid email is provided, fall back to the circled user icon
     func makeGravatarTappableView(with email: String?, action: TapAction? = nil) -> UIView {
         let gravatarImageView = GravatarButtonView(tappableWidth: GravatarConfiguration.tappableWidth)
@@ -64,7 +64,7 @@ fileprivate extension UIBarButtonItem {
             }
         }
 
-        gravatarImageView.isUserInteractionEnabled = true
+        gravatarImageView.isUserInteractionEnabled = action != nil
         gravatarImageView.contentMode = .scaleAspectFill
 
         if let email = email {
