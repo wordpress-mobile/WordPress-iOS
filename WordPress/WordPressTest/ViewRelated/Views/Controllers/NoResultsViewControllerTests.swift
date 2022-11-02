@@ -10,6 +10,7 @@ class NoResultsViewControllerTests: XCTestCase {
         This is a long Text. This is a long Text. This is a long Text. This is a long Text. This is a long Text.
         This is a long Text. This is a long Text. This is a long Text. This is a long Text. This is a long Text.
         """
+        static let noResultsText = "No media matching your search"
         static let iPhoneSeSize = CGSize(width: 320, height: 568)
         static let iPadProSize = CGSize(width: 1024, height: 1366)
         static let resultViewMaxWidth: CGFloat = 360
@@ -20,13 +21,13 @@ class NoResultsViewControllerTests: XCTestCase {
     private var parentViewController: UIViewController!
 
     override func setUpWithError() throws {
-        self.resultViewController = NoResultsViewController.controller()
-        self.parentViewController = UIViewController()
+        resultViewController = NoResultsViewController.controller()
+        parentViewController = UIViewController()
     }
 
     override func tearDownWithError() throws {
-        self.resultViewController = nil
-        self.parentViewController = nil
+        resultViewController = nil
+        parentViewController = nil
     }
 
     func testTitleLabelWidthForLongTextInSmallScreen() {
@@ -91,6 +92,20 @@ class NoResultsViewControllerTests: XCTestCase {
         XCTAssertTrue(resultViewController.subtitleTextView.frame.width <= Constants.resultViewMaxWidth)
     }
 
+    func testTitleLabelWidthForNoSearchResults() {
+        // Given
+        let parentViewSize = Constants.iPadProSize
+        parentViewController.view.frame = CGRect(origin: .zero, size: parentViewSize)
+
+        // When
+        resultViewController.configureForNoSearchResults(title: Constants.noResultsText)
+        addResultViewControllerToParent()
+
+        // Then
+        XCTAssertEqual(resultViewController.titleLabel.text, Constants.noResultsText)
+        XCTAssertTrue(resultViewController.noResultsView.isHidden)
+        XCTAssertTrue(resultViewController.titleLabel.frame.width <= parentViewSize.width)
+    }
 }
 
 private extension NoResultsViewControllerTests {
