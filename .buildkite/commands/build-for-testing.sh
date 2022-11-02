@@ -7,7 +7,6 @@ echo "--- :cocoapods: Setting up Pods"
 install_cocoapods
 
 echo "--- :writing_hand: Copy Files"
-cp -v fastlane/env/project.env-example .configure-files/project.env
 mkdir -pv ~/.configure/wordpress-ios/secrets
 cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/project.env
 
