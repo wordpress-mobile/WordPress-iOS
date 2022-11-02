@@ -1,3 +1,1 @@
-* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
-* [*] Block Editor: Fixed iOS Voice Control support within Image block captions. [https://github.com/WordPress/gutenberg/pull/44850]
-* [***] Dropped support for iOS 13. Now supporting iOS 14.0 and above. [#19509]
+Voice Control is now easier to use in the block editor—when you’re working with Image blocks, use the Voice Control cursor to select the caption for text entry.
