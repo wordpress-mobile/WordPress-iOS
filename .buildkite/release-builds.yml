@@ -14,8 +14,18 @@ common_params:
 
 steps:
 
+  # Make sure there is a cached version of the pods avaialble before testing
+  # the app or deploying installable builds to avoid parallel steps wasting
+  # time building the same `Podfile.lock` from scratch.
+  - label: ':cocoapods: Pre-load Pods'
+    key: pods
+    command: .buildkite/commands/load-pods.sh
+    env: *common_env
+    plugins: *common_plugins
+
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
+    depends_on: "pods"
     env: *common_env
     plugins: *common_plugins
     notify:
@@ -23,6 +33,7 @@ steps:
 
   - label: ":wordpress: :appcenter: WordPress Release Build (App Center)"
     command: ".buildkite/commands/release-build-wordpress-internal.sh"
+    depends_on: "pods"
     env: *common_env
     plugins: *common_plugins
     notify:
@@ -30,6 +41,7 @@ steps:
 
   - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-jetpack.sh"
+    depends_on: "pods"
     env: *common_env
     plugins: *common_plugins
     notify:

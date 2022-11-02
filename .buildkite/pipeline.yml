@@ -13,6 +13,15 @@ common_params:
 # This is the default pipeline – it will build and test the app
 steps:
 
+  # Make sure there is a cached version of the pods avaialble before testing
+  # the app or deploying installable builds to avoid parallel steps wasting
+  # time building the same `Podfile.lock` from scratch.
+  - label: ':cocoapods: Pre-load Pods'
+    key: pods
+    command: .buildkite/commands/load-pods.sh
+    env: *common_env
+    plugins: *common_plugins
+
   #################
   # Create Installable Builds for WP and JP
   #################
@@ -20,6 +29,7 @@ steps:
     steps:
       - label: "🛠 WordPress Installable Build"
         command: ".buildkite/commands/installable-build-wordpress.sh"
+        depends_on: "pods"
         env: *common_env
         plugins: *common_plugins
         if: "build.pull_request.id != null || build.pull_request.draft"
@@ -29,6 +39,7 @@ steps:
 
       - label: "🛠 Jetpack Installable Build"
         command: ".buildkite/commands/installable-build-jetpack.sh"
+        depends_on: "pods"
         env: *common_env
         plugins: *common_plugins
         if: "build.pull_request.id != null || build.pull_request.draft"
@@ -42,6 +53,7 @@ steps:
   - label: "🛠 Build for Testing"
     key: "build"
     command: ".buildkite/commands/build-for-testing.sh"
+    depends_on: "pods"
     env: *common_env
     plugins: *common_plugins
     notify:
