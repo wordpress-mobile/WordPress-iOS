@@ -45,15 +45,9 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v21.0-whats-new"
+msgctxt "v21.1-whats-new"
 msgid ""
-"Welcome to version 21! We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view.\n"
-"\n"
-"We also fixed a handful of bugs.\n"
-"\n"
-"- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.\n"
-"- Cached notifications no longer appear on screen after you log out of your WordPress.com account.\n"
-"- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.\n"
+"Voice Control is now easier to use in the block editor—when you’re working with Image blocks, use the Voice Control cursor to select the caption for text entry.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

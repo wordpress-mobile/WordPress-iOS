@@ -1,6 +1,3 @@
-* [**] We added a new landing screen with a cool animation that responds to device motion! [#19251, #19264, #19277, #19381, #19404, #19410, #19432, #19434, #19442, #19443, #19468, #19469]
-* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
-* [***] Widgets are now on Jetpack. Find Today, This Week, and All Time Widgets to display your Stats on your home screen. [#19479]
-* [*] Block Editor: Fixed iOS Voice Control support within Image block captions. [https://github.com/WordPress/gutenberg/pull/44850]
-* [***] Dropped support for iOS 13. Now supporting iOS 14.0 and above. [#19509]
+Dynamic widgets are now on Jetpack. Get daily, weekly, and all-time stats on your device’s home screen. You’ll also notice a shiny new landing screen in the app that responds to your device’s motion.
 
+Voice Control is now easier to use in the block editor—when you’re working with Image blocks, use the Voice Control cursor to select the caption for text entry.
