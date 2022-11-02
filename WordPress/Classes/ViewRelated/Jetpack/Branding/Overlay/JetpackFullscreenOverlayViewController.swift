@@ -139,15 +139,16 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func setupButtonInsets() {
         if #available(iOS 15.0, *) {
-            // Continue Button
-            var continueButtonConfig: UIButton.Configuration = .plain()
-            continueButtonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
+            // Continue & Switch Buttons
+            var buttonConfig: UIButton.Configuration = .plain()
+            buttonConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ incoming in
                 var outgoing = incoming
                 outgoing.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
                 return outgoing
             })
-            continueButtonConfig.contentInsets = Metrics.continueButtonContentInsets
-            continueButton.configuration = continueButtonConfig
+            buttonConfig.contentInsets = Metrics.mainButtonsContentInsets
+            continueButton.configuration = buttonConfig
+            switchButton.configuration = buttonConfig
 
             // Learn More Button
             var learnMoreButtonConfig: UIButton.Configuration = .plain()
@@ -155,7 +156,10 @@ class JetpackFullscreenOverlayViewController: UIViewController {
             learnMoreButton.configuration = learnMoreButtonConfig
         } else {
             // Continue Button
-            continueButton.contentEdgeInsets = Metrics.continueButtonContentEdgeInsets
+            continueButton.contentEdgeInsets = Metrics.mainButtonsContentEdgeInsets
+
+            // Switch Button
+            switchButton.contentEdgeInsets = Metrics.mainButtonsContentEdgeInsets
 
             // Learn More Button
             learnMoreButton.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
@@ -211,8 +215,8 @@ private extension JetpackFullscreenOverlayViewController {
 
     enum Metrics {
         static let closeButtonRadius: CGFloat = 30
-        static let continueButtonContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
-        static let continueButtonContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
+        static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)
