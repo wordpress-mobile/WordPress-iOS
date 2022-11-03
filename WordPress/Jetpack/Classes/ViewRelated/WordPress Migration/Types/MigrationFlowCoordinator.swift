@@ -21,11 +21,7 @@ final class MigrationFlowCoordinator {
 
     // MARK: - Init
 
-    init() {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
-            fatalError()
-        }
+    init(account: WPAccount) {
         self.account = account
     }
 
