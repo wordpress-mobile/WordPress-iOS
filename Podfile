@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58.2-beta.1'
+  pod 'WordPressKit', '~> 4.58', '>= 4.58.2'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -179,7 +179,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.84.1'
+  gutenberg tag: 'v1.85.0'
 
   ## Third party libraries
   ## =====================
@@ -302,42 +302,6 @@ target 'JetpackDraftActionExtension' do
   aztec
   shared_with_all_pods
   shared_with_networking_pods
-  wordpress_ui
-end
-
-## Today Widget
-## ============
-##
-target 'WordPressTodayWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## All Time Widget
-## ============
-##
-target 'WordPressAllTimeWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## This Week Widget
-## ============
-##
-target 'WordPressThisWeekWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
   wordpress_ui
 end
 

@@ -193,6 +193,11 @@ extension ContextManager {
     @objc public class func overrideSharedInstance(_ instance: CoreDataStack?) {
         ContextManager.overrideInstance = instance
     }
+
+    enum ContextManagerError: Error {
+        case missingCoordinatorOrStore
+        case missingDatabase
+    }
 }
 
 extension CoreDataStack {
@@ -213,5 +218,129 @@ extension CoreDataStack {
                 continuation.resume(with: $0)
             }
         }
+    }
+
+    /// Creates a copy of the current open store and saves it to the specified destination
+    /// - Parameter backupLocation: Location to save the store copy to
+    func createStoreCopy(to backupLocation: URL) throws {
+        guard let storeCoordinator = mainContext.persistentStoreCoordinator,
+              let store = storeCoordinator.persistentStores.first else {
+            throw ContextManager.ContextManagerError.missingCoordinatorOrStore
+        }
+
+        let model = storeCoordinator.managedObjectModel
+        let storeCoordinatorCopy = NSPersistentStoreCoordinator(managedObjectModel: model)
+        var storeOptions = store.options
+        storeOptions?[NSReadOnlyPersistentStoreOption] = true
+        let storeCopy = try storeCoordinatorCopy.addPersistentStore(ofType: store.type,
+                                                                    configurationName: store.configurationName,
+                                                                    at: store.url,
+                                                                    options: storeOptions)
+        try storeCoordinatorCopy.migratePersistentStore(storeCopy,
+                                                        to: backupLocation,
+                                                        withType: storeCopy.type)
+    }
+
+    /// Replaces the current active store with the database at the specified location.
+    ///
+    /// The following steps are performed:
+    ///   - Remove the current store from the store coordinator.
+    ///   - Create a backup of the current database.
+    ///   - Copy the source database over the current database. If this fails, restore the backup files.
+    ///   - Attempt to re-add the store with the new database or original database if the copy failed. If adding the new store fails, restore the backup and try to re-add the old store.
+    ///   - Finally, remove all the backup files and source database if everything was successful.
+    ///
+    /// **Warning: This is destructive towards the active database. It will be overwritten on success.**
+    /// - Parameter databaseLocation: Database to overwrite the current one with
+    func restoreStoreCopy(from databaseLocation: URL) throws {
+        guard let storeCoordinator = mainContext.persistentStoreCoordinator,
+              let store = storeCoordinator.persistentStores.first else {
+            throw ContextManager.ContextManagerError.missingCoordinatorOrStore
+        }
+
+        let (databaseLocation, shmLocation, walLocation) = databaseFiles(for: databaseLocation)
+
+        guard let currentDatabaseLocation = store.url,
+              FileManager.default.fileExists(atPath: databaseLocation.path),
+              FileManager.default.fileExists(atPath: shmLocation.path),
+              FileManager.default.fileExists(atPath: walLocation.path)  else {
+            throw ContextManager.ContextManagerError.missingDatabase
+        }
+
+        try storeCoordinator.remove(store)
+        let databaseReplaced = replaceDatabase(from: databaseLocation, to: currentDatabaseLocation)
+
+        do {
+            try storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
+                                                    configurationName: nil,
+                                                    at: currentDatabaseLocation)
+
+            if databaseReplaced {
+                // The database was replaced successfully and the store added with no errors so we
+                // can remove the source database & backup files
+                let (databaseBackup, shmBackup, walBackup) = backupFiles(for: currentDatabaseLocation)
+                try? FileManager.default.removeItem(at: databaseLocation)
+                try? FileManager.default.removeItem(at: shmLocation)
+                try? FileManager.default.removeItem(at: walLocation)
+                try? FileManager.default.removeItem(at: databaseBackup)
+                try? FileManager.default.removeItem(at: shmBackup)
+                try? FileManager.default.removeItem(at: walBackup)
+            }
+        } catch {
+            // Re-adding the store failed for some reason, attempt to restore the backup
+            // and use that store instead. We re-throw the error so that the caller can
+            // attempt to handle the error
+            restoreDatabaseBackup(at: currentDatabaseLocation)
+            _ = try? storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
+                                                         configurationName: nil,
+                                                         at: currentDatabaseLocation)
+            throw error
+        }
+    }
+
+    private func databaseFiles(for database: URL) -> (database: URL, shm: URL, wal: URL) {
+        let shmFile = URL(string: database.absoluteString.appending("-shm"))!
+        let walFile = URL(string: database.absoluteString.appending("-wal"))!
+        return (database, shmFile, walFile)
+    }
+
+    private func backupFiles(for database: URL) -> (database: URL, shm: URL, wal: URL) {
+        let (database, shmFile, walFile) = databaseFiles(for: database)
+        let databaseBackup = database.appendingPathExtension("backup")
+        let shmBackup = shmFile.appendingPathExtension("backup")
+        let walBackup = walFile.appendingPathExtension("backup")
+        return (databaseBackup, shmBackup, walBackup)
+    }
+
+    private func replaceDatabase(from source: URL, to destination: URL) -> Bool {
+        let (source, sourceShm, sourceWal) = databaseFiles(for: source)
+        let (destination, destinationShm, destinationWal) = databaseFiles(for: destination)
+        let (databaseBackup, shmBackup, walBackup) = backupFiles(for: destination)
+
+        do {
+            try FileManager.default.copyItem(at: destination, to: databaseBackup)
+            try FileManager.default.copyItem(at: destinationShm, to: shmBackup)
+            try FileManager.default.copyItem(at: destinationWal, to: walBackup)
+            try FileManager.default.removeItem(at: destination)
+            try FileManager.default.removeItem(at: destinationShm)
+            try FileManager.default.removeItem(at: destinationWal)
+            try FileManager.default.copyItem(at: source, to: destination)
+            try FileManager.default.copyItem(at: sourceShm, to: destinationShm)
+            try FileManager.default.copyItem(at: sourceWal, to: destinationWal)
+            return true
+        } catch {
+            // Attempt to restore backup files. Some might not exist depending on where the process failed
+            DDLogError("Error when replacing database: \(error)")
+            restoreDatabaseBackup(at: destination)
+            return false
+        }
+    }
+
+    private func restoreDatabaseBackup(at location: URL) {
+        let (location, locationShm, locationWal) = databaseFiles(for: location)
+        let (databaseBackup, shmBackup, walBackup) = backupFiles(for: location)
+        _ = try? FileManager.default.replaceItemAt(location, withItemAt: databaseBackup)
+        _ = try? FileManager.default.replaceItemAt(locationShm, withItemAt: shmBackup)
+        _ = try? FileManager.default.replaceItemAt(locationWal, withItemAt: walBackup)
     }
 }
