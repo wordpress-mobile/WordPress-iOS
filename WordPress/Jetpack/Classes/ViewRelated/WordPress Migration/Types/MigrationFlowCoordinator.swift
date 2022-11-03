@@ -8,7 +8,9 @@ final class MigrationFlowCoordinator {
 
     private(set) lazy var navigationController: UINavigationController = {
         let rootViewController = self.viewController(for: currentStep)
-        return MigrationFlowNavigationController(rootViewController: rootViewController)
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        self.configure(navigationController: navigationController)
+        return navigationController
     }()
 
     // MARK: - State
@@ -55,6 +57,21 @@ final class MigrationFlowCoordinator {
             viewController.view.backgroundColor = .systemBackground
             return viewController
         }
+    }
+
+    private func configure(navigationController: UINavigationController) {
+        let navigationBar = navigationController.navigationBar
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        let scrollEdgeAppearance = UINavigationBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        navigationBar.standardAppearance = standardAppearance
+        navigationBar.scrollEdgeAppearance = scrollEdgeAppearance
+        navigationBar.compactAppearance = standardAppearance
+        if #available(iOS 15.0, *) {
+            navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
+        }
+        navigationBar.isTranslucent = true
     }
 
     // MARK: - Factories
