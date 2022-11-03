@@ -515,7 +515,7 @@ PODS:
     - WordPressKit (~> 4.18-beta)
     - WordPressShared (~> 1.12-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.58.2-beta.1):
+  - WordPressKit (4.58.2):
     - Alamofire (~> 4.8.0)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
@@ -618,7 +618,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (>= 3.2.2, ~> 3.2)
-  - WordPressKit (~> 4.58.2-beta.1)
+  - WordPressKit (>= 4.58.2, ~> 4.58)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.6)
@@ -629,6 +629,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -666,7 +667,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -887,7 +887,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 5110c62de1b1b1eb1f2a43fd2599f7f6c7a6659d
-  WordPressKit: 57142466919a035114ba6bebfc0e29e05d5c4e70
+  WordPressKit: d8bc00bce09273fc241cf171b0e61ef8f4f29479
   WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 749ebfa75fb2b6df4f5e5d9d0847e9512ad74d28
@@ -902,6 +902,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 37bdb325d8b7f8f04adadfd4edc290a40093d1c9
+PODFILE CHECKSUM: a12836837e94243e127f3602e0c15d48a572520e
 
 COCOAPODS: 1.11.2

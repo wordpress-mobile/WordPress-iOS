@@ -22,8 +22,8 @@ class RemoteFeatureFlagTests: XCTestCase {
             exp.fulfill()
         }
 
-        store.updateIfNeeded(using: mock)
-        store.updateIfNeeded(using: mock)
+        store.update(using: mock)
+        store.update(using: mock)
 
         wait(for: [exp], timeout: 1.0)
     }
@@ -45,10 +45,10 @@ class RemoteFeatureFlagTests: XCTestCase {
     }
 
     func testThatUpdateCachesNewFlags() {
-        let mock = MockFeatureFlagRemote(flags: MockFeatureFlag.remoteCases)
+        let mock = MockFeatureFlagRemote(mockFlags: MockFeatureFlag.remoteCases)
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
 
-        store.updateIfNeeded(using: mock)
+        store.update(using: mock)
 
         // All of the remotely defined values should be present
         XCTAssertTrue(store.hasValue(for: MockFeatureFlag.remotelyEnabledLocallyEnabledFeature))
@@ -75,9 +75,14 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
     var flags: FeatureFlagList
     var deviceIdCallback: ((String) -> Void)?
 
-    init(flags: [MockFeatureFlag] = [], shouldSucceed: Bool = true) {
-        self.flags = flags
+    init(mockFlags: [MockFeatureFlag] = []) {
+        self.flags = mockFlags
             .compactMap { $0.toFeatureFlag }
+        super.init()
+    }
+
+    init(flags: [WordPressKit.FeatureFlag]) {
+        self.flags = flags
         super.init()
     }
 

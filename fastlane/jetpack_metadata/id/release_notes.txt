@@ -1,9 +1,9 @@
-Selamat datang di versi 21! Di kesempatan ini, kami menambahkan ekstensi agar Anda dapat menyimpan konten sebagai konsep dan membagikan konten ke Jetpack menggunakan menu bawaan perangkat. Anda juga akan mendapatkan pemberitahuan push lebih rinci di perangkat.
+Selamat datang di versi 21! Di versi ini, kami menambahkan ekstensi agar Anda dapat menyimpan konten sebagai konsep dan membagikan konten ke Jetpack menggunakan menu bawaan perangkat. Anda juga akan mendapatkan pemberitahuan push lebih lengkap di perangkat.
 
-Kami memperbarui layar peluncuran aplikasi dengan desain sederhana dan simpel, serta melakukan sejumlah upgrade desain ramah pengguna pada tampilan Detail Komentar. Anda juga dapat mengubah ikon aplikasi Jetpack dengan beragam pilihan di menu Pengaturan Aplikasi.
+Kami memperbarui layar peluncuran aplikasi dengan desain apik dan simpel, serta melakukan sejumlah upgrade desain ramah pengguna pada tampilan Detail Komentar. Anda juga dapat mengubah ikon aplikasi Jetpack dengan beragam pilihan menarik di menu Pengaturan Aplikasi.
 
 Terakhir, kami memperbaiki sejumlah bug.
 
-- Teks Poskan tidak muncul saat Anda sedang mengerjakan Pos atau Halaman di mode lanskap, hanya potret. Tidak ada lagi teks bertumpuk.
-- Pemberitahuan cache tidak lagi muncul di layar setelah logout dari akun WordPress.com Anda.
+- Teks Poskan tidak tampak saat Anda sedang mengerjakan Pos atau Halaman di mode lanskap. Teks hanya akan tampak di mode portrait. Tampilan keyboard tidak lagi menutupi teks.
+- Pemberitahuan cache tidak lagi tampak di layar setelah logout dari akun WordPress.com Anda.
 - Kami telah menyelidiki kasus hilangnya bilah navigasi selama proses Login. Sekarang bilah terlihat dari awal hingga akhir. Masalah teratasi.

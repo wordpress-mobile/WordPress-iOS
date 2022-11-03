@@ -1,0 +1,7 @@
+Välkommen till version 21! Appens startskärm har fått en enkel och stilig uppfräschning och några användarvänliga designändringar i detaljvyn över kommentarer.
+
+Och så har vi korrigerat några fel.
+
+– Texten ”publicera” visas bara när du arbetar med ett inlägg eller en sida i stående format och inte i liggande. Så den kommer inte längre att krocka med tangentbordet.
+– Sparade notiser visas inte längre på skärmen om du har loggat ut ur ditt konto hos WordPress.com.
+– Vi har noga undersökt mysteriet med navigeringsfältet som försvann medan man höll på att logga in. Nu är fältet synligt hela tiden, så problemet är löst.

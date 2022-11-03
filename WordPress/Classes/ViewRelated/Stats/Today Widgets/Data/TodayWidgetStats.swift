@@ -3,7 +3,6 @@ import Foundation
 
 /// This struct contains data for the Insights Today stats to be displayed in the corresponding widget.
 /// The data is stored in a plist for the widget to access.
-/// This file is shared with WordPressTodayWidget, which accesses the data when it is viewed.
 ///
 
 struct TodayWidgetStats: Codable {

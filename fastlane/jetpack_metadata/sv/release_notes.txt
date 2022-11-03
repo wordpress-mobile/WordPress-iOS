@@ -1,0 +1,9 @@
+Välkommen till version 21! För att fira det har vi lagt till utökningar så att du kan spara innehåll som utkast och dela innehåll till Jetpack med din enhets inbyggda menyer. Du får även mer detaljerade push-aviseringar på din enhet.
+
+Vi har uppdaterat appens startskärm med en enkel, smidig design och gjort några användarvänliga designuppgraderingar av vyn Kommentarsinformation. Du kan även ändra Jetpack-appens ikon med en rad olika färgglada alternativ i menyn Appinställningar.
+
+Slutligen har vi åtgärdat en del buggar.
+
+– Publicera text visas inte när du jobbar med ett inlägg eller en sida i liggande läge, endast i stående läge. Inga fler tangentbordsöverlappningar.
+– Cachelagrade aviseringar visas inte längre på skärmen när du loggar ut från ditt WordPress.com-konto.
+– Vi har utrett fallet med det försvinnande navigeringsfältet under inloggningsprocessen. Nu håller det sig synligt från början till slut. Mysteriet är löst.

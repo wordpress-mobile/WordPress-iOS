@@ -60,15 +60,15 @@ extension Tracks {
     // MARK: - Private Enums
 
     fileprivate enum ExtensionEvents: String {
-        case launched       = "wpios_draft_extension_launched"
-        case posted         = "wpios_draft_extension_posted"
-        case tagsOpened     = "wpios_draft_extension_tags_opened"
-        case tagsSelected   = "wpios_draft_extension_tags_selected"
-        case canceled       = "wpios_draft_extension_canceled"
-        case error          = "wpios_draft_extension_error"
-        case categoriesOpened   = "wpios_draft_extension_categories_opened"
-        case categoriesSelected = "wpios_draft_extension_categories_selected"
-        case postTypeOpened   = "wpios_draft_extension_post_type_opened"
-        case postTypeSelected = "wpios_draft_extension_post_type_selected"
+        case launched       = "draft_extension_launched"
+        case posted         = "draft_extension_posted"
+        case tagsOpened     = "draft_extension_tags_opened"
+        case tagsSelected   = "draft_extension_tags_selected"
+        case canceled       = "draft_extension_canceled"
+        case error          = "draft_extension_error"
+        case categoriesOpened   = "draft_extension_categories_opened"
+        case categoriesSelected = "draft_extension_categories_selected"
+        case postTypeOpened   = "draft_extension_post_type_opened"
+        case postTypeSelected = "draft_extension_post_type_selected"
     }
 }
