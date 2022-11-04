@@ -64,7 +64,7 @@ final class InteractiveNotificationsManager: NSObject {
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
-                    self?.disableWPNotificationsIfNeeded()
+                    self?.disableWordPressNotificationsIfNeeded()
                 } else {
                     WPAnalytics.track(.pushNotificationOSAlertDenied)
                 }
@@ -690,11 +690,10 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 }
 
 private extension InteractiveNotificationsManager {
-    /// A temporary setting to allow controling WordPress notifications when they are disabled after Jetpack installation
+    /// A temporary setting to allow controlling WordPress notifications when they are disabled after Jetpack installation
     /// Disable WordPress notifications when they are enabled on Jetpack
-    func disableWPNotificationsIfNeeded() {
-        if FeatureFlag.allowDisablingWPNotifications.enabled, AppConfiguration.isJetpack {
-            UserDefaults(suiteName: WPAppGroupName)?.set(AppConfiguration.isWordPress, forKey: WPNotificationsEnabledKey)
-        }
+    func disableWordPressNotificationsIfNeeded() {
+        let notificationFilteringService = NotificationFilteringService()
+        notificationFilteringService.disableWordPressNotificationsIfNeeded()
     }
 }

@@ -21,10 +21,12 @@ class NotificationService: UNNotificationServiceExtension {
     /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
+    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
+    private let notificationFilteringService = NotificationFilteringService()
+
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        UserDefaults(suiteName: WPAppGroupName)?.synchronize()
         if shouldFilterNotification() {
             // TODO
             /// Once com.apple.developer.usernotifications.filtering we can pass empty content to silence notifications
@@ -346,16 +348,7 @@ private extension NotificationService {
 
 // MARK: - Notification Filtering
 private extension NotificationService {
-
-    /// Temporarily filter WordPress notifications which were disabled when Jetpack is installed
     func shouldFilterNotification() -> Bool {
-        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName),
-              userDefaults.value(forKey: WPNotificationsEnabledKey) != nil else {
-            return false
-        }
-
-        return FeatureFlag.allowDisablingWPNotifications.enabled
-            && AppConfiguration.isWordPress
-            && !userDefaults.bool(forKey: WPNotificationsEnabledKey)
+        return notificationFilteringService.shouldFilterWordPressNotifications()
     }
 }

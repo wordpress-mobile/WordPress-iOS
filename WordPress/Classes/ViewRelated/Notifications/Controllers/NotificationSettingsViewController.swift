@@ -53,6 +53,9 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate var followedSites: [ReaderSiteTopic] = []
     fileprivate var tableSections: [Section] = []
 
+    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
+    private let notificationFilteringService = NotificationFilteringService()
+
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
         mainView.pinSubviewAtCenter(activityIndicatorView)
@@ -198,7 +201,7 @@ class NotificationSettingsViewController: UIViewController {
             section.append(.followedSites)
         }
 
-        if shouldShowNotificationControl() {
+        if notificationFilteringService.shouldShowNotificationControl() {
             section.insert(.notificationControl, at: 0)
         }
 
@@ -647,22 +650,10 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
 // MARK: - Notification Switch Cell
 extension NotificationSettingsViewController {
     private func configureNotificationSwitchCell(_ cell: SwitchTableViewCell) {
-        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
-            return
-        }
-
         cell.name = NSLocalizedString("Allow Notifications", comment: "Title for a cell with switch control that allows to enable or disable notifications")
-
-        PushNotificationsManager.shared.loadAuthorizationStatus { status in
-            cell.on = userDefaults.bool(forKey: WPNotificationsEnabledKey) && status == .authorized
+        cell.on = notificationFilteringService.wordPressNotificationsEnabled
+        cell.onChange = { [weak self] (newValue: Bool) in
+            self?.notificationFilteringService.wordPressNotificationsEnabled = newValue
         }
-        cell.onChange = { (newValue: Bool) in
-            userDefaults.set(newValue, forKey: WPNotificationsEnabledKey)
-        }
-    }
-
-    /// A temporary setting to allow controling WordPress notifications when they are disabled after Jetpack installation
-    private func shouldShowNotificationControl() -> Bool {
-        return FeatureFlag.allowDisablingWPNotifications.enabled && AppConfiguration.isWordPress
     }
 }
