@@ -60,7 +60,6 @@ import Reachability
     private var titleLabelLeadingConstraint: NSLayoutConstraint?
     private var titleLabelTrailingConstraint: NSLayoutConstraint?
     private var titleLabelCenterXConstraint: NSLayoutConstraint?
-    private var titleLabelCenterYConstraint: NSLayoutConstraint?
     private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
     private var titleLabelTopConstraint: NSLayoutConstraint?
 
@@ -479,11 +478,11 @@ private extension NoResultsViewController {
         } else {
             guard let titleLabelMaxWidthConstraint = titleLabelMaxWidthConstraint,
                 let titleLabelCenterXConstraint = titleLabelCenterXConstraint,
-                let titleLabelCenterYConstraint = titleLabelCenterYConstraint else {
+                let titleLabelTopConstraint = titleLabelTopConstraint else {
                     return
             }
-
-            NSLayoutConstraint.activate([titleLabelCenterYConstraint, titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
+            titleLabelTopConstraint.constant = TitleLabelConstraints.topLandscape
+            NSLayoutConstraint.activate([titleLabelTopConstraint, titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
         }
     }
 
@@ -493,7 +492,6 @@ private extension NoResultsViewController {
         titleLabelLeadingConstraint?.isActive = false
         titleLabelMaxWidthConstraint?.isActive = false
         titleLabelCenterXConstraint?.isActive = false
-        titleLabelCenterYConstraint?.isActive = false
 
         guard let titleOnlyLabel = titleOnlyLabel else {
             return
@@ -503,7 +501,6 @@ private extension NoResultsViewController {
         titleLabelLeadingConstraint = titleOnlyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading)
         titleLabelTrailingConstraint = titleOnlyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
         titleLabelCenterXConstraint = titleOnlyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        titleLabelCenterYConstraint = titleOnlyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         titleLabelMaxWidthConstraint = titleOnlyLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
     }
 
@@ -521,6 +518,7 @@ private extension NoResultsViewController {
 
     struct TitleLabelConstraints {
         static let top = CGFloat(64)
+        static let topLandscape = CGFloat(32)
         static let leading = CGFloat(38)
         static let trailing = CGFloat(-38)
         static let maxWidth = CGFloat(360)
