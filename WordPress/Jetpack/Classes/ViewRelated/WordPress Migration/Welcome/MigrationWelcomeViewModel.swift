@@ -4,11 +4,15 @@ final class MigrationWelcomeViewModel: MigrationStepViewModel {
 
     // MARK: - Properties
 
+    let gravatarEmail: String
+
     let blogListDataSource: BlogListDataSource
 
     // MARK: - Init
 
     init(account: WPAccount, primaryAction: @escaping () -> Void) {
+        self.gravatarEmail = account.email
+
         self.blogListDataSource = BlogListDataSource()
         self.blogListDataSource.loggedIn = true
         self.blogListDataSource.account = account
@@ -21,7 +25,6 @@ final class MigrationWelcomeViewModel: MigrationStepViewModel {
         let descriptions = Descriptions(primary: Strings.primaryDescription, secondary: secondaryDescription)
 
         super.init(
-            email: account.email,
             title: Strings.title,
             image: UIImage(named: "wp-migration-welcome"),
             descriptions: descriptions,

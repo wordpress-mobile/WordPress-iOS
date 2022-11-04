@@ -4,8 +4,6 @@ class MigrationStepViewModel {
 
     // MARK: - Properties
 
-    let gravatarEmail: String
-
     let image: UIImage?
     let title: String
     let descriptions: Descriptions
@@ -13,8 +11,7 @@ class MigrationStepViewModel {
 
     // MARK: - Init
 
-    init(email: String, title: String, image: UIImage?, descriptions: Descriptions, actions: Actions) {
-        self.gravatarEmail = email
+    init(title: String, image: UIImage?, descriptions: Descriptions, actions: Actions) {
         self.title = title
         self.image = image
         self.descriptions = descriptions
