@@ -38,19 +38,16 @@ final class NotificationFilteringService {
         }
     }
 
-    /// A temporary setting to allow controlling WordPress notifications when they are disabled after Jetpack installation
     func shouldShowNotificationControl() -> Bool {
         return allowDisablingWPNotifications && isWordPress && notificationsEnabled
     }
 
-    /// Disable WordPress notifications when they are enabled on Jetpack
     func disableWordPressNotificationsIfNeeded() {
         if allowDisablingWPNotifications, !isWordPress {
             wordPressNotificationsEnabled = false
         }
     }
 
-    /// Temporarily filter WordPress notifications which were disabled when Jetpack is installed
     func shouldFilterWordPressNotifications() -> Bool {
         return allowDisablingWPNotifications
             && isWordPress
