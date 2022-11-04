@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58.2-beta.1'
+  pod 'WordPressKit', '~> 4.58', '>= 4.58.2'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -80,9 +80,13 @@ def shared_test_pods
 end
 
 def shared_with_extension_pods
-  pod 'Gridicons', '~> 1.1.0'
+  shared_style_pods
   pod 'ZIPFoundation', '~> 0.9.8'
   pod 'Down', '~> 0.6.6'
+end
+
+def shared_style_pods
+  pod 'Gridicons', '~> 1.1.0'
 end
 
 def gutenberg(options)
@@ -175,7 +179,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.84.0'
+  gutenberg tag: 'v1.85.0'
 
   ## Third party libraries
   ## =====================
@@ -301,43 +305,7 @@ target 'JetpackDraftActionExtension' do
   wordpress_ui
 end
 
-## Today Widget
-## ============
-##
-target 'WordPressTodayWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## All Time Widget
-## ============
-##
-target 'WordPressAllTimeWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## This Week Widget
-## ============
-##
-target 'WordPressThisWeekWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## iOS 14 Today Widget
+## Home Screen Widgets
 ## ============
 ##
 target 'WordPressStatsWidgets' do
@@ -345,6 +313,17 @@ target 'WordPressStatsWidgets' do
 
   shared_with_all_pods
   shared_with_networking_pods
+  shared_style_pods
+
+  wordpress_ui
+end
+
+target 'JetpackStatsWidgets' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+  shared_style_pods
 
   wordpress_ui
 end
@@ -353,6 +332,15 @@ end
 ## ============
 ##
 target 'WordPressIntents' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
+target 'JetpackIntents' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods

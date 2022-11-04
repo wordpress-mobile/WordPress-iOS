@@ -140,8 +140,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ byl opět spojen.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -3193,9 +3192,6 @@ translators: Block name. %s: The localized block name */
    Label for number of followers. */
 "Followers" = "Odběratelé";
 
-/* Insights 'Followers Total' header */
-"Followers Total" = "Celkem fanoušků";
-
 /* Accessibility label for following buttons.
    Title of the Following Reader tab
    User is following the blog.
@@ -4496,6 +4492,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -5725,9 +5722,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Publikovat";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Publikovaná";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -7792,13 +7786,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "Dohromady";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "Celkový počet komentářů";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Celkový počet e-mailových odběratelů: %@";
 
-/* 'This Year' label for total number of likes. */
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "Celkem to se mi líbí";
 
 /* 'This Year' label for the total number of posts. */

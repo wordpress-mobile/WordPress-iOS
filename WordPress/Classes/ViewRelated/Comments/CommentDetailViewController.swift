@@ -509,6 +509,7 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
+        cell.accessoryButtonType = .info
         cell.accessoryButtonAction = { [weak self] senderView in
             self?.presentUserInfoSheet(senderView)
         }
@@ -736,7 +737,7 @@ private extension CommentDetailViewController {
         })
     }
 
-    @objc func shareCommentURL(_ senderView: UIView) {
+    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -745,7 +746,7 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = senderView
+        activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
         present(activityViewController, animated: true, completion: nil)
     }
 

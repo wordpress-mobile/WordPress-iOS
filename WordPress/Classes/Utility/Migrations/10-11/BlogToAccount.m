@@ -42,10 +42,10 @@
         NSString *newKey = WPComXMLRPCUrl;
 
         NSError *error;
-        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:oldKey accessGroup:nil error:&error];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([KeychainUtils.shared storeUsername:username password:password serviceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
-                [KeychainUtils.shared deleteItemWithUsername:username serviceName:oldKey accessGroup:nil error:&error];
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {
@@ -112,10 +112,10 @@
             newKey = xmlrpc;
         }
         NSError *error;
-        NSString *password = [KeychainUtils.shared getPasswordForUsername:username serviceName:oldKey accessGroup:nil error:&error];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([KeychainUtils.shared storeUsername:username password:password serviceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
-                [KeychainUtils.shared deleteItemWithUsername:username serviceName:oldKey accessGroup:nil error:&error];
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {

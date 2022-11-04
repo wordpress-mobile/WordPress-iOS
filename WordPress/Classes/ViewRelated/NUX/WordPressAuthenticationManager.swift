@@ -464,10 +464,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
         do {
-            try KeychainUtils.shared.storeUsername(WPAppleIDKeychainUsernameKey,
-                                                   password: appleUserID,
-                                                   serviceName: WPAppleIDKeychainServiceName,
-                                                   updateExisting: true)
+            try SFHFKeychainUtils.storeUsername(WPAppleIDKeychainUsernameKey,
+                                                andPassword: appleUserID,
+                                                forServiceName: WPAppleIDKeychainServiceName,
+                                                updateExisting: true)
         } catch {
             DDLogInfo("Error while saving Apple User ID: \(error)")
         }

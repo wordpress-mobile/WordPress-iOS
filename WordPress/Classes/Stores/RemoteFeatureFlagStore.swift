@@ -22,7 +22,7 @@ class RemoteFeatureFlagStore {
     /// - Parameter remote: An optional FeatureFlagRemote with a default WordPressComRestApi instance. Inject a FeatureFlagRemote with a different WordPressComRestApi instance
     /// to authenticate with the Remote Feature Flags endpoint – this allows customizing flags server-side on a per-user basis.
     /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
-    public func updateIfNeeded(using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
+    public func update(using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
                                then callback: FetchCallback? = nil) {
         remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
             switch result {

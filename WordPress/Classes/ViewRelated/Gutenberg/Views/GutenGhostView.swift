@@ -14,10 +14,8 @@ class GutenGhostView: UIView {
     @IBOutlet var toolbarViews: [UIView]!
     @IBOutlet weak var toolbarTopBorderView: UIView! {
         didSet {
-            if #available(iOS 12.0, *) {
-                let isDarkStyle = traitCollection.userInterfaceStyle == .dark
-                toolbarTopBorderView.isHidden = isDarkStyle
-            }
+            let isDarkStyle = traitCollection.userInterfaceStyle == .dark
+            toolbarTopBorderView.isHidden = isDarkStyle
         }
     }
 

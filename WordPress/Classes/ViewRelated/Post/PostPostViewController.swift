@@ -33,6 +33,8 @@ class PostPostViewController: UIViewController {
     @objc var onClose: (() -> ())?
     @objc var reshowEditor: (() -> ())?
     @objc var preview: (() -> ())?
+    /// Set to `true` to hide the edit button from the view.
+    var hideEditButton = false
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -175,6 +177,7 @@ class PostPostViewController: UIViewController {
         siteUrlLabel.text = post.blog.displayURL as String?
         siteUrlLabel.accessibilityIdentifier = "siteUrl"
         siteIconView.downloadSiteIcon(for: post.blog)
+        editButton.isHidden = hideEditButton
         let isPrivate = !post.blog.visible
         if isPrivate {
             shareButton.isHidden = true

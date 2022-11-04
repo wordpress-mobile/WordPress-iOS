@@ -23,7 +23,8 @@ open class Tracks {
 
     // MARK: - Public Methods
     open func track(_ eventName: String, properties: [String: Any]? = nil) {
-        let payload  = payloadWithEventName(eventName, properties: properties)
+        let prefixedEventName = "\(TracksConfiguration.eventNamePrefix)_\(eventName)"
+        let payload  = payloadWithEventName(prefixedEventName, properties: properties)
         uploader.send(payload)
     }
 
