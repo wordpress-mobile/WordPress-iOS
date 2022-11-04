@@ -1,11 +1,3 @@
-//
-//  NotificationFilteringServiceTests.swift
-//  WordPressTest
-//
-//  Created by Povilas Staskus on 2022-11-04.
-//  Copyright © 2022 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
