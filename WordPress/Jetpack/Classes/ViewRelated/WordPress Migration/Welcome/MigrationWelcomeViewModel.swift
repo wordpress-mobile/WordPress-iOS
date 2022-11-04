@@ -53,8 +53,10 @@ final class MigrationWelcomeViewModel: MigrationStepViewModel {
             let siteWord = plural ? "sites" : "site"
             let value = "We found your \(siteWord). Continue to transfer all your data and sign in to Jetpack automatically."
             if plural {
+                let comment = "The plural form of the secondary description in the migration welcome screen"
                 return NSLocalizedString("migration.welcome.secondaryDescription.plural", value: value, comment: comment)
             } else {
+                let comment = "The singular form of the secondary description in the migration welcome screen"
                 return NSLocalizedString("migration.welcome.secondaryDescription.singular", value: value, comment: comment)
             }
         }
