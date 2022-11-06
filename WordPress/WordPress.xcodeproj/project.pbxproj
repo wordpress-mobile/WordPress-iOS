@@ -755,6 +755,8 @@
 		3FFDEF852918215700B625CE /* MigrationStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF842918215700B625CE /* MigrationStepView.swift */; };
 		3FFDEF882918596B00B625CE /* MigrationDoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF872918596B00B625CE /* MigrationDoneViewModel.swift */; };
 		3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF892918597700B625CE /* MigrationDoneViewController.swift */; };
+		3FFDEF8F29187F1200B625CE /* MigrationHeaderConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */; };
+		3FFDEF9129187F2100B625CE /* MigrationActionsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */; };
 		3FFE3C0828FE00D10021BB96 /* StatsSegmentedControlDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */; };
 		400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */; };
 		400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */; };
@@ -6122,6 +6124,8 @@
 		3FFDEF842918215700B625CE /* MigrationStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationStepView.swift; sourceTree = "<group>"; };
 		3FFDEF872918596B00B625CE /* MigrationDoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationDoneViewModel.swift; sourceTree = "<group>"; };
 		3FFDEF892918597700B625CE /* MigrationDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationDoneViewController.swift; sourceTree = "<group>"; };
+		3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHeaderConfiguration.swift; sourceTree = "<group>"; };
+		3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationActionsConfiguration.swift; sourceTree = "<group>"; };
 		3FFE3C0728FE00D10021BB96 /* StatsSegmentedControlDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSegmentedControlDataTests.swift; sourceTree = "<group>"; };
 		400199AA222590E100EB0906 /* AllTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400199AC22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAndMostPopularTimeStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -10954,6 +10958,8 @@
 		3FFDEF8D2918625600B625CE /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */,
+				3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */,
 				3FFDEF7E29177FB100B625CE /* MigrationStepConfiguration.swift */,
 			);
 			path = Configuration;
@@ -23492,6 +23498,7 @@
 				3F2ABE1D277118CC005D8916 /* WPMediaAsset+VideoLimits.swift in Sources */,
 				FABB23FB2602FC2C00C8785C /* WPTabBarController+MeNavigation.swift in Sources */,
 				80EF928B280D28140064A971 /* Atomic.swift in Sources */,
+				3FFDEF9129187F2100B625CE /* MigrationActionsConfiguration.swift in Sources */,
 				FABB23FC2602FC2C00C8785C /* SitePromptView.swift in Sources */,
 				8B4EDADE27DF9D5E004073B6 /* Blog+MySite.swift in Sources */,
 				FABB23FD2602FC2C00C8785C /* BaseRestoreCompleteViewController.swift in Sources */,
@@ -23543,6 +23550,7 @@
 				830A58D92793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */,
 				FABB24262602FC2C00C8785C /* SiteAssemblyStep.swift in Sources */,
 				FABB24272602FC2C00C8785C /* SiteSettingsViewController+Swift.swift in Sources */,
+				3FFDEF8F29187F1200B625CE /* MigrationHeaderConfiguration.swift in Sources */,
 				FABB24282602FC2C00C8785C /* FilterTableData.swift in Sources */,
 				FABB24292602FC2C00C8785C /* ReaderGapMarker.m in Sources */,
 				FABB242A2602FC2C00C8785C /* Pattern.swift in Sources */,
