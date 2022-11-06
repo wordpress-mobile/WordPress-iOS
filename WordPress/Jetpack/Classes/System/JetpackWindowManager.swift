@@ -1,10 +1,14 @@
+import Combine
 import Foundation
 
 class JetpackWindowManager: WindowManager {
+    /// receives migration flow updates in order to dismiss it when needed.
+    private var cancellable: AnyCancellable?
+
     override func showUI(for blog: Blog?) {
         // If the user is logged in and has blogs sync'd to their account
         if AccountHelper.isLoggedIn && AccountHelper.hasBlogs {
-            showAppUI(for: blog)
+            shouldShowMigrationUI ? showMigrationUI(blog) : showAppUI(for: blog)
             return
         }
 
@@ -17,5 +21,28 @@ class JetpackWindowManager: WindowManager {
         // If the user doesn't have any blogs, but they're still logged in, log them out
         // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
         AccountHelper.logOutDefaultWordPressComAccount()
+    }
+
+    private func showMigrationUI(_ blog: Blog?) {
+        let container = MigrationDependencyContainer()
+        cancellable = container.migrationCoordinator.$currentStep.sink { [weak self] step in
+            switch step {
+            case .welcome, .notifications, .done:
+                break
+            case .dismiss:
+                self?.switchToAppUI(for: blog)
+            }
+        }
+        self.show(container.makeInitialViewController())
+    }
+
+    private func switchToAppUI(for blog: Blog?) {
+        cancellable = nil
+        showAppUI(for: blog)
+    }
+
+    // TODO: Add logic in here to trigger migration UI if needed
+    private var shouldShowMigrationUI: Bool {
+        true
     }
 }
