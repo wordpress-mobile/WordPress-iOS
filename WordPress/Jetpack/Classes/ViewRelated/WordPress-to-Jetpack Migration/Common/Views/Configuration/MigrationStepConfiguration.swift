@@ -1,0 +1,180 @@
+
+struct MigrationStepConfiguration {
+    let headerConfiguration: MigrationHeaderConfiguration
+    let actionsConfiguration: MigrationActionsViewConfiguration
+}
+
+struct MigrationHeaderConfiguration {
+
+    let step: MigrationStep
+    let title: String?
+    let image: UIImage?
+    let primaryDescription: String?
+    let secondaryDescription: String?
+
+    init(step: MigrationStep, multiSite: Bool = false) {
+        self.step = step
+
+        image = Appearance.image(for: step)
+        title = Appearance.title(for: step)
+        primaryDescription = Appearance.primaryDescription(for: step)
+        secondaryDescription = Appearance.secondaryDescription(for: step, multiSite: multiSite)
+    }
+}
+
+private extension MigrationHeaderConfiguration {
+
+    enum Appearance {
+        // TODO: Set the right images for notification and done states
+        static func image(for step: MigrationStep) -> UIImage? {
+            switch step {
+            case .welcome:
+                return UIImage(named: "wp-migration-welcome")
+            case .notifications:
+                return UIImage(named: "wp-migration-welcome")
+            case .done:
+                return UIImage(named: "wp-migration-welcome")
+            case .dismiss:
+                return nil
+            }
+        }
+
+        static func title(for step: MigrationStep) -> String? {
+            switch step {
+            case .welcome:
+                return welcomeTitle
+            case .notifications:
+                return notificationsTitle
+            case .done:
+                return doneTitle
+            case .dismiss:
+                return nil
+            }
+        }
+
+        static func primaryDescription(for step: MigrationStep) -> String? {
+            switch step {
+            case .welcome:
+                return welcomePrimaryDescription
+            case .notifications:
+                return notificationsPrimaryDescription
+            case .done:
+                return donePrimaryDescription
+            case .dismiss:
+                return nil
+            }
+        }
+
+        static func secondaryDescription(for step: MigrationStep, multiSite: Bool = false) -> String? {
+            switch step {
+            case .welcome:
+                return welcomeSecondaryDescription(plural: multiSite)
+            case .notifications:
+                return notificationsSecondaryDescription
+            case .done:
+                return nil
+            case .dismiss:
+                return nil
+            }
+        }
+
+        static let welcomeTitle = NSLocalizedString("migration.welcome.title",
+                                                    value: "Welcome to Jetpack!",
+                                                    comment: "The title in the migration welcome screen")
+
+        static let notificationsTitle = NSLocalizedString("migration.notifications.title",
+                                                          value: "Allow notifications to keep up with your site",
+                                                          comment: "Title of the migration notifications screen.")
+
+        static let doneTitle = NSLocalizedString("migration.done.title",
+                                                 value: "Thanks for switching to Jetpack!",
+                                                 comment: "Title of the migration done screen.")
+
+        static let welcomePrimaryDescription = NSLocalizedString("migration.welcome.primaryDescription",
+                                                                 value: "It looks like you’re switching from the WordPress app.",
+                                                                 comment: "The primary description in the migration welcome screen")
+
+        static let notificationsPrimaryDescription = NSLocalizedString("migration.notifications.primaryDescription",
+                                                                       value: "You’ll get all the same notifications but now they’ll come from the Jetpack app.",
+                                                                       comment: "Primary description in the migration notifications screen.")
+
+        static let donePrimaryDescription = NSLocalizedString("migration.done.primaryDescription",
+                                                              value: "We’ve transferred all your data and settings. Everything is right where you left it.",
+                                                              comment: "Primary description in the migration done screen.")
+
+        static let notificationsSecondaryDescription = NSLocalizedString("migration.notifications.secondaryDescription",
+                                                                         value: "We’ve disabled notifications for the WordPress app.",
+                                                                         comment: "Secondary description in the migration notifications screen")
+
+        static func welcomeSecondaryDescription(plural: Bool) -> String {
+            let siteWord = plural ? "sites" : "site"
+            let value = "We found your \(siteWord). Continue to transfer all your data and sign in to Jetpack automatically."
+            if plural {
+                let comment = "The plural form of the secondary description in the migration welcome screen"
+                return NSLocalizedString("migration.welcome.secondaryDescription.plural", value: value, comment: comment)
+            } else {
+                let comment = "The singular form of the secondary description in the migration welcome screen"
+                return NSLocalizedString("migration.welcome.secondaryDescription.singular", value: value, comment: comment)
+            }
+        }
+    }
+}
+
+struct MigrationActionsViewConfiguration {
+    let step: MigrationStep
+    let primaryTitle: String?
+    let secondaryTitle: String?
+    let primaryHandler: (() -> Void)?
+    let secondaryHandler: (() -> Void)?
+
+    init(step: MigrationStep, primaryHandler: (() -> Void)? = nil, secondaryHandler: (() -> Void)? = nil) {
+        self.step = step
+        self.primaryHandler = primaryHandler
+        self.secondaryHandler = secondaryHandler
+        self.primaryTitle = Appearance.primaryTitle(for: step)
+        self.secondaryTitle = Appearance.secondaryTitle(for: step)
+    }
+}
+
+private extension MigrationActionsViewConfiguration {
+
+    enum Appearance {
+
+        static func primaryTitle(for step: MigrationStep) -> String? {
+            switch step {
+            case .welcome, .notifications:
+                return Appearance.defaultPrimaryTitle
+            case .done:
+                return Appearance.donePrimaryTitle
+            case.dismiss:
+                return nil
+            }
+        }
+
+        static func secondaryTitle(for step: MigrationStep) -> String? {
+            switch step {
+            case .welcome:
+                return Appearance.welcomeSecondaryTitle
+            case .notifications:
+                return Appearance.notificationsSecondaryTitle
+            default:
+                return nil
+            }
+        }
+
+        static let defaultPrimaryTitle = NSLocalizedString("Continue",
+                                                           value: "Continue",
+                                                           comment: "The primary button title in the migration welcome and notifications screens.")
+
+        static let donePrimaryTitle = NSLocalizedString("migration.done.actions.primary.title",
+                                                        value: "Finish",
+                                                        comment: "Primary button title in the migration done screen.")
+
+        static let welcomeSecondaryTitle = NSLocalizedString("Need help?",
+                                                             comment: "The secondary button title in the migration welcome screen")
+
+        static let notificationsSecondaryTitle = NSLocalizedString("migration.notifications.actions.secondary.title",
+                                                                   value: "Decide later",
+                                                                   comment: "Secondary button title in the migration notifications screen.")
+    }
+}
