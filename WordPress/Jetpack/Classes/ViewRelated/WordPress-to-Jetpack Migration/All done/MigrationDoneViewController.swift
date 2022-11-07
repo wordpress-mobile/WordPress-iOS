@@ -14,6 +14,7 @@ class MigrationDoneViewController: UIViewController {
     }
 
     override func loadView() {
+        // TODO: replace this blank center view with the actual content
         let centerView = UIView()
         centerView.translatesAutoresizingMaskIntoConstraints = false
         centerView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
