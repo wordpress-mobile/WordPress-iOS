@@ -26,19 +26,19 @@ class JetpackWindowManager: WindowManager {
     private func showMigrationUI(_ blog: Blog?) {
         let container = MigrationDependencyContainer()
         cancellable = container.migrationCoordinator.$currentStep.sink { [weak self] step in
-            switch step {
-            case .welcome, .notifications, .done:
-                break
-            case .dismiss:
-                self?.switchToAppUI(for: blog)
+            guard step == .dismiss else {
+                return
             }
+            self?.switchToAppUI(for: blog)
         }
         self.show(container.makeInitialViewController())
     }
 
     private func switchToAppUI(for blog: Blog?) {
         cancellable = nil
-        showAppUI(for: blog)
+        DispatchQueue.main.async { [weak self] in
+            self?.showAppUI(for: blog)
+        }
     }
 
     // TODO: Add logic in here to trigger migration UI if needed
