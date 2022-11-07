@@ -31,12 +31,9 @@ WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
   WordPressDraftAction
-  WordPressTodayWidget
   WordPressStatsWidgets
   WordPressNotificationServiceExtension
   WordPressNotificationContentExtension
-  WordPressAllTimeWidget
-  WordPressThisWeekWidget
   WordPressIntents
 ].map { |suffix| "#{WORDPRESS_BUNDLE_IDENTIFIER}.#{suffix}" }
 ALL_WORDPRESS_BUNDLE_IDENTIFIERS = [WORDPRESS_BUNDLE_IDENTIFIER, *WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
@@ -45,11 +42,8 @@ JETPACK_BUNDLE_IDENTIFIER = 'com.automattic.jetpack'
 JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   JetpackShare
   JetpackDraftAction
-  JetpackTodayWidget
   JetpackStatsWidgets
   JetpackNotificationServiceExtension
-  JetpackAllTimeWidget
-  JetpackThisWeekWidget
   JetpackIntents
 ].map { |suffix| "#{JETPACK_BUNDLE_IDENTIFIER}.#{suffix}" }
 ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze

@@ -49,12 +49,7 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
     }
 
     static func schedulingViewController(with viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) -> SchedulingViewControllerProtocol {
-        let schedulingViewController: SchedulingViewControllerProtocol
-        if #available(iOS 14.0, *) {
-            schedulingViewController = SchedulingDatePickerViewController()
-        } else {
-            schedulingViewController = SchedulingCalendarViewController()
-        }
+        let schedulingViewController = SchedulingDatePickerViewController()
         schedulingViewController.coordinator = DateCoordinator(date: viewModel.date,
                                                                timeZone: viewModel.timeZone,
                                                                dateFormatter: viewModel.dateFormatter,
@@ -64,6 +59,11 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
     }
 }
 
+// FIXME: This protocol is redundant as of dropping iOS 13.
+//
+// It was used as a facade in between `SchedulingCalendarViewController` (iOS 13) and
+// `SchedulingDatePickerViewController` (iOS 14+). `SchedulingCalendarViewController` has been
+// deleted so we can remove this as well.
 protocol SchedulingViewControllerProtocol: UIViewController, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
     var coordinator: DateCoordinator? { get set }
 }

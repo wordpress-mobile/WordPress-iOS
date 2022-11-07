@@ -15,11 +15,11 @@ struct UnconfiguredView: View {
     var unconfiguredMessage: LocalizedString {
         switch widgetKind {
         case .today:
-            return LocalizableStrings.unconfiguredViewTodayTitle
+            return AppConfiguration.Widget.Localization.unconfiguredViewTodayTitle
         case .allTime:
-            return LocalizableStrings.unconfiguredViewAllTimeTitle
+            return AppConfiguration.Widget.Localization.unconfiguredViewAllTimeTitle
         case .thisWeek:
-            return LocalizableStrings.unconfiguredViewThisWeekTitle
+            return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
         case .noStats:
             return LocalizableStrings.noDataViewTitle
         }

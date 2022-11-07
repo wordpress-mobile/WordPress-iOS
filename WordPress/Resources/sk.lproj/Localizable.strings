@@ -2217,6 +2217,7 @@
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -2920,9 +2921,6 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Verejné";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Propagovať";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.

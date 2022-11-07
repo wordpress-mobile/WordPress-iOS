@@ -6,8 +6,8 @@ import Foundation
 /// - launched: the content extension was successfully entered & launched
 ///
 private enum ContentExtensionEvents: String {
-    case launched           = "wpios_notification_content_extension_launched"
-    case failedToMarkAsRead = "wpios_notification_content_extension_failed_mark_as_read"
+    case launched           = "notification_content_extension_launched"
+    case failedToMarkAsRead = "notification_content_extension_failed_mark_as_read"
 }
 
 // MARK: - Supports tracking notification content extension events.

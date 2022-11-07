@@ -1,7 +1,9 @@
-Kini Anda dapat membatalkan login WordPress.com saat sudah login ke situs yang dihosting sendiri—tidak ada lagi masalah di layar login jika Anda berubah pikiran.
+Selamat datang di versi 21! Di versi ini, kami menambahkan ekstensi agar Anda dapat menyimpan konten sebagai konsep dan membagikan konten ke Jetpack menggunakan menu bawaan perangkat. Anda juga akan mendapatkan pemberitahuan push lebih lengkap di perangkat.
 
-Aplikasi Jetpack dapat menjalankan ringkasan mingguan di latar belakang ketika Anda menggunakan aplikasi. Lancar tanpa masalah.
+Kami memperbarui layar peluncuran aplikasi dengan desain apik dan simpel, serta melakukan sejumlah upgrade desain ramah pengguna pada tampilan Detail Komentar. Anda juga dapat mengubah ikon aplikasi Jetpack dengan beragam pilihan menarik di menu Pengaturan Aplikasi.
 
-Di tampilan iPad, tombol “Aktifkan pemberitahuan” tidak lagi muncul di atas instruksi untuk mengaktifkan pemberitahuan push. Teks menu samping “Tidak ada hasil” kini juga muncul di layar.
+Terakhir, kami memperbaiki sejumlah bug.
 
-Kami pernah menyelesaikan masalah pemuatan gambar berikutnya di cerita karena satu gambar di konsep Pos Cerita dihapus. Dan semua orang bahagia selamanya.
+- Teks Poskan tidak tampak saat Anda sedang mengerjakan Pos atau Halaman di mode lanskap. Teks hanya akan tampak di mode portrait. Tampilan keyboard tidak lagi menutupi teks.
+- Pemberitahuan cache tidak lagi tampak di layar setelah logout dari akun WordPress.com Anda.
+- Kami telah menyelidiki kasus hilangnya bilah navigasi selama proses Login. Sekarang bilah terlihat dari awal hingga akhir. Masalah teratasi.

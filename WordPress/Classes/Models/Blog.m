@@ -465,7 +465,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)password
 {
-    return [KeychainUtils.shared getPasswordForUsername:self.username serviceName:self.xmlrpc accessGroup:nil error:nil];
+    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc accessGroup:nil error:nil];
 }
 
 - (void)setPassword:(NSString *)password
@@ -473,17 +473,17 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     NSAssert(self.username != nil, @"Can't set password if we don't know the username yet");
     NSAssert(self.xmlrpc != nil, @"Can't set password if we don't know the XML-RPC endpoint yet");
     if (password) {
-        [KeychainUtils.shared storeUsername:self.username
-                                   password:password
-                                serviceName:self.xmlrpc
-                                accessGroup:nil
-                             updateExisting:YES
-                                      error:nil];
+        [SFHFKeychainUtils storeUsername:self.username
+                             andPassword:password
+                          forServiceName:self.xmlrpc
+                             accessGroup:nil
+                          updateExisting:YES
+                                   error:nil];
     } else {
-        [KeychainUtils.shared deleteItemWithUsername:self.username
-                                         serviceName:self.xmlrpc
-                                         accessGroup:nil
-                                               error:nil];
+        [SFHFKeychainUtils deleteItemForUsername:self.username
+                                  andServiceName:self.xmlrpc
+                                     accessGroup:nil
+                                           error:nil];
     }
 }
 

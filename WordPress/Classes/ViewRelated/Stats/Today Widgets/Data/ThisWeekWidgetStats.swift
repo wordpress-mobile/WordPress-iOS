@@ -3,7 +3,6 @@ import WordPressKit
 
 /// This struct contains data for 'Views This Week' stats to be displayed in the corresponding widget.
 /// The data is stored in a plist for the widget to access.
-/// This file is shared with WordPressThisWeekWidget, which accesses the data when it is viewed.
 ///
 
 struct ThisWeekWidgetStats: Codable {
@@ -107,7 +106,7 @@ extension ThisWeekWidgetStats {
         return days
     }
 
-    private static var dataFileName = "ThisWeekData.plist"
+    private static var dataFileName = AppConfiguration.Widget.StatsToday.thisWeekFilename
 
     private static var dataFileURL: URL? {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {

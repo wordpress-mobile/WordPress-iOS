@@ -1,7 +1,9 @@
-Je kan nu het inloggen op WordPress.com annuleren als je al ingelogd bent op een zelf-gehoste site. Zo kom je niet meer vast te zitten op het inlogscherm als je van gedachten verandert.
+Welkom bij versie 21! Ter ere van deze gelegenheid hebben we extensies toegevoegd waarmee je met de geïntegreerde menu’s van de apparaat je content als een concept op kan slaan en met Jetpack kan delen. Je krijgt ook uitgebreidere pushmeldingen op je apparaat.
 
-De Jetpack-app kan nu in de achtergrond wekelijkse overzichten uitvoeren terwijl je andere apps gebruikt. Daar gaan we.
+We hebben het startscherm van de app bijgewerkt met een simpel, strak ontwerp en een aantal gebruiksvriendelijke designupgrades doorgevoerd voor de weergave van informatie bij reacties. Je kan in het menu app-instellingen ook het pictogram van de Jetpack-app wijzigen met een breed aanbod kleurrijke opties.
 
-De knop 'Meldingen inschakelen' wordt op iPads niet meer bovenop de instructies voor het inschakelen van pushmeldingen weergegeven. De tekst 'Geen resultaten' in het menu aan de zijkant past nu ook op het scherm.
+- Tot slot hebben we een klein aantal bugs verholpen.
 
-Er was eens een probleem waarbij het verwijderen van een afbeelding in een concept van een verhaalbericht het laden van de volgende afbeelding zou voorkomen. Dat probleem hebben we nu opgelost. En iedereen leefde nog lang en gelukkig.
+- Publiceer-tekst zal niet meer verschijnen wanneer je in de landschapsmodus aan een bericht of pagina werkt, alleen in de portretmodus. Geen toetsenbordoverlap meer.
+- Meldingen in cache verschijnen niet meer op het scherm nadat je bent uitgelogd bij WordPress.com.
+- We hebben de zaak van de verdwijnende navigatiebalk tijden het inlogproces onderzocht. Hij blijft nu van begin tot eind zichtbaar. Het mysterie is ontrafeld.

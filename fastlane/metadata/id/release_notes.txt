@@ -1,7 +1,7 @@
-Kini Anda dapat membatalkan login WordPress.com saat sudah login ke situs yang dihosting sendiri—tidak ada lagi masalah di layar login jika Anda berubah pikiran.
+Selamat datang di versi 21! Kami memperbarui layar peluncuran aplikasi dengan desain apik dan simpel, serta melakukan sejumlah upgrade desain ramah pengguna pada tampilan Detail Komentar.
 
-Kami juga mengatasi beberapa bug dalam pembaruan terakhir.
+Kami juga memperbaiki sejumlah bug.
 
-- Kami pernah menyelesaikan masalah pemuatan gambar berikutnya di cerita karena satu gambar di konsep Pos Cerita dihapus. Dan semua orang bahagia selamanya.
-- Di tampilan iPad, tombol “Aktifkan pemberitahuan” tidak lagi muncul di atas instruksi untuk mengaktifkan pemberitahuan push. Teks menu samping “Tidak ada hasil” kini juga muncul di layar.
-- Konten di atas banner Didukung oleh Jetpack kini tetap terlihat dan responsif saat Anda menggulir. Lancar tanpa masalah.
+- Teks Poskan tidak tampak saat Anda sedang mengerjakan Pos atau Halaman di mode lanskap. Teks hanya akan tampak di mode portrait. Tampilan keyboard tidak lagi menutupi teks.
+- Pemberitahuan cache tidak lagi tampak di layar setelah logout dari akun WordPress.com Anda.
+- Kami telah menyelidiki kasus hilangnya bilah navigasi selama proses Login. Sekarang bilah terlihat dari awal hingga akhir. Masalah teratasi.

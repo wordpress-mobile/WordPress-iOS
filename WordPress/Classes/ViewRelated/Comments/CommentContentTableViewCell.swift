@@ -6,6 +6,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     enum AccessoryButtonType {
         case share
         case ellipsis
+        case info
     }
 
     enum RenderMethod {
@@ -282,7 +283,14 @@ private extension CommentContentTableViewCell {
     typealias Style = WPStyleGuide.CommentDetail.Content
 
     var accessoryButtonImage: UIImage? {
-        return .init(systemName: Style.infoIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        switch accessoryButtonType {
+        case .share:
+            return .init(systemName: Style.shareIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        case .ellipsis:
+            return .init(systemName: Style.ellipsisIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        case .info:
+            return .init(systemName: Style.infoIconImageName, withConfiguration: Style.accessoryIconConfiguration)
+        }
     }
 
     var likeButtonTitle: String {
