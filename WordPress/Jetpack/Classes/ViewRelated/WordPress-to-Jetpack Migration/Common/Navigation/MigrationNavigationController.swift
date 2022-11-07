@@ -2,11 +2,10 @@ import Combine
 import UIKit
 
 class MigrationNavigationController: UINavigationController {
-
+    /// Navigation coordinator
     private let coordinator: MigrationFlowCoordinator
-    /// The full navigation stack: keys are the states in which the corresponding view
-    /// controller should be the root
-    private let migrationStack: [MigrationStep: UIViewController]
+    /// The view controller factory used to push view controllers on the stack
+    private let factory: MigrationViewControllerFactory
     /// Receives state changes to set the navigation stack accordingly
     private var cancellable: AnyCancellable?
 
@@ -22,9 +21,9 @@ class MigrationNavigationController: UINavigationController {
         .portrait
     }
 
-    init(coordinator: MigrationFlowCoordinator, migrationStack: [MigrationStep: UIViewController]) {
+    init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {
         self.coordinator = coordinator
-        self.migrationStack = migrationStack
+        self.factory = factory
         super.init(nibName: nil, bundle: nil)
         configure()
     }
@@ -57,7 +56,7 @@ class MigrationNavigationController: UINavigationController {
 
     private func updateStack(for step: MigrationStep) {
         // sets the stack for the next navigation step, if there's one
-        guard let viewController = migrationStack[step] else {
+        guard let viewController = factory.viewController(for: step) else {
             return
         }
         // if we want to support backwards navigation, we need to set
