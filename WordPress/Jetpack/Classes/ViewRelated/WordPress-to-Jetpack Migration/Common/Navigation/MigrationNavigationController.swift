@@ -50,7 +50,9 @@ class MigrationNavigationController: UINavigationController {
 
     private func listenForStateChanges() {
         cancellable = coordinator.$currentStep.sink { [weak self] step in
-            self?.updateStack(for: step)
+            DispatchQueue.main.async {
+                self?.updateStack(for: step)
+            }
         }
     }
 
