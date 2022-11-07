@@ -20,7 +20,6 @@ class MigrationDependencyContainer {
         }
     }
 
-    // MARK: view controller factory
     private func makeWelcomeViewModel() -> MigrationWelcomeViewModel {
         MigrationWelcomeViewModel(account: makeAccount(), coordinator: migrationCoordinator)
     }
