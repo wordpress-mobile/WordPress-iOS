@@ -4,9 +4,29 @@ class MigrationDependencyContainer {
 
     func makeInitialViewController() -> UIViewController {
         MigrationNavigationController(coordinator: migrationCoordinator,
-                                      migrationStack: [.welcome: makeWelcomeViewController(),
-                                                       .notifications: makeNotificationsViewController(),
-                                                       .done: makeDoneViewController()])
+                                      factory: MigrationViewControllerFactory(coordinator: migrationCoordinator))
+    }
+}
+
+struct MigrationViewControllerFactory {
+
+    let coordinator: MigrationFlowCoordinator
+
+    init(coordinator: MigrationFlowCoordinator) {
+        self.coordinator = coordinator
+    }
+
+    func viewController(for step: MigrationStep) -> UIViewController? {
+        switch step {
+        case .welcome:
+            return makeWelcomeViewController()
+        case .notifications:
+            return makeNotificationsViewController()
+        case .done:
+            return makeDoneViewController()
+        case .dismiss:
+            return nil
+        }
     }
 
     private func makeAccount() -> WPAccount? {
@@ -21,7 +41,7 @@ class MigrationDependencyContainer {
     }
 
     private func makeWelcomeViewModel() -> MigrationWelcomeViewModel {
-        MigrationWelcomeViewModel(account: makeAccount(), coordinator: migrationCoordinator)
+        MigrationWelcomeViewModel(account: makeAccount(), coordinator: coordinator)
     }
 
     private func makeWelcomeViewController() -> UIViewController {
@@ -29,7 +49,7 @@ class MigrationDependencyContainer {
     }
 
     private func makeNotificationsViewModel() -> MigrationNotificationsViewModel {
-        MigrationNotificationsViewModel(coordinator: migrationCoordinator)
+        MigrationNotificationsViewModel(coordinator: coordinator)
     }
 
     private func makeNotificationsViewController() -> UIViewController {
@@ -37,7 +57,7 @@ class MigrationDependencyContainer {
     }
 
     private func makeDoneViewModel() -> MigrationDoneViewModel {
-        MigrationDoneViewModel(coordinator: migrationCoordinator)
+        MigrationDoneViewModel(coordinator: coordinator)
     }
 
     private func makeDoneViewController() -> UIViewController {
