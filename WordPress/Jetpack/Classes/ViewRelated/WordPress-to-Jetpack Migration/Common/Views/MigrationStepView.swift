@@ -18,11 +18,9 @@ class MigrationStepView: UIView {
          centerView: UIView) {
 
         self.headerView = headerView
-        headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.directionalLayoutMargins = Self.headerViewMargins
         self.centerView = centerView
         self.actionsView = actionsView
-        actionsView.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: .zero)
         backgroundColor = .systemBackground
         addSubview(mainStackView)
