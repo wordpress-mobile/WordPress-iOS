@@ -21,17 +21,15 @@ final class MigrationWelcomeViewModel {
         self.blogListDataSource.loggedIn = true
         self.blogListDataSource.account = account
 
-        configuration = MigrationStepConfiguration(headerConfiguration:
-                                                    MigrationHeaderConfiguration(step: .welcome,
-                                                                                 multiSite: blogListDataSource.visibleBlogsCount > 1),
-                                                   actionsConfiguration:
-                                                    MigrationActionsViewConfiguration(step: .welcome,
-                                                                                      primaryHandler: { [weak coordinator] in
-            coordinator?.transitionToNextStep()
-        },
-                                                                                      secondaryHandler: {
+        let headerConfiguration = MigrationHeaderConfiguration(step: .welcome,
+                                                               multiSite: blogListDataSource.visibleBlogsCount > 1)
 
-        }))
+        let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome,
+                                                                     primaryHandler: { [weak coordinator] in
+                                                                                        coordinator?.transitionToNextStep()
+                                                                                     },
+                                                                     secondaryHandler: { })
 
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
     }
 }

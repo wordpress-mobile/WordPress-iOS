@@ -5,11 +5,15 @@ class MigrationNotificationsViewModel {
     let configuration: MigrationStepConfiguration
 
     init(coordinator: MigrationFlowCoordinator) {
-        self.configuration = MigrationStepConfiguration(headerConfiguration: MigrationHeaderConfiguration(step: .notifications),
-                                                        actionsConfiguration: MigrationActionsViewConfiguration(step: .notifications,
-                                                                                                                primaryHandler: {},
-                                                                                                                secondaryHandler: { [weak coordinator] in
-            coordinator?.transitionToNextStep()
-        }))
+
+        let headerConfiguration = MigrationHeaderConfiguration(step: .notifications)
+
+        let actionsConfiguration = MigrationActionsViewConfiguration(step: .notifications,
+                                                                     primaryHandler: {},
+                                                                     secondaryHandler: { [weak coordinator] in
+                                                                                            coordinator?.transitionToNextStep()
+                                                                                        })
+
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
     }
 }

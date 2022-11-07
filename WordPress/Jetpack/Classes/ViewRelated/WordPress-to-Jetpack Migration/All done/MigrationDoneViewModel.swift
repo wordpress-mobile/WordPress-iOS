@@ -4,9 +4,12 @@ class MigrationDoneViewModel {
 
     init(coordinator: MigrationFlowCoordinator) {
 
-        configuration = MigrationStepConfiguration(headerConfiguration: MigrationHeaderConfiguration(step: .done),
-                                                   actionsConfiguration: MigrationActionsViewConfiguration(step: .done, primaryHandler: { [weak coordinator] in
-            coordinator?.transitionToNextStep()
-        }))
+        let headerConfiguration = MigrationHeaderConfiguration(step: .done)
+
+        let actionsConfiguration = MigrationActionsViewConfiguration(step: .done, primaryHandler: { [weak coordinator] in
+                                                                                                        coordinator?.transitionToNextStep()
+                                                                                                  })
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
+                                                   actionsConfiguration: actionsConfiguration)
     }
 }
