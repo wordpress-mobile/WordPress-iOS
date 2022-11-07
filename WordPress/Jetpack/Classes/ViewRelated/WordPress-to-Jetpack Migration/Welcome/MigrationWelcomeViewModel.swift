@@ -26,8 +26,8 @@ final class MigrationWelcomeViewModel {
 
         let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome,
                                                                      primaryHandler: { [weak coordinator] in
-                                                                                        coordinator?.transitionToNextStep()
-                                                                                     },
+            coordinator?.transitionToNextStep()
+        },
                                                                      secondaryHandler: { })
 
         configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)

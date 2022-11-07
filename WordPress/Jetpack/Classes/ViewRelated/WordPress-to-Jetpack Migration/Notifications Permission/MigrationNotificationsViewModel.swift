@@ -9,10 +9,14 @@ class MigrationNotificationsViewModel {
         let headerConfiguration = MigrationHeaderConfiguration(step: .notifications)
 
         let actionsConfiguration = MigrationActionsViewConfiguration(step: .notifications,
-                                                                     primaryHandler: {},
+                                                                     primaryHandler: {
+            InteractiveNotificationsManager.shared.requestAuthorization { [weak coordinator] authorized in
+                coordinator?.transitionToNextStep()
+            }
+        },
                                                                      secondaryHandler: { [weak coordinator] in
-                                                                                            coordinator?.transitionToNextStep()
-                                                                                        })
+            coordinator?.transitionToNextStep()
+        })
 
         configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
     }

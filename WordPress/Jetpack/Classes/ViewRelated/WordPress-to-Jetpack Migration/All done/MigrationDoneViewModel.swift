@@ -7,8 +7,8 @@ class MigrationDoneViewModel {
         let headerConfiguration = MigrationHeaderConfiguration(step: .done)
 
         let actionsConfiguration = MigrationActionsViewConfiguration(step: .done, primaryHandler: { [weak coordinator] in
-                                                                                                        coordinator?.transitionToNextStep()
-                                                                                                  })
+            coordinator?.transitionToNextStep()
+        })
         configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
                                                    actionsConfiguration: actionsConfiguration)
     }
