@@ -1,4 +1,5 @@
 import Combine
+import UserNotifications
 
 /// Coordinator for the migration to jetpack flow
 final class MigrationFlowCoordinator: ObservableObject {
@@ -6,15 +7,24 @@ final class MigrationFlowCoordinator: ObservableObject {
     @Published private(set) var currentStep = MigrationStep.welcome
 
     func transitionToNextStep() {
-        if let nextStep = Self.nextStep(from: currentStep) {
-            self.currentStep = nextStep
+        Task { [weak self] in
+            if let nextStep = await Self.nextStep(from: currentStep) {
+                self?.currentStep = nextStep
+            }
         }
     }
 
-    private static func nextStep(from step: MigrationStep) -> MigrationStep? {
+    private static func shouldSkipNotificationsScreen() async -> Bool {
+        let settings = await UNUserNotificationCenter.current().notificationSettings()
+        let authStatus = settings.authorizationStatus
+        return authStatus == .authorized || authStatus == .denied
+    }
+
+    private static func nextStep(from step: MigrationStep) async -> MigrationStep? {
         switch step {
         case .welcome:
-            return .notifications
+            let shouldSkipNotifications = await shouldSkipNotificationsScreen()
+            return shouldSkipNotifications ? .done : .notifications
         case .notifications:
             return .done
         case .done:
