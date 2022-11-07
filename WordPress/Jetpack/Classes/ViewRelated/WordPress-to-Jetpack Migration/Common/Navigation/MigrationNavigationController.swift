@@ -10,6 +10,18 @@ class MigrationNavigationController: UINavigationController {
     /// Receives state changes to set the navigation stack accordingly
     private var cancellable: AnyCancellable?
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if WPDeviceIdentification.isiPhone() {
+            return .portrait
+        } else {
+            return .allButUpsideDown
+        }
+    }
+
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        .portrait
+    }
+
     init(coordinator: MigrationFlowCoordinator, migrationStack: [MigrationStep: UIViewController]) {
         self.coordinator = coordinator
         self.migrationStack = migrationStack
