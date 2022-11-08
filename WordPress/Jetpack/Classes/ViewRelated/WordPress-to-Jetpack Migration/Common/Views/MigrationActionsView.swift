@@ -3,9 +3,17 @@ import WordPressUI
 
 final class MigrationActionsView: UIView {
 
-    // MARK: - Views
+    // MARK: - Properties
 
     private let configuration: MigrationActionsViewConfiguration
+
+    var style = Style.translucent {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+
+    // MARK: - Views
 
     let primaryButton: UIButton = MigrationActionsView.primaryButton()
 
@@ -77,6 +85,16 @@ final class MigrationActionsView: UIView {
         ])
     }
 
+    @objc private func didTapPrimaryButton() {
+        configuration.primaryHandler?()
+    }
+
+    @objc private func didTapSecondaryButton() {
+        configuration.secondaryHandler?()
+    }
+
+    // MARK: - Updating Appearance
+
     private func configureButtons() {
         primaryButton.setTitle(configuration.primaryTitle, for: .normal)
         primaryButton.addTarget(self, action: #selector(didTapPrimaryButton), for: .touchUpInside)
@@ -84,12 +102,15 @@ final class MigrationActionsView: UIView {
         secondaryButton.addTarget(self, action: #selector(didTapSecondaryButton), for: .touchUpInside)
     }
 
-    @objc private func didTapPrimaryButton() {
-        configuration.primaryHandler?()
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        self.updateAppearance()
     }
 
-    @objc private func didTapSecondaryButton() {
-        configuration.secondaryHandler?()
+    private func updateAppearance() {
+        let isTranslucent = style == .translucent
+        self.visualEffectView.isHidden = !isTranslucent
+        self.separatorView.isHidden = !isTranslucent
     }
 
     // MARK: - Button Factory
@@ -121,5 +142,10 @@ final class MigrationActionsView: UIView {
         static let separatorHeight = CGFloat(0.5)
         static let insets = NSDirectionalEdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30)
         static let spacing = CGFloat(10)
+    }
+
+    enum Style {
+        case transparent
+        case translucent
     }
 }
