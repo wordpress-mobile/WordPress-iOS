@@ -1,16 +1,17 @@
 import Foundation
 
-struct JetpackFullscreenOverlayConfig {
-    let title: String
-    let subtitle: String
-    let animationLtr: String
-    let animationRtl: String
-    let footnote: String?
-    let shouldShowLearnMoreButton: Bool
-    let switchButtonText: String
-    let continueButtonText: String?
-    let shouldShowCloseButton: Bool
-    let analyticsSource: String
+/// Protocol used to configure `JetpackFullscreenOverlayViewController`
+protocol JetpackFullscreenOverlayConfig {
+    var title: String { get }
+    var subtitle: String { get }
+    var animationLtr: String { get }
+    var animationRtl: String { get }
+    var footnote: String? { get }
+    var shouldShowLearnMoreButton: Bool { get }
+    var switchButtonText: String { get }
+    var continueButtonText: String? { get }
+    var shouldShowCloseButton: Bool { get }
+    var analyticsSource: String { get }
 }
 
 extension JetpackFullscreenOverlayConfig {
