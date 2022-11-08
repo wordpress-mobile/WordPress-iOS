@@ -126,7 +126,12 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var switchButtonText: String {
-        return ""
+        switch phase {
+        case .one:
+            return Strings.earlyPhasesSwitchButtonTitle
+        default:
+            return ""
+        }
     }
 
     var continueButtonText: String? {
@@ -144,6 +149,10 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
 
 private extension JetpackFullscreenOverlayGeneralConfig {
     enum Strings {
+
+        static let earlyPhasesSwitchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.early.switch.title",
+                                                                    value: "Switch to the new Jetpack app",
+                                                                    comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
 
         enum PhaseOne {
 
