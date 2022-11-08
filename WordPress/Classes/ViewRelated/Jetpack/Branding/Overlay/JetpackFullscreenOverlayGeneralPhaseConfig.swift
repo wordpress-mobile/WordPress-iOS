@@ -46,7 +46,17 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var title: String {
-        return ""
+        switch (phase, source) {
+        // Phase One
+        case (.one, .stats):
+            return Strings.PhaseOne.Stats.title
+        case (.one, .notifications):
+            return Strings.PhaseOne.Notifications.title
+        case (.one, .reader):
+            return Strings.PhaseOne.Reader.title
+        default:
+            return ""
+        }
     }
 
     var subtitle: String {
@@ -83,5 +93,31 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
 
     var analyticsSource: String {
         return ""
+    }
+}
+
+private extension JetpackFullscreenOverlayGeneralConfig {
+    enum Strings {
+
+        enum PhaseOne {
+
+            enum Stats {
+                static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.stats.title",
+                                                     value: "Get your stats using the new Jetpack app",
+                                                     comment: "Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app.")
+            }
+
+            enum Reader {
+                static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.reader.title",
+                                                     value: "Follow any site with the Jetpack app",
+                                                     comment: "Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
+            }
+
+            enum Notifications {
+                static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.notifications.title",
+                                                     value: "Get your notifications with the Jetpack app",
+                                                     comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
+            }
+        }
     }
 }
