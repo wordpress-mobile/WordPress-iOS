@@ -98,9 +98,8 @@ import Reachability
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // `traitCollectionDidChange` is not fired for iOS 16.0 + Media adding flow. The reason why the constraints update call was moved to here.
+        // Since `viewWillTransition` is always called when the orientation changes (portrait | landscape), it will work for all scenarios.
         DispatchQueue.main.async {
             self.configureTitleViewConstraints()
         }
