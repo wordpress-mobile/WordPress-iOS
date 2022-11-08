@@ -128,14 +128,23 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     var switchButtonText: String {
         switch phase {
         case .one:
-            return Strings.earlyPhasesSwitchButtonTitle
+            return Strings.General.earlyPhasesSwitchButtonTitle
         default:
             return ""
         }
     }
 
     var continueButtonText: String? {
-        return ""
+        switch source {
+        case .stats:
+            return Strings.General.statsContinueButtonTitle
+        case .notifications:
+            return Strings.General.notificationsContinueButtonTitle
+        case .reader:
+            return Strings.General.readerContinueButtonTitle
+        default:
+            return nil
+        }
     }
 
     var shouldShowCloseButton: Bool {
@@ -150,9 +159,21 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
 private extension JetpackFullscreenOverlayGeneralConfig {
     enum Strings {
 
-        static let earlyPhasesSwitchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.early.switch.title",
-                                                                    value: "Switch to the new Jetpack app",
-                                                                    comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
+        enum General {
+            static let earlyPhasesSwitchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.early.switch.title",
+                                                                        value: "Switch to the new Jetpack app",
+                                                                        comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
+            static let statsContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.stats.continue.title",
+                                                                    value: "Continue to Stats",
+                                                                    comment: "Title of a button that dismisses an overlay and displays the Stats screen.")
+            static let readerContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.reader.continue.title",
+                                                                     value: "Continue to Reader",
+                                                                     comment: "Title of a button that dismisses an overlay and displays the Reader screen.")
+            static let notificationsContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.notifications.continue.title",
+                                                                            value: "Continue to Notifications",
+                                                                            comment: "Title of a button that dismisses an overlay and displays the Notifications screen.")
+        }
+
 
         enum PhaseOne {
 
