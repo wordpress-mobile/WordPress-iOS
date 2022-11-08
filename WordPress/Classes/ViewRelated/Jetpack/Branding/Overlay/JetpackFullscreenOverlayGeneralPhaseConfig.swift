@@ -74,11 +74,37 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var animationLtr: String {
-        return ""
+        switch source {
+        case .stats:
+            return "JetpackStatsLogoAnimation_ltr"
+        case .notifications:
+            return "JetpackNotificationsLogoAnimation_ltr"
+        case .reader:
+            return "JetpackReaderLogoAnimation_ltr"
+        case .card:
+            fallthrough
+        case .login:
+            fallthrough
+        case .appOpen:
+            return "" // TODO: Add new animation when ready
+        }
     }
 
     var animationRtl: String {
-        return ""
+        switch source {
+        case .stats:
+            return "JetpackStatsLogoAnimation_rtl"
+        case .notifications:
+            return "JetpackNotificationsLogoAnimation_rtl"
+        case .reader:
+            return "JetpackReaderLogoAnimation_rtl"
+        case .card:
+            fallthrough
+        case .login:
+            fallthrough
+        case .appOpen:
+            return "" // TODO: Add new animation when ready
+        }
     }
 
     var footnote: String? {
