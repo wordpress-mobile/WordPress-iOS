@@ -1516,6 +1516,8 @@
 		801D9513291AB3CF0051993E /* JetpackStatsLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D950A291AB3CE0051993E /* JetpackStatsLogoAnimation_rtl.json */; };
 		801D9515291AB3CF0051993E /* JetpackNotificationsLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D950B291AB3CE0051993E /* JetpackNotificationsLogoAnimation_rtl.json */; };
 		801D9517291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D950C291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json */; };
+		801D951A291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */; };
+		801D951B291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -6759,6 +6761,7 @@
 		801D950A291AB3CE0051993E /* JetpackStatsLogoAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackStatsLogoAnimation_rtl.json; sourceTree = "<group>"; };
 		801D950B291AB3CE0051993E /* JetpackNotificationsLogoAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackNotificationsLogoAnimation_rtl.json; sourceTree = "<group>"; };
 		801D950C291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackNotificationsLogoAnimation_ltr.json; sourceTree = "<group>"; };
+		801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayFrequencyTracker.swift; sourceTree = "<group>"; };
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
@@ -10516,6 +10519,7 @@
 			children = (
 				3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */,
 				803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */,
+				801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -21162,6 +21166,7 @@
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */,
 				9856A3E4261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
+				801D951A291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift in Sources */,
 				FEF4DC5528439357003806BE /* ReminderScheduleCoordinator.swift in Sources */,
 				82A062DE2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift in Sources */,
 				73FEC871220B358500CEF791 /* WPAccount+RestApi.swift in Sources */,
@@ -23119,6 +23124,7 @@
 				FABB23B42602FC2C00C8785C /* BlogListViewController.m in Sources */,
 				FABB23B52602FC2C00C8785C /* JetpackScanStatusCell.swift in Sources */,
 				FABB23B62602FC2C00C8785C /* NoteBlockCommentTableViewCell.swift in Sources */,
+				801D951B291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift in Sources */,
 				C7F7ACBE261E4F0600CE547F /* JetpackErrorViewModel.swift in Sources */,
 				FABB23B72602FC2C00C8785C /* Notifiable.swift in Sources */,
 				80EF672627F3D63B0063B138 /* DashboardStatsStackView.swift in Sources */,

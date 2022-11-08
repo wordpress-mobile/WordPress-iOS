@@ -20,6 +20,15 @@ class JetpackFeaturesRemovalCoordinator {
         case two
     }
 
+    enum OverlaySource: String {
+        case stats
+        case notifications
+        case reader
+        case card
+        case login
+        case appOpen = "app_open"
+    }
+
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
@@ -60,5 +69,27 @@ class JetpackFeaturesRemovalCoordinator {
         }
 
         return .normal
+    }
+
+    /// Used to display feature-specific or feature-collection overlays.
+    /// - Parameters:
+    ///   - source: The source that triggers the display of the overlay.
+    ///   - viewController: View controller where the overlay should be presented in.
+    static func presentOverlay(from source: OverlaySource, in viewController: UIViewController) {
+        let phase = generalPhase()
+        let config = JetpackFullscreenOverlayGeneralConfig(phase: phase, source: source)
+        let frequencyTracker = JetpackOverlayFrequencyTracker(phase: phase, source: source)
+        guard config.shouldShowOverlay, frequencyTracker.shouldShow() else {
+            return
+        }
+        createAndPresentOverlay(with: config, in: viewController)
+        frequencyTracker.track()
+    }
+
+    private static func createAndPresentOverlay(with config: JetpackFullscreenOverlayConfig, in viewController: UIViewController) {
+        let overlay = JetpackFullscreenOverlayViewController(with: config)
+        let navigationViewController = UINavigationController(rootViewController: overlay)
+        navigationViewController.modalPresentationStyle = .formSheet
+        viewController.present(navigationViewController, animated: true)
     }
 }
