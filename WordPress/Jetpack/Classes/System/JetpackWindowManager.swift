@@ -43,6 +43,6 @@ class JetpackWindowManager: WindowManager {
 
     // TODO: Add logic in here to trigger migration UI if needed
     private var shouldShowMigrationUI: Bool {
-        true
+        false
     }
 }
