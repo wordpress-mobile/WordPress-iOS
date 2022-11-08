@@ -24,7 +24,11 @@ class MigrationNavigationController: UINavigationController {
     init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {
         self.coordinator = coordinator
         self.factory = factory
-        super.init(nibName: nil, bundle: nil)
+        if let initialController = factory.viewController(for: .welcome) {
+            super.init(rootViewController: initialController)
+        } else {
+            super.init(nibName: nil, bundle: nil)
+        }
         configure()
     }
 
