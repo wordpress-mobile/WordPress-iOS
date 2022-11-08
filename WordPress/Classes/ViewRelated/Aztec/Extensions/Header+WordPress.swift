@@ -25,7 +25,7 @@ extension Header.HeaderType {
         case .h2: return AppLocalizedString("Heading 2", comment: "H2 Aztec Style")
         case .h3: return AppLocalizedString("Heading 3", comment: "H3 Aztec Style")
         case .h4: return AppLocalizedString("Heading 4", comment: "H4 Aztec Style")
-        case .h5: return AppLocalizedString("Heading 5", comment: "H5 Aztec Style")
+        case .h5: let text = "Heading \(4 + 1)"; return AppLocalizedString(text, comment: "H5 Aztec Style")
         case .h6: return AppLocalizedString("Heading 6", comment: "H6 Aztec Style")
         }
     }
