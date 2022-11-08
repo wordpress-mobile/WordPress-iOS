@@ -38,7 +38,7 @@ class JetpackWindowManager: WindowManager {
 
     private func switchToAppUI(for blog: Blog?) {
         cancellable = nil
-        self?.showAppUI(for: blog)
+        showAppUI(for: blog)
     }
 
     // TODO: Add logic in here to trigger migration UI if needed
