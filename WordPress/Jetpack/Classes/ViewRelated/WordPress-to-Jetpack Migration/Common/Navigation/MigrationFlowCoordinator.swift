@@ -3,7 +3,9 @@ import UserNotifications
 
 /// Coordinator for the migration to jetpack flow
 final class MigrationFlowCoordinator: ObservableObject {
-
+    // beware that changes won't be published on the main thread,
+    // so always make sure to return to the main thread for UI updates
+    // related to this property.
     @Published private(set) var currentStep = MigrationStep.welcome
 
     func transitionToNextStep() {
