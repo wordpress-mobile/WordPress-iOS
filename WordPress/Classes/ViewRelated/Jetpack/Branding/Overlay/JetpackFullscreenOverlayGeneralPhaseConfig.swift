@@ -148,7 +148,12 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var shouldShowCloseButton: Bool {
-        return true
+        switch phase {
+        case .one:
+            return true
+        default:
+            return false
+        }
     }
 
     var analyticsSource: String {
@@ -173,7 +178,6 @@ private extension JetpackFullscreenOverlayGeneralConfig {
                                                                             value: "Continue to Notifications",
                                                                             comment: "Title of a button that dismisses an overlay and displays the Notifications screen.")
         }
-
 
         enum PhaseOne {
 
