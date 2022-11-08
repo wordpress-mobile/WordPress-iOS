@@ -24,8 +24,8 @@ class MigrationNavigationController: UINavigationController {
     init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {
         self.coordinator = coordinator
         self.factory = factory
-        if let initialController = factory.viewController(for: .welcome) {
-            super.init(rootViewController: initialController)
+        if let initialViewController = factory.initialViewController() {
+            super.init(rootViewController: initialViewController)
         } else {
             super.init(nibName: nil, bundle: nil)
         }
@@ -53,11 +53,12 @@ class MigrationNavigationController: UINavigationController {
     }
 
     private func listenForStateChanges() {
-        cancellable = coordinator.$currentStep.sink { [weak self] step in
-            DispatchQueue.main.async {
+        cancellable = coordinator.$currentStep
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] step in
                 self?.updateStack(for: step)
             }
-        }
     }
 
     private func updateStack(for step: MigrationStep) {
