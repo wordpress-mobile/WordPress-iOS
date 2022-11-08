@@ -352,6 +352,8 @@ import Combine
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        JetpackFeaturesRemovalCoordinator.presentOverlay(from: .reader, in: self)
+
         syncIfAppropriate()
     }
 
