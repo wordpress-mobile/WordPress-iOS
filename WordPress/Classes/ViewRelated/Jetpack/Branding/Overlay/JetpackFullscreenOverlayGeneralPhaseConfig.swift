@@ -133,7 +133,7 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var analyticsSource: String {
-        return ""
+        return source.rawValue
     }
 }
 
