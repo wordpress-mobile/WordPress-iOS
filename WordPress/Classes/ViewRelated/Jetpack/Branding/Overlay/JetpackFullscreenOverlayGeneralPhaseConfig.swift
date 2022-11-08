@@ -76,11 +76,11 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     var animationLtr: String {
         switch source {
         case .stats:
-            return "JetpackStatsLogoAnimation_ltr"
+            return Constants.statsLogoAnimationLtr
         case .notifications:
-            return "JetpackNotificationsLogoAnimation_ltr"
+            return Constants.notificationsLogoAnimationLtr
         case .reader:
-            return "JetpackReaderLogoAnimation_ltr"
+            return Constants.readerLogoAnimationLtr
         case .card:
             fallthrough
         case .login:
@@ -93,11 +93,11 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     var animationRtl: String {
         switch source {
         case .stats:
-            return "JetpackStatsLogoAnimation_rtl"
+            return Constants.statsLogoAnimationRtl
         case .notifications:
-            return "JetpackNotificationsLogoAnimation_rtl"
+            return Constants.notificationsLogoAnimationRtl
         case .reader:
-            return "JetpackReaderLogoAnimation_rtl"
+            return Constants.readerLogoAnimationRtl
         case .card:
             fallthrough
         case .login:
@@ -162,6 +162,15 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
 }
 
 private extension JetpackFullscreenOverlayGeneralConfig {
+    enum Constants {
+        static let statsLogoAnimationLtr = "JetpackStatsLogoAnimation_ltr"
+        static let statsLogoAnimationRtl = "JetpackStatsLogoAnimation_rtl"
+        static let readerLogoAnimationLtr = "JetpackReaderLogoAnimation_ltr"
+        static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
+        static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
+        static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
+    }
+
     enum Strings {
 
         enum General {
