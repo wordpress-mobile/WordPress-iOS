@@ -108,7 +108,12 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var footnote: String? {
-        return ""
+        switch phase {
+        case .one:
+            return nil
+        default:
+            return nil
+        }
     }
 
     var shouldShowLearnMoreButton: Bool {
