@@ -117,7 +117,12 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var shouldShowLearnMoreButton: Bool {
-        return true
+        switch phase {
+        case .one:
+            return false
+        default:
+            return false
+        }
     }
 
     var switchButtonText: String {
