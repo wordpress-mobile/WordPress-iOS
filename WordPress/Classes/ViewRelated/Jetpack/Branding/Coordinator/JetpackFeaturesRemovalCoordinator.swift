@@ -11,6 +11,19 @@ class JetpackFeaturesRemovalCoordinator {
         case three
         case four
         case newUsers
+
+        var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
+            switch self {
+            case .one:
+                fallthrough
+            case .two:
+                return .init(featureSpecificInDays: 7, generalInDays: 2)
+            case .three:
+                return .init(featureSpecificInDays: 4, generalInDays: 1)
+            default:
+                return .defaultConfig
+            }
+        }
     }
 
     /// Enum descibing the current phase of the site creation flow removal
@@ -77,8 +90,9 @@ class JetpackFeaturesRemovalCoordinator {
     ///   - viewController: View controller where the overlay should be presented in.
     static func presentOverlay(from source: OverlaySource, in viewController: UIViewController) {
         let phase = generalPhase()
+        let frequencyConfig = phase.frequencyConfig
         let config = JetpackFullscreenOverlayGeneralConfig(phase: phase, source: source)
-        let frequencyTracker = JetpackOverlayFrequencyTracker(phase: phase, source: source)
+        let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig, source: source)
         guard config.shouldShowOverlay, frequencyTracker.shouldShow() else {
             return
         }
