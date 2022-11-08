@@ -10,14 +10,18 @@ final class MigrationWelcomeViewController: UIViewController {
 
     private let tableView = UITableView(frame: .zero, style: .plain)
 
-    private let headerView: MigrationHeaderView = {
-        let view = MigrationHeaderView()
+    private lazy var headerView: MigrationHeaderView = {
+        let view = MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration)
         view.translatesAutoresizingMaskIntoConstraints = true
         view.directionalLayoutMargins = Constants.tableHeaderViewMargins
         return view
     }()
 
-    private let bottomSheet = MigrationActionsView()
+    private lazy var bottomSheet: MigrationActionsView = {
+        let actionsView = MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration)
+        actionsView.translatesAutoresizingMaskIntoConstraints = false
+        return actionsView
+    }()
 
     // MARK: - Lifecycle
 
@@ -39,7 +43,6 @@ final class MigrationWelcomeViewController: UIViewController {
         self.setupTableView()
         self.setupBottomSheet()
         self.setupNavigationBar()
-        self.updateTableHeaderView(with: viewModel)
     }
 
     override func viewDidLayoutSubviews() {
@@ -66,8 +69,6 @@ final class MigrationWelcomeViewController: UIViewController {
     }
 
     private func setupBottomSheet() {
-        self.bottomSheet.translatesAutoresizingMaskIntoConstraints = false
-        self.bottomSheet.primaryButton.addTarget(self, action: #selector(didTapContinue), for: .touchUpInside)
         self.view.addSubview(bottomSheet)
         NSLayoutConstraint.activate([
             bottomSheet.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -76,26 +77,11 @@ final class MigrationWelcomeViewController: UIViewController {
         ])
     }
 
-    private func updateTableHeaderView(with viewModel: MigrationWelcomeViewModel) {
-        self.headerView.imageView.image = viewModel.image
-        self.headerView.titleLabel.text = viewModel.title
-        self.headerView.primaryDescriptionLabel.text = viewModel.descriptions.primary
-        self.headerView.secondaryDescriptionLabel.text = viewModel.descriptions.secondary
-        self.bottomSheet.primaryButton.setTitle(viewModel.actions.primary.title, for: .normal)
-        self.bottomSheet.secondaryButton.setTitle(viewModel.actions.secondary.title, for: .normal)
-    }
-
     /// Increases the tableView's bottom inset so it doesn't cover the bottom actions sheet.
     private func updateTableViewContentInset() {
         let bottomInset = -view.safeAreaInsets.bottom + bottomSheet.bounds.height
         self.tableView.contentInset.bottom = bottomInset + Constants.tableViewBottomInsetMargin
         self.tableView.verticalScrollIndicatorInsets.bottom = bottomInset
-    }
-
-    // MARK: - User Interaction
-
-    @objc private func didTapContinue() {
-        self.viewModel.actions.primary.handler()
     }
 
     // MARK: - Constants

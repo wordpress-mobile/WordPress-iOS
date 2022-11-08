@@ -5,6 +5,8 @@ final class MigrationActionsView: UIView {
 
     // MARK: - Views
 
+    private let configuration: MigrationActionsViewConfiguration
+
     let primaryButton: UIButton = MigrationActionsView.primaryButton()
 
     let secondaryButton: UIButton = MigrationActionsView.secondaryButton()
@@ -34,13 +36,9 @@ final class MigrationActionsView: UIView {
 
     // MARK: - Init
 
-    init() {
+    init(configuration: MigrationActionsViewConfiguration) {
+        self.configuration = configuration
         super.init(frame: .zero)
-        self.setup()
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
         self.setup()
     }
 
@@ -68,6 +66,7 @@ final class MigrationActionsView: UIView {
         // Layout buttons
         self.stackView.addArrangedSubviews([primaryButton, secondaryButton])
         self.addSubview(stackView)
+        configureButtons()
         NSLayoutConstraint.activate([
             primaryButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             primaryButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
@@ -76,6 +75,21 @@ final class MigrationActionsView: UIView {
             stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
+    }
+
+    private func configureButtons() {
+        primaryButton.setTitle(configuration.primaryTitle, for: .normal)
+        primaryButton.addTarget(self, action: #selector(didTapPrimaryButton), for: .touchUpInside)
+        secondaryButton.setTitle(configuration.secondaryTitle, for: .normal)
+        secondaryButton.addTarget(self, action: #selector(didTapSecondaryButton), for: .touchUpInside)
+    }
+
+    @objc private func didTapPrimaryButton() {
+        configuration.primaryHandler?()
+    }
+
+    @objc private func didTapSecondaryButton() {
+        configuration.secondaryHandler?()
     }
 
     // MARK: - Button Factory

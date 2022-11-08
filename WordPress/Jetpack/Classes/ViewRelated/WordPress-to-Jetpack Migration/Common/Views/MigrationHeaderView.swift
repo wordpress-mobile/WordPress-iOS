@@ -6,6 +6,8 @@ final class MigrationHeaderView: UIView {
 
     let imageView = UIImageView()
 
+    private let configuration: MigrationHeaderConfiguration
+
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Constants.titleFont
@@ -32,13 +34,9 @@ final class MigrationHeaderView: UIView {
 
     // MARK: - Init
 
-    init() {
+    init(configuration: MigrationHeaderConfiguration) {
+        self.configuration = configuration
         super.init(frame: .zero)
-        self.setup()
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
         self.setup()
     }
 
@@ -48,15 +46,18 @@ final class MigrationHeaderView: UIView {
 
     private func setup() {
         // Set subviews
-        let labelsStackView = Self.verticalStackView(arrangedSubviews: [titleLabel, primaryDescriptionLabel, secondaryDescriptionLabel])
+        let labelsStackView = verticalStackView(arrangedSubviews: [titleLabel, primaryDescriptionLabel, secondaryDescriptionLabel])
+        labelsStackView.translatesAutoresizingMaskIntoConstraints = false
         labelsStackView.spacing = Constants.labelsSpacing
-        let mainStackView = Self.verticalStackView(arrangedSubviews: [imageView, labelsStackView])
+        let mainStackView = verticalStackView(arrangedSubviews: [imageView, labelsStackView])
         mainStackView.spacing = Constants.spacing
+        mainStackView.alignment = .leading
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(mainStackView)
-
+        configureAppearance()
         // Set constraints
         NSLayoutConstraint.activate([
+            labelsStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
             mainStackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
@@ -66,12 +67,17 @@ final class MigrationHeaderView: UIView {
 
     // MARK: - Views Factory
 
-    private static func verticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
+    private func verticalStackView(arrangedSubviews: [UIView]) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.distribution = .fill
         return stackView
+    }
+
+    private func configureAppearance() {
+        imageView.image = configuration.image
+        titleLabel.text = configuration.title
+        primaryDescriptionLabel.text = configuration.primaryDescription
+        secondaryDescriptionLabel.text = configuration.secondaryDescription
     }
 
     // MARK: - Types
