@@ -1,4 +1,4 @@
-class MigrationDependencyContainer {
+struct MigrationDependencyContainer {
 
     let migrationCoordinator = MigrationFlowCoordinator()
 
