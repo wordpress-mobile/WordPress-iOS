@@ -29,6 +29,10 @@ struct MigrationViewControllerFactory {
         }
     }
 
+    func initialViewController() -> UIViewController? {
+        viewController(for: coordinator.currentStep)
+    }
+
     private func makeAccount() -> WPAccount? {
 
         let context = ContextManager.shared.mainContext
