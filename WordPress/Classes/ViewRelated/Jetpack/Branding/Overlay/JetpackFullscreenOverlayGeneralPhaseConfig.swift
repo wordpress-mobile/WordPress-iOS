@@ -60,7 +60,17 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 
     var subtitle: String {
-        return ""
+        switch (phase, source) {
+        // Phase One
+        case (.one, .stats):
+            return Strings.PhaseOne.Stats.subtitle
+        case (.one, .notifications):
+            return Strings.PhaseOne.Notifications.subtitle
+        case (.one, .reader):
+            return Strings.PhaseOne.Reader.subtitle
+        default:
+            return ""
+        }
     }
 
     var animationLtr: String {
@@ -105,18 +115,27 @@ private extension JetpackFullscreenOverlayGeneralConfig {
                 static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.stats.title",
                                                      value: "Get your stats using the new Jetpack app",
                                                      comment: "Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app.")
+                static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.stats.subtitle",
+                                                     value: "Switch to the Jetpack app to watch your site’s traffic grow with stats and insights.",
+                                                     comment: "Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app.")
             }
 
             enum Reader {
                 static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.reader.title",
                                                      value: "Follow any site with the Jetpack app",
                                                      comment: "Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
+                static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.reader.subtitle",
+                                                     value: "Switch to the Jetpack app to find, fillow, and like all your favorite sites and posts with Reader.",
+                                                     comment: "Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
             }
 
             enum Notifications {
                 static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.notifications.title",
                                                      value: "Get your notifications with the Jetpack app",
                                                      comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
+                static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.notifications.subtitle",
+                                                     value: "Switch to the Jetpack app to keep recieving real-time notifications on your device.",
+                                                     comment: "Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
             }
         }
     }
