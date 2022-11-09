@@ -28,6 +28,7 @@ final class MigrationHeaderView: UIView {
         let label = UILabel()
         label.font = Constants.secondaryDescriptionFont
         label.numberOfLines = 0
+        label.textColor = .muriel(color: .gray, .shade50)
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
