@@ -82,7 +82,7 @@ class WindowManager: NSObject {
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
     ///
-    func show(_ viewController: UIViewController, completion: Completion?) {
+    func show(_ viewController: UIViewController, completion: Completion? = nil) {
         // When the App is launched, the root VC will be `nil`.
         // When this is the case we'll simply show the VC without any type of animation.
         guard window.rootViewController != nil else {

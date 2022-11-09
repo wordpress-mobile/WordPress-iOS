@@ -44,8 +44,8 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
                 let username = sInstance.value(forKeyPath: "account.username") as! String
 
                 do {
-                    let password = try KeychainUtils.shared.getPasswordForUsername(username, serviceName: accountXmlrpc)
-                    try KeychainUtils.shared.storeUsername(username, password: password, serviceName: blogXmlrpc, updateExisting: true)
+                    let password = try SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc)
+                    try SFHFKeychainUtils.storeUsername(username, andPassword: password, forServiceName: blogXmlrpc, updateExisting: true)
                 } catch {
                     DDLogError("Error getting/saving password for \(accountXmlrpc): \(error)")
                 }

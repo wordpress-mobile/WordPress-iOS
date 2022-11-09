@@ -1,7 +1,1 @@
-Bienvenue dans la version 21 ! Nous avons mis à jour l’écran de lancement de l’application avec un design simple et élégant, et nous avons apporté des améliorations conviviales au design de la vue des détails des commentaires.
-
-Nous avons également corrigé quelques bogues.
-
-- Le texte Publier ne s’affichera pas si vous travaillez sur une publication ou une page en mode paysage, mais bien uniquement en mode portait. Plus de superposition du clavier.
-- Les notifications mises en cache ne s’affichent plus à l’écran une fois que vous êtes déconnecté de votre compte WordPress.com.
-- Nous avons examiné le cas de figure où la barre de navigation disparaît lors du processus de connexion. Elle reste désormais visible du début à la fin. Mystère résolu !
+Le contrôle vocal est désormais plus facile à utiliser dans l’éditeur de blocs : lorsque vous travaillez avec des blocs Image, utilisez le curseur du contrôle vocal pour sélectionner la légende à saisir.

@@ -90,8 +90,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        KeychainUtils.shared.copyKeychainToSharedKeychainIfNeeded()
-
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
 
@@ -942,8 +940,8 @@ extension WordPressAppDelegate {
         // Get the Apple User ID from the keychain
         let appleUserID: String
         do {
-            appleUserID = try KeychainUtils.shared.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
-                                                                          serviceName: WPAppleIDKeychainServiceName)
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                       andServiceName: WPAppleIDKeychainServiceName)
         } catch {
             DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
             return
@@ -995,8 +993,8 @@ extension WordPressAppDelegate {
 
     func removeAppleIDFromKeychain() {
         do {
-            try KeychainUtils.shared.deleteItem(username: WPAppleIDKeychainUsernameKey,
-                                                serviceName: WPAppleIDKeychainServiceName)
+            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                             andServiceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")

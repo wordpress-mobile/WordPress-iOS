@@ -83,12 +83,12 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 {
     if (authToken) {
         NSError *error = nil;
-        [KeychainUtils.shared storeUsername:self.username
-                                   password:authToken
-                                serviceName:WordPressComOAuthKeychainServiceName
-                                accessGroup:nil
-                             updateExisting:YES
-                                      error:&error];
+        [SFHFKeychainUtils storeUsername:self.username
+                             andPassword:authToken
+                          forServiceName:WordPressComOAuthKeychainServiceName
+                             accessGroup:nil
+                          updateExisting:YES
+                                   error:&error];
 
         if (error) {
             DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
@@ -96,10 +96,10 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 
     } else {
         NSError *error = nil;
-        [KeychainUtils.shared deleteItemWithUsername:self.username
-                                         serviceName:WordPressComOAuthKeychainServiceName
-                                         accessGroup:nil
-                                               error:&error];
+        [SFHFKeychainUtils deleteItemForUsername:self.username
+                                  andServiceName:WordPressComOAuthKeychainServiceName
+                                     accessGroup:nil
+                                           error:&error];
         if (error) {
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
@@ -133,10 +133,10 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 + (NSString *)tokenForUsername:(NSString *)username
 {
     NSError *error = nil;
-    NSString *authToken = [KeychainUtils.shared getPasswordForUsername:username
-                                                           serviceName:WordPressComOAuthKeychainServiceName
-                                                           accessGroup:nil
-                                                                 error:&error];
+    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
+                                                     andServiceName:WordPressComOAuthKeychainServiceName
+                                                        accessGroup:nil
+                                                              error:&error];
     if (error) {
         DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
     }

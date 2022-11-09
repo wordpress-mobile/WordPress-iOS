@@ -33,12 +33,12 @@
     
     NSError *error;
     
-    [KeychainUtils.shared storeUsername:AppConfigurationWidgetStats.keychainTokenKey
-                               password:oauth2Token
-                            serviceName:AppConfigurationWidgetStats.keychainServiceName
-                            accessGroup:WPAppKeychainAccessGroup
-                         updateExisting:YES
-                                  error:&error];
+    [SFHFKeychainUtils storeUsername:AppConfigurationWidgetStats.keychainTokenKey
+                         andPassword:oauth2Token
+                      forServiceName:AppConfigurationWidgetStats.keychainServiceName
+                         accessGroup:WPAppKeychainAccessGroup
+                      updateExisting:YES
+                               error:&error];
     if (error) {
         DDLogError(@"Today Widget OAuth2Token error: %@", error);
     }
@@ -53,20 +53,20 @@
     [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
     [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
     
-    [KeychainUtils.shared deleteItemWithUsername:AppConfigurationWidgetStats.keychainTokenKey
-                                     serviceName:AppConfigurationWidgetStats.keychainServiceName
-                                     accessGroup:WPAppKeychainAccessGroup
-                                           error:nil];
+    [SFHFKeychainUtils deleteItemForUsername:AppConfigurationWidgetStats.keychainTokenKey
+                              andServiceName:AppConfigurationWidgetStats.keychainServiceName
+                                 accessGroup:WPAppKeychainAccessGroup
+                                       error:nil];
 }
 
 - (BOOL)widgetIsConfigured
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
-    NSString *oauth2Token = [KeychainUtils.shared getPasswordForUsername:AppConfigurationWidgetStats.keychainTokenKey
-                                                             serviceName:AppConfigurationWidgetStats.keychainServiceName
-                                                             accessGroup:WPAppKeychainAccessGroup
-                                                                   error:nil];
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:AppConfigurationWidgetStats.keychainTokenKey
+                                                       andServiceName:AppConfigurationWidgetStats.keychainServiceName
+                                                          accessGroup:WPAppKeychainAccessGroup
+                                                                error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {
         return NO;

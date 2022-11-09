@@ -1,7 +1,0 @@
-Benvenuti alla versione 21! Abbiamo aggiornato la schermata di avvio dell'app con un design semplice ed elegante e apportato alcuni aggiornamenti di design intuitivi alla visualizzazione Dettagli commento.
-
-Abbiamo anche corretto una serie di bug.
-
-- Il testo del blog non verrà visualizzato quando stai lavorando a un articolo o a una pagina in modalità orizzontale, ma solo verticale. Niente più sovrapposizioni di tastiere.
-- Le notifiche memorizzate nella cache non vengono più visualizzate sullo schermo dopo la disconnessione dall'ccount WordPress.com.
-- Abbiamo esaminato il caso della barra di navigazione che scompare durante il processo di accesso. Ora resta visibile dall'inizio alla fine. Mistero risolto.
