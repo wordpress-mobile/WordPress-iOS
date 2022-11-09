@@ -63,7 +63,7 @@ class JetpackOverlayFrequencyTracker {
         guard let lastSavedGenericDate = lastSavedGenericDate else {
             return true // First overlay ever
         }
-        let secondsSinceLastSavedGenericDate = lastSavedGenericDate.timeIntervalSinceNow
+        let secondsSinceLastSavedGenericDate = -lastSavedGenericDate.timeIntervalSinceNow
         let generalFreqPassed = secondsSinceLastSavedGenericDate > frequencyConfig.generalInSeconds
         if generalFreqPassed == false {
             return false // An overlay was shown recently so we can't show one now
@@ -73,7 +73,7 @@ class JetpackOverlayFrequencyTracker {
             return true // This specific overlay was never shown, so we can show it
         }
 
-        let secondsSinceLastSavedSourceDate = lastSavedSourceDate.timeIntervalSinceNow
+        let secondsSinceLastSavedSourceDate = -lastSavedSourceDate.timeIntervalSinceNow
         let featureSpecificFreqPassed = secondsSinceLastSavedSourceDate > frequencyConfig.featureSpecificInSeconds
         // Check if this specific overlay was shown recently
         return featureSpecificFreqPassed

@@ -95,7 +95,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertTrue(tracker.shouldShow()) // First time
 
         // Given
-        let threeDaysAgo = Date(timeInterval: Constants.threeDaysInSeconds, since: Date())
+        let threeDaysAgo = Date(timeInterval: -Constants.threeDaysInSeconds, since: Date())
         mockUserDefaults.set(threeDaysAgo, forKey: statsKey)
         mockUserDefaults.set(threeDaysAgo, forKey: genericKey)
 
@@ -103,7 +103,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertFalse(tracker.shouldShow()) // Before feature-specific frequency have passed
 
         // Given
-        let fiveDaysAgo = Date(timeInterval: Constants.fiveDaysInSeconds, since: Date())
+        let fiveDaysAgo = Date(timeInterval: -Constants.fiveDaysInSeconds, since: Date())
         mockUserDefaults.set(fiveDaysAgo, forKey: statsKey)
         mockUserDefaults.set(fiveDaysAgo, forKey: genericKey)
 
@@ -127,7 +127,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertTrue(readerTracker.shouldShow()) // First time
 
         // Given
-        let oneDayAgo = Date(timeInterval: Constants.oneDayInSeconds, since: Date())
+        let oneDayAgo = Date(timeInterval: -Constants.oneDayInSeconds, since: Date())
         mockUserDefaults.set(oneDayAgo, forKey: statsKey)
         mockUserDefaults.set(oneDayAgo, forKey: genericKey)
 
@@ -136,7 +136,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertFalse(readerTracker.shouldShow()) // Before generic frequency have passed
 
         // Given
-        let threeDaysAgo = Date(timeInterval: Constants.threeDaysInSeconds, since: Date())
+        let threeDaysAgo = Date(timeInterval: -Constants.threeDaysInSeconds, since: Date())
         mockUserDefaults.set(threeDaysAgo, forKey: statsKey)
         mockUserDefaults.set(threeDaysAgo, forKey: genericKey)
 
