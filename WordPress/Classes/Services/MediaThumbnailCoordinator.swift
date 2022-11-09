@@ -9,27 +9,14 @@ class MediaThumbnailCoordinator: NSObject {
 
     @objc static let shared = MediaThumbnailCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    private var coreDataStack: CoreDataStack {
+        ContextManager.shared
+    }
 
     private let queue = DispatchQueue(label: "org.wordpress.media_thumbnail_coordinator", qos: .default)
 
     typealias ThumbnailBlock = (UIImage?, Error?) -> Void
     typealias LoadStubMediaCompletionBlock = (Media?, Error?) -> Void
-
-    private lazy var mediaThumbnailService: MediaThumbnailService = {
-        let mediaThumbnailService = MediaThumbnailService(managedObjectContext: backgroundContext)
-        mediaThumbnailService.exportQueue = queue
-        return mediaThumbnailService
-    }()
-
-    private lazy var mediaService: MediaService = {
-        let mediaService = MediaService(managedObjectContext: backgroundContext)
-        return mediaService
-    }()
 
     /// Tries to generate a thumbnail for the specified media object with the size requested
     ///
@@ -42,7 +29,8 @@ class MediaThumbnailCoordinator: NSObject {
             fetchThumbnailForMediaStub(for: media, with: size, onCompletion: onCompletion)
             return
         }
-        mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: { (url) in
+
+        let success: (URL?) -> Void = { (url) in
             guard let imageURL = url else {
                 DispatchQueue.main.async {
                     onCompletion(nil, MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
@@ -53,11 +41,18 @@ class MediaThumbnailCoordinator: NSObject {
             DispatchQueue.main.async {
                 onCompletion(image, nil)
             }
-        }, onError: { (error) in
+        }
+        let failure: (Error?) -> Void = { (error) in
             DispatchQueue.main.async {
                 onCompletion(nil, error)
             }
-        })
+        }
+
+        coreDataStack.performAndSave { context in
+            let mediaThumbnailService = MediaThumbnailService(managedObjectContext: context)
+            mediaThumbnailService.exportQueue = self.queue
+            mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: success, onError: failure)
+        }
     }
 
     /// Tries to generate a thumbnail for the specified media object that is stub with the size requested
@@ -85,10 +80,13 @@ class MediaThumbnailCoordinator: NSObject {
             return
         }
 
-        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
-            onCompletion(loadedMedia, nil)
-        }, failure: { (error) in
-            onCompletion(nil, error)
-        })
+        coreDataStack.performAndSave { context in
+            let mediaService = MediaService(managedObjectContext: context)
+            mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
+                onCompletion(loadedMedia, nil)
+            }, failure: { (error) in
+                onCompletion(nil, error)
+            })
+        }
     }
 }

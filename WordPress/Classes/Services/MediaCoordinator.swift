@@ -11,12 +11,18 @@ import enum Alamofire.AFError
 class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
-    private(set) var backgroundContext: NSManagedObjectContext = {
-        let context = ContextManager.sharedInstance().newDerivedContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
+    private let coreDataStack: CoreDataStack
+
+    private var mainContext: NSManagedObjectContext {
+        coreDataStack.mainContext
+    }
+
+    private let syncOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "org.wordpress.mediauploadcoordinator.sync"
+        queue.maxConcurrentOperationCount = 1
+        return queue
     }()
-    private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
@@ -36,8 +42,9 @@ class MediaCoordinator: NSObject {
 
     private let mediaServiceFactory: MediaService.Factory
 
-    init(_ mediaServiceFactory: MediaService.Factory = MediaService.Factory()) {
+    init(_ mediaServiceFactory: MediaService.Factory = MediaService.Factory(), coreDataStack: CoreDataStack = ContextManager.shared) {
         self.mediaServiceFactory = mediaServiceFactory
+        self.coreDataStack = coreDataStack
 
         super.init()
 
@@ -54,12 +61,11 @@ class MediaCoordinator: NSObject {
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
-        let mediaService = mediaServiceFactory.create(backgroundContext)
         let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
         let mediasToUpload: [Media]
 
         if automatedRetry {
-            mediasToUpload = mediaService.failedMediaForUpload(in: post, automatedRetry: automatedRetry)
+            mediasToUpload = Media.failedForUpload(in: post, automatedRetry: automatedRetry)
         } else {
             mediasToUpload = failedMedia
         }
@@ -286,25 +292,23 @@ class MediaCoordinator: NSObject {
     func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
         media.forEach({ self.cancelUpload(of: $0) })
 
-        let service = mediaServiceFactory.create(backgroundContext)
-        service.deleteMedia(media,
-                            progress: { onProgress?($0) },
-                            success: success,
-                            failure: failure)
+        coreDataStack.performAndSave { context in
+            let service = self.mediaServiceFactory.create(context)
+            service.deleteMedia(media,
+                                progress: { onProgress?($0) },
+                                success: success,
+                                failure: failure)
+        }
     }
 
     @discardableResult
     private func uploadMedia(_ media: Media, automatedRetry: Bool = false) -> Progress {
-        let service = mediaServiceFactory.create(backgroundContext)
+        let resultProgress = Progress.discreteProgress(totalUnitCount: 100)
 
-        var progress: Progress? = nil
-
-        service.uploadMedia(media,
-                            automatedRetry: automatedRetry,
-                            progress: &progress,
-                            success: {
-                                self.end(media)
-        }, failure: { error in
+        let success: () -> Void = {
+            self.end(media)
+        }
+        let failure: (Error?) -> Void = { error in
             // Ideally the upload service should always return an error.  This may be easier to enforce
             // if we update the service to Swift, but in the meanwhile I'm instantiating an unknown upload
             // error whenever the service doesn't provide one.
@@ -324,12 +328,19 @@ class MediaCoordinator: NSObject {
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
-        })
-        var resultProgress = Progress.discreteCompletedProgress()
-        if let taskProgress = progress {
-            resultProgress =  taskProgress
         }
+
+        coreDataStack.performAndSave { context in
+            let service = self.mediaServiceFactory.create(context)
+            var progress: Progress? = nil
+            service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
+            if let progress {
+                resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
+            }
+        }
+
         uploading(media, progress: resultProgress)
+
         return resultProgress
     }
 
@@ -634,16 +645,30 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog from where to sync the media library from.
     ///
     @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
-        let service = mediaServiceFactory.create(backgroundContext)
-        service.syncMediaLibrary(for: blog, success: success, failure: failure)
+        syncOperationQueue.addOperation(AsyncBlockOperation { done in
+            self.coreDataStack.performAndSave { context in
+                let service = self.mediaServiceFactory.create(context)
+                service.syncMediaLibrary(
+                    for: blog,
+                    success: {
+                        done()
+                        success?()
+                    },
+                    failure: { error in
+                        done()
+                        failure?(error)
+                    }
+                )
+            }
+        })
+
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
     ///
     @objc func refreshMediaStatus() {
-        let service = mediaServiceFactory.create(backgroundContext)
-        service.refreshMediaStatus()
+        Media.refreshMediaStatus(using: coreDataStack)
     }
 }
 
@@ -693,10 +718,12 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
 extension MediaCoordinator: Uploader {
     func resume() {
-        let service = mediaServiceFactory.create(backgroundContext)
-
-        service.failedMediaForUpload(automatedRetry: true).forEach() {
-            retryMedia($0, automatedRetry: true)
+        coreDataStack.performAndSave { context in
+            Media
+                .failedMediaForUpload(automatedRetry: true, in: context)
+                .forEach() {
+                    self.retryMedia($0, automatedRetry: true)
+                }
         }
     }
 }
