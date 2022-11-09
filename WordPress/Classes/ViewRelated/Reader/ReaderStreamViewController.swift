@@ -62,8 +62,7 @@ import Combine
         ContextManager.shared
     }
 
-    /// An alias for the apps's main context – temporarily replaces  `newMainContextChildContext` until we have `NSPersistentContainer` support
-    ///
+    /// An alias for the apps's main context
     private var viewContext: NSManagedObjectContext {
         coreDataStack.mainContext
     }
