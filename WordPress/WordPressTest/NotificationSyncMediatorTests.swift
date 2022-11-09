@@ -28,13 +28,6 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
         mediator = NotificationSyncMediator(manager: contextManager, dotcomAPI: dotcomAPI)
-
-        // Note:
-        // Since the ContextManagerMock actually changed, and thus, the entire Core Data stack,
-        // we'll need to manually reset the global shared Derived Context.
-        // This definitely won't be needed in the actual app.
-        //
-        NotificationSyncMediator.resetSharedDerivedContext()
     }
 
     override func tearDown() {
