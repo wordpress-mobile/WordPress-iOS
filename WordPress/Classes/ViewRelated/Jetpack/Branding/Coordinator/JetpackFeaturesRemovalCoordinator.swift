@@ -13,16 +13,7 @@ class JetpackFeaturesRemovalCoordinator {
         case newUsers
 
         var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
-            switch self {
-            case .one:
-                fallthrough
-            case .two:
-                return .init(featureSpecificInDays: 7, generalInDays: 2)
-            case .three:
-                return .init(featureSpecificInDays: 4, generalInDays: 1)
-            default:
-                return .defaultConfig
-            }
+            return .defaultConfig
         }
     }
 
