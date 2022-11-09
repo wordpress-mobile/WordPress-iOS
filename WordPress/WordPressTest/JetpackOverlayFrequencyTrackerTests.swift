@@ -133,7 +133,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
         // When & Then
         XCTAssertFalse(statsTracker.shouldShow()) // Before generic frequency have passed
-        XCTAssertFalse(statsTracker.shouldShow()) // Before generic frequency have passed
+        XCTAssertFalse(readerTracker.shouldShow()) // Before generic frequency have passed
 
         // Given
         let threeDaysAgo = Date(timeInterval: Constants.threeDaysInSeconds, since: Date())

@@ -37,26 +37,19 @@ class JetpackOverlayFrequencyTracker {
     }
 
     func shouldShow() -> Bool {
-        guard let lastSavedGenericDate = lastSavedGenericDate,
-              let lastSavedSourceDate = lastSavedSourceDate else {
-            return true
-        }
-
         switch source {
         case .stats:
             fallthrough
         case .notifications:
             fallthrough
         case .reader:
-            // Check frequencies for features
-            return frequenciesPassed(lastSavedGenericDate: lastSavedGenericDate,
-                                     lastSavedSourceDate: lastSavedSourceDate)
+            return frequenciesPassed()
         case .card:
-            return true // Always show for card
+            return true
         case .login:
             fallthrough
         case .appOpen:
-            return false // Show once for login and app open
+            return lastSavedSourceDate == nil
         }
     }
 
@@ -66,12 +59,24 @@ class JetpackOverlayFrequencyTracker {
         lastSavedGenericDate = date
     }
 
-    private func frequenciesPassed(lastSavedGenericDate: Date, lastSavedSourceDate: Date) -> Bool {
-        let secondsSinceLastSavedSourceDate = lastSavedSourceDate.timeIntervalSinceNow
+    private func frequenciesPassed() -> Bool {
+        guard let lastSavedGenericDate = lastSavedGenericDate else {
+            return true // First overlay ever
+        }
         let secondsSinceLastSavedGenericDate = lastSavedGenericDate.timeIntervalSinceNow
-        let featureSpecificFreqPassed = secondsSinceLastSavedSourceDate > frequencyConfig.featureSpecificInSeconds
         let generalFreqPassed = secondsSinceLastSavedGenericDate > frequencyConfig.generalInSeconds
-        return generalFreqPassed && featureSpecificFreqPassed
+        if generalFreqPassed == false {
+            return false // An overlay was shown recently so we can't show one now
+        }
+
+        guard let lastSavedSourceDate = lastSavedSourceDate else {
+            return true // This specific overlay was never shown, so we can show it
+        }
+
+        let secondsSinceLastSavedSourceDate = lastSavedSourceDate.timeIntervalSinceNow
+        let featureSpecificFreqPassed = secondsSinceLastSavedSourceDate > frequencyConfig.featureSpecificInSeconds
+        // Check if this specific overlay was shown recently
+        return featureSpecificFreqPassed
     }
 }
 
