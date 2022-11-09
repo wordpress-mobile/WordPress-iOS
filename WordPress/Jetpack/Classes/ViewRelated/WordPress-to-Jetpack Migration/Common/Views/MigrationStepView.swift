@@ -10,6 +10,7 @@ class MigrationStepView: UIView {
         let stackView = UIStackView(arrangedSubviews: [headerView, centerView, actionsView])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setCustomSpacing(Constants.textToButtonsSpacing, after: centerView)
         return stackView
     }()
 
@@ -18,8 +19,9 @@ class MigrationStepView: UIView {
          centerView: UIView) {
 
         self.headerView = headerView
-        headerView.directionalLayoutMargins = Self.headerViewMargins
+        headerView.directionalLayoutMargins = Constants.contentMargins
         self.centerView = centerView
+        centerView.directionalLayoutMargins = Constants.contentMargins
         self.actionsView = actionsView
         super.init(frame: .zero)
         backgroundColor = .systemBackground
@@ -31,5 +33,11 @@ class MigrationStepView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 30)
+    private enum Constants {
+        static let contentMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 30)
+
+        static let textToButtonsSpacing: CGFloat = 48
+    }
+
+
 }
