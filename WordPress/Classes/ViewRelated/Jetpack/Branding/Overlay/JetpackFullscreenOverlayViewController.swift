@@ -115,7 +115,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func setupContent() {
         animationView.animation = animation
-        titleLabel.text = config.title
+        setTitle()
         subtitleLabel.text = config.subtitle
         footnoteLabel.text = config.footnote
         switchButton.setTitle(config.switchButtonText, for: .normal)
@@ -124,6 +124,20 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         learnMoreButton.isHidden = config.learnMoreButtonIsHidden
         continueButton.isHidden = config.continueButtonIsHidden
         setupLearnMoreButton()
+    }
+
+    private func setTitle() {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = Metrics.titleLineHeightMultiple
+        style.lineBreakMode = .byTruncatingTail
+
+        let defaultAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: style,
+            .kern: Metrics.titleKern
+        ]
+        let attributedString = NSMutableAttributedString(string: config.title)
+        attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
+        titleLabel.attributedText = attributedString
     }
 
     private func setupColors() {
@@ -229,6 +243,8 @@ private extension JetpackFullscreenOverlayViewController {
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let switchButtonCornerRadius: CGFloat = 6
+        static let titleLineHeightMultiple: CGFloat = 0.88
+        static let titleKern: CGFloat = 0.37
     }
 
     enum Constants {
