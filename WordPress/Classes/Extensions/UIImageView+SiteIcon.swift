@@ -18,7 +18,7 @@ extension UIImageView {
 
 
     /// Downloads the SiteIcon Image, hosted at the specified path. This method will attempt to optimize the URL, so that
-    /// the download Image Size matches `SiteIconDefaults.imageSize`.
+    /// the download Image Size matches `imageSize`.
     ///
     /// TODO: This is a convenience method. Nuke me once we're all swifted.
     ///
@@ -31,10 +31,11 @@ extension UIImageView {
 
 
     /// Downloads the SiteIcon Image, hosted at the specified path. This method will attempt to optimize the URL, so that
-    /// the download Image Size matches `SiteIconDefaults.imageSize`.
+    /// the download Image Size matches `imageSize`.
     ///
     /// - Parameters:
     ///     - path: SiteIcon's url (string encoded) to be downloaded.
+    ///     - imageSize: Request site icon in the specified image size.
     ///     - placeholderImage: Yes. It's the "place holder image", Sherlock.
     ///
     @objc
@@ -43,7 +44,7 @@ extension UIImageView {
         imageSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage?
     ) {
-        guard let siteIconURL = optimizedURL(for: path, size: imageSize) else {
+        guard let siteIconURL = optimizedURL(for: path, imageSize: imageSize) else {
             image = placeholderImage
             return
         }
@@ -57,7 +58,8 @@ extension UIImageView {
     /// Downloads a SiteIcon image, using a specified request.
     ///
     /// - Parameters:
-    ///     - request: the request for the SiteIcon.
+    ///     - request: The request for the SiteIcon.
+    ///     - imageSize: Request site icon in the specified image size.
     ///     - placeholderImage: Yes. It's the "place holder image".
     ///
     private func downloadSiteIcon(
@@ -99,7 +101,7 @@ extension UIImageView {
 
 
     /// Downloads the SiteIcon Image, associated to a given Blog. This method will attempt to optimize the URL, so that
-    /// the download Image Size matches `SiteIconDefaults.imageSize`.
+    /// the download Image Size matches `imageSize`.
     ///
     /// - Parameters:
     ///     - blog: reference to the source blog
@@ -110,7 +112,7 @@ extension UIImageView {
         imageSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage? = .siteIconPlaceholder
     ) {
-        guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath, size: imageSize) else {
+        guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath, imageSize: imageSize) else {
 
             if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
                 image = UIImage.gridicon(.p2, size: imageSize)
@@ -146,27 +148,27 @@ extension UIImageView {
 private extension UIImageView {
     /// Returns the Size Optimized URL for a given Path.
     ///
-    func optimizedURL(for path: String, size: CGSize = SiteIconDefaults.imageSize) -> URL? {
+    func optimizedURL(for path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
         if isPhotonURL(path) || isDotcomURL(path) {
-            return optimizedDotcomURL(from: path, size: size)
+            return optimizedDotcomURL(from: path, imageSize: imageSize)
         }
 
         if isBlavatarURL(path) {
-            return optimizedBlavatarURL(from: path, size: size)
+            return optimizedBlavatarURL(from: path, imageSize: imageSize)
         }
 
-        return optimizedPhotonURL(from: path, size: size)
+        return optimizedPhotonURL(from: path, imageSize: imageSize)
     }
 
 
     // MARK: - Private Helpers
 
-    /// Returns the download URL for a square icon with a size of `SiteIconDefaults.imageSize` in pixels.
+    /// Returns the download URL for a square icon with a size of `imageSize` in pixels.
     ///
     /// - Parameter path: SiteIcon URL (string encoded).
     ///
-    private func optimizedDotcomURL(from path: String, size: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        let size = size.toPixels()
+    private func optimizedDotcomURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
+        let size = imageSize.toPixels()
         let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
 
         return parseURL(path: path, query: query)
@@ -177,8 +179,8 @@ private extension UIImageView {
     ///
     /// - Parameter path: Blavatar URL (string encoded).
     ///
-    private func optimizedBlavatarURL(from path: String, size: CGSize = SiteIconDefaults.imageSize) -> URL? {
-        let size = size.toPixels()
+    private func optimizedBlavatarURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
+        let size = imageSize.toPixels()
         let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
 
         return parseURL(path: path, query: query)
@@ -189,12 +191,12 @@ private extension UIImageView {
     ///
     /// - Parameter siteIconPath: SiteIcon URL (string encoded).
     ///
-    private func optimizedPhotonURL(from path: String, size: CGSize = SiteIconDefaults.imageSize) -> URL? {
+    private func optimizedPhotonURL(from path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
         guard let url = URL(string: path) else {
             return nil
         }
 
-        return PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+        return PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: url)
     }
 
 
