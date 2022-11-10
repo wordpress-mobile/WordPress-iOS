@@ -145,7 +145,7 @@ extension UIImageView {
 
 // MARK: - Private Methods
 //
-private extension UIImageView {
+extension UIImageView {
     /// Returns the Size Optimized URL for a given Path.
     ///
     func optimizedURL(for path: String, imageSize: CGSize = SiteIconDefaults.imageSize) -> URL? {
