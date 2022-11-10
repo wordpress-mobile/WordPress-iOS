@@ -11,16 +11,9 @@ extension UIImageView {
     /// Default Settings
     ///
     struct SiteIconDefaults {
-
         /// Default SiteIcon's Image Size, in points.
         ///
-        static let imageSize = 40
-
-        /// Default SiteIcon's Image Size, in pixels.
-        ///
-        static var imageSizeInPixels: Int {
-            return imageSize * Int(UIScreen.main.scale)
-        }
+        static let imageSize = CGSize(width: 40, height: 40)
     }
 
 
@@ -65,8 +58,8 @@ extension UIImageView {
     ///
     private func downloadSiteIcon(
         with request: URLRequest,
-        placeholderImage: UIImage?) {
-
+        placeholderImage: UIImage?
+    ) {
         af_setImage(withURLRequest: request, placeholderImage: placeholderImage, completion: { [weak self] dataResponse in
             switch dataResponse.result {
             case .success(let image):
@@ -82,7 +75,7 @@ extension UIImageView {
                 // The following lines of code ensure that we resize the image to the default Site Icon size, to
                 // ensure there is no UI breakage due to having larger images set here.
                 //
-                let expectedSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
+                let expectedSize = SiteIconDefaults.imageSize
 
                 if image.size != expectedSize {
                     self.image = image.resizedImage(with: .scaleAspectFill, bounds: expectedSize, interpolationQuality: .default)
@@ -114,7 +107,7 @@ extension UIImageView {
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
 
             if blog.isWPForTeams() && placeholderImage == .siteIconPlaceholder {
-                let standardSize = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
+                let standardSize = SiteIconDefaults.imageSize
                 image = UIImage.gridicon(.p2, size: standardSize)
                 return
             }
@@ -163,13 +156,13 @@ private extension UIImageView {
 
     // MARK: - Private Helpers
 
-    /// Returns the download URL for a square icon with a size of `SiteIconDefaults.imageSizeInPixels`
+    /// Returns the download URL for a square icon with a size of `SiteIconDefaults.imageSize` in pixels.
     ///
     /// - Parameter path: SiteIcon URL (string encoded).
     ///
     private func optimizedDotcomURL(from path: String) -> URL? {
-        let size = SiteIconDefaults.imageSizeInPixels
-        let query = String(format: "w=%d&h=%d", size, size)
+        let size = SiteIconDefaults.imageSize.toPixels()
+        let query = String(format: "w=%d&h=%d", Int(size.width), Int(size.height))
 
         return parseURL(path: path, query: query)
     }
@@ -180,8 +173,8 @@ private extension UIImageView {
     /// - Parameter path: Blavatar URL (string encoded).
     ///
     private func optimizedBlavatarURL(from path: String) -> URL? {
-        let size = SiteIconDefaults.imageSizeInPixels
-        let query = String(format: "d=404&s=%d", size)
+        let size = SiteIconDefaults.imageSize.toPixels()
+        let query = String(format: "d=404&s=%d", Int(max(size.width, size.height)))
 
         return parseURL(path: path, query: query)
     }
@@ -196,8 +189,7 @@ private extension UIImageView {
             return nil
         }
 
-        let size = CGSize(width: SiteIconDefaults.imageSize, height: SiteIconDefaults.imageSize)
-        return PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+        return PhotonImageURLHelper.photonURL(with: SiteIconDefaults.imageSize, forImageURL: url)
     }
 
 
@@ -265,5 +257,21 @@ private extension UIImageView {
         }
 
         DDLogInfo("URL optimized from \(original) to \(optimized.absoluteString) for blog \(blogInfo)")
+    }
+}
+
+// MARK: - CGFloat Extension
+
+private extension CGSize {
+
+    func toPixels() -> CGSize {
+        return CGSize(width: width.toPixels(), height: height.toPixels())
+    }
+}
+
+private extension CGFloat {
+
+    func toPixels() -> CGFloat {
+        return self * UIScreen.main.scale
     }
 }
