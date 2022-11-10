@@ -71,6 +71,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
         configureNavigationBar()
         applyStyles()
+        addConstraints()
         setupContent()
         setupColors()
         setupFonts()
@@ -104,6 +105,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func applyStyles() {
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
+    }
+
+    private func addConstraints() {
+        let animationSize = animation?.size ?? .init(width: 1, height: 1)
+        let ratio = animationSize.width / animationSize.height
+        animationView.widthAnchor.constraint(equalTo: animationView.heightAnchor, multiplier: ratio).isActive = true
     }
 
     private func setupContent() {
