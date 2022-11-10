@@ -1,6 +1,7 @@
 21.2
 -----
 * [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
+* [*] [Block Editor] Fixed image block issue where no message was shown when permission to the device photos was not granted [#19577]
 
 
 21.1
