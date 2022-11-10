@@ -1,5 +1,4 @@
 #import "ContextManager.h"
-#import "LegacyContextFactory.h"
 #import "WordPress-Swift.h"
 @import WordPressShared.WPAnalytics;
 @import Foundation;
@@ -43,7 +42,7 @@ static ContextManager *_instance;
     self = [super init];
     if (self) {
         if (factory == nil) {
-            factory = [Feature enabled:FeatureFlagNewCoreDataContext] ? [ContainerContextFactory class] : [LegacyContextFactory class];
+            factory = [ContainerContextFactory class];
         }
 
         NSParameterAssert([modelName isEqualToString:ContextManagerModelNameCurrent] || [modelName hasPrefix:@"WordPress "]);

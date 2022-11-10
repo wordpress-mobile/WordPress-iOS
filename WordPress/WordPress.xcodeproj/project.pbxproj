@@ -1105,8 +1105,6 @@
 		4A2172FF28F688890006F4F1 /* Blog+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172FD28F688890006F4F1 /* Blog+Media.swift */; };
 		4A266B8F282B05210089CF3D /* JSONObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B8E282B05210089CF3D /* JSONObjectTests.swift */; };
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
-		4A50667C28B3216500DD09F4 /* LegacyContextFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A50667B28B3216500DD09F4 /* LegacyContextFactory.m */; };
-		4A50667D28B3216500DD09F4 /* LegacyContextFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A50667B28B3216500DD09F4 /* LegacyContextFactory.m */; };
 		4A50668028B364CA00DD09F4 /* ContainerContextFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */; };
 		4A50668128B364CA00DD09F4 /* ContainerContextFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */; };
 		4A82C43128D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
@@ -6428,8 +6426,6 @@
 		4A2172FD28F688890006F4F1 /* Blog+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Media.swift"; sourceTree = "<group>"; };
 		4A266B8E282B05210089CF3D /* JSONObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectTests.swift; sourceTree = "<group>"; };
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
-		4A50667A28B3216500DD09F4 /* LegacyContextFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LegacyContextFactory.h; sourceTree = "<group>"; };
-		4A50667B28B3216500DD09F4 /* LegacyContextFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LegacyContextFactory.m; sourceTree = "<group>"; };
 		4A50667E28B3218800DD09F4 /* ManagedObjectContextFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedObjectContextFactory.h; sourceTree = "<group>"; };
 		4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerContextFactory.swift; sourceTree = "<group>"; };
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
@@ -14701,8 +14697,6 @@
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
 				4A50667E28B3218800DD09F4 /* ManagedObjectContextFactory.h */,
-				4A50667A28B3216500DD09F4 /* LegacyContextFactory.h */,
-				4A50667B28B3216500DD09F4 /* LegacyContextFactory.m */,
 				4A50667F28B364CA00DD09F4 /* ContainerContextFactory.swift */,
 				E1E5EE36231E47A80018E9E3 /* ContextManager+ErrorHandling.swift */,
 				B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */,
@@ -20333,7 +20327,6 @@
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				57047A4F22A961BC00B461DF /* PostSearchHeader.swift in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
-				4A50667C28B3216500DD09F4 /* LegacyContextFactory.m in Sources */,
 				C3C2F84828AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift in Sources */,
 				F181EDE526B2AC7200C61241 /* BackgroundTasksCoordinator.swift in Sources */,
 				8B93412F257029F60097D0AC /* FilterChipButton.swift in Sources */,
@@ -23348,7 +23341,6 @@
 				F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */,
 				FABB23072602FC2C00C8785C /* SiteCreationRotatingMessageView.swift in Sources */,
 				FABB23082602FC2C00C8785C /* SignupUsernameViewController.swift in Sources */,
-				4A50667D28B3216500DD09F4 /* LegacyContextFactory.m in Sources */,
 				FABB23092602FC2C00C8785C /* MediaItemViewController.swift in Sources */,
 				FABB230A2602FC2C00C8785C /* PostAnnotation.m in Sources */,
 				FABB230B2602FC2C00C8785C /* GutenbergViewController.swift in Sources */,
