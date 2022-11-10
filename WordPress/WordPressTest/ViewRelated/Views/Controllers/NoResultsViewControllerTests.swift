@@ -104,7 +104,7 @@ class NoResultsViewControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(resultViewController.titleLabel.text, Constants.noResultsText)
         XCTAssertTrue(resultViewController.noResultsView.isHidden)
-        XCTAssertTrue(resultViewController.titleLabel.frame.width <= parentViewSize.width)
+        XCTAssertLessThanOrEqual(resultViewController.titleLabel.frame.width, parentViewSize.width)
     }
 }
 
