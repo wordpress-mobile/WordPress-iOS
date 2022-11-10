@@ -7,6 +7,7 @@ class JetpackBrandingCoordinator {
 
         let action = redirectAction ?? {
             // TODO: Add here the default action to redirect to the jp app
+            UIApplication.shared.open(URL(string: "https://jetpack.com/app")!)
         }
 
         let jetpackOverlayViewController = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)

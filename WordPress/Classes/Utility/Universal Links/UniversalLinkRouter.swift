@@ -30,6 +30,7 @@ struct UniversalLinkRouter: LinkRouter {
         meRoutes +
         newPostRoutes +
         newPageRoutes +
+        jetpackRoutes +
         notificationsRoutes +
         readerRoutes +
         statsRoutes +
@@ -41,6 +42,10 @@ struct UniversalLinkRouter: LinkRouter {
         MeRoute(),
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute()
+    ]
+
+    static let jetpackRoutes: [Route] = [
+        JetpackRoute()
     ]
 
     static let newPostRoutes: [Route] = [
@@ -121,7 +126,9 @@ struct UniversalLinkRouter: LinkRouter {
         }
 
         // If there's a hostname, check it's WordPress.com
-        return scheme == "https" && host == "wordpress.com" && matcherCanHandle
+        return scheme == "https"
+        && (host == "wordpress.com" || host == "jetpack.com")
+        && matcherCanHandle
     }
 
     /// Attempts to find a route that matches the url's path, and perform its

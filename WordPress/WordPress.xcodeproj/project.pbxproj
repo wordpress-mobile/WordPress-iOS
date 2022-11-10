@@ -181,6 +181,8 @@
 		08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */; };
 		082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 082635BA1CEA69280088030C /* MenuItemsViewController.m */; };
 		0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */; };
+		082A645B291C2DD700668D2C /* Routes+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A645A291C2DD700668D2C /* Routes+Jetpack.swift */; };
+		082A645C291C2DD700668D2C /* Routes+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A645A291C2DD700668D2C /* Routes+Jetpack.swift */; };
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
 		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
@@ -5458,6 +5460,7 @@
 		082635B91CEA69280088030C /* MenuItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsViewController.h; sourceTree = "<group>"; };
 		082635BA1CEA69280088030C /* MenuItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsViewController.m; sourceTree = "<group>"; };
 		0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPAppAnalytics+Media.swift"; sourceTree = "<group>"; };
+		082A645A291C2DD700668D2C /* Routes+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Jetpack.swift"; sourceTree = "<group>"; };
 		082AB9D71C4EEEF4000CA523 /* PostTagService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTagService.h; sourceTree = "<group>"; };
 		082AB9D81C4EEEF4000CA523 /* PostTagService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagService.m; sourceTree = "<group>"; };
 		082AB9DB1C4F035E000CA523 /* PostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTag.h; sourceTree = "<group>"; };
@@ -9615,19 +9618,20 @@
 		1797373920EBDA1100377B4E /* Universal Links */ = {
 			isa = PBXGroup;
 			children = (
+				17BD4A182101D31B00975AC3 /* NavigationActionHelpers.swift */,
 				17B7C89F20EC1D6A0042E260 /* Route.swift */,
+				F574416C2425697D00E150A8 /* Route+Page.swift */,
+				1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */,
 				17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */,
-				174C11922624C78900346EC6 /* Routes+Start.swift */,
+				082A645A291C2DD700668D2C /* Routes+Jetpack.swift */,
 				F1655B4722A6C2FA00227BFB /* Routes+Mbar.swift */,
 				17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */,
 				17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */,
 				17B7C8C020EE2A870042E260 /* Routes+Notifications.swift */,
 				1703D04B20ECD93800D292E9 /* Routes+Post.swift */,
-				F574416C2425697D00E150A8 /* Route+Page.swift */,
 				17A4A36820EE51870071C2CA /* Routes+Reader.swift */,
+				174C11922624C78900346EC6 /* Routes+Start.swift */,
 				1715179120F4B2EB002C4A38 /* Routes+Stats.swift */,
-				17BD4A182101D31B00975AC3 /* NavigationActionHelpers.swift */,
-				1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */,
 				17B7C89D20EC1D0D0042E260 /* UniversalLinkRouter.swift */,
 			);
 			path = "Universal Links";
@@ -20640,6 +20644,7 @@
 				D858F30120E20106007E8A1C /* LikePost.swift in Sources */,
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
 				E11C4B702010930B00A6619C /* Blog+Jetpack.swift in Sources */,
+				082A645B291C2DD700668D2C /* Routes+Jetpack.swift in Sources */,
 				DC3B9B2C27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */,
 				F1DB8D292288C14400906E2F /* Uploader.swift in Sources */,
 				3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */,
@@ -22990,6 +22995,7 @@
 				FABB23312602FC2C00C8785C /* SettingsCommon.swift in Sources */,
 				17C1D6922670E4A2006C8970 /* UIFont+Fitting.swift in Sources */,
 				FABB23322602FC2C00C8785C /* FormatBarItemProviders.swift in Sources */,
+				082A645C291C2DD700668D2C /* Routes+Jetpack.swift in Sources */,
 				FABB23332602FC2C00C8785C /* RevisionDiffViewController.swift in Sources */,
 				FABB23342602FC2C00C8785C /* BlogDetailsSectionFooterView.swift in Sources */,
 				3F435221289B2B5100CE19ED /* JetpackOverlayViewController.swift in Sources */,
