@@ -31,17 +31,20 @@
                     <rect key="frame" x="0.0" y="0.0" width="667" height="280"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PbU-M0-J6O" userLabel="Scroll Content View">
-                            <rect key="frame" x="0.0" y="0.0" width="667" height="653.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="667" height="280"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="TTg-Z6-h4X" userLabel="Content Stack View">
-                                    <rect key="frame" x="30" y="0.0" width="607" height="653.5"/>
+                                    <rect key="frame" x="30" y="3.5" width="607" height="273"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUe-f2-zzc" userLabel="Icon Super View">
-                                            <rect key="frame" x="0.0" y="0.0" width="607" height="445.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="607" height="65"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="120" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="v3d-AD-Jsf" customClass="AnimationView" customModule="Lottie">
-                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="445.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="65"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="65" id="j0D-cP-R17"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -52,25 +55,25 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="EqD-nO-Q6T">
-                                            <rect key="frame" x="0.0" y="465.5" width="607" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="85" width="607" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="n6H-KY-dMw">
-                                            <rect key="frame" x="0.0" y="506" width="607" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="125.5" width="607" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Footnote Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="1l4-qY-6ZA">
-                                            <rect key="frame" x="0.0" y="546.5" width="607" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="166" width="607" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0z9-x4-AgY" userLabel="Learn More Super View">
-                                            <rect key="frame" x="0.0" y="587" width="607" height="66.5"/>
+                                            <rect key="frame" x="0.0" y="206.5" width="607" height="66.5"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n55-iX-u43">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="66.5"/>
