@@ -1,7 +1,1 @@
-Willkommen zu Version 21! Wir haben den Startbildschirm mit einem einfachen, eleganten Design aktualisiert und die Ansicht mit den Kommentardetails benutzerfreundlicher gestaltet.
-
-Außerdem haben wir einige Bugs behoben.
-
-- Veröffentlichte Texte werden nicht angezeigt, wenn du an einem Beitrag oder einer Seite im Querformat arbeitest, sondern nur im Hochformat. Es gibt jetzt kein Überlappen der Tastatur mehr.
-- Benachrichtigungen im Cache werden nicht mehr auf dem Bildschirm angezeigt, nachdem du dich von deinem WordPress.com-Konto abgemeldet hast.
-- Wir haben untersucht, warum die Navigationsleiste bei der Anmeldung verschwinden kann. Sie bleibt jetzt von Anfang bis Ende sichtbar. Rätsel gelöst!
+Die Verwendung der Sprachsteuerung ist im Block-Editor jetzt einfacher. Wenn du mit Bildblöcken arbeitest, kannst du mit dem Cursor der Sprachsteuerung die Unterschrift auswählen, für die Text eingegeben werden soll.

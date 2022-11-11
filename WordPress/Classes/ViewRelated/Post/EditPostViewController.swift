@@ -217,6 +217,7 @@ class EditPostViewController: UIViewController {
         }
 
         postPost.setup(post: post)
+        postPost.hideEditButton = isPresentingOverEditor()
         postPost.onClose = {
             self.closePostPost(animated: true)
         }
@@ -226,6 +227,17 @@ class EditPostViewController: UIViewController {
         postPost.preview = {
             self.previewPost()
         }
+    }
+
+    /// - Returns: `true` if `self` was presented over an existing `EditPostViewController`, otherwise `false`.
+    private func isPresentingOverEditor() -> Bool {
+        guard
+            let aztecNavigationController = presentingViewController as? AztecNavigationController,
+            aztecNavigationController.presentingViewController is EditPostViewController
+        else {
+            return false
+        }
+        return true
     }
 
     @objc func shouldShowPostPost(hasChanges: Bool) -> Bool {

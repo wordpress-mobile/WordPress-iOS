@@ -1,5 +1,6 @@
 21.2
 -----
+* [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
 
 
 21.1

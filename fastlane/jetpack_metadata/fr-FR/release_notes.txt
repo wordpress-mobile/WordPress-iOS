@@ -1,9 +1,3 @@
-Bienvenue dans la version 21 ! À cette occasion, nous avons ajouté des extensions pour vous permettre d’enregistrer du contenu en brouillon et de partager du contenu avec Jetpack à l’aide des menus intégrés de votre appareil. Vous recevrez également des notifications push plus détaillées sur votre appareil.
+Jetpack dispose maintenant de widgets dynamiques. Obtenez des statistiques quotidiennes, hebdomadaires et globales sur l’écran d’accueil de votre appareil. - Vous remarquerez dans l’application un tout nouvel écran d’accueil qui réagit aux mouvements de votre appareil.
 
-Nous avons mis à jour l’écran de lancement de l’application avec un design simple et élégant, et nous avons apporté des améliorations conviviales au design de la vue des détails des commentaires. Vous pouvez également modifier votre icône d’application Jetpack à l’aide de toute une série d’options de couleur dans le menu Réglages de l’application.
-
-Pour terminer, nous avons corrigé quelques bogues.
-
-- Le texte Publier ne s’affichera pas si vous travaillez sur une publication ou une page en mode paysage, mais bien uniquement en mode portait. Plus de superposition du clavier.
-- Les notifications mises en cache ne s’affichent plus à l’écran une fois que vous êtes déconnecté de votre compte WordPress.com.
-- Nous avons examiné le cas de figure où la barre de navigation disparaît lors du processus de connexion. Elle reste désormais visible du début à la fin. Mystère résolu !
+Il est désormais plus facile d’utiliser le contrôle vocal dans l’éditeur de blocs. Lorsque vous travaillez avec des blocs d’image, utilisez le curseur du contrôle vocal pour sélectionner la légende à saisir.

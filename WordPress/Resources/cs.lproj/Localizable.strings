@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-04 18:11:57+0000 */
+/* Translation-Revision-Date: 2022-11-07 09:20:25+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -1053,8 +1053,7 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Nejlepší hodina";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Nejlepší pohledy ze všech";
 
 /* Text for related post cell preview */
@@ -1107,7 +1106,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Bloky jsou části obsahu, které můžete vkládat, přeskupovat a upravovat, aniž byste museli vědět, jak kódovat. Bloky představují snadný a moderní způsob, jak vytvořit krásná rozvržení.";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1451,9 +1450,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "Vybrat šablonu";
 
-/* Label for Publish time picker */
-"Choose a time" = "Vyberte čas";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Zvolit téma ze seznamu níže nebo napište své vlastní";
 
@@ -1644,7 +1640,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1840,6 +1835,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Pokračování s Apple";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Přispět";
+
 /* No comment provided by engineer. */
 "Convert to link" = "Převést na odkaz";
 
@@ -1936,9 +1934,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Nelze se připojit. Váš hostitel blokuje požadavky POST a aplikace to potřebuje, aby mohla komunikovat s vaším webem. Požádejte svého hostitele o vyřešení tohoto problému.";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "Nelze načíst data";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Značky se nepodařilo načíst.";
@@ -2378,15 +2373,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Zobrazované jméno";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Zde zobrazte své statistiky všech dob. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Zde zobrazte statistiky svého webu pro tento týden. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Zde zobrazte statistiky svého webu pro dnešek. Nakonfigurujte v aplikaci WordPress ve statistikách svého webu.";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Udělej to znova";
@@ -4007,7 +3993,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -4627,12 +4612,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "Nejnovější první";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "Novinky";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Další";
@@ -4796,9 +4781,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Není třeba čekat. Až bude váš web obnoven, upozorníme vás.";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "Síť není dostupná";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "Žádná nová témata ke sledování";
@@ -5071,9 +5053,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otevřít nastavení";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Otevřít WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Otevřít úplný výběr médií";
@@ -5573,7 +5552,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Příspěvky";
@@ -6123,7 +6101,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -6990,9 +6967,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistiky nebyly načteny";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Statistiky budou aktualizovány, až budete online";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Stav";
 
@@ -7746,7 +7720,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Dnes";
 
@@ -8433,7 +8406,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8465,7 +8437,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
