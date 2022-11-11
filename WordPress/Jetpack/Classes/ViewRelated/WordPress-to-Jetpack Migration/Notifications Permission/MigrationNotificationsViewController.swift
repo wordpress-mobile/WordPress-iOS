@@ -17,6 +17,6 @@ class MigrationNotificationsViewController: UIViewController {
 
         view = MigrationStepView(headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
                                  actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-                                 centerView: MigrationNotificationsCenterView())
+                                 centerView: MigrationCenterView(contentView: MigrationNotificationsCenterView()))
     }
 }
