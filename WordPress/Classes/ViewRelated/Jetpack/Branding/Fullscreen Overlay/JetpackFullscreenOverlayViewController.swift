@@ -77,6 +77,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupFonts()
         setupButtonInsets()
         animationView.play()
+        viewModel.trackOverlayDisplayed()
     }
 
     // MARK: Helpers
@@ -202,15 +203,18 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     @objc private func closeButtonPressed(sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        viewModel.trackCloseButtonTapped()
     }
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
         // TODO: Add here action to redirect to the JP app
+        viewModel.trackSwitchButtonTapped()
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+        viewModel.trackContinueButtonTapped()
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
@@ -222,6 +226,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         let webViewController = WebViewControllerFactory.controller(url: url, source: source)
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
+        viewModel.trackLearnMoreTapped()
     }
 }
 
