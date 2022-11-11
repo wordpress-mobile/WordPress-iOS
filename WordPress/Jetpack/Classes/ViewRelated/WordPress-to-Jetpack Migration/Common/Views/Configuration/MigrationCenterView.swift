@@ -21,7 +21,7 @@ class MigrationNotificationsCenterView: UIView {
     }()
 
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fakeAlertImageView, descriptionLabel, makeSpacer()])
+        let stackView = UIStackView(arrangedSubviews: [fakeAlertImageView, descriptionLabel])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.setCustomSpacing(Appearance.fakeAlertToDescriptionSpacing, after: fakeAlertImageView)
