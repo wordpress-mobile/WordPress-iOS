@@ -247,6 +247,9 @@ platform :ios do
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
+    # Manually add files in case there are entirely new localization files.
+    # Fastlane's `git_commit` can only commit changes to existing files.
+    git_add(path: modified_files, shell_escape: false)
     git_commit(
       path: modified_files,
       message: 'Update app translations – Other `.strings`',

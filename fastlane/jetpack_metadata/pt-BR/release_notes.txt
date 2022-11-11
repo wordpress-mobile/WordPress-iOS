@@ -1,9 +1,3 @@
-Boas-vindas à versão 21! Para comemorar, adicionamos extensões para que você possa salvar conteúdo como rascunho e compartilhar conteúdo no Jetpack usando os menus integrados do seu dispositivo. Você também vai receber notificações por push mais detalhadas no seu dispositivo.
+Widgets dinâmicos agora no Jetpack. Receba estatísticas diárias, semanais ou completas na tela inicial do seu dispositivo. Você também verá no aplicativo uma tela inicial novinha em folha e sensível ao movimento do seu dispositivo. Aproveite!
 
-Atualizamos a tela de início do aplicativo com um design simples e elegante e fizemos alguns upgrades intuitivos na visualização de detalhes do comentário. Você também pode alterar o ícone do aplicativo Jetpack usando uma variedade de opções coloridas no menu Configurações do aplicativo.
-
-Por fim, corrigimos vários bugs.
-
-- O texto de publicação não vai aparecer quando você estiver trabalhando em um post ou página no modo paisagem, apenas retrato. Não há mais sobreposição de teclado.
-- As notificações em cache não aparecem mais na tela após você fazer logout da sua conta do WordPress.com.
-- Investigamos o caso da barra de navegação desaparecendo durante o processo de fazer login. Agora fica visível do início ao fim. Mistério solucionado.
+Agora ficou mais fácil usar o controle por voz no editor de blocos. Quando estiver trabalhando com blocos de imagem, use o cursor do controle por voz para selecionar a legenda na entrada de texto.
