@@ -51,7 +51,7 @@ final class MigrationHeaderView: UIView {
         labelsStackView.translatesAutoresizingMaskIntoConstraints = false
         labelsStackView.spacing = Constants.labelsSpacing
         let mainStackView = verticalStackView(arrangedSubviews: [imageView, labelsStackView])
-        mainStackView.spacing = Constants.spacing
+        mainStackView.setCustomSpacing(Constants.spacing, after: imageView)
         mainStackView.alignment = .leading
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(mainStackView)
@@ -91,7 +91,7 @@ final class MigrationHeaderView: UIView {
         static let labelsSpacing: CGFloat = 20
 
         static let titleFont: UIFont = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
-        static let primaryDescriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .regular)
+        static let primaryDescriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         static let secondaryDescriptionFont: UIFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
     }
 }
