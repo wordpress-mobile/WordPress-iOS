@@ -65,10 +65,17 @@ final class MigrationWelcomeViewController: UIViewController {
 
     private func setupHeader() {
         let headerContentView = UIView()
+        headerContentView.translatesAutoresizingMaskIntoConstraints = false
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerContentView.addSubview(headerView)
         headerContentView.pinSubviewToAllEdges(headerView, insets: Constants.tableHeaderViewMargins)
         self.tableView.tableHeaderView = headerContentView
+        NSLayoutConstraint.activate([
+            headerContentView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            headerContentView.topAnchor.constraint(equalTo: tableView.topAnchor),
+            headerContentView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
+        ])
+
     }
 
     private func setupNavigationBar() {
