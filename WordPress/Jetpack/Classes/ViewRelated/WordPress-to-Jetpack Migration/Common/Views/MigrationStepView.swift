@@ -10,7 +10,6 @@ class MigrationStepView: UIView {
         let stackView = UIStackView(arrangedSubviews: [headerView, centerView, actionsView])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.setCustomSpacing(Constants.textToButtonsSpacing, after: centerView)
         return stackView
     }()
 
@@ -35,9 +34,5 @@ class MigrationStepView: UIView {
 
     private enum Constants {
         static let contentMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 30)
-
-        static let textToButtonsSpacing: CGFloat = 48
     }
-
-
 }
