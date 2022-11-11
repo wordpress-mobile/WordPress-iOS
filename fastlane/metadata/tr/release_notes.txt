@@ -1,0 +1,1 @@
+Sesle Kontrol artık blok düzenleyicide daha kolay; Görsel bloklarıyla çalışırken metin girişi için altyazı seçmek üzere Sesle Kontrol imlecini kullanın.
