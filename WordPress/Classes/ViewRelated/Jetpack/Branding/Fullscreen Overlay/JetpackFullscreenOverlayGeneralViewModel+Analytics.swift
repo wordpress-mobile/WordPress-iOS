@@ -1,7 +1,7 @@
 import Foundation
 import AutomatticTracks
 
-extension JetpackFullscreenOverlayGeneralConfig {
+extension JetpackFullscreenOverlayGeneralViewModel {
 
     // MARK: Private Enum Decleration
 

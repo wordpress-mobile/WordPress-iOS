@@ -5,13 +5,13 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Variables
 
-    private let config: JetpackFullscreenOverlayConfig
+    private let viewModel: JetpackFullscreenOverlayViewModel
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(config.animationLtr) :
-        Animation.named(config.animationRtl)
+        Animation.named(viewModel.animationLtr) :
+        Animation.named(viewModel.animationRtl)
     }
 
     // MARK: Lazy Views
@@ -55,8 +55,8 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Initializers
 
-    init(with config: JetpackFullscreenOverlayConfig) {
-        self.config = config
+    init(with viewModel: JetpackFullscreenOverlayViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -96,7 +96,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func addCloseButtonIfNeeded() {
-        guard config.shouldShowCloseButton else {
+        guard viewModel.shouldShowCloseButton else {
             return
         }
 
@@ -116,13 +116,13 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupContent() {
         animationView.animation = animation
         setTitle()
-        subtitleLabel.text = config.subtitle
-        footnoteLabel.text = config.footnote
-        switchButton.setTitle(config.switchButtonText, for: .normal)
-        continueButton.setTitle(config.continueButtonText, for: .normal)
-        footnoteLabel.isHidden = config.footnoteIsHidden
-        learnMoreButton.isHidden = config.learnMoreButtonIsHidden
-        continueButton.isHidden = config.continueButtonIsHidden
+        subtitleLabel.text = viewModel.subtitle
+        footnoteLabel.text = viewModel.footnote
+        switchButton.setTitle(viewModel.switchButtonText, for: .normal)
+        continueButton.setTitle(viewModel.continueButtonText, for: .normal)
+        footnoteLabel.isHidden = viewModel.footnoteIsHidden
+        learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
+        continueButton.isHidden = viewModel.continueButtonIsHidden
         setupLearnMoreButton()
     }
 
@@ -135,7 +135,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
             .paragraphStyle: style,
             .kern: Metrics.titleKern
         ]
-        let attributedString = NSMutableAttributedString(string: config.title)
+        let attributedString = NSMutableAttributedString(string: viewModel.title)
         attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
         titleLabel.attributedText = attributedString
     }
@@ -218,7 +218,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
             return
         }
 
-        let source = "jetpack_overlay_\(config.analyticsSource)"
+        let source = "jetpack_overlay_\(viewModel.analyticsSource)"
         let webViewController = WebViewControllerFactory.controller(url: url, source: source)
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)

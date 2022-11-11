@@ -1,7 +1,7 @@
 import Foundation
 
 /// Protocol used to configure `JetpackFullscreenOverlayViewController`
-protocol JetpackFullscreenOverlayConfig {
+protocol JetpackFullscreenOverlayViewModel {
     var title: String { get }
     var subtitle: String { get }
     var animationLtr: String { get }
@@ -21,7 +21,7 @@ protocol JetpackFullscreenOverlayConfig {
     func trackContinueButtonTapped()
 }
 
-extension JetpackFullscreenOverlayConfig {
+extension JetpackFullscreenOverlayViewModel {
     var learnMoreButtonIsHidden: Bool {
         !shouldShowLearnMoreButton
     }

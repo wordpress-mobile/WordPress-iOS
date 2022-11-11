@@ -91,17 +91,17 @@ class JetpackFeaturesRemovalCoordinator {
     static func presentOverlay(from source: OverlaySource, in viewController: UIViewController) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
-        let config = JetpackFullscreenOverlayGeneralConfig(phase: phase, source: source)
+        let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig, source: source)
-        guard config.shouldShowOverlay, frequencyTracker.shouldShow() else {
+        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow() else {
             return
         }
-        createAndPresentOverlay(with: config, in: viewController)
+        createAndPresentOverlay(with: viewModel, in: viewController)
         frequencyTracker.track()
     }
 
-    private static func createAndPresentOverlay(with config: JetpackFullscreenOverlayConfig, in viewController: UIViewController) {
-        let overlay = JetpackFullscreenOverlayViewController(with: config)
+    private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel, in viewController: UIViewController) {
+        let overlay = JetpackFullscreenOverlayViewController(with: viewModel)
         let navigationViewController = UINavigationController(rootViewController: overlay)
         navigationViewController.modalPresentationStyle = .formSheet
         viewController.present(navigationViewController, animated: true)
