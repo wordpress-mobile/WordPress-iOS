@@ -14,13 +14,23 @@ class MigrationDoneViewController: UIViewController {
     }
 
     override func loadView() {
-        // TODO: replace this blank center view with the actual content
-        let centerView = UIView()
-        centerView.translatesAutoresizingMaskIntoConstraints = false
-        centerView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+        let centerContentView = MigrationDoneCenterView()
+        let centerView = MigrationCenterView(contentView: centerContentView,
+                                             descriptionText: TextContent.description,
+                                             highlightedDescriptionText: TextContent.highlightedDescription)
 
         view = MigrationStepView(headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
                                  actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-                                 centerView: MigrationCenterView(contentView: MigrationDoneCenterView()))
+                                 centerView: centerView)
+    }
+
+    enum TextContent {
+
+        static let description = NSLocalizedString("migration.done.footer",
+                                                   value: "Please delete the WordPress app to avoid data conflicts.",
+                                                   comment: "Footer for the migration done screen.")
+        static let highlightedDescription = NSLocalizedString("migration.done.footer.highlighted",
+                                                       value: "delete the WordPress app",
+                                                       comment: "Highlighted text in the footer of the migration done screen.")
     }
 }

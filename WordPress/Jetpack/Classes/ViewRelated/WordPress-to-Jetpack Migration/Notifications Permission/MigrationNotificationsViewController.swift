@@ -14,9 +14,23 @@ class MigrationNotificationsViewController: UIViewController {
     }
 
     override func loadView() {
+        let centerContentView = MigrationNotificationsCenterView()
+        let centerView = MigrationCenterView(contentView: centerContentView,
+                                             descriptionText: TextContent.description,
+                                             highlightedDescriptionText: TextContent.highlightedDescription)
 
         view = MigrationStepView(headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
                                  actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-                                 centerView: MigrationCenterView(contentView: MigrationNotificationsCenterView()))
+                                 centerView: centerView)
+    }
+
+    enum TextContent {
+
+        static let description = NSLocalizedString("migration.notifications.footer",
+                                                   value: "When the alert apears tap Allow to continue receiving all your WordPress notifications.",
+                                                   comment: "Footer for the migration notifications screen.")
+        static let highlightedDescription = NSLocalizedString("migration.notifications.footer.highlighted",
+                                                       value: "Allow",
+                                                       comment: "Highlighted text in the footer of the migration notifications screen.")
     }
 }
