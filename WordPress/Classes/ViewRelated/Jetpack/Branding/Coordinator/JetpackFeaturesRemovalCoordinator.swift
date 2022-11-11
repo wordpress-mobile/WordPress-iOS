@@ -4,7 +4,7 @@ import Foundation
 class JetpackFeaturesRemovalCoordinator {
 
     /// Enum descibing the current phase of the Jetpack features removal
-    enum GeneralPhase {
+    enum GeneralPhase: String {
         case normal
         case one
         case two

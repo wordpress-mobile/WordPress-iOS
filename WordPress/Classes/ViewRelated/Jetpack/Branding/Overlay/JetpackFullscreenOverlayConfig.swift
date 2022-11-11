@@ -12,6 +12,13 @@ protocol JetpackFullscreenOverlayConfig {
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
+
+    func trackOverlayDisplayed()
+    func trackLearnMoreTapped()
+    func trackSwitchButtonTapped()
+    func trackCloseButtonTapped()
+    func trackOverlaySwippedDown()
+    func trackContinueButtonTapped()
 }
 
 extension JetpackFullscreenOverlayConfig {
