@@ -6,7 +6,7 @@ class MigrationNotificationsCenterView: UIView {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         label.attributedText = Appearance.highlightString(Appearance.highlightedWord, inString: Appearance.description)
-        label.textColor = .muriel(color: .gray, .shade50)
+        label.textColor = Appearance.descriptionTextColor
         label.numberOfLines = 0
         return label
     }()
@@ -79,5 +79,7 @@ class MigrationNotificationsCenterView: UIView {
         }
 
         static let fakeAlertToDescriptionSpacing: CGFloat = 20
+
+        static let descriptionTextColor = UIColor(light: .muriel(color: .gray, .shade50), dark: .muriel(color: .gray, .shade10))
     }
 }
