@@ -10172,6 +10172,7 @@
 		3F00739D2915BAA100A37FD1 /* Notifications Permission */ = {
 			isa = PBXGroup;
 			children = (
+				3FF15A55291B4EEA00E1B4E5 /* MigrationNotificationsCenterView.swift */,
 				3FFDEF7929177D8C00B625CE /* MigrationNotificationsViewController.swift */,
 				3FFDEF7729177D7500B625CE /* MigrationNotificationsViewModel.swift */,
 			);
@@ -16038,7 +16039,6 @@
 				F41BDD782910AFCA00B7F2B0 /* MigrationFlowCoordinator.swift */,
 				3FFDEF802917882800B625CE /* MigrationNavigationController.swift */,
 				F41BDD7A29114E2400B7F2B0 /* MigrationStep.swift */,
-				3FF15A55291B4EEA00E1B4E5 /* MigrationNotificationsCenterView.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
