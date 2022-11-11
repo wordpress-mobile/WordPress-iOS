@@ -835,6 +835,7 @@
 		3FF15A5A291EC56700E1B4E5 /* MigrationDoneCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF15A59291EC56700E1B4E5 /* MigrationDoneCenterView.swift */; };
 		3FF15A5C291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF15A5B291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift */; };
 		3FF1A853242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */; };
+		3FF717FF291F07AB00323614 /* MigrationCenterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF717FE291F07AB00323614 /* MigrationCenterViewConfiguration.swift */; };
 		3FFA5ED22876152E00830E28 /* JetpackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA5ED12876152E00830E28 /* JetpackButton.swift */; };
 		3FFDEF7829177D7500B625CE /* MigrationNotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF7729177D7500B625CE /* MigrationNotificationsViewModel.swift */; };
 		3FFDEF7A29177D8C00B625CE /* MigrationNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFDEF7929177D8C00B625CE /* MigrationNotificationsViewController.swift */; };
@@ -6103,6 +6104,7 @@
 		3FF15A59291EC56700E1B4E5 /* MigrationDoneCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationDoneCenterView.swift; sourceTree = "<group>"; };
 		3FF15A5B291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationNotificationsCenterView.swift; sourceTree = "<group>"; };
 		3FF1A852242D5FCB00373F5D /* WPTabBarController+ReaderTabNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+ReaderTabNavigation.swift"; sourceTree = "<group>"; };
+		3FF717FE291F07AB00323614 /* MigrationCenterViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationCenterViewConfiguration.swift; sourceTree = "<group>"; };
 		3FFA5ED12876152E00830E28 /* JetpackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackButton.swift; sourceTree = "<group>"; };
 		3FFDEF7729177D7500B625CE /* MigrationNotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationNotificationsViewModel.swift; sourceTree = "<group>"; };
 		3FFDEF7929177D8C00B625CE /* MigrationNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationNotificationsViewController.swift; sourceTree = "<group>"; };
@@ -10928,6 +10930,7 @@
 			isa = PBXGroup;
 			children = (
 				3FFDEF9029187F2100B625CE /* MigrationActionsConfiguration.swift */,
+				3FF717FE291F07AB00323614 /* MigrationCenterViewConfiguration.swift */,
 				3FFDEF8E29187F1200B625CE /* MigrationHeaderConfiguration.swift */,
 				3FFDEF7E29177FB100B625CE /* MigrationStepConfiguration.swift */,
 			);
@@ -16429,9 +16432,9 @@
 			isa = PBXGroup;
 			children = (
 				F41BDD72290BBDCA00B7F2B0 /* MigrationActionsView.swift */,
+				3FF15A55291B4EEA00E1B4E5 /* MigrationCenterView.swift */,
 				F4F9D5EB29096CF500502576 /* MigrationHeaderView.swift */,
 				3FFDEF842918215700B625CE /* MigrationStepView.swift */,
-				3FF15A55291B4EEA00E1B4E5 /* MigrationCenterView.swift */,
 				3FFDEF8D2918625600B625CE /* Configuration */,
 			);
 			path = Views;
@@ -23386,6 +23389,7 @@
 				FABB246A2602FC2C00C8785C /* WordPressAuthenticationManager.swift in Sources */,
 				FABB246B2602FC2C00C8785C /* SiteManagementService.swift in Sources */,
 				FABB246C2602FC2C00C8785C /* ActivityPostRange.swift in Sources */,
+				3FF717FF291F07AB00323614 /* MigrationCenterViewConfiguration.swift in Sources */,
 				FABB246D2602FC2C00C8785C /* ReaderSelectInterestsViewController.swift in Sources */,
 				FABB246E2602FC2C00C8785C /* ReaderShowMenuAction.swift in Sources */,
 				3FFDEF882918596B00B625CE /* MigrationDoneViewModel.swift in Sources */,

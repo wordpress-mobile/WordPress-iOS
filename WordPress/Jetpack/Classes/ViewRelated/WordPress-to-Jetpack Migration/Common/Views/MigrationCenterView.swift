@@ -5,14 +5,14 @@ class MigrationCenterView: UIView {
 
     private let contentView: UIView
 
-    private let descriptionText: String
-
-    private let highlightedDescriptionText: String
+    private let configuration: MigrationCenterViewConfiguration?
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
-        label.attributedText = Appearance.highlightString(highlightedDescriptionText, inString: descriptionText)
+        if let configuration {
+            label.attributedText = configuration.attributedText
+        }
         label.textColor = Appearance.descriptionTextColor
         label.numberOfLines = 0
         return label
@@ -27,10 +27,9 @@ class MigrationCenterView: UIView {
         return stackView
     }()
 
-    init(contentView: UIView, descriptionText: String, highlightedDescriptionText: String) {
+    init(contentView: UIView, configuration: MigrationCenterViewConfiguration?) {
         self.contentView = contentView
-        self.descriptionText = descriptionText
-        self.highlightedDescriptionText = highlightedDescriptionText
+        self.configuration = configuration
         super.init(frame: .zero)
         addSubview(mainStackView)
         pinSubviewToAllEdges(mainStackView)
@@ -41,18 +40,6 @@ class MigrationCenterView: UIView {
     }
 
     private enum Appearance {
-
-        static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
-            let attributedString = NSMutableAttributedString(string: inString)
-
-            guard let subStringRange = inString.nsRange(of: subString) else {
-                return attributedString
-            }
-
-            attributedString.addAttributes([.font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .bold)],
-                                           range: subStringRange)
-            return attributedString
-        }
 
         static let fakeAlertToDescriptionSpacing: CGFloat = 20
 

@@ -30,6 +30,8 @@ final class MigrationWelcomeViewModel {
         },
                                                                      secondaryHandler: { })
 
-        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
+                                                   centerViewConfiguration: nil,
+                                                   actionsConfiguration: actionsConfiguration)
     }
 }

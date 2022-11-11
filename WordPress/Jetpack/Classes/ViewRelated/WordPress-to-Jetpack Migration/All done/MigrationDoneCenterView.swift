@@ -39,7 +39,6 @@ class MigrationDoneCenterView: UIView {
     }
 
     private enum Appearance {
-
         static let iconImage = UIImage(named: "wp-migration-icon-with-badge")
     }
 }
