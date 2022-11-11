@@ -55,7 +55,7 @@ class MigrationNotificationsCenterView: UIView {
     private enum Appearance {
 
         static func fakeAlertImage(for textDirection: UITraitEnvironmentLayoutDirection) -> UIImage? {
-            let imageName = textDirection == .rightToLeft ? "wp-migration-fake-alert-rtl" : "wp-migration-fake-alert-ltr"
+            let imageName = textDirection == .rightToLeft ? "wp-migration-notifications-explainer-rtl" : "wp-migration-notifications-explainer-ltr"
             return UIImage(named: imageName)
         }
 
