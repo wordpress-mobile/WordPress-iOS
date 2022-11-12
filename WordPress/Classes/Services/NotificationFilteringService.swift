@@ -1,6 +1,7 @@
 import Foundation
 
 /// The service is created to support disabling WordPress notifications when Jetpack app is installed
+/// The service uses App Groups which allows Jetpack app to change the state of notifications flag and be later accessed by WordPress app
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
 final class NotificationFilteringService {
