@@ -11,14 +11,6 @@ final class NotificationFilteringService {
     private let isWordPress: Bool
     private let userDefaults = UserDefaults(suiteName: WPAppGroupName)
 
-    /// Notifications should be disabled in all the migration phases
-    static var allowDisablingWPNotifications: Bool {
-        FeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled
-        || FeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled
-        || FeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled
-        || FeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled
-    }
-
     var wordPressNotificationsEnabled: Bool {
         get {
             guard let userDefaults = userDefaults,
@@ -36,7 +28,7 @@ final class NotificationFilteringService {
     }
 
     init(notificationSettingsLoader: NotificationSettingsLoader = UNUserNotificationCenter.current(),
-         allowDisablingWPNotifications: Bool = NotificationFilteringService.allowDisablingWPNotifications,
+         allowDisablingWPNotifications: Bool = FeatureFlag.allowDisablingWPNotifications.enabled,
          isWordPress: Bool = AppConfiguration.isWordPress) {
         self.notificationSettingsLoader = notificationSettingsLoader
         self.allowDisablingWPNotifications = allowDisablingWPNotifications
