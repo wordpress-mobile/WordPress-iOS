@@ -37,7 +37,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
-    case allowDisablingWPNotifications
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -124,8 +123,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newWordPressLandingScreen:
             return false
         case .newCoreDataContext:
-            return true
-        case .allowDisablingWPNotifications:
             return true
         case .jetpackFeaturesRemovalPhaseOne:
             return false
@@ -247,8 +244,6 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .allowDisablingWPNotifications:
-            return "Disable WordPress app notifications when Jetpack is installed"
         case .jetpackFeaturesRemovalPhaseOne:
             return "Jetpack Features Removal Phase One"
         case .jetpackFeaturesRemovalPhaseTwo:
