@@ -158,7 +158,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "jp_removal_new_users"
         case .allowDisablingWPNotifications:
-            return "jp_disable_wp_notifications"
+            return "prevent_duplicate_notifs_remote_field"
             default:
                 return nil
         }
