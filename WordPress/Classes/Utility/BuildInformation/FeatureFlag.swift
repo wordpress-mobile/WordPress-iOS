@@ -126,7 +126,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newCoreDataContext:
             return true
         case .allowDisablingWPNotifications:
-            return true
+            return false
         case .jetpackFeaturesRemovalPhaseOne:
             return false
         case .jetpackFeaturesRemovalPhaseTwo:
