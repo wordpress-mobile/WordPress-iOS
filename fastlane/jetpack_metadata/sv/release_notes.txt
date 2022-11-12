@@ -1,0 +1,3 @@
+Dynamiska widgetar är nu tillgängliga med Jetpack. Få daglig, veckobaserad och total statistik på din enhets startskärm. Det finns också en helt ny landningsskärm i appen som svarar på din enhets rörelser.
+
+Det är nu enklare att använda röststyrning i blockredigeraren – när du arbetar med bildblock kan du använda röststyrningen för att välja bildtext för textinlägget.
