@@ -695,5 +695,7 @@ private extension InteractiveNotificationsManager {
     func disableWordPressNotificationsIfNeeded() {
         let notificationFilteringService = NotificationFilteringService()
         notificationFilteringService.disableWordPressNotificationsIfNeeded()
+
+        notificationFilteringService.cancelAllPendingWordPressLocalNotifications()
     }
 }
