@@ -79,7 +79,7 @@ final class MigrationWelcomeBlogTableViewCell: UITableViewCell, Reusable {
             self.siteNameLabel.text = displayURL
             self.siteAddressLabel.text = nil
         }
-        self.siteImageView.downloadSiteIcon(for: blog)
+        self.siteImageView.downloadSiteIcon(for: blog, imageSize: Constants.imageSize)
     }
 
     // MARK: - Types
