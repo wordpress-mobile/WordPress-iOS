@@ -27,17 +27,6 @@ class NotificationService: UNNotificationServiceExtension {
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        if shouldFilterNotification() {
-            // TODO
-            /// Once com.apple.developer.usernotifications.filtering we can pass empty content to silence notifications
-            /// https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_usernotifications_filtering
-            let content = UNMutableNotificationContent()
-            content.title = "Filtered"
-            content.body =  "This notication won't appear"
-            contentHandler(content)
-            return
-        }
-
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
