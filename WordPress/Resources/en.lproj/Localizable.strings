@@ -1961,6 +1961,7 @@
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4185,6 +4186,9 @@
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress is better with Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Learn more at jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Add an author";
 
@@ -4787,6 +4791,39 @@
 /* Option to select the Microsft Outlook app when logging in with magic links */
 "Microsoft Outlook" = "Microsoft Outlook";
 
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Finish";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Thanks for switching to Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Decide later";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "You’ll get all the same notifications but now they’ll come from the Jetpack app.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "We’ve disabled notifications for the WordPress app.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Allow notifications to keep up with your site";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "It looks like you’re switching from the WordPress app.";
+
+/* No comment provided by engineer. */
+"migration.welcome.secondaryDescription.plural" = "migration.welcome.secondaryDescription.plural";
+
+/* No comment provided by engineer. */
+"migration.welcome.secondaryDescription.singular" = "migration.welcome.secondaryDescription.singular";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Welcome to Jetpack!";
+
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Miscellaneous vulnerability";
 
@@ -4956,7 +4993,8 @@
 /* A button title. */
 "Need help finding your site address?" = "Need help finding your site address?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Need help?";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
