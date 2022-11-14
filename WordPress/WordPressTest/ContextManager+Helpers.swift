@@ -2,29 +2,14 @@ import XCTest
 
 @testable import WordPress
 
-class ContextManagerMock: ContextManager {
+extension ContextManager {
 
-    /// Create an in memory database using the current version of the data model.
-    convenience init() {
-        self.init(modelName: ContextManagerModelNameCurrent)
-    }
-
-    /// Create an in memory database using given `modelName`.
+    /// Create an in memory database.
     ///
     /// - SeeAlso `ContextManager`
-    init(modelName: String) {
-        super.init(modelName: modelName, store: ContextManager.inMemoryStoreURL, contextFactory: nil)
-    }
-
-    override func saveContextAndWait(_ context: NSManagedObjectContext) {
-        super.saveContextAndWait(context)
-        // FIXME: Remove this method to use superclass one instead
-        //
-        // This log resolves a deadlock in
-        // `DashboardCardTests.testShouldNotShowQuickStartIfDefaultSectionIsSiteMenu`
-        //
-        // Unfortunately, we're not sure why.
-        NSLog("Context save completed")
+    @objc
+    static func forTesting() -> ContextManager {
+        ContextManager(modelName: ContextManagerModelNameCurrent, store: ContextManager.inMemoryStoreURL, contextFactory: nil)
     }
 
     /// Override `ContextManager.shared` with the mock instance, and un-override it when
@@ -34,7 +19,7 @@ class ContextManagerMock: ContextManager {
     /// `setUp` method.
     ///
     /// - Parameter testCase: The test case to wait for.
-    @objc func useAsSharedInstance(untilTestFinished testCase: XCTestCase) {
+    func useAsSharedInstance(untilTestFinished testCase: XCTestCase) {
         // Create the test observer singleton to add it to `XCTestObservationCenter`.
         _ = AutomaticTeardownTestObserver.instance
 
