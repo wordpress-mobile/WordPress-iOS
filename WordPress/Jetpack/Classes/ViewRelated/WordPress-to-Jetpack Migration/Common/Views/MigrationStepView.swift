@@ -60,8 +60,14 @@ class MigrationStepView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        mainScrollView.contentInset.bottom = actionsView.frame.size.height + Constants.bottomMargin
+    }
+
     private enum Constants {
         static let contentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         static let stackViewSpacing: CGFloat = 20
+        static let bottomMargin: CGFloat = 20
     }
 }
