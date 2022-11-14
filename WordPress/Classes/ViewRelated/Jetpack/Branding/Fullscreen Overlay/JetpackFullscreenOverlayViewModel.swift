@@ -17,7 +17,6 @@ protocol JetpackFullscreenOverlayViewModel {
     func trackLearnMoreTapped()
     func trackSwitchButtonTapped()
     func trackCloseButtonTapped()
-    func trackOverlaySwippedDown()
     func trackContinueButtonTapped()
 }
 

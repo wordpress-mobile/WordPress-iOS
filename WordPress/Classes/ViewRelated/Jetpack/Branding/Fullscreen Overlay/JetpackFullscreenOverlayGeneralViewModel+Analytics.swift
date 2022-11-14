@@ -6,7 +6,7 @@ extension JetpackFullscreenOverlayGeneralViewModel {
     // MARK: Private Enum Decleration
 
     private enum DismissalType: String {
-        case close, swipe, `continue`
+        case close, `continue`
     }
 
     // MARK: Static Property Keys
@@ -40,10 +40,6 @@ extension JetpackFullscreenOverlayGeneralViewModel {
 
     func trackCloseButtonTapped() {
         trackOverlayDismissed(dismissalType: .close)
-    }
-
-    func trackOverlaySwippedDown() {
-        trackOverlayDismissed(dismissalType: .swipe)
     }
 
     func trackContinueButtonTapped() {
