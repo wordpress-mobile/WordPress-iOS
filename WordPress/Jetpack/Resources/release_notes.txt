@@ -1,3 +1,3 @@
-Dynamic widgets are now on Jetpack. Get daily, weekly, and all-time stats on your device’s home screen. You’ll also notice a shiny new landing screen in the app that responds to your device’s motion.
+* [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
+* [*] Fixed an issue where the message "No media matching your search" for the media picker is not visible [#19555]
 
-Voice Control is now easier to use in the block editor—when you’re working with Image blocks, use the Voice Control cursor to select the caption for text entry.
