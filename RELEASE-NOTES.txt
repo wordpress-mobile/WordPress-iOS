@@ -1,5 +1,9 @@
 21.2
 -----
+* [*] Removed WeeklyRoundup notifications as part of Jetpack focus [#19590]
+
+21.2
+-----
 * [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
 * [*] Fixed an issue where the message "No media matching your search" for the media picker is not visible [#19555]
 
