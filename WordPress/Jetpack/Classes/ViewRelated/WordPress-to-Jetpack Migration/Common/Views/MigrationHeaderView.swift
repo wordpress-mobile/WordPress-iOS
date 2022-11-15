@@ -55,7 +55,13 @@ final class MigrationHeaderView: UIView {
         mainStackView.alignment = .leading
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(mainStackView)
-        pinSubviewToAllEdges(mainStackView)
+        NSLayoutConstraint.activate([
+            labelsStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor),
+            mainStackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+        ])
         configureAppearance()
     }
 
