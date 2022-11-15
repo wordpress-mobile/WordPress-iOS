@@ -96,7 +96,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        JetpackFeaturesRemovalCoordinator.presentOverlay(from: .stats, in: self)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .stats, in: self)
     }
 
     func configureInsightsTableView() {
