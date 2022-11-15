@@ -1529,8 +1529,20 @@
 		7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */; };
 		800035BD291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035BC291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift */; };
 		800035BE291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035BC291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift */; };
+		8000360C2924553F007D2D26 /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
+		8000360D2924553F007D2D26 /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
+		8000360E29245542007D2D26 /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */; };
 		800036102924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8000360F2924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift */; };
 		800036112924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8000360F2924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift */; };
+		80003612292458E4007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003613292458E4007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003614292458E5007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003615292458E6007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003616292458E7007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003617292458E9007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003618292458EA007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		80003619292458EA007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
+		8000361A292458EB007D2D26 /* RemoteFeatureFlagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */; };
 		801D94EF2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801D94EE2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift */; };
 		801D94F02919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801D94EE2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift */; };
 		801D950D291AB3CF0051993E /* JetpackReaderLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 801D9507291AB3CD0051993E /* JetpackReaderLogoAnimation_ltr.json */; };
@@ -19636,6 +19648,7 @@
 				0107E0D228F97D5000DE87DB /* UnconfiguredView.swift in Sources */,
 				0107E1852900059300DE87DB /* LocalizationConfiguration.swift in Sources */,
 				0107E0D328F97D5000DE87DB /* Tracks+StatsWidgets.swift in Sources */,
+				8000361A292458EB007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				0107E0D428F97D5000DE87DB /* HomeWidgetData.swift in Sources */,
 				0107E0D528F97D5000DE87DB /* HomeWidgetTodayData.swift in Sources */,
 				0107E0D628F97D5000DE87DB /* AllTimeWidgetStats.swift in Sources */,
@@ -21409,6 +21422,7 @@
 				3FAA18CC25797B85002B1911 /* UnconfiguredView.swift in Sources */,
 				0107E1872900065500DE87DB /* LocalizationConfiguration.swift in Sources */,
 				98390AC3254C984700868F0A /* Tracks+StatsWidgets.swift in Sources */,
+				80003614292458E5007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				3FA53ED62565860900F4D9A2 /* HomeWidgetData.swift in Sources */,
 				3FB34ACB25672A90001A74A6 /* HomeWidgetTodayData.swift in Sources */,
 				3F5C863B25C9EA8200BABE64 /* AllTimeWidgetStats.swift in Sources */,
@@ -21495,6 +21509,7 @@
 				170BEC8A239153160017AEC1 /* FeatureFlagOverrideStore.swift in Sources */,
 				433ADC1B223B2A7E00ED9DE1 /* TextBundleWrapper.m in Sources */,
 				4326191622FCB9F8003C7642 /* MurielColor.swift in Sources */,
+				8000360C2924553F007D2D26 /* CocoaLumberjack.swift in Sources */,
 				73B05D2921374F1E0073ECAA /* Constants.m in Sources */,
 				736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */,
 				73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */,
@@ -21503,6 +21518,7 @@
 				FAD257F52611B54200EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				0107E16B28FFED1800DE87DB /* WidgetConfiguration.swift in Sources */,
 				73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
+				80003615292458E6007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				736584E6213752730029C9A4 /* SFHFKeychainUtils.m in Sources */,
 				73B05D2621374B960073ECAA /* Tracks.swift in Sources */,
 				1752D4FC238D703A002B79E7 /* KeyValueDatabase.swift in Sources */,
@@ -21541,6 +21557,7 @@
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				73ACDF9C2118AF7000233AD4 /* SFHFKeychainUtils.m in Sources */,
 				7335AC5921220AC40012EF2D /* FormattableContent.swift in Sources */,
+				80003616292458E7007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				7335AC6721220EAE0012EF2D /* NotificationContentRangeFactory.swift in Sources */,
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
 				73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */,
@@ -21551,6 +21568,7 @@
 				7335AC6321220E6E0012EF2D /* NotificationTextContent.swift in Sources */,
 				0107E16C28FFED1800DE87DB /* WidgetConfiguration.swift in Sources */,
 				83A1B19E28AFE86A00E737AC /* FeatureFlag.swift in Sources */,
+				8000360D2924553F007D2D26 /* CocoaLumberjack.swift in Sources */,
 				73E8E592212CD635000B26A5 /* UIImage+Assets.swift in Sources */,
 				83A1B1A328AFE89F00E737AC /* BuildConfiguration.swift in Sources */,
 				73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */,
@@ -21582,6 +21600,7 @@
 				FAD256B82611B01B00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */,
 				9822D8DE214194EB0092CBD1 /* NoResultsViewController.swift in Sources */,
+				80003613292458E4007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				74021A1A202E1502006CC39F /* WPStyleGuide+Gridicon.swift in Sources */,
 				74021A04202E1307006CC39F /* String+Extensions.swift in Sources */,
 				747F88C42037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */,
@@ -21657,6 +21676,7 @@
 				809620E128E540D700940A5D /* TextList+WordPress.swift in Sources */,
 				809620E228E540D700940A5D /* AppExtensionsService.swift in Sources */,
 				809620E328E540D700940A5D /* ExtensionNotificationManager.swift in Sources */,
+				80003617292458E9007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				809620E428E540D700940A5D /* NoResultsViewController.swift in Sources */,
 				809620E528E540D700940A5D /* NSAttributedStringKey+Conversion.swift in Sources */,
 				809620E628E540D700940A5D /* SharePost.swift in Sources */,
@@ -21732,6 +21752,7 @@
 				8096214228E55C9400940A5D /* PostUploadOperation.swift in Sources */,
 				8096214328E55C9400940A5D /* NoResultsViewController.swift in Sources */,
 				8096214428E55C9400940A5D /* WPStyleGuide+Gridicon.swift in Sources */,
+				80003618292458EA007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				8096214528E55C9400940A5D /* String+Extensions.swift in Sources */,
 				8096214628E55C9400940A5D /* TableViewKeyboardObserver.swift in Sources */,
 				8096214728E55C9400940A5D /* BuildConfiguration.swift in Sources */,
@@ -21816,6 +21837,7 @@
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03928EE866A00953C1A /* SFHFKeychainUtils.m in Sources */,
 				80F6D03A28EE866A00953C1A /* FormattableContent.swift in Sources */,
+				80003619292458EA007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				80F6D03B28EE866A00953C1A /* NotificationContentRangeFactory.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
 				80F6D03D28EE866A00953C1A /* Tracks.swift in Sources */,
@@ -21826,6 +21848,7 @@
 				80F6D04228EE866A00953C1A /* NotificationTextContent.swift in Sources */,
 				80F6D04328EE866A00953C1A /* FeatureFlag.swift in Sources */,
 				0107E16028FFE99300DE87DB /* WidgetConfiguration.swift in Sources */,
+				8000360E29245542007D2D26 /* CocoaLumberjack.swift in Sources */,
 				80F6D04428EE866A00953C1A /* UIImage+Assets.swift in Sources */,
 				80F6D04528EE866A00953C1A /* BuildConfiguration.swift in Sources */,
 				80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */,
@@ -21871,6 +21894,7 @@
 				FAD256A62611B01A00EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				74D06FEB1FE0788500AF1788 /* TextList+WordPress.swift in Sources */,
 				74FA2EE4200E8A6C001DDC13 /* AppExtensionsService.swift in Sources */,
+				80003612292458E4007D2D26 /* RemoteFeatureFlagStore.swift in Sources */,
 				74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */,
 				9822D8DD214194EB0092CBD1 /* NoResultsViewController.swift in Sources */,
 				74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */,
