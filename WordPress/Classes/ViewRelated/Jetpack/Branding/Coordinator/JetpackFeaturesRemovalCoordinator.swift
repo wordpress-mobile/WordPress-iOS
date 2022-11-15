@@ -88,7 +88,7 @@ class JetpackFeaturesRemovalCoordinator {
     /// - Parameters:
     ///   - source: The source that triggers the display of the overlay.
     ///   - viewController: View controller where the overlay should be presented in.
-    static func presentOverlay(from source: OverlaySource, in viewController: UIViewController) {
+    static func presentOverlayIfNeeded(from source: OverlaySource, in viewController: UIViewController) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
