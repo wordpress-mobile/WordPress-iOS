@@ -43,7 +43,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var pingHubManager: PingHubManager?
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
-    private let remoteFeatureFlagStore = RemoteFeatureFlagsFetcher()
+    private let remoteFeatureFlagFetcher = RemoteFeatureFlagsFetcher()
 
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
@@ -658,7 +658,7 @@ extension WordPressAppDelegate {
             let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
             let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
             let remote = FeatureFlagRemote(wordPressComRestApi: api)
-            remoteFeatureFlagStore.update(using: remote)
+            remoteFeatureFlagFetcher.update(using: remote)
         } catch {
             DDLogError("Error fetching default user account: \(error)")
         }
