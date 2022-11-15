@@ -21,6 +21,9 @@ class NotificationService: UNNotificationServiceExtension {
     /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
+    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
+    private let notificationFilteringService = NotificationFilteringService()
+
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -330,4 +333,11 @@ private extension NotificationService {
     }
 
     static let viewMilestoneTitle = AppLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
+}
+
+// MARK: - Notification Filtering
+private extension NotificationService {
+    func shouldFilterNotification() -> Bool {
+        return notificationFilteringService.shouldFilterWordPressNotifications()
+    }
 }

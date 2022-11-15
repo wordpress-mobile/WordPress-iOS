@@ -1,9 +1,3 @@
-Benvenuti alla versione 21! Per l'occasione, abbiamo aggiunto estensioni che ti consentono di salvare i contenuti come bozza e di condividerli su Jetpack utilizzando i menu integrati del tuo dispositivo. Riceverai anche notifiche push più dettagliate sul tuo dispositivo.
+I widget dinamici ora sono su Jetpack. Ottieni statistiche giornaliere, settimanali e in ogni momento sulla schermata principale del dispositivo. Noterai una schermata di destinazione nuova di zecca nell'app che risponde al movimento del tuo dispositivo.
 
-Abbiamo aggiornato la schermata di avvio dell'app con un design semplice ed elegante e apportato alcuni aggiornamenti di design intuitivi alla visualizzazione Dettagli commento. Puoi anche cambiare l'icona dell'app Jetpack utilizzando una gamma di opzioni colorate nel menu Impostazioni app.
-
-Infine, abbiamo corretto una serie di bug.
-
-- Il testo del blog non verrà visualizzato quando stai lavorando a un articolo o a una pagina in modalità orizzontale, ma solo verticale. Niente più sovrapposizioni di tastiere.
-- Le notifiche memorizzate nella cache non vengono più visualizzate sullo schermo dopo la disconnessione dall'ccount WordPress.com.
-- Abbiamo esaminato il caso della barra di navigazione che scompare durante il processo di accesso. Ora resta visibile dall'inizio alla fine. Mistero risolto.
+Il controllo vocale è ora più semplice da usare nell'editor a blocchi: mentre stai lavorando con i blocchi Immagine, usa il cursore del controllo vocale per selezionare la didascalia per la voce del testo.

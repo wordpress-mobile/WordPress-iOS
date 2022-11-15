@@ -9,7 +9,7 @@ class MediaCoordinatorTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        coordinator = MediaCoordinator(MediaServiceFactoryMock())
+        coordinator = MediaCoordinator(MediaServiceFactoryMock(), coreDataStack: contextManager)
     }
 
     override func tearDown() {

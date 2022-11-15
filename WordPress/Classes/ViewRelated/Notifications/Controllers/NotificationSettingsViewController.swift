@@ -38,6 +38,7 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate let blogRowHeight = CGFloat(54.0)
 
     fileprivate let defaultReuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
+    fileprivate let switchReuseIdentifier = SwitchTableViewCell.classNameWithoutNamespaces()
 
     fileprivate let emptyCount = 0
     fileprivate let loadMoreRowIndex = 3
@@ -51,6 +52,9 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate var displayFollowedMoreWasAccepted = false
     fileprivate var followedSites: [ReaderSiteTopic] = []
     fileprivate var tableSections: [Section] = []
+
+    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
+    private let notificationFilteringService = NotificationFilteringService()
 
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
@@ -99,6 +103,7 @@ class NotificationSettingsViewController: UIViewController {
         // Register the cells
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
+        tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: switchReuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -195,6 +200,11 @@ class NotificationSettingsViewController: UIViewController {
         } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
             section.append(.followedSites)
         }
+
+        if notificationFilteringService.shouldShowNotificationControl() {
+            section.insert(.notificationControl, at: 0)
+        }
+
         tableSections = section
     }
 
@@ -242,6 +252,8 @@ extension NotificationSettingsViewController: UITableViewDataSource {
             return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
             return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : min(loadMoreRowCount, rowCountForFollowedSite)
+        case .notificationControl:
+            return 1
         default:
             return groupedSettings[section]?.count ?? 0
         }
@@ -346,6 +358,8 @@ private extension NotificationSettingsViewController {
         switch section(at: indexPath.section) {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
+        case .notificationControl:
+            return switchReuseIdentifier
         default:
             return defaultReuseIdentifier
         }
@@ -373,6 +387,11 @@ private extension NotificationSettingsViewController {
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
             cell.layoutSubviews()
+            return
+        }
+
+        if let cell = cell as? SwitchTableViewCell {
+            configureNotificationSwitchCell(cell)
             return
         }
 
@@ -443,6 +462,7 @@ private extension NotificationSettingsViewController {
         case followedSites
         case other
         case wordPressCom
+        case notificationControl
 
         func headerText() -> String? {
             switch self {
@@ -453,6 +473,8 @@ private extension NotificationSettingsViewController {
             case .other:
                 return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
             case .wordPressCom:
+                return nil
+            case .notificationControl:
                 return nil
             }
         }
@@ -471,6 +493,9 @@ private extension NotificationSettingsViewController {
                 return NSLocalizedString("We’ll always send important emails regarding your account, " +
                                          "but you can get some helpful extras, too.",
                                          comment: "Title displayed in the Notification Settings for WordPress.com")
+            case .notificationControl:
+                return NSLocalizedString("Disable push notifications on the app.",
+                                         comment: "Notification Settings for the app")
             }
         }
 
@@ -619,5 +644,16 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
             return nil
         }
         return Set(keywordArray)
+    }
+}
+
+// MARK: - Notification Switch Cell
+extension NotificationSettingsViewController {
+    private func configureNotificationSwitchCell(_ cell: SwitchTableViewCell) {
+        cell.name = NSLocalizedString("Allow Notifications", comment: "Title for a cell with switch control that allows to enable or disable notifications")
+        cell.on = notificationFilteringService.wordPressNotificationsEnabled
+        cell.onChange = { [weak self] (newValue: Bool) in
+            self?.notificationFilteringService.wordPressNotificationsEnabled = newValue
+        }
     }
 }
