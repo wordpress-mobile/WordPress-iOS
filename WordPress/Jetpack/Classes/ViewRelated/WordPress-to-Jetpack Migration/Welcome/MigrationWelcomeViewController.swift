@@ -13,6 +13,7 @@ final class MigrationWelcomeViewController: UIViewController {
     private lazy var headerView: MigrationHeaderView = {
         let view = MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration)
         view.translatesAutoresizingMaskIntoConstraints = true
+        view.directionalLayoutMargins = Constants.tableHeaderViewMargins
         return view
     }()
 
@@ -57,25 +58,10 @@ final class MigrationWelcomeViewController: UIViewController {
         self.tableView.register(MigrationWelcomeBlogTableViewCell.self, forCellReuseIdentifier: MigrationWelcomeBlogTableViewCell.defaultReuseID)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.dataSource = self
+        self.tableView.tableHeaderView = headerView
         self.tableView.cellLayoutMarginsFollowReadableWidth = true
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
-        setupHeader()
-    }
-
-    private func setupHeader() {
-        let headerContentView = UIView()
-        headerContentView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerContentView.addSubview(headerView)
-        headerContentView.pinSubviewToAllEdges(headerView, insets: Constants.tableHeaderViewMargins)
-        self.tableView.tableHeaderView = headerContentView
-        NSLayoutConstraint.activate([
-            headerContentView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            headerContentView.topAnchor.constraint(equalTo: tableView.topAnchor),
-            headerContentView.widthAnchor.constraint(equalTo: tableView.widthAnchor)
-        ])
-
     }
 
     private func setupNavigationBar() {
@@ -108,7 +94,7 @@ final class MigrationWelcomeViewController: UIViewController {
         static let tableViewLeadingMargin = CGFloat(30)
 
         /// Used for the `tableHeaderView` layout guide margins.
-        static let tableHeaderViewMargins = UIEdgeInsets(top: 0, left: 30, bottom: 30, right: 30)
+        static let tableHeaderViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 30)
     }
 }
 
