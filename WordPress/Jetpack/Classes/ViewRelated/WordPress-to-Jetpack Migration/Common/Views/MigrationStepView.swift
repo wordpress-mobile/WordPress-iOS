@@ -6,8 +6,14 @@ class MigrationStepView: UIView {
     private let centerView: UIView
     private let actionsView: MigrationActionsView
 
+    private lazy var centerContentView: UIView = {
+        let view = UIView()
+        view.addSubview(centerView)
+        return view
+    }()
+
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [headerView, centerView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, centerContentView])
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +40,9 @@ class MigrationStepView: UIView {
 
         self.headerView = headerView
         self.centerView = centerView
+        centerView.translatesAutoresizingMaskIntoConstraints = false
         self.actionsView = actionsView
+        headerView.directionalLayoutMargins = Constants.headerViewMargins
         actionsView.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: .zero)
         backgroundColor = .systemBackground
@@ -44,7 +52,8 @@ class MigrationStepView: UIView {
     }
 
     private func activateConstraints() {
-        contentView.pinSubviewToAllEdges(mainStackView, insets: Constants.contentMargins)
+        centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
+        contentView.pinSubviewToAllEdges(mainStackView)
         pinSubviewToAllEdges(mainScrollView)
         mainScrollView.pinSubviewToAllEdges(contentView)
 
@@ -66,8 +75,9 @@ class MigrationStepView: UIView {
     }
 
     private enum Constants {
-        static let contentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+        static let centerContentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         static let stackViewSpacing: CGFloat = 20
         static let bottomMargin: CGFloat = 20
+        static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
     }
 }
