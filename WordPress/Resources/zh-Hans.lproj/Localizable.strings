@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-20 09:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-03 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
@@ -1110,8 +1110,7 @@ translators: Block name. %s: The localized block name */
 /* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
 "Best for %@" = "最适合 %@";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "最受欢迎的文章";
 
 /* Text for related post cell preview */
@@ -1164,7 +1163,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "博客";
 
 /* Create new Blog Post button title */
@@ -1529,9 +1528,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "选择主题";
 
-/* Label for Publish time picker */
-"Choose a time" = "选择时间";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "请从以下列表中选择主题或输入自己的主题。";
 
@@ -1725,7 +1721,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1939,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "继续使用 Apple";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "贡献";
+
 /* No comment provided by engineer. */
 "Convert to link" = "转换为链接";
 
@@ -2041,9 +2039,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "无法连接。您的主机会阻止 POST 请求，而应用程序需要通过该请求与您的站点通信。请联系您的托管服务提供商以解决此问题。";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "无法加载数据";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "无法加载标签。";
@@ -2486,15 +2481,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "显示名称";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "在此处显示您站点在所有时间的统计信息。在 WordPress 应用程序的站点统计信息中进行配置。";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "在此处显示您站点本周的统计数据。在 WordPress 应用程序的站点统计信息中进行配置。";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "在此处显示您站点当天的统计数据。在 WordPress 应用程序的站点统计信息中进行配置。";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "再次尝试";
@@ -4225,7 +4211,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -4864,12 +4849,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "最新评论在先";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "新闻";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "继续";
@@ -5033,9 +5018,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "无需在此等待，我们会在网站完全恢复后通知您。";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "没有可用网络";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "没有新的话题可关注";
@@ -5326,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "打开设置";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "打开 WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "打开完整媒体选择器";
@@ -5834,7 +5813,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "文章";
@@ -6396,7 +6374,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -7299,9 +7276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "未加载统计信息";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "统计信息会在您下次上线时更新";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "状态";
 
@@ -8103,7 +8077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
 
@@ -8823,7 +8796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8861,7 +8833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -9901,6 +9872,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "使用此链接请团队成员加入，而不必逐个邀请团队成员。 使用此 URL 的任何人都可以注册您的组织（即使他们收到了其他人的链接），因此请确保与值得信任的人共享。";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "保存到 Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "保存到 Jetpack";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "保存为草稿";
 
@@ -10110,6 +10087,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "登录WordPress以查看全部时间统计数据。";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "登录 Jetpack，查看所有时间的统计信息。";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "登录 Jetpack，查看本周的统计信息。";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "在您的WordPress网站上了解本周活动更新。";

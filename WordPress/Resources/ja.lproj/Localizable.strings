@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-21 08:00:47+0000 */
+/* Translation-Revision-Date: 2022-11-03 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ja_JP */
@@ -1110,8 +1110,7 @@ translators: Block name. %s: The localized block name */
 /* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
 "Best for %@" = "%@ に最適";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "過去最高の表示数";
 
 /* Text for related post cell preview */
@@ -1164,7 +1163,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "ブロックとは、コーディングについて知らなくても挿入、配置変更、スタイル設定が実行できる、コンテンツの集まりです。 ブロックを使うことで、簡単かつ洗練された方法で美しいレイアウトに仕上げることができます。";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "ブログ";
 
 /* Create new Blog Post button title */
@@ -1529,9 +1528,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "テーマを選択";
 
-/* Label for Publish time picker */
-"Choose a time" = "時間を選択";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "以下のリストからテーマを選択するか、自分で入力します。";
 
@@ -1725,7 +1721,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1939,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Apple と連携しています";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "参加";
+
 /* No comment provided by engineer. */
 "Convert to link" = "リンクに変換";
 
@@ -2041,9 +2039,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "接続できませんでした。ご利用のホスティングサービスは POST 要求をブロックしていますが、アプリはあなたのサイトとの通信に POST 要求を必要としています。ホスティングサービスに連絡して、この問題を解決してください。";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "データを読み込めませんでした";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "タグを読み込めませんでした。";
@@ -2486,15 +2481,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "表示名";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "サイトの全期間の統計をここに表示します。サイト統計情報から WordPress アプリへの設定を行います。";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "今週のサイト統計情報をここに表示します。サイト統計情報から WordPress アプリへの設定を行います。";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "本日のサイト統計情報をこちらに表示します。サイト統計情報で WordPress アプリへの設定を行います。";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "再実行";
@@ -4225,7 +4211,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -4864,12 +4849,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "新しいものから表示";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "ニュース";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "次へ";
@@ -5033,9 +5018,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "お待ちいただく必要はありません。 サイトが完全に復元されたらお知らせします。";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "利用可能なネットワークがありません";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "フォローする新規トピックがありません";
@@ -5326,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "設定を開く";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "WordPress を開く";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "メディアピッカーを通常モードで開く";
@@ -5834,7 +5813,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "投稿";
@@ -6396,7 +6374,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -7299,9 +7276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "統計情報は読み込まれていません";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "統計情報は次回オンラインにしたときに更新されます";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "状態";
 
@@ -8103,7 +8077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
 
@@ -8823,7 +8796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8861,7 +8833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -9901,6 +9872,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "このリンクを使用すると、チームメンバーを1人ずつではなく一括で招待できます。 この URL にアクセスすると、だれでも組織に登録されます。リンクをだれから受け取ったかは関係ないため、信頼できる人と共有するようにしてください。";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Jetpack に保存";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Jetpack に保存";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "下書きとして保存";
 
@@ -10110,6 +10087,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "WordPress にログインして全期間の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Jetpack にログインして全期間の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Jetpack にログインして今週の統計情報を確認しましょう。";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Jetpack にログインして今日の統計情報を確認しましょう。";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "今週のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
