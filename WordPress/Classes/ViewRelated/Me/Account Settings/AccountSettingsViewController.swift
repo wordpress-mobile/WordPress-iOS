@@ -356,9 +356,10 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var localizedErrorMessageForAtomicSites: String {
+        // Based on https://github.com/Automattic/wp-calypso/pull/65780
         NSLocalizedString(
             "accountSettings.closeAccount.error.atomicSite",
-            value: "To close this account now, contact our support team.",
+            value: "This user account cannot be closed because it has active purchases. Please contact our support team.",
             comment: "Error message displayed when unable to close user account due to having active atomic site."
         )
     }
