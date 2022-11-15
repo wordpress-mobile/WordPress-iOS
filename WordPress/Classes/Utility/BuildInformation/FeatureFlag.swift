@@ -50,6 +50,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return overriddenValue
         }
 
+        let remoteStore = RemoteFeatureFlagStore()
+        if remoteStore.hasValue(for: self) {
+            return remoteStore.value(for: self)
+        }
+
         switch self {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
