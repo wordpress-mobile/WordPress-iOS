@@ -25,7 +25,7 @@ final class NotificationFilteringService {
         set {
             userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
 
-            if isWordPress {
+            if isWordPress && !newValue {
                 cancelAllPendingWordPressLocalNotifications()
             }
         }
