@@ -4,7 +4,7 @@ import WordPressKit
 class RemoteFeatureFlagsFetcher {
 
     typealias FetchCallback = () -> Void
-    private let store: RemoteFeatureFlagStore
+    private var store: RemoteFeatureFlagStore
 
     init(store: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
         self.store = store

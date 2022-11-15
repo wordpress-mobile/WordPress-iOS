@@ -4,7 +4,7 @@ fileprivate extension DispatchQueue {
     static let remoteFeatureFlagStoreQueue = DispatchQueue(label: "remote-feature-flag-store-queue")
 }
 
-class RemoteFeatureFlagStore {
+struct RemoteFeatureFlagStore {
 
     /// Thread Safety Coordinator
     private var queue: DispatchQueue
