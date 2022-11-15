@@ -1,8 +1,8 @@
 import Foundation
 
-/// Dynamic implementation of `JetpackFullscreenOverlayConfig`
+/// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the general phase
 /// Should be used for feature-specific and feature-collection overlays.
-struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
+struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewModel {
 
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
     let source: JetpackFeaturesRemovalCoordinator.OverlaySource
@@ -161,7 +161,7 @@ struct JetpackFullscreenOverlayGeneralConfig: JetpackFullscreenOverlayConfig {
     }
 }
 
-private extension JetpackFullscreenOverlayGeneralConfig {
+private extension JetpackFullscreenOverlayGeneralViewModel {
     enum Constants {
         static let statsLogoAnimationLtr = "JetpackStatsLogoAnimation_ltr"
         static let statsLogoAnimationRtl = "JetpackStatsLogoAnimation_rtl"

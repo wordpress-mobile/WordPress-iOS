@@ -407,6 +407,10 @@ import Foundation
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
     case jetpackPoweredBottomSheetButtonTapped
+    case jetpackFullscreenOverlayDisplayed
+    case jetpackFullscreenOverlayLinkTapped
+    case jetpackFullscreenOverlayButtonTapped
+    case jetpackFullscreenOverlayDismissed
 
     /// A String that represents the event
     var value: String {
@@ -1102,6 +1106,14 @@ import Foundation
             return "jetpack_powered_banner_tapped"
         case .jetpackPoweredBottomSheetButtonTapped:
             return "jetpack_powered_bottom_sheet_button_tapped"
+        case .jetpackFullscreenOverlayDisplayed:
+            return "remove_feature_overlay_displayed"
+        case .jetpackFullscreenOverlayLinkTapped:
+            return "remove_feature_overlay_link_tapped"
+        case .jetpackFullscreenOverlayButtonTapped:
+            return "remove_feature_overlay_button_tapped"
+        case .jetpackFullscreenOverlayDismissed:
+            return "remove_feature_overlay_dismissed"
         } // END OF SWITCH
     }
 
