@@ -356,8 +356,11 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var localizedErrorMessageForAtomicSites: String {
-        NSLocalizedString("To close this account now, contact our support team.",
-                                 comment: "Error message displayed when unable to close user account due to having active atomic site.")
+        NSLocalizedString(
+            "accountSettings.closeAccount.error.atomicSite",
+            value: "To close this account now, contact our support team.",
+            comment: "Error message displayed when unable to close user account due to having active atomic site."
+        )
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
