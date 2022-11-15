@@ -98,9 +98,8 @@ import Reachability
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // `traitCollectionDidChange` is not fired for iOS 16.0 + Media adding flow. The reason why the constraints update call was moved to here.
+        // Since `viewWillTransition` is always called when the orientation changes (portrait | landscape), it will work for all scenarios.
         DispatchQueue.main.async {
             self.configureTitleViewConstraints()
         }
@@ -481,12 +480,13 @@ private extension NoResultsViewController {
                 let titleLabelTopConstraint = titleLabelTopConstraint else {
                     return
             }
-
+            titleLabelTopConstraint.constant = TitleLabelConstraints.topLandscape
             NSLayoutConstraint.activate([titleLabelTopConstraint, titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
         }
     }
 
     func resetTitleViewConstraints() {
+        titleLabelTopConstraint?.isActive = false
         titleLabelTrailingConstraint?.isActive = false
         titleLabelLeadingConstraint?.isActive = false
         titleLabelMaxWidthConstraint?.isActive = false
@@ -517,6 +517,7 @@ private extension NoResultsViewController {
 
     struct TitleLabelConstraints {
         static let top = CGFloat(64)
+        static let topLandscape = CGFloat(32)
         static let leading = CGFloat(38)
         static let trailing = CGFloat(-38)
         static let maxWidth = CGFloat(360)

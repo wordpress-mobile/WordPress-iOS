@@ -1,7 +1,1 @@
-Welkom bij versie 21! We hebben het startscherm van de app bijgewerkt met een simpel, strak ontwerp en een aantal gebruiksvriendelijke designupgrades doorgevoerd voor de weergave van informatie bij reacties.
-
-- We hebben ook een klein aantal bugs verholpen.
-
-- Publiceer-tekst zal niet meer verschijnen wanneer je in de landschapsmodus aan een bericht of pagina werkt, alleen in de portretmodus. Geen toetsenbordoverlap meer.
-- Meldingen in cache verschijnen niet meer op het scherm nadat je bent uitgelogd bij WordPress.com.
-- We hebben de zaak van de verdwijnende navigatiebalk tijden het inlogproces onderzocht. Hij blijft nu van begin tot eind zichtbaar. Het mysterie is ontrafeld.
+Voice Control is in de blokeditor nu makkelijker te gebruiken dan ooit. Als je met afbeeldingblokken werkt, kan je de Voice Control-cursor gebruiken om de titel van de tekst te selecteren.

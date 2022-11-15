@@ -549,10 +549,17 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                media = [Media makeMediaWithBlog:blog];
            }
            [self updateMedia:media withRemoteMedia:remoteMedia];
+
+           [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+
            if (success){
                success(media);
+
+               if ([media hasChanges]) {
+                   NSCAssert(NO, @"The success callback should not modify the Media instance");
+                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+               }
            }
-           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
        }];
     } failure:^(NSError *error) {
         if (failure) {

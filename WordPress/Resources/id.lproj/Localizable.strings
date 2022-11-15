@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-27 20:36:49+0000 */
+/* Translation-Revision-Date: 2022-10-31 22:28:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -1110,8 +1110,7 @@ translators: Block name. %s: The localized block name */
 /* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
 "Best for %@" = "Terbaik untuk %@";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Terbanyak dilihat";
 
 /* Text for related post cell preview */
@@ -1164,7 +1163,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blok adalah bagian konten yang dapat Anda sisipkan, atur ulang, dan gaya tanpa perlu mengetahui cara membuat kode. Blok adalah cara mudah dan modern bagi Anda untuk membuat tata letak yang indah.";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1529,9 +1528,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "Pilih tema";
 
-/* Label for Publish time picker */
-"Choose a time" = "Pilih waktu";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Pilih topik dari daftar berikut atau ketik sendiri.";
 
@@ -1725,7 +1721,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1939,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Melanjutkan dengan Apple";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Kontribusi";
+
 /* No comment provided by engineer. */
 "Convert to link" = "Konversikan ke tautan";
 
@@ -2041,9 +2039,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Tidak dapat terhubung. Host Anda memblokir permintaan POST, dan aplikasi memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "Tidak dapat memuat data";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Tidak bisa memuat tag.";
@@ -2486,15 +2481,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nama Tampilan";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Menampilkan statistik situs semua waktu di sini. Konfigurasikan di aplikasi WordPress di bagian statistik situs Anda.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Tampilkan statistik situs Anda untuk minggu ini di sini. Konfigurasikan di aplikasi WordPress di bagian statistik situs Anda.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Tampilkan statistik situs Anda untuk hari ini di sini. Konfigurasikan di aplikasi WordPress di bagian statistik situs Anda.";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Lakukan lagi";
@@ -4225,7 +4211,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -4864,12 +4849,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "Paling baru dulu";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "Berita";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Lanjut";
@@ -5033,9 +5018,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Tidak perlu lagi menunggu. Kami akan memberi tahu Anda jika situs telah berhasil dipulihkan.";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "Tidak ada jaringan";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "Tidak ada topik baru untuk diikuti";
@@ -5326,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Buka Pengaturan";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Buka WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Buka pemilih media penuh";
@@ -5834,7 +5813,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Tulisan-tulisan";
@@ -6396,7 +6374,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -7299,9 +7276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistik tidak dimuat";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Statistik akan diperbarui saat nanti Anda online";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
@@ -8103,7 +8077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Hari ini";
 
@@ -8823,7 +8796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8861,7 +8833,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -9901,6 +9872,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Gunakan tautan ini untuk mendaftarkan anggota tim Anda tanpa harus mengundang mereka satu per satu. Siapa pun yang mengunjungi URL berikut akan dapat mendaftar ke organisasi Anda, meski pun mereka menerima tautan dari orang lain, jadi pastikan Anda membagikannya dengan orang tepercaya.";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Simpan ke Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Simpan ke Jetpack";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Simpan sebagai Konsep";
 
@@ -10110,6 +10087,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Login ke WordPress untuk melihat statistik hingga hari ini.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Login ke Jetpack untuk melihat semua statistik.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Login ke Jetpack untuk melihat statistik hari ini.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Login ke Jetpack untuk melihat statistik hari ini.";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Dapatkan kabar terbaru tentang aktivitas minggu ini di situs WordPress Anda.";
