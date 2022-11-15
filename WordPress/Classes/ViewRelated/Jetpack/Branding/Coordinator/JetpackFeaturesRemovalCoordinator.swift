@@ -42,42 +42,42 @@ class JetpackFeaturesRemovalCoordinator {
         case appOpen = "app_open"
     }
 
-    static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
+    static func generalPhase() -> GeneralPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled {
             return .newUsers
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled {
             return .four
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled {
             return .three
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled {
             return .one
         }
 
         return .normal
     }
 
-    static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
+    static func siteCreationPhase() -> SiteCreationPhase {
         if AppConfiguration.isJetpack {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseFour) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled
+            || FeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled {
             return .two
         }
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseThree)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseTwo)
-            || featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseOne) {
+        if FeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled
+            || FeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled
+            || FeatureFlag.jetpackFeaturesRemovalPhaseOne.enabled {
             return .one
         }
 
