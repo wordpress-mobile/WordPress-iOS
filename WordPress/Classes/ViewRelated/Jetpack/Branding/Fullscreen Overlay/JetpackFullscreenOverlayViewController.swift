@@ -107,6 +107,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func applyStyles() {
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
+        titleLabel.numberOfLines = viewModel.titleLabelMaxNumberOfLines
     }
 
     private func addConstraints() {

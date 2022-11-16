@@ -159,6 +159,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var analyticsSource: String {
         return source.rawValue
     }
+
+    var titleLabelMaxNumberOfLines: Int {
+        return 2
+    }
 }
 
 private extension JetpackFullscreenOverlayGeneralViewModel {
