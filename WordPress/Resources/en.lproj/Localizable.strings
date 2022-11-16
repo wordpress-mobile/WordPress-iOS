@@ -459,6 +459,9 @@
    Link to Account Settings section */
 "Account Settings" = "Account Settings";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "This user account cannot be closed immediately because it has active purchases. Please contact our support team to finish deleting the account.";
+
 /* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Acknowledgements";
 
@@ -8314,9 +8317,6 @@
 
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Title for a category is mandatory.";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "To continue please enter your email address and name.";
