@@ -1,3 +1,1 @@
-* [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
-* [*] Fixed an issue where the message "No media matching your search" for the media picker is not visible [#19555]
-
+We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.
