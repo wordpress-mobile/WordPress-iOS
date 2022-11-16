@@ -24,6 +24,10 @@ final class NotificationFilteringService {
 
         set {
             userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
+
+            if isWordPress && !newValue {
+                cancelAllPendingWordPressLocalNotifications()
+            }
         }
     }
 
@@ -50,9 +54,21 @@ final class NotificationFilteringService {
     }
 
     func shouldFilterWordPressNotifications() -> Bool {
-        return allowDisablingWPNotifications
+        let shouldFilter = allowDisablingWPNotifications
             && isWordPress
             && !wordPressNotificationsEnabled
+
+        if shouldFilter {
+            cancelAllPendingWordPressLocalNotifications()
+        }
+
+        return shouldFilter
+    }
+
+    private func cancelAllPendingWordPressLocalNotifications(notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
+        if isWordPress {
+            notificationCenter.removeAllPendingNotificationRequests()
+        }
     }
 }
 
