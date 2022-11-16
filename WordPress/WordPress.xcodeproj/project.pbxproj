@@ -12370,6 +12370,15 @@
 			path = "Fullscreen Overlay";
 			sourceTree = "<group>";
 		};
+		8000361B29245DB6007D2D26 /* Remote Feature Flags */ = {
+			isa = PBXGroup;
+			children = (
+				24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */,
+				8000360F2924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift */,
+			);
+			path = "Remote Feature Flags";
+			sourceTree = "<group>";
+		};
 		801D94F4291AB36A0051993E /* Lottie Animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -12671,6 +12680,7 @@
 				B53520991AF7BB9600B33BA8 /* Notifications */,
 				852416CC1A12EAF70030700C /* Ratings */,
 				B5C9401D1DB901F30079D4FF /* Reachability */,
+				8000361B29245DB6007D2D26 /* Remote Feature Flags */,
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				74729CA12056F9DB00D1394D /* Spotlight */,
 				B526DC241B1E473B002A8C5F /* WebViewController */,
@@ -15786,14 +15796,12 @@
 				9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */,
 				9A4E271C22EF33F5001F6A6B /* AccountSettingsStore.swift */,
 				9A09F914230C3E9700F42AB7 /* StoreFetchingStatus.swift */,
-				24ADA24B24F9A4CB001B5DAE /* RemoteFeatureFlagStore.swift */,
 				3F3CA64F25D3003C00642A89 /* StatsWidgetsStore.swift */,
 				08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */,
 				08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */,
 				08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */,
 				0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */,
 				803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */,
-				8000360F2924578A007D2D26 /* RemoteFeatureFlagsFetcher.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
