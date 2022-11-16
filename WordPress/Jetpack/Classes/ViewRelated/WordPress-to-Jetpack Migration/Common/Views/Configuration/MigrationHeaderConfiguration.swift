@@ -19,15 +19,14 @@ struct MigrationHeaderConfiguration {
 private extension MigrationHeaderConfiguration {
 
     enum Appearance {
-        // TODO: Set the right images for notification and done states
         static func image(for step: MigrationStep) -> UIImage? {
             switch step {
             case .welcome:
                 return UIImage(named: "wp-migration-welcome")
             case .notifications:
-                return UIImage(named: "wp-migration-welcome")
+                return UIImage(named: "wp-migration-notifications")
             case .done:
-                return UIImage(named: "wp-migration-welcome")
+                return UIImage(named: "wp-migration-done")
             case .dismiss:
                 return nil
             }

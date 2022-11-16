@@ -47,6 +47,7 @@ NSString *const WPNotificationServiceExtensionKeychainServiceName   = @"Notifica
 NSString *const WPNotificationServiceExtensionKeychainTokenKey      = @"OAuth2Token";
 NSString *const WPNotificationServiceExtensionKeychainUsernameKey   = @"Username";
 NSString *const WPNotificationServiceExtensionKeychainUserIDKey     = @"UserID";
+NSString *const WPNotificationsEnabledKey                           = @"WordPressNotificationsEnabled";
 
 /// Share Extension Constants
 ///

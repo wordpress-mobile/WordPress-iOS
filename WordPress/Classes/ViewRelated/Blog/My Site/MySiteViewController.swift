@@ -844,6 +844,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
+        stackView.sendSubviewToBack(blogDashboardViewController.view)
     }
 
     // MARK: - Model Changes

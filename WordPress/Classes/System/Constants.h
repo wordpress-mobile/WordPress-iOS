@@ -41,6 +41,7 @@ extern NSString *const WPNotificationServiceExtensionKeychainServiceName;
 extern NSString *const WPNotificationServiceExtensionKeychainTokenKey;
 extern NSString *const WPNotificationServiceExtensionKeychainUsernameKey;
 extern NSString *const WPNotificationServiceExtensionKeychainUserIDKey;
+extern NSString *const WPNotificationsEnabledKey;
 
 /// Share Extension Constants
 ///
