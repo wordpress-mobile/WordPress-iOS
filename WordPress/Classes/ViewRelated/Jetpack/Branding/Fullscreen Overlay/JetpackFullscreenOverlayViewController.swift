@@ -52,6 +52,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
 
     // MARK: Initializers
 
@@ -72,7 +73,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         self.isModalInPresentation = true
         configureNavigationBar()
         applyStyles()
-        addConstraints()
+        setupConstraints()
         setupContent()
         setupColors()
         setupFonts()
@@ -110,10 +111,14 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         titleLabel.numberOfLines = viewModel.titleLabelMaxNumberOfLines
     }
 
-    private func addConstraints() {
+    private func setupConstraints() {
+        // Animation constraint
         let animationSize = animation?.size ?? .init(width: 1, height: 1)
         let ratio = animationSize.width / animationSize.height
         animationView.widthAnchor.constraint(equalTo: animationView.heightAnchor, multiplier: ratio).isActive = true
+
+        // Buttons bottom constraints
+        buttonsSuperViewBottomConstraint.constant = viewModel.continueButtonIsHidden ? Metrics.singleButtonBottomSpacing : Metrics.buttonsNormalBottomSpacing
     }
 
     private func setupContent() {
@@ -252,6 +257,8 @@ private extension JetpackFullscreenOverlayViewController {
         static let switchButtonCornerRadius: CGFloat = 6
         static let titleLineHeightMultiple: CGFloat = 0.88
         static let titleKern: CGFloat = 0.37
+        static let buttonsNormalBottomSpacing: CGFloat = 30
+        static let singleButtonBottomSpacing: CGFloat = 60
     }
 
     enum Constants {
