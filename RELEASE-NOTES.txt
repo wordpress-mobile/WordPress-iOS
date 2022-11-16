@@ -1,6 +1,6 @@
-21.2
+21.3
 -----
-* [*] Removed WeeklyRoundup notifications as part of Jetpack focus [#19590]
+* [*] [internal] WeeklyRoundup notifications and scheduling are now FeatureFlag and can be turned off for WordPress as part of Jetpack focus [#19590]
 
 21.2
 -----
