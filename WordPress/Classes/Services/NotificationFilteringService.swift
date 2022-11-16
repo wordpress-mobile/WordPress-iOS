@@ -65,7 +65,7 @@ final class NotificationFilteringService {
         return shouldFilter
     }
 
-    func cancelAllPendingWordPressLocalNotifications(notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
+    private func cancelAllPendingWordPressLocalNotifications(notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         if isWordPress {
             notificationCenter.removeAllPendingNotificationRequests()
         }
