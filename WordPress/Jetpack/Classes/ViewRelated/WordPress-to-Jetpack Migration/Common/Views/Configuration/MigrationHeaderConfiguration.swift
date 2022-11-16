@@ -100,14 +100,18 @@ private extension MigrationHeaderConfiguration {
                                                                          comment: "Secondary description in the migration notifications screen")
 
         static func welcomeSecondaryDescription(plural: Bool) -> String {
-            let siteWord = plural ? "sites" : "site"
-            let value = "We found your \(siteWord). Continue to transfer all your data and sign in to Jetpack automatically."
             if plural {
-                let comment = "The plural form of the secondary description in the migration welcome screen"
-                return NSLocalizedString("migration.welcome.secondaryDescription.plural", value: value, comment: comment)
+                return NSLocalizedString(
+                    "migration.welcome.secondaryDescription.plural",
+                    value: "We found your sites. Continue to transfer all your data and sign in to Jetpack automatically.",
+                    comment: "The plural form of the secondary description in the migration welcome screen"
+                )
             } else {
-                let comment = "The singular form of the secondary description in the migration welcome screen"
-                return NSLocalizedString("migration.welcome.secondaryDescription.singular", value: value, comment: comment)
+                return NSLocalizedString(
+                    "migration.welcome.secondaryDescription.singular",
+                    value: "We found your site. Continue to transfer all your data and sign in to Jetpack automatically.",
+                    comment: "The singular form of the secondary description in the migration welcome screen"
+                )
             }
         }
     }

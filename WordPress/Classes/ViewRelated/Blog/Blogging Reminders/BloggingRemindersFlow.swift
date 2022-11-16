@@ -11,6 +11,10 @@ class BloggingRemindersFlow {
                         delegate: BloggingRemindersFlowDelegate? = nil,
                         onDismiss: DismissClosure? = nil) {
 
+        guard Feature.enabled(.bloggingReminders) else {
+            return
+        }
+
         guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
             return
         }

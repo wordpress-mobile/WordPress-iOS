@@ -289,12 +289,10 @@ class EditPostViewController: UIViewController {
                 return
             }
 
-            if FeatureFlag.bloggingReminders.enabled {
-                BloggingRemindersFlow.present(from: controller,
-                                              for: self.blog,
-                                              source: .publishFlow,
-                                              alwaysShow: false)
-            }
+            BloggingRemindersFlow.present(from: controller,
+                                          for: self.blog,
+                                          source: .publishFlow,
+                                          alwaysShow: false)
         }
     }
 }
