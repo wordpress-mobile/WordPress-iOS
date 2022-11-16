@@ -211,6 +211,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @objc private func closeButtonPressed(sender: UIButton) {
         dismiss(animated: true, completion: nil)
         viewModel.trackCloseButtonTapped()
+        viewModel.onDismiss?()
     }
 
 
@@ -222,6 +223,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBAction func continueButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
         viewModel.trackContinueButtonTapped()
+        viewModel.onDismiss?()
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {

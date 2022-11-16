@@ -163,6 +163,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var titleLabelMaxNumberOfLines: Int {
         return 2
     }
+
+    var onDismiss: JetpackOverlayDismissCallback?
 }
 
 private extension JetpackFullscreenOverlayGeneralViewModel {
