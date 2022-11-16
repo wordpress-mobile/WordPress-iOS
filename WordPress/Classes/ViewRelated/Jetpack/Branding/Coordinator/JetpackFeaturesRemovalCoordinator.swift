@@ -103,7 +103,8 @@ class JetpackFeaturesRemovalCoordinator {
     /// Used to display Site Creation overlays.
     /// - Parameters:
     ///   - viewController: View controller where the overlay should be presented in.
-    static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController, onDismiss: JetpackOverlayDismissCallback? = nil) {
+    static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
+                                                   onDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase()
         var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase)
         viewModel.onDismiss = onDismiss
