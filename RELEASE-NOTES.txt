@@ -1,6 +1,6 @@
 21.3
 -----
-* [*] Fixed a minor UI issue where the segmented control under My SIte was being clipped when "Home" is selected. [#19595]
+* [*] [internal] Blogging Reminders notifications and flow are now connected to blogging reminders FeatureFlag and can be turned off for WordPress as part of Jetpack focus [#19611]
 
 21.2
 -----
