@@ -117,7 +117,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         let ratio = animationSize.width / animationSize.height
         animationView.widthAnchor.constraint(equalTo: animationView.heightAnchor, multiplier: ratio).isActive = true
 
-        // Buttons bottom constraints
+        // Buttons bottom constraint
         buttonsSuperViewBottomConstraint.constant = viewModel.continueButtonIsHidden ? Metrics.singleButtonBottomSpacing : Metrics.buttonsNormalBottomSpacing
     }
 
