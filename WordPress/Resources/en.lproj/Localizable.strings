@@ -4818,11 +4818,11 @@
 /* The primary description in the migration welcome screen */
 "migration.welcome.primaryDescription" = "It looks like you’re switching from the WordPress app.";
 
-/* No comment provided by engineer. */
-"migration.welcome.secondaryDescription.plural" = "migration.welcome.secondaryDescription.plural";
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "We found your sites. Continue to transfer all your data and sign in to Jetpack automatically.";
 
-/* No comment provided by engineer. */
-"migration.welcome.secondaryDescription.singular" = "migration.welcome.secondaryDescription.singular";
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "We found your site. Continue to transfer all your data and sign in to Jetpack automatically.";
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welcome to Jetpack!";
