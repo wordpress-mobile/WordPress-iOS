@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "wp-migration-icon-with-badge.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

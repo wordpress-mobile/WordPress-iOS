@@ -19,15 +19,14 @@ struct MigrationHeaderConfiguration {
 private extension MigrationHeaderConfiguration {
 
     enum Appearance {
-        // TODO: Set the right images for notification and done states
         static func image(for step: MigrationStep) -> UIImage? {
             switch step {
             case .welcome:
                 return UIImage(named: "wp-migration-welcome")
             case .notifications:
-                return UIImage(named: "wp-migration-welcome")
+                return UIImage(named: "wp-migration-notifications")
             case .done:
-                return UIImage(named: "wp-migration-welcome")
+                return UIImage(named: "wp-migration-done")
             case .dismiss:
                 return nil
             }
@@ -101,14 +100,18 @@ private extension MigrationHeaderConfiguration {
                                                                          comment: "Secondary description in the migration notifications screen")
 
         static func welcomeSecondaryDescription(plural: Bool) -> String {
-            let siteWord = plural ? "sites" : "site"
-            let value = "We found your \(siteWord). Continue to transfer all your data and sign in to Jetpack automatically."
             if plural {
-                let comment = "The plural form of the secondary description in the migration welcome screen"
-                return NSLocalizedString("migration.welcome.secondaryDescription.plural", value: value, comment: comment)
+                return NSLocalizedString(
+                    "migration.welcome.secondaryDescription.plural",
+                    value: "We found your sites. Continue to transfer all your data and sign in to Jetpack automatically.",
+                    comment: "The plural form of the secondary description in the migration welcome screen"
+                )
             } else {
-                let comment = "The singular form of the secondary description in the migration welcome screen"
-                return NSLocalizedString("migration.welcome.secondaryDescription.singular", value: value, comment: comment)
+                return NSLocalizedString(
+                    "migration.welcome.secondaryDescription.singular",
+                    value: "We found your site. Continue to transfer all your data and sign in to Jetpack automatically.",
+                    comment: "The singular form of the secondary description in the migration welcome screen"
+                )
             }
         }
     }
