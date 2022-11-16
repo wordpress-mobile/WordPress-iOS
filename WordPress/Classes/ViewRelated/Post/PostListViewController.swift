@@ -705,11 +705,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func publish(_ post: AbstractPost) {
         publishPost(post) {
-
-            BloggingRemindersFlow.present(from: self,
-                                          for: post.blog,
-                                          source: .publishFlow,
-                                          alwaysShow: false)
+            if FeatureFlag.bloggingReminders.enabled {
+                BloggingRemindersFlow.present(from: self,
+                                              for: post.blog,
+                                              source: .publishFlow,
+                                              alwaysShow: false)
+            }
         }
     }
 
