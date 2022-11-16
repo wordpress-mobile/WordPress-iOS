@@ -1,7 +1,9 @@
 struct JetpackRoute: Route {
     let path = "/app"
     let section: DeepLinkSection? = nil
-    let action: NavigationAction = MeNavigationAction.root
+    var action: NavigationAction {
+        return self
+    }
 }
 
 extension JetpackRoute: NavigationAction {
