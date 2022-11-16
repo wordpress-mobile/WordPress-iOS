@@ -71,7 +71,7 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
     }
 
     var titleLabelMaxNumberOfLines: Int {
-        return 2
+        return 3
     }
 }
 
