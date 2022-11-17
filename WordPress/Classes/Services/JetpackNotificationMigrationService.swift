@@ -44,6 +44,15 @@ final class JetpackNotificationMigrationService {
         }
     }
 
+    /// Migration is supported if WordPress is compatible with the notification migration URLScheme
+    var isMigrationSupported: Bool {
+        guard let url = URL(string: "\(JetpackNotificationMigrationService.wordPressScheme)://") else {
+            return false
+        }
+
+        return UIApplication.shared.canOpenURL(url)
+    }
+
     init(notificationSettingsLoader: NotificationSettingsLoader = UNUserNotificationCenter.current(),
          allowDisablingWPNotifications: Bool = FeatureFlag.allowDisablingWPNotifications.enabled,
          isWordPress: Bool = AppConfiguration.isWordPress) {
