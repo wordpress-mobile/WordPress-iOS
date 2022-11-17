@@ -517,7 +517,7 @@ extension PublishingEditor {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView(presentBloggingReminders: !JetpackNotificationMigrationService().shouldDisableWordPressNotifications())
+        dismissOrPopView(presentBloggingReminders: !JetpackNotificationMigrationService.shared.shouldDisableWordPressNotifications())
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }

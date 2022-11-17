@@ -63,7 +63,7 @@ private extension MigrationHeaderConfiguration {
             case .welcome:
                 return welcomeSecondaryDescription(plural: multiSite)
             case .notifications:
-                return JetpackNotificationMigrationService().isMigrationSupported ? notificationsSecondaryDescription : nil
+                return JetpackNotificationMigrationService.shared.isMigrationSupported ? notificationsSecondaryDescription : nil
             case .done:
                 return nil
             case .dismiss:

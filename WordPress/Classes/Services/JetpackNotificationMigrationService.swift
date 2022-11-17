@@ -11,6 +11,8 @@ final class JetpackNotificationMigrationService {
     private let isWordPress: Bool
     private let userDefaults = UserDefaults(suiteName: WPAppGroupName)
 
+    static let shared = JetpackNotificationMigrationService()
+
     static var wordPressScheme: String {
         return "wordpressnotificationmigration"
     }

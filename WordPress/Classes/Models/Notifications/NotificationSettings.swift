@@ -142,7 +142,7 @@ open class NotificationSettings {
     fileprivate var blogPreferenceKeys: [String] {
         var keys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
 
-        if Feature.enabled(.weeklyRoundup) && !JetpackNotificationMigrationService().shouldDisableWordPressNotifications() {
+        if Feature.enabled(.weeklyRoundup) && !JetpackNotificationMigrationService.shared.shouldDisableWordPressNotifications() {
             keys.append(Keys.weeklyRoundup)
         }
 

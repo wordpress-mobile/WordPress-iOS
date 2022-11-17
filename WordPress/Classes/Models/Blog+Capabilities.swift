@@ -66,6 +66,6 @@ extension Blog {
     }
 
     public func areBloggingRemindersAllowed() -> Bool {
-        return Feature.enabled(.bloggingReminders) && isUserCapableOf(.EditPosts) && !JetpackNotificationMigrationService().shouldDisableWordPressNotifications()
+        return Feature.enabled(.bloggingReminders) && isUserCapableOf(.EditPosts) && !JetpackNotificationMigrationService.shared.shouldDisableWordPressNotifications()
     }
 }

@@ -57,7 +57,7 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     @objc func registerForRemoteNotifications() {
-        if JetpackNotificationMigrationService().shouldDisableWordPressNotifications() {
+        if JetpackNotificationMigrationService.shared.shouldDisableWordPressNotifications() {
             return
         }
 

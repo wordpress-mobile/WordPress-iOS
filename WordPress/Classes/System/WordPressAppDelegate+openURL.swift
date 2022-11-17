@@ -21,7 +21,7 @@ import AutomatticTracks
         }
 
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
-            return JetpackNotificationMigrationService().handleNotificationMigrationOnWordPress()
+            return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }
 
         guard url.scheme == WPComScheme else {
