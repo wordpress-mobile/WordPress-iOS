@@ -57,6 +57,10 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     @objc func registerForRemoteNotifications() {
+        if NotificationFilteringService().shouldFilterWordPressNotifications() {
+            return
+        }
+
         sharedApplication.registerForRemoteNotifications()
     }
 
