@@ -3,23 +3,20 @@ import Foundation
 extension SupportTableViewController {
 
     struct Configuration {
-
-        let meHeaderConfiguration: MeHeaderView.Configuration?
+        var meHeaderConfiguration: MeHeaderView.Configuration?
+        var showsLogOutButton: Bool = false
     }
 }
 
 extension SupportTableViewController.Configuration {
 
-    init() {
-        self.init(meHeaderConfiguration: nil)
-    }
-
     static func currentAccountConfiguration() -> Self {
-        var meHeaderConfiguration: MeHeaderView.Configuration?
+        var config = Self.init()
         if let account = Self.makeAccount() {
-            meHeaderConfiguration = .init(account: account)
+            config.meHeaderConfiguration = .init(account: account)
+            config.showsLogOutButton = true
         }
-        return .init(meHeaderConfiguration: meHeaderConfiguration)
+        return config
     }
 
     private static func makeAccount() -> WPAccount? {
