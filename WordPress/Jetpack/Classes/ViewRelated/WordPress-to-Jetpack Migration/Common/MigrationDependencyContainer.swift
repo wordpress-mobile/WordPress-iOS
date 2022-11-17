@@ -44,9 +44,13 @@ struct MigrationViewControllerFactory {
         }
     }
 
+    // MARK: - View Models
+
     private func makeWelcomeViewModel() -> MigrationWelcomeViewModel {
         MigrationWelcomeViewModel(account: makeAccount(), coordinator: coordinator)
     }
+
+    // MARK: - View Controllers
 
     private func makeWelcomeViewController() -> UIViewController {
         MigrationWelcomeViewController(viewModel: makeWelcomeViewModel())

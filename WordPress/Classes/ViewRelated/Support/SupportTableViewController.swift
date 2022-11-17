@@ -171,7 +171,7 @@ private extension SupportTableViewController {
             )
         }
 
-        // Log out sections
+        // Log out Section
         var logOutSections: ImmuTableSection?
         if configuration.showsLogOutButton {
             let logOutRow = DestructiveButtonRow(

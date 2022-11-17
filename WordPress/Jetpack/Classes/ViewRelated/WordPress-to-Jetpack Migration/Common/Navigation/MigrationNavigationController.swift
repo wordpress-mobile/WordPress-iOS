@@ -2,12 +2,17 @@ import Combine
 import UIKit
 
 class MigrationNavigationController: UINavigationController {
+
+    // MARK: - Properties
+
     /// Navigation coordinator
     private let coordinator: MigrationFlowCoordinator
     /// The view controller factory used to push view controllers on the stack
     private let factory: MigrationViewControllerFactory
     /// Receives state changes to set the navigation stack accordingly
     private var cancellable: AnyCancellable?
+
+    // MARK: - Orientation
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if WPDeviceIdentification.isiPhone() {
@@ -20,6 +25,8 @@ class MigrationNavigationController: UINavigationController {
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         .portrait
     }
+
+    // MARK: - Init
 
     init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {
         self.coordinator = coordinator
@@ -36,6 +43,8 @@ class MigrationNavigationController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Configuration
+
     private func configure() {
         let navigationBar = self.navigationBar
         let standardAppearance = UINavigationBarAppearance()
@@ -49,7 +58,15 @@ class MigrationNavigationController: UINavigationController {
             navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
         }
         navigationBar.isTranslucent = true
-        listenForStateChanges()
+        configure(coordinator: coordinator)
+    }
+
+    private func configure(coordinator: MigrationFlowCoordinator) {
+        coordinator.routeToSupportViewController = { [weak self] in
+            let destination = SupportTableViewController(configuration: .currentAccountConfiguration())
+            self?.present(UINavigationController(rootViewController: destination), animated: true)
+        }
+        self.listenForStateChanges()
     }
 
     private func listenForStateChanges() {

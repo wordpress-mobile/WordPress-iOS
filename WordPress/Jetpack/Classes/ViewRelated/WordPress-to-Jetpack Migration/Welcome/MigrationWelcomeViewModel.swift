@@ -24,12 +24,29 @@ final class MigrationWelcomeViewModel {
         let headerConfiguration = MigrationHeaderConfiguration(step: .welcome,
                                                                multiSite: blogListDataSource.visibleBlogsCount > 1)
 
-        let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome,
-                                                                     primaryHandler: { [weak coordinator] in
+        let primaryHandler = { [weak coordinator] () -> Void in
             coordinator?.transitionToNextStep()
-        },
-                                                                     secondaryHandler: { })
-
+        }
+        let secondaryHandler = { [weak coordinator] () -> Void in
+            // Which object is responsible for displaying the support screen?
+            //
+            // The following code needs to be executed somewhere:
+            //
+            // let destination = SupportTableViewController()
+            // presentingViewController.present(destination, completion: nil)
+            //
+            // Approaches considered:
+            //
+            // 1. The View Model shouldn't be responsible for displaying the support screen
+            // 2. The coordination can't perform the presentation because it doesn't have access to the `presenting` view controller
+            // 3. I thought of making the `MigrationViewControllerFactory` responsible for creating the `secondaryHandler` and injecting it into this view model
+            //    But that didn't work as well.
+            //
+            // Workaround:
+            //
+            coordinator?.routeToSupportViewController?()
+        }
+        let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome, primaryHandler: primaryHandler, secondaryHandler: secondaryHandler)
         configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
     }
 }
