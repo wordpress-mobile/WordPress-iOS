@@ -157,16 +157,19 @@ private extension SupportTableViewController {
             footerText: LocalizedText.helpFooter)
 
         // Information Section
-        let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-        let switchRow = SwitchRow(title: LocalizedText.extraDebug,
-                                  value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
-                                  onChange: extraDebugToggled())
-        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
-
-        let informationSection = ImmuTableSection(
-            headerText: nil,
-            rows: [versionRow, switchRow, logsRow],
-            footerText: LocalizedText.informationFooter)
+        var informationSection: ImmuTableSection?
+        if configuration.showsLogsSection {
+            let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
+            let switchRow = SwitchRow(title: LocalizedText.extraDebug,
+                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
+                                      onChange: extraDebugToggled())
+            let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+            informationSection = ImmuTableSection(
+                headerText: nil,
+                rows: [versionRow, switchRow, logsRow],
+                footerText: LocalizedText.informationFooter
+            )
+        }
 
         // Log out sections
         var logOutSections: ImmuTableSection?

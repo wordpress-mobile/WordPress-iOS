@@ -5,6 +5,7 @@ extension SupportTableViewController {
     struct Configuration {
         var meHeaderConfiguration: MeHeaderView.Configuration?
         var showsLogOutButton: Bool = false
+        var showsLogsSection: Bool = true
     }
 }
 
@@ -15,6 +16,7 @@ extension SupportTableViewController.Configuration {
         if let account = Self.makeAccount() {
             config.meHeaderConfiguration = .init(account: account)
             config.showsLogOutButton = true
+            config.showsLogsSection = false
         }
         return config
     }
