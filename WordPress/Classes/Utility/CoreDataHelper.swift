@@ -271,6 +271,7 @@ extension CoreDataStack {
             throw ContextManager.ContextManagerError.missingDatabase
         }
 
+        mainContext.reset()
         try storeCoordinator.remove(store)
         let databaseReplaced = replaceDatabase(from: databaseLocation, to: currentDatabaseLocation)
 
