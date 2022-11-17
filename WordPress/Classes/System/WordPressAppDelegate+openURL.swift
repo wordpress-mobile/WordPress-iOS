@@ -20,8 +20,8 @@ import AutomatticTracks
             return true
         }
 
-        if url.scheme == NotificationFilteringService.wordPressScheme {
-            return NotificationFilteringService().handleNotificationMigrationOnWordPress()
+        if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
+            return JetpackNotificationMigrationService().handleNotificationMigrationOnWordPress()
         }
 
         guard url.scheme == WPComScheme else {

@@ -4,7 +4,7 @@ import UIKit
 /// The service uses URLScheme to determine from Jetpack app if WordPress app is installed, open it, disable notifications and come back to Jetpack app
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
-final class NotificationFilteringService {
+final class JetpackNotificationMigrationService {
     private var notificationSettingsLoader: NotificationSettingsLoader
     private var notificationsEnabled: Bool = false
     private let allowDisablingWPNotifications: Bool
@@ -61,7 +61,7 @@ final class NotificationFilteringService {
     }
 
 
-    func shouldFilterWordPressNotifications() -> Bool {
+    func shouldDisableWordPressNotifications() -> Bool {
         let shouldFilter = allowDisablingWPNotifications
             && isWordPress
             && !wordPressNotificationsEnabled
@@ -76,7 +76,7 @@ final class NotificationFilteringService {
     // MARK: - Only executed on Jetpack app
 
     func disableWordPressNotificationsFromJetpack() {
-        guard allowDisablingWPNotifications, !isWordPress, let url = URL(string: "\(NotificationFilteringService.wordPressScheme)://") else {
+        guard allowDisablingWPNotifications, !isWordPress, let url = URL(string: "\(JetpackNotificationMigrationService.wordPressScheme)://") else {
             return
         }
 
@@ -89,7 +89,7 @@ final class NotificationFilteringService {
     // MARK: - Only executed on WordPress app
 
     func handleNotificationMigrationOnWordPress() -> Bool {
-        guard isWordPress, let url = URL(string: "\(NotificationFilteringService.jetpackScheme)://") else {
+        guard isWordPress, let url = URL(string: "\(JetpackNotificationMigrationService.jetpackScheme)://") else {
             return false
         }
 

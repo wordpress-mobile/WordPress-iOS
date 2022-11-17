@@ -1,9 +1,9 @@
 import XCTest
 @testable import WordPress
 
-final class NotificationFilteringServiceTests: XCTestCase {
+final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
-    private var sut: NotificationFilteringService!
+    private var sut: JetpackNotificationMigrationService!
     private var notificationSettingsLoader: NotificationSettingsLoaderMock!
 
     override func setUpWithError() throws {
@@ -53,44 +53,44 @@ final class NotificationFilteringServiceTests: XCTestCase {
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
     }
 
-    // MARK: - Should filter WordPress notifications
+    // MARK: - Should disable WordPress notifications
 
-    func testShouldFilterWordPressNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {
+    func testShouldDisableWordPressNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {
         setup(allowDisablingWPNotifications: true, isWordPress: true)
         sut.wordPressNotificationsEnabled = false
 
-        XCTAssertTrue(sut.shouldFilterWordPressNotifications())
+        XCTAssertTrue(sut.shouldDisableWordPressNotifications())
     }
 
-    func testShouldFilterWordPressNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
+    func testShouldDisableWordPressNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
         setup(allowDisablingWPNotifications: false, isWordPress: true)
         sut.wordPressNotificationsEnabled = false
 
-        XCTAssertFalse(sut.shouldFilterWordPressNotifications())
+        XCTAssertFalse(sut.shouldDisableWordPressNotifications())
     }
 
-    func testShouldFilterWordPressNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsEnabled() {
+    func testShouldDisableWordPressNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsEnabled() {
         setup(allowDisablingWPNotifications: true, isWordPress: true)
         sut.wordPressNotificationsEnabled = true
 
-        XCTAssertFalse(sut.shouldFilterWordPressNotifications())
+        XCTAssertFalse(sut.shouldDisableWordPressNotifications())
     }
 
-    func testShouldFilterWordPressNotificationsInJetpack() {
+    func testShouldDisableWordPressNotificationsInJetpack() {
         setup(allowDisablingWPNotifications: true, isWordPress: false)
 
-        XCTAssertFalse(sut.shouldFilterWordPressNotifications())
+        XCTAssertFalse(sut.shouldDisableWordPressNotifications())
     }
 }
 
 // MARK: - Helpers
 
-private extension NotificationFilteringServiceTests {
+private extension JetpackNotificationMigrationServiceTests {
     func setup(allowDisablingWPNotifications: Bool,
                isWordPress: Bool,
                notificationsEnabled: Bool = true) {
         notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
-        sut = NotificationFilteringService(notificationSettingsLoader: notificationSettingsLoader,
+        sut = JetpackNotificationMigrationService(notificationSettingsLoader: notificationSettingsLoader,
                                            allowDisablingWPNotifications: allowDisablingWPNotifications,
                                            isWordPress: isWordPress)
         sut.wordPressNotificationsEnabled = true

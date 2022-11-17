@@ -54,7 +54,7 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate var tableSections: [Section] = []
 
     /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
-    private let notificationFilteringService = NotificationFilteringService()
+    private let jetpackNotificationMigrationService = JetpackNotificationMigrationService()
 
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
@@ -201,7 +201,7 @@ class NotificationSettingsViewController: UIViewController {
             section.append(.followedSites)
         }
 
-        if notificationFilteringService.shouldShowNotificationControl() {
+        if jetpackNotificationMigrationService.shouldShowNotificationControl() {
             section.insert(.notificationControl, at: 0)
         }
 
@@ -651,9 +651,9 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
 extension NotificationSettingsViewController {
     private func configureNotificationSwitchCell(_ cell: SwitchTableViewCell) {
         cell.name = NSLocalizedString("Allow Notifications", comment: "Title for a cell with switch control that allows to enable or disable notifications")
-        cell.on = notificationFilteringService.wordPressNotificationsEnabled
+        cell.on = jetpackNotificationMigrationService.wordPressNotificationsEnabled
         cell.onChange = { [weak self] (newValue: Bool) in
-            self?.notificationFilteringService.wordPressNotificationsEnabled = newValue
+            self?.jetpackNotificationMigrationService.wordPressNotificationsEnabled = newValue
         }
     }
 }
