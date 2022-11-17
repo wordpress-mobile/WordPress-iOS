@@ -5,6 +5,9 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    /// Configures the appearance of the support screen.
+    let configuration: Configuration
+
     var sourceTag: WordPressSupportSourceTag?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
@@ -21,7 +24,8 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    override init(style: UITableView.Style) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
+        self.configuration = configuration
         super.init(style: style)
     }
 
@@ -44,6 +48,11 @@ class SupportTableViewController: UITableViewController {
         checkForAutomatticEmail()
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.tableView.sizeToFitHeaderView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -112,9 +121,12 @@ private extension SupportTableViewController {
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-        // remove empty cells
-        tableView.tableFooterView = UIView()
-
+        tableView.tableFooterView = UIView() // remove empty cells
+        if let headerConfig = configuration.meHeaderConfiguration {
+            let headerView = MeHeaderView()
+            headerView.update(with: headerConfig)
+            tableView.tableHeaderView = headerView
+        }
         registerObservers()
     }
 
