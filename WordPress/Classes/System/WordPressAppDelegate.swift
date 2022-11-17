@@ -155,7 +155,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
         copyToSharedDefaultsIfNeeded()
-        BloggingRemindersScheduler.handleRemindersMigration()
         return true
     }
 
