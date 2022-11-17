@@ -494,8 +494,8 @@ private extension NotificationSettingsViewController {
                                          "but you can get some helpful extras, too.",
                                          comment: "Title displayed in the Notification Settings for WordPress.com")
             case .notificationControl:
-                return NSLocalizedString("Disable push notifications on the app.",
-                                         comment: "Notification Settings for the app")
+                return NSLocalizedString("Turning the switch off will disable all notifications from this app, regardless of type.",
+                                         comment: "Notification Settings switch for the app.")
             }
         }
 
