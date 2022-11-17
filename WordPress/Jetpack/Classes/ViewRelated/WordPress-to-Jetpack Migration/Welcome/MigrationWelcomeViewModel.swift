@@ -47,6 +47,8 @@ final class MigrationWelcomeViewModel {
             coordinator?.routeToSupportViewController?()
         }
         let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome, primaryHandler: primaryHandler, secondaryHandler: secondaryHandler)
-        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
+                                                   centerViewConfiguration: nil,
+                                                   actionsConfiguration: actionsConfiguration)
     }
 }

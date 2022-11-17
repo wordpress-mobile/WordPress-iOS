@@ -123,7 +123,7 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do
+  lane :generate_strings_file_for_glotpress do |options|
     cocoapods
 
     wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
@@ -141,7 +141,7 @@ platform :ios do
       destination: File.join(wordpress_en_lproj, 'Localizable.strings')
     )
 
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
+    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
   end
 
 

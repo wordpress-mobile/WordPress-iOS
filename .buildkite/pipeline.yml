@@ -123,3 +123,10 @@ steps:
         plugins: *common_plugins
         agents:
           queue: "android"
+      # Runs the `.strings` generation automation to ensure all the
+      # `LocalizedString` calls in the code can be correctly parsed by Apple's
+      # `genstrings`.
+      - label: "Lint Localized Strings Format"
+        command: .buildkite/commands/lint-localized-strings-format.sh
+        plugins: *common_plugins
+        env: *common_env

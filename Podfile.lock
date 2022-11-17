@@ -64,15 +64,15 @@ PODS:
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
   - Kanvas (1.4.4)
-  - libwebp (1.2.3):
-    - libwebp/demux (= 1.2.3)
-    - libwebp/mux (= 1.2.3)
-    - libwebp/webp (= 1.2.3)
-  - libwebp/demux (1.2.3):
+  - libwebp (1.2.4):
+    - libwebp/demux (= 1.2.4)
+    - libwebp/mux (= 1.2.4)
+    - libwebp/webp (= 1.2.4)
+  - libwebp/demux (1.2.4):
     - libwebp/webp
-  - libwebp/mux (1.2.3):
+  - libwebp/mux (1.2.4):
     - libwebp/demux
-  - libwebp/webp (1.2.3)
+  - libwebp/webp (1.2.4)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
@@ -512,7 +512,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (~> 1.8)
   - WordPressUI (1.12.5)
-  - WPMediaPicker (1.8.7-beta.1)
+  - WPMediaPicker (1.8.7)
   - wpxmlrpc (0.9.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -605,7 +605,7 @@ DEPENDENCIES:
   - WordPressKit (>= 4.58.2, ~> 4.58)
   - WordPressShared (~> 1.18.0)
   - WordPressUI (~> 1.12.5)
-  - WPMediaPicker (~> 1.8.7-beta.1)
+  - WPMediaPicker (~> 1.8.7)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.85.0/third-party-podspecs/Yoga.podspec.json`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
@@ -807,7 +807,7 @@ SPEC CHECKSUMS:
   Gutenberg: 387b010e396588027538e351899bf1cc730a7009
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
-  libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
+  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374
@@ -868,7 +868,7 @@ SPEC CHECKSUMS:
   WordPressKit: d8bc00bce09273fc241cf171b0e61ef8f4f29479
   WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
-  WPMediaPicker: 59135aebb058a95a507045f93e478516729e5c0f
+  WPMediaPicker: 0d45dfd7b3c5651c5236ffd48c1b0b2f60a2d5d2
   wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
   Yoga: 2ca978c40e0fd6d7f54bcb1602bc0cbbc79454a7
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -880,6 +880,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 936784ec2e9d8246acccd6b123c0ba5b1b6e13b9
+PODFILE CHECKSUM: e4762593ef0d1097286d309c828f611976c1e771
 
 COCOAPODS: 1.11.2
