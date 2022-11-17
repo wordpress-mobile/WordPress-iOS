@@ -552,6 +552,7 @@
 			<array>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
+				<string>jetpack_notification_migration</string>
 			</array>
 		</dict>
 		<dict>
@@ -571,6 +572,7 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>wordpressnotificationmigration</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
 		<string>whatsapp</string>
