@@ -8,9 +8,6 @@ final class MigrationFlowCoordinator: ObservableObject {
     // related to this property.
     @Published private(set) var currentStep = MigrationStep.welcome
 
-    /// Call this closure to display the support screen
-    var routeToSupportViewController: (() -> Void)?
-
     func transitionToNextStep() {
         Task { [weak self] in
             if let nextStep = await Self.nextStep(from: currentStep) {

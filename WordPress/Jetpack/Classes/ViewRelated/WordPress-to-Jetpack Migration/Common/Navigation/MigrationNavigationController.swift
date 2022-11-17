@@ -58,15 +58,7 @@ class MigrationNavigationController: UINavigationController {
             navigationBar.compactScrollEdgeAppearance = scrollEdgeAppearance
         }
         navigationBar.isTranslucent = true
-        configure(coordinator: coordinator)
-    }
-
-    private func configure(coordinator: MigrationFlowCoordinator) {
-        coordinator.routeToSupportViewController = { [weak self] in
-            let destination = SupportTableViewController(configuration: .currentAccountConfiguration())
-            self?.present(UINavigationController(rootViewController: destination), animated: true)
-        }
-        self.listenForStateChanges()
+        listenForStateChanges()
     }
 
     private func listenForStateChanges() {
