@@ -5,7 +5,7 @@ protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
     private(set) lazy var items: [SiteStatsPinnable] = {
-        return !JetpackNotificationMigrationService.shared.shouldDisableWordPressNotifications() ?
+        return !jetpackNotificationMigrationService.shouldDisableWordPressNotifications() ?
                                                      [GrowAudienceCell.HintType.social,
                                                       GrowAudienceCell.HintType.bloggingReminders,
                                                       GrowAudienceCell.HintType.readerDiscover,
@@ -17,9 +17,12 @@ final class SiteStatsPinnedItemStore {
     private let lowSiteViewsCountThreshold = 3000
     private let siteId: NSNumber
     private(set) var currentItem: SiteStatsPinnable?
+    private let jetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol
 
-    init(siteId: NSNumber) {
+    init(siteId: NSNumber,
+         jetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol = JetpackNotificationMigrationService.shared) {
         self.siteId = siteId
+        self.jetpackNotificationMigrationService = jetpackNotificationMigrationService
     }
 
     func itemToDisplay(for siteViewsCount: Int) -> SiteStatsPinnable? {

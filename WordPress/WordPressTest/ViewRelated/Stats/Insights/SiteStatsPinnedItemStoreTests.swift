@@ -3,16 +3,21 @@ import XCTest
 
 final class SiteStatsPinnedItemStoreTests: XCTestCase {
 
-    let store = SiteStatsPinnedItemStore(siteId: 1)
-    let featureFlags = FeatureFlagOverrideStore()
+    var store: SiteStatsPinnedItemStore!
+    var jetpackNotificationMigrationService: JetpackNotificationMigrationServiceMock!
 
-    func testPinnedItemsShouldContainBloggingRemindersWhenFeatureFlagEnabled() throws {
-        try featureFlags.override(FeatureFlag.bloggingReminders, withValue: true)
+    override func setUpWithError() throws {
+        jetpackNotificationMigrationService = JetpackNotificationMigrationServiceMock()
+        store = SiteStatsPinnedItemStore(siteId: 0, jetpackNotificationMigrationService: jetpackNotificationMigrationService)
+    }
+
+    func testPinnedItemsShouldContainBloggingRemindersWhenWPNotificationsEnabled() throws {
+        jetpackNotificationMigrationService.shouldDisableWordPressNotificationsToReturn = false
         XCTAssertTrue(itemsContainsBloggingReminders())
     }
 
     func testPinnedItemsShouldNotContainBloggingRemindersWhenFeatureFlagDisabled() throws {
-        try featureFlags.override(FeatureFlag.bloggingReminders, withValue: false)
+        jetpackNotificationMigrationService.shouldDisableWordPressNotificationsToReturn = true
         XCTAssertFalse(itemsContainsBloggingReminders())
     }
 
@@ -23,5 +28,13 @@ final class SiteStatsPinnedItemStoreTests: XCTestCase {
             }
             return false
         })
+    }
+}
+
+class JetpackNotificationMigrationServiceMock: JetpackNotificationMigrationServiceProtocol {
+    var shouldDisableWordPressNotificationsToReturn = false
+
+    func shouldDisableWordPressNotifications() -> Bool {
+        return shouldDisableWordPressNotificationsToReturn
     }
 }

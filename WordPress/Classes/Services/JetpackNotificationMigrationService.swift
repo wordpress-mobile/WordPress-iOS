@@ -1,10 +1,14 @@
 import UIKit
 
+protocol JetpackNotificationMigrationServiceProtocol {
+    func shouldDisableWordPressNotifications() -> Bool
+}
+
 /// The service is created to support disabling WordPress notifications when Jetpack app enables notifications
 /// The service uses URLScheme to determine from Jetpack app if WordPress app is installed, open it, disable notifications and come back to Jetpack app
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
-final class JetpackNotificationMigrationService {
+final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
     private var notificationSettingsLoader: NotificationSettingsLoader
     private var notificationsEnabled: Bool = false
     private let allowDisablingWPNotifications: Bool
@@ -13,13 +17,8 @@ final class JetpackNotificationMigrationService {
 
     static let shared = JetpackNotificationMigrationService()
 
-    static var wordPressScheme: String {
-        return "wordpressnotificationmigration"
-    }
-
-    static var jetpackScheme: String {
-        return "jetpacknotificationmigration"
-    }
+    static let wordPressScheme = "wordpressnotificationmigration"
+    static let jetpackScheme = "jetpacknotificationmigration"
 
     var wordPressNotificationsEnabled: Bool {
         get {
