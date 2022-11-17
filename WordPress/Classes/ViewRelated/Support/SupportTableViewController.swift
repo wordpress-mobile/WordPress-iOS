@@ -116,6 +116,7 @@ private extension SupportTableViewController {
                                 NavigationItemRow.self,
                                 TextRow.self,
                                 HelpRow.self,
+                                DestructiveButtonRow.self,
                                 SupportEmailRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
@@ -167,8 +168,20 @@ private extension SupportTableViewController {
             rows: [versionRow, switchRow, logsRow],
             footerText: LocalizedText.informationFooter)
 
+        // Log out sections
+        var logOutSections: ImmuTableSection?
+        if configuration.showsLogOutButton {
+            let logOutRow = DestructiveButtonRow(
+                title: LocalizedText.logOutButtonTitle,
+                action: logOutTapped(),
+                accessibilityIdentifier: ""
+            )
+            logOutSections = .init(headerText: LocalizedText.wpAccount, optionalRows: [logOutRow])
+        }
+
         // Create and return table
-        return ImmuTable(sections: [helpSection, informationSection])
+        let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
+        return ImmuTable(sections: sections)
     }
 
     @objc func refreshNotificationIndicator(_ notification: Foundation.Notification) {
@@ -286,6 +299,17 @@ private extension SupportTableViewController {
         }
     }
 
+    private func logOutTapped() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self else {
+                return
+            }
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            let actionHandler = LogOutActionHandler()
+            actionHandler.logOut(with: self)
+        }
+    }
+
     // MARK: - ImmuTableRow Struct
 
     struct HelpRow: ImmuTableRow {
@@ -357,6 +381,8 @@ private extension SupportTableViewController {
         static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
         static let contactEmailAccessibilityHint = NSLocalizedString("Shows a dialog for changing the Contact Email.", comment: "Accessibility hint describing what happens if the Contact Email button is tapped.")
         static let emailNotSet = NSLocalizedString("Not Set", comment: "Display value for Support email field if there is no user email address.")
+        static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-out section header title")
+        static let logOutButtonTitle = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
 
     // MARK: - User Defaults Keys
