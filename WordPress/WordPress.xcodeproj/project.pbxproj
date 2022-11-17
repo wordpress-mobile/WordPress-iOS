@@ -1798,6 +1798,9 @@
 		8320BDE6283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */; };
 		8323789828526E6D003F4443 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
 		8323789928526E6E003F4443 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
+		8332DD2429259AE300802F7D /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2329259AE300802F7D /* DataMigrator.swift */; };
+		8332DD2529259AE300802F7D /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2329259AE300802F7D /* DataMigrator.swift */; };
+		8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332DD2729259BEB00802F7D /* DataMigratorTests.swift */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
@@ -6862,6 +6865,8 @@
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueAnimator.swift; sourceTree = "<group>"; };
 		8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+BloggingPrompts.swift"; sourceTree = "<group>"; };
+		8332DD2329259AE300802F7D /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
+		8332DD2729259BEB00802F7D /* DataMigratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigratorTests.swift; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
 		834CE7331256D0DE0046A4A3 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -12327,6 +12332,7 @@
 		803DE81D29063689007D4E9C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
+				8332DD2629259B9700802F7D /* Utility */,
 				803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */,
 			);
 			name = Jetpack;
@@ -12444,6 +12450,22 @@
 				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		8332DD2229259ABA00802F7D /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8332DD2329259AE300802F7D /* DataMigrator.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		8332DD2629259B9700802F7D /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8332DD2729259BEB00802F7D /* DataMigratorTests.swift */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		850BD4531922F95C0032F3AD /* Networking */ = {
@@ -14974,6 +14996,7 @@
 				C72A52CD2649B14B009CA633 /* System */,
 				C7124E4B2638527D00929318 /* NUX */,
 				C7F7ABD5261CED7A00CE547F /* JetpackAuthenticationManager.swift */,
+				8332DD2229259ABA00802F7D /* Utility */,
 				C7F7AC72261CF1C900CE547F /* ViewRelated */,
 			);
 			path = Classes;
@@ -21304,6 +21327,7 @@
 				57AA848F228715DA00D3C2A2 /* PostCardCell.swift in Sources */,
 				FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
 				8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */,
+				8332DD2429259AE300802F7D /* DataMigrator.swift in Sources */,
 				8F228F2923045666AE456D2C /* TimeZoneSelectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -21950,6 +21974,7 @@
 				80EF92932810FA5A0064A971 /* QuickStartFactoryTests.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
 				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
+				8332DD2829259BEB00802F7D /* DataMigratorTests.swift in Sources */,
 				C80512FE243FFD4B00B6B04D /* TenorDataSouceTests.swift in Sources */,
 				323F8F3023A22C4C000BA49C /* SiteCreationRotatingMessageViewTests.swift in Sources */,
 				FF1FD02620912AA900186384 /* URL+LinkNormalizationTests.swift in Sources */,
@@ -23053,6 +23078,7 @@
 				FABB234B2602FC2C00C8785C /* UIBarButtonItem+MeBarButton.swift in Sources */,
 				FABB234C2602FC2C00C8785C /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				F158542E267D3B8A00A2E966 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
+				8332DD2529259AE300802F7D /* DataMigrator.swift in Sources */,
 				FABB234D2602FC2C00C8785C /* ReaderLikeAction.swift in Sources */,
 				DCF892CD282FA3BB00BB71E1 /* SiteStatsImmuTableRows.swift in Sources */,
 				FABB234E2602FC2C00C8785C /* ReaderMenuAction.swift in Sources */,
