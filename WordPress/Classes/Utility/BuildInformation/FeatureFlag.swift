@@ -68,11 +68,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .milestoneNotifications:
             return true
         case .bloggingReminders:
-            return !NotificationFilteringService().shouldFilterWordPressNotifications()
+            return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .weeklyRoundup:
-            return !NotificationFilteringService().shouldFilterWordPressNotifications()
+            return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false

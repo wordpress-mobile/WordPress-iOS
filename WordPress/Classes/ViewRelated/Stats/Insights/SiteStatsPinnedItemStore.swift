@@ -5,7 +5,7 @@ protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
     private(set) lazy var items: [SiteStatsPinnable] = {
-        return FeatureFlag.bloggingReminders.enabled ?
+        return !JetpackNotificationMigrationService().shouldDisableWordPressNotifications() ?
                                                      [GrowAudienceCell.HintType.social,
                                                       GrowAudienceCell.HintType.bloggingReminders,
                                                       GrowAudienceCell.HintType.readerDiscover,

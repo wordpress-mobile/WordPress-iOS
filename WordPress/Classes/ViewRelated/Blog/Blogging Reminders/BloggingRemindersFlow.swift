@@ -11,7 +11,7 @@ class BloggingRemindersFlow {
                         delegate: BloggingRemindersFlowDelegate? = nil,
                         onDismiss: DismissClosure? = nil) {
 
-        guard Feature.enabled(.bloggingReminders) else {
+        guard Feature.enabled(.bloggingReminders) && !JetpackNotificationMigrationService().shouldDisableWordPressNotifications() else {
             return
         }
 
