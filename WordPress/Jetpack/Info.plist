@@ -552,7 +552,7 @@
 			<array>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
-				<string>jetpack_notification_migration</string>
+				<string>jetpacknotificationmigration</string>
 			</array>
 		</dict>
 		<dict>

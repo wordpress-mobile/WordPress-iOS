@@ -694,6 +694,6 @@ private extension InteractiveNotificationsManager {
     /// Disable WordPress notifications when they are enabled on Jetpack
     func disableWordPressNotificationsIfNeeded() {
         let notificationFilteringService = NotificationFilteringService()
-        notificationFilteringService.disableWordPressNotificationsIfNeeded()
+        notificationFilteringService.disableWordPressNotificationsFromJetpack()
     }
 }

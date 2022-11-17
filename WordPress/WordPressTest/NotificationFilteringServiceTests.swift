@@ -53,35 +53,6 @@ final class NotificationFilteringServiceTests: XCTestCase {
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
     }
 
-    // MARK: - Disable WordPress notifications
-
-    func testDisableWPNotificationsIfNeededInJetpackWhenFeatureFlagEnabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: false)
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
-
-        sut.disableWordPressNotificationsIfNeeded()
-
-        XCTAssertFalse(sut.wordPressNotificationsEnabled)
-    }
-
-    func testDisableWPNotificationsIfNeededInJetpackWhenFeatureFlagDisabled() {
-        setup(allowDisablingWPNotifications: false, isWordPress: false)
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
-
-        sut.disableWordPressNotificationsIfNeeded()
-
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
-    }
-
-    func testDisableWPNotificationsIfNeededInWordPresskWhenFeatureFlagEnabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true)
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
-
-        sut.disableWordPressNotificationsIfNeeded()
-
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
-    }
-
     // MARK: - Should filter WordPress notifications
 
     func testShouldFilterWordPressNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {

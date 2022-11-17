@@ -1,7 +1,7 @@
-import Foundation
+import UIKit
 
-/// The service is created to support disabling WordPress notifications when Jetpack app is installed
-/// The service uses App Groups which allows Jetpack app to change the state of notifications flag and be later accessed by WordPress app
+/// The service is created to support disabling WordPress notifications when Jetpack app enables notifications
+/// The service uses URLScheme to determine from Jetpack app if WordPress app is installed, open it, disable notifications and come back to Jetpack app
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
 final class NotificationFilteringService {
@@ -11,6 +11,14 @@ final class NotificationFilteringService {
     private let isWordPress: Bool
     private let userDefaults = UserDefaults(suiteName: WPAppGroupName)
 
+    static var wordPressScheme: String {
+        return "wordpressnotificationmigration"
+    }
+
+    static var jetpackScheme: String {
+        return "jetpacknotificationmigration"
+    }
+
     var wordPressNotificationsEnabled: Bool {
         get {
             guard let userDefaults = userDefaults,
@@ -19,10 +27,15 @@ final class NotificationFilteringService {
                 return true
             }
 
-            return userDefaults.bool(forKey: WPNotificationsEnabledKey)
+            return userDefaults.bool(forKey: WPNotificationsEnabledKey) && UIApplication.shared.isRegisteredForRemoteNotifications
         }
 
         set {
+            if newValue, AppConfiguration.isWordPress {
+                UIApplication.shared.registerForRemoteNotifications()
+            } else if AppConfiguration.isWordPress {
+                UIApplication.shared.unregisterForRemoteNotifications()
+            }
             userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
 
             if isWordPress && !newValue {
@@ -47,11 +60,6 @@ final class NotificationFilteringService {
         return allowDisablingWPNotifications && isWordPress && notificationsEnabled
     }
 
-    func disableWordPressNotificationsIfNeeded() {
-        if allowDisablingWPNotifications, !isWordPress {
-            wordPressNotificationsEnabled = false
-        }
-    }
 
     func shouldFilterWordPressNotifications() -> Bool {
         let shouldFilter = allowDisablingWPNotifications
@@ -64,6 +72,38 @@ final class NotificationFilteringService {
 
         return shouldFilter
     }
+
+    // MARK: - Only executed on Jetpack app
+
+    func disableWordPressNotificationsFromJetpack() {
+        guard allowDisablingWPNotifications, !isWordPress, let url = URL(string: "\(NotificationFilteringService.wordPressScheme)://") else {
+            return
+        }
+
+        /// Open WordPress app to disable notifications
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    // MARK: - Only executed on WordPress app
+
+    func handleNotificationMigrationOnWordPress() -> Bool {
+        guard isWordPress, let url = URL(string: "\(NotificationFilteringService.jetpackScheme)://") else {
+            return false
+        }
+
+        wordPressNotificationsEnabled = false
+
+        /// Return to Jetpack app
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+
+        return true
+    }
+
+    // MARK: - Local notifications
 
     private func cancelAllPendingWordPressLocalNotifications(notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
         if isWordPress {
