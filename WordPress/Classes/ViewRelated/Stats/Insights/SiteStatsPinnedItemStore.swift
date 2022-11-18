@@ -5,14 +5,15 @@ protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
     private(set) lazy var items: [SiteStatsPinnable] = {
-        return jetpackNotificationMigrationService.shouldPresentNotifications() ?
-                                                     [GrowAudienceCell.HintType.social,
-                                                      GrowAudienceCell.HintType.bloggingReminders,
-                                                      GrowAudienceCell.HintType.readerDiscover,
-                                                      InsightType.customize] :
-                                                       [GrowAudienceCell.HintType.social,
-                                                        GrowAudienceCell.HintType.readerDiscover,
-                                                        InsightType.customize]
+        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+        return presentBloggingReminders ?
+            [GrowAudienceCell.HintType.social,
+             GrowAudienceCell.HintType.bloggingReminders,
+             GrowAudienceCell.HintType.readerDiscover,
+             InsightType.customize] :
+            [GrowAudienceCell.HintType.social,
+             GrowAudienceCell.HintType.readerDiscover,
+             InsightType.customize]
     }()
     private let lowSiteViewsCountThreshold = 3000
     private let siteId: NSNumber
