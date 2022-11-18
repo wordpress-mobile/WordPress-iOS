@@ -37,7 +37,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
-    case allowDisablingWPNotifications
+    case jetpackMigrationPreventDuplicateNotifications
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -125,7 +125,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .newCoreDataContext:
             return true
-        case .allowDisablingWPNotifications:
+        case .jetpackMigrationPreventDuplicateNotifications:
             return false
         case .jetpackFeaturesRemovalPhaseOne:
             return false
@@ -157,7 +157,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_four"
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "jp_removal_new_users"
-        case .allowDisablingWPNotifications:
+        case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
             default:
                 return nil
@@ -249,8 +249,8 @@ extension FeatureFlag {
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .allowDisablingWPNotifications:
-            return "Disable WordPress app notifications when Jetpack is installed"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
         case .jetpackFeaturesRemovalPhaseOne:
             return "Jetpack Features Removal Phase One"
         case .jetpackFeaturesRemovalPhaseTwo:

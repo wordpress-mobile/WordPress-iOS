@@ -12,12 +12,12 @@ final class SiteStatsPinnedItemStoreTests: XCTestCase {
     }
 
     func testPinnedItemsShouldContainBloggingRemindersWhenWPNotificationsEnabled() throws {
-        jetpackNotificationMigrationService.shouldDisableNotificationsToReturn = false
+        jetpackNotificationMigrationService.shouldPresentNotificationsToReturn = true
         XCTAssertTrue(itemsContainsBloggingReminders())
     }
 
     func testPinnedItemsShouldNotContainBloggingRemindersWhenFeatureFlagDisabled() throws {
-        jetpackNotificationMigrationService.shouldDisableNotificationsToReturn = true
+        jetpackNotificationMigrationService.shouldPresentNotificationsToReturn = false
         XCTAssertFalse(itemsContainsBloggingReminders())
     }
 
@@ -32,9 +32,9 @@ final class SiteStatsPinnedItemStoreTests: XCTestCase {
 }
 
 class JetpackNotificationMigrationServiceMock: JetpackNotificationMigrationServiceProtocol {
-    var shouldDisableNotificationsToReturn = false
+    var shouldPresentNotificationsToReturn = false
 
-    func shouldDisableNotifications() -> Bool {
-        return shouldDisableNotificationsToReturn
+    func shouldPresentNotifications() -> Bool {
+        return shouldPresentNotificationsToReturn
     }
 }

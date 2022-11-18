@@ -21,25 +21,25 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     // MARK: - Should show notification control
 
     func testShouldShowNotificationControlInWordPressWhenFeatureFlagEnabledAndNotificationsEnabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true, notificationsEnabled: true)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true, notificationsEnabled: true)
 
         XCTAssertTrue(sut.shouldShowNotificationControl())
     }
 
     func testShouldHideNotificationControlInWordPressWhenFeatureFlagEnabledAndNotificationsDisabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true, notificationsEnabled: false)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true, notificationsEnabled: false)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
 
     func testShouldHideNotificationControlInWordPressWhenFeatureFlagDisabled() {
-        setup(allowDisablingWPNotifications: false, isWordPress: true, notificationsEnabled: true)
+        setup(preventDuplicateNotificationsFlag: false, isWordPress: true, notificationsEnabled: true)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
 
     func testShouldHideNotificationControlInJetpackWhenFeatureFlagEnabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: false, notificationsEnabled: true)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: false, notificationsEnabled: true)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
@@ -47,7 +47,7 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     // MARK: - WordPress notifications enabled
 
     func testWordPressNotificationsEnabledWhenRegisteredForRemoteNotications() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
 
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
@@ -62,7 +62,7 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     }
 
     func testWordPressNotificationsEnabledWhenUnegisteredForRemoteNotications() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
 
         sut.wordPressNotificationsEnabled = false
@@ -72,47 +72,48 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
         XCTAssertFalse(sut.wordPressNotificationsEnabled)
     }
 
-    // MARK: - Should disable WordPress notifications
+    // MARK: - Should present WordPress notifications
 
-    func testShouldDisableNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true)
+    func testShouldHideNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsDisabled() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
         sut.wordPressNotificationsEnabled = false
 
-        XCTAssertTrue(sut.shouldDisableNotifications())
+        XCTAssertFalse(sut.shouldPresentNotifications())
     }
 
-    func testShouldAllowNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
-        setup(allowDisablingWPNotifications: false, isWordPress: true)
+    func testShouldPresentNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
+        setup(preventDuplicateNotificationsFlag: false, isWordPress: true)
         sut.wordPressNotificationsEnabled = false
 
-        XCTAssertFalse(sut.shouldDisableNotifications())
+        XCTAssertTrue(sut.shouldPresentNotifications())
     }
 
-    func testShouldAllowNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsEnabled() {
-        setup(allowDisablingWPNotifications: true, isWordPress: true)
+    func testShouldPresentNotificationsInWordPressWhenFeatureFlagEnabledAndWordPressNotificationsEnabled() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
         sut.wordPressNotificationsEnabled = true
 
-        XCTAssertFalse(sut.shouldDisableNotifications())
+        XCTAssertTrue(sut.shouldPresentNotifications())
     }
 
-    func testShouldAllowNotificationsInJetpack() {
-        setup(allowDisablingWPNotifications: true, isWordPress: false)
+    func testShouldPresentNotificationsInJetpack() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: false)
 
-        XCTAssertFalse(sut.shouldDisableNotifications())
+        XCTAssertTrue(sut.shouldPresentNotifications())
     }
 }
 
 // MARK: - Helpers
 
 private extension JetpackNotificationMigrationServiceTests {
-    func setup(allowDisablingWPNotifications: Bool,
+    func setup(preventDuplicateNotificationsFlag: Bool,
                isWordPress: Bool,
                notificationsEnabled: Bool = true) {
         notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
+
         sut = JetpackNotificationMigrationService(
             notificationSettingsLoader: notificationSettingsLoader,
             remoteNotificationRegister: remoteNotificationsRegister,
-            allowDisablingWPNotifications: allowDisablingWPNotifications,
+            preventDuplicateNotifications: preventDuplicateNotificationsFlag,
             isWordPress: isWordPress
         )
         sut.wordPressNotificationsEnabled = true
