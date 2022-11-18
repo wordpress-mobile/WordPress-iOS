@@ -9,7 +9,8 @@ protocol JetpackNotificationMigrationServiceProtocol {
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
 final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
-    private var notificationSettingsLoader: NotificationSettingsLoader
+    private let notificationSettingsLoader: NotificationSettingsLoader
+    private let remoteNotificationRegister: RemoteNotificationRegister
     private var notificationsEnabled: Bool = false
     private let allowDisablingWPNotifications: Bool
     private let isWordPress: Bool
@@ -32,10 +33,10 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         }
 
         set {
-            if newValue, AppConfiguration.isWordPress {
-                UIApplication.shared.registerForRemoteNotifications()
-            } else if AppConfiguration.isWordPress {
-                UIApplication.shared.unregisterForRemoteNotifications()
+            if newValue, isWordPress {
+                remoteNotificationRegister.registerForRemoteNotifications()
+            } else if isWordPress {
+                remoteNotificationRegister.unregisterForRemoteNotifications()
             }
             userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
 
@@ -55,9 +56,11 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     init(notificationSettingsLoader: NotificationSettingsLoader = UNUserNotificationCenter.current(),
+         remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
          allowDisablingWPNotifications: Bool = FeatureFlag.allowDisablingWPNotifications.enabled,
          isWordPress: Bool = AppConfiguration.isWordPress) {
         self.notificationSettingsLoader = notificationSettingsLoader
+        self.remoteNotificationRegister = remoteNotificationRegister
         self.allowDisablingWPNotifications = allowDisablingWPNotifications
         self.isWordPress = isWordPress
 
@@ -135,3 +138,10 @@ extension UNUserNotificationCenter: NotificationSettingsLoader {
         }
     }
 }
+
+protocol RemoteNotificationRegister {
+    func registerForRemoteNotifications()
+    func unregisterForRemoteNotifications()
+}
+
+extension UIApplication: RemoteNotificationRegister {}

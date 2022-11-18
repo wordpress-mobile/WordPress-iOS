@@ -5,14 +5,17 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     private var sut: JetpackNotificationMigrationService!
     private var notificationSettingsLoader: NotificationSettingsLoaderMock!
+    private var remoteNotificationsRegister: RemoteNotificationRegisterMock!
 
     override func setUpWithError() throws {
         notificationSettingsLoader = NotificationSettingsLoaderMock()
+        remoteNotificationsRegister = RemoteNotificationRegisterMock()
     }
 
     override func tearDownWithError() throws {
         sut = nil
         notificationSettingsLoader = nil
+        remoteNotificationsRegister = nil
     }
 
     // MARK: - Should show notification control
@@ -47,10 +50,14 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
         setup(allowDisablingWPNotifications: true, isWordPress: true)
 
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
+
         sut.wordPressNotificationsEnabled = false
         XCTAssertFalse(sut.wordPressNotificationsEnabled)
+        XCTAssertTrue(remoteNotificationsRegister.unregisterForRemoteNotificationsCalled)
+
         sut.wordPressNotificationsEnabled = true
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
+        XCTAssertTrue(remoteNotificationsRegister.registerForRemoteNotificationsCalled)
     }
 
     // MARK: - Should disable WordPress notifications
@@ -90,9 +97,12 @@ private extension JetpackNotificationMigrationServiceTests {
                isWordPress: Bool,
                notificationsEnabled: Bool = true) {
         notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
-        sut = JetpackNotificationMigrationService(notificationSettingsLoader: notificationSettingsLoader,
-                                           allowDisablingWPNotifications: allowDisablingWPNotifications,
-                                           isWordPress: isWordPress)
+        sut = JetpackNotificationMigrationService(
+            notificationSettingsLoader: notificationSettingsLoader,
+            remoteNotificationRegister: remoteNotificationsRegister,
+            allowDisablingWPNotifications: allowDisablingWPNotifications,
+            isWordPress: isWordPress
+        )
         sut.wordPressNotificationsEnabled = true
     }
 }
@@ -102,5 +112,18 @@ private class NotificationSettingsLoaderMock: NotificationSettingsLoader {
 
     func getNotificationAuthorizationStatus(completionHandler: @escaping (UNAuthorizationStatus) -> Void) {
         completionHandler(authorizationStatus)
+    }
+}
+
+private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
+    var registerForRemoteNotificationsCalled = false
+    var unregisterForRemoteNotificationsCalled = false
+
+    func registerForRemoteNotifications() {
+        registerForRemoteNotificationsCalled = true
+    }
+
+    func unregisterForRemoteNotifications() {
+        unregisterForRemoteNotificationsCalled = true
     }
 }
