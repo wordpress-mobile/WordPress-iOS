@@ -89,12 +89,18 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     // MARK: - Only executed on Jetpack app
 
     func disableWordPressNotificationsFromJetpack() {
-        guard preventDuplicateNotifications, !isWordPress, let url = URL(string: "\(JetpackNotificationMigrationService.wordPressScheme)://") else {
+        guard preventDuplicateNotifications, !isWordPress else {
             return
         }
 
+        let wordPressUrl: URL? = {
+            var components = URLComponents()
+            components.scheme = JetpackNotificationMigrationService.wordPressScheme
+            return components.url
+        }()
+
         /// Open WordPress app to disable notifications
-        if UIApplication.shared.canOpenURL(url) {
+        if let url = wordPressUrl, UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
     }
@@ -102,14 +108,20 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     // MARK: - Only executed on WordPress app
 
     func handleNotificationMigrationOnWordPress() -> Bool {
-        guard isWordPress, let url = URL(string: "\(JetpackNotificationMigrationService.jetpackScheme)://") else {
+        guard isWordPress else {
             return false
         }
 
         wordPressNotificationsEnabled = false
 
+        let jetpackUrl: URL? = {
+            var components = URLComponents()
+            components.scheme = JetpackNotificationMigrationService.jetpackScheme
+            return components.url
+        }()
+
         /// Return to Jetpack app
-        if UIApplication.shared.canOpenURL(url) {
+        if let url = jetpackUrl, UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
 
