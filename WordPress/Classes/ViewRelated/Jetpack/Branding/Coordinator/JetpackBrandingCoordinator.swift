@@ -6,7 +6,28 @@ class JetpackBrandingCoordinator {
     static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
-            UIApplication.shared.open(URL(string: "https://jetpack.com/app")!)
+            #if DEBUG
+            let jetpackScheme = "jpdebug"
+            #elseif INTERNAL_BUILD
+            let jetpackScheme = "jpinternal"
+            #elseif ALPHA_BUILD
+            let jetpackScheme = "jpalpha"
+            #else
+            let jetpackScheme = "jetpack"
+            #endif
+
+            guard AppConfiguration.isWordPress,
+                  let jetpackDeepLinkURL = URL(string: "\(jetpackScheme)://app"),
+                  let jetpackUniversalLinkURL = URL(string: "https://jetpack.com/app"),
+                  let jetpackAppStoreURL = URL(string: "https://apps.apple.com/app/jetpack-website-builder/id1565481562") else {
+                return
+            }
+
+            // First, check if the WordPress app can open Jetpack by testing its URL scheme.
+            // if we can potentially open Jetpack app, let's open it through universal link to avoid scheme conflicts (e.g., a certain game :-).
+            // finally, if the user might not have Jetpack installed, direct them to App Store page.
+            let urlToOpen = UIApplication.shared.canOpenURL(jetpackDeepLinkURL) ? jetpackUniversalLinkURL : jetpackAppStoreURL
+            UIApplication.shared.open(urlToOpen)
         }
 
         let jetpackOverlayViewController = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)
