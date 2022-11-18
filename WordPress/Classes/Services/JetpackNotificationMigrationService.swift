@@ -1,7 +1,7 @@
 import UIKit
 
 protocol JetpackNotificationMigrationServiceProtocol {
-    func shouldDisableWordPressNotifications() -> Bool
+    func shouldDisableNotifications() -> Bool
 }
 
 /// The service is created to support disabling WordPress notifications when Jetpack app enables notifications
@@ -71,7 +71,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
 
-    func shouldDisableWordPressNotifications() -> Bool {
+    func shouldDisableNotifications() -> Bool {
         let shouldFilter = allowDisablingWPNotifications
             && isWordPress
             && !wordPressNotificationsEnabled

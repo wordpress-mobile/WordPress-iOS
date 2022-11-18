@@ -361,7 +361,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
         // This will no longer run for WordPress as part of JetPack migration.
         // This can be removed once JetPack migration is complete.
-        if jetpackNotificationMigrationService.shouldDisableWordPressNotifications() {
+        if jetpackNotificationMigrationService.shouldDisableNotifications() {
             notificationScheduler.cancellAll()
             notificationScheduler.cancelStaticNotification()
             return
@@ -624,7 +624,7 @@ class WeeklyRoundupNotificationScheduler {
         dateComponents: DateComponents,
         completion: @escaping (Result<Void, Error>) -> Void) {
 
-        if jetpackNotificationMigrationService.shouldDisableWordPressNotifications() {
+        if jetpackNotificationMigrationService.shouldDisableNotifications() {
             return
         }
 
