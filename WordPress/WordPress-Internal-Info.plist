@@ -443,6 +443,7 @@
 			<string>org.wordpress</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wordpressnotificationmigration</string>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
 			</array>
