@@ -46,8 +46,9 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     // MARK: - WordPress notifications enabled
 
-    func testWordPressNotificationsEnabled() {
+    func testWordPressNotificationsEnabledWhenRegisteredForRemoteNotications() {
         setup(allowDisablingWPNotifications: true, isWordPress: true)
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
 
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
 
@@ -58,6 +59,17 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
         sut.wordPressNotificationsEnabled = true
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
         XCTAssertTrue(remoteNotificationsRegister.registerForRemoteNotificationsCalled)
+    }
+
+    func testWordPressNotificationsEnabledWhenUnegisteredForRemoteNotications() {
+        setup(allowDisablingWPNotifications: true, isWordPress: true)
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
+
+        sut.wordPressNotificationsEnabled = false
+        XCTAssertFalse(sut.wordPressNotificationsEnabled)
+
+        sut.wordPressNotificationsEnabled = true
+        XCTAssertFalse(sut.wordPressNotificationsEnabled)
     }
 
     // MARK: - Should disable WordPress notifications
@@ -104,6 +116,7 @@ private extension JetpackNotificationMigrationServiceTests {
             isWordPress: isWordPress
         )
         sut.wordPressNotificationsEnabled = true
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
     }
 }
 
@@ -118,6 +131,7 @@ private class NotificationSettingsLoaderMock: NotificationSettingsLoader {
 private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
     var registerForRemoteNotificationsCalled = false
     var unregisterForRemoteNotificationsCalled = false
+    var isRegisteredForRemoteNotifications = false
 
     func registerForRemoteNotifications() {
         registerForRemoteNotificationsCalled = true

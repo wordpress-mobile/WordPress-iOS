@@ -29,7 +29,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
                 return true
             }
 
-            return userDefaults.bool(forKey: WPNotificationsEnabledKey) && UIApplication.shared.isRegisteredForRemoteNotifications
+            return userDefaults.bool(forKey: WPNotificationsEnabledKey) && remoteNotificationRegister.isRegisteredForRemoteNotifications
         }
 
         set {
@@ -142,6 +142,7 @@ extension UNUserNotificationCenter: NotificationSettingsLoader {
 protocol RemoteNotificationRegister {
     func registerForRemoteNotifications()
     func unregisterForRemoteNotifications()
+    var isRegisteredForRemoteNotifications: Bool { get }
 }
 
 extension UIApplication: RemoteNotificationRegister {}
