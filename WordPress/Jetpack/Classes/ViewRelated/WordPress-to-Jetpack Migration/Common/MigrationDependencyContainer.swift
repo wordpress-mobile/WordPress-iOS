@@ -56,7 +56,6 @@ struct MigrationViewControllerFactory {
             secondaryHandler: secondaryHandler
         )
 
-
         return .init(account: makeAccount(), actions: actions)
     }
 
@@ -91,7 +90,7 @@ struct MigrationViewControllerFactory {
 
     private func makeSupportViewControllerRouter(with presenter: UIViewController) -> () -> Void {
         return { [weak presenter] in
-            let destination = SupportTableViewController(configuration: .currentAccountConfiguration())
+            let destination = SupportTableViewController(configuration: .currentAccountConfiguration(), style: .insetGrouped)
             presenter?.present(UINavigationController(rootViewController: destination), animated: true)
         }
     }
@@ -102,5 +101,4 @@ struct MigrationViewControllerFactory {
         var primary: (() -> Void)?
         var secondary: (() -> Void)?
     }
-
 }
