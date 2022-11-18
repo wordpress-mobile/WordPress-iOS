@@ -1,1 +1,0 @@
-Voice Control is in de blokeditor nu makkelijker te gebruiken dan ooit. Als je met afbeeldingblokken werkt, kan je de Voice Control-cursor gebruiken om de titel van de tekst te selecteren.
