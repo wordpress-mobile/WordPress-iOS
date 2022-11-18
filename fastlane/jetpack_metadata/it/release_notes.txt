@@ -1,3 +1,0 @@
-I widget dinamici ora sono su Jetpack. Ottieni statistiche giornaliere, settimanali e in ogni momento sulla schermata principale del dispositivo. Noterai una schermata di destinazione nuova di zecca nell'app che risponde al movimento del tuo dispositivo.
-
-Il controllo vocale è ora più semplice da usare nell'editor a blocchi: mentre stai lavorando con i blocchi Immagine, usa il cursore del controllo vocale per selezionare la didascalia per la voce del testo.

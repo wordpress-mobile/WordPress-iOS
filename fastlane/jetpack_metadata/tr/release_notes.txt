@@ -1,3 +1,0 @@
-Dinamik bileşenler artık Jetpack'te. Cihazınızın ana ekranından günlük, haftalık ve tüm zamanların istatistiklerini alın. Ayrıca uygulamada cihazınızın hareketine yanıt veren göz alıcı yeni bir açılış ekranı göreceksiniz.
-
-Sesle Kontrol artık blok düzenleyicide daha kolay; Görsel bloklarıyla çalışırken metin girişi için altyazı seçmek üzere Sesle Kontrol imlecini kullanın.
