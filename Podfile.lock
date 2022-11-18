@@ -64,15 +64,15 @@ PODS:
     - RNTAztecView
   - JTAppleCalendar (8.0.3)
   - Kanvas (1.4.4)
-  - libwebp (1.2.4):
-    - libwebp/demux (= 1.2.4)
-    - libwebp/mux (= 1.2.4)
-    - libwebp/webp (= 1.2.4)
-  - libwebp/demux (1.2.4):
+  - libwebp (1.2.3):
+    - libwebp/demux (= 1.2.3)
+    - libwebp/mux (= 1.2.3)
+    - libwebp/webp (= 1.2.3)
+  - libwebp/demux (1.2.3):
     - libwebp/webp
-  - libwebp/mux (1.2.4):
+  - libwebp/mux (1.2.3):
     - libwebp/demux
-  - libwebp/webp (1.2.4)
+  - libwebp/webp (1.2.3)
   - MediaEditor (1.2.1):
     - CropViewController (~> 2.5.3)
   - MRProgress (0.8.3):
@@ -807,7 +807,7 @@ SPEC CHECKSUMS:
   Gutenberg: 387b010e396588027538e351899bf1cc730a7009
   JTAppleCalendar: 932cadea40b1051beab10f67843451d48ba16c99
   Kanvas: f932eaed3d3f47aae8aafb6c2d27c968bdd49030
-  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
+  libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
   MediaEditor: 20cdeb46bdecd040b8bc94467ac85a52b53b193a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   NSObject-SafeExpectations: ab8fe623d36b25aa1f150affa324e40a2f3c0374

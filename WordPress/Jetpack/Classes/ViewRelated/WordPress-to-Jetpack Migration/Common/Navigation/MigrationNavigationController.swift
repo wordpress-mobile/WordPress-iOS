@@ -2,17 +2,12 @@ import Combine
 import UIKit
 
 class MigrationNavigationController: UINavigationController {
-
-    // MARK: - Properties
-
     /// Navigation coordinator
     private let coordinator: MigrationFlowCoordinator
     /// The view controller factory used to push view controllers on the stack
     private let factory: MigrationViewControllerFactory
     /// Receives state changes to set the navigation stack accordingly
     private var cancellable: AnyCancellable?
-
-    // MARK: - Orientation
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if WPDeviceIdentification.isiPhone() {
@@ -25,8 +20,6 @@ class MigrationNavigationController: UINavigationController {
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         .portrait
     }
-
-    // MARK: - Init
 
     init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {
         self.coordinator = coordinator
@@ -42,8 +35,6 @@ class MigrationNavigationController: UINavigationController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - Configuration
 
     private func configure() {
         let navigationBar = self.navigationBar
