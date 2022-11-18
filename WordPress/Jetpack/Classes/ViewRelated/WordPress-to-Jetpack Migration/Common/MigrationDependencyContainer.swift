@@ -55,7 +55,8 @@ struct MigrationViewControllerFactory {
             primaryHandler: primaryHandler,
             secondaryHandler: secondaryHandler
         )
-        
+
+
         return .init(account: makeAccount(), actions: actions)
     }
 
