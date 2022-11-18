@@ -25,6 +25,10 @@ struct UniversalLinkRouter: LinkRouter {
     static let shared = UniversalLinkRouter(
         routes: defaultRoutes)
 
+    // A singleton that handles universal link routes without requiring authentication.
+    //
+    static let unauthenticated = UniversalLinkRouter(routes: jetpackRoutes)
+
     static let defaultRoutes: [Route] =
         redirects +
         meRoutes +
