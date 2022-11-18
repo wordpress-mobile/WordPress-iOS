@@ -27,6 +27,20 @@ import WordPressKit
     #endif
     #endif
     #endif
+
+    /// Deep Link URL Scheme
+    ///
+    /// Note: this needs to be in sync with Target > Build Settings > User-defined > `WPCOM_SCHEME` value.
+    ///
+    #if DEBUG
+    static let deepLinkScheme = "jpdebug"
+    #elseif INTERNAL_BUILD
+    static let deepLinkScheme = "jpinternal"
+    #elseif ALPHA_BUILD
+    static let deepLinkScheme = "jpalpha"
+    #else
+    static let deepLinkScheme = "jetpack"
+    #endif
 }
 
 // MARK: - Tab bar order

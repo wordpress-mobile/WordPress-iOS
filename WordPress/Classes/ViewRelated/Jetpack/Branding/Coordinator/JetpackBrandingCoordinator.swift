@@ -6,18 +6,7 @@ class JetpackBrandingCoordinator {
     static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
-            #if DEBUG
-            let jetpackScheme = "jpdebug"
-            #elseif INTERNAL_BUILD
-            let jetpackScheme = "jpinternal"
-            #elseif ALPHA_BUILD
-            let jetpackScheme = "jpalpha"
-            #else
-            let jetpackScheme = "jetpack"
-            #endif
-
-            guard AppConfiguration.isWordPress,
-                  let jetpackDeepLinkURL = URL(string: "\(jetpackScheme)://app"),
+            guard let jetpackDeepLinkURL = URL(string: "\(AppConstants.deepLinkScheme)://app"),
                   let jetpackUniversalLinkURL = URL(string: "https://jetpack.com/app"),
                   let jetpackAppStoreURL = URL(string: "https://apps.apple.com/app/jetpack-website-builder/id1565481562") else {
                 return
