@@ -48,28 +48,22 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     func testWordPressNotificationsEnabledWhenRegisteredForRemoteNotications() {
         setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
-        remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
 
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
+        XCTAssertFalse(sut.wordPressNotificationsEnabled)
+
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
         XCTAssertTrue(sut.wordPressNotificationsEnabled)
+    }
+
+    func testRemoteNotificationsRegisteredWhenWordPressNotificationsEnabled() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
 
         sut.wordPressNotificationsEnabled = false
-        XCTAssertFalse(sut.wordPressNotificationsEnabled)
         XCTAssertTrue(remoteNotificationsRegister.unregisterForRemoteNotificationsCalled)
 
         sut.wordPressNotificationsEnabled = true
-        XCTAssertTrue(sut.wordPressNotificationsEnabled)
         XCTAssertTrue(remoteNotificationsRegister.registerForRemoteNotificationsCalled)
-    }
-
-    func testWordPressNotificationsEnabledWhenUnegisteredForRemoteNotications() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
-        remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
-
-        sut.wordPressNotificationsEnabled = false
-        XCTAssertFalse(sut.wordPressNotificationsEnabled)
-
-        sut.wordPressNotificationsEnabled = true
-        XCTAssertFalse(sut.wordPressNotificationsEnabled)
     }
 
     // MARK: - Should present WordPress notifications
@@ -110,10 +104,11 @@ private extension JetpackNotificationMigrationServiceTests {
                notificationsEnabled: Bool = true) {
         notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
 
+        try? FeatureFlagOverrideStore().override(FeatureFlag.jetpackMigrationPreventDuplicateNotifications, withValue: preventDuplicateNotificationsFlag)
+
         sut = JetpackNotificationMigrationService(
             notificationSettingsLoader: notificationSettingsLoader,
             remoteNotificationRegister: remoteNotificationsRegister,
-            preventDuplicateNotifications: preventDuplicateNotificationsFlag,
             isWordPress: isWordPress
         )
         sut.wordPressNotificationsEnabled = true
@@ -135,10 +130,12 @@ private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
     var isRegisteredForRemoteNotifications = false
 
     func registerForRemoteNotifications() {
+        isRegisteredForRemoteNotifications = true
         registerForRemoteNotificationsCalled = true
     }
 
     func unregisterForRemoteNotifications() {
+        isRegisteredForRemoteNotifications = false
         unregisterForRemoteNotificationsCalled = true
     }
 }

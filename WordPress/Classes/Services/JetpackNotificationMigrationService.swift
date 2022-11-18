@@ -12,9 +12,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     private let notificationSettingsLoader: NotificationSettingsLoader
     private let remoteNotificationRegister: RemoteNotificationRegister
     private var notificationsEnabled: Bool = false
-    private let preventDuplicateNotifications: Bool
     private let isWordPress: Bool
-    private let userDefaults = UserDefaults(suiteName: WPAppGroupName)
 
     static let shared = JetpackNotificationMigrationService()
 
@@ -23,13 +21,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     var wordPressNotificationsEnabled: Bool {
         get {
-            guard let userDefaults = userDefaults,
-                  userDefaults.value(forKey: WPNotificationsEnabledKey) != nil else {
-                /// Treat this flag as enabled if it wasn't explicitly disabled
-                return true
-            }
-
-            return userDefaults.bool(forKey: WPNotificationsEnabledKey) && remoteNotificationRegister.isRegisteredForRemoteNotifications
+            return remoteNotificationRegister.isRegisteredForRemoteNotifications
         }
 
         set {
@@ -38,7 +30,6 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
             } else if isWordPress {
                 remoteNotificationRegister.unregisterForRemoteNotifications()
             }
-            userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
 
             if isWordPress && !newValue {
                 cancelAllPendingWordPressLocalNotifications()
@@ -57,11 +48,9 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     init(notificationSettingsLoader: NotificationSettingsLoader = UNUserNotificationCenter.current(),
          remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
-         preventDuplicateNotifications: Bool = FeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled,
          isWordPress: Bool = AppConfiguration.isWordPress) {
         self.notificationSettingsLoader = notificationSettingsLoader
         self.remoteNotificationRegister = remoteNotificationRegister
-        self.preventDuplicateNotifications = preventDuplicateNotifications
         self.isWordPress = isWordPress
 
         notificationSettingsLoader.getNotificationAuthorizationStatus { [weak self] status in
@@ -70,12 +59,12 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     func shouldShowNotificationControl() -> Bool {
-        return preventDuplicateNotifications && isWordPress && notificationsEnabled
+        return Feature.enabled(.jetpackMigrationPreventDuplicateNotifications) && isWordPress && notificationsEnabled
     }
 
 
     func shouldPresentNotifications() -> Bool {
-        let disableNotifications = preventDuplicateNotifications
+        let disableNotifications = Feature.enabled(.jetpackMigrationPreventDuplicateNotifications)
             && isWordPress
             && !wordPressNotificationsEnabled
 
@@ -89,7 +78,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     // MARK: - Only executed on Jetpack app
 
     func disableWordPressNotificationsFromJetpack() {
-        guard preventDuplicateNotifications, !isWordPress else {
+        guard Feature.enabled(.jetpackMigrationPreventDuplicateNotifications), !isWordPress else {
             return
         }
 
