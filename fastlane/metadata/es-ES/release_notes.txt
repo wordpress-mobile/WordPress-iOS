@@ -1,1 +1,0 @@
-El control por voz es ahora más fácil de usar en el editor de bloques – cuando estás trabajando con bloques de imágenes, usa el cursor de control por voz para seleccionar la leyenda de texto.

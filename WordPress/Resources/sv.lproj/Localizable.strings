@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-31 12:11:26+0000 */
+/* Translation-Revision-Date: 2022-11-16 15:07:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "Behöver du hjälp att hitta adressen till din webbplats?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Behöver du hjälp?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8033,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Rubrik för kategori är obligatoriskt.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "För att avsluta detta konto nu, kontakta vårt supportteam.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Skriv in din e-postadress och ditt namn för att fortsätta.";
 
@@ -9780,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "ett år";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Användarkontot kan inte avslutas omedelbart eftersom det är kopplat till aktiva köp. Kontakta vårt supportteam om du vill slutföra borttagningen av kontot.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Avfärda";
 
@@ -9914,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress är bättre med Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Läs mer på jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Lägg till en författare";
 
@@ -9967,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Avfärda";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Avsluta";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Vi har flyttat över alla data och dina inställningar, så allt är precis som förut.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Tack för att du bytt till Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Bestäm senare";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Du kommer att få samma aviseringar som tidigare, men nu från Jetpack-appen.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Vi har inaktiverat aviseringar från WordPress-appen.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Tillåt aviseringar för att hålla koll på din webbplats";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Det verkar som att du byter från WordPress-appen.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Vi har hittat dina webbplatser. Gå vidare för att automatiskt överföra dina data och logga in till Jetpack.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Vi har hittat din webbplats. Gå vidare för att automatiskt överföra dina data och logga in till Jetpack.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Välkommen till Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Avfärda";

@@ -1,3 +1,0 @@
-Widgets dinâmicos agora no Jetpack. Receba estatísticas diárias, semanais ou completas na tela inicial do seu dispositivo. Você também verá no aplicativo uma tela inicial novinha em folha e sensível ao movimento do seu dispositivo. Aproveite!
-
-Agora ficou mais fácil usar o controle por voz no editor de blocos. Quando estiver trabalhando com blocos de imagem, use o cursor do controle por voz para selecionar a legenda na entrada de texto.
