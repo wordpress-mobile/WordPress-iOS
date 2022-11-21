@@ -128,8 +128,13 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     private func rescheduleLocalNotifications() {
         DispatchQueue.main.async { [weak self] in
+            self?.rescheduleWeeklyRoundupNotifications()
             self?.rescheduleBloggingReminderNotifications()
         }
+    }
+
+    private func rescheduleWeeklyRoundupNotifications() {
+        WordPressAppDelegate.shared?.backgroundTasksCoordinator.scheduleTasks { _ in }
     }
 
     private func rescheduleBloggingReminderNotifications() {
