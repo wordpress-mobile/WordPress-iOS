@@ -27,20 +27,6 @@ import WordPressAuthenticator
     #endif
     #endif
     #endif
-
-    /// Deep Link URL Scheme
-    ///
-    /// Note: This needs to be manually in sync with Target > Build Settings > User-defined > `WPCOM_SCHEME`.
-    ///
-    #if DEBUG
-    static let deepLinkScheme = "wpdebug"
-    #elseif INTERNAL_BUILD
-    static let deepLinkScheme = "wpinternal"
-    #elseif ALPHA_BUILD
-    static let deepLinkScheme = "wpalpha"
-    #else
-    static let deepLinkScheme = "wordpress"
-    #endif
 }
 
 // MARK: - Tab bar order

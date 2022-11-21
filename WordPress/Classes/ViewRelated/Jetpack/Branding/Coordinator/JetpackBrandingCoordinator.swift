@@ -3,10 +3,27 @@ import UIKit
 /// A class containing convenience methods for the the Jetpack branding experience
 class JetpackBrandingCoordinator {
 
+    /// Used to "guess" if the Jetpack app is already installed.
+    /// The check is done from the WordPress side.
+    ///
+    /// Note: The string values should kept in-sync with Jetpack's URL scheme.
+    ///
+    static var jetpackDeepLinkScheme: String {
+        #if DEBUG
+        return "jpdebug"
+        #elseif INTERNAL_BUILD
+        return "jpinternal"
+        #elseif ALPHA_BUILD
+        return "jpalpha"
+        #else
+        return "jetpack"
+        #endif
+    }
+
     static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
-            guard let jetpackDeepLinkURL = URL(string: "\(AppConstants.deepLinkScheme)://app"),
+            guard let jetpackDeepLinkURL = URL(string: "\(jetpackDeepLinkScheme)://app"),
                   let jetpackUniversalLinkURL = URL(string: "https://jetpack.com/app"),
                   let jetpackAppStoreURL = URL(string: "https://apps.apple.com/app/jetpack-website-builder/id1565481562") else {
                 return
