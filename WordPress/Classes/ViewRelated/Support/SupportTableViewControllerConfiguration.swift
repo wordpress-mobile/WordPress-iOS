@@ -1,15 +1,14 @@
 import Foundation
 
-extension SupportTableViewController {
+struct SupportTableViewControllerConfiguration {
 
-    struct Configuration {
-        var meHeaderConfiguration: MeHeaderView.Configuration?
-        var showsLogOutButton: Bool = false
-        var showsLogsSection: Bool = true
-    }
-}
+    // MARK: Properties
 
-extension SupportTableViewController.Configuration {
+    var meHeaderConfiguration: MeHeaderView.Configuration?
+    var showsLogOutButton: Bool = false
+    var showsLogsSection: Bool = true
+
+    // MARK: Default Configurations
 
     static func currentAccountConfiguration() -> Self {
         var config = Self.init()
@@ -30,4 +29,9 @@ extension SupportTableViewController.Configuration {
             return nil
         }
     }
+}
+
+extension SupportTableViewController {
+
+    typealias Configuration = SupportTableViewControllerConfiguration
 }

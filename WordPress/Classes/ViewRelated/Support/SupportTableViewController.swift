@@ -87,7 +87,6 @@ class SupportTableViewController: UITableViewController {
         dismissTapped?()
         dismiss(animated: true)
     }
-
 }
 
 // MARK: - Private Extension
