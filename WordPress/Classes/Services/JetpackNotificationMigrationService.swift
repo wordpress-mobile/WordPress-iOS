@@ -27,6 +27,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         set {
             if newValue, isWordPress {
                 remoteNotificationRegister.registerForRemoteNotifications()
+                rescheduleLocalNotifications()
             } else if isWordPress {
                 remoteNotificationRegister.unregisterForRemoteNotifications()
             }
@@ -123,6 +124,32 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         if isWordPress {
             notificationCenter.removeAllPendingNotificationRequests()
         }
+    }
+
+    private func rescheduleLocalNotifications() {
+        DispatchQueue.main.async { [weak self] in
+            self?.rescheduleBloggingReminderNotifications()
+        }
+    }
+
+    private func rescheduleBloggingReminderNotifications() {
+        guard let bloggingRemindersScheduler = try? BloggingRemindersScheduler(notificationCenter: UNUserNotificationCenter.current(),
+                                                                               pushNotificationAuthorizer: InteractiveNotificationsManager.shared) else {
+            return
+        }
+
+        NotificationSettingsService(coreDataStack: ContextManager.sharedInstance()).getAllSettings { settings in
+            for setting in settings {
+                if let blog = setting.blog {
+                    let schedule = bloggingRemindersScheduler.schedule(for: blog)
+                    let time = bloggingRemindersScheduler.scheduledTime(for: blog)
+                    if schedule != .none {
+                        bloggingRemindersScheduler.schedule(schedule, for: blog, time: time) { _ in }
+                    }
+                }
+
+            }
+        } failure: { _ in }
     }
 }
 
