@@ -9,9 +9,7 @@ protocol JetpackNotificationMigrationServiceProtocol {
 /// This is a temporary solution to avoid duplicate notifications during the migration process from WordPress to Jetpack app
 /// This service and its usage can be deleted once the migration is done
 final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
-    private let notificationSettingsLoader: NotificationSettingsLoader
     private let remoteNotificationRegister: RemoteNotificationRegister
-    private var notificationsEnabled: Bool = false
     private let isWordPress: Bool
 
     static let shared = JetpackNotificationMigrationService()
@@ -47,20 +45,14 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         return UIApplication.shared.canOpenURL(url)
     }
 
-    init(notificationSettingsLoader: NotificationSettingsLoader = UNUserNotificationCenter.current(),
-         remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
+    init(remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
          isWordPress: Bool = AppConfiguration.isWordPress) {
-        self.notificationSettingsLoader = notificationSettingsLoader
         self.remoteNotificationRegister = remoteNotificationRegister
         self.isWordPress = isWordPress
-
-        notificationSettingsLoader.getNotificationAuthorizationStatus { [weak self] status in
-            self?.notificationsEnabled = status == .authorized
-        }
     }
 
     func shouldShowNotificationControl() -> Bool {
-        return Feature.enabled(.jetpackMigrationPreventDuplicateNotifications) && isWordPress && notificationsEnabled
+        return Feature.enabled(.jetpackMigrationPreventDuplicateNotifications) && isWordPress
     }
 
 
@@ -152,25 +144,12 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
                         bloggingRemindersScheduler.schedule(schedule, for: blog, time: time) { _ in }
                     }
                 }
-
             }
         } failure: { _ in }
     }
 }
 
 // MARK: - Helpers
-
-protocol NotificationSettingsLoader: AnyObject {
-    func getNotificationAuthorizationStatus(completionHandler: @escaping (UNAuthorizationStatus) -> Void)
-}
-
-extension UNUserNotificationCenter: NotificationSettingsLoader {
-    func getNotificationAuthorizationStatus(completionHandler: @escaping (UNAuthorizationStatus) -> Void) {
-        getNotificationSettings { settings in
-            completionHandler(settings.authorizationStatus)
-        }
-    }
-}
 
 protocol RemoteNotificationRegister {
     func registerForRemoteNotifications()

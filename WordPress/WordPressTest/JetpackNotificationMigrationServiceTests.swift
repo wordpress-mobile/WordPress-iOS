@@ -4,42 +4,33 @@ import XCTest
 final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
     private var sut: JetpackNotificationMigrationService!
-    private var notificationSettingsLoader: NotificationSettingsLoaderMock!
     private var remoteNotificationsRegister: RemoteNotificationRegisterMock!
 
     override func setUpWithError() throws {
-        notificationSettingsLoader = NotificationSettingsLoaderMock()
         remoteNotificationsRegister = RemoteNotificationRegisterMock()
     }
 
     override func tearDownWithError() throws {
         sut = nil
-        notificationSettingsLoader = nil
         remoteNotificationsRegister = nil
     }
 
     // MARK: - Should show notification control
 
-    func testShouldShowNotificationControlInWordPressWhenFeatureFlagEnabledAndNotificationsEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true, notificationsEnabled: true)
+    func testShouldShowNotificationControlInWordPressWhenFeatureFlagEnabled() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
 
         XCTAssertTrue(sut.shouldShowNotificationControl())
     }
 
-    func testShouldHideNotificationControlInWordPressWhenFeatureFlagEnabledAndNotificationsDisabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: true, notificationsEnabled: false)
-
-        XCTAssertFalse(sut.shouldShowNotificationControl())
-    }
-
     func testShouldHideNotificationControlInWordPressWhenFeatureFlagDisabled() {
-        setup(preventDuplicateNotificationsFlag: false, isWordPress: true, notificationsEnabled: true)
+        setup(preventDuplicateNotificationsFlag: false, isWordPress: true)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
 
     func testShouldHideNotificationControlInJetpackWhenFeatureFlagEnabled() {
-        setup(preventDuplicateNotificationsFlag: true, isWordPress: false, notificationsEnabled: true)
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: false)
 
         XCTAssertFalse(sut.shouldShowNotificationControl())
     }
@@ -100,27 +91,16 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
 
 private extension JetpackNotificationMigrationServiceTests {
     func setup(preventDuplicateNotificationsFlag: Bool,
-               isWordPress: Bool,
-               notificationsEnabled: Bool = true) {
-        notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
+               isWordPress: Bool) {
 
         try? FeatureFlagOverrideStore().override(FeatureFlag.jetpackMigrationPreventDuplicateNotifications, withValue: preventDuplicateNotificationsFlag)
 
         sut = JetpackNotificationMigrationService(
-            notificationSettingsLoader: notificationSettingsLoader,
             remoteNotificationRegister: remoteNotificationsRegister,
             isWordPress: isWordPress
         )
         sut.wordPressNotificationsEnabled = true
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
-    }
-}
-
-private class NotificationSettingsLoaderMock: NotificationSettingsLoader {
-    var authorizationStatus: UNAuthorizationStatus = .notDetermined
-
-    func getNotificationAuthorizationStatus(completionHandler: @escaping (UNAuthorizationStatus) -> Void) {
-        completionHandler(authorizationStatus)
     }
 }
 
