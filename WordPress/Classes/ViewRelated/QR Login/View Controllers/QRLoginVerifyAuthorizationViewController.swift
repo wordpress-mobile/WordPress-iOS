@@ -201,16 +201,17 @@ extension QRLoginVerifyAuthorizationViewController {
                 value: "You're logged in!",
                 comment: "Title for the success view when the user has successfully logged in"
             )
-            static let subtitle = NSLocalizedString(
+            private static let subtitleFormat = NSLocalizedString(
                 "qrLoginVerifyAuthorization.completedInstructions.subtitle",
-                value: "Tap dismiss and head back to your web browser to continue.",
-                comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow"
+                value: "Tap '%@' and head back to your web browser to continue.",
+                comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name."
             )
             static let confirmButton = NSLocalizedString(
                 "qrLoginVerifyAuthorization.completedInstructions.dismiss",
                 value: "Dismiss",
                 comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen"
             )
+            static let subtitle = String(format: subtitleFormat, Self.confirmButton)
         }
 
         enum noConnection {
