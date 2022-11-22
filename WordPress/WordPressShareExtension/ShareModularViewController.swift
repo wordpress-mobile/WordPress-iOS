@@ -884,21 +884,25 @@ fileprivate extension ShareModularViewController {
 
     func showRetryAlert() {
         let title: String = AppLocalizedString(
-            "Sharing Error",
+            "shareModularViewController.retryAlert.title",
+            value: "Sharing Error",
             comment: "Share extension error dialog title."
         )
         let message: String = AppLocalizedString(
-            "Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.",
+            "shareModularViewController.retryAlert.message",
+            value: "Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.",
             comment: "Share extension error dialog text."
         )
         let dismiss: String = AppLocalizedString(
-            "Dismiss",
+            "shareModularViewController.retryAlert.dismiss",
+            value: "Dismiss",
             comment: "Share extension error dialog cancel button label."
         )
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         let acceptButtonText = AppLocalizedString(
-            "Try again",
+            "shareModularViewController.retryAlert.accept",
+            value: "Try again",
             comment: "Share extension error dialog retry button label."
         )
         let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
