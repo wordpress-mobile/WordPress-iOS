@@ -883,12 +883,24 @@ fileprivate extension ShareModularViewController {
     }
 
     func showRetryAlert() {
-        let title: String = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message: String = AppLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
-        let dismiss: String = AppLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
+        let title: String = AppLocalizedString(
+            "Sharing Error",
+            comment: "Share extension error dialog title."
+        )
+        let message: String = AppLocalizedString(
+            "Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.",
+            comment: "Share extension error dialog text."
+        )
+        let dismiss: String = AppLocalizedString(
+            "Dismiss",
+            comment: "Share extension error dialog cancel button label."
+        )
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let acceptButtonText = AppLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
+        let acceptButtonText = AppLocalizedString(
+            "Try again",
+            comment: "Share extension error dialog retry button label."
+        )
         let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
             self.savePostToRemoteSite()
         }
