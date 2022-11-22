@@ -24,7 +24,9 @@ class QRLoginCameraSession: NSObject, QRCodeScanningSession {
     }
 
     func start() {
-        session?.startRunning()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.session?.startRunning()
+        }
     }
 
     func stop() {
