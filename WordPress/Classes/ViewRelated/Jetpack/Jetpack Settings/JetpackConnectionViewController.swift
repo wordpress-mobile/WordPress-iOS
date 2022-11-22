@@ -106,11 +106,9 @@ open class JetpackConnectionViewController: UITableViewController {
                                                success: { [weak self] in
                                                    self?.stopLoading()
                                                    if let blog = self?.blog {
-                                                       // Jetpack was successfully disconnected, lets hide the blog,
-                                                       // it should become unavailable the next time blogs are fetched
                                                        let context = ContextManager.sharedInstance().mainContext
-                                                       let service = AccountService(managedObjectContext: context)
-                                                       service.setVisibility(false, forBlogs: [blog])
+                                                       let service = BlogService(managedObjectContext: context)
+                                                       service.remove(blog)
                                                        try? context.save()
                                                        self?.delegate?.jetpackDisconnectedForBlog(blog)
                                                    } else {
