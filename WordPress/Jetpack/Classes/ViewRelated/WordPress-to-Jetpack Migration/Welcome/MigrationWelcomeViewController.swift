@@ -65,7 +65,9 @@ final class MigrationWelcomeViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail) { [weak self] () -> Void in
+            self?.viewModel.configuration.actionsConfiguration.secondaryHandler?()
+        }
     }
 
     private func setupBottomSheet() {
