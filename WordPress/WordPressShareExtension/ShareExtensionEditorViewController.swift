@@ -944,23 +944,39 @@ extension ShareExtensionEditorViewController {
 
     func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
-        let title: String = AppLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let title: String = AppLocalizedString(
+            "shareExtension.editor.attachmentActions.title",
+            value: "Media Options",
+            comment: "Title for action sheet with media options."
+        )
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(AppLocalizedString("Dismiss", comment: "User action to dismiss media options."),
-                                           style: .cancel,
-                                           handler: { (action) in
-                                            if attachment == self.currentSelectedAttachment {
-                                                self.currentSelectedAttachment = nil
-                                                self.resetMediaAttachmentOverlay(attachment)
-                                                self.richTextView.refresh(attachment)
-                                            }
-        })
+        alertController.addActionWithTitle(
+            AppLocalizedString(
+                "shareExtension.editor.attachmentActions.dismiss",
+                value: "Dismiss",
+                comment: "User action to dismiss media options."
+            ),
+            style: .cancel,
+            handler: { (action) in
+                if attachment == self.currentSelectedAttachment {
+                    self.currentSelectedAttachment = nil
+                    self.resetMediaAttachmentOverlay(attachment)
+                    self.richTextView.refresh(attachment)
+                }
+            }
+        )
         if attachment is ImageAttachment {
-            alertController.addActionWithTitle(AppLocalizedString("Remove", comment: "User action to remove media."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                self.richTextView.remove(attachmentID: mediaID)
-            })
+            alertController.addActionWithTitle(
+                AppLocalizedString(
+                    "shareExtension.editor.attachmentActions.remove",
+                    value: "Remove",
+                    comment: "User action to remove media."
+                ),
+                style: .destructive,
+                handler: { (action) in
+                    self.richTextView.remove(attachmentID: mediaID)
+                }
+            )
         }
 
         alertController.title = title

@@ -75,12 +75,36 @@ private extension CustomizeInsightsCell {
     // MARK: - Constants
 
     struct Labels {
-        static let title = NSLocalizedString("Customize your insights", comment: "Customize Insights title")
-        static let content = NSLocalizedString("Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.", comment: "Customize Insights description")
-        static let tryIt = NSLocalizedString("Try it now", comment: "Customize Insights button title")
-        static let dismiss = NSLocalizedString("Dismiss", comment: "Customize Insights button title")
-        static let dismissHint = NSLocalizedString("Tap to dismiss this card", comment: "Accessibility hint")
-        static let tryItHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint")
+        static let title = NSLocalizedString(
+            "customizeInsightsCell.title",
+            value: "Customize your insights",
+            comment: "Customize Insights title"
+        )
+        static let content = NSLocalizedString(
+            "customizeInsightsCell.content",
+            value: "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.",
+            comment: "Customize Insights description"
+        )
+        static let tryIt = NSLocalizedString(
+            "customizeInsightsCell.tryItButton.title",
+            value: "Try it now",
+            comment: "Customize Insights button title"
+        )
+        static let dismiss = NSLocalizedString(
+            "customizeInsightsCell.dismissButton.title",
+            value: "Dismiss",
+            comment: "Customize Insights button title"
+        )
+        static let dismissHint = NSLocalizedString(
+            "customizeInsightsCell.dismissButton.accessibilityHint",
+            value: "Tap to dismiss this card",
+            comment: "Accessibility hint"
+        )
+        static let tryItHint = NSLocalizedString(
+            "customizeInsightsCell.tryItButton.accessibilityHint",
+            value: "Tap to customize insights",
+            comment: "Accessibility hint"
+        )
     }
 
 }
