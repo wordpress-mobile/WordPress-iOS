@@ -34,7 +34,7 @@ class MigrationSuccessRow: ImmuTableRow {
 
 extension BlogDetailsViewController {
 
-    @objc func migrationSuccesstSectionViewModel() -> BlogDetailsSection {
+    @objc func migrationSuccessSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {}
 
