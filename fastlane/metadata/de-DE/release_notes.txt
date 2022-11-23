@@ -1,1 +1,0 @@
-Die Verwendung der Sprachsteuerung ist im Block-Editor jetzt einfacher. Wenn du mit Bildblöcken arbeitest, kannst du mit dem Cursor der Sprachsteuerung die Unterschrift auswählen, für die Text eingegeben werden soll.

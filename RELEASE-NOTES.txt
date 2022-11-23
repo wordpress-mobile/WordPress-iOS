@@ -1,5 +1,7 @@
 21.3
 -----
+* [*] [internal] Blogging Reminders notifications and scheduling can be turned off for WordPress as part of Jetpack focus behind a feature flag. [#19611]
+* [*] [internal] Weekly Roundup notifications and scheduling can be turned off for WordPress as part of Jetpack focus behind a feature flag. [#19590]
 * [*] Fixed a minor UI issue where the segmented control under My SIte was being clipped when "Home" is selected. [#19595]
 
 21.2

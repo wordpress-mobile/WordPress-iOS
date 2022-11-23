@@ -81,11 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v21.1-whats-new"
+msgctxt "v21.2-whats-new"
 msgid ""
-"Dynamic widgets are now on Jetpack. Get daily, weekly, and all-time stats on your device’s home screen. You’ll also notice a shiny new landing screen in the app that responds to your device’s motion.\n"
-"\n"
-"Voice Control is now easier to use in the block editor—when you’re working with Image blocks, use the Voice Control cursor to select the caption for text entry.\n"
+"We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

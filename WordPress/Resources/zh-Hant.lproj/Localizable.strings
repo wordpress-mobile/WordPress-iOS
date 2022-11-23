@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-02 12:54:11+0000 */
+/* Translation-Revision-Date: 2022-11-15 07:14:31+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "需要幫你找網站位址嗎？";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "需要協助？";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -4906,7 +4908,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No Thanks" = "不用了，謝謝";
 
 /* Label used for posts without a title in spotlight search. */
-"No Title" = "沒有標題";
+"No Title" = "無標題";
 
 /* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "No activities available" = "無活動";
@@ -8032,9 +8034,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "分類標題是必填的。";
-
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "若要立即關閉此帳號，請與支援團隊聯絡。";
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "若要繼續，請輸入你的電子郵件地址和姓名。";

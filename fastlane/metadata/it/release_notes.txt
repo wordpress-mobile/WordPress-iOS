@@ -1,1 +1,0 @@
-Il controllo vocale è ora più semplice da usare nell'editor a blocchi: mentre stai lavorando con i blocchi Immagine, usa il cursore del controllo vocale per selezionare la didascalia per la voce del testo.
