@@ -107,11 +107,14 @@ class BlogDashboardViewModel {
     }
 
     func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
-        return sectionIndex == DashboardSection.quickActions.rawValue
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        let targetIndex = showMigration ? DashboardSection.quickActions.rawValue : DashboardSection.quickActions.rawValue - 1
+        return sectionIndex == targetIndex
     }
 
     func isMigrationSuccessCardSection(_ sectionIndex: Int) -> Bool {
-        sectionIndex == DashboardSection.migrationSuccess.rawValue
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        return showMigration ? sectionIndex == DashboardSection.migrationSuccess.rawValue : false
     }
 }
 
