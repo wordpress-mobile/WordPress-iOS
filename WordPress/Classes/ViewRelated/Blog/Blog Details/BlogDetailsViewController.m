@@ -736,7 +736,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self quickActionsSectionViewModel]];
     }
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
-        [marr addObject:[self migrationSuccesstSectionViewModel]];
+        [marr addObject:[self migrationSuccessSectionViewModel]];
     }
 
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
