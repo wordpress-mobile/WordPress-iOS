@@ -3,25 +3,54 @@ import AutomatticTracks
 
 extension JetpackFullscreenOverlaySiteCreationViewModel {
 
+    // MARK: Private Enum Decleration
+
+    private enum DismissalType: String {
+        case close, `continue`
+    }
+
+    // MARK: Static Property Keys
+
+    private static let phasePropertyKey = "site_creation_phase"
+    private static let sourcePropertyKey = "source"
+    private static let dismiassalTypePropertyKey = "dismissal_type"
+
+    // MARK: Private Computed Property
+
+    private var defaultProperties: [String: String] {
+        return [
+            Self.phasePropertyKey: phase.rawValue,
+            Self.sourcePropertyKey: source
+        ]
+    }
+
     // MARK: Analytics Implementation
 
     func trackOverlayDisplayed() {
-        // TODO: Implement this
+        WPAnalytics.track(.jetpackSiteCreationOverlayDisplayed, properties: defaultProperties)
     }
 
     func trackLearnMoreTapped() {
-        // TODO: Implement this
+        assert(false, "Not implemnted because it should never be called.")
     }
 
     func trackSwitchButtonTapped() {
-        // TODO: Implement this
+        WPAnalytics.track(.jetpackSiteCreationOverlayButtonTapped, properties: defaultProperties)
     }
 
     func trackCloseButtonTapped() {
-        // TODO: Implement this
+        trackOverlayDismissed(dismissalType: .close)
     }
 
     func trackContinueButtonTapped() {
-        // TODO: Implement this
+        trackOverlayDismissed(dismissalType: .continue)
+    }
+
+    // MARK: Helpers
+
+    private func trackOverlayDismissed(dismissalType: DismissalType) {
+        var properties = defaultProperties
+        properties[Self.dismiassalTypePropertyKey] = dismissalType.rawValue
+        WPAnalytics.track(.jetpackSiteCreationOverlayDismissed, properties: properties)
     }
 }

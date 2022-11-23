@@ -27,7 +27,7 @@ class JetpackFeaturesRemovalCoordinator {
     }
 
     /// Enum descibing the current phase of the site creation flow removal
-    enum SiteCreationPhase {
+    enum SiteCreationPhase: String {
         case normal
         case one
         case two
