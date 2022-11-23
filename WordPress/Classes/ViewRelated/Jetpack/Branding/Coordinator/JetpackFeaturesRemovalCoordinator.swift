@@ -100,6 +100,21 @@ class JetpackFeaturesRemovalCoordinator {
         frequencyTracker.track()
     }
 
+    /// Used to display Site Creation overlays.
+    /// - Parameters:
+    ///   - viewController: View controller where the overlay should be presented in.
+    static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
+                                                   onDismiss: JetpackOverlayDismissCallback? = nil) {
+        let phase = siteCreationPhase()
+        var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase)
+        viewModel.onDismiss = onDismiss
+        guard viewModel.shouldShowOverlay else {
+            onDismiss?()
+            return
+        }
+        createAndPresentOverlay(with: viewModel, in: viewController)
+    }
+
     private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel, in viewController: UIViewController) {
         let overlay = JetpackFullscreenOverlayViewController(with: viewModel)
         let navigationViewController = UINavigationController(rootViewController: overlay)
