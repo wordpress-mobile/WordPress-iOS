@@ -385,7 +385,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
         epilogueViewController.onCreateNewSite = {
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController) {
+            let source = "login_epilogue"
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source) {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                     return
                 }
@@ -397,7 +398,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 }
 
                 navigationController.present(wizard, animated: true)
-                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
             }
         }
 

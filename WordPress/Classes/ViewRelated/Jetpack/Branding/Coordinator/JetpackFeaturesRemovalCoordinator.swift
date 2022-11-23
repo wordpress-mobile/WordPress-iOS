@@ -104,9 +104,10 @@ class JetpackFeaturesRemovalCoordinator {
     /// - Parameters:
     ///   - viewController: View controller where the overlay should be presented in.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
+                                                   source: String,
                                                    onDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase()
-        var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase)
+        var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase, source: source)
         viewModel.onDismiss = onDismiss
         guard viewModel.shouldShowOverlay else {
             onDismiss?()
