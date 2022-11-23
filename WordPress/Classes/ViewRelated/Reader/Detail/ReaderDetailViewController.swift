@@ -1112,7 +1112,7 @@ extension ReaderDetailViewController {
             comment: "Spoken accessibility label"
         )
         static let safariButtonAccessibilityLabel = NSLocalizedString(
-            "readerDetail.backButton.accessibilityLabel",
+            "readerDetail.safariButton.accessibilityLabel",
             value: "Open in Safari",
             comment: "Spoken accessibility label"
         )
