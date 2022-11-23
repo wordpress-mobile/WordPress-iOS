@@ -16,6 +16,7 @@ class MigrationCenterView: UIView {
         label.textAlignment = .center
         label.textColor = Appearance.descriptionTextColor
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
