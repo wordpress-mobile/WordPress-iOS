@@ -756,8 +756,8 @@
 		3F8B311F25D1D610005A2903 /* HomeWidgetThisWeekData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */; };
 		3F8B313025D1D652005A2903 /* HomeWidgetThisWeekData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */; };
 		3F8B45A029283D6C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B459F29283D6C00730FA4 /* DashboardMigrationSuccessCell.swift */; };
-		3F8B45A7292C1A2300730FA4 /* MigrationSuccesCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45A6292C1A2300730FA4 /* MigrationSuccesCardView.swift */; };
-		3F8B45A8292C1F2500730FA4 /* MigrationSuccesCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45A6292C1A2300730FA4 /* MigrationSuccesCardView.swift */; };
+		3F8B45A7292C1A2300730FA4 /* MigrationSuccessCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */; };
+		3F8B45A8292C1F2500730FA4 /* MigrationSuccessCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */; };
 		3F8B45A9292C1F2C00730FA4 /* DashboardMigrationSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B459F29283D6C00730FA4 /* DashboardMigrationSuccessCell.swift */; };
 		3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45AA292C42CC00730FA4 /* MigrationSuccessCell.swift */; };
 		3F8B45AC292C455800730FA4 /* MigrationSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8B45AA292C42CC00730FA4 /* MigrationSuccessCell.swift */; };
@@ -6087,7 +6087,7 @@
 		3F8B136C25D08F34004FAC0A /* HomeWidgetThisWeekData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetThisWeekData.swift; sourceTree = "<group>"; };
 		3F8B138E25D09AA5004FAC0A /* WordPressHomeWidgetThisWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressHomeWidgetThisWeek.swift; sourceTree = "<group>"; };
 		3F8B459F29283D6C00730FA4 /* DashboardMigrationSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMigrationSuccessCell.swift; sourceTree = "<group>"; };
-		3F8B45A6292C1A2300730FA4 /* MigrationSuccesCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationSuccesCardView.swift; sourceTree = "<group>"; };
+		3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationSuccessCardView.swift; sourceTree = "<group>"; };
 		3F8B45AA292C42CC00730FA4 /* MigrationSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationSuccessCell.swift; sourceTree = "<group>"; };
 		3F8CB10523A07B17007627BF /* ReaderReblogAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogAction.swift; sourceTree = "<group>"; };
 		3F8CBE0A24EEB0EA00F71234 /* AnnouncementsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDataSource.swift; sourceTree = "<group>"; };
@@ -10756,7 +10756,7 @@
 			isa = PBXGroup;
 			children = (
 				3F8B459F29283D6C00730FA4 /* DashboardMigrationSuccessCell.swift */,
-				3F8B45A6292C1A2300730FA4 /* MigrationSuccesCardView.swift */,
+				3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */,
 				3F8B45AA292C42CC00730FA4 /* MigrationSuccessCell.swift */,
 			);
 			path = "Success card";
@@ -20138,7 +20138,7 @@
 				FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				F913BB0E24B3C58B00C19032 /* EventLoggingDelegate.swift in Sources */,
 				4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
-				3F8B45A8292C1F2500730FA4 /* MigrationSuccesCardView.swift in Sources */,
+				3F8B45A8292C1F2500730FA4 /* MigrationSuccessCardView.swift in Sources */,
 				DC772AF5282009BA00664C02 /* StatsLineChartView.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
@@ -23686,7 +23686,7 @@
 				FABB25062602FC2C00C8785C /* ReaderTagsTableViewModel.swift in Sources */,
 				17ABD3532811A48900B1E9CB /* StatsMostPopularTimeInsightsCell.swift in Sources */,
 				C324D7AB28C2F73100310DEF /* SplashPrologueStyleGuide.swift in Sources */,
-				3F8B45A7292C1A2300730FA4 /* MigrationSuccesCardView.swift in Sources */,
+				3F8B45A7292C1A2300730FA4 /* MigrationSuccessCardView.swift in Sources */,
 				FABB25072602FC2C00C8785C /* SiteAssemblyService.swift in Sources */,
 				FABB25082602FC2C00C8785C /* ManagedPerson.swift in Sources */,
 				FABB25092602FC2C00C8785C /* ChosenValueRow.swift in Sources */,
