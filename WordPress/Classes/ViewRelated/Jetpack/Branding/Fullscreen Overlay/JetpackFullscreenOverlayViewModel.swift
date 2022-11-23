@@ -1,5 +1,7 @@
 import Foundation
 
+typealias JetpackOverlayDismissCallback = () -> Void
+
 /// Protocol used to configure `JetpackFullscreenOverlayViewController`
 protocol JetpackFullscreenOverlayViewModel {
     var title: String { get }
@@ -12,6 +14,8 @@ protocol JetpackFullscreenOverlayViewModel {
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
+    var titleLabelMaxNumberOfLines: Int { get }
+    var onDismiss: JetpackOverlayDismissCallback? { get }
 
     func trackOverlayDisplayed()
     func trackLearnMoreTapped()
