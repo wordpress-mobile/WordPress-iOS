@@ -4,34 +4,35 @@ final class MigrationWelcomeViewModel {
 
     // MARK: - Properties
 
-    var gravatarEmail: String?
-
-    let blogListDataSource: BlogListDataSource
-
+    let gravatarEmail: String?
     let configuration: MigrationStepConfiguration
+    let blogListDataSource: BlogListDataSource
 
     // MARK: - Init
 
-    init(account: WPAccount?, coordinator: MigrationFlowCoordinator) {
-        if let account {
-            self.gravatarEmail = account.email
-        }
+    init(gravatarEmail: String?, blogListDataSource: BlogListDataSource, configuration: MigrationStepConfiguration) {
+        self.gravatarEmail = gravatarEmail
+        self.configuration = configuration
+        self.blogListDataSource = blogListDataSource
+    }
 
-        self.blogListDataSource = BlogListDataSource()
-        self.blogListDataSource.loggedIn = true
-        self.blogListDataSource.account = account
-
-        let headerConfiguration = MigrationHeaderConfiguration(step: .welcome,
-                                                               multiSite: blogListDataSource.visibleBlogsCount > 1)
-
-        let actionsConfiguration = MigrationActionsViewConfiguration(step: .welcome,
-                                                                     primaryHandler: { [weak coordinator] in
-            coordinator?.transitionToNextStep()
-        },
-                                                                     secondaryHandler: { })
-
-        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
-                                                   centerViewConfiguration: nil,
-                                                   actionsConfiguration: actionsConfiguration)
+    convenience init(account: WPAccount?, actions: MigrationActionsViewConfiguration) {
+        let blogsDataSource = BlogListDataSource()
+        blogsDataSource.loggedIn = true
+        blogsDataSource.account = account
+        let header = MigrationHeaderConfiguration(
+            step: .welcome,
+            multiSite: blogsDataSource.visibleBlogsCount > 1
+        )
+        let configuration = MigrationStepConfiguration(
+            headerConfiguration: header,
+            centerViewConfiguration: nil,
+            actionsConfiguration: actions
+        )
+        self.init(
+            gravatarEmail: account?.email,
+            blogListDataSource: blogsDataSource,
+            configuration: configuration
+        )
     }
 }

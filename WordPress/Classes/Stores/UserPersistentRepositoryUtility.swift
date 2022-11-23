@@ -15,8 +15,6 @@ private enum UPRUConstants {
     static let currentAnnouncementsKey = "currentAnnouncements"
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
-    static let bloggingRemindersCopiedKey = "reminders-copied"
-    static let sharedBloggingRemindersCopiedKey = "shared-reminders-copied"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -164,24 +162,6 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.announcementsVersionDisplayedKey)
-        }
-    }
-
-    var bloggingRemindersCopied: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.bloggingRemindersCopiedKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.bloggingRemindersCopiedKey)
-        }
-    }
-
-    var sharedBloggingRemindersCopied: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.sharedBloggingRemindersCopiedKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.sharedBloggingRemindersCopiedKey)
         }
     }
 }
