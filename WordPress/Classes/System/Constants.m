@@ -49,18 +49,6 @@ NSString *const WPNotificationServiceExtensionKeychainUsernameKey   = @"Username
 NSString *const WPNotificationServiceExtensionKeychainUserIDKey     = @"UserID";
 NSString *const WPNotificationsEnabledKey                           = @"WordPressNotificationsEnabled";
 
-/// Share Extension Constants
-///
-NSString *const WPShareExtensionKeychainUsernameKey                 = @"Username";
-NSString *const WPShareExtensionKeychainTokenKey                    = @"OAuth2Token";
-NSString *const WPShareExtensionKeychainServiceName                 = @"ShareExtension";
-NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
-NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
-NSString *const WPShareExtensionUserDefaultsLastUsedSiteName        = @"WPShareUserDefaultsLastUsedSiteName";
-NSString *const WPShareExtensionUserDefaultsLastUsedSiteID          = @"WPShareUserDefaultsLastUsedSiteID";
-NSString *const WPShareExtensionMaximumMediaDimensionKey            = @"WPShareExtensionMaximumMediaDimensionKey";
-NSString *const WPShareExtensionRecentSitesKey                      = @"WPShareExtensionRecentSitesKey";
-
 /// Apple ID Constants
 ///
 NSString *const WPAppleIDKeychainUsernameKey                        = @"Username";
