@@ -159,7 +159,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
+        if !AppConfiguration.isJetpack && FeatureFlag.contentMigration.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
             let dict = UserDefaults.standard.dictionaryRepresentation()
             for (key, value) in dict {
                 UserPersistentStore.standard.set(value, forKey: key)
