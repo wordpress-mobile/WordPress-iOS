@@ -134,6 +134,7 @@ final class BlogDashboardViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.isScrollEnabled = !embeddedInScrollView
         collectionView.backgroundColor = .listBackground
+        collectionView.register(DashboardMigrationSuccessCell.self, forCellWithReuseIdentifier: DashboardMigrationSuccessCell.self.defaultReuseID)
         collectionView.register(DashboardQuickActionsCardCell.self, forCellWithReuseIdentifier: DashboardQuickActionsCardCell.self.defaultReuseID)
         DashboardCard.allCases.forEach {
             collectionView.register($0.cell, forCellWithReuseIdentifier: $0.cell.defaultReuseID)
@@ -224,8 +225,9 @@ extension BlogDashboardViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         let isQuickActionSection = viewModel.isQuickActionsSection(sectionIndex)
+        let isMigrationSuccessCardSection = viewModel.isMigrationSuccessCardSection(sectionIndex)
         let horizontalInset = isQuickActionSection ? 0 : Constants.horizontalSectionInset
-        let bottomInset = isQuickActionSection ? 0 : Constants.verticalSectionInset
+        let bottomInset = isQuickActionSection || isMigrationSuccessCardSection ? 0 : Constants.verticalSectionInset
         section.contentInsets = NSDirectionalEdgeInsets(top: Constants.verticalSectionInset,
                                                         leading: horizontalInset,
                                                         bottom: bottomInset,

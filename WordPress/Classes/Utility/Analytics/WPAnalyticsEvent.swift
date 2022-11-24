@@ -411,6 +411,9 @@ import Foundation
     case jetpackFullscreenOverlayLinkTapped
     case jetpackFullscreenOverlayButtonTapped
     case jetpackFullscreenOverlayDismissed
+    case jetpackSiteCreationOverlayDisplayed
+    case jetpackSiteCreationOverlayButtonTapped
+    case jetpackSiteCreationOverlayDismissed
 
     /// A String that represents the event
     var value: String {
@@ -1114,6 +1117,12 @@ import Foundation
             return "remove_feature_overlay_button_tapped"
         case .jetpackFullscreenOverlayDismissed:
             return "remove_feature_overlay_dismissed"
+        case .jetpackSiteCreationOverlayDisplayed:
+            return "remove_site_creation_overlay_displayed"
+        case .jetpackSiteCreationOverlayButtonTapped:
+            return "remove_site_creation_overlay_button_tapped"
+        case .jetpackSiteCreationOverlayDismissed:
+            return "remove_site_creation_overlay_dismissed"
         } // END OF SWITCH
     }
 

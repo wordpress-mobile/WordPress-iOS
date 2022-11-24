@@ -1,0 +1,1 @@
+Vi har korrigerat placeringen av meddelandet "Ingen mediafiler matchar din sökning" i mediabiblioteket. Det visas nu endast när det inte finns några sökresultat. Ta det lugnt och sök vidare.

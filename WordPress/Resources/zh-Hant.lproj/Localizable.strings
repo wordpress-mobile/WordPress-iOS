@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-15 07:14:31+0000 */
+/* Translation-Revision-Date: 2022-11-22 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -8505,7 +8505,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unnamed Site" = "未命名的網站";
 
 /* Accessibility label for unordered list button on formatting toolbar. */
-"Unordered List" = "未排序清單";
+"Unordered List" = "不排序清單";
 
 /* Filters Unread Notifications */
 "Unread" = "未讀";
@@ -9779,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "一年";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "此使用者帳號有使用中的購買項目，因此無法立即關閉。 請聯絡我們的支援團隊，以完成刪除帳號程序。";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "關閉";
 
@@ -9913,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress 搭配 Jetpack 效果更加";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "瞭解更多：jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "新增作者";
 
@@ -9966,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "關閉";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "完成";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "我們已轉移你的所有資料和設定。 一切全部順暢銜接。";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "感謝改用 Jetpack！";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "稍後決定";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "你將收到所有相同的通知，但來源為 Jetpack 應用程式。";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "我們已停用 WordPress 應用程式的通知。";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "允許通知以掌握你的網站動態";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "你似乎正從 WordPress 應用程式切換過來。";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "我們找到你的網站了。 繼續轉移你的所有資料，並自動登入 Jetpack。";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "我們找到你的網站了。 繼續轉移你的所有資料，並自動登入 Jetpack。";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "歡迎使用 Jetpack！";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "關閉";

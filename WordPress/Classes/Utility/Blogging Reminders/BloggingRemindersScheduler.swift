@@ -147,7 +147,7 @@ class BloggingRemindersScheduler {
     }
 
     static func handleRemindersMigration() {
-        guard FeatureFlag.sharedLogin.enabled else {
+        guard FeatureFlag.contentMigration.enabled else {
             return
         }
 

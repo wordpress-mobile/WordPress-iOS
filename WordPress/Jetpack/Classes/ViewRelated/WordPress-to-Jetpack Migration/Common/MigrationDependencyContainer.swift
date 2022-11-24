@@ -44,12 +44,30 @@ struct MigrationViewControllerFactory {
         }
     }
 
-    private func makeWelcomeViewModel() -> MigrationWelcomeViewModel {
-        MigrationWelcomeViewModel(account: makeAccount(), coordinator: coordinator)
+    // MARK: - View Controllers
+
+    private func makeWelcomeViewModel(handlers: ActionHandlers) -> MigrationWelcomeViewModel {
+        let primaryHandler = { () -> Void in handlers.primary?() }
+        let secondaryHandler = { () -> Void in handlers.secondary?() }
+
+        let actions = MigrationActionsViewConfiguration(
+            step: .welcome,
+            primaryHandler: primaryHandler,
+            secondaryHandler: secondaryHandler
+        )
+
+        return .init(account: makeAccount(), actions: actions)
     }
 
     private func makeWelcomeViewController() -> UIViewController {
-        MigrationWelcomeViewController(viewModel: makeWelcomeViewModel())
+        let handlers = ActionHandlers()
+        let viewModel = makeWelcomeViewModel(handlers: handlers)
+
+        let viewController = MigrationWelcomeViewController(viewModel: viewModel)
+        handlers.primary = { [weak coordinator] in coordinator?.transitionToNextStep() }
+        handlers.secondary = makeSupportViewControllerRouter(with: viewController)
+
+        return viewController
     }
 
     private func makeNotificationsViewModel() -> MigrationNotificationsViewModel {
@@ -66,5 +84,21 @@ struct MigrationViewControllerFactory {
 
     private func makeDoneViewController() -> UIViewController {
         MigrationDoneViewController(viewModel: makeDoneViewModel())
+    }
+
+    // MARK: - Routers
+
+    private func makeSupportViewControllerRouter(with presenter: UIViewController) -> () -> Void {
+        return { [weak presenter] in
+            let destination = SupportTableViewController(configuration: .currentAccountConfiguration(), style: .insetGrouped)
+            presenter?.present(UINavigationController(rootViewController: destination), animated: true)
+        }
+    }
+
+    // MARK: - Types
+
+    private class ActionHandlers {
+        var primary: (() -> Void)?
+        var secondary: (() -> Void)?
     }
 }

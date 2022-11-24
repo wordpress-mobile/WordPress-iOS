@@ -27,7 +27,7 @@ class JetpackFeaturesRemovalCoordinator {
     }
 
     /// Enum descibing the current phase of the site creation flow removal
-    enum SiteCreationPhase {
+    enum SiteCreationPhase: String {
         case normal
         case one
         case two
@@ -98,6 +98,22 @@ class JetpackFeaturesRemovalCoordinator {
         }
         createAndPresentOverlay(with: viewModel, in: viewController)
         frequencyTracker.track()
+    }
+
+    /// Used to display Site Creation overlays.
+    /// - Parameters:
+    ///   - viewController: View controller where the overlay should be presented in.
+    static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
+                                                   source: String,
+                                                   onDismiss: JetpackOverlayDismissCallback? = nil) {
+        let phase = siteCreationPhase()
+        var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase, source: source)
+        viewModel.onDismiss = onDismiss
+        guard viewModel.shouldShowOverlay else {
+            onDismiss?()
+            return
+        }
+        createAndPresentOverlay(with: viewModel, in: viewController)
     }
 
     private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel, in viewController: UIViewController) {

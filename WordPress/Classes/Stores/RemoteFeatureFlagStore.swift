@@ -51,6 +51,9 @@ class RemoteFeatureFlagStore {
     /// - Parameters:
     ///     - flag: The `FeatureFlag` object associated with a remote feature flag
     public func value(for flag: OverrideableFlag) -> Bool {
+        if let overriddenValue = FeatureFlagOverrideStore().overriddenValue(for: flag) {
+            return overriddenValue
+        }
         guard
             let remoteKey = flag.remoteKey, // Not all flags contain a remote key, since they may not use remote feature flagging
             let value = cache[remoteKey]    // The value may not be in the cache if this is the first run
