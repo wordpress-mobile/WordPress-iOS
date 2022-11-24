@@ -514,6 +514,18 @@ private extension PromptRemindersSchedulerTests {
 
             return saveShouldSucceed
         }
+
+        func containerURL(forAppGroup appGroup: String) -> URL? {
+            return nil
+        }
+
+        func removeItem(at url: URL) throws {
+            // no-op
+        }
+
+        func copyItem(at srcURL: URL, to dstURL: URL) throws {
+            // no-op
+        }
     }
 }
 
