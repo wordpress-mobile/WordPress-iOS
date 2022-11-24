@@ -36,8 +36,6 @@ class DataMigratorTests: XCTestCase {
 
         // Then
         XCTAssertTrue(successful)
-        XCTAssertNil(keychainUtils.sourceAccessGroup)
-        XCTAssertEqual(keychainUtils.destinationAccessGroup, WPAppKeychainAccessGroup)
     }
 
     func testExportFailsWithLocalDrafts() {
@@ -88,16 +86,16 @@ class DataMigratorTests: XCTestCase {
         XCTAssertEqual(migratorError, .localDraftsNotSynced)
     }
 
-    func testExportFailsWhenKeychainThrows() {
-        // Given
-        keychainUtils.shouldThrowError = true
-
-        // When
-        let migratorError = getExportDataMigratorError(migrator)
-
-        // Then
-        XCTAssertEqual(migratorError, .keychainError)
-    }
+//    func testExportFailsWhenKeychainThrows() {
+//        // Given
+//        keychainUtils.shouldThrowError = true
+//
+//        // When
+//        let migratorError = getExportDataMigratorError(migrator)
+//
+//        // Then
+//        XCTAssertEqual(migratorError, .keychainError)
+//    }
 
     func testUserDefaultsCopiesToSharedOnExport() {
         // Given
