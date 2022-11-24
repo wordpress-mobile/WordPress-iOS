@@ -1,3 +1,8 @@
+fileprivate protocol MigratableUserDefaultsKey {
+    var rawValue: String { get }
+    func valueForJetpack() -> String
+}
+
 final class DataMigrator {
 
     private let coreDataStack: CoreDataStack
@@ -147,6 +152,21 @@ private extension DataMigrator {
 
         return true
     }
+
+    func copyUserDefaultKeys(_ keys: [MigratableUserDefaultsKey]) {
+        guard let sharedDefaults else {
+            return
+        }
+
+        keys.forEach { key in
+            // go to the next key if there's nothing stored under the current key.
+            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
+                return
+            }
+
+            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
+        }
+    }
 }
 
 // MARK: - Today Widget Helpers
@@ -167,10 +187,6 @@ private extension DataMigrator {
     }
 
     func copyTodayWidgetUserDefaults() {
-        guard let sharedDefaults else {
-            return
-        }
-
         let userDefaultKeys: [WPWidgetConstants] = [
             .userDefaultsSiteIdKey,
             .userDefaultsLoggedInKey,
@@ -180,14 +196,7 @@ private extension DataMigrator {
             .statsUserDefaultsSiteTimeZoneKey
         ]
 
-        userDefaultKeys.forEach { key in
-            // go to the next key if there's nothing stored under the current key.
-            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
-                return
-            }
-
-            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
-        }
+        copyUserDefaultKeys(userDefaultKeys)
     }
 
     func copyTodayWidgetCacheFiles() {
@@ -217,7 +226,7 @@ private extension DataMigrator {
 
     /// Keys relevant for migration, copied from WidgetConfiguration.
     ///
-    enum WPWidgetConstants: String {
+    enum WPWidgetConstants: String, MigratableUserDefaultsKey {
         // Constants for Home Widget
         case keychainTokenKey = "OAuth2Token"
         case keychainServiceName = "TodayWidget"
@@ -289,10 +298,6 @@ private extension DataMigrator {
     }
 
     func copyShareExtensionUserDefaults() {
-        guard let sharedDefaults else {
-            return
-        }
-
         let userDefaultKeys: [WPShareExtensionConstants] = [
             .userDefaultsPrimarySiteName,
             .userDefaultsPrimarySiteID,
@@ -302,19 +307,12 @@ private extension DataMigrator {
             .recentSitesKey
         ]
 
-        userDefaultKeys.forEach { key in
-            // go to the next key if there's nothing stored under the current key.
-            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
-                return
-            }
-
-            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
-        }
+        copyUserDefaultKeys(userDefaultKeys)
     }
 
     /// Keys relevant for migration, copied from ExtensionConfiguration.
     ///
-    enum WPShareExtensionConstants: String {
+    enum WPShareExtensionConstants: String, MigratableUserDefaultsKey {
 
         case keychainUsernameKey = "Username"
         case keychainTokenKey = "OAuth2Token"
@@ -369,27 +367,16 @@ private extension DataMigrator {
     }
 
     func copyNotificationExtensionUserDefaults() {
-        guard let sharedDefaults else {
-            return
-        }
-
         let userDefaultKeys: [WPNotificationsExtensionConstants] = [
             .enabledKey
         ]
 
-        userDefaultKeys.forEach { key in
-            // go to the next key if there's nothing stored under the current key.
-            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
-                return
-            }
-
-            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
-        }
+        copyUserDefaultKeys(userDefaultKeys)
     }
 
     /// Keys relevant for migration, copied from ExtensionConfiguration.
     ///
-    enum WPNotificationsExtensionConstants: String {
+    enum WPNotificationsExtensionConstants: String, MigratableUserDefaultsKey {
 
         case keychainServiceName = "NotificationServiceExtension"
         case keychainTokenKey = "OAuth2Token"
