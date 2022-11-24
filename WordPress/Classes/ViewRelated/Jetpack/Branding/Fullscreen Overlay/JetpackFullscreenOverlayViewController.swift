@@ -216,7 +216,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        // TODO: Add here action to redirect to the JP app
+        JetpackRedirector.redirectToJetpack()
         viewModel.trackSwitchButtonTapped()
     }
 
