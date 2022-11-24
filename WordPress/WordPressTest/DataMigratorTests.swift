@@ -316,7 +316,7 @@ private final class MockLocalFileStore: LocalFileStore {
     var copyShouldThrowError: Bool = false
 
     func fileExists(at url: URL) -> Bool {
-        return fileShouldExistClosure(nil)
+        return fileShouldExistClosure(url)
     }
 
     func save(contents: Data, at url: URL) -> Bool {
