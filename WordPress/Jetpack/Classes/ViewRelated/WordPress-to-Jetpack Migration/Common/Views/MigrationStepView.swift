@@ -79,16 +79,23 @@ class MigrationStepView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let bottomInset = actionsView.frame.size.height - safeAreaInsets.bottom
-        mainScrollView.contentInset.bottom = bottomInset + Constants.bottomMargin
+        mainScrollView.contentInset.bottom = bottomInset + Constants.additionalBottomContentInset
         mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-        mainScrollView.contentInset.top = Constants.topMargin
+        mainScrollView.contentInset.top = Constants.topContentInset
     }
 
     private enum Constants {
+        /// Adds space between the content bottom edge and actions sheet top edge.
+        ///
+        /// Bottom inset is added to the `scrollView` so the content is not covered by the Actions Sheet view.
+        /// The value of the bottom inset is computed in `layoutSubviews`.
+        static let additionalBottomContentInset: CGFloat = 10
+
+        /// Adds top padding to the `scrollView`.
+        static let topContentInset: CGFloat = UINavigationBar().intrinsicContentSize.height
+
         static let centerContentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         static let stackViewSpacing: CGFloat = 20
-        static let bottomMargin: CGFloat = 10
-        static let topMargin: CGFloat = UINavigationBar().intrinsicContentSize.height
         static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
     }
 }
