@@ -282,8 +282,8 @@ private extension NotificationService {
     /// - Returns: the token if found; `nil` otherwise
     ///
     func readExtensionToken() -> String? {
-        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
-                                                                             andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                                                                             andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                              accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension OAuth token")
             return nil
@@ -297,8 +297,8 @@ private extension NotificationService {
     /// - Returns: the username if found; `nil` otherwise
     ///
     func readExtensionUsername() -> String? {
-        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
-                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                                                                           andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                            accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension username")
             return nil
@@ -312,8 +312,8 @@ private extension NotificationService {
     /// - Returns: the userID if found; `nil` otherwise
     ///
     func readExtensionUserID() -> String? {
-        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUserIDKey,
-                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                                                                         andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                          accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension userID")
             return nil
