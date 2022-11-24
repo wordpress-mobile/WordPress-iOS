@@ -223,6 +223,10 @@ extension CoreDataStack {
     /// Creates a copy of the current open store and saves it to the specified destination
     /// - Parameter backupLocation: Location to save the store copy to
     func createStoreCopy(to backupLocation: URL) throws {
+        let (backupLocation, shmLocation, walLocation) = databaseFiles(for: backupLocation)
+        try? FileManager.default.removeItem(at: backupLocation)
+        try? FileManager.default.removeItem(at: shmLocation)
+        try? FileManager.default.removeItem(at: walLocation)
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
               let store = storeCoordinator.persistentStores.first else {
             throw ContextManager.ContextManagerError.missingCoordinatorOrStore
@@ -267,6 +271,7 @@ extension CoreDataStack {
             throw ContextManager.ContextManagerError.missingDatabase
         }
 
+        mainContext.reset()
         try storeCoordinator.remove(store)
         let databaseReplaced = replaceDatabase(from: databaseLocation, to: currentDatabaseLocation)
 

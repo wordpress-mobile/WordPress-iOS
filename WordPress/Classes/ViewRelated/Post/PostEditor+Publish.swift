@@ -517,7 +517,7 @@ extension PublishingEditor {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView(presentBloggingReminders: true)
+        dismissOrPopView(presentBloggingReminders: FeatureFlag.bloggingReminders.enabled)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }

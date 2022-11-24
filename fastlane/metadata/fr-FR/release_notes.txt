@@ -1,1 +1,0 @@
-Le contrôle vocal est désormais plus facile à utiliser dans l’éditeur de blocs : lorsque vous travaillez avec des blocs Image, utilisez le curseur du contrôle vocal pour sélectionner la légende à saisir.

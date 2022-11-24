@@ -8,6 +8,8 @@ class MigrationNotificationsViewModel {
 
         let headerConfiguration = MigrationHeaderConfiguration(step: .notifications)
 
+        let centerViewConfigurartion = MigrationCenterViewConfiguration(step: .notifications)
+
         let actionsConfiguration = MigrationActionsViewConfiguration(step: .notifications,
                                                                      primaryHandler: {
             InteractiveNotificationsManager.shared.requestAuthorization { [weak coordinator] authorized in
@@ -18,6 +20,8 @@ class MigrationNotificationsViewModel {
             coordinator?.transitionToNextStep()
         })
 
-        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration, actionsConfiguration: actionsConfiguration)
+        configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
+                                                   centerViewConfiguration: centerViewConfigurartion,
+                                                   actionsConfiguration: actionsConfiguration)
     }
 }

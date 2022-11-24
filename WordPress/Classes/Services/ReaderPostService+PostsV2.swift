@@ -7,11 +7,7 @@ extension ReaderPostService {
         }
 
         let remoteService = ReaderPostServiceRemote.withDefaultApi()
-        remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { [weak self] posts, pageHandle in
-            guard let self = self else {
-                return
-            }
-
+        remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { posts, pageHandle in
             self.managedObjectContext.perform {
 
                 if self.managedObjectContext.parent == ContextManager.shared.mainContext {

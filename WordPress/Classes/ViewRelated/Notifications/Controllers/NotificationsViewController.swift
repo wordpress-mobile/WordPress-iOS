@@ -180,6 +180,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .notifications, in: self)
+
         syncNotificationsWithModeratedComments()
         setupInlinePrompt()
 

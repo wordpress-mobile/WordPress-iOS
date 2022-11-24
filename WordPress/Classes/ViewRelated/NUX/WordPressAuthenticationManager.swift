@@ -385,13 +385,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
         epilogueViewController.onCreateNewSite = {
-            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
-            guard let wizard = wizardLauncher.ui else {
-                return
-            }
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController) {
+                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                    return
+                }
 
-            navigationController.present(wizard, animated: true)
-            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+                // Display site creation flow if not in phase two
+                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
+                guard let wizard = wizardLauncher.ui else {
+                    return
+                }
+
+                navigationController.present(wizard, animated: true)
+                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+            }
         }
 
         navigationController.delegate = epilogueViewController

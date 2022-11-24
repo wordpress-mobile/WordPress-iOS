@@ -252,6 +252,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
+    private let notificationFilteringService = NotificationFilteringService()
 
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
@@ -260,7 +261,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         store: Store = Store()) {
 
         self.eventTracker = eventTracker
-        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
+        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents,
+                                                                   notificationFilteringService: notificationFilteringService)
         self.store = store
 
         self.runDateComponents = runDateComponents ?? {
@@ -356,6 +358,14 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     // MARK: - Running the Background Task
 
     func run(onError: @escaping (Error) -> Void, completion: @escaping (Bool) -> Void) {
+
+        // This will no longer run for WordPress as part of JetPack migration.
+        // This can be removed once JetPack migration is complete.
+        if notificationFilteringService.shouldFilterWordPressNotifications() {
+            notificationScheduler.cancellAll()
+            notificationScheduler.cancelStaticNotification()
+            return
+        }
 
         // We use multiple operations in series so that if the expiration handler is
         // called, the operation queue will cancell any pending operations, ensuring
@@ -485,9 +495,11 @@ class WeeklyRoundupNotificationScheduler {
 
     init(
         staticNotificationDateComponents: DateComponents? = nil,
+        notificationFilteringService: NotificationFilteringService,
         userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
 
         self.userNotificationCenter = userNotificationCenter
+        self.notificationFilteringService = notificationFilteringService
 
         self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
             var dateComponents = DateComponents()
@@ -506,6 +518,7 @@ class WeeklyRoundupNotificationScheduler {
 
     let staticNotificationDateComponents: DateComponents
     let userNotificationCenter: UNUserNotificationCenter
+    let notificationFilteringService: NotificationFilteringService
 
     enum NotificationSchedulingError: Error {
         case staticNotificationSchedulingError(error: Error)
@@ -611,6 +624,10 @@ class WeeklyRoundupNotificationScheduler {
         dateComponents: DateComponents,
         completion: @escaping (Result<Void, Error>) -> Void) {
 
+        if notificationFilteringService.shouldFilterWordPressNotifications() {
+            return
+        }
+
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -649,7 +666,7 @@ class WeeklyRoundupNotificationScheduler {
         }
     }
 
-    func cancelStaticNotification(completion: @escaping (Bool) -> Void) {
+    func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
         userNotificationCenter.getPendingNotificationRequests { requests in
             if Feature.enabled(.weeklyRoundupStaticNotification) {
                 guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {

@@ -1,3 +1,0 @@
-Bei Jetpack sind jetzt dynamische Widgets verfügbar. Damit kannst du dir Statistiken für das aktuelle Datum, die gesamte Woche oder den gesamten Zeitraum auf dem Startbildschirm deines Geräts anzeigen lassen. Dir wird in der App auch ein brandneuer Startbildschirm angezeigt, der auf die Bewegung deines Geräts reagiert.
-
-Die Verwendung der Sprachsteuerung ist im Block-Editor jetzt einfacher. Wenn du mit Bildblöcken arbeitest, kannst du mit dem Cursor der Sprachsteuerung die Unterschrift auswählen, für die Text eingegeben werden soll.

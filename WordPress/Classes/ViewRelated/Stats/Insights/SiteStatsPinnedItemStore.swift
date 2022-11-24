@@ -4,13 +4,15 @@ import Foundation
 protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
-    private lazy var items: [SiteStatsPinnable] = {
-        return [
-            GrowAudienceCell.HintType.social,
-            GrowAudienceCell.HintType.bloggingReminders,
-            GrowAudienceCell.HintType.readerDiscover,
-            InsightType.customize
-        ]
+    private(set) lazy var items: [SiteStatsPinnable] = {
+        return FeatureFlag.bloggingReminders.enabled ?
+                                                     [GrowAudienceCell.HintType.social,
+                                                      GrowAudienceCell.HintType.bloggingReminders,
+                                                      GrowAudienceCell.HintType.readerDiscover,
+                                                      InsightType.customize] :
+                                                       [GrowAudienceCell.HintType.social,
+                                                        GrowAudienceCell.HintType.readerDiscover,
+                                                        InsightType.customize]
     }()
     private let lowSiteViewsCountThreshold = 3000
     private let siteId: NSNumber
