@@ -108,7 +108,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func applyStyles() {
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
-        titleLabel.numberOfLines = viewModel.titleLabelMaxNumberOfLines
     }
 
     private func setupConstraints() {
@@ -159,8 +158,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func setupFonts() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        footnoteLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)

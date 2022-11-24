@@ -14,7 +14,6 @@ protocol JetpackFullscreenOverlayViewModel {
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
-    var titleLabelMaxNumberOfLines: Int { get }
     var onDismiss: JetpackOverlayDismissCallback? { get }
 
     func trackOverlayDisplayed()

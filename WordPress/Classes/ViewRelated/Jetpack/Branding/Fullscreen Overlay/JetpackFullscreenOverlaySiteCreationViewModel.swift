@@ -71,10 +71,6 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return Constants.analyticsSource
     }
 
-    var titleLabelMaxNumberOfLines: Int {
-        return Constants.titleLabelMaxNumberOfLines
-    }
-
     var onDismiss: JetpackOverlayDismissCallback?
 }
 
@@ -83,7 +79,6 @@ private extension JetpackFullscreenOverlaySiteCreationViewModel {
         static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
         static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
         static let analyticsSource = "site_creation"
-        static let titleLabelMaxNumberOfLines: Int = 3
     }
 
     enum Strings {
