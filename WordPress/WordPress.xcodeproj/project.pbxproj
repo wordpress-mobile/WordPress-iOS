@@ -1556,6 +1556,8 @@
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
 		803C493F283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
+		803D90F7292F0188007CC0D0 /* JetpackRedirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */; };
+		803D90F8292F0188007CC0D0 /* JetpackRedirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */; };
 		803DE81328FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */; };
 		803DE81428FFAE36007D4E9C /* RemoteConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */; };
 		803DE81628FFAEF2007D4E9C /* RemoteConfigParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */; };
@@ -6839,6 +6841,7 @@
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
+		803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRedirector.swift; sourceTree = "<group>"; };
 		803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStore.swift; sourceTree = "<group>"; };
 		803DE81528FFAEF2007D4E9C /* RemoteConfigParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameter.swift; sourceTree = "<group>"; };
 		803DE81828FFB7B5007D4E9C /* RemoteConfigParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigParameterTests.swift; sourceTree = "<group>"; };
@@ -10607,6 +10610,7 @@
 			children = (
 				3F43704328932F0100475B6E /* JetpackBrandingCoordinator.swift */,
 				803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */,
+				803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */,
 				801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */,
 			);
 			path = Coordinator;
@@ -21009,6 +21013,7 @@
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
 				4353BFA9219E0E820009CED3 /* RevisionOperationViewController.swift in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
+				803D90F7292F0188007CC0D0 /* JetpackRedirector.swift in Sources */,
 				3F09CCAA2428FF8300D00A8C /* ReaderTabView.swift in Sources */,
 				9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */,
 				08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */,
@@ -22460,6 +22465,7 @@
 				FABB20F72602FC2C00C8785C /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				C3C39B0826F50D3900B1238D /* WordPressSupportSourceTag+Editor.swift in Sources */,
 				FEFC0F8A2731182C001F7F1D /* CommentService+Replies.swift in Sources */,
+				803D90F8292F0188007CC0D0 /* JetpackRedirector.swift in Sources */,
 				FABB20F82602FC2C00C8785C /* BaseActivityListViewController.swift in Sources */,
 				98E54FF3265C972900B4BE9A /* ReaderDetailLikesView.swift in Sources */,
 				FABB20F92602FC2C00C8785C /* RequestAuthenticator.swift in Sources */,

@@ -160,10 +160,6 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         return source.rawValue
     }
 
-    var titleLabelMaxNumberOfLines: Int {
-        return Constants.titleLabelMaxNumberOfLines
-    }
-
     var onDismiss: JetpackOverlayDismissCallback?
 }
 
@@ -175,7 +171,6 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
         static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
         static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
-        static let titleLabelMaxNumberOfLines: Int = 2
     }
 
     enum Strings {
