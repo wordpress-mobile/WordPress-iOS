@@ -56,13 +56,12 @@ final class DataMigrator {
         }
 
         copyTodayWidgetDataToJetpack()
+        copyShareExtensionDataToJetpack()
         BloggingRemindersScheduler.handleRemindersMigration()
         completion?(.success(()))
     }
 
     /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
-    ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget, the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
@@ -71,6 +70,12 @@ final class DataMigrator {
         copyTodayWidgetKeychain()
         copyTodayWidgetUserDefaults()
         copyTodayWidgetCacheFiles()
+    }
+
+    /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
+    func copyShareExtensionDataToJetpack() {
+        copyShareExtensionKeychain()
+        copyShareExtensionUserDefaults()
     }
 }
 
@@ -137,7 +142,7 @@ private extension DataMigrator {
     }
 }
 
-// MARK: - Today Widget Extension Constants
+// MARK: - Today Widget Helpers
 
 private extension DataMigrator {
 
@@ -254,6 +259,87 @@ private extension DataMigrator {
                 return "JetpackThisWeekData.plist"
             case .statsAllTimeFilename:
                 return "JetpackAllTimeData.plist"
+            }
+        }
+    }
+}
+
+// MARK: - App Extensions Helpers
+
+private extension DataMigrator {
+
+    func copyShareExtensionKeychain() {
+        guard let authToken = try? keychainUtils.password(for: WPShareExtensionConstants.keychainTokenKey.rawValue,
+                                                          serviceName: WPShareExtensionConstants.keychainServiceName.rawValue,
+                                                          accessGroup: WPAppKeychainAccessGroup) else {
+            return
+        }
+
+        try? keychainUtils.store(username: WPShareExtensionConstants.keychainTokenKey.valueForJetpack(),
+                                 password: authToken,
+                                 serviceName: WPShareExtensionConstants.keychainServiceName.valueForJetpack(),
+                                 updateExisting: true)
+    }
+
+    func copyShareExtensionUserDefaults() {
+        guard let sharedDefaults else {
+            return
+        }
+
+        let userDefaultKeys: [WPShareExtensionConstants] = [
+            .userDefaultsPrimarySiteName,
+            .userDefaultsPrimarySiteID,
+            .userDefaultsLastUsedSiteName,
+            .userDefaultsLastUsedSiteID,
+            .maximumMediaDimensionKey,
+            .recentSitesKey
+        ]
+
+        userDefaultKeys.forEach { key in
+            // go to the next key if there's nothing stored under the current key.
+            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
+                return
+            }
+
+            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
+        }
+    }
+
+    /// Keys relevant for migration, copied from ExtensionConfiguration.
+    ///
+    enum WPShareExtensionConstants: String {
+
+        // Constants for share extension
+        case keychainUsernameKey = "Username"
+        case keychainTokenKey = "OAuth2Token"
+        case keychainServiceName = "ShareExtension"
+        case userDefaultsPrimarySiteName = "WPShareUserDefaultsPrimarySiteName"
+        case userDefaultsPrimarySiteID = "WPShareUserDefaultsPrimarySiteID"
+        case userDefaultsLastUsedSiteName = "WPShareUserDefaultsLastUsedSiteName"
+        case userDefaultsLastUsedSiteID = "WPShareUserDefaultsLastUsedSiteID"
+        case maximumMediaDimensionKey = "WPShareExtensionMaximumMediaDimensionKey"
+        case recentSitesKey = "WPShareExtensionRecentSitesKey"
+
+        func valueForJetpack() -> String {
+            switch self {
+            case .keychainUsernameKey:
+                return "JPUsername"
+            case .keychainTokenKey:
+                return "JPOAuth2Token"
+            case .keychainServiceName:
+                return "JPShareExtension"
+            case .userDefaultsPrimarySiteName:
+                return "JPShareUserDefaultsPrimarySiteName"
+            case .userDefaultsPrimarySiteID:
+                return "JPShareUserDefaultsPrimarySiteID"
+            case .userDefaultsLastUsedSiteName:
+                return "JPShareUserDefaultsLastUsedSiteName"
+            case .userDefaultsLastUsedSiteID:
+                return "JPShareUserDefaultsLastUsedSiteID"
+            case .maximumMediaDimensionKey:
+                return "JPShareExtensionMaximumMediaDimensionKey"
+            case .recentSitesKey:
+                return "JPShareExtensionRecentSitesKey"
             }
         }
     }
