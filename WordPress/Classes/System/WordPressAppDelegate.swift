@@ -504,6 +504,14 @@ extension WordPressAppDelegate {
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
+        // try to handle unauthenticated routes first.
+        if activity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = activity.webpageURL,
+           UniversalLinkRouter.unauthenticated.canHandle(url: url) {
+            UniversalLinkRouter.unauthenticated.handle(url: url)
+            return
+        }
+
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
