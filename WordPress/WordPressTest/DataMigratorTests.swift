@@ -308,7 +308,7 @@ private extension NSManagedObjectContext {
 // MARK: - Mock Local File Store
 
 private final class MockLocalFileStore: LocalFileStore {
-    var fileShouldExistClosure: (URL?) -> Bool = { return false }
+    var fileShouldExistClosure: (URL?) -> Bool = { _ in return false }
     var removeItemCallCount: Int = 0
     var copyItemCallCount: Int = 0
 
