@@ -1554,6 +1554,8 @@
 		8031F349292FF46A00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34A292FF46B00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34B292FF46E00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
+		8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
+		8031F34D29302C8100E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -19718,6 +19720,7 @@
 				0107E0D928F97D5000DE87DB /* SFHFKeychainUtils.m in Sources */,
 				0107E0DA28F97D5000DE87DB /* ListViewData.swift in Sources */,
 				0107E0DB28F97D5000DE87DB /* Double+Stats.swift in Sources */,
+				8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */,
 				0107E0DC28F97D5000DE87DB /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -21498,6 +21501,7 @@
 				3FCC8FD9256C911300810295 /* SFHFKeychainUtils.m in Sources */,
 				3FE20C3725CF211F00A15525 /* ListViewData.swift in Sources */,
 				3F71D5302548C2B200A4BA93 /* Double+Stats.swift in Sources */,
+				8031F34D29302C8100E8F95E /* ExtensionConfiguration.swift in Sources */,
 				98390AD2254C985F00868F0A /* Tracks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
