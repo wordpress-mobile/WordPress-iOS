@@ -118,10 +118,26 @@ extension PostSettingsViewController {
     }
 
     struct FeaturedImageActionSheet {
-        static let title = NSLocalizedString("Featured Image Options", comment: "Title for action sheet with featured media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss featured media options.")
-        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry featured media upload.")
-        static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove featured media.")
+        static let title = NSLocalizedString(
+            "postSettings.featuredImageUploadActionSheet.title",
+            value: "Featured Image Options",
+            comment: "Title for action sheet with featured media options."
+        )
+        static let dismissActionTitle = NSLocalizedString(
+            "postSettings.featuredImageUploadActionSheet.dismiss",
+            value: "Dismiss",
+            comment: "User action to dismiss featured media options."
+        )
+        static let retryUploadActionTitle = NSLocalizedString(
+            "postSettings.featuredImageUploadActionSheet.retryUpload",
+            value: "Retry",
+            comment: "User action to retry featured media upload."
+        )
+        static let removeActionTitle = NSLocalizedString(
+            "postSettings.featuredImageUploadActionSheet.remove",
+            value: "Remove",
+            comment: "User action to remove featured media."
+        )
     }
 
 }

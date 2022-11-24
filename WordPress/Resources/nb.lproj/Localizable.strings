@@ -1329,6 +1329,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -3241,7 +3242,8 @@ translators: Block name. %s: The localized block name */
 /* A button title. */
 "Need help finding your site address?" = "Trenger du hjelp med å finne sideadressen?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Trenger du hjelp?";
 
 /* Title of the more help button on alert helping users understand their site address */

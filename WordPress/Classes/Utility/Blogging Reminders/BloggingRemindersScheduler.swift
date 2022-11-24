@@ -159,8 +159,7 @@ class BloggingRemindersScheduler {
     }
 
     private static func copyStoreToSharedFile() {
-        guard !UserPersistentStoreFactory.instance().bloggingRemindersCopied,
-              let store = try? defaultStore(),
+        guard let store = try? defaultStore(),
               let fileUrl = try? defaultDataFileURL(),
               let sharedFileUrl = sharedDataFileURL() else {
             return
@@ -170,13 +169,10 @@ class BloggingRemindersScheduler {
         if store.configuration.count > 0 {
             try? FileManager.default.copyItem(at: fileUrl, to: sharedFileUrl)
         }
-
-        UserPersistentStoreFactory.instance().bloggingRemindersCopied = true
     }
 
     private static func copyStoreToLocalFile() {
-        guard !UserPersistentStoreFactory.instance().sharedBloggingRemindersCopied,
-              let localStore = try? defaultStore(),
+        guard let localStore = try? defaultStore(),
               let sharedFileUrl = sharedDataFileURL(),
               FileManager.default.fileExists(at: sharedFileUrl),
               let sharedStore = try? BloggingRemindersStore(dataFileURL: sharedFileUrl) else {
@@ -190,8 +186,6 @@ class BloggingRemindersScheduler {
                 try? localStore.save(scheduledReminders: schedule, for: blogIdentifier)
             }
         }
-
-        UserPersistentStoreFactory.instance().sharedBloggingRemindersCopied = true
     }
 
     // MARK: - Initializers
