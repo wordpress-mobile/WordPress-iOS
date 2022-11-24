@@ -6,16 +6,19 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     private var sut: JetpackNotificationMigrationService!
     private var notificationSettingsLoader: NotificationSettingsLoaderMock!
     private var remoteNotificationsRegister: RemoteNotificationRegisterMock!
+    private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
 
     override func setUpWithError() throws {
         notificationSettingsLoader = NotificationSettingsLoaderMock()
         remoteNotificationsRegister = RemoteNotificationRegisterMock()
+        remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
     }
 
     override func tearDownWithError() throws {
         sut = nil
         notificationSettingsLoader = nil
         remoteNotificationsRegister = nil
+        remoteFeatureFlagStore = nil
     }
 
     // MARK: - Should show notification control
@@ -104,11 +107,12 @@ private extension JetpackNotificationMigrationServiceTests {
                notificationsEnabled: Bool = true) {
         notificationSettingsLoader.authorizationStatus = notificationsEnabled ? .authorized : .denied
 
-        try? FeatureFlagOverrideStore().override(FeatureFlag.jetpackMigrationPreventDuplicateNotifications, withValue: preventDuplicateNotificationsFlag)
+        remoteFeatureFlagStore.value = preventDuplicateNotificationsFlag
 
         sut = JetpackNotificationMigrationService(
             notificationSettingsLoader: notificationSettingsLoader,
             remoteNotificationRegister: remoteNotificationsRegister,
+            featureFlagStore: remoteFeatureFlagStore,
             isWordPress: isWordPress
         )
         sut.wordPressNotificationsEnabled = true
@@ -137,5 +141,13 @@ private class RemoteNotificationRegisterMock: RemoteNotificationRegister {
     func unregisterForRemoteNotifications() {
         isRegisteredForRemoteNotifications = false
         unregisterForRemoteNotificationsCalled = true
+    }
+}
+
+private class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
+    var value = false
+
+    override func value(for flag: OverrideableFlag) -> Bool {
+        return value
     }
 }
