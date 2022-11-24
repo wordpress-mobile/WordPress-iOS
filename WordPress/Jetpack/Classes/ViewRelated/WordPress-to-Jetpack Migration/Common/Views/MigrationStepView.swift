@@ -45,7 +45,7 @@ class MigrationStepView: UIView {
         headerView.directionalLayoutMargins = Constants.headerViewMargins
         actionsView.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: .zero)
-        backgroundColor = .systemBackground
+        backgroundColor = MigrationAppearance.backgroundColor
         addSubview(mainScrollView)
         addSubview(actionsView)
         activateConstraints()
