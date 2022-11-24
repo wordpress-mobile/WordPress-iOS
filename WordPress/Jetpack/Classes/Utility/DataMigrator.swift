@@ -57,6 +57,7 @@ final class DataMigrator {
 
         copyTodayWidgetDataToJetpack()
         copyShareExtensionDataToJetpack()
+        copyNotificationsExtensionDataToJetpack()
         BloggingRemindersScheduler.handleRemindersMigration()
         completion?(.success(()))
     }
@@ -76,6 +77,12 @@ final class DataMigrator {
     func copyShareExtensionDataToJetpack() {
         copyShareExtensionKeychain()
         copyShareExtensionUserDefaults()
+    }
+
+    /// Copies WP's Notifications extension data (in Keychain and User Defaults) into JP.
+    func copyNotificationsExtensionDataToJetpack() {
+        copyNotificationExtensionKeychain()
+        copyNotificationExtensionUserDefaults()
     }
 }
 
@@ -264,7 +271,7 @@ private extension DataMigrator {
     }
 }
 
-// MARK: - App Extensions Helpers
+// MARK: - Share Extension Helpers
 
 private extension DataMigrator {
 
@@ -309,7 +316,6 @@ private extension DataMigrator {
     ///
     enum WPShareExtensionConstants: String {
 
-        // Constants for share extension
         case keychainUsernameKey = "Username"
         case keychainTokenKey = "OAuth2Token"
         case keychainServiceName = "ShareExtension"
@@ -340,6 +346,69 @@ private extension DataMigrator {
                 return "JPShareExtensionMaximumMediaDimensionKey"
             case .recentSitesKey:
                 return "JPShareExtensionRecentSitesKey"
+            }
+        }
+    }
+}
+
+// MARK: - Notifications Extension Helpers
+
+private extension DataMigrator {
+
+    func copyNotificationExtensionKeychain() {
+        guard let authToken = try? keychainUtils.password(for: WPNotificationsExtensionConstants.keychainTokenKey.rawValue,
+                                                          serviceName: WPNotificationsExtensionConstants.keychainServiceName.rawValue,
+                                                          accessGroup: WPAppKeychainAccessGroup) else {
+            return
+        }
+
+        try? keychainUtils.store(username: WPNotificationsExtensionConstants.keychainTokenKey.valueForJetpack(),
+                                 password: authToken,
+                                 serviceName: WPNotificationsExtensionConstants.keychainServiceName.valueForJetpack(),
+                                 updateExisting: true)
+    }
+
+    func copyNotificationExtensionUserDefaults() {
+        guard let sharedDefaults else {
+            return
+        }
+
+        let userDefaultKeys: [WPNotificationsExtensionConstants] = [
+            .enabledKey
+        ]
+
+        userDefaultKeys.forEach { key in
+            // go to the next key if there's nothing stored under the current key.
+            guard let objectToMigrate = sharedDefaults.object(forKey: key.rawValue) else {
+                return
+            }
+
+            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
+        }
+    }
+
+    /// Keys relevant for migration, copied from ExtensionConfiguration.
+    ///
+    enum WPNotificationsExtensionConstants: String {
+
+        case keychainServiceName = "NotificationServiceExtension"
+        case keychainTokenKey = "OAuth2Token"
+        case keychainUsernameKey = "Username"
+        case keychainUserIDKey = "UserID"
+        case enabledKey = "WordPressNotificationsEnabled"
+
+        func valueForJetpack() -> String {
+            switch self {
+            case .keychainServiceName:
+                return "JPNotificationServiceExtension"
+            case .keychainTokenKey:
+                return "JPOAuth2Token"
+            case .keychainUsernameKey:
+                return "JPUsername"
+            case .keychainUserIDKey:
+                return "JPUserID"
+            case .enabledKey:
+                return "JetpackNotificationsEnabled"
             }
         }
     }
