@@ -5,6 +5,7 @@ import Foundation
 struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayViewModel {
 
     let phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase
+    let source: String
 
     var shouldShowOverlay: Bool {
         switch phase {
