@@ -154,18 +154,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
-        copyToSharedDefaultsIfNeeded()
         return true
-    }
-
-    private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.contentMigration.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
-            let dict = UserDefaults.standard.dictionaryRepresentation()
-            for (key, value) in dict {
-                UserPersistentStore.standard.set(value, forKey: key)
-            }
-            UserPersistentStore.standard.isOneOffMigrationComplete = true
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
