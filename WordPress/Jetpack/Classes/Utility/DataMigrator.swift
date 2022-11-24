@@ -1,5 +1,12 @@
 final class DataMigrator {
 
+    /// `DefaultsWrapper` is used to single out a dictionary for the migration process.
+    /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
+    private struct DefaultsWrapper {
+        static let dictKey = "defaults_staging_dictionary"
+        let defaultsDict: [String: Any]
+    }
+
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
     private let keychainUtils: KeychainUtils
@@ -38,7 +45,7 @@ final class DataMigrator {
             completion?(.failure(.keychainError))
             return
         }
-        guard copyUserDefaults(from: localDefaults, to: sharedDefaults) else {
+        guard populateSharedDefaults() else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
         }
@@ -55,7 +62,7 @@ final class DataMigrator {
             completion?(.failure(.keychainError))
             return
         }
-        guard copyUserDefaults(from: sharedDefaults, to: localDefaults) else {
+        guard populateFromSharedDefaults() else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
         }
@@ -115,15 +122,30 @@ private extension DataMigrator {
         return true
     }
 
-    func copyUserDefaults(from source: UserDefaults?, to destination: UserDefaults?) -> Bool {
-        guard let source, let destination else {
+    func populateSharedDefaults() -> Bool {
+        guard let sharedDefaults = sharedDefaults else {
             return false
         }
-        let data = source.dictionaryRepresentation()
+
+        let data = localDefaults.dictionaryRepresentation()
+        var temporaryDictionary: [String: Any] = [:]
         for (key, value) in data {
-            destination.set(value, forKey: key)
+            temporaryDictionary[key] = value
+        }
+        sharedDefaults.set(temporaryDictionary, forKey: DefaultsWrapper.dictKey)
+        return true
+    }
+
+    func populateFromSharedDefaults() -> Bool {
+        guard let sharedDefaults = sharedDefaults,
+              let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
+            return false
         }
 
+        for (key, value) in temporaryDictionary {
+            localDefaults.set(value, forKey: key)
+        }
+        sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
         return true
     }
 }

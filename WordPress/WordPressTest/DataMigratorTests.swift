@@ -112,9 +112,10 @@ class DataMigratorTests: XCTestCase {
         // When
         migrator.exportData()
 
+        let stagingDict = sharedDefaults.dictionary(forKey: "defaults_staging_dictionary")
         keys.forEach { key in
             // Then
-            let sharedValue = sharedDefaults.value(forKey: key) as? String
+            let sharedValue = stagingDict?[key] as? String
             XCTAssertEqual(value, sharedValue)
 
             UserDefaults.standard.removeObject(forKey: key)
