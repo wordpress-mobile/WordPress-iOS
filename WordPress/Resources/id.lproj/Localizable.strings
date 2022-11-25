@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-22 11:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-25 12:18:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -9975,6 +9975,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Selesai";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Kami telah mentransfer semua data dan pengaturan Anda. Semua percis seperti terakhir Anda tinggalkan.";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Terima kasih telah beralih ke Jetpack!";

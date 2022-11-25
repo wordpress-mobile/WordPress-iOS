@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-22 15:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-25 13:02:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -1934,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Ga verder met Apple";
+
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Bijdragen";
 
 /* No comment provided by engineer. */
 "Convert to link" = "Naar link converteren";
@@ -6378,7 +6381,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    title for action that tries to connect to the reader after a loading error.
    User action to retry featured media upload.
    User action to retry media upload. */
-"Retry" = "Opnieuw";
+"Retry" = "Opnieuw proberen";
 
 /* Button title that triggers a scan */
 "Retry Scan" = "Scan opnieuw proberen";
@@ -9871,6 +9874,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Gebruik deze link om je teamleden aan boord te krijgen zonder ze een voor een uit te nodigen. Iedereen die deze URL bezoekt, kan zich aanmelden bij je organisatie, zelfs als ze de link van iemand anders hebben ontvangen, dus zorg ervoor dat je deze deelt met vertrouwde mensen.";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Opslaan naar Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Opslaan naar Jetpack";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Opslaan als concept";
 
@@ -9993,6 +10002,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The singular form of the secondary description in the migration welcome screen */
 "migration.welcome.secondaryDescription.singular" = "We hebben je site gevonden. Ga door met het overdragen van je gegevens en meld je automatisch aan bij Jetpack.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Welkom bij Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Negeren";
