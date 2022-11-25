@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-03 16:54:08+0000 */
+/* Translation-Revision-Date: 2022-11-22 15:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: he_IL */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "צריך עזרה במציאת כתובת האתר שלך?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "דרושה עזרה?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8033,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "חובה להזין כותרת לקטגורייה.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "לסגירת חשבון זה כעת, עליך לפנות לצוות התמיכה שלנו.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "יש להזין את כתובת האימייל והשם שלך כדי להמשיך.";
 
@@ -9780,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "שנה";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "לא ניתן לסגור את חשבון המשתמש מייד מאחר שיש לו רכישות פעילות. יש לפנות לצוות התמיכה שלנו כדי להשלים את מחיקת החשבון.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "ביטול";
 
@@ -9914,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "השירות של WordPress טוב יותר עם Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "מידע נוסף באתר Jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "להוסיף מחבר";
 
@@ -9967,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "סיום";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "העברנו את כל הנתונים וההגדרות שלך. השארנו הכול במקום.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "תודה שעברת אל Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "אני אחליט מאוחר יותר";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "אותן הודעות ימשיכו להישלח אליך אבל כעת הן יגיעו מהאפליקציה של Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "השבתנו את ההודעות מהאפליקציה של WordPress.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "לאפשר להודעות להתעדכן מול האתר שלך";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "נראה שעברת מהאפליקציה של WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "מצאנו את האתרים שלך. אפשר להמשיך להעביר את כל הנתונים שלך ולהתחבר ל-Jetpack באופן אוטומטי.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "מצאנו את האתר שלך. אפשר להמשיך להעביר את כל הנתונים שלך ולהתחבר ל-Jetpack באופן אוטומטי.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "ברוך בואך אל Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "ביטול";

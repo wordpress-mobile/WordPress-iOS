@@ -1,1 +1,1 @@
-Nu har det blivit enklare att använda röstkommandon i blockredigeraren. När du arbetar med bildblock kan du använda röststyrning av markören för att markera bildtexten och mata in text.
+Vi har rättat till placeringen av meddelandet ”Ingen mediafil motsvarar din sökning” i mediabiblioteket. Nu går det att se meddelandet om en sökning inte matchade något. Ta det lugnt och sök på något annat.

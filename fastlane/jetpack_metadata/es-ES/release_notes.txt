@@ -1,3 +1,1 @@
-Ahora, Jetpack dispone de widgets dinámicos. En la pantalla de inicio de tu dispositivo, podrás obtener estadísticas diarias, semanales y totales. También descubrirás una nueva pantalla de destino en la aplicación que responde al movimiento de tu dispositivo.
-
-El control por voz es ahora más fácil de utilizar en el Editor de bloques. De esta manera, cuando trabajes con bloques Imagen, podrás utilizar el cursor del control por voz para seleccionar el pie de foto e introducir el texto.
+Hemos corregido la posición del mensaje “No hay medios que coincidan con tu búsqueda” en la biblioteca de medios. Ahora se muestra cuando no hay resultados de la búsqueda. Tómatelo con calma y sigue buscando.

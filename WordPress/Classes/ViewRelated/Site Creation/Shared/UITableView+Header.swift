@@ -42,7 +42,10 @@ extension UITableView {
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
-        tableHeaderView.frame = CGRect(origin: .zero, size: size)
-        self.tableHeaderView = tableHeaderView
+        let newFrame = CGRect(origin: .zero, size: size)
+        if tableHeaderView.frame.height != newFrame.height {
+            tableHeaderView.frame = newFrame
+            self.tableHeaderView = tableHeaderView
+        }
     }
 }

@@ -10,12 +10,17 @@ protocol JetpackNotificationMigrationServiceProtocol {
 /// This service and its usage can be deleted once the migration is done
 final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
     private let remoteNotificationRegister: RemoteNotificationRegister
+    private let featureFlagStore: RemoteFeatureFlagStore
     private let isWordPress: Bool
 
     static let shared = JetpackNotificationMigrationService()
 
     static let wordPressScheme = "wordpressnotificationmigration"
     static let jetpackScheme = "jetpacknotificationmigration"
+
+    private var jetpackMigrationPreventDuplicateNotifications: Bool {
+        return featureFlagStore.value(for: FeatureFlag.jetpackMigrationPreventDuplicateNotifications)
+    }
 
     var wordPressNotificationsEnabled: Bool {
         get {
@@ -46,18 +51,20 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     init(remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
+         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          isWordPress: Bool = AppConfiguration.isWordPress) {
         self.remoteNotificationRegister = remoteNotificationRegister
+        self.featureFlagStore = featureFlagStore
         self.isWordPress = isWordPress
     }
 
     func shouldShowNotificationControl() -> Bool {
-        return Feature.enabled(.jetpackMigrationPreventDuplicateNotifications) && isWordPress
+        return jetpackMigrationPreventDuplicateNotifications && isWordPress
     }
 
 
     func shouldPresentNotifications() -> Bool {
-        let disableNotifications = Feature.enabled(.jetpackMigrationPreventDuplicateNotifications)
+        let disableNotifications = jetpackMigrationPreventDuplicateNotifications
             && isWordPress
             && !wordPressNotificationsEnabled
 
@@ -71,7 +78,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     // MARK: - Only executed on Jetpack app
 
     func disableWordPressNotificationsFromJetpack() {
-        guard Feature.enabled(.jetpackMigrationPreventDuplicateNotifications), !isWordPress else {
+        guard jetpackMigrationPreventDuplicateNotifications, !isWordPress else {
             return
         }
 

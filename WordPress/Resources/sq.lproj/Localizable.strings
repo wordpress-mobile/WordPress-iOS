@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-30 09:58:54+0000 */
+/* Translation-Revision-Date: 2022-11-18 21:53:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1933,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Po vazhdohet me Apple";
+
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Kontribuoni";
 
 /* No comment provided by engineer. */
 "Convert to link" = "Shndërroje në lidhje";
@@ -4791,7 +4795,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "Ju duhet ndihmë për gjetjen e adresës së sajtit tuaj?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Ju duhet ndihmë?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8015,9 +8020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Titulli është i detyrueshëm për një kategori.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "Për të mbyllur këtë llogari, lidhuni me ekipin tonë të asistencës.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Që të vazhdohet, jepni adresën tuaj email dhe emrin.";
 
@@ -9762,6 +9764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "një vit";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Kjo llogari përdoruesi s’mund të mbyllet menjëherë, ngaqë ka blerje aktive. Ju lutemi, lidhuni me ekipin tonë të asistencës, që të përfundoni fshirjen e llogarisë.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Hidhe tej";
 
@@ -9854,6 +9859,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Përdoreni këtë lidhje për mirëseardhjen e anëtarëve të ekipit tuaj, pa pasur nevojë t’i ftoni ata tek për tek. Cilido që viziton këtë URL, do të jetë në gjendje të regjistrohet në entin tuaj, madje edhe nëse lidhjen e morën nga dikush tjetër, ndaj kujdesuni t’ua jepni personave të besuar.";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Ruaje ë Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Ruaje në Jetpack";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Ruaje si Skicë";
 
@@ -9889,6 +9900,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress-i është më i mirë me Jetpack-un";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Mësoni më tepër te jetpack.com";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Shtoni një autor";
@@ -9943,6 +9957,36 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Përfundoje";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Kemi shpërngulur krejt të dhënat dhe rregullimet tuaja. Gjithçka është mu atje ku e latë.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Faleminderit që kaloni në Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Vendosni më vonë";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Do të merrni të njëjtat njoftime, por tani do të vijnë nga aplikacioni Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "I kemi çaktivizuar njoftimet për aplikacionin WordPress.";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Duket sikur po bëni migrimin që nga aplikacioni WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "I gjetëm sajtet tuaj. Vazhdoni,  që të shpërngulen krejt të dhënat tuaja dhe të bëhet automatikisht hyrja në Jetpack.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "E gjetëm sajtin tuaj. Vazhdoni,  që të shpërngulen krejt të dhënat tuaja dhe të bëhet automatikisht hyrja në Jetpack.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Mirë se vini te Jetpack-u!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Hidhe tej";
@@ -10063,6 +10107,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Bëni hyrjen në WordPress, që të shihni statistikat për krejt kohën.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Që të shihni statistikat për krejt kohën, hyni në llogarinë tuaj Jetpcak.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Që të shihni statistikat e kësaj jave, hyni në llogarinë tuaj Jetpcak.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Që të shihni statistikat për sot, hyni në llogarinë tuaj Jetpack.";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Jini i përditësuar me veprimtarinë e kësaj jave në sajtin tuaj WordPress.";

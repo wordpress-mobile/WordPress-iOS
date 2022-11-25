@@ -1,3 +1,1 @@
-Widget dinamis kini hadir di Jetpack. Dapatkan data harian, mingguan, dan keseluruhan langsung di layar utama perangkat Anda. Anda juga akan disuguhi layar muka aplikasi baru yang ikut bergerak saat perangkat digerakkan.
-
-Editor blok kini lebih ramah Kontrol Suara. Saat mengedit blok Gambar, gunakan kursor Kontrol Suara untuk memilih kolom keterangan dan memasukkan teks.
+Kami memperbaiki pemosisian pesan "Tidak ada media yang cocok dengan pencarian Anda" di Pustaka Media. Sekarang pesan tersebut dapat dilihat saat tidak ditemukan hasil pada pencarian. Tetaplah tenang dan teruslah mencari.

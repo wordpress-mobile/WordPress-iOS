@@ -32,8 +32,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case featureHighlightTooltip
     case jetpackPowered
     case jetpackPoweredBottomSheet
-    case sharedUserDefaults
-    case sharedLogin
+    case contentMigration
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
@@ -115,9 +114,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackPoweredBottomSheet:
             return false
-        case .sharedUserDefaults:
-            return false
-        case .sharedLogin:
+        case .contentMigration:
             return false
         case .newJetpackLandingScreen:
             return true
@@ -239,10 +236,8 @@ extension FeatureFlag {
             return "Jetpack powered banners and badges"
         case .jetpackPoweredBottomSheet:
             return "Jetpack powered bottom sheet"
-        case .sharedUserDefaults:
-            return "Shared User Defaults"
-        case .sharedLogin:
-            return "Shared Login"
+        case .contentMigration:
+            return "Content Migration"
         case .newJetpackLandingScreen:
             return "New Jetpack landing screen"
         case .newWordPressLandingScreen:

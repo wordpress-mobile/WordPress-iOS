@@ -1,3 +1,1 @@
-Dynamische widgets zijn nu beschikbaar op Jetpack. Bekijk op het startscherm van je apparaat dagelijkse en wekelijkse statistieken en statistieken sinds het begin. Je zult ook zien dat we in de app een prachtig nieuw landingsscherm hebben dat op de bewegingen van je apparaat reageert.
-
-Voice Control is in de blokeditor nu makkelijker te gebruiken dan ooit. Als je met afbeeldingblokken werkt, kan je de Voice Control-cursor gebruiken om de titel van de tekst te selecteren.
+We hebben de positie van het bericht 'Er komen geen media overeen met je zoekopdracht' verbeterd in de mediabibliotheek. Deze is nu zichtbaar als er geen zoekresultaten zijn. Blijf kalm en zoek verder.

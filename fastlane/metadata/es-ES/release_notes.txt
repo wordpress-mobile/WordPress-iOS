@@ -1,1 +1,1 @@
-El control por voz es ahora más fácil de usar en el editor de bloques – cuando estás trabajando con bloques de imágenes, usa el cursor de control por voz para seleccionar la leyenda de texto.
+Hemos corregido la posición del mensaje “No hay medios que coincidan con tu búsqueda” en la biblioteca de medios. Ahora se muestra cuando no hay resultados de la búsqueda. Tómatelo con calma y sigue buscando.

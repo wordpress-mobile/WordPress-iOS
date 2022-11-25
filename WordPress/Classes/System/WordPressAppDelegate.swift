@@ -155,12 +155,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
         copyToSharedDefaultsIfNeeded()
-        BloggingRemindersScheduler.handleRemindersMigration()
         return true
     }
 
     private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
+        if !AppConfiguration.isJetpack && FeatureFlag.contentMigration.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
             let dict = UserDefaults.standard.dictionaryRepresentation()
             for (key, value) in dict {
                 UserPersistentStore.standard.set(value, forKey: key)
@@ -505,6 +504,14 @@ extension WordPressAppDelegate {
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
+        // try to handle unauthenticated routes first.
+        if activity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = activity.webpageURL,
+           UniversalLinkRouter.unauthenticated.canHandle(url: url) {
+            UniversalLinkRouter.unauthenticated.handle(url: url)
+            return
+        }
+
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {

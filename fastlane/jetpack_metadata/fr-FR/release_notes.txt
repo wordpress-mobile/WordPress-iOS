@@ -1,3 +1,1 @@
-Jetpack dispose maintenant de widgets dynamiques. Obtenez des statistiques quotidiennes, hebdomadaires et globales sur l’écran d’accueil de votre appareil. - Vous remarquerez dans l’application un tout nouvel écran d’accueil qui réagit aux mouvements de votre appareil.
-
-Il est désormais plus facile d’utiliser le contrôle vocal dans l’éditeur de blocs. Lorsque vous travaillez avec des blocs d’image, utilisez le curseur du contrôle vocal pour sélectionner la légende à saisir.
+Nous avons corrigé la position d’affichage du message « Aucun média ne correspond à votre recherche » dans la bibliothèque de médias. Il s’affiche désormais lorsqu’il n’y a pas de résultat de recherche. Continuez à chercher en toute tranquillité.

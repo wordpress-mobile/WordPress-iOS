@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-31 13:16:29+0000 */
+/* Translation-Revision-Date: 2022-11-17 11:04:48+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "Ai nevoie de ajutor ca să-ți găsești adresa site-ului?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Ai nevoie de ajutor?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8033,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Titlu pentru o categorie este obligatoriu.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "Pentru a închide acest cont acum, contactează echipa noastră pentru suport.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pentru a continua te rog introdu adresa ta de email și numele.";
 
@@ -9780,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "un an";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Acest cont de utilizator nu poate fi închis imediat deoarece are cumpărături active. Ca să finalizezi ștergerea contului, te rog să contactezi echipa noastră pentru suport.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Refuză";
 
@@ -9914,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress este mai bun cu Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Află mai multe la jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Adaugi un autor";
 
@@ -9967,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Refuză";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Finalizează";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Am transferat toate datele și setările tale. Toate sunt acolo, exact unde erau.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Îți mulțumim că ai comutat la Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Poți să decizi mai târziu";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Vei primi aceleași notificări, dar acum vor veni din aplicația Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Am dezactivat notificările pentru aplicația WordPress.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Permite ca notificările să continue pe site-ul tău";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Se pare că faci o comutare din aplicația WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Ți-am găsit site-urile. Continuă să transferi toate datele și te autentifici automat la Jetpack.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Ți-am găsit site-ul. Continuă să transferi toate datele și te autentifici automat la Jetpack.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Bine ai venit la Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Refuză";

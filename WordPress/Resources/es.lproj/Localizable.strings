@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-02 20:21:48+0000 */
+/* Translation-Revision-Date: 2022-11-22 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: es */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "¿Necesitas ayuda para encontrar la dirección de tu sitio?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "¿Necesitas ayuda?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8033,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Es necesario el título de la categoría.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "Para cerrar esta cuenta ahora, contacta con nuestro equipo de soporte.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Para continuar, por favor, introduce tu dirección de correo electrónico y nombre.";
 
@@ -9780,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "un año";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Esta cuenta de usuario no se puede cerrar inmediatamente porque tiene compras en activo. Contacta con nuestros Happiness Engineers para eliminar definitivamente la cuenta.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Descartar";
 
@@ -9914,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress es mejor con Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Encontrarás más información en jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Añade un autor";
 
@@ -9967,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Descartar";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Terminar";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Hemos transferido todos tus datos y ajustes. Todo está tal y como lo dejaste.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "¡Gracias por cambiar a Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Decidir más tarde";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Recibirás las mismas notificaciones, pero ahora te llegarán desde la aplicación de Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Hemos desactivado las notificaciones de la aplicación de WordPress.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Activa las notificaciones para estar al tanto de lo que sucede en tu sitio";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Parece que estás realizando el cambio desde la aplicación de WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Hemos encontrado tus sitios. Continúa para transferir todos tus datos y acceder a Jetpack automáticamente.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Hemos encontrado tu sitio. Continúa para transferir todos tus datos y acceder a Jetpack automáticamente.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "¡Te damos la bienvenida a Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Descartar";

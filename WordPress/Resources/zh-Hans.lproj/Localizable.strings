@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-03 10:54:08+0000 */
+/* Translation-Revision-Date: 2022-11-22 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
@@ -1908,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -4800,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "查找站点地址时需要帮助？";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "需要帮助？";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -8033,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "分类目录名必填。";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "要立即关闭此帐户，请联系我们的支持团队。";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "请输入您的电子邮件地址和名称以继续。";
 
@@ -9780,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1 年后";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "无法立即关闭此用户账户，因为该账户存在已启用的购买。 请联系我们的支持团队，完成删除账户操作。";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "忽略";
 
@@ -9914,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "请访问 jetpack.com 以了解详情";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "添加作者";
 
@@ -9967,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "完成";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "我们已转移您的所有数据和设置。 一切都完好如初。";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "感谢您切换至 Jetpack！";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "稍后再决定";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "您将收到所有相同的通知，但现在这些通知来自 Jetpack 应用程序。";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "我们已禁用 WordPress 应用程序的通知。";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "允许通知，持续关注您的站点";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "您似乎即将从 WordPress 应用程序转移过来。";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "我们找到了您的站点。 继续转移您的所有数据并自动登录至 Jetpack。";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "我们找到了您的站点。 继续转移您的所有数据并自动登录至 Jetpack。";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "欢迎使用 Jetpack！";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "忽略";
