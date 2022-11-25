@@ -10998,6 +10998,7 @@
 		3FFDEF7D29177F4200B625CE /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C3AB4878292F114A001F7AF8 /* MigrationHelper.swift */,
 				3FFDEF8229179CD000B625CE /* MigrationDependencyContainer.swift */,
 				F41BDD772910AFB900B7F2B0 /* Navigation */,
 				F4F9D5EE29096D0400502576 /* Views */,
@@ -12564,7 +12565,6 @@
 			isa = PBXGroup;
 			children = (
 				8332DD2329259AE300802F7D /* DataMigrator.swift */,
-				C3AB4878292F114A001F7AF8 /* MigrationHelper.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
