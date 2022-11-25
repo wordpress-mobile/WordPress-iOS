@@ -34,10 +34,6 @@ final class DataMigrator {
             completion?(.failure(.databaseCopyError))
             return
         }
-        guard copyKeychain(from: nil, to: WPAppKeychainAccessGroup) else {
-            completion?(.failure(.keychainError))
-            return
-        }
         guard copyUserDefaults(from: localDefaults, to: sharedDefaults) else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
@@ -49,10 +45,6 @@ final class DataMigrator {
     func importData(completion: ((Result<Void, DataMigratorError>) -> Void)? = nil) {
         guard let backupLocation, restoreDatabase(from: backupLocation) else {
             completion?(.failure(.databaseCopyError))
-            return
-        }
-        guard copyKeychain(from: WPAppKeychainAccessGroup, to: nil) else {
-            completion?(.failure(.keychainError))
             return
         }
         guard copyUserDefaults(from: sharedDefaults, to: localDefaults) else {
