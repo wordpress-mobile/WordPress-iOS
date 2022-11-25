@@ -1162,6 +1162,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (section.category == BlogDetailsSectionCategoryMigrationSuccess && MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        [cell configureWithViewController:self];
         return cell;
     }
 
