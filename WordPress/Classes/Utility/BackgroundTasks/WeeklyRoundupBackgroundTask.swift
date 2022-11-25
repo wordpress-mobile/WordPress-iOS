@@ -252,7 +252,6 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     private let eventTracker: NotificationEventTracker
     let runDateComponents: DateComponents
     let notificationScheduler: WeeklyRoundupNotificationScheduler
-    private let jetpackNotificationMigrationService = JetpackNotificationMigrationService()
 
     init(
         eventTracker: NotificationEventTracker = NotificationEventTracker(),
@@ -261,8 +260,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         store: Store = Store()) {
 
         self.eventTracker = eventTracker
-        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents,
-                                                                   jetpackNotificationMigrationService: jetpackNotificationMigrationService)
+        notificationScheduler = WeeklyRoundupNotificationScheduler(staticNotificationDateComponents: staticNotificationDateComponents)
         self.store = store
 
         self.runDateComponents = runDateComponents ?? {
@@ -361,7 +359,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
         // This will no longer run for WordPress as part of JetPack migration.
         // This can be removed once JetPack migration is complete.
-        guard jetpackNotificationMigrationService.shouldPresentNotifications() else {
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
             notificationScheduler.cancellAll()
             notificationScheduler.cancelStaticNotification()
             return
@@ -495,11 +493,9 @@ class WeeklyRoundupNotificationScheduler {
 
     init(
         staticNotificationDateComponents: DateComponents? = nil,
-        jetpackNotificationMigrationService: JetpackNotificationMigrationService,
         userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
 
         self.userNotificationCenter = userNotificationCenter
-        self.jetpackNotificationMigrationService = jetpackNotificationMigrationService
 
         self.staticNotificationDateComponents = staticNotificationDateComponents ?? {
             var dateComponents = DateComponents()
@@ -518,7 +514,6 @@ class WeeklyRoundupNotificationScheduler {
 
     let staticNotificationDateComponents: DateComponents
     let userNotificationCenter: UNUserNotificationCenter
-    let jetpackNotificationMigrationService: JetpackNotificationMigrationService
 
     enum NotificationSchedulingError: Error {
         case staticNotificationSchedulingError(error: Error)
@@ -624,7 +619,7 @@ class WeeklyRoundupNotificationScheduler {
         dateComponents: DateComponents,
         completion: @escaping (Result<Void, Error>) -> Void) {
 
-        guard jetpackNotificationMigrationService.shouldPresentNotifications() else {
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
             return
         }
 
