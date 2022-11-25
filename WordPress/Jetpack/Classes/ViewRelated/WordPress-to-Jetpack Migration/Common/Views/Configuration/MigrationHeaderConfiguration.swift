@@ -1,14 +1,14 @@
 struct MigrationHeaderConfiguration {
 
-    let step: MigrationStep
     let title: String?
     let image: UIImage?
     let primaryDescription: String?
     let secondaryDescription: String?
+}
+
+extension MigrationHeaderConfiguration {
 
     init(step: MigrationStep, multiSite: Bool = false) {
-        self.step = step
-
         image = Appearance.image(for: step)
         title = Appearance.title(for: step)
         primaryDescription = Appearance.primaryDescription(for: step)
