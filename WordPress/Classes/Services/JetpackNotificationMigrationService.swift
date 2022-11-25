@@ -17,6 +17,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     static let wordPressScheme = "wordpressnotificationmigration"
     static let jetpackScheme = "jetpacknotificationmigration"
+    private let jetpackNotificationMigrationDefaultsKey = "jetpackNotificationMigrationDefaultsKey"
 
     private var jetpackMigrationPreventDuplicateNotifications: Bool {
         return featureFlagStore.value(for: FeatureFlag.jetpackMigrationPreventDuplicateNotifications)
@@ -50,6 +51,16 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         return UIApplication.shared.canOpenURL(url)
     }
 
+    /// disableWordPressNotificationsFromJetpack may get triggered multiple times from Jetpack app but it only needs to be executed the first time
+    private var isMigrationDone: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: jetpackNotificationMigrationDefaultsKey)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: jetpackNotificationMigrationDefaultsKey)
+        }
+    }
+
     init(remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          isWordPress: Bool = AppConfiguration.isWordPress) {
@@ -61,7 +72,6 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     func shouldShowNotificationControl() -> Bool {
         return jetpackMigrationPreventDuplicateNotifications && isWordPress
     }
-
 
     func shouldPresentNotifications() -> Bool {
         let disableNotifications = jetpackMigrationPreventDuplicateNotifications
@@ -78,7 +88,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     // MARK: - Only executed on Jetpack app
 
     func disableWordPressNotificationsFromJetpack() {
-        guard jetpackMigrationPreventDuplicateNotifications, !isWordPress else {
+        guard !isMigrationDone, jetpackMigrationPreventDuplicateNotifications, !isWordPress else {
             return
         }
 
@@ -90,6 +100,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
         /// Open WordPress app to disable notifications
         if let url = wordPressUrl, UIApplication.shared.canOpenURL(url) {
+            isMigrationDone = true
             UIApplication.shared.open(url)
         }
     }
