@@ -54,7 +54,14 @@ class MigrationStepView: UIView {
     private func activateConstraints() {
         centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
         contentView.pinSubviewToAllEdges(mainStackView)
-        pinSubviewToAllEdges(mainScrollView)
+
+        NSLayoutConstraint.activate([
+            mainScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+
         mainScrollView.pinSubviewToAllEdges(contentView)
 
         NSLayoutConstraint.activate([
@@ -71,13 +78,24 @@ class MigrationStepView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        mainScrollView.contentInset.bottom = actionsView.frame.size.height + Constants.bottomMargin
+        let bottomInset = actionsView.frame.size.height - safeAreaInsets.bottom
+        mainScrollView.contentInset.bottom = bottomInset + Constants.additionalBottomContentInset
+        mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        mainScrollView.contentInset.top = Constants.topContentInset
     }
 
     private enum Constants {
+        /// Adds space between the content bottom edge and actions sheet top edge.
+        ///
+        /// Bottom inset is added to the `scrollView` so the content is not covered by the Actions Sheet view.
+        /// The value of the bottom inset is computed in `layoutSubviews`.
+        static let additionalBottomContentInset: CGFloat = 10
+
+        /// Adds top padding to the `scrollView`.
+        static let topContentInset: CGFloat = UINavigationBar().intrinsicContentSize.height
+
         static let centerContentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         static let stackViewSpacing: CGFloat = 20
-        static let bottomMargin: CGFloat = 20
         static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
     }
 }

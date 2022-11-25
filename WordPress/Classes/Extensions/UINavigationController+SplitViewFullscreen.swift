@@ -13,7 +13,7 @@ fileprivate let fadeAnimationDuration: TimeInterval = 0.1
 // UIKit glitch.
 extension UINavigationController {
     @objc func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
-        guard let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .primaryHidden else {
+        guard let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .secondaryOnly else {
             pushViewController(viewController, animated: animated)
             return
         }

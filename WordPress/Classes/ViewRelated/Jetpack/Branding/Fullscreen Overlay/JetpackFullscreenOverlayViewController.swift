@@ -52,6 +52,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
 
     // MARK: Initializers
 
@@ -72,7 +73,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         self.isModalInPresentation = true
         configureNavigationBar()
         applyStyles()
-        addConstraints()
+        setupConstraints()
         setupContent()
         setupColors()
         setupFonts()
@@ -109,10 +110,14 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
     }
 
-    private func addConstraints() {
+    private func setupConstraints() {
+        // Animation constraint
         let animationSize = animation?.size ?? .init(width: 1, height: 1)
         let ratio = animationSize.width / animationSize.height
         animationView.widthAnchor.constraint(equalTo: animationView.heightAnchor, multiplier: ratio).isActive = true
+
+        // Buttons bottom constraint
+        buttonsSuperViewBottomConstraint.constant = viewModel.continueButtonIsHidden ? Metrics.singleButtonBottomSpacing : Metrics.buttonsNormalBottomSpacing
     }
 
     private func setupContent() {
@@ -153,8 +158,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func setupFonts() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        footnoteLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -205,17 +213,19 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @objc private func closeButtonPressed(sender: UIButton) {
         dismiss(animated: true, completion: nil)
         viewModel.trackCloseButtonTapped()
+        viewModel.onDismiss?()
     }
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        // TODO: Add here action to redirect to the JP app
+        JetpackRedirector.redirectToJetpack()
         viewModel.trackSwitchButtonTapped()
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
         viewModel.trackContinueButtonTapped()
+        viewModel.onDismiss?()
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
@@ -251,6 +261,8 @@ private extension JetpackFullscreenOverlayViewController {
         static let switchButtonCornerRadius: CGFloat = 6
         static let titleLineHeightMultiple: CGFloat = 0.88
         static let titleKern: CGFloat = 0.37
+        static let buttonsNormalBottomSpacing: CGFloat = 30
+        static let singleButtonBottomSpacing: CGFloat = 60
     }
 
     enum Constants {

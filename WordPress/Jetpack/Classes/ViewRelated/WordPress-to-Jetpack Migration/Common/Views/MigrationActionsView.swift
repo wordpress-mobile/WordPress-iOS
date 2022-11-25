@@ -102,8 +102,9 @@ final class MigrationActionsView: UIView {
 
     private static func secondaryButton() -> UIButton {
         let button = UIButton()
-        let font = WPStyleGuide.fontForTextStyle(.headline)
-        button.setTitleColor(.text, for: .normal)
+        let font = Constants.secondaryButtonFont
+        let color = Constants.secondaryButtonColor
+        button.setTitleColor(color, for: .normal)
         button.titleLabel?.font = font
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
@@ -121,5 +122,7 @@ final class MigrationActionsView: UIView {
         static let separatorHeight = CGFloat(0.5)
         static let insets = NSDirectionalEdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30)
         static let spacing = CGFloat(10)
+        static let secondaryButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
+        static let secondaryButtonColor = UIColor.muriel(color: .jetpackGreen, .shade50)
     }
 }

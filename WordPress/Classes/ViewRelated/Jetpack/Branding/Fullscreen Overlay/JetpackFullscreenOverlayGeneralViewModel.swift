@@ -159,6 +159,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var analyticsSource: String {
         return source.rawValue
     }
+
+    var onDismiss: JetpackOverlayDismissCallback?
 }
 
 private extension JetpackFullscreenOverlayGeneralViewModel {

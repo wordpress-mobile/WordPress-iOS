@@ -35,7 +35,7 @@
     NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     context.persistentStoreCoordinator = self.container.persistentStoreCoordinator;
     
-    if ([Feature enabled:FeatureFlagSharedLogin]) {
+    if ([Feature enabled:FeatureFlagContentMigration]) {
         context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
     }
     

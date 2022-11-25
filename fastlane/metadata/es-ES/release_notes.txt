@@ -1,0 +1,1 @@
+Hemos corregido la posición del mensaje “No hay medios que coincidan con tu búsqueda” en la biblioteca de medios. Ahora se muestra cuando no hay resultados de la búsqueda. Tómatelo con calma y sigue buscando.

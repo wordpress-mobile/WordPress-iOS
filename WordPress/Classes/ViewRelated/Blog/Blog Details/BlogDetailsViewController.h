@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategoryConfigure,
     BlogDetailsSectionCategoryExternal,
     BlogDetailsSectionCategoryRemoveSite,
+    BlogDetailsSectionCategoryMigrationSuccess,
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
@@ -38,6 +39,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionPeople,
     BlogDetailsSubsectionPlugins,
     BlogDetailsSubsectionHome,
+    BlogDetailsSubsectionMigrationSuccess,
 };
 
 

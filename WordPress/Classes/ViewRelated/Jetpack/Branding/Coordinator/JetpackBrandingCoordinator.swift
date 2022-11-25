@@ -6,7 +6,7 @@ class JetpackBrandingCoordinator {
     static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
-            // TODO: Add here the default action to redirect to the jp app
+            JetpackRedirector.redirectToJetpack()
         }
 
         let jetpackOverlayViewController = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)
