@@ -3396,6 +3396,8 @@
 		F465980B28E66A5B00D5F49A /* white-on-blue-icon-app-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465980628E66A5A00D5F49A /* white-on-blue-icon-app-60@2x.png */; };
 		F465980C28E66A5B00D5F49A /* white-on-blue-icon-app-83.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465980728E66A5B00D5F49A /* white-on-blue-icon-app-83.5@2x.png */; };
 		F478B152292FC1BC00AA8645 /* MigrationAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */; };
+		F48216CD2931341700EDDD3F /* MigrationSuccessCardView+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48216CC2931341700EDDD3F /* MigrationSuccessCardView+Jetpack.swift */; };
+		F48216D02931346900EDDD3F /* MigrationSuccessCardView+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48216CF2931346900EDDD3F /* MigrationSuccessCardView+WordPress.swift */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
@@ -8547,6 +8549,8 @@
 		F465980628E66A5A00D5F49A /* white-on-blue-icon-app-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-on-blue-icon-app-60@2x.png"; sourceTree = "<group>"; };
 		F465980728E66A5B00D5F49A /* white-on-blue-icon-app-83.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-on-blue-icon-app-83.5@2x.png"; sourceTree = "<group>"; };
 		F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAppearance.swift; sourceTree = "<group>"; };
+		F48216CC2931341700EDDD3F /* MigrationSuccessCardView+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationSuccessCardView+Jetpack.swift"; sourceTree = "<group>"; };
+		F48216CF2931346900EDDD3F /* MigrationSuccessCardView+WordPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationSuccessCardView+WordPress.swift"; sourceTree = "<group>"; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
@@ -10798,9 +10802,9 @@
 		3F8B459E29283D3800730FA4 /* Success card */ = {
 			isa = PBXGroup;
 			children = (
+				F48216CE2931342D00EDDD3F /* Migration Success Card */,
 				F4D8296E2931092800038726 /* Collection View */,
 				F4D8296D2931091B00038726 /* Table View */,
-				3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */,
 				F4D829672931059000038726 /* MigrationSuccessActionHandler.swift */,
 			);
 			path = "Success card";
@@ -16551,6 +16555,16 @@
 			path = "white-on-pink";
 			sourceTree = "<group>";
 		};
+		F48216CE2931342D00EDDD3F /* Migration Success Card */ = {
+			isa = PBXGroup;
+			children = (
+				3F8B45A6292C1A2300730FA4 /* MigrationSuccessCardView.swift */,
+				F48216CC2931341700EDDD3F /* MigrationSuccessCardView+Jetpack.swift */,
+				F48216CF2931346900EDDD3F /* MigrationSuccessCardView+WordPress.swift */,
+			);
+			path = "Migration Success Card";
+			sourceTree = "<group>";
+		};
 		F4D829602930E9DD00038726 /* Delete WordPress */ = {
 			isa = PBXGroup;
 			children = (
@@ -20470,6 +20484,7 @@
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
 				08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */,
+				F48216D02931346900EDDD3F /* MigrationSuccessCardView+WordPress.swift in Sources */,
 				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
 				F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */,
 				982DDF92263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */,
@@ -23237,6 +23252,7 @@
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
 				98BC522527F6245700D6E8C2 /* BloggingPromptsFeatureIntroduction.swift in Sources */,
+				F48216CD2931341700EDDD3F /* MigrationSuccessCardView+Jetpack.swift in Sources */,
 				FABB233A2602FC2C00C8785C /* RevisionsNavigationController.swift in Sources */,
 				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
 				FABB233B2602FC2C00C8785C /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */,

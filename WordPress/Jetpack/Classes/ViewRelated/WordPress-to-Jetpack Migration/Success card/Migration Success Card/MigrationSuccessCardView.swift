@@ -72,14 +72,3 @@ class MigrationSuccessCardView: UIView {
         static let descriptionFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
     }
 }
-
-// TODO: This extension is temporary, and should be replaced by the actual condition to check, and placed in the proper location
-extension MigrationSuccessCardView {
-    @objc
-    static var shouldShowMigrationSuccessCard: Bool {
-
-        AppConfiguration.isJetpack && showCard
-    }
-
-    private static let showCard = false
-}
