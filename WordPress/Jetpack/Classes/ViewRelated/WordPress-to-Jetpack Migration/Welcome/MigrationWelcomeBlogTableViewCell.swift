@@ -44,6 +44,8 @@ final class MigrationWelcomeBlogTableViewCell: UITableViewCell, Reusable {
 
     private func setup() {
         // Set cell properties
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
         self.accessibilityElements = [siteNameLabel, siteAddressLabel]
 

@@ -10,6 +10,7 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:jetpack.com</string>
 		<string>webcredentials:wordpress.com</string>
 		<string>applinks:apps.wordpress.com</string>
 		<string>applinks:wordpress.com</string>

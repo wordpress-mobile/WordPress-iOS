@@ -2,17 +2,30 @@ import XCTest
 @testable import WordPress
 
 final class SiteStatsPinnedItemStoreTests: XCTestCase {
-
-    let store = SiteStatsPinnedItemStore(siteId: 1)
     let featureFlags = FeatureFlagOverrideStore()
+    var store: SiteStatsPinnedItemStore!
+    var jetpackNotificationMigrationService: JetpackNotificationMigrationServiceMock!
 
-    func testPinnedItemsShouldContainBloggingRemindersWhenFeatureFlagEnabled() throws {
+    override func setUpWithError() throws {
+        jetpackNotificationMigrationService = JetpackNotificationMigrationServiceMock()
+        store = SiteStatsPinnedItemStore(siteId: 0, jetpackNotificationMigrationService: jetpackNotificationMigrationService)
+    }
+
+    func testPinnedItemsShouldContainBloggingRemindersWhenWPNotificationsEnabled() throws {
         try featureFlags.override(FeatureFlag.bloggingReminders, withValue: true)
+        jetpackNotificationMigrationService.shouldPresentNotificationsToReturn = true
         XCTAssertTrue(itemsContainsBloggingReminders())
     }
 
     func testPinnedItemsShouldNotContainBloggingRemindersWhenFeatureFlagDisabled() throws {
         try featureFlags.override(FeatureFlag.bloggingReminders, withValue: false)
+        jetpackNotificationMigrationService.shouldPresentNotificationsToReturn = false
+        XCTAssertFalse(itemsContainsBloggingReminders())
+    }
+
+    func testPinnedItemsShouldNotContainBloggingRemindersWhenFeatureFlagDisabledAndShouldPresentNotifications() throws {
+        try featureFlags.override(FeatureFlag.bloggingReminders, withValue: false)
+        jetpackNotificationMigrationService.shouldPresentNotificationsToReturn = true
         XCTAssertFalse(itemsContainsBloggingReminders())
     }
 
@@ -23,5 +36,13 @@ final class SiteStatsPinnedItemStoreTests: XCTestCase {
             }
             return false
         })
+    }
+}
+
+class JetpackNotificationMigrationServiceMock: JetpackNotificationMigrationServiceProtocol {
+    var shouldPresentNotificationsToReturn = false
+
+    func shouldPresentNotifications() -> Bool {
+        return shouldPresentNotificationsToReturn
     }
 }

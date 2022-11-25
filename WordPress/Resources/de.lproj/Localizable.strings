@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-02 12:54:09+0000 */
+/* Translation-Revision-Date: 2022-11-22 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: de */
@@ -9779,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "ein Jahr";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Dieses Benutzerkonto kann nicht sofort geschlossen werden, da es aktive Käufe hat. Wende dich bitte an das Support-Team, um das Konto zu löschen.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Verwerfen";
 
@@ -9913,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress ist mit Jetpack noch besser";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Weitere Informationen auf jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Einen Autor hinzufügen";
 
@@ -9966,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Verwerfen";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Beenden";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Wir haben all deine Daten und Einstellungen übertragen. Alles ist genauso wie vorher.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Danke für deinen Wechsel zu Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Später entscheiden";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Du erhältst dieselben Benachrichtigungen, sie kommen aber ab sofort von der Jetpack-App.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Wir haben Benachrichtigungen für die WordPress-App deaktiviert.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Benachrichtigungen zulassen, um deine Website auf dem neusten Stand zu halten";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Anscheinend wechselst du von der WordPress-App.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Wir haben deine Websites gefunden. Fahre mit der Übertragung all deiner Daten fort und melde dich automatisch bei Jetpack an.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Wir haben deine Website gefunden. Fahre mit der Übertragung all deiner Daten fort und melde dich automatisch bei Jetpack an.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Willkommen bei Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Verwerfen";

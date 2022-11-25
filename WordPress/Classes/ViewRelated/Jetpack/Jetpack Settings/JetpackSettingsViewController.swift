@@ -338,6 +338,9 @@ open class JetpackSettingsViewController: UITableViewController {
     fileprivate func refreshSettings() {
         service.syncJetpackSettingsForBlog(blog,
                                            success: { [weak self] in
+                                               guard self?.blog?.settings != nil else {
+                                                   return
+                                               }
                                                self?.reloadViewModel()
                                                DDLogInfo("Reloaded Jetpack Settings")
                                            },
