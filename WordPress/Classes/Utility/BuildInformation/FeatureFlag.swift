@@ -123,7 +123,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newCoreDataContext:
             return true
         case .jetpackMigrationPreventDuplicateNotifications:
-            return false
+            return true
         case .jetpackFeaturesRemovalPhaseOne:
             return false
         case .jetpackFeaturesRemovalPhaseTwo:

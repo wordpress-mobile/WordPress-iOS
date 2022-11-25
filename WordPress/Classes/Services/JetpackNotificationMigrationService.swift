@@ -25,7 +25,16 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
 
     var wordPressNotificationsEnabled: Bool {
         get {
-            return remoteNotificationRegister.isRegisteredForRemoteNotifications
+            /// UIApplication.shared.isRegisteredForRemoteNotifications should be always accessed from main thread
+            if Thread.isMainThread {
+                return remoteNotificationRegister.isRegisteredForRemoteNotifications
+            } else {
+                var isRegisteredForRemoteNotifications = false
+                DispatchQueue.main.sync {
+                    isRegisteredForRemoteNotifications = remoteNotificationRegister.isRegisteredForRemoteNotifications
+                }
+                return isRegisteredForRemoteNotifications
+            }
         }
 
         set {
