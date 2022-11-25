@@ -48,7 +48,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
             return false
         }
 
-        return UIApplication.shared.canOpenURL(url)
+        return UIApplication.shared.canOpenURL(url) && jetpackMigrationPreventDuplicateNotifications
     }
 
     /// disableWordPressNotificationsFromJetpack may get triggered multiple times from Jetpack app but it only needs to be executed the first time
