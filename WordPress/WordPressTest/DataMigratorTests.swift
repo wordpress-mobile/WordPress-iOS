@@ -7,6 +7,7 @@ class DataMigratorTests: XCTestCase {
     private var migrator: DataMigrator!
     private var coreDataStack: CoreDataStackMock!
     private var keychainUtils: KeychainUtilsMock!
+    private var mockLocalStore: MockLocalFileStore!
 
     override func setUp() {
         super.setUp()
@@ -14,7 +15,11 @@ class DataMigratorTests: XCTestCase {
         context = try! createInMemoryContext()
         coreDataStack = CoreDataStackMock(mainContext: context)
         keychainUtils = KeychainUtilsMock()
-        migrator = DataMigrator(coreDataStack: coreDataStack, backupLocation: URL(string: "/dev/null"), keychainUtils: keychainUtils)
+        mockLocalStore = MockLocalFileStore()
+        migrator = DataMigrator(coreDataStack: coreDataStack,
+                                backupLocation: URL(string: "/dev/null"),
+                                keychainUtils: keychainUtils,
+                                localFileStore: mockLocalStore)
     }
 
     func testExportSucceeds() {
@@ -86,17 +91,6 @@ class DataMigratorTests: XCTestCase {
         XCTAssertEqual(migratorError, .localDraftsNotSynced)
     }
 
-//    func testExportFailsWhenKeychainThrows() {
-//        // Given
-//        keychainUtils.shouldThrowError = true
-//
-//        // When
-//        let migratorError = getExportDataMigratorError(migrator)
-//
-//        // Then
-//        XCTAssertEqual(migratorError, .keychainError)
-//    }
-
     func testUserDefaultsCopiesToSharedOnExport() {
         // Given
         let value = "Test"
@@ -131,6 +125,78 @@ class DataMigratorTests: XCTestCase {
         XCTAssertEqual(migratorError, .sharedUserDefaultsNil)
     }
 
+    // MARK: Widget Migration Tests
+
+    func test_widgetMigration_keychainShouldMigrateSuccessfully() {
+        // Given
+        let expectedUsername = "OAuth2Token"
+        let expectedPassword = "password"
+        let expectedServiceName = "JetpackTodayWidget"
+        keychainUtils.passwordToReturn = expectedPassword
+
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        XCTAssertNotNil(keychainUtils.storedPassword)
+        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
+        XCTAssertNotNil(keychainUtils.storedUsername)
+        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
+        XCTAssertNotNil(keychainUtils.storedServiceName)
+        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
+        XCTAssertNil(keychainUtils.storedAccessGroup)
+    }
+
+    func test_widgetMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        XCTAssertNil(keychainUtils.storedPassword)
+    }
+
+    func test_widgetMigration_userDefaultsShouldMigrateSuccessfully() {
+        // TODO: This will be added later.
+    }
+
+    func test_widgetMigration_plistFileShouldMigrateSuccessfully() {
+        // Given
+        let expectedSourceFilename = "HomeWidgetTodayData.plist"
+        mockLocalStore.fileShouldExistClosure = { url in
+            guard let url else {
+                return false
+            }
+            return url.lastPathComponent == expectedSourceFilename
+        }
+
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        XCTAssertEqual(mockLocalStore.removeItemCallCount, 0)
+        XCTAssertEqual(mockLocalStore.copyItemCallCount, 1)
+    }
+
+    func test_widgetMigration_whenTargetPlistFileExists_itShouldBeDeletedFirst() {
+        // Given
+        let expectedSourceFilename = "HomeWidgetTodayData.plist"
+        let expectedTargetFilename = "JetpackHomeWidgetTodayData.plist"
+        mockLocalStore.fileShouldExistClosure = { url in
+            guard let url else {
+                return false
+            }
+            return [expectedSourceFilename, expectedTargetFilename].contains(url.lastPathComponent)
+        }
+
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        // migrator tries to remove any existing item in the target location first.
+        XCTAssertEqual(mockLocalStore.removeItemCallCount, 1)
+        XCTAssertEqual(mockLocalStore.copyItemCallCount, 1)
+    }
+
 }
 
 // MARK: - CoreDataStackMock
@@ -158,6 +224,12 @@ private final class KeychainUtilsMock: KeychainUtils {
     var sourceAccessGroup: String?
     var destinationAccessGroup: String?
     var shouldThrowError = false
+    var passwordToReturn: String? = nil
+    var storeShouldThrow = false
+    var storedPassword: String? = nil
+    var storedUsername: String? = nil
+    var storedServiceName: String? = nil
+    var storedAccessGroup: String? = nil
 
     override func copyKeychain(from sourceAccessGroup: String?, to destinationAccessGroup: String?, updateExisting: Bool = true) throws {
         if shouldThrowError {
@@ -166,6 +238,21 @@ private final class KeychainUtilsMock: KeychainUtils {
 
         self.sourceAccessGroup = sourceAccessGroup
         self.destinationAccessGroup = destinationAccessGroup
+    }
+
+    override func password(for username: String, serviceName: String, accessGroup: String? = nil) throws -> String? {
+        return passwordToReturn
+    }
+
+    override func store(username: String, password: String, serviceName: String, accessGroup: String? = nil, updateExisting: Bool) throws {
+        if storeShouldThrow {
+            throw NSError(domain: "", code: 0)
+        }
+
+        storedUsername = username
+        storedPassword = password
+        storedServiceName = serviceName
+        storedAccessGroup = accessGroup
     }
 
 }
@@ -216,4 +303,41 @@ private extension NSManagedObjectContext {
         try! save()
     }
 
+}
+
+// MARK: - Mock Local File Store
+
+private final class MockLocalFileStore: LocalFileStore {
+    var fileShouldExistClosure: (URL?) -> Bool = { _ in return false }
+    var removeItemCallCount: Int = 0
+    var copyItemCallCount: Int = 0
+
+    var removeShouldThrowError: Bool = false
+    var copyShouldThrowError: Bool = false
+
+    func fileExists(at url: URL) -> Bool {
+        return fileShouldExistClosure(url)
+    }
+
+    func save(contents: Data, at url: URL) -> Bool {
+        return true
+    }
+
+    func containerURL(forAppGroup appGroup: String) -> URL? {
+        return URL(string: "/dev/null")
+    }
+
+    func removeItem(at url: URL) throws {
+        if removeShouldThrowError {
+            throw NSError(domain: "", code: 0)
+        }
+        removeItemCallCount += 1
+    }
+
+    func copyItem(at srcURL: URL, to dstURL: URL) throws {
+        if copyShouldThrowError {
+            throw NSError(domain: "", code: 0)
+        }
+        copyItemCallCount += 1
+    }
 }
