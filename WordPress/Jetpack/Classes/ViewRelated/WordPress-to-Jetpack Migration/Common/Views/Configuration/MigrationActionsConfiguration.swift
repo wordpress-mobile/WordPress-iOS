@@ -1,5 +1,5 @@
 struct MigrationActionsViewConfiguration {
-    
+
     let primaryTitle: String?
     let secondaryTitle: String?
     let primaryHandler: (() -> Void)?

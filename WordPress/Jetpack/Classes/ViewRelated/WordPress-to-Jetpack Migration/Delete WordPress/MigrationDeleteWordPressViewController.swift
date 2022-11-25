@@ -87,4 +87,3 @@ final class MigrationDeleteWordPressViewController: UIViewController {
         self.present(UINavigationController(rootViewController: destination), animated: true)
     }
 }
-
