@@ -45,7 +45,7 @@ final class MigrationDeleteWordPressViewModel {
             comment: "The primary button title in the Delete WordPress screen"
         )
         static let secondaryAction = NSLocalizedString(
-            "Need help?",
+            "migration.deleteWordpress.secondaryButton",
             value: "Need help?",
             comment: "The secondary button title in the Delete WordPress screen"
         )
