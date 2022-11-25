@@ -962,7 +962,7 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
     }
 
-    /// Removes all view controllers from the details view controller stack and leaves splti view details in an empty state.
+    /// Removes all view controllers from the details view controller stack and leaves split view details in an empty state.
     ///
     private func hideSplitDetailsView() {
         if let splitViewController = splitViewController as? WPSplitViewController,
