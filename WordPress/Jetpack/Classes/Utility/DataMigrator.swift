@@ -24,7 +24,6 @@ final class DataMigrator {
     enum DataMigratorError: Error {
         case localDraftsNotSynced
         case databaseCopyError
-        case keychainError
         case sharedUserDefaultsNil
     }
 
@@ -62,7 +61,8 @@ final class DataMigrator {
 
     /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
     ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget, the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
+    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
+    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
@@ -110,17 +110,6 @@ private extension DataMigrator {
             DDLogError("Error restoring database: \(error)")
             return false
         }
-        return true
-    }
-
-    func copyKeychain(from sourceAccessGroup: String?, to destinationAccessGroup: String?) -> Bool {
-        do {
-            try keychainUtils.copyKeychain(from: sourceAccessGroup, to: destinationAccessGroup)
-        } catch {
-            DDLogError("Error copying keychain: \(error)")
-            return false
-        }
-
         return true
     }
 
@@ -211,9 +200,9 @@ private extension DataMigrator {
         case keychainServiceName = "TodayWidget"
         case userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
         case userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
-        case todayFilename = "HomeWidgetTodayData.plist"
-        case allTimeFilename = "HomeWidgetAllTimeData.plist"
-        case thisWeekFilename = "HomeWidgetThisWeekData.plist" // HomeWidgetAllTimeData
+        case todayFilename = "HomeWidgetTodayData.plist" // HomeWidgetTodayData
+        case allTimeFilename = "HomeWidgetAllTimeData.plist" // HomeWidgetAllTimeData
+        case thisWeekFilename = "HomeWidgetThisWeekData.plist" // HomeWidgetThisWeekData
 
         // Constants for Stats Widget
         case statsUserDefaultsSiteIdKey = "WordPressTodayWidgetSiteId"
