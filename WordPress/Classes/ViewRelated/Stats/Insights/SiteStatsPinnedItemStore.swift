@@ -5,7 +5,7 @@ protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
     private(set) lazy var items: [SiteStatsPinnable] = {
-        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && jetpackNotificationMigrationService.shouldPresentNotifications()
         return presentBloggingReminders ?
             [GrowAudienceCell.HintType.social,
              GrowAudienceCell.HintType.bloggingReminders,
