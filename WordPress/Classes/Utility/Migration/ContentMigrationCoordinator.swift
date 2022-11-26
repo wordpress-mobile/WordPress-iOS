@@ -56,15 +56,18 @@ class ContentMigrationCoordinator {
     ///
     func startOnce(completion: (() -> Void)? = nil) {
         if keyValueDatabase.bool(forKey: .oneOffMigrationKey) {
+            completion?()
             return
         }
 
         startAndDo { [weak self] result in
             guard case .success = result else {
+                completion?()
                 return
             }
 
             self?.keyValueDatabase.set(true, forKey: .oneOffMigrationKey)
+            completion?()
         }
     }
 }

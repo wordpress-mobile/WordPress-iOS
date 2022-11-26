@@ -128,8 +128,8 @@ private extension ContentMigrationCoordinatorTests {
         var importCalled = false
 
         func exportData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)? = nil) {
+            exportCalled = true
             guard let exportErrorToReturn else {
-                exportCalled = true
                 completion?(.success(()))
                 return
             }
@@ -137,8 +137,8 @@ private extension ContentMigrationCoordinatorTests {
         }
 
         func importData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)? = nil) {
+            importCalled = true
             guard let importErrorToReturn else {
-                importCalled = true
                 completion?(.success(()))
                 return
             }
