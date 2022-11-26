@@ -76,7 +76,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
 
     func test_startOnce_whenUserDefaultsDoesNotExist_shouldMigrate() {
         let expect = expectation(description: "Content migration should succeed")
-        coordinator.startOnce { [unowned self] in
+        coordinator.startOnceIfNeeded { [unowned self] in
             XCTAssertTrue(mockDataMigrator.exportCalled)
             XCTAssertTrue(mockKeyValueDatabase.bool(forKey: userDefaultsKey))
             expect.fulfill()
@@ -88,7 +88,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
         mockDataMigrator.exportErrorToReturn = .localDraftsNotSynced
 
         let expect = expectation(description: "Content migration should succeed")
-        coordinator.startOnce { [unowned self] in
+        coordinator.startOnceIfNeeded { [unowned self] in
             XCTAssertTrue(mockDataMigrator.exportCalled)
             XCTAssertFalse(mockKeyValueDatabase.bool(forKey: userDefaultsKey))
             expect.fulfill()
@@ -100,7 +100,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
         mockKeyValueDatabase.set(true, forKey: userDefaultsKey)
 
         let expect = expectation(description: "Content migration should not be called")
-        coordinator.startOnce { [unowned self] in
+        coordinator.startOnceIfNeeded { [unowned self] in
             XCTAssertFalse(mockDataMigrator.exportCalled)
             expect.fulfill()
         }

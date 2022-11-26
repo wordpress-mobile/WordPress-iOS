@@ -52,9 +52,14 @@ class ContentMigrationCoordinator {
         }
     }
 
-    /// Starts the content migration process once per installation.
+    /// Silently starts the content migration process from WordPress to Jetpack.
+    /// This operation is only executed once per installation, and only performed
+    /// when all the conditions are fulfilled.
     ///
-    func startOnce(completion: (() -> Void)? = nil) {
+    /// Note: If the conditions are not fulfilled, this method will attempt to migrate
+    /// again on the next call.
+    ///
+    func startOnceIfNeeded(completion: (() -> Void)? = nil) {
         if keyValueDatabase.bool(forKey: .oneOffMigrationKey) {
             completion?()
             return
