@@ -159,7 +159,24 @@ class DataMigratorTests: XCTestCase {
     }
 
     func test_widgetMigration_userDefaultsShouldMigrateSuccessfully() {
-        // TODO: This will be added later.
+        // Given
+        sharedUserDefaults.set("test1", forKey: "WordPressHomeWidgetsSiteId")
+        sharedUserDefaults.set("test2", forKey: "WordPressHomeWidgetsLoggedIn")
+        sharedUserDefaults.set("test3", forKey: "WordPressTodayWidgetSiteId")
+        sharedUserDefaults.set("test4", forKey: "WordPressTodayWidgetSiteName")
+        sharedUserDefaults.set("test5", forKey: "WordPressTodayWidgetSiteUrl")
+        sharedUserDefaults.set("test6", forKey: "WordPressTodayWidgetTimeZone")
+
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackHomeWidgetsSiteId"), "test1")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackHomeWidgetsLoggedIn"), "test2")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteId"), "test3")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteName"), "test4")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteUrl"), "test5")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetTimeZone"), "test6")
     }
 
     func test_widgetMigration_plistFileShouldMigrateSuccessfully() {
