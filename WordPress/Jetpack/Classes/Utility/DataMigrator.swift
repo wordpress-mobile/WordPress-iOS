@@ -15,15 +15,15 @@ final class DataMigrator {
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
     private let keychainUtils: KeychainUtils
-    private let localDefaults: UserDefaults
-    private let sharedDefaults: UserDefaults?
+    private let localDefaults: UserPersistentRepository
+    private let sharedDefaults: UserPersistentRepository?
     private let localFileStore: LocalFileStore
 
     init(coreDataStack: CoreDataStack = ContextManager.sharedInstance(),
          backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.org.wordpress")?.appendingPathComponent("WordPress.sqlite"),
          keychainUtils: KeychainUtils = KeychainUtils(),
-         localDefaults: UserDefaults = UserDefaults.standard,
-         sharedDefaults: UserDefaults? = UserDefaults(suiteName: WPAppGroupName),
+         localDefaults: UserPersistentRepository = UserDefaults.standard,
+         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
          localFileStore: LocalFileStore = FileManager.default) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
