@@ -90,10 +90,9 @@ final class DataMigrator {
         copyShareExtensionUserDefaults()
     }
 
-    /// Copies WP's Notifications extension data (in Keychain and User Defaults) into JP.
+    /// Copies WP's Notifications extension data (in Keychain) into JP.
     func copyNotificationsExtensionDataToJetpack() {
         copyNotificationExtensionKeychain()
-        copyNotificationExtensionUserDefaults()
     }
 }
 
@@ -376,14 +375,6 @@ private extension DataMigrator {
                                  updateExisting: true)
     }
 
-    func copyNotificationExtensionUserDefaults() {
-        let userDefaultKeys: [WPNotificationsExtensionConstants] = [
-            .enabledKey
-        ]
-
-        copyUserDefaultKeys(userDefaultKeys)
-    }
-
     /// Keys relevant for migration, copied from ExtensionConfiguration.
     ///
     enum WPNotificationsExtensionConstants: String, MigratableUserDefaultsKey {
@@ -392,7 +383,6 @@ private extension DataMigrator {
         case keychainTokenKey = "OAuth2Token"
         case keychainUsernameKey = "Username"
         case keychainUserIDKey = "UserID"
-        case enabledKey = "WordPressNotificationsEnabled"
 
         func valueForJetpack() -> String {
             switch self {
@@ -404,8 +394,6 @@ private extension DataMigrator {
                 return "JPUsername"
             case .keychainUserIDKey:
                 return "JPUserID"
-            case .enabledKey:
-                return "JetpackNotificationsEnabled"
             }
         }
     }
