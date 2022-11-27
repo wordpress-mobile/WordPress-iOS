@@ -1,6 +1,6 @@
-fileprivate protocol MigratableUserDefaultsKey {
+fileprivate protocol MigratableConstant {
     var rawValue: String { get }
-    func valueForJetpack() -> String
+    var valueForJetpack: String { get }
 }
 
 final class DataMigrator {
@@ -162,7 +162,7 @@ private extension DataMigrator {
         return true
     }
 
-    func copyUserDefaultKeys(_ keys: [MigratableUserDefaultsKey]) {
+    func copyUserDefaultKeys(_ keys: [MigratableConstant]) {
         guard let sharedDefaults else {
             return
         }
@@ -173,7 +173,7 @@ private extension DataMigrator {
                 return
             }
 
-            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack())
+            sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack)
         }
     }
 }
@@ -189,9 +189,9 @@ private extension DataMigrator {
             return
         }
 
-        try? keychainUtils.store(username: WPWidgetConstants.keychainTokenKey.valueForJetpack(),
+        try? keychainUtils.store(username: WPWidgetConstants.keychainTokenKey.valueForJetpack,
                                  password: authToken,
-                                 serviceName: WPWidgetConstants.keychainServiceName.valueForJetpack(),
+                                 serviceName: WPWidgetConstants.keychainServiceName.valueForJetpack,
                                  updateExisting: true)
     }
 
@@ -220,7 +220,7 @@ private extension DataMigrator {
 
         fileNames.forEach { fileName in
             guard let sourceURL = localFileStore.containerURL(forAppGroup: WPAppGroupName)?.appendingPathComponent(fileName.rawValue),
-                  let targetURL = localFileStore.containerURL(forAppGroup: WPAppGroupName)?.appendingPathComponent(fileName.valueForJetpack()),
+                  let targetURL = localFileStore.containerURL(forAppGroup: WPAppGroupName)?.appendingPathComponent(fileName.valueForJetpack),
                   localFileStore.fileExists(at: sourceURL) else {
                 return
             }
@@ -235,7 +235,7 @@ private extension DataMigrator {
 
     /// Keys relevant for migration, copied from WidgetConfiguration.
     ///
-    enum WPWidgetConstants: String, MigratableUserDefaultsKey {
+    enum WPWidgetConstants: String, MigratableConstant {
         // Constants for Home Widget
         case keychainTokenKey = "OAuth2Token"
         case keychainServiceName = "TodayWidget"
@@ -254,7 +254,7 @@ private extension DataMigrator {
         case statsThisWeekFilename = "ThisWeekData.plist" // ThisWeekWidgetStats
         case statsAllTimeFilename = "AllTimeData.plist" // AllTimeWidgetStats
 
-        func valueForJetpack() -> String {
+        var valueForJetpack: String {
             switch self {
             case .keychainTokenKey:
                 return "OAuth2Token"
@@ -300,9 +300,9 @@ private extension DataMigrator {
             return
         }
 
-        try? keychainUtils.store(username: WPShareExtensionConstants.keychainTokenKey.valueForJetpack(),
+        try? keychainUtils.store(username: WPShareExtensionConstants.keychainTokenKey.valueForJetpack,
                                  password: authToken,
-                                 serviceName: WPShareExtensionConstants.keychainServiceName.valueForJetpack(),
+                                 serviceName: WPShareExtensionConstants.keychainServiceName.valueForJetpack,
                                  updateExisting: true)
     }
 
@@ -321,7 +321,7 @@ private extension DataMigrator {
 
     /// Keys relevant for migration, copied from ExtensionConfiguration.
     ///
-    enum WPShareExtensionConstants: String, MigratableUserDefaultsKey {
+    enum WPShareExtensionConstants: String, MigratableConstant {
 
         case keychainUsernameKey = "Username"
         case keychainTokenKey = "OAuth2Token"
@@ -333,7 +333,7 @@ private extension DataMigrator {
         case maximumMediaDimensionKey = "WPShareExtensionMaximumMediaDimensionKey"
         case recentSitesKey = "WPShareExtensionRecentSitesKey"
 
-        func valueForJetpack() -> String {
+        var valueForJetpack: String {
             switch self {
             case .keychainUsernameKey:
                 return "JPUsername"
@@ -369,22 +369,22 @@ private extension DataMigrator {
             return
         }
 
-        try? keychainUtils.store(username: WPNotificationsExtensionConstants.keychainTokenKey.valueForJetpack(),
+        try? keychainUtils.store(username: WPNotificationsExtensionConstants.keychainTokenKey.valueForJetpack,
                                  password: authToken,
-                                 serviceName: WPNotificationsExtensionConstants.keychainServiceName.valueForJetpack(),
+                                 serviceName: WPNotificationsExtensionConstants.keychainServiceName.valueForJetpack,
                                  updateExisting: true)
     }
 
     /// Keys relevant for migration, copied from ExtensionConfiguration.
     ///
-    enum WPNotificationsExtensionConstants: String, MigratableUserDefaultsKey {
+    enum WPNotificationsExtensionConstants: String {
 
         case keychainServiceName = "NotificationServiceExtension"
         case keychainTokenKey = "OAuth2Token"
         case keychainUsernameKey = "Username"
         case keychainUserIDKey = "UserID"
 
-        func valueForJetpack() -> String {
+        var valueForJetpack: String {
             switch self {
             case .keychainServiceName:
                 return "JPNotificationServiceExtension"
