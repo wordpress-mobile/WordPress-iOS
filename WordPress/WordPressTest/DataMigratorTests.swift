@@ -112,7 +112,7 @@ class DataMigratorTests: XCTestCase {
             let sharedValue = stagingDict?[key] as? String
             XCTAssertEqual(value, sharedValue)
 
-            UserDefaults.standard.removeObject(forKey: key)
+            localUserDefaults.removeObject(forKey: key)
             sharedUserDefaults.removeObject(forKey: key)
         }
     }
