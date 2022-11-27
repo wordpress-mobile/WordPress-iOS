@@ -198,6 +198,70 @@ class DataMigratorTests: XCTestCase {
         XCTAssertEqual(mockLocalStore.copyItemCallCount, 1)
     }
 
+    // MARK: Share Extension Migration Tests
+
+    func test_shareExtensionMigration_keychainShouldMigrateSuccessfully() {
+        // Given
+        let expectedUsername = "JPOAuth2Token"
+        let expectedPassword = "password"
+        let expectedServiceName = "JPShareExtension"
+        keychainUtils.passwordToReturn = expectedPassword
+
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNotNil(keychainUtils.storedPassword)
+        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
+        XCTAssertNotNil(keychainUtils.storedUsername)
+        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
+        XCTAssertNotNil(keychainUtils.storedServiceName)
+        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
+        XCTAssertNil(keychainUtils.storedAccessGroup)
+    }
+
+    func test_shareExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNil(keychainUtils.storedPassword)
+    }
+
+    func test_shareExtensionMigration_userDefaultsShouldMigrateSuccessfully() {
+        // TODO: This will be added later.
+    }
+
+    // MARK: Notifications Extension Migration Tests
+
+    func test_notificationsExtensionMigration_keychainShouldMigrateSuccessfully() {
+        // Given
+        let expectedUsername = "JPOAuth2Token"
+        let expectedPassword = "password"
+        let expectedServiceName = "JPNotificationServiceExtension"
+        keychainUtils.passwordToReturn = expectedPassword
+
+        // When
+        migrator.copyNotificationsExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNotNil(keychainUtils.storedPassword)
+        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
+        XCTAssertNotNil(keychainUtils.storedUsername)
+        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
+        XCTAssertNotNil(keychainUtils.storedServiceName)
+        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
+        XCTAssertNil(keychainUtils.storedAccessGroup)
+    }
+
+    func test_notificationsExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
+        // When
+        migrator.copyNotificationsExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNil(keychainUtils.storedPassword)
+    }
+
 }
 
 // MARK: - CoreDataStackMock
