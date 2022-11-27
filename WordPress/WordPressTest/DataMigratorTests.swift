@@ -248,7 +248,24 @@ class DataMigratorTests: XCTestCase {
     }
 
     func test_shareExtensionMigration_userDefaultsShouldMigrateSuccessfully() {
-        // TODO: This will be added later.
+        // Given
+        sharedUserDefaults.set("test1", forKey: "WPShareUserDefaultsPrimarySiteName")
+        sharedUserDefaults.set("test2", forKey: "WPShareUserDefaultsPrimarySiteID")
+        sharedUserDefaults.set("test3", forKey: "WPShareUserDefaultsLastUsedSiteName")
+        sharedUserDefaults.set("test4", forKey: "WPShareUserDefaultsLastUsedSiteID")
+        sharedUserDefaults.set("test5", forKey: "WPShareExtensionMaximumMediaDimensionKey")
+        sharedUserDefaults.set("test6", forKey: "WPShareExtensionRecentSitesKey")
+
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsPrimarySiteName"), "test1")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsPrimarySiteID"), "test2")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteName"), "test3")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteID"), "test4")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
     }
 
     // MARK: Notifications Extension Migration Tests
