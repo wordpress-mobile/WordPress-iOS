@@ -77,7 +77,6 @@ final class DataMigrator {
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
-    ///
     func copyTodayWidgetDataToJetpack() {
         copyTodayWidgetKeychain()
         copyTodayWidgetUserDefaults()
@@ -85,12 +84,18 @@ final class DataMigrator {
     }
 
     /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
     func copyShareExtensionDataToJetpack() {
         copyShareExtensionKeychain()
         copyShareExtensionUserDefaults()
     }
 
     /// Copies WP's Notifications extension data (in Keychain) into JP.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
     func copyNotificationsExtensionDataToJetpack() {
         copyNotificationExtensionKeychain()
     }
