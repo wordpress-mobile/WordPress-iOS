@@ -8,6 +8,8 @@ class DataMigratorTests: XCTestCase {
     private var coreDataStack: CoreDataStackMock!
     private var keychainUtils: KeychainUtilsMock!
     private var mockLocalStore: MockLocalFileStore!
+    private var sharedUserDefaults: InMemoryUserDefaults!
+    private var localUserDefaults: InMemoryUserDefaults!
 
     override func setUp() {
         super.setUp()
@@ -16,9 +18,13 @@ class DataMigratorTests: XCTestCase {
         coreDataStack = CoreDataStackMock(mainContext: context)
         keychainUtils = KeychainUtilsMock()
         mockLocalStore = MockLocalFileStore()
+        sharedUserDefaults = InMemoryUserDefaults()
+        localUserDefaults = InMemoryUserDefaults()
         migrator = DataMigrator(coreDataStack: coreDataStack,
                                 backupLocation: URL(string: "/dev/null"),
                                 keychainUtils: keychainUtils,
+                                localDefaults: localUserDefaults,
+                                sharedDefaults: sharedUserDefaults,
                                 localFileStore: mockLocalStore)
     }
 
@@ -95,23 +101,19 @@ class DataMigratorTests: XCTestCase {
         // Given
         let value = "Test"
         let keys = [UUID().uuidString, UUID().uuidString, UUID().uuidString]
-        keys.forEach { key in UserDefaults.standard.set(value, forKey: key) }
-        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
-            XCTFail("Unable to create shared user defaults")
-            return
-        }
+        keys.forEach { key in localUserDefaults.set(value, forKey: key) }
 
         // When
         migrator.exportData()
 
-        let stagingDict = sharedDefaults.dictionary(forKey: "defaults_staging_dictionary")
+        let stagingDict = sharedUserDefaults.dictionary(forKey: "defaults_staging_dictionary")
         keys.forEach { key in
             // Then
             let sharedValue = stagingDict?[key] as? String
             XCTAssertEqual(value, sharedValue)
 
             UserDefaults.standard.removeObject(forKey: key)
-            sharedDefaults.removeObject(forKey: key)
+            sharedUserDefaults.removeObject(forKey: key)
         }
     }
 
