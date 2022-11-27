@@ -25,7 +25,6 @@ import Foundation
             @objc static let keychainTokenKey = "JPOAuth2Token"
             @objc static let keychainUsernameKey = "JPUsername"
             @objc static let keychainUserIDKey = "JPUserID"
-            @objc static let enabledKey = "JetpackNotificationsEnabled"
         }
     }
 }

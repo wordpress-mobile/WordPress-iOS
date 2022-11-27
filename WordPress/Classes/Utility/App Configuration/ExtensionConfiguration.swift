@@ -25,7 +25,6 @@ import Foundation
             @objc static let keychainTokenKey = "OAuth2Token"
             @objc static let keychainUsernameKey = "Username"
             @objc static let keychainUserIDKey = "UserID"
-            @objc static let enabledKey = "WordPressNotificationsEnabled"
         }
     }
 }
