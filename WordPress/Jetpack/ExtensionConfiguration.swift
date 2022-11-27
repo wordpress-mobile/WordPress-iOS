@@ -2,6 +2,9 @@
 
 import Foundation
 
+/// - Warning:
+/// This configuartion extension has a **WordPress** counterpart in the WordPress bundle.
+/// Make sure to keep them in sync to avoid build errors when builing the WordPress target.
 @objc extension AppConfiguration {
 
     @objc(AppConfigurationExtension)
@@ -25,7 +28,6 @@ import Foundation
             @objc static let keychainTokenKey = "JPOAuth2Token"
             @objc static let keychainUsernameKey = "JPUsername"
             @objc static let keychainUserIDKey = "JPUserID"
-            @objc static let enabledKey = "JetpackNotificationsEnabled"
         }
     }
 }

@@ -1,0 +1,1 @@
+Ortam Kütüphanesi'ndeki “Aramanızla eşleşen ortam yok” mesajının konumunu düzelttik. Artık arama sonucu olmadığında görünüyor. Sakin olun ve aramaya devam edin.

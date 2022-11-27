@@ -20,6 +20,10 @@ import AutomatticTracks
             return true
         }
 
+        if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
+            return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
+        }
+
         guard url.scheme == WPComScheme else {
             return false
         }

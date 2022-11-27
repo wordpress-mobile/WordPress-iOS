@@ -2,6 +2,9 @@ import Foundation
 
 /**
  * WordPress Configuration
+ * - Warning:
+ * This configuartion class has a **Jetpack** counterpart in the Jetpack bundle.
+ * Make sure to keep them in sync to avoid build errors when builing the Jetpack target.
  */
 @objc class AppConfiguration: NSObject {
     @objc static let isJetpack: Bool = false

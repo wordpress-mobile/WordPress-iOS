@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-02 16:54:11+0000 */
+/* Translation-Revision-Date: 2022-11-21 18:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ar */
@@ -9779,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "سنة";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "يتعذر إغلاق حساب المستخدم هذا على الفور لأنه يتضمن عمليات شراء نشطة. يرجى الاتصال بفريق الدعم لدينا لإنهاء حذف الحساب.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "تجاهُل";
 
@@ -9913,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "ووردبريس أفضل مع Jetpack";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "معرفة المزيد على jetpack.com";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "إضافة مؤلف";
 
@@ -9966,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "تجاهُل";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "إنهاء";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "لقد نقلنا كل بياناتك وإعداداتك. يصبح كل شيء صحيحًا عندما تتركه.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "شكرًا على التبديل إلى Jetpack!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "التقرير لاحقًا";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "ستتلقى كل التنبيهات نفسها ولكنها ستأتي الآن من تطبيق Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "لقد عطلنا التنبيهات في تطبيق ووردبريس.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "السماح بالتنبيهات بمواكبة موقعك";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "يبدو أنك ستقوم بالتبديل من تطبيق ووربريس.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "عثرنا على موقعك. استمر في نقل جميع البيانات وسجّل الدخول إلى Jetpack تلقائيًا.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "عثرنا على موقعك. استمر في نقل جميع البيانات وسجّل الدخول إلى Jetpack تلقائيًا.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "مرحبًا بك في Jetpack!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "تجاهُل";

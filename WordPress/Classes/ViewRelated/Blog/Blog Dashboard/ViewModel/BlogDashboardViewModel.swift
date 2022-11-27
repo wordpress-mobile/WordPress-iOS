@@ -3,6 +3,7 @@ import UIKit
 import CoreData
 
 enum DashboardSection: Int, CaseIterable {
+    case migrationSuccess
     case quickActions
     case cards
 }
@@ -10,6 +11,7 @@ enum DashboardSection: Int, CaseIterable {
 typealias BlogID = Int
 
 enum DashboardItem: Hashable {
+    case migrationSuccess
     case quickActions(BlogID)
     case cards(DashboardCardModel)
 }
@@ -61,6 +63,10 @@ class BlogDashboardViewModel {
                     cellConfigurable.configure(blog: blog, viewController: viewController, apiResponse: cardModel.apiResponse)
                 }
                 return cell
+            case .migrationSuccess:
+                let cellType = DashboardMigrationSuccessCell.self
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardMigrationSuccessCell
+                return cell
             }
 
         }
@@ -101,7 +107,14 @@ class BlogDashboardViewModel {
     }
 
     func isQuickActionsSection(_ sectionIndex: Int) -> Bool {
-        return sectionIndex == DashboardSection.quickActions.rawValue
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        let targetIndex = showMigration ? DashboardSection.quickActions.rawValue : DashboardSection.quickActions.rawValue - 1
+        return sectionIndex == targetIndex
+    }
+
+    func isMigrationSuccessCardSection(_ sectionIndex: Int) -> Bool {
+        let showMigration = MigrationSuccessCardView.shouldShowMigrationSuccessCard && !WPDeviceIdentification.isiPad()
+        return showMigration ? sectionIndex == DashboardSection.migrationSuccess.rawValue : false
     }
 }
 
@@ -148,7 +161,13 @@ private extension BlogDashboardViewModel {
         let items = cards.map { DashboardItem.cards($0) }
         let dotComID = blog.dotComID?.intValue ?? 0
         var snapshot = DashboardSnapshot()
-        snapshot.appendSections(DashboardSection.allCases)
+        if MigrationSuccessCardView.shouldShowMigrationSuccessCard, !WPDeviceIdentification.isiPad() {
+            snapshot.appendSections(DashboardSection.allCases)
+            snapshot.appendItems([.migrationSuccess], toSection: .migrationSuccess)
+        } else {
+            snapshot.appendSections([.quickActions, .cards])
+        }
+
         snapshot.appendItems([.quickActions(dotComID)], toSection: .quickActions)
         snapshot.appendItems(items, toSection: .cards)
         return snapshot

@@ -547,6 +547,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        hideSplitDetailsView()
         blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
@@ -966,6 +967,16 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
         }
 
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
+    }
+
+    /// Removes all view controllers from the details view controller stack and leaves split view details in an empty state.
+    ///
+    private func hideSplitDetailsView() {
+        if let splitViewController = splitViewController as? WPSplitViewController,
+           splitViewController.viewControllers.count > 1,
+           let detailsNavigationController = splitViewController.viewControllers.last as? UINavigationController {
+            detailsNavigationController.setViewControllers([], animated: false)
+        }
     }
 }
 

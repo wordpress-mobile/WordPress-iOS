@@ -32,12 +32,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case featureHighlightTooltip
     case jetpackPowered
     case jetpackPoweredBottomSheet
-    case sharedUserDefaults
-    case sharedLogin
+    case contentMigration
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
-    case allowDisablingWPNotifications
+    case jetpackMigrationPreventDuplicateNotifications
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -68,11 +67,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .milestoneNotifications:
             return true
         case .bloggingReminders:
-            return !NotificationFilteringService().shouldFilterWordPressNotifications()
+            return true
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
         case .weeklyRoundup:
-            return !NotificationFilteringService().shouldFilterWordPressNotifications()
+            return true
         case .weeklyRoundupStaticNotification:
             // This may be removed, but we're feature flagging it for now until we know for sure we won't need it.
             return false
@@ -115,9 +114,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackPoweredBottomSheet:
             return false
-        case .sharedUserDefaults:
-            return false
-        case .sharedLogin:
+        case .contentMigration:
             return false
         case .newJetpackLandingScreen:
             return true
@@ -125,8 +122,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .newCoreDataContext:
             return true
-        case .allowDisablingWPNotifications:
-            return false
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return true
         case .jetpackFeaturesRemovalPhaseOne:
             return false
         case .jetpackFeaturesRemovalPhaseTwo:
@@ -157,7 +154,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_four"
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "jp_removal_new_users"
-        case .allowDisablingWPNotifications:
+        case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
             default:
                 return nil
@@ -239,18 +236,16 @@ extension FeatureFlag {
             return "Jetpack powered banners and badges"
         case .jetpackPoweredBottomSheet:
             return "Jetpack powered bottom sheet"
-        case .sharedUserDefaults:
-            return "Shared User Defaults"
-        case .sharedLogin:
-            return "Shared Login"
+        case .contentMigration:
+            return "Content Migration"
         case .newJetpackLandingScreen:
             return "New Jetpack landing screen"
         case .newWordPressLandingScreen:
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
-        case .allowDisablingWPNotifications:
-            return "Disable WordPress app notifications when Jetpack is installed"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
         case .jetpackFeaturesRemovalPhaseOne:
             return "Jetpack Features Removal Phase One"
         case .jetpackFeaturesRemovalPhaseTwo:
