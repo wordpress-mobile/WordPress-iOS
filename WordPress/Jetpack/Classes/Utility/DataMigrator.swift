@@ -1,5 +1,12 @@
 final class DataMigrator {
 
+    /// `DefaultsWrapper` is used to single out a dictionary for the migration process.
+    /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
+    private struct DefaultsWrapper {
+        static let dictKey = "defaults_staging_dictionary"
+        let defaultsDict: [String: Any]
+    }
+
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
     private let keychainUtils: KeychainUtils
@@ -24,7 +31,6 @@ final class DataMigrator {
     enum DataMigratorError: Error {
         case localDraftsNotSynced
         case databaseCopyError
-        case keychainError
         case sharedUserDefaultsNil
     }
 
@@ -37,7 +43,7 @@ final class DataMigrator {
             completion?(.failure(.databaseCopyError))
             return
         }
-        guard copyUserDefaults(from: localDefaults, to: sharedDefaults) else {
+        guard populateSharedDefaults() else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
         }
@@ -50,7 +56,7 @@ final class DataMigrator {
             completion?(.failure(.databaseCopyError))
             return
         }
-        guard copyUserDefaults(from: sharedDefaults, to: localDefaults) else {
+        guard populateFromSharedDefaults() else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
         }
@@ -62,7 +68,8 @@ final class DataMigrator {
 
     /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
     ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget, the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
+    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
+    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
@@ -113,26 +120,30 @@ private extension DataMigrator {
         return true
     }
 
-    func copyKeychain(from sourceAccessGroup: String?, to destinationAccessGroup: String?) -> Bool {
-        do {
-            try keychainUtils.copyKeychain(from: sourceAccessGroup, to: destinationAccessGroup)
-        } catch {
-            DDLogError("Error copying keychain: \(error)")
+    func populateSharedDefaults() -> Bool {
+        guard let sharedDefaults = sharedDefaults else {
             return false
         }
 
+        let data = localDefaults.dictionaryRepresentation()
+        var temporaryDictionary: [String: Any] = [:]
+        for (key, value) in data {
+            temporaryDictionary[key] = value
+        }
+        sharedDefaults.set(temporaryDictionary, forKey: DefaultsWrapper.dictKey)
         return true
     }
 
-    func copyUserDefaults(from source: UserDefaults?, to destination: UserDefaults?) -> Bool {
-        guard let source, let destination else {
+    func populateFromSharedDefaults() -> Bool {
+        guard let sharedDefaults = sharedDefaults,
+              let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
             return false
         }
-        let data = source.dictionaryRepresentation()
-        for (key, value) in data {
-            destination.set(value, forKey: key)
-        }
 
+        for (key, value) in temporaryDictionary {
+            localDefaults.set(value, forKey: key)
+        }
+        sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
         return true
     }
 }
@@ -211,9 +222,9 @@ private extension DataMigrator {
         case keychainServiceName = "TodayWidget"
         case userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
         case userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
-        case todayFilename = "HomeWidgetTodayData.plist"
-        case allTimeFilename = "HomeWidgetAllTimeData.plist"
-        case thisWeekFilename = "HomeWidgetThisWeekData.plist" // HomeWidgetAllTimeData
+        case todayFilename = "HomeWidgetTodayData.plist" // HomeWidgetTodayData
+        case allTimeFilename = "HomeWidgetAllTimeData.plist" // HomeWidgetAllTimeData
+        case thisWeekFilename = "HomeWidgetThisWeekData.plist" // HomeWidgetThisWeekData
 
         // Constants for Stats Widget
         case statsUserDefaultsSiteIdKey = "WordPressTodayWidgetSiteId"

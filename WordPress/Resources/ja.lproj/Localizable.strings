@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-03 10:54:08+0000 */
+/* Translation-Revision-Date: 2022-11-23 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ja_JP */
@@ -9779,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1年";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "有効になっている購入があるため、すぐにはこのユーザーアカウントを閉鎖できません。 サポートチームにご連絡いただき、アカウントの削除を完了してください。";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "削除";
 
@@ -9913,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress が Jetpack でパワーアップ";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "詳細は jetpack.com をご覧ください";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "投稿者を追加";
 
@@ -9966,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "削除";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "完了";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "すべてのデータと設定を転送しました。 すべて移行先にあります。";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Jetpack にお切り替えいただきありがとうございます。";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "後で決める";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "通知内容はすべて同じですが、Jetpack アプリから送信されるようになりました。";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "WordPress アプリの通知を無効にしました。";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "サイトを更新するよう通知を許可する";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "WordPress アプリから切り替わっているようです。";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "サイトが見つかりました。 すべてのデータを転送して Jetpack に自動でログインするには続行します。";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "サイトが見つかりました。 すべてのデータを転送して Jetpack に自動でログインするには続行します。";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Jetpack へようこそ !";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "削除";

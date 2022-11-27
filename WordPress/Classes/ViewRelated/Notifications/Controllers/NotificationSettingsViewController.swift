@@ -53,8 +53,7 @@ class NotificationSettingsViewController: UIViewController {
     fileprivate var followedSites: [ReaderSiteTopic] = []
     fileprivate var tableSections: [Section] = []
 
-    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
-    private let notificationFilteringService = NotificationFilteringService()
+    private var notificationsEnabled = false
 
     override func loadView() {
         mainView.pinSubviewToAllEdges(tableView)
@@ -147,6 +146,12 @@ class NotificationSettingsViewController: UIViewController {
             self?.handleLoadError()
         })
 
+        dispatchGroup.enter()
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            self?.notificationsEnabled = settings.authorizationStatus == .authorized
+            dispatchGroup.leave()
+        }
+
         dispatchGroup.notify(queue: .main) { [weak self] in
             self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isExternal }
             self?.setupSections()
@@ -201,7 +206,7 @@ class NotificationSettingsViewController: UIViewController {
             section.append(.followedSites)
         }
 
-        if notificationFilteringService.shouldShowNotificationControl() {
+        if JetpackNotificationMigrationService.shared.shouldShowNotificationControl() && notificationsEnabled {
             section.insert(.notificationControl, at: 0)
         }
 
@@ -494,8 +499,8 @@ private extension NotificationSettingsViewController {
                                          "but you can get some helpful extras, too.",
                                          comment: "Title displayed in the Notification Settings for WordPress.com")
             case .notificationControl:
-                return NSLocalizedString("Disable push notifications on the app.",
-                                         comment: "Notification Settings for the app")
+                return NSLocalizedString("Turning the switch off will disable all notifications from this app, regardless of type.",
+                                         comment: "Notification Settings switch for the app.")
             }
         }
 
@@ -651,9 +656,9 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
 extension NotificationSettingsViewController {
     private func configureNotificationSwitchCell(_ cell: SwitchTableViewCell) {
         cell.name = NSLocalizedString("Allow Notifications", comment: "Title for a cell with switch control that allows to enable or disable notifications")
-        cell.on = notificationFilteringService.wordPressNotificationsEnabled
-        cell.onChange = { [weak self] (newValue: Bool) in
-            self?.notificationFilteringService.wordPressNotificationsEnabled = newValue
+        cell.on = JetpackNotificationMigrationService.shared.wordPressNotificationsEnabled
+        cell.onChange = { newValue in
+            JetpackNotificationMigrationService.shared.wordPressNotificationsEnabled = newValue
         }
     }
 }

@@ -9,6 +9,16 @@ protocol JetpackConnectionDelegate {
 ///
 open class JetpackConnectionViewController: UITableViewController {
 
+    // MARK: - Views
+
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: .large)
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(indicatorView)
+        view.pinSubviewAtCenter(indicatorView)
+        return indicatorView
+    }()
+
     // MARK: - Private Properties
 
     fileprivate var blog: Blog!
@@ -91,21 +101,22 @@ open class JetpackConnectionViewController: UITableViewController {
 
     @objc func disconnectJetpack() {
         WPAnalytics.trackEvent(.jetpackDisconnectRequested)
+        startLoading()
         self.service.disconnectJetpackFromBlog(self.blog,
                                                success: { [weak self] in
+                                                   self?.stopLoading()
                                                    if let blog = self?.blog {
-                                                       // Jetpack was successfully disconnected, lets hide the blog,
-                                                       // it should become unavailable the next time blogs are fetched
                                                        let context = ContextManager.sharedInstance().mainContext
-                                                       let service = AccountService(managedObjectContext: context)
-                                                       service.setVisibility(false, forBlogs: [blog])
+                                                       let service = BlogService(managedObjectContext: context)
+                                                       service.remove(blog)
                                                        try? context.save()
                                                        self?.delegate?.jetpackDisconnectedForBlog(blog)
                                                    } else {
                                                        self?.dismiss()
                                                    }
                                                },
-                                               failure: { error in
+                                               failure: { [weak self] error in
+                                                   self?.stopLoading()
                                                    let errorTitle = NSLocalizedString("Error disconnecting Jetpack",
                                                                                       comment: "Title of error dialog when disconnecting jetpack fails.")
                                                    let errorMessage = NSLocalizedString("Please contact support for assistance.",
@@ -123,4 +134,21 @@ open class JetpackConnectionViewController: UITableViewController {
         }
     }
 
+}
+
+// MARK: - Loading
+
+/// Loading blocks user interactions while loading is in progress since navigating from this view controller
+/// during Jetpack connection or disconnection process can leave the application in an undetermined state.
+///
+private extension JetpackConnectionViewController {
+    func startLoading() {
+        activityIndicatorView.startAnimating()
+        UIApplication.shared.mainWindow?.isUserInteractionEnabled = false
+    }
+
+    func stopLoading() {
+        activityIndicatorView.stopAnimating()
+        UIApplication.shared.mainWindow?.isUserInteractionEnabled = true
+    }
 }
