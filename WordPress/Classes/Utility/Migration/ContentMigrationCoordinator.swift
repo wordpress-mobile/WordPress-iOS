@@ -21,6 +21,7 @@ class ContentMigrationCoordinator {
     enum ContentMigrationCoordinatorError: Error {
         case ineligible
         case exportFailure
+        case importFailure
     }
 
     // MARK: Methods
@@ -73,6 +74,25 @@ class ContentMigrationCoordinator {
 
             self?.keyValueDatabase.set(true, forKey: .oneOffMigrationKey)
             completion?()
+        }
+    }
+
+    /// Starts the content migration process of importing app data to the local location.
+    ///
+    /// The completion block is intentionally called regardless of whether the import process
+    /// succeeds or fails. Since the import process consists of local file operations, we should
+    /// just let the user continue with the original intent in case of failure.
+    ///
+    /// - Parameter completion: Closure called after the import process completes.
+    func importData(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
+        dataMigrator.importData { result in
+            if case let .failure(error) = result {
+                DDLogError("[Jetpack Migration] Error importing data: \(error)")
+                completion?(.failure(.importFailure))
+                return
+            }
+
+            completion?(.success(()))
         }
     }
 }
