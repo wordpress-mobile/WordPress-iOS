@@ -11011,7 +11011,6 @@
 			isa = PBXGroup;
 			children = (
 				3FFDEF8229179CD000B625CE /* MigrationDependencyContainer.swift */,
-				C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */,
 				F41BDD772910AFB900B7F2B0 /* Navigation */,
 				F4F9D5EE29096D0400502576 /* Views */,
 				F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */,
@@ -14432,6 +14431,7 @@
 				179A70EF2729834B006DAC0A /* Binding+OnChange.swift */,
 				FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */,
 				C7AFF873283C0ADC000E01DF /* UIApplication+Helpers.swift */,
+				C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
