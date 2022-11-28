@@ -1,3 +1,14 @@
+protocol ContentDataMigrating {
+    func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+    func importData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+}
+
+enum DataMigrationError: Error {
+    case localDraftsNotSynced
+    case databaseCopyError
+    case sharedUserDefaultsNil
+}
+
 fileprivate protocol MigratableConstant {
     var rawValue: String { get }
     var valueForJetpack: String { get }
@@ -33,50 +44,14 @@ final class DataMigrator {
         self.localFileStore = localFileStore
     }
 
-    enum DataMigratorError: Error {
-        case localDraftsNotSynced
-        case databaseCopyError
-        case sharedUserDefaultsNil
-    }
-
-    func exportData(completion: ((Result<Void, DataMigratorError>) -> Void)? = nil) {
-        guard isLocalDraftsSynced() else {
-            completion?(.failure(.localDraftsNotSynced))
-            return
-        }
-        guard let backupLocation, copyDatabase(to: backupLocation) else {
-            completion?(.failure(.databaseCopyError))
-            return
-        }
-        guard populateSharedDefaults() else {
-            completion?(.failure(.sharedUserDefaultsNil))
-            return
-        }
-        BloggingRemindersScheduler.handleRemindersMigration()
-        completion?(.success(()))
-    }
-
-    func importData(completion: ((Result<Void, DataMigratorError>) -> Void)? = nil) {
-        guard let backupLocation, restoreDatabase(from: backupLocation) else {
-            completion?(.failure(.databaseCopyError))
-            return
-        }
-        guard populateFromSharedDefaults() else {
-            completion?(.failure(.sharedUserDefaultsNil))
-            return
-        }
-
-        copyTodayWidgetDataToJetpack()
-        copyShareExtensionDataToJetpack()
-        copyNotificationsExtensionDataToJetpack()
-        BloggingRemindersScheduler.handleRemindersMigration()
-        completion?(.success(()))
-    }
-
     /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
+    ///
+    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
+    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
+    ///
     func copyTodayWidgetDataToJetpack() {
         copyTodayWidgetKeychain()
         copyTodayWidgetUserDefaults()
@@ -98,6 +73,45 @@ final class DataMigrator {
     /// It requires time to properly mock the dependencies in `importData`.
     func copyNotificationsExtensionDataToJetpack() {
         copyNotificationExtensionKeychain()
+    }
+}
+
+// MARK: - Content Data Migrating
+
+extension DataMigrator: ContentDataMigrating {
+
+    func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
+        guard isLocalDraftsSynced() else {
+            completion?(.failure(.localDraftsNotSynced))
+            return
+        }
+        guard let backupLocation, copyDatabase(to: backupLocation) else {
+            completion?(.failure(.databaseCopyError))
+            return
+        }
+        guard populateSharedDefaults() else {
+            completion?(.failure(.sharedUserDefaultsNil))
+            return
+        }
+        BloggingRemindersScheduler.handleRemindersMigration()
+        completion?(.success(()))
+    }
+
+    func importData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
+        guard let backupLocation, restoreDatabase(from: backupLocation) else {
+            completion?(.failure(.databaseCopyError))
+            return
+        }
+        guard populateFromSharedDefaults() else {
+            completion?(.failure(.sharedUserDefaultsNil))
+            return
+        }
+
+        copyTodayWidgetDataToJetpack()
+        copyShareExtensionDataToJetpack()
+        copyNotificationsExtensionDataToJetpack()
+        BloggingRemindersScheduler.handleRemindersMigration()
+        completion?(.success(()))
     }
 }
 
