@@ -53,7 +53,6 @@ class JetpackWindowManager: WindowManager {
         showAppUI(for: blog)
     }
 
-    // TODO: Add logic in here to trigger migration UI if needed
     private var shouldShowMigrationUI: Bool {
         return FeatureFlag.contentMigration.enabled && AccountHelper.isLoggedIn
     }
