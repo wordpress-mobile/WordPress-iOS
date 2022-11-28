@@ -42,6 +42,10 @@ class InMemoryUserDefaults: UserPersistentRepository {
         return dictionary[key] as? URL
     }
 
+    func dictionaryRepresentation() -> [String: Any] {
+        return dictionary
+    }
+
     func set(_ value: Any?, forKey key: String) {
         dictionary[key] = value
     }
