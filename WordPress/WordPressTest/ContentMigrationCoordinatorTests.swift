@@ -122,12 +122,12 @@ private extension ContentMigrationCoordinatorTests {
     }
 
     final class MockDataMigrator: ContentDataMigrating {
-        var exportErrorToReturn: DataMigrator.DataMigratorError? = nil
+        var exportErrorToReturn: DataMigrationError? = nil
         var exportCalled = false
-        var importErrorToReturn: DataMigrator.DataMigratorError? = nil
+        var importErrorToReturn: DataMigrationError? = nil
         var importCalled = false
 
-        func exportData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)? = nil) {
+        func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
             exportCalled = true
             guard let exportErrorToReturn else {
                 completion?(.success(()))
@@ -136,7 +136,7 @@ private extension ContentMigrationCoordinatorTests {
             completion?(.failure(exportErrorToReturn))
         }
 
-        func importData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)? = nil) {
+        func importData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
             importCalled = true
             guard let importErrorToReturn else {
                 completion?(.success(()))

@@ -77,15 +77,6 @@ class ContentMigrationCoordinator {
     }
 }
 
-// MARK: - Content Migrating
-
-protocol ContentDataMigrating {
-    func exportData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)?)
-    func importData(completion: ((Result<Void, DataMigrator.DataMigratorError>) -> Void)?)
-}
-
-extension DataMigrator: ContentDataMigrating {}
-
 // MARK: - Content Migration Eligibility Provider
 
 protocol ContentMigrationEligibilityProvider {

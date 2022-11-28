@@ -1,3 +1,14 @@
+protocol ContentDataMigrating {
+    func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+    func importData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+}
+
+enum DataMigrationError: Error {
+    case localDraftsNotSynced
+    case databaseCopyError
+    case sharedUserDefaultsNil
+}
+
 final class DataMigrator {
 
     /// `DefaultsWrapper` is used to single out a dictionary for the migration process.
@@ -28,13 +39,26 @@ final class DataMigrator {
         self.localFileStore = localFileStore
     }
 
-    enum DataMigratorError: Error {
-        case localDraftsNotSynced
-        case databaseCopyError
-        case sharedUserDefaultsNil
+    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
+    ///
+    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
+    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
+    ///
+    func copyTodayWidgetDataToJetpack() {
+        copyTodayWidgetKeychain()
+        copyTodayWidgetUserDefaults()
+        copyTodayWidgetCacheFiles()
     }
+}
 
-    func exportData(completion: ((Result<Void, DataMigratorError>) -> Void)? = nil) {
+// MARK: - Content Data Migrating
+
+extension DataMigrator: ContentDataMigrating {
+
+    func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
         guard isLocalDraftsSynced() else {
             completion?(.failure(.localDraftsNotSynced))
             return
@@ -51,7 +75,7 @@ final class DataMigrator {
         completion?(.success(()))
     }
 
-    func importData(completion: ((Result<Void, DataMigratorError>) -> Void)? = nil) {
+    func importData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
         guard let backupLocation, restoreDatabase(from: backupLocation) else {
             completion?(.failure(.databaseCopyError))
             return
@@ -64,20 +88,6 @@ final class DataMigrator {
         copyTodayWidgetDataToJetpack()
         BloggingRemindersScheduler.handleRemindersMigration()
         completion?(.success(()))
-    }
-
-    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
-    ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
-    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
-    ///
-    /// Note: This method is not private for unit testing purposes.
-    /// It requires time to properly mock the dependencies in `importData`.
-    ///
-    func copyTodayWidgetDataToJetpack() {
-        copyTodayWidgetKeychain()
-        copyTodayWidgetUserDefaults()
-        copyTodayWidgetCacheFiles()
     }
 }
 
