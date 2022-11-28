@@ -372,8 +372,8 @@ private extension DataMigratorTests {
         return managedObjectContext
     }
 
-    func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrator.DataMigratorError? {
-        var migratorError: DataMigrator.DataMigratorError?
+    func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrationError? {
+        var migratorError: DataMigrationError?
         migrator.exportData { result in
             switch result {
             case .success:
