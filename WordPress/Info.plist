@@ -477,6 +477,7 @@
 			<array>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
+				<string>wordpressmigration+v1</string>
 				<string>wordpressnotificationmigration</string>
 			</array>
 		</dict>
