@@ -631,8 +631,10 @@ extension WordPressAppDelegate {
         switch rootViewController {
         case is LoginNavigationController:
             return "Login View"
+#if JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
+#endif
         default:
             return WPTabBarController.sharedInstance().currentlySelectedScreen()
         }
