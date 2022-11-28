@@ -2,6 +2,17 @@ import UIKit
 
 class MigrationStepView: UIView {
 
+    // MARK: - Configuration
+
+    var additionalContentInset = UIEdgeInsets(
+        top: Constants.topContentInset,
+        left: 0,
+        bottom: Constants.additionalBottomContentInset,
+        right: 0
+    )
+
+    // MARK: - Views
+
     private let headerView: MigrationHeaderView
     private let centerView: UIView
     private let actionsView: MigrationActionsView
@@ -34,6 +45,8 @@ class MigrationStepView: UIView {
         return scrollView
     }()
 
+    // MARK: - Init
+
     init(headerView: MigrationHeaderView,
          actionsView: MigrationActionsView,
          centerView: UIView) {
@@ -45,7 +58,7 @@ class MigrationStepView: UIView {
         headerView.directionalLayoutMargins = Constants.headerViewMargins
         actionsView.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: .zero)
-        backgroundColor = .systemBackground
+        backgroundColor = MigrationAppearance.backgroundColor
         addSubview(mainScrollView)
         addSubview(actionsView)
         activateConstraints()
@@ -54,7 +67,14 @@ class MigrationStepView: UIView {
     private func activateConstraints() {
         centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
         contentView.pinSubviewToAllEdges(mainStackView)
-        pinSubviewToAllEdges(mainScrollView)
+
+        NSLayoutConstraint.activate([
+            mainScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+
         mainScrollView.pinSubviewToAllEdges(contentView)
 
         NSLayoutConstraint.activate([
@@ -71,13 +91,28 @@ class MigrationStepView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        mainScrollView.contentInset.bottom = actionsView.frame.size.height + Constants.bottomMargin
+        let bottomInset = actionsView.frame.size.height - safeAreaInsets.bottom
+        mainScrollView.contentInset = .init(
+            top: additionalContentInset.top,
+            left: additionalContentInset.left,
+            bottom: bottomInset + additionalContentInset.bottom,
+            right: additionalContentInset.right
+        )
+        mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
     }
 
     private enum Constants {
+        /// Adds space between the content bottom edge and actions sheet top edge.
+        ///
+        /// Bottom inset is added to the `scrollView` so the content is not covered by the Actions Sheet view.
+        /// The value of the bottom inset is computed in `layoutSubviews`.
+        static let additionalBottomContentInset: CGFloat = 10
+
+        /// Adds top padding to the `scrollView`.
+        static let topContentInset: CGFloat = UINavigationBar().intrinsicContentSize.height
+
         static let centerContentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         static let stackViewSpacing: CGFloat = 20
-        static let bottomMargin: CGFloat = 20
         static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
     }
 }

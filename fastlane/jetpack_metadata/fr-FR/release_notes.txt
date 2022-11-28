@@ -1,0 +1,1 @@
+Nous avons corrigé la position d’affichage du message « Aucun média ne correspond à votre recherche » dans la bibliothèque de médias. Il s’affiche désormais lorsqu’il n’y a pas de résultat de recherche. Continuez à chercher en toute tranquillité.

@@ -1,0 +1,1 @@
+Wir haben die Positionierung der Meldung „Keine Medien entsprechen deiner Suche“ in der Mediathek korrigiert. Sie wird nun angezeigt, wenn keine Suchergebnisse vorhanden sind. Du kannst also unbesorgt weitersuchen.

@@ -21,9 +21,6 @@ class NotificationService: UNNotificationServiceExtension {
     /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
-    /// A temporary service to allow controlling WordPress notifications when they are disabled after Jetpack installation
-    private let notificationFilteringService = NotificationFilteringService()
-
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -282,8 +279,8 @@ private extension NotificationService {
     /// - Returns: the token if found; `nil` otherwise
     ///
     func readExtensionToken() -> String? {
-        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
-                                                                             andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                                                                             andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                              accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension OAuth token")
             return nil
@@ -297,8 +294,8 @@ private extension NotificationService {
     /// - Returns: the username if found; `nil` otherwise
     ///
     func readExtensionUsername() -> String? {
-        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
-                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                                                                           andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                            accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension username")
             return nil
@@ -312,8 +309,8 @@ private extension NotificationService {
     /// - Returns: the userID if found; `nil` otherwise
     ///
     func readExtensionUserID() -> String? {
-        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUserIDKey,
-                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                                                                         andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                                                                          accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Service Extension userID")
             return nil
@@ -333,11 +330,4 @@ private extension NotificationService {
     }
 
     static let viewMilestoneTitle = AppLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
-}
-
-// MARK: - Notification Filtering
-private extension NotificationService {
-    func shouldFilterNotification() -> Bool {
-        return notificationFilteringService.shouldFilterWordPressNotifications()
-    }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-16 10:13:53+0000 */
+/* Translation-Revision-Date: 2022-11-22 11:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ru */
@@ -9996,6 +9996,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The primary description in the migration welcome screen */
 "migration.welcome.primaryDescription" = "Похоже, вы перешли с приложения WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Мы нашли ваши сайты. Продолжайте переносить все данные и входите в Jetpack автоматически.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Мы нашли ваш сайт. Продолжайте переносить все данные и входите в Jetpack автоматически.";
 
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Jetpack приветствует вас!";

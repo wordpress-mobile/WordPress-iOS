@@ -14,16 +14,16 @@ final class NotificationFilteringService {
     var wordPressNotificationsEnabled: Bool {
         get {
             guard let userDefaults = userDefaults,
-                  userDefaults.value(forKey: WPNotificationsEnabledKey) != nil else {
+                  userDefaults.value(forKey: AppConfiguration.Extension.NotificationsService.enabledKey) != nil else {
                 /// Treat this flag as enabled if it wasn't explicitly disabled
                 return true
             }
 
-            return userDefaults.bool(forKey: WPNotificationsEnabledKey)
+            return userDefaults.bool(forKey: AppConfiguration.Extension.NotificationsService.enabledKey)
         }
 
         set {
-            userDefaults?.set(newValue, forKey: WPNotificationsEnabledKey)
+            userDefaults?.set(newValue, forKey: AppConfiguration.Extension.NotificationsService.enabledKey)
 
             if isWordPress && !newValue {
                 cancelAllPendingWordPressLocalNotifications()

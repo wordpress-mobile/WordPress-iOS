@@ -13,8 +13,10 @@ class MigrationCenterView: UIView {
         if let configuration {
             label.attributedText = configuration.attributedText
         }
+        label.textAlignment = .center
         label.textColor = Appearance.descriptionTextColor
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 

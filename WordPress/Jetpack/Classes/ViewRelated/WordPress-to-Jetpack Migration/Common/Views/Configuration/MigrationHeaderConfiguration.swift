@@ -1,14 +1,14 @@
 struct MigrationHeaderConfiguration {
 
-    let step: MigrationStep
     let title: String?
     let image: UIImage?
     let primaryDescription: String?
     let secondaryDescription: String?
+}
+
+extension MigrationHeaderConfiguration {
 
     init(step: MigrationStep, multiSite: Bool = false) {
-        self.step = step
-
         image = Appearance.image(for: step)
         title = Appearance.title(for: step)
         primaryDescription = Appearance.primaryDescription(for: step)
@@ -63,7 +63,7 @@ private extension MigrationHeaderConfiguration {
             case .welcome:
                 return welcomeSecondaryDescription(plural: multiSite)
             case .notifications:
-                return notificationsSecondaryDescription
+                return JetpackNotificationMigrationService.shared.isMigrationSupported ? notificationsSecondaryDescription : nil
             case .done:
                 return nil
             case .dismiss:
@@ -96,7 +96,7 @@ private extension MigrationHeaderConfiguration {
                                                               comment: "Primary description in the migration done screen.")
 
         static let notificationsSecondaryDescription = NSLocalizedString("migration.notifications.secondaryDescription",
-                                                                         value: "We’ve disabled notifications for the WordPress app.",
+                                                                         value: "We’ll disable notifications for the WordPress app.",
                                                                          comment: "Secondary description in the migration notifications screen")
 
         static func welcomeSecondaryDescription(plural: Bool) -> String {

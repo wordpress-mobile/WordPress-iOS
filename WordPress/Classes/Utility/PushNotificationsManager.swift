@@ -57,6 +57,10 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     @objc func registerForRemoteNotifications() {
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            return
+        }
+
         sharedApplication.registerForRemoteNotifications()
     }
 
