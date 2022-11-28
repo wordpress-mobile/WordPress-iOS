@@ -8,7 +8,7 @@ class JetpackWindowManager: WindowManager {
     override func showUI(for blog: Blog?) {
         // If the user is logged in and has blogs sync'd to their account
         if AccountHelper.isLoggedIn && AccountHelper.hasBlogs {
-            shouldShowMigrationUI ? showMigrationUI(blog) : showAppUI(for: blog)
+            showAppUI(for: blog)
             return
         }
 
@@ -23,7 +23,7 @@ class JetpackWindowManager: WindowManager {
         AccountHelper.logOutDefaultWordPressComAccount()
     }
 
-    private func showMigrationUI(_ blog: Blog?) {
+    func showMigrationUI(_ blog: Blog? = nil) {
         let container = MigrationDependencyContainer()
         cancellable = container.migrationCoordinator.$currentStep
             .receive(on: DispatchQueue.main)
