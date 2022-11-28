@@ -66,6 +66,7 @@ class BlogDashboardViewModel {
             case .migrationSuccess:
                 let cellType = DashboardMigrationSuccessCell.self
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.defaultReuseID, for: indexPath) as? DashboardMigrationSuccessCell
+                cell?.configure(with: viewController)
                 return cell
             }
 

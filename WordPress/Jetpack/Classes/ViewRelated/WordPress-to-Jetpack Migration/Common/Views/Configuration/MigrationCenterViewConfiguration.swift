@@ -1,6 +1,9 @@
 struct MigrationCenterViewConfiguration {
 
     let attributedText: NSAttributedString
+}
+
+extension MigrationCenterViewConfiguration {
 
     init(step: MigrationStep) {
         self.attributedText = Appearance.highlightText(Appearance.highlightedText(for: step), inString: Appearance.text(for: step))
