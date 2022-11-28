@@ -615,9 +615,12 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     var currentlySelectedScreen: String {
+        guard let rootViewController = window?.rootViewController else {
+            return String()
+        }
+
         // Check if the post editor or login view is up
-        let rootViewController = window?.rootViewController
-        if let presentedViewController = rootViewController?.presentedViewController {
+        if let presentedViewController = rootViewController.presentedViewController {
             if presentedViewController is EditPostViewController {
                 return "Post Editor"
             } else if presentedViewController is LoginNavigationController {
@@ -625,7 +628,14 @@ extension WordPressAppDelegate {
             }
         }
 
-        return WPTabBarController.sharedInstance().currentlySelectedScreen()
+        switch rootViewController {
+        case is LoginNavigationController:
+            return "Login View"
+        case is MigrationNavigationController:
+            return "Jetpack Migration View"
+        default:
+            return WPTabBarController.sharedInstance().currentlySelectedScreen()
+        }
     }
 
     var isWelcomeScreenVisible: Bool {
