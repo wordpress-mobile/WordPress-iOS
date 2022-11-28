@@ -7,14 +7,14 @@ class ContentMigrationCoordinator {
     // MARK: Dependencies
 
     private let dataMigrator: ContentDataMigrating
-    private let keyValueDatabase: KeyValueDatabase
+    private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
 
     init(dataMigrator: ContentDataMigrating = DataMigrator(),
-         keyValueDatabase: KeyValueDatabase = UserDefaults.standard,
+         userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration()) {
         self.dataMigrator = dataMigrator
-        self.keyValueDatabase = keyValueDatabase
+        self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
     }
 
@@ -60,7 +60,7 @@ class ContentMigrationCoordinator {
     /// again on the next call.
     ///
     func startOnceIfNeeded(completion: (() -> Void)? = nil) {
-        if keyValueDatabase.bool(forKey: .oneOffMigrationKey) {
+        if userPersistentRepository.bool(forKey: .oneOffMigrationKey) {
             completion?()
             return
         }
@@ -71,7 +71,7 @@ class ContentMigrationCoordinator {
                 return
             }
 
-            self?.keyValueDatabase.set(true, forKey: .oneOffMigrationKey)
+            self?.userPersistentRepository.set(true, forKey: .oneOffMigrationKey)
             completion?()
         }
     }

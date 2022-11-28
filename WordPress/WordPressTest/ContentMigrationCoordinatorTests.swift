@@ -8,7 +8,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
 
     private var mockEligibilityProvider: MockEligibilityProvider!
     private var mockDataMigrator: MockDataMigrator!
-    private var mockKeyValueDatabase: EphemeralKeyValueDatabase!
+    private var mockPersistentRepository: InMemoryUserDefaults!
     private var coordinator: ContentMigrationCoordinator!
 
     override func setUp() {
@@ -16,14 +16,14 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
 
         mockEligibilityProvider = MockEligibilityProvider()
         mockDataMigrator = MockDataMigrator()
-        mockKeyValueDatabase = EphemeralKeyValueDatabase()
+        mockPersistentRepository = InMemoryUserDefaults()
         coordinator = makeCoordinator()
     }
 
     override func tearDown() {
         mockEligibilityProvider = nil
         mockDataMigrator = nil
-        mockKeyValueDatabase = nil
+        mockPersistentRepository = nil
         coordinator = nil
 
         super.tearDown()
@@ -78,7 +78,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
         let expect = expectation(description: "Content migration should succeed")
         coordinator.startOnceIfNeeded { [unowned self] in
             XCTAssertTrue(mockDataMigrator.exportCalled)
-            XCTAssertTrue(mockKeyValueDatabase.bool(forKey: userDefaultsKey))
+            XCTAssertTrue(mockPersistentRepository.bool(forKey: userDefaultsKey))
             expect.fulfill()
         }
         wait(for: [expect], timeout: timeout)
@@ -90,14 +90,14 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
         let expect = expectation(description: "Content migration should succeed")
         coordinator.startOnceIfNeeded { [unowned self] in
             XCTAssertTrue(mockDataMigrator.exportCalled)
-            XCTAssertFalse(mockKeyValueDatabase.bool(forKey: userDefaultsKey))
+            XCTAssertFalse(mockPersistentRepository.bool(forKey: userDefaultsKey))
             expect.fulfill()
         }
         wait(for: [expect], timeout: timeout)
     }
 
     func test_startOnce_whenUserDefaultsExists_shouldNotMigrate() {
-        mockKeyValueDatabase.set(true, forKey: userDefaultsKey)
+        mockPersistentRepository.set(true, forKey: userDefaultsKey)
 
         let expect = expectation(description: "Content migration should not be called")
         coordinator.startOnceIfNeeded { [unowned self] in
@@ -148,7 +148,7 @@ private extension ContentMigrationCoordinatorTests {
 
     func makeCoordinator() -> ContentMigrationCoordinator {
         return .init(dataMigrator: mockDataMigrator,
-                     keyValueDatabase: mockKeyValueDatabase,
+                     userPersistentRepository: mockPersistentRepository,
                      eligibilityProvider: mockEligibilityProvider)
     }
 
