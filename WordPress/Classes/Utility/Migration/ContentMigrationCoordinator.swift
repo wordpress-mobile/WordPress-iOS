@@ -2,7 +2,9 @@
 ///
 class ContentMigrationCoordinator {
 
-    static let shared: ContentMigrationCoordinator = .init()
+    static var shared: ContentMigrationCoordinator = {
+        .init()
+    }()
 
     // MARK: Dependencies
 
@@ -42,19 +44,20 @@ class ContentMigrationCoordinator {
         // TODO: Sync local post drafts here.
 
         dataMigrator.exportData { result in
-            if case let .failure(error) = result {
+            switch result {
+            case .success:
+                completion?(.success(()))
+
+            case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
                 completion?(.failure(.exportFailure))
-                return
             }
-
-            completion?(.success(()))
         }
     }
 
-    /// Silently starts the content migration process from WordPress to Jetpack.
-    /// This operation is only executed once per installation, and only performed
-    /// when all the conditions are fulfilled.
+    /// Starts the content migration process from WordPress to Jetpack.
+    /// This method ensures that the migration will only be executed once per installation,
+    /// and only performed when all the conditions are fulfilled.
     ///
     /// Note: If the conditions are not fulfilled, this method will attempt to migrate
     /// again on the next call.
@@ -66,12 +69,10 @@ class ContentMigrationCoordinator {
         }
 
         startAndDo { [weak self] result in
-            guard case .success = result else {
-                completion?()
-                return
+            if case .success = result {
+                self?.userPersistentRepository.set(true, forKey: .oneOffMigrationKey)
             }
 
-            self?.userPersistentRepository.set(true, forKey: .oneOffMigrationKey)
             completion?()
         }
     }
