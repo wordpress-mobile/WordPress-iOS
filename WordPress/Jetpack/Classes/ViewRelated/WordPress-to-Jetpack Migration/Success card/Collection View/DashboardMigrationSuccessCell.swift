@@ -2,6 +2,8 @@ import UIKit
 
 class DashboardMigrationSuccessCell: UICollectionViewCell, Reusable {
 
+    var onTap: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -13,7 +15,7 @@ class DashboardMigrationSuccessCell: UICollectionViewCell, Reusable {
 
     private func setup() {
         let view = MigrationSuccessCardView() {
-            // TODO: add card presentation logic here
+            self.onTap?()
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(view)
