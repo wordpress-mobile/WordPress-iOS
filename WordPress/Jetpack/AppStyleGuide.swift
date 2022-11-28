@@ -3,7 +3,7 @@ import WordPressShared
 import Gridicons
 
 /// - Warning:
-/// This configuartion struct has a **WordPress** counterpart in the WordPress bundle.
+/// This configuration struct has a **WordPress** counterpart in the WordPress bundle.
 /// Make sure to keep them in sync to avoid build errors when builing the WordPress target.
 struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)

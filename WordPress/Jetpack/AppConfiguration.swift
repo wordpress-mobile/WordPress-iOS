@@ -3,7 +3,7 @@ import Foundation
 /**
  * Jetpack Configuration
  * - Warning:
- * This configuartion class has a **WordPress** counterpart in the WordPress bundle.
+ * This configuration class has a **WordPress** counterpart in the WordPress bundle.
  * Make sure to keep them in sync to avoid build errors when builing the WordPress target.
  */
 @objc class AppConfiguration: NSObject {
