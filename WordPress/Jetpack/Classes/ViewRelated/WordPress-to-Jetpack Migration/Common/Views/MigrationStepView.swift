@@ -2,6 +2,17 @@ import UIKit
 
 class MigrationStepView: UIView {
 
+    // MARK: - Configuration
+
+    var additionalContentInset = UIEdgeInsets(
+        top: Constants.topContentInset,
+        left: 0,
+        bottom: Constants.additionalBottomContentInset,
+        right: 0
+    )
+
+    // MARK: - Views
+
     private let headerView: MigrationHeaderView
     private let centerView: UIView
     private let actionsView: MigrationActionsView
@@ -33,6 +44,8 @@ class MigrationStepView: UIView {
         scrollView.addSubview(contentView)
         return scrollView
     }()
+
+    // MARK: - Init
 
     init(headerView: MigrationHeaderView,
          actionsView: MigrationActionsView,
@@ -79,9 +92,13 @@ class MigrationStepView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let bottomInset = actionsView.frame.size.height - safeAreaInsets.bottom
-        mainScrollView.contentInset.bottom = bottomInset + Constants.additionalBottomContentInset
+        mainScrollView.contentInset = .init(
+            top: additionalContentInset.top,
+            left: additionalContentInset.left,
+            bottom: bottomInset + additionalContentInset.bottom,
+            right: additionalContentInset.right
+        )
         mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
-        mainScrollView.contentInset.top = Constants.topContentInset
     }
 
     private enum Constants {

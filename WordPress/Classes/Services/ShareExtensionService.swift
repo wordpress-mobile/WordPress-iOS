@@ -9,9 +9,9 @@ open class ShareExtensionService: NSObject {
     @objc class func configureShareExtensionToken(_ oauth2Token: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                WPShareExtensionKeychainTokenKey,
+                AppConfiguration.Extension.Share.keychainTokenKey,
                 andPassword: oauth2Token,
-                forServiceName: WPShareExtensionKeychainServiceName,
+                forServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -27,9 +27,9 @@ open class ShareExtensionService: NSObject {
     @objc class func configureShareExtensionUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                WPShareExtensionKeychainUsernameKey,
+                AppConfiguration.Extension.Share.keychainUsernameKey,
                 andPassword: username,
-                forServiceName: WPShareExtensionKeychainServiceName,
+                forServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -50,8 +50,8 @@ open class ShareExtensionService: NSObject {
             return
         }
 
-        userDefaults.set(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
-        userDefaults.set(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
+        userDefaults.set(defaultSiteID, forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteID)
+        userDefaults.set(defaultSiteName, forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteName)
     }
 
     /// Sets the Last Used Site that should be pre-selected in the Share Extension.
@@ -65,8 +65,8 @@ open class ShareExtensionService: NSObject {
             return
         }
 
-        userDefaults.set(lastUsedSiteID, forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
-        userDefaults.set(lastUsedSiteName, forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
+        userDefaults.set(lastUsedSiteID, forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteID)
+        userDefaults.set(lastUsedSiteName, forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteName)
     }
 
     /// Sets the Maximum Media Size.
@@ -78,7 +78,7 @@ open class ShareExtensionService: NSObject {
             return
         }
 
-        userDefaults.set(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
+        userDefaults.set(maximumMediaDimension, forKey: AppConfiguration.Extension.Share.maximumMediaDimensionKey)
     }
 
 
@@ -91,7 +91,7 @@ open class ShareExtensionService: NSObject {
             return
         }
 
-        userDefaults.set(recentSites, forKey: WPShareExtensionRecentSitesKey)
+        userDefaults.set(recentSites, forKey: AppConfiguration.Extension.Share.recentSitesKey)
     }
 
     /// Nukes all of the Share Extension Configuration
@@ -99,8 +99,8 @@ open class ShareExtensionService: NSObject {
     @objc class func removeShareExtensionConfiguration() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: WPShareExtensionKeychainTokenKey,
-                andServiceName: WPShareExtensionKeychainServiceName,
+                forUsername: AppConfiguration.Extension.Share.keychainTokenKey,
+                andServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -109,8 +109,8 @@ open class ShareExtensionService: NSObject {
 
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: WPShareExtensionKeychainUsernameKey,
-                andServiceName: WPShareExtensionKeychainServiceName,
+                forUsername: AppConfiguration.Extension.Share.keychainUsernameKey,
+                andServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -118,20 +118,20 @@ open class ShareExtensionService: NSObject {
         }
 
         if let userDefaults = UserDefaults(suiteName: WPAppGroupName) {
-            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteID)
-            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteName)
-            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
-            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
-            userDefaults.removeObject(forKey: WPShareExtensionMaximumMediaDimensionKey)
-            userDefaults.removeObject(forKey: WPShareExtensionRecentSitesKey)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteID)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteName)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteID)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteName)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.maximumMediaDimensionKey)
+            userDefaults.removeObject(forKey: AppConfiguration.Extension.Share.recentSitesKey)
         }
     }
 
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
     @objc class func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
-                                                                              andServiceName: WPShareExtensionKeychainServiceName,
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.Share.keychainTokenKey,
+                                                                              andServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                                                                               accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
@@ -142,8 +142,8 @@ open class ShareExtensionService: NSObject {
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
     @objc class func retrieveShareExtensionUsername() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
-                                                                              andServiceName: WPShareExtensionKeychainServiceName,
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Extension.Share.keychainUsernameKey,
+                                                                              andServiceName: AppConfiguration.Extension.Share.keychainServiceName,
                                                                               accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
@@ -158,8 +158,8 @@ open class ShareExtensionService: NSObject {
             return nil
         }
 
-        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String {
+        if let siteID = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteName) as? String {
             return (siteID, siteName)
         }
 
@@ -174,13 +174,13 @@ open class ShareExtensionService: NSObject {
             return nil
         }
 
-        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsLastUsedSiteID) as? Int,
-            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsLastUsedSiteName) as? String {
+        if let siteID = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteID) as? Int,
+            let siteName = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsLastUsedSiteName) as? String {
             return (siteID, siteName)
         }
 
-        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String {
+        if let siteID = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.object(forKey: AppConfiguration.Extension.Share.userDefaultsPrimarySiteName) as? String {
             return (siteID, siteName)
         }
 
@@ -194,7 +194,7 @@ open class ShareExtensionService: NSObject {
             return nil
         }
 
-        return userDefaults.object(forKey: WPShareExtensionMaximumMediaDimensionKey) as? Int
+        return userDefaults.object(forKey: AppConfiguration.Extension.Share.maximumMediaDimensionKey) as? Int
     }
 
     /// Retrieves the recently used sites, if any.
@@ -204,6 +204,6 @@ open class ShareExtensionService: NSObject {
             return nil
         }
 
-        return userDefaults.object(forKey: WPShareExtensionRecentSitesKey) as? [String]
+        return userDefaults.object(forKey: AppConfiguration.Extension.Share.recentSitesKey) as? [String]
     }
 }
