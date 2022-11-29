@@ -4,7 +4,6 @@ protocol ContentDataMigrating {
 }
 
 enum DataMigrationError: Error {
-    case localDraftsNotSynced
     case databaseCopyError
     case sharedUserDefaultsNil
 }
@@ -81,10 +80,6 @@ final class DataMigrator {
 extension DataMigrator: ContentDataMigrating {
 
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
-        guard isLocalDraftsSynced() else {
-            completion?(.failure(.localDraftsNotSynced))
-            return
-        }
         guard let backupLocation, copyDatabase(to: backupLocation) else {
             completion?(.failure(.databaseCopyError))
             return
@@ -118,21 +113,6 @@ extension DataMigrator: ContentDataMigrating {
 // MARK: - Private Functions
 
 private extension DataMigrator {
-
-    func isLocalDraftsSynced() -> Bool {
-        let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-        fetchRequest.predicate = NSPredicate(format: "status = %@ && (remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@)",
-                                             BasePost.Status.draft.rawValue,
-                                             NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue),
-                                             NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
-                                             NSNumber(value: AbstractPostRemoteStatus.local.rawValue),
-                                             NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
-        guard let count = try? coreDataStack.mainContext.count(for: fetchRequest) else {
-            return false
-        }
-
-        return count == 0
-    }
 
     func copyDatabase(to destination: URL) -> Bool {
         do {

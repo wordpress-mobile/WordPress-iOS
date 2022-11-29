@@ -29,10 +29,6 @@ class DataMigratorTests: XCTestCase {
     }
 
     func testExportSucceeds() {
-        // Given
-        context.addDraftPost(remoteStatus: .sync)
-        context.addDraftPost(remoteStatus: .sync)
-
         // When
         var successful = false
         migrator.exportData { result in
@@ -47,54 +43,6 @@ class DataMigratorTests: XCTestCase {
 
         // Then
         XCTAssertTrue(successful)
-    }
-
-    func testExportFailsWithLocalDrafts() {
-        // Given
-        context.addDraftPost(remoteStatus: .local)
-        context.addDraftPost(remoteStatus: .sync)
-
-        // When
-        let migratorError = getExportDataMigratorError(migrator)
-
-        // Then
-        XCTAssertEqual(migratorError, .localDraftsNotSynced)
-    }
-
-    func testExportFailsWithPushingDrafts() {
-        // Given
-        context.addDraftPost(remoteStatus: .pushing)
-        context.addDraftPost(remoteStatus: .sync)
-
-        // When
-        let migratorError = getExportDataMigratorError(migrator)
-
-        // Then
-        XCTAssertEqual(migratorError, .localDraftsNotSynced)
-    }
-
-    func testExportFailsWithPushingMediaDrafts() {
-        // Given
-        context.addDraftPost(remoteStatus: .pushingMedia)
-        context.addDraftPost(remoteStatus: .sync)
-
-        // When
-        let migratorError = getExportDataMigratorError(migrator)
-
-        // Then
-        XCTAssertEqual(migratorError, .localDraftsNotSynced)
-    }
-
-    func testExportFailsWithFailedUploadDrafts() {
-        // Given
-        context.addDraftPost(remoteStatus: .failed)
-        context.addDraftPost(remoteStatus: .sync)
-
-        // When
-        let migratorError = getExportDataMigratorError(migrator)
-
-        // Then
-        XCTAssertEqual(migratorError, .localDraftsNotSynced)
     }
 
     func testUserDefaultsCopiesToSharedOnExport() {
@@ -384,26 +332,6 @@ private extension DataMigratorTests {
         }
         return migratorError
     }
-}
-
-private extension NSManagedObjectContext {
-
-    func createBlog() -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: self) as! Blog
-        blog.url = ""
-        blog.xmlrpc = ""
-        return blog
-    }
-
-    func addDraftPost(remoteStatus: AbstractPostRemoteStatus) {
-        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: self) as! Post
-        post.blog = createBlog()
-        post.remoteStatus = remoteStatus
-        post.dateModified = Date()
-        post.status = .draft
-        try! save()
-    }
-
 }
 
 // MARK: - Mock Local File Store
