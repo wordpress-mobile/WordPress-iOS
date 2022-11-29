@@ -2582,6 +2582,7 @@
 		C324D7AC28C2F73F00310DEF /* SplashPrologueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DD4DCD28BE5D4D0046C68E /* SplashPrologueViewController.swift */; };
 		C32A6A2C2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */; };
 		C32A6A2D2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */; };
+		C33A5ADC2935848F00961E3A /* MigrationAppDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A5ADB2935848F00961E3A /* MigrationAppDetection.swift */; };
 		C3439B5F27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3439B5E27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift */; };
 		C34E94BA28EDF7D900D27A16 /* InfiniteScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E94B928EDF7D900D27A16 /* InfiniteScrollerView.swift */; };
 		C34E94BC28EDF80700D27A16 /* InfiniteScrollerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E94BB28EDF80700D27A16 /* InfiniteScrollerViewDelegate.swift */; };
@@ -7699,6 +7700,7 @@
 		C32A6A2B2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignCategoryThumbnailSize.swift; sourceTree = "<group>"; };
 		C3302CC427EB67D0004229D3 /* IntentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntentCell.xib; sourceTree = "<group>"; };
 		C3302CC527EB67D0004229D3 /* IntentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentCell.swift; sourceTree = "<group>"; };
+		C33A5ADB2935848F00961E3A /* MigrationAppDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAppDetection.swift; sourceTree = "<group>"; };
 		C3439B5E27FE3A3C0058DA55 /* SiteCreationWizardLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncherTests.swift; sourceTree = "<group>"; };
 		C34E94B928EDF7D900D27A16 /* InfiniteScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollerView.swift; sourceTree = "<group>"; };
 		C34E94BB28EDF80700D27A16 /* InfiniteScrollerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollerViewDelegate.swift; sourceTree = "<group>"; };
@@ -11019,6 +11021,7 @@
 				F41BDD772910AFB900B7F2B0 /* Navigation */,
 				F4F9D5EE29096D0400502576 /* Views */,
 				F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */,
+				C33A5ADB2935848F00961E3A /* MigrationAppDetection.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -22552,6 +22555,7 @@
 				FABB21022602FC2C00C8785C /* Plugin.swift in Sources */,
 				FABB21032602FC2C00C8785C /* JetpackActivityLogViewController.swift in Sources */,
 				17870A712816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */,
+				C33A5ADC2935848F00961E3A /* MigrationAppDetection.swift in Sources */,
 				DC772AF6282009BA00664C02 /* StatsLineChartView.swift in Sources */,
 				FABB21042602FC2C00C8785C /* FormattableMediaContent.swift in Sources */,
 				FABB21052602FC2C00C8785C /* CollabsableHeaderFilterCollectionViewCell.swift in Sources */,
