@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-03 14:54:08+0000 */
+/* Translation-Revision-Date: 2022-11-23 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -9779,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1년";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "이 사용자 계정은 활성 구매 항목이 있어서 즉시 닫을 수 없습니다. 지원팀에 문의하여 계정 삭제를 마무리하세요.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "무시";
 
@@ -9913,6 +9916,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "워드프레스는 젯팩과 함께 사용하면 더 좋습니다.";
 
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "jetpack.com에서 더 알아보기";
+
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "글쓴이 추가";
 
@@ -9966,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "무시";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "마침";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "모든 데이터와 설정을 이전하겠습니다. 모든 것이 그대로 다 남아 있습니다.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "젯팩으로 전환해 주셔서 감사합니다!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "나중에 결정";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "동일한 알림을 모두 받겠지만, 이제는 젯팩 앱에서 알림을 보냅니다.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "워드프레스 앱에 대한 알림을 비활성화했습니다.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "알림이 사이트에 계속 표시되도록 허용";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "워드프레스 앱에서 전환 중이신 것 같습니다.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "사이트를 찾았습니다. 자동으로 모든 데이터를 계속 이전하고 젯팩에 로그인합니다.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "사이트를 찾았습니다. 자동으로 모든 데이터를 계속 이전하고 젯팩에 로그인합니다.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "젯팩에 오신 것을 환영합니다!";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "무시";

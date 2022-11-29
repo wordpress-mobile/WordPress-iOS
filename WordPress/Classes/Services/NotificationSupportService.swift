@@ -48,9 +48,9 @@ open class NotificationSupportService: NSObject {
     class func insertServiceExtensionToken(_ oauthToken: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                WPNotificationServiceExtensionKeychainTokenKey,
+                AppConfiguration.Extension.NotificationsService.keychainTokenKey,
                 andPassword: oauthToken,
-                forServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -67,9 +67,9 @@ open class NotificationSupportService: NSObject {
     class func insertServiceExtensionUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                WPNotificationServiceExtensionKeychainUsernameKey,
+                AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
                 andPassword: username,
-                forServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -86,9 +86,9 @@ open class NotificationSupportService: NSObject {
     class func insertServiceExtensionUserID(_ userID: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                WPNotificationServiceExtensionKeychainUserIDKey,
+                AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
                 andPassword: userID,
-                forServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true
             )
@@ -133,8 +133,8 @@ open class NotificationSupportService: NSObject {
     class func deleteServiceExtensionToken() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: WPNotificationServiceExtensionKeychainTokenKey,
-                andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -148,8 +148,8 @@ open class NotificationSupportService: NSObject {
     class func deleteServiceExtensionUsername() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: WPNotificationServiceExtensionKeychainUsernameKey,
-                andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
@@ -163,8 +163,8 @@ open class NotificationSupportService: NSObject {
     class func deleteServiceExtensionUserID() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: WPNotificationServiceExtensionKeychainUserIDKey,
-                andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup
             )
         } catch {

@@ -1,6 +1,9 @@
 import Foundation
 import WordPressShared
 
+/// - Warning:
+/// This configuration struct has a **Jetpack** counterpart in the Jetpack bundle.
+/// Make sure to keep them in sync to avoid build errors when builing the Jetpack target.
 struct AppStyleGuide {
     static let navigationBarStandardFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.headline, fontWeight: .semibold)
     static let navigationBarLargeFont: UIFont = WPStyleGuide.fixedSerifFontForTextStyle(.largeTitle, fontWeight: .semibold)

@@ -1,12 +1,14 @@
 struct MigrationActionsViewConfiguration {
-    let step: MigrationStep
+
     let primaryTitle: String?
     let secondaryTitle: String?
     let primaryHandler: (() -> Void)?
     let secondaryHandler: (() -> Void)?
+}
+
+extension MigrationActionsViewConfiguration {
 
     init(step: MigrationStep, primaryHandler: (() -> Void)? = nil, secondaryHandler: (() -> Void)? = nil) {
-        self.step = step
         self.primaryHandler = primaryHandler
         self.secondaryHandler = secondaryHandler
         self.primaryTitle = Appearance.primaryTitle(for: step)

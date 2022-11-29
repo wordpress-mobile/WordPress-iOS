@@ -218,8 +218,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        JetpackRedirector.redirectToJetpack()
-        viewModel.trackSwitchButtonTapped()
+        // Try to export WordPress data to a shared location before redirecting the user.
+        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
+            JetpackRedirector.redirectToJetpack()
+            self?.viewModel.trackSwitchButtonTapped()
+        }
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {

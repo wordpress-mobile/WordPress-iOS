@@ -8,6 +8,8 @@ class DataMigratorTests: XCTestCase {
     private var coreDataStack: CoreDataStackMock!
     private var keychainUtils: KeychainUtilsMock!
     private var mockLocalStore: MockLocalFileStore!
+    private var sharedUserDefaults: InMemoryUserDefaults!
+    private var localUserDefaults: InMemoryUserDefaults!
 
     override func setUp() {
         super.setUp()
@@ -16,9 +18,13 @@ class DataMigratorTests: XCTestCase {
         coreDataStack = CoreDataStackMock(mainContext: context)
         keychainUtils = KeychainUtilsMock()
         mockLocalStore = MockLocalFileStore()
+        sharedUserDefaults = InMemoryUserDefaults()
+        localUserDefaults = InMemoryUserDefaults()
         migrator = DataMigrator(coreDataStack: coreDataStack,
                                 backupLocation: URL(string: "/dev/null"),
                                 keychainUtils: keychainUtils,
+                                localDefaults: localUserDefaults,
+                                sharedDefaults: sharedUserDefaults,
                                 localFileStore: mockLocalStore)
     }
 
@@ -95,23 +101,19 @@ class DataMigratorTests: XCTestCase {
         // Given
         let value = "Test"
         let keys = [UUID().uuidString, UUID().uuidString, UUID().uuidString]
-        keys.forEach { key in UserDefaults.standard.set(value, forKey: key) }
-        guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName) else {
-            XCTFail("Unable to create shared user defaults")
-            return
-        }
+        keys.forEach { key in localUserDefaults.set(value, forKey: key) }
 
         // When
         migrator.exportData()
 
-        let stagingDict = sharedDefaults.dictionary(forKey: "defaults_staging_dictionary")
+        let stagingDict = sharedUserDefaults.dictionary(forKey: "defaults_staging_dictionary")
         keys.forEach { key in
             // Then
             let sharedValue = stagingDict?[key] as? String
             XCTAssertEqual(value, sharedValue)
 
-            UserDefaults.standard.removeObject(forKey: key)
-            sharedDefaults.removeObject(forKey: key)
+            localUserDefaults.removeObject(forKey: key)
+            sharedUserDefaults.removeObject(forKey: key)
         }
     }
 
@@ -157,7 +159,24 @@ class DataMigratorTests: XCTestCase {
     }
 
     func test_widgetMigration_userDefaultsShouldMigrateSuccessfully() {
-        // TODO: This will be added later.
+        // Given
+        sharedUserDefaults.set("test1", forKey: "WordPressHomeWidgetsSiteId")
+        sharedUserDefaults.set("test2", forKey: "WordPressHomeWidgetsLoggedIn")
+        sharedUserDefaults.set("test3", forKey: "WordPressTodayWidgetSiteId")
+        sharedUserDefaults.set("test4", forKey: "WordPressTodayWidgetSiteName")
+        sharedUserDefaults.set("test5", forKey: "WordPressTodayWidgetSiteUrl")
+        sharedUserDefaults.set("test6", forKey: "WordPressTodayWidgetTimeZone")
+
+        // When
+        migrator.copyTodayWidgetDataToJetpack()
+
+        // Then
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackHomeWidgetsSiteId"), "test1")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackHomeWidgetsLoggedIn"), "test2")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteId"), "test3")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteName"), "test4")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetSiteUrl"), "test5")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JetpackTodayWidgetTimeZone"), "test6")
     }
 
     func test_widgetMigration_plistFileShouldMigrateSuccessfully() {
@@ -196,6 +215,87 @@ class DataMigratorTests: XCTestCase {
         // migrator tries to remove any existing item in the target location first.
         XCTAssertEqual(mockLocalStore.removeItemCallCount, 1)
         XCTAssertEqual(mockLocalStore.copyItemCallCount, 1)
+    }
+
+    // MARK: Share Extension Migration Tests
+
+    func test_shareExtensionMigration_keychainShouldMigrateSuccessfully() {
+        // Given
+        let expectedUsername = "JPOAuth2Token"
+        let expectedPassword = "password"
+        let expectedServiceName = "JPShareExtension"
+        keychainUtils.passwordToReturn = expectedPassword
+
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNotNil(keychainUtils.storedPassword)
+        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
+        XCTAssertNotNil(keychainUtils.storedUsername)
+        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
+        XCTAssertNotNil(keychainUtils.storedServiceName)
+        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
+        XCTAssertNil(keychainUtils.storedAccessGroup)
+    }
+
+    func test_shareExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNil(keychainUtils.storedPassword)
+    }
+
+    func test_shareExtensionMigration_userDefaultsShouldMigrateSuccessfully() {
+        // Given
+        sharedUserDefaults.set("test1", forKey: "WPShareUserDefaultsPrimarySiteName")
+        sharedUserDefaults.set("test2", forKey: "WPShareUserDefaultsPrimarySiteID")
+        sharedUserDefaults.set("test3", forKey: "WPShareUserDefaultsLastUsedSiteName")
+        sharedUserDefaults.set("test4", forKey: "WPShareUserDefaultsLastUsedSiteID")
+        sharedUserDefaults.set("test5", forKey: "WPShareExtensionMaximumMediaDimensionKey")
+        sharedUserDefaults.set("test6", forKey: "WPShareExtensionRecentSitesKey")
+
+        // When
+        migrator.copyShareExtensionDataToJetpack()
+
+        // Then
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsPrimarySiteName"), "test1")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsPrimarySiteID"), "test2")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteName"), "test3")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteID"), "test4")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
+    }
+
+    // MARK: Notifications Extension Migration Tests
+
+    func test_notificationsExtensionMigration_keychainShouldMigrateSuccessfully() {
+        // Given
+        let expectedUsername = "JPOAuth2Token"
+        let expectedPassword = "password"
+        let expectedServiceName = "JPNotificationServiceExtension"
+        keychainUtils.passwordToReturn = expectedPassword
+
+        // When
+        migrator.copyNotificationsExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNotNil(keychainUtils.storedPassword)
+        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
+        XCTAssertNotNil(keychainUtils.storedUsername)
+        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
+        XCTAssertNotNil(keychainUtils.storedServiceName)
+        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
+        XCTAssertNil(keychainUtils.storedAccessGroup)
+    }
+
+    func test_notificationsExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
+        // When
+        migrator.copyNotificationsExtensionDataToJetpack()
+
+        // Then
+        XCTAssertNil(keychainUtils.storedPassword)
     }
 
 }
@@ -272,8 +372,8 @@ private extension DataMigratorTests {
         return managedObjectContext
     }
 
-    func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrator.DataMigratorError? {
-        var migratorError: DataMigrator.DataMigratorError?
+    func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrationError? {
+        var migratorError: DataMigrationError?
         migrator.exportData { result in
             switch result {
             case .success:
