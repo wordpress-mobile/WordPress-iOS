@@ -30,6 +30,7 @@ class JetpackWindowManager: WindowManager {
             } else {
                 showAppUI(for: blog)
             }
+            return
         }
         // If the user doesn't have any blogs, but they're still logged in, log them out
         // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
