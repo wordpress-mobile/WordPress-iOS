@@ -22,7 +22,7 @@ class JetpackWindowManager: WindowManager {
                     self?.showSignInUI()
                 }
             } else {
-                showAppUI(for: blog)
+                showSignInUI()
             }
             return
         }
