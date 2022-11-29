@@ -1,7 +1,1 @@
-¡Te damos la bienvenida a la versión 21! Hemos actualizado la pantalla de inicio de la aplicación con un diseño sencillo y elegante y hemos realizado algunas mejoras en el diseño de la vista de detalles de los comentarios.
-
-También hemos corregido un puñado de errores.
-
-- El texto de publicación no aparecerá cuando trabajes en una publicación o página en modo horizontal, sólo en modo vertical. Ya no se superponen los teclados.
-- Las notificaciones en caché ya no aparecen en pantalla después de cerrar la sesión de tu cuenta de WordPress.com.
-- Hemos investigado el caso de la barra de navegación que desaparecía durante el proceso de acceso. Ahora permanece visible de principio a fin. Misterio resuelto.
+Hemos corregido la posición del mensaje “No hay medios que coincidan con tu búsqueda” en la biblioteca de medios. Ahora se muestra cuando no hay resultados de la búsqueda. Tómatelo con calma y sigue buscando.

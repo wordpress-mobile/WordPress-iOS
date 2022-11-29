@@ -59,4 +59,19 @@ extension Media {
 
         return media
     }
+
+    /// Returns a list of Media objects from a post, that should be autoUploaded on the next attempt.
+    ///
+    /// - Parameters:
+    ///     - post: the post to look auto-uploadable media for.
+    ///     - automatedRetry: whether the media to upload is the result of an automated retry.
+    ///
+    /// - Returns: the Media objects that should be autoUploaded.
+    ///
+    class func failedForUpload(in post: AbstractPost, automatedRetry: Bool) -> [Media] {
+        post.media.filter { media in
+            media.remoteStatus == .failed
+                && (!automatedRetry || media.autoUploadFailureCount.intValue < Media.maxAutoUploadFailureCount)
+        }
+    }
 }

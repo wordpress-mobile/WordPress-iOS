@@ -357,6 +357,14 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     func run(onError: @escaping (Error) -> Void, completion: @escaping (Bool) -> Void) {
 
+        // This will no longer run for WordPress as part of JetPack migration.
+        // This can be removed once JetPack migration is complete.
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            notificationScheduler.cancellAll()
+            notificationScheduler.cancelStaticNotification()
+            return
+        }
+
         // We use multiple operations in series so that if the expiration handler is
         // called, the operation queue will cancell any pending operations, ensuring
         // that the task will exit as soon as possible.
@@ -611,6 +619,10 @@ class WeeklyRoundupNotificationScheduler {
         dateComponents: DateComponents,
         completion: @escaping (Result<Void, Error>) -> Void) {
 
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            return
+        }
+
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -649,7 +661,7 @@ class WeeklyRoundupNotificationScheduler {
         }
     }
 
-    func cancelStaticNotification(completion: @escaping (Bool) -> Void) {
+    func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
         userNotificationCenter.getPendingNotificationRequests { requests in
             if Feature.enabled(.weeklyRoundupStaticNotification) {
                 guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {

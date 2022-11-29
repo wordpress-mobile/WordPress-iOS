@@ -1,9 +1,1 @@
-Bienvenue dans la version 21 ! À cette occasion, nous avons ajouté des extensions pour vous permettre d’enregistrer du contenu en brouillon et de partager du contenu avec Jetpack à l’aide des menus intégrés de votre appareil. Vous recevrez également des notifications push plus détaillées sur votre appareil.
-
-Nous avons mis à jour l’écran de lancement de l’application avec un design simple et élégant, et nous avons apporté des améliorations conviviales au design de la vue des détails des commentaires. Vous pouvez également modifier votre icône d’application Jetpack à l’aide de toute une série d’options de couleur dans le menu Réglages de l’application.
-
-Pour terminer, nous avons corrigé quelques bogues.
-
-- Le texte Publier ne s’affichera pas si vous travaillez sur une publication ou une page en mode paysage, mais bien uniquement en mode portait. Plus de superposition du clavier.
-- Les notifications mises en cache ne s’affichent plus à l’écran une fois que vous êtes déconnecté de votre compte WordPress.com.
-- Nous avons examiné le cas de figure où la barre de navigation disparaît lors du processus de connexion. Elle reste désormais visible du début à la fin. Mystère résolu !
+Nous avons corrigé la position d’affichage du message « Aucun média ne correspond à votre recherche » dans la bibliothèque de médias. Il s’affiche désormais lorsqu’il n’y a pas de résultat de recherche. Continuez à chercher en toute tranquillité.

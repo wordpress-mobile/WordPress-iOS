@@ -66,6 +66,6 @@ extension Blog {
     }
 
     public func areBloggingRemindersAllowed() -> Bool {
-        return Feature.enabled(.bloggingReminders) && isUserCapableOf(.EditPosts)
+        return Feature.enabled(.bloggingReminders) && isUserCapableOf(.EditPosts) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
     }
 }

@@ -91,7 +91,7 @@ def shared_style_pods
 end
 
 def gutenberg_pods
-  gutenberg commit: 'dc45609f4529526a32fd3a7b4a956398ca9e10af'
+  gutenberg commit: '58ab7096cf86b3e69e8d20877740d698ddd39168'
 end
 
 def gutenberg(options)
@@ -225,7 +225,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.6'
+  pod 'WPMediaPicker', '~> 1.8.7'
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
   ## while PR is in review:
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''

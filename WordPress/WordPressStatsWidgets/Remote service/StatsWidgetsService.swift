@@ -30,10 +30,9 @@ class StatsWidgetsService {
         state = .loading
 
         do {
-            let token = try KeychainUtils.shared.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
-                                                                        serviceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                                                                        accessGroup: WPAppKeychainAccessGroup)
-
+            let token = try SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
+                                                                     andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+                                                                     accessGroup: WPAppKeychainAccessGroup)
             let wpApi = WordPressComRestApi(oAuthToken: token)
             let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
 

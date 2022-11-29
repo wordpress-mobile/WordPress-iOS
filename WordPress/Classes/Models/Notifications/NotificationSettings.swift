@@ -139,15 +139,15 @@ open class NotificationSettings {
     }
 
     // MARK: - Private Properties
-    fileprivate let blogPreferenceKeys: [String] = {
+    fileprivate var blogPreferenceKeys: [String] {
         var keys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
 
-        if Feature.enabled(.weeklyRoundup) {
+        if Feature.enabled(.weeklyRoundup) && JetpackNotificationMigrationService.shared.shouldPresentNotifications() {
             keys.append(Keys.weeklyRoundup)
         }
 
         return keys
-    }()
+    }
     fileprivate let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
     fileprivate let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
     fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]

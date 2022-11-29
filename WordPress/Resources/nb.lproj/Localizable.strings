@@ -787,8 +787,7 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Beste time";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Beste visninger noensinne";
 
 /* Text for related post cell preview */
@@ -829,7 +828,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Blocklist */
 "Blocklist" = "Blokkeringsliste";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
 
 /* Create new Blog Post button title */
@@ -1095,9 +1094,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "Velg et tema";
 
-/* Label for Publish time picker */
-"Choose a time" = "Velg en tid";
-
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Velg fra min enhet";
 
@@ -1218,7 +1214,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1334,6 +1329,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1754,15 +1750,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Visningsnavn";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Vis all nettstedsstatistikk her. Konfigurer i WordPress-appen under nettsidestatistikk.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Vis nettstedets statistikk for denne siden her. Konfigurer i nettstedsstatistikken i WordPress-appen.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Vis statistikk for nettstedet ditt for i dag her. Konfigurer det i WordPress-appen i din nettstedsstatistkk.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -2807,7 +2794,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -3256,7 +3242,8 @@ translators: Block name. %s: The localized block name */
 /* A button title. */
 "Need help finding your site address?" = "Trenger du hjelp med å finne sideadressen?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Trenger du hjelp?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -3301,7 +3288,6 @@ translators: Block name. %s: The localized block name */
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Neste";
@@ -3426,9 +3412,6 @@ translators: Block name. %s: The localized block name */
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
 "No menus available" = "Ingen menyer funnet";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "Intet nettverk tilgjengelig";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Ingen varslinger ennå";
@@ -3638,9 +3621,6 @@ translators: Block name. %s: The localized block name */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åpne innstillinger";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Åpne WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Åpne full medievelger";
@@ -4059,7 +4039,6 @@ translators: Block name. %s: The localized block name */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Innlegg";
@@ -4482,7 +4461,6 @@ translators: Block name. %s: The localized block name */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -5168,9 +5146,6 @@ translators: Block name. %s: The localized block name */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistikk ikke lastet inn";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Statistikken vil bli oppdatert neste gang du er på nett.";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
@@ -5726,7 +5701,6 @@ translators: Block name. %s: The localized block name */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
 
@@ -6272,7 +6246,6 @@ translators: Block name. %s: The localized block name */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -6301,7 +6274,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */

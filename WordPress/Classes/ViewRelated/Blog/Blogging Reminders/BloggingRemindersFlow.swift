@@ -11,6 +11,10 @@ class BloggingRemindersFlow {
                         delegate: BloggingRemindersFlowDelegate? = nil,
                         onDismiss: DismissClosure? = nil) {
 
+        guard Feature.enabled(.bloggingReminders) && JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            return
+        }
+
         guard alwaysShow || !hasShownWeeklyRemindersFlow(for: blog) else {
             return
         }

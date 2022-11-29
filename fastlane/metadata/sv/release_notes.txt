@@ -1,7 +1,1 @@
-Välkommen till version 21! Appens startskärm har fått en enkel och stilig uppfräschning och några användarvänliga designändringar i detaljvyn över kommentarer.
-
-Och så har vi korrigerat några fel.
-
-– Texten ”publicera” visas bara när du arbetar med ett inlägg eller en sida i stående format och inte i liggande. Så den kommer inte längre att krocka med tangentbordet.
-– Sparade notiser visas inte längre på skärmen om du har loggat ut ur ditt konto hos WordPress.com.
-– Vi har noga undersökt mysteriet med navigeringsfältet som försvann medan man höll på att logga in. Nu är fältet synligt hela tiden, så problemet är löst.
+Vi har rättat till placeringen av meddelandet ”Ingen mediafil motsvarar din sökning” i mediabiblioteket. Nu går det att se meddelandet om en sökning inte matchade något. Ta det lugnt och sök på något annat.

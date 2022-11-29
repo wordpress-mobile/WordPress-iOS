@@ -90,8 +90,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        KeychainUtils.shared.copyKeychainToSharedKeychainIfNeeded()
-
         window = UIWindow(frame: UIScreen.main.bounds)
         AppAppearance.overrideAppearance()
 
@@ -156,19 +154,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
-        copyToSharedDefaultsIfNeeded()
-        BloggingRemindersScheduler.handleRemindersMigration()
         return true
-    }
-
-    private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
-            let dict = UserDefaults.standard.dictionaryRepresentation()
-            for (key, value) in dict {
-                UserPersistentStore.standard.set(value, forKey: key)
-            }
-            UserPersistentStore.standard.isOneOffMigrationComplete = true
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -333,6 +319,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupWordPressExtensions()
+
+        // Start proactively exporting WP data in the background if the conditions are fulfilled.
+        // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
+        DispatchQueue.global().async {
+            ContentMigrationCoordinator.shared.startOnceIfNeeded()
+        }
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
@@ -507,6 +499,14 @@ extension WordPressAppDelegate {
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
+        // try to handle unauthenticated routes first.
+        if activity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = activity.webpageURL,
+           UniversalLinkRouter.unauthenticated.canHandle(url: url) {
+            UniversalLinkRouter.unauthenticated.handle(url: url)
+            return
+        }
+
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
@@ -942,8 +942,8 @@ extension WordPressAppDelegate {
         // Get the Apple User ID from the keychain
         let appleUserID: String
         do {
-            appleUserID = try KeychainUtils.shared.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
-                                                                          serviceName: WPAppleIDKeychainServiceName)
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
+                                                                       andServiceName: WPAppleIDKeychainServiceName)
         } catch {
             DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
             return
@@ -995,8 +995,8 @@ extension WordPressAppDelegate {
 
     func removeAppleIDFromKeychain() {
         do {
-            try KeychainUtils.shared.deleteItem(username: WPAppleIDKeychainUsernameKey,
-                                                serviceName: WPAppleIDKeychainServiceName)
+            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
+                                             andServiceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")

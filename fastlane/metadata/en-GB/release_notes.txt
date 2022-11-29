@@ -1,7 +1,1 @@
-Welcome to version 21! We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view.
-
-We also fixed a handful of bugs.
-
-- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
-- Cached notifications no longer appear on screen after you log out of your WordPress.com account.
-- We investigated the case of the vanishing navigation bar during the log-in process. It now stays visible from start to finish. Mystery solved.
+We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.

@@ -123,7 +123,7 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do
+  lane :generate_strings_file_for_glotpress do |options|
     cocoapods
 
     wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
@@ -141,7 +141,7 @@ platform :ios do
       destination: File.join(wordpress_en_lproj, 'Localizable.strings')
     )
 
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
+    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
   end
 
 
@@ -247,6 +247,9 @@ platform :ios do
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
+    # Manually add files in case there are entirely new localization files.
+    # Fastlane's `git_commit` can only commit changes to existing files.
+    git_add(path: modified_files, shell_escape: false)
     git_commit(
       path: modified_files,
       message: 'Update app translations – Other `.strings`',

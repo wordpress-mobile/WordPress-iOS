@@ -1,7 +1,1 @@
-Willkommen zu Version 21! Wir haben den Startbildschirm mit einem einfachen, eleganten Design aktualisiert und die Ansicht mit den Kommentardetails benutzerfreundlicher gestaltet.
-
-Außerdem haben wir einige Bugs behoben.
-
-- Veröffentlichte Texte werden nicht angezeigt, wenn du an einem Beitrag oder einer Seite im Querformat arbeitest, sondern nur im Hochformat. Es gibt jetzt kein Überlappen der Tastatur mehr.
-- Benachrichtigungen im Cache werden nicht mehr auf dem Bildschirm angezeigt, nachdem du dich von deinem WordPress.com-Konto abgemeldet hast.
-- Wir haben untersucht, warum die Navigationsleiste bei der Anmeldung verschwinden kann. Sie bleibt jetzt von Anfang bis Ende sichtbar. Rätsel gelöst!
+Wir haben die Positionierung der Meldung „Keine Medien entsprechen deiner Suche“ in der Mediathek korrigiert. Sie wird nun angezeigt, wenn keine Suchergebnisse vorhanden sind. Du kannst also unbesorgt weitersuchen.

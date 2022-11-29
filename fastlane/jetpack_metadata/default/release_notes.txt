@@ -1,9 +1,1 @@
-Welcome to version 21! In honor of the occasion, we added extensions so you can save content as a draft and share content to Jetpack using your device’s built-in menus. You’ll also get more detailed push notifications on your device.
-
-We updated the app’s launch screen with a simple, sleek design and made some user-friendly design upgrades to the Comment Details view. You can also change your Jetpack app icon using a range of colorful options in the App Settings menu.
-
-Finally, we fixed a handful of bugs.
-
-- Publish text won’t appear when you’re working on a Post or Page in landscape mode, only portrait. No more keyboard overlap.
-- Cached notifications no longer appear on screen after you log out of your WordPress.com account.
-- We investigated the case of the vanishing navigation bar during the Login process. It now stays visible from start to finish. Mystery solved.
+We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.

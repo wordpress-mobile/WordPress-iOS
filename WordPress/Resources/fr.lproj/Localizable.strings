@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-10-20 14:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-22 13:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -1110,8 +1110,7 @@ translators: Block name. %s: The localized block name */
 /* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
 "Best for %@" = "Idéal pour %@";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Record de vues";
 
 /* Text for related post cell preview */
@@ -1164,7 +1163,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Les blocs sont des éléments de contenu que vous pouvez insérer, réorganiser et styliser sans avoir besoin de savoir coder. Les blocs sont un moyen simple et moderne de créer de belles mises en page.";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1529,9 +1528,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "Choisissez un thème";
 
-/* Label for Publish time picker */
-"Choose a time" = "Choisir une heure";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Choisissez un thème dans la liste ci-dessous ou saisissez-le manuellement.";
 
@@ -1725,7 +1721,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1913,6 +1908,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1938,6 +1934,9 @@ translators: Block name. %s: The localized block name */
 
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "Continuez avec Apple";
+
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Contribuez";
 
 /* No comment provided by engineer. */
 "Convert to link" = "Convertir en lien";
@@ -2041,9 +2040,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Impossible de se connecter. Votre hébergeur bloque les requêtes POST et l’app a besoin de cela pour communiquer avec votre site. Contactez votre hébergeur pour résoudre ce problème.";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "Impossible de charger les données";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Impossible de charger les étiquettes";
@@ -2486,15 +2482,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nom affiché";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Affichez ici les statistiques de votre site. Configurez dans l’application WordPress dans la rubrique les statistiques de votre site.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Afficher les statistiques de votre site pour cette semaine ici. Configurer ceci dans l’app WordPress dans vos statistiques de site.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Affiche vos statistiques d'aujourd’hui ici. Configurez ceci dans l'application WordPress sous Site > Statistiques > Aujourd'hui";
 
 /* Title for button that will open up the follow topics screen. */
 "Do it again" = "Recommencer";
@@ -4225,7 +4212,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -4815,7 +4801,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "Besoin d’aide pour trouver l’adresse de votre site ?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Besoin d’aide ?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -4864,12 +4851,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "Les plus récents en premier";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "Actualités";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Suivant";
@@ -5033,9 +5020,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Pas besoin d’attendre. Nous vous avertirons lorsque votre site aura été totalement restauré.";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "Aucun réseau disponible";
 
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "Aucun nouveau sujet à suivre";
@@ -5326,9 +5310,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Ouvrir les paramètres";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Ouvrir WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Ouvrir le sélecteur de média complet.";
@@ -5834,7 +5815,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Articles";
@@ -6396,7 +6376,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -7299,9 +7278,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistiques non chargées";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Les statistiques seront mises à jour la prochaine fois que vous serez en ligne.";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "État.";
 
@@ -8059,9 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Une catégorie doit obligatoirement avoir un titre.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "Pour fermer ce compte maintenant, contactez notre équipe d’assistance.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Pour continuer, veuillez saisir votre adresse e-mail et votre nom.";
 
@@ -8103,7 +8076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Aujourd'hui";
 
@@ -8823,7 +8795,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8861,7 +8832,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -9809,6 +9779,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "un an";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Ce compte d’utilisateur ne peut pas être fermé immédiatement, car il est associé à des achats actifs. Veuillez contacter notre équipe d’assistance pour terminer la suppression du compte.";
+
 /* Dismiss button title */
 "activityList.dismiss.title" = "Ignorer";
 
@@ -9901,6 +9874,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Utilisez ce lien pour ajouter les membres de votre équipe sans avoir à les inviter individuellement. Toute personne ayant accès à ce lien sera en mesure de rejoindre votre organisation, même si le lien a été envoyé par quelqu’un d’autre que vous. Veillez à le partager uniquement avec des personnes de confiance.";
 
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Enregistrer dans Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Enregistrer dans Jetpack";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
 
@@ -9936,6 +9915,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress est mieux avec Jetpack";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Lire la suite sur jetpack.com";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Ajouter un auteur";
@@ -9990,6 +9972,39 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Ignorer";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Terminer";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Nous avons transféré tous vos réglages et données. Tout se trouve au même endroit qu’avant.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Merci d’être passé à Jetpack !";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Décider ultérieurement";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Vous recevrez les mêmes notifications, mais elles proviendront maintenant de l’application Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Nous avons désactivé les notifications pour l’application WordPress.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Autoriser les notifications pour suivre l’évolution de votre site";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Il semblerait que vous ayez transféré vos données depuis l’application WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Nous avons trouvé vos sites. Cliquez sur Continuer pour transférer l’ensemble de vos données et vous connecter automatiquement à Jetpack.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Nous avons trouvé votre site. Cliquez sur Continuer pour transférer l’ensemble de vos données et vous connecter automatiquement à Jetpack.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Bienvenue dans Jetpack !";
 
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Ignorer";
@@ -10110,6 +10125,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "Connectez-vous à WordPress pour voir les statistiques depuis la création du site.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Connectez-vous à Jetpack pour voir les statistiques depuis la création du site.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Connectez-vous à Jetpack pour voir les statistiques de cette semaine.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Connectez-vous à Jetpack pour voir les statistiques du jour.";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Gardez toujours un œil sur l'activité hebdomadaire de votre site WordPress.";

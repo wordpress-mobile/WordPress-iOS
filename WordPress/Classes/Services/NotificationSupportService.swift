@@ -9,12 +9,12 @@ open class NotificationSupportService: NSObject {
     @objc
     class func insertContentExtensionToken(_ oauthToken: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
-                    WPNotificationContentExtensionKeychainTokenKey,
-                    password: oauthToken,
-                    serviceName: WPNotificationContentExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup,
-                    updateExisting: true
+            try SFHFKeychainUtils.storeUsername(
+                WPNotificationContentExtensionKeychainTokenKey,
+                andPassword: oauthToken,
+                forServiceName: WPNotificationContentExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
             )
         } catch {
             DDLogDebug("Error while saving Notification Content Extension OAuth token: \(error)")
@@ -28,12 +28,12 @@ open class NotificationSupportService: NSObject {
     @objc
     class func insertContentExtensionUsername(_ username: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
-                    WPNotificationContentExtensionKeychainUsernameKey,
-                    password: username,
-                    serviceName: WPNotificationContentExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup,
-                    updateExisting: true
+            try SFHFKeychainUtils.storeUsername(
+                WPNotificationContentExtensionKeychainUsernameKey,
+                andPassword: username,
+                forServiceName: WPNotificationContentExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
             )
         } catch {
             DDLogDebug("Error while saving Notification Content Extension username: \(error)")
@@ -47,12 +47,12 @@ open class NotificationSupportService: NSObject {
     @objc
     class func insertServiceExtensionToken(_ oauthToken: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
-                    WPNotificationServiceExtensionKeychainTokenKey,
-                    password: oauthToken,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup,
-                    updateExisting: true
+            try SFHFKeychainUtils.storeUsername(
+                AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                andPassword: oauthToken,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension OAuth token: \(error)")
@@ -66,12 +66,12 @@ open class NotificationSupportService: NSObject {
     @objc
     class func insertServiceExtensionUsername(_ username: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
-                    WPNotificationServiceExtensionKeychainUsernameKey,
-                    password: username,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup,
-                    updateExisting: true
+            try SFHFKeychainUtils.storeUsername(
+                AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                andPassword: username,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension username: \(error)")
@@ -85,12 +85,12 @@ open class NotificationSupportService: NSObject {
     @objc
     class func insertServiceExtensionUserID(_ userID: String) {
         do {
-            try KeychainUtils.shared.storeUsername(
-                    WPNotificationServiceExtensionKeychainUserIDKey,
-                    password: userID,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup,
-                    updateExisting: true
+            try SFHFKeychainUtils.storeUsername(
+                AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                andPassword: userID,
+                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension userID: \(error)")
@@ -102,10 +102,10 @@ open class NotificationSupportService: NSObject {
     @objc
     class func deleteContentExtensionToken() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                    username: WPNotificationContentExtensionKeychainTokenKey,
-                    serviceName: WPNotificationContentExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: WPNotificationContentExtensionKeychainTokenKey,
+                andServiceName: WPNotificationContentExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
             DDLogDebug("Error while removing Notification Content Extension OAuth token: \(error)")
@@ -117,10 +117,10 @@ open class NotificationSupportService: NSObject {
     @objc
     class func deleteContentExtensionUsername() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                    username: WPNotificationContentExtensionKeychainUsernameKey,
-                    serviceName: WPNotificationContentExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: WPNotificationContentExtensionKeychainUsernameKey,
+                andServiceName: WPNotificationContentExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
             DDLogDebug("Error while removing Notification Content Extension username: \(error)")
@@ -132,10 +132,10 @@ open class NotificationSupportService: NSObject {
     @objc
     class func deleteServiceExtensionToken() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                    username: WPNotificationServiceExtensionKeychainTokenKey,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension OAuth token: \(error)")
@@ -147,10 +147,10 @@ open class NotificationSupportService: NSObject {
     @objc
     class func deleteServiceExtensionUsername() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                    username: WPNotificationServiceExtensionKeychainUsernameKey,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension username: \(error)")
@@ -162,10 +162,10 @@ open class NotificationSupportService: NSObject {
     @objc
     class func deleteServiceExtensionUserID() {
         do {
-            try KeychainUtils.shared.deleteItem(
-                    username: WPNotificationServiceExtensionKeychainUserIDKey,
-                    serviceName: WPNotificationServiceExtensionKeychainServiceName,
-                    accessGroup: WPAppKeychainAccessGroup
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension userID: \(error)")

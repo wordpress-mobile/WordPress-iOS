@@ -1,9 +1,1 @@
-¡Te damos la bienvenida a la versión 21! Dado que la ocasión lo merece, hemos añadido extensiones con las que podrás guardar contenido como borrador y compartir contenido con Jetpack mediante los menús integrados en tus dispositivos. También recibirás notificaciones push más exhaustivas en tu dispositivo.
-
-Hemos actualizado la pantalla de inicio con un diseño sencillo y elegante y también hemos hecho algunas mejoras de diseño orientadas a los usuarios en la vista Detalles de los comentarios. Además, ahora puedes cambiar el icono de la app de Jetpack mediante una amplia variedad de opciones coloridas en el menú Ajustes de la aplicación.
-
-Por último, hemos solucionado varios errores.
-
-- El texto publicado no aparecerá cuando estés trabajando en una entrada o página en el modo horizontal, solo aparecerá en el vertical. Olvídate de la superposición del teclado.
-- Las notificaciones en caché ya no aparecerán en la pantalla cuando salgas de tu cuenta de WordPress.com. 
-- Hemos investigado por qué se vaciaba la barra de navegación durante el proceso de acceso. Ahora permanece visible de principio a fin. Misterio resuelto.
+Hemos corregido la posición del mensaje “No hay medios que coincidan con tu búsqueda” en la biblioteca de medios. Ahora se muestra cuando no hay resultados de la búsqueda. Tómatelo con calma y sigue buscando.

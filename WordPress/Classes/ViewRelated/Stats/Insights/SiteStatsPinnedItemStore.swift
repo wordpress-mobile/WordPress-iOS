@@ -4,20 +4,26 @@ import Foundation
 protocol SiteStatsPinnable { /* not implemented */ }
 
 final class SiteStatsPinnedItemStore {
-    private lazy var items: [SiteStatsPinnable] = {
-        return [
-            GrowAudienceCell.HintType.social,
-            GrowAudienceCell.HintType.bloggingReminders,
-            GrowAudienceCell.HintType.readerDiscover,
-            InsightType.customize
-        ]
+    private(set) lazy var items: [SiteStatsPinnable] = {
+        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && jetpackNotificationMigrationService.shouldPresentNotifications()
+        return presentBloggingReminders ?
+            [GrowAudienceCell.HintType.social,
+             GrowAudienceCell.HintType.bloggingReminders,
+             GrowAudienceCell.HintType.readerDiscover,
+             InsightType.customize] :
+            [GrowAudienceCell.HintType.social,
+             GrowAudienceCell.HintType.readerDiscover,
+             InsightType.customize]
     }()
     private let lowSiteViewsCountThreshold = 3000
     private let siteId: NSNumber
     private(set) var currentItem: SiteStatsPinnable?
+    private let jetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol
 
-    init(siteId: NSNumber) {
+    init(siteId: NSNumber,
+         jetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol = JetpackNotificationMigrationService.shared) {
         self.siteId = siteId
+        self.jetpackNotificationMigrationService = jetpackNotificationMigrationService
     }
 
     func itemToDisplay(for siteViewsCount: Int) -> SiteStatsPinnable? {

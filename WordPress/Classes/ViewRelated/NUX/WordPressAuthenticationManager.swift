@@ -385,13 +385,21 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let onDismissQuickStartPromptForNewSiteHandler = onDismissQuickStartPromptHandler(type: .newSite, onDismiss: onDismiss)
 
         epilogueViewController.onCreateNewSite = {
-            let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
-            guard let wizard = wizardLauncher.ui else {
-                return
-            }
+            let source = "login_epilogue"
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source) {
+                guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                    return
+                }
 
-            navigationController.present(wizard, animated: true)
-            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": "login_epilogue"])
+                // Display site creation flow if not in phase two
+                let wizardLauncher = SiteCreationWizardLauncher(onDismiss: onDismissQuickStartPromptForNewSiteHandler)
+                guard let wizard = wizardLauncher.ui else {
+                    return
+                }
+
+                navigationController.present(wizard, animated: true)
+                WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
+            }
         }
 
         navigationController.delegate = epilogueViewController
@@ -464,10 +472,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
         do {
-            try KeychainUtils.shared.storeUsername(WPAppleIDKeychainUsernameKey,
-                                                   password: appleUserID,
-                                                   serviceName: WPAppleIDKeychainServiceName,
-                                                   updateExisting: true)
+            try SFHFKeychainUtils.storeUsername(WPAppleIDKeychainUsernameKey,
+                                                andPassword: appleUserID,
+                                                forServiceName: WPAppleIDKeychainServiceName,
+                                                updateExisting: true)
         } catch {
             DDLogInfo("Error while saving Apple User ID: \(error)")
         }

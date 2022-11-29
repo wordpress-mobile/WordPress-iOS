@@ -865,8 +865,7 @@
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Best Hour";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best views ever";
 
 /* Text for related post cell preview */
@@ -903,7 +902,7 @@
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
 
-/* Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Create new Blog Post button title */
@@ -1202,9 +1201,6 @@
    Title of a Quick Start Tour */
 "Choose a theme" = "Choose a theme";
 
-/* Label for Publish time picker */
-"Choose a time" = "Choose a time";
-
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "Choose a topic from the list below or type your own";
 
@@ -1350,7 +1346,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1499,6 +1494,7 @@
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1596,9 +1592,6 @@
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem.";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "Couldn't load data";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
@@ -1989,15 +1982,6 @@
    My Profile display name label
    User's Display Name */
 "Display Name" = "Display Name";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Display your all-time site stats here. Configure in the WordPress app in your site stats.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Display your site stats for this week here. Configure in the WordPress app in your site stats.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Display your site stats for today here. Configure in the WordPress app in your site stats.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Document: %@";
@@ -3298,7 +3282,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -3804,7 +3787,8 @@
 /* A button title. */
 "Need help finding your site address?" = "Need help finding your site address?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Need help?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -3844,12 +3828,12 @@
 /* Sort Order */
 "Newest first" = "Newest first";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "News";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Next";
@@ -4004,9 +3988,6 @@
 
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "No network available";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "No notifications yet";
@@ -4234,9 +4215,6 @@
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Open Settings";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Open WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Open full media picker";
@@ -4696,7 +4674,6 @@
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Posts";
@@ -5185,7 +5162,6 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
@@ -5947,9 +5923,6 @@
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Stats not loaded";
 
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Stats will be updated next time you're online";
-
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
@@ -6575,9 +6548,6 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Title for a category is mandatory.";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "To close this account now, contact our support team.";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "To continue please enter your email address and name.";
 
@@ -6616,7 +6586,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Today";
 
@@ -7183,7 +7152,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -7209,7 +7177,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
