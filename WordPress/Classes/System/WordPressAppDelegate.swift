@@ -196,6 +196,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         uploadsManager.resume()
         updateFeatureFlags()
         updateRemoteConfig()
+        if let windowManager = windowManager as? JetpackWindowManager,
+           windowManager.shouldImportMigrationData {
+            windowManager.importAndShowMigrationContent(nil, failureCompletion: nil)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
