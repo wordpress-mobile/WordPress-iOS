@@ -42,9 +42,17 @@ class JetpackWindowManager: WindowManager {
                 UserPersistentStoreFactory.instance().isJPContentImportComplete = true
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
                 self.showMigrationUIIfNeeded(blog)
+                self.sendMigrationEmail()
             case .failure:
                 failureCompletion?()
             }
+        }
+    }
+
+    private func sendMigrationEmail() {
+        Task {
+            let service = try? MigrationEmailService()
+            try? await service?.sendMigrationEmail()
         }
     }
 
