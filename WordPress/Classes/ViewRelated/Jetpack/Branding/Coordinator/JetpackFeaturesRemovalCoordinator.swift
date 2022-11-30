@@ -84,7 +84,7 @@ class JetpackFeaturesRemovalCoordinator {
         return .normal
     }
 
-    static func removalDeadline(remoteConfigStore: RemoteConfigStore = .shared) -> Date? {
+    static func removalDeadline(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> Date? {
         guard let dateString = RemoteConfig(store: remoteConfigStore).jetpackDeadline.value else {
             return nil
         }

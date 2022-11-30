@@ -9,7 +9,7 @@ struct RemoteConfig {
 
     // MARK: Initializer
 
-    init(store: RemoteConfigStore = .shared) {
+    init(store: RemoteConfigStore = RemoteConfigStore()) {
         self.store = store
     }
 

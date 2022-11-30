@@ -1,22 +1,24 @@
 import Foundation
 
+fileprivate extension DispatchQueue {
+    static let remoteConfigStoreQueue = DispatchQueue(label: "remote-config-store-queue")
+}
+
 class RemoteConfigStore {
-
-    // MARK: Shared Instance
-
-    public static let shared = RemoteConfigStore()
 
     // MARK: Private Variables
 
     /// Thread Safety Coordinator
-    private let queue: DispatchQueue = DispatchQueue(label: "remote-config-store-queue")
+    private let queue: DispatchQueue
     private let remote: RemoteConfigRemote
     private let persistenceStore: UserPersistentRepository
 
     // MARK: Initializer
 
-    init(remote: RemoteConfigRemote = RemoteConfigRemote(wordPressComRestApi: .defaultApi()),
+    init(queue: DispatchQueue = .remoteConfigStoreQueue,
+         remote: RemoteConfigRemote = RemoteConfigRemote(wordPressComRestApi: .defaultApi()),
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
+        self.queue = queue
         self.remote = remote
         self.persistenceStore = persistenceStore
     }
