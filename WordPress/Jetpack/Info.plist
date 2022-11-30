@@ -572,6 +572,8 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>wordpress</string>
+		<string>wordpressmigration+v1</string>
 		<string>wordpressnotificationmigration</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
