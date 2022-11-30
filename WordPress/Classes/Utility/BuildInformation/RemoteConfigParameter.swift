@@ -17,7 +17,7 @@ struct RemoteConfigParameter<T> {
 
     // MARK: Initializer
 
-    init(key: String, defaultValue: T?, store: RemoteConfigStore = .shared) {
+    init(key: String, defaultValue: T?, store: RemoteConfigStore) {
         self.key = key
         self.defaultValue = defaultValue
         self.store = store
