@@ -1,6 +1,5 @@
-/// TODO
-///
-final class SharedDataIssueSolver {
+@objcMembers
+final class SharedDataIssueSolver: NSObject {
 
     private let contextManager: CoreDataStack
     private let keychainUtils: KeychainUtils
@@ -17,14 +16,26 @@ final class SharedDataIssueSolver {
         self.localFileStore = localFileStore
     }
 
+    /// Helper method for creating an instance in Obj-C
+    ///
+    class func instance() -> SharedDataIssueSolver {
+        return SharedDataIssueSolver()
+    }
+
+    func migrateAuthKey() {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
+              let username = account.username else {
+            return
+        }
+        migrateAuthKey(for: username)
+    }
+
     /// Resolve shared data issue by splitting the keys used to store authentication token and supporting data.
     /// To be safe, the method only "migrates" the data when the user is logged in, and there's a good chance that
     /// both apps are logged in with the same account.
     ///
-    func solveIfNeeded() {
+    func migrateAuthKey(for username: String) {
         guard AppConfiguration.isJetpack,
-              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
-              let username = account.username,
               let token = try? keychainUtils.password(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
             return
         }
@@ -41,7 +52,13 @@ final class SharedDataIssueSolver {
                                  serviceName: WPAccountConstants.authToken.valueForJetpack,
                                  updateExisting: true)
 
-        migrateExtensionsData()
+        migrateExtensionsKeychainData()
+    }
+
+    func migrateExtensionsKeychainData() {
+        copyTodayWidgetKeychain()
+        copyShareExtensionKeychain()
+        copyNotificationExtensionKeychain()
     }
 
     func migrateExtensionsData() {

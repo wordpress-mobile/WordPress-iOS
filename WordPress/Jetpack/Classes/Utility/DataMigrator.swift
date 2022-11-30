@@ -63,6 +63,9 @@ extension DataMigrator: ContentDataMigrating {
             return
         }
 
+        let sharedDataIssueSolver = SharedDataIssueSolver()
+        sharedDataIssueSolver.migrateAuthKey()
+        sharedDataIssueSolver.migrateExtensionsData()
         BloggingRemindersScheduler.handleRemindersMigration()
         completion?(.success(()))
     }
