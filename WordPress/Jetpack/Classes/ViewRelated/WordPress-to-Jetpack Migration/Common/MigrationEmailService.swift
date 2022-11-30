@@ -25,7 +25,7 @@ final class MigrationEmailService {
             }
             self.init(api: account.wordPressComRestV2Api)
         } catch let error {
-            DDLogError("[\(MigrationError.domain)] Object instantiation failed: \(error)")
+            DDLogError("[\(MigrationError.domain)] Object instantiation failed: \(error.localizedDescription)")
             throw error
         }
     }
@@ -41,9 +41,9 @@ final class MigrationEmailService {
             }
             WPAnalytics.track(.migrationEmailSent)
         } catch let error {
-            let properties = trackEventProperties(from: error)
+            let properties = ["error_type": error.localizedDescription]
             WPAnalytics.track(.migrationEmailFailed, properties: properties)
-            DDLogError("[\(MigrationError.domain)] Migration email sending failed: \(error)")
+            DDLogError("[\(MigrationError.domain)] Migration email sending failed: \(error.localizedDescription)")
             throw error
         }
     }
@@ -65,24 +65,18 @@ final class MigrationEmailService {
         }
     }
 
-    // MARK: - Track Event Properties
-
-    private func trackEventProperties(from error: Error) -> [String: Any] {
-        let errorType: String
-        switch error {
-        case let error as MigrationError:
-            errorType = error.rawValue
-        default:
-            errorType = error.localizedDescription
-        }
-        return ["error_type": errorType]
-    }
-
     // MARK: - Types
 
-    enum MigrationError: String, Swift.Error {
+    enum MigrationError: LocalizedError {
         case accountNotFound
         case unsuccessfulResponse
+
+        var errorDescription: String? {
+            switch self {
+            case .accountNotFound: return "Account not found."
+            case .unsuccessfulResponse: return "Backend returned an unsuccessful response. ( success: false )"
+            }
+        }
 
         static let domain = "MigrationEmailService"
     }
