@@ -27,7 +27,7 @@ struct MigrationAppDetection {
 
 struct MigratatableStateTracker {
 
-    static let eventName = "jpmigration_wordpressapp_detected"
+    private static let eventName = "jpmigration_wordpressapp_detected"
 
     private func track(_ event: AnalyticsEvent) {
         WPAnalytics.track(event)
