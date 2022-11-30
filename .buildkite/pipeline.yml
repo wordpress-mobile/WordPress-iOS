@@ -1,3 +1,6 @@
+agents:
+  queue: "tonyli"
+
 # Nodes with values to reuse in the pipeline.
 common_params:
   # Common plugin settings to use with the `plugins` key.
