@@ -44,6 +44,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var noticePresenter: NoticePresenter?
     private var bgTask: UIBackgroundTaskIdentifier? = nil
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
+    private let remoteConfigStore = RemoteConfigStore()
 
     private var mainContext: NSManagedObjectContext {
         return ContextManager.shared.mainContext
@@ -667,7 +668,7 @@ extension WordPressAppDelegate {
     }
 
     func updateRemoteConfig() {
-        RemoteConfigStore.shared.update()
+        remoteConfigStore.update()
     }
 }
 
