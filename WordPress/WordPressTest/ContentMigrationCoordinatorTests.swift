@@ -76,8 +76,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_startAndDo_givenPostWithLocalStatus_shouldReturnFailure() {
         // Given
-        makeDraftPost(remoteStatus: .local)
-        makeDraftPost(remoteStatus: .sync)
+        makePost(remoteStatus: .local)
+        makePost(remoteStatus: .sync)
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in
@@ -94,8 +94,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_startAndDo_givenPostWithPushingStatus_shouldReturnFailure() {
         // Given
-        makeDraftPost(remoteStatus: .pushing)
-        makeDraftPost(remoteStatus: .sync)
+        makePost(remoteStatus: .pushing)
+        makePost(remoteStatus: .sync)
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in
@@ -112,8 +112,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_startAndDo_givenPostWithPushingMediaStatus_shouldReturnFailure() {
         // Given
-        makeDraftPost(remoteStatus: .pushingMedia)
-        makeDraftPost(remoteStatus: .sync)
+        makePost(remoteStatus: .pushingMedia)
+        makePost(remoteStatus: .sync)
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in
@@ -130,8 +130,8 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_startAndDo_givenPostWithFailedStatus_shouldReturnFailure() {
         // Given
-        makeDraftPost(remoteStatus: .failed)
-        makeDraftPost(remoteStatus: .sync)
+        makePost(remoteStatus: .failed)
+        makePost(remoteStatus: .sync)
 
         let expect = expectation(description: "Content migration should fail")
         coordinator.startAndDo { result in
@@ -227,9 +227,9 @@ private extension ContentMigrationCoordinatorTests {
                      eligibilityProvider: mockEligibilityProvider)
     }
 
-    func makeDraftPost(remoteStatus: AbstractPostRemoteStatus = .failed) {
+    func makePost(remoteStatus: AbstractPostRemoteStatus = .failed) {
         let _ = PostBuilder(contextManager.mainContext)
-            .drafted()
+            .published()
             .with(remoteStatus: remoteStatus)
             .build()
     }

@@ -45,7 +45,7 @@ class ContentMigrationCoordinator {
             return
         }
 
-        guard isLocalDraftsSynced() else {
+        guard isLocalPostsSynced() else {
             completion?(.failure(.localDraftsNotSynced))
             return
         }
@@ -89,10 +89,9 @@ class ContentMigrationCoordinator {
 
 private extension ContentMigrationCoordinator {
 
-    func isLocalDraftsSynced() -> Bool {
+    func isLocalPostsSynced() -> Bool {
         let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
-        fetchRequest.predicate = NSPredicate(format: "status = %@ && (remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@)",
-                                             BasePost.Status.draft.rawValue,
+        fetchRequest.predicate = NSPredicate(format: "remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@",
                                              NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue),
                                              NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
                                              NSNumber(value: AbstractPostRemoteStatus.local.rawValue),
