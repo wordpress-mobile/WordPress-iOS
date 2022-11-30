@@ -67,6 +67,37 @@ final class SharedDataIssueSolver: NSObject {
         copyNotificationsExtensionDataToJetpack()
     }
 
+    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
+    ///
+    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
+    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
+    ///
+    func copyTodayWidgetDataToJetpack() {
+        copyTodayWidgetKeychain()
+        copyTodayWidgetUserDefaults()
+        copyTodayWidgetCacheFiles()
+    }
+
+    /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
+    func copyShareExtensionDataToJetpack() {
+        copyShareExtensionKeychain()
+        copyShareExtensionUserDefaults()
+    }
+
+    /// Copies WP's Notifications extension data (in Keychain) into JP.
+    ///
+    /// Note: This method is not private for unit testing purposes.
+    /// It requires time to properly mock the dependencies in `importData`.
+    func copyNotificationsExtensionDataToJetpack() {
+        copyNotificationExtensionKeychain()
+    }
+
     private func copySharedDefaults(_ keys: [MigratableConstant]) {
         guard let sharedDefaults else {
             return
@@ -111,17 +142,6 @@ private extension SharedDataIssueSolver {
 // MARK: - Today Widget Helpers
 
 private extension SharedDataIssueSolver {
-    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
-    ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location,
-    /// but in case of Today Widget, the keys used for Keychain and User Defaults are differentiated
-    /// to prevent one app overwriting the other.
-    ///
-    func copyTodayWidgetDataToJetpack() {
-        copyTodayWidgetKeychain()
-        copyTodayWidgetUserDefaults()
-        copyTodayWidgetCacheFiles()
-    }
 
     func copyTodayWidgetKeychain() {
         guard let authToken = try? keychainUtils.password(for: WPWidgetConstants.keychainTokenKey.rawValue,
@@ -233,12 +253,6 @@ private extension SharedDataIssueSolver {
 // MARK: - Share Extension Helpers
 
 private extension SharedDataIssueSolver {
-    /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
-    ///
-    func copyShareExtensionDataToJetpack() {
-        copyShareExtensionKeychain()
-        copyShareExtensionUserDefaults()
-    }
 
     func copyShareExtensionKeychain() {
         guard let authToken = try? keychainUtils.password(for: WPShareExtensionConstants.keychainTokenKey.rawValue,
@@ -308,11 +322,6 @@ private extension SharedDataIssueSolver {
 // MARK: - Notifications Extension Helpers
 
 private extension SharedDataIssueSolver {
-    /// Copies WP's Notifications extension data (in Keychain) into JP.
-    ///
-    func copyNotificationsExtensionDataToJetpack() {
-        copyNotificationExtensionKeychain()
-    }
 
     func copyNotificationExtensionKeychain() {
         guard let authToken = try? keychainUtils.password(for: WPNotificationsExtensionConstants.keychainTokenKey.rawValue,
