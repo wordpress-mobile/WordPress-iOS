@@ -4,6 +4,10 @@ enum WordPressInstallationState {
     case wordPressNotInstalled
     case wordPressInstalledNotMigratable
     case wordPressInstalledAndMigratable
+
+    var isWordPressInstalled: Bool {
+        return self != .wordPressNotInstalled
+    }
 }
 
 struct MigrationAppDetection {
