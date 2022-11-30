@@ -43,7 +43,7 @@ class InMemoryUserDefaults: UserPersistentRepository {
     }
 
     func dictionaryRepresentation() -> [String: Any] {
-        return dictionary
+        return dictionary as [String: Any]
     }
 
     func set(_ value: Any?, forKey key: String) {
