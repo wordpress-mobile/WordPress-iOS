@@ -123,7 +123,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupContent() {
         animationView.animation = animation
         setTitle()
-        subtitleLabel.text = viewModel.subtitle
+        subtitleLabel.attributedText = viewModel.subtitle
         footnoteLabel.text = viewModel.footnote
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)

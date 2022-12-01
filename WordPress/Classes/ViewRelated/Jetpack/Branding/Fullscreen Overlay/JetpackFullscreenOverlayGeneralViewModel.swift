@@ -75,15 +75,15 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         }
     }
 
-    var subtitle: String {
+    var subtitle: NSAttributedString {
         switch (phase, source) {
         // Phase One
         case (.one, .stats):
-            return Strings.PhaseOne.Stats.subtitle
+            return .init(string: Strings.PhaseOne.Stats.subtitle)
         case (.one, .notifications):
-            return Strings.PhaseOne.Notifications.subtitle
+            return .init(string: Strings.PhaseOne.Notifications.subtitle)
         case (.one, .reader):
-            return Strings.PhaseOne.Reader.subtitle
+            return .init(string: Strings.PhaseOne.Reader.subtitle)
 
         // Phase Two
         case (.two, _):
@@ -91,9 +91,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
 
         // Phase Three
         case (.three, _):
-            return Strings.PhaseTwoAndThree.subtitle // TODO: inject date
+            return .init(string: Strings.PhaseTwoAndThree.subtitle) // TODO: inject date
         default:
-            return ""
+            return .init(string: "")
         }
     }
 

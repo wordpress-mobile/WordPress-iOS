@@ -5,7 +5,7 @@ typealias JetpackOverlayDismissCallback = () -> Void
 /// Protocol used to configure `JetpackFullscreenOverlayViewController`
 protocol JetpackFullscreenOverlayViewModel {
     var title: String { get }
-    var subtitle: String { get }
+    var subtitle: NSAttributedString { get }
     var animationLtr: String { get }
     var animationRtl: String { get }
     var footnote: String? { get }
