@@ -144,6 +144,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         switch phase {
         case .one:
             return false
+        case .two:
+            return true
+        case .three:
+            return true
         default:
             return false
         }
