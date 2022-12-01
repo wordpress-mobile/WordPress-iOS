@@ -32,11 +32,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case featureHighlightTooltip
     case jetpackPowered
     case jetpackPoweredBottomSheet
-    case sharedUserDefaults
-    case sharedLogin
+    case contentMigration
     case newJetpackLandingScreen
     case newWordPressLandingScreen
     case newCoreDataContext
+    case jetpackMigrationPreventDuplicateNotifications
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -114,15 +114,15 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackPoweredBottomSheet:
             return false
-        case .sharedUserDefaults:
-            return false
-        case .sharedLogin:
+        case .contentMigration:
             return false
         case .newJetpackLandingScreen:
             return true
         case .newWordPressLandingScreen:
             return false
         case .newCoreDataContext:
+            return true
+        case .jetpackMigrationPreventDuplicateNotifications:
             return true
         case .jetpackFeaturesRemovalPhaseOne:
             return false
@@ -154,6 +154,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_four"
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "jp_removal_new_users"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "prevent_duplicate_notifs_remote_field"
             default:
                 return nil
         }
@@ -234,16 +236,16 @@ extension FeatureFlag {
             return "Jetpack powered banners and badges"
         case .jetpackPoweredBottomSheet:
             return "Jetpack powered bottom sheet"
-        case .sharedUserDefaults:
-            return "Shared User Defaults"
-        case .sharedLogin:
-            return "Shared Login"
+        case .contentMigration:
+            return "Content Migration"
         case .newJetpackLandingScreen:
             return "New Jetpack landing screen"
         case .newWordPressLandingScreen:
             return "New WordPress landing screen"
         case .newCoreDataContext:
             return "Use new Core Data context structure (Require app restart)"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
         case .jetpackFeaturesRemovalPhaseOne:
             return "Jetpack Features Removal Phase One"
         case .jetpackFeaturesRemovalPhaseTwo:

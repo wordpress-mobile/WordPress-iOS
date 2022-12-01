@@ -38,8 +38,7 @@ final class MigrationWelcomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundColor = .ungroupedListBackground
-        self.view.backgroundColor = tableView.backgroundColor
+        self.view.backgroundColor = MigrationAppearance.backgroundColor
         self.setupTableView()
         self.setupBottomSheet()
         self.setupNavigationBar()
@@ -54,6 +53,7 @@ final class MigrationWelcomeViewController: UIViewController {
     // MARK: - Setup and Updates
 
     private func setupTableView() {
+        self.tableView.backgroundColor = .clear
         self.tableView.directionalLayoutMargins.leading = Constants.tableViewLeadingMargin
         self.tableView.register(MigrationWelcomeBlogTableViewCell.self, forCellReuseIdentifier: MigrationWelcomeBlogTableViewCell.defaultReuseID)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,9 @@ final class MigrationWelcomeViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail) { [weak self] () -> Void in
+            self?.viewModel.configuration.actionsConfiguration.secondaryHandler?()
+        }
     }
 
     private func setupBottomSheet() {

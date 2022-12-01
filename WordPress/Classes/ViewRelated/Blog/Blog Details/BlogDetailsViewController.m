@@ -28,6 +28,7 @@ static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSec
 static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
+static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetailsMigrationSuccessCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -353,6 +354,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
+    [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -441,6 +443,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionDomainCredit:
         case BlogDetailsSubsectionHome:
+        case BlogDetailsSubsectionMigrationSuccess:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
@@ -554,6 +557,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     switch (subsection) {
         case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionHome:
+        case BlogDetailsSubsectionMigrationSuccess:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionDomainCredit:
             return [NSIndexPath indexPathForRow:0 inSection:section];
@@ -731,6 +735,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (AppConfiguration.showsQuickActions && ![self isDashboardEnabled]) {
         [marr addObject:[self quickActionsSectionViewModel]];
     }
+    if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+        [marr addObject:[self migrationSuccessSectionViewModel]];
+    }
+
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
         if (!self.hasLoggedDomainCreditPromptShownEvent) {
             [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
@@ -1149,6 +1157,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (section.category == BlogDetailsSectionCategoryQuickStart) {
         QuickStartCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickStartCellIdentifier];
         [cell configureWithBlog:self.blog viewController:self];
+        return cell;
+    }
+
+    if (section.category == BlogDetailsSectionCategoryMigrationSuccess && MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
+        MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        [cell configureWithViewController:self];
         return cell;
     }
 

@@ -22,4 +22,16 @@ class KeychainUtils: NSObject {
             try keychainUtils.storeUsername(username, andPassword: password, forServiceName: serviceName, accessGroup: destinationAccessGroup, updateExisting: updateExisting)
         }
     }
+
+    func password(for username: String, serviceName: String, accessGroup: String? = nil) throws -> String? {
+        return try keychainUtils.getPasswordForUsername(username, andServiceName: serviceName, accessGroup: accessGroup)
+    }
+
+    func store(username: String, password: String, serviceName: String, accessGroup: String? = nil, updateExisting: Bool) throws {
+        return try keychainUtils.storeUsername(username,
+                                               andPassword: password,
+                                               forServiceName: serviceName,
+                                               accessGroup: accessGroup,
+                                               updateExisting: updateExisting)
+    }
 }

@@ -5,13 +5,13 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     // MARK: Variables
 
-    private let config: JetpackFullscreenOverlayConfig
+    private let viewModel: JetpackFullscreenOverlayViewModel
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(config.animationLtr) :
-        Animation.named(config.animationRtl)
+        Animation.named(viewModel.animationLtr) :
+        Animation.named(viewModel.animationRtl)
     }
 
     // MARK: Lazy Views
@@ -52,11 +52,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var learnMoreButton: UIButton!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
 
     // MARK: Initializers
 
-    init(with config: JetpackFullscreenOverlayConfig) {
-        self.config = config
+    init(with viewModel: JetpackFullscreenOverlayViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -69,13 +70,16 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.isModalInPresentation = true
         configureNavigationBar()
         applyStyles()
+        setupConstraints()
         setupContent()
         setupColors()
         setupFonts()
         setupButtonInsets()
         animationView.play()
+        viewModel.trackOverlayDisplayed()
     }
 
     // MARK: Helpers
@@ -95,7 +99,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func addCloseButtonIfNeeded() {
-        guard config.shouldShowCloseButton else {
+        guard viewModel.shouldShowCloseButton else {
             return
         }
 
@@ -106,17 +110,41 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
     }
 
+    private func setupConstraints() {
+        // Animation constraint
+        let animationSize = animation?.size ?? .init(width: 1, height: 1)
+        let ratio = animationSize.width / animationSize.height
+        animationView.widthAnchor.constraint(equalTo: animationView.heightAnchor, multiplier: ratio).isActive = true
+
+        // Buttons bottom constraint
+        buttonsSuperViewBottomConstraint.constant = viewModel.continueButtonIsHidden ? Metrics.singleButtonBottomSpacing : Metrics.buttonsNormalBottomSpacing
+    }
+
     private func setupContent() {
         animationView.animation = animation
-        titleLabel.text = config.title
-        subtitleLabel.text = config.subtitle
-        footnoteLabel.text = config.footnote
-        switchButton.setTitle(config.switchButtonText, for: .normal)
-        continueButton.setTitle(config.continueButtonText, for: .normal)
-        footnoteLabel.isHidden = config.footnoteIsHidden
-        learnMoreButton.isHidden = config.learnMoreButtonIsHidden
-        continueButton.isHidden = config.continueButtonIsHidden
+        setTitle()
+        subtitleLabel.text = viewModel.subtitle
+        footnoteLabel.text = viewModel.footnote
+        switchButton.setTitle(viewModel.switchButtonText, for: .normal)
+        continueButton.setTitle(viewModel.continueButtonText, for: .normal)
+        footnoteLabel.isHidden = viewModel.footnoteIsHidden
+        learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
+        continueButton.isHidden = viewModel.continueButtonIsHidden
         setupLearnMoreButton()
+    }
+
+    private func setTitle() {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = Metrics.titleLineHeightMultiple
+        style.lineBreakMode = .byTruncatingTail
+
+        let defaultAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: style,
+            .kern: Metrics.titleKern
+        ]
+        let attributedString = NSMutableAttributedString(string: viewModel.title)
+        attributedString.addAttributes(defaultAttributes, range: NSRange(location: 0, length: attributedString.length))
+        titleLabel.attributedText = attributedString
     }
 
     private func setupColors() {
@@ -130,8 +158,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     private func setupFonts() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        footnoteLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -181,15 +212,23 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     @objc private func closeButtonPressed(sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        viewModel.trackCloseButtonTapped()
+        viewModel.onDismiss?()
     }
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        // TODO: Add here action to redirect to the JP app
+        // Try to export WordPress data to a shared location before redirecting the user.
+        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
+            JetpackRedirector.redirectToJetpack()
+            self?.viewModel.trackSwitchButtonTapped()
+        }
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+        viewModel.trackContinueButtonTapped()
+        viewModel.onDismiss?()
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
@@ -197,10 +236,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
             return
         }
 
-        let source = "jetpack_overlay_\(config.analyticsSource)"
+        let source = "jetpack_overlay_\(viewModel.analyticsSource)"
         let webViewController = WebViewControllerFactory.controller(url: url, source: source)
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
+        viewModel.trackLearnMoreTapped()
     }
 }
 
@@ -222,6 +262,10 @@ private extension JetpackFullscreenOverlayViewController {
         static let externalIconSize = CGSize(width: 16, height: 16)
         static let externalIconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let switchButtonCornerRadius: CGFloat = 6
+        static let titleLineHeightMultiple: CGFloat = 0.88
+        static let titleKern: CGFloat = 0.37
+        static let buttonsNormalBottomSpacing: CGFloat = 30
+        static let singleButtonBottomSpacing: CGFloat = 60
     }
 
     enum Constants {

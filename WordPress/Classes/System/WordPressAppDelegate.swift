@@ -154,19 +154,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
 
-        copyToSharedDefaultsIfNeeded()
-        BloggingRemindersScheduler.handleRemindersMigration()
         return true
-    }
-
-    private func copyToSharedDefaultsIfNeeded() {
-        if !AppConfiguration.isJetpack && FeatureFlag.sharedUserDefaults.enabled && !UserPersistentStore.standard.isOneOffMigrationComplete {
-            let dict = UserDefaults.standard.dictionaryRepresentation()
-            for (key, value) in dict {
-                UserPersistentStore.standard.set(value, forKey: key)
-            }
-            UserPersistentStore.standard.isOneOffMigrationComplete = true
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -208,6 +196,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         uploadsManager.resume()
         updateFeatureFlags()
         updateRemoteConfig()
+
+        #if JETPACK
+        if let windowManager = windowManager as? JetpackWindowManager,
+           windowManager.shouldImportMigrationData {
+            windowManager.importAndShowMigrationContent(nil, failureCompletion: nil)
+        }
+        #endif
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -331,6 +326,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupWordPressExtensions()
+
+        // Start proactively exporting WP data in the background if the conditions are fulfilled.
+        // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
+        DispatchQueue.global().async {
+            ContentMigrationCoordinator.shared.startOnceIfNeeded()
+        }
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
@@ -505,6 +506,14 @@ extension WordPressAppDelegate {
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
+        // try to handle unauthenticated routes first.
+        if activity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = activity.webpageURL,
+           UniversalLinkRouter.unauthenticated.canHandle(url: url) {
+            UniversalLinkRouter.unauthenticated.handle(url: url)
+            return
+        }
+
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {

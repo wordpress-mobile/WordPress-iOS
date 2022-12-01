@@ -14,13 +14,23 @@ class MigrationNotificationsViewController: UIViewController {
     }
 
     override func loadView() {
-        // TODO: replace this blank center view with the actual content
-        let centerView = UIView()
-        centerView.translatesAutoresizingMaskIntoConstraints = false
-        centerView.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+        let centerContentView = MigrationNotificationsCenterView()
+        let centerView = MigrationCenterView(contentView: centerContentView,
+                                             configuration: viewModel.configuration.centerViewConfiguration)
 
         view = MigrationStepView(headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
                                  actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
                                  centerView: centerView)
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }

@@ -6,7 +6,10 @@ class JetpackBrandingCoordinator {
     static func presentOverlay(from viewController: UIViewController, redirectAction: (() -> Void)? = nil) {
 
         let action = redirectAction ?? {
-            // TODO: Add here the default action to redirect to the jp app
+            // Try to export WordPress data to a shared location before redirecting the user.
+            ContentMigrationCoordinator.shared.startAndDo { _ in
+                JetpackRedirector.redirectToJetpack()
+            }
         }
 
         let jetpackOverlayViewController = JetpackOverlayViewController(viewFactory: makeJetpackOverlayView, redirectAction: action)

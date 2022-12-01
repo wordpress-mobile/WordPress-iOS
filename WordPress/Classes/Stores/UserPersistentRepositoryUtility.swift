@@ -15,8 +15,7 @@ private enum UPRUConstants {
     static let currentAnnouncementsKey = "currentAnnouncements"
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
-    static let bloggingRemindersCopiedKey = "reminders-copied"
-    static let sharedBloggingRemindersCopiedKey = "shared-reminders-copied"
+    static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -167,21 +166,12 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var bloggingRemindersCopied: Bool {
+    var isJPContentImportComplete: Bool {
         get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.bloggingRemindersCopiedKey)
+            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
         }
         set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.bloggingRemindersCopiedKey)
-        }
-    }
-
-    var sharedBloggingRemindersCopied: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.sharedBloggingRemindersCopiedKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.sharedBloggingRemindersCopiedKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.isJPContentImportCompleteKey)
         }
     }
 }

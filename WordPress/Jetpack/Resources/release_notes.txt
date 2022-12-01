@@ -1,1 +1,5 @@
-We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.
+* [*] [internal] When a user migrates to the Jetpack app and allows notifications, WordPress app notifications are disabled. This is released disabled and is behind a feature flag. [#19616, #19611, #19590]
+* [*] Fixed a minor UI issue where the segmented control under My SIte was being clipped when "Home" is selected. [#19595]
+* [*] Fixed an issue where the site wasn't removed and the app wasn't refreshed after disconnecting the site from WordPress.com. [#19634]
+* [*] [internal] Fixed an issue where Jetpack extensions were conflicting with WordPress extensions. [#19665]
+

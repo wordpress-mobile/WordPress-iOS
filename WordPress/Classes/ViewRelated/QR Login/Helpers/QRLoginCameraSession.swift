@@ -3,6 +3,12 @@ import AVFoundation
 
 class QRLoginCameraSession: NSObject, QRCodeScanningSession {
     var session: AVCaptureSession?
+    // > Delegate any interaction with the AVCaptureSession—including its inputs and outputs—to a
+    // > dedicated serial dispatch queue, so that the interaction doesn’t block the main queue.
+    // >
+    // > – https://developer.apple.com/documentation/avfoundation/capture_setup/avcam_building_a_camera_app
+    let sessionQueue = DispatchQueue(label: "qrlogincamerasession.queue.serial")
+
     var cameraDevice: AVCaptureDevice?
 
     var hasCamera: Bool {
@@ -24,21 +30,29 @@ class QRLoginCameraSession: NSObject, QRCodeScanningSession {
     }
 
     func start() {
-        session?.startRunning()
+        sessionQueue.async { [weak self] in
+            self?.session?.startRunning()
+        }
     }
 
     func stop() {
-        session?.stopRunning()
+        sessionQueue.async { [weak self] in
+            self?.session?.stopRunning()
+        }
     }
 }
 
 private extension QRLoginCameraSession {
     func startCameraSession() {
-        session?.startRunning()
+        sessionQueue.async { [weak self] in
+            self?.session?.startRunning()
+        }
     }
 
     func stopCameraSession() {
-        session?.stopRunning()
+        sessionQueue.async { [weak self] in
+            self?.session?.stopRunning()
+        }
     }
 
     func configureCamera() {

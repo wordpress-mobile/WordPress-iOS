@@ -10,6 +10,9 @@ class MigrationNavigationController: UINavigationController {
     private var cancellable: AnyCancellable?
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if let presentedViewController {
+            return presentedViewController.supportedInterfaceOrientations
+        }
         if WPDeviceIdentification.isiPhone() {
             return .portrait
         } else {
@@ -17,8 +20,12 @@ class MigrationNavigationController: UINavigationController {
         }
     }
 
+    // Force portrait orientation for migration view controllers only
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        .portrait
+        if let presentedViewController {
+            return presentedViewController.preferredInterfaceOrientationForPresentation
+        }
+        return .portrait
     }
 
     init(coordinator: MigrationFlowCoordinator, factory: MigrationViewControllerFactory) {

@@ -1101,20 +1101,61 @@ extension ReaderDetailViewController: UIViewControllerRestoration {
 // MARK: - Strings
 extension ReaderDetailViewController {
     private struct Strings {
-        static let backButtonAccessibilityLabel = NSLocalizedString("Back", comment: "Spoken accessibility label")
-        static let dismissButtonAccessibilityLabel = NSLocalizedString("Dismiss", comment: "Spoken accessibility label")
-        static let safariButtonAccessibilityLabel = NSLocalizedString("Open in Safari", comment: "Spoken accessibility label")
-        static let shareButtonAccessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        static let moreButtonAccessibilityLabel = NSLocalizedString("More", comment: "Spoken accessibility label")
-        static let localPostsSectionTitle = NSLocalizedString("More from %1$@", comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name.")
-        static let globalPostsSectionTitle = NSLocalizedString("More on WordPress.com", comment: "Section title for global related posts.")
-        static let tooltipTitle = NSLocalizedString("Follow the conversation", comment: "Title of follow conversations tooltip.")
+        static let backButtonAccessibilityLabel = NSLocalizedString(
+            "readerDetail.backButton.accessibilityLabel",
+            value: "Back",
+            comment: "Spoken accessibility label"
+        )
+        static let dismissButtonAccessibilityLabel = NSLocalizedString(
+            "readerDetail.dismissButton.accessibilityLabel",
+            value: "Dismiss",
+            comment: "Spoken accessibility label"
+        )
+        static let safariButtonAccessibilityLabel = NSLocalizedString(
+            "readerDetail.safariButton.accessibilityLabel",
+            value: "Open in Safari",
+            comment: "Spoken accessibility label"
+        )
+        static let shareButtonAccessibilityLabel = NSLocalizedString(
+            "readerDetail.shareButton.accessibilityLabel",
+            value: "Share",
+            comment: "Spoken accessibility label"
+        )
+        static let moreButtonAccessibilityLabel = NSLocalizedString(
+            "readerDetail.moreButton.accessibilityLabel",
+            value: "More",
+            comment: "Spoken accessibility label"
+        )
+        static let localPostsSectionTitle = NSLocalizedString(
+            "readerDetail.localPostsSection.accessibilityLabel",
+            value: "More from %1$@",
+            comment: "Section title for local related posts. %1$@ is a placeholder for the blog display name."
+        )
+        static let globalPostsSectionTitle = NSLocalizedString(
+            "readerDetail.globalPostsSection.accessibilityLabel",
+            value: "More on WordPress.com",
+            comment: "Section title for global related posts."
+        )
+        static let tooltipTitle = NSLocalizedString(
+            "readerDetail.followConversationTooltipTitle.accessibilityLabel",
+            value: "Follow the conversation",
+            comment: "Title of follow conversations tooltip."
+        )
         static let tooltipMessage = NSLocalizedString(
-            "Get notified when new comments are added to this post.",
+            "readerDetail.followConversationTooltipMessage.accessibilityLabel",
+            value: "Get notified when new comments are added to this post.",
             comment: "Message for the follow conversations tooltip."
         )
-        static let tooltipButtonTitle = NSLocalizedString("Got it", comment: "Button title for the follow conversations tooltip.")
-        static let tooltipAnchorTitle = NSLocalizedString("New", comment: "Title for the tooltip anchor.")
+        static let tooltipButtonTitle = NSLocalizedString(
+            "readerDetail.followConversationTooltipButton.accessibilityLabel",
+            value: "Got it",
+            comment: "Button title for the follow conversations tooltip."
+        )
+        static let tooltipAnchorTitle = NSLocalizedString(
+            "readerDetail.tooltipAnchorTitle.accessibilityLabel",
+            value: "New",
+            comment: "Title for the tooltip anchor."
+        )
     }
 }
 

@@ -517,7 +517,8 @@ extension PublishingEditor {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView(presentBloggingReminders: true)
+        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+        dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
