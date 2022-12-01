@@ -45,9 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v21.2-whats-new"
+msgctxt "v21.3-whats-new"
 msgid ""
-"We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.\n"
+"We fixed a small visual issue with the Home and Menu control in the My Site dashboard.\n"
+"\n"
+"We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
