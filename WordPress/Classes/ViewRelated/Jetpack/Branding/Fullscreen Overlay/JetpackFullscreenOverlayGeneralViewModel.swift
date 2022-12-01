@@ -84,6 +84,14 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return Strings.PhaseOne.Notifications.subtitle
         case (.one, .reader):
             return Strings.PhaseOne.Reader.subtitle
+
+        // Phase Two
+        case (.two, _):
+            fallthrough
+
+        // Phase Three
+        case (.three, _):
+            return Strings.PhaseTwoAndThree.subtitle // TODO: inject date
         default:
             return ""
         }
@@ -246,6 +254,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let notificationsTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title",
                                                  value: "Notifications are moving to Jetpack",
                                                  comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
+            static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle",
+                                                 value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.",
+                                                 comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed.")
         }
     }
 }
