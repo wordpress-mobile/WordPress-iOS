@@ -231,7 +231,8 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
-        guard let url = URL(string: Constants.learnMoreURLString) else {
+        guard let urlString = viewModel.learnMoreButtonURL,
+              let url = URL(string: urlString) else {
             return
         }
 
@@ -268,8 +269,6 @@ private extension JetpackFullscreenOverlayViewController {
     }
 
     enum Constants {
-        // TODO: Update link
-        static let learnMoreURLString = "https://jetpack.com/blog/"
         static let closeButtonSystemName = "xmark.circle.fill"
     }
 
