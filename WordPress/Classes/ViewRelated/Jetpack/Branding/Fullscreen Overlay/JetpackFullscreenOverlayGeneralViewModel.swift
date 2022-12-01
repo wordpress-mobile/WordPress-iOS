@@ -161,6 +161,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         switch phase {
         case .one:
             return Strings.General.earlyPhasesSwitchButtonTitle
+        case .two:
+            return Strings.General.earlyPhasesSwitchButtonTitle
+        case .three:
+            return Strings.General.latePhasesSwitchButtonTitle
         default:
             return ""
         }
@@ -210,6 +214,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         enum General {
             static let earlyPhasesSwitchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.early.switch.title",
                                                                         value: "Switch to the new Jetpack app",
+                                                                        comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
+            static let latePhasesSwitchButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.late.switch.title",
+                                                                        value: "Switch to the Jetpack app",
                                                                         comment: "Title of a button that navigates the user to the Jetpack app if installed, or to the app store.")
             static let statsContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.stats.continue.title",
                                                                     value: "Continue to Stats",
