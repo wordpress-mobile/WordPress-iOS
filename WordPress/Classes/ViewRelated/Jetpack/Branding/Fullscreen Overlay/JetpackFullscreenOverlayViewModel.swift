@@ -9,7 +9,7 @@ protocol JetpackFullscreenOverlayViewModel {
     var animationLtr: String { get }
     var animationRtl: String { get }
     var footnote: String? { get }
-    var shouldShowLearnMoreButton: Bool { get }
+    var learnMoreButtonURL: String? { get }
     var switchButtonText: String { get }
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
@@ -25,7 +25,7 @@ protocol JetpackFullscreenOverlayViewModel {
 
 extension JetpackFullscreenOverlayViewModel {
     var learnMoreButtonIsHidden: Bool {
-        !shouldShowLearnMoreButton
+        learnMoreButtonURL == nil
     }
 
     var footnoteIsHidden: Bool {

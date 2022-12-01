@@ -144,16 +144,20 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         }
     }
 
-    var shouldShowLearnMoreButton: Bool {
+    var learnMoreButtonURL: String? {
         switch phase {
         case .one:
-            return false
+            return nil
         case .two:
-            return true
+            return RemoteConfig().phaseTwoBlogPostUrl.value
         case .three:
-            return true
+            return RemoteConfig().phaseThreeBlogPostUrl.value
+        case .four:
+            return RemoteConfig().phaseFourBlogPostUrl.value
+        case .newUsers:
+            return RemoteConfig().phaseNewUsersBlogPostUrl.value
         default:
-            return false
+            return nil
         }
     }
 

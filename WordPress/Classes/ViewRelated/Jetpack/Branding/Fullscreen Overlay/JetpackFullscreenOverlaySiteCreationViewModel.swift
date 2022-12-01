@@ -45,8 +45,8 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return nil
     }
 
-    var shouldShowLearnMoreButton: Bool {
-        return false
+    var learnMoreButtonURL: String? {
+        return nil
     }
 
     var switchButtonText: String {
