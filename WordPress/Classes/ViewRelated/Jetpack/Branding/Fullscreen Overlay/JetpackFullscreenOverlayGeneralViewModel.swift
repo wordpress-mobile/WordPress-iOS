@@ -250,17 +250,17 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
 
         enum PhaseTwoAndThree {
             static let statsTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title",
-                                                 value: "Stats are moving to the Jetpack app",
-                                                 comment: "Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app.")
+                                                      value: "Stats are moving to the Jetpack app",
+                                                      comment: "Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app.")
             static let readerTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title",
-                                                 value: "Reader is moving to the Jetpack app",
-                                                 comment: "Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
+                                                       value: "Reader is moving to the Jetpack app",
+                                                       comment: "Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
             static let notificationsTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title",
-                                                 value: "Notifications are moving to Jetpack",
-                                                 comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
+                                                              value: "Notifications are moving to Jetpack",
+                                                              comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle",
-                                                 value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.",
-                                                 comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed.")
+                                                    value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.",
+                                                    comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed.")
         }
     }
 }
