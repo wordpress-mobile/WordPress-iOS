@@ -77,6 +77,10 @@ private extension MainShareViewController {
             view.backgroundColor = .basicBackground
         }
 
+        // Notice that this will set the apparence of _all_ `UINavigationBar` instances.
+        //
+        // Such a catch-all approach wouldn't be good in the context of a fully fledged application,
+        // but is acceptable here, given we are in an app extension.
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
         navigationBarAppearace.tintColor = .appBarTint
