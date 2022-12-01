@@ -2,12 +2,19 @@ import UIKit
 
 struct LogOutActionHandler {
 
+    private weak var windowManager: WindowManager?
+
+    init(windowManager: WindowManager? = WordPressAppDelegate.shared?.windowManager) {
+        self.windowManager = windowManager
+    }
+
     func logOut(with viewController: UIViewController) {
         let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
         alert.addActionWithTitle(Strings.alertCancelAction, style: .cancel)
         alert.addActionWithTitle(Strings.alertLogoutAction, style: .destructive) { [weak viewController] _ in
             viewController?.dismiss(animated: true) {
                 AccountHelper.logOutDefaultWordPressComAccount()
+                windowManager?.showSignInUI()
             }
         }
         viewController.present(alert, animated: true)
