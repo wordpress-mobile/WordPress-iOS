@@ -91,7 +91,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
 
         // Phase Three
         case (.three, _):
-            return .init(string: Strings.PhaseTwoAndThree.subtitle) // TODO: inject date
+            return phaseTwoAndThreeSubtitle()
         default:
             return .init(string: "")
         }
@@ -201,6 +201,27 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var onDismiss: JetpackOverlayDismissCallback?
 }
 
+// MARK: Helpers
+
+private extension JetpackFullscreenOverlayGeneralViewModel {
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d, yyyy"
+        return formatter
+    }()
+
+    func phaseTwoAndThreeSubtitle() -> NSAttributedString {
+        guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline() else {
+            return NSAttributedString(string: Strings.PhaseTwoAndThree.fallbackSubtitle)
+        }
+        let formattedDate = Self.dateFormatter.string(from: deadline)
+        let subtitle = String.localizedStringWithFormat(Strings.PhaseTwoAndThree.subtitle, formattedDate)
+        return NSAttributedString(string: subtitle)
+    }
+}
+
+// MARK: Constants
+
 private extension JetpackFullscreenOverlayGeneralViewModel {
     enum Constants {
         static let statsLogoAnimationLtr = "JetpackStatsLogoAnimation_ltr"
@@ -274,6 +295,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle",
                                                     value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.",
                                                     comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed.")
+            static let fallbackSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle",
+                                                    value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app soon.",
+                                                    comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app.")
             static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
                                                     value: "Switching is free and only takes a minute.",
                                                     comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
