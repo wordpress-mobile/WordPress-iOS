@@ -189,21 +189,4 @@ class ReaderWebView: WKWebView {
             }
         """
     }
-
-    /// If iOS 12 or below, returns only light colors
-    ///
-    private func lightCSSColors() -> String {
-        return """
-            :root {
-              --color-text: #\(UIColor.text.hexString() ?? "");
-              --color-neutral-0: #\(UIColor.listForegroundUnread.hexString() ?? "");
-              --color-neutral-10: #\(UIColor(color: .muriel(color: .gray, .shade10)).hexString() ?? "");
-              --color-neutral-40: #\(UIColor(color: .muriel(color: .gray, .shade40)).hexString() ?? "");
-              --color-neutral-50: #\(UIColor.textSubtle.hexString() ?? "");
-              --color-neutral-70: #\(UIColor.text.hexString() ?? "");
-              --main-link-color: #\(UIColor.primary.hexString() ?? "");
-              --main-link-active-color: #\(UIColor.primaryDark.hexString() ?? "");
-            }
-        """
-    }
 }
