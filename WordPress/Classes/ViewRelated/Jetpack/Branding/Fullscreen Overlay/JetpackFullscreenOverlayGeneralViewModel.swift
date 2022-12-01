@@ -186,7 +186,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var shouldShowCloseButton: Bool {
         switch phase {
         case .one:
-            return true
+            fallthrough
+        case .two:
+            return true // Only show close button in phases 1 & 2
         default:
             return false
         }
