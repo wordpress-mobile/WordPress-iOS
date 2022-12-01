@@ -170,9 +170,6 @@ class ReaderWebView: WKWebView {
         """
     }
 
-    /// If iOS 13, returns light and dark colors
-    ///
-    @available(iOS 13, *)
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
         UIColor(light: .muriel(color: .gray, .shade40),
