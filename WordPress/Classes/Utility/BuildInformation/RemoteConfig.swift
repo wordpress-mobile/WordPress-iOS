@@ -21,11 +21,11 @@ struct RemoteConfig {
     }
 
     var phaseTwoBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-two-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase-two-blog-post", defaultValue: "https://jetpack.com/mobile", store: store) // TODO: Revert this
     }
 
     var phaseThreeBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-three-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase-three-blog-post", defaultValue: "https://jetpack.com/mobile", store: store) // TODO: Revert this
     }
 
     var phaseFourBlogPostUrl: RemoteConfigParameter<String> {
