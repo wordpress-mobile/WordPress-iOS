@@ -214,9 +214,17 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline() else {
             return NSAttributedString(string: Strings.PhaseTwoAndThree.fallbackSubtitle)
         }
+
         let formattedDate = Self.dateFormatter.string(from: deadline)
         let subtitle = String.localizedStringWithFormat(Strings.PhaseTwoAndThree.subtitle, formattedDate)
-        return NSAttributedString(string: subtitle)
+
+        let rangeOfDate = (subtitle as NSString).range(of: formattedDate)
+        let plainFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        let boldFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .bold)
+        let attributedSubtitle = NSMutableAttributedString(string: subtitle, attributes: [.font: plainFont])
+        attributedSubtitle.addAttribute(.font, value: boldFont, range: rangeOfDate)
+
+        return attributedSubtitle
     }
 }
 
