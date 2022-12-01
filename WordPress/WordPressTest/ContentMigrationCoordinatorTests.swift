@@ -2,7 +2,7 @@ import XCTest
 
 @testable import WordPress
 
-final class ContentMigrationCoordinatorTests: XCTestCase {
+final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     private let timeout: TimeInterval = 1
 
@@ -72,6 +72,80 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
         wait(for: [expect], timeout: timeout)
     }
 
+    // MARK: Local draft checking tests
+
+    func test_startAndDo_givenPostWithLocalStatus_shouldReturnFailure() {
+        // Given
+        makePost(remoteStatus: .local)
+        makePost(remoteStatus: .sync)
+
+        let expect = expectation(description: "Content migration should fail")
+        coordinator.startAndDo { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(error, .localDraftsNotSynced)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
+    func test_startAndDo_givenPostWithPushingStatus_shouldReturnFailure() {
+        // Given
+        makePost(remoteStatus: .pushing)
+        makePost(remoteStatus: .sync)
+
+        let expect = expectation(description: "Content migration should fail")
+        coordinator.startAndDo { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(error, .localDraftsNotSynced)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
+    func test_startAndDo_givenPostWithPushingMediaStatus_shouldReturnFailure() {
+        // Given
+        makePost(remoteStatus: .pushingMedia)
+        makePost(remoteStatus: .sync)
+
+        let expect = expectation(description: "Content migration should fail")
+        coordinator.startAndDo { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(error, .localDraftsNotSynced)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
+    func test_startAndDo_givenPostWithFailedStatus_shouldReturnFailure() {
+        // Given
+        makePost(remoteStatus: .failed)
+        makePost(remoteStatus: .sync)
+
+        let expect = expectation(description: "Content migration should fail")
+        coordinator.startAndDo { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(error, .localDraftsNotSynced)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
     // MARK: `startOnce` tests
 
     func test_startOnce_whenUserDefaultsDoesNotExist_shouldMigrate() {
@@ -85,7 +159,7 @@ final class ContentMigrationCoordinatorTests: XCTestCase {
     }
 
     func test_startOnce_givenErrorResult_shouldNotSaveUserDefaults() {
-        mockDataMigrator.exportErrorToReturn = .localDraftsNotSynced
+        mockDataMigrator.exportErrorToReturn = .databaseCopyError
 
         let expect = expectation(description: "Content migration should succeed")
         coordinator.startOnceIfNeeded { [unowned self] in
@@ -147,9 +221,17 @@ private extension ContentMigrationCoordinatorTests {
     }
 
     func makeCoordinator() -> ContentMigrationCoordinator {
-        return .init(dataMigrator: mockDataMigrator,
+        return .init(coreDataStack: contextManager,
+                     dataMigrator: mockDataMigrator,
                      userPersistentRepository: mockPersistentRepository,
                      eligibilityProvider: mockEligibilityProvider)
+    }
+
+    func makePost(remoteStatus: AbstractPostRemoteStatus = .failed) {
+        let _ = PostBuilder(contextManager.mainContext)
+            .published()
+            .with(remoteStatus: remoteStatus)
+            .build()
     }
 
 }
