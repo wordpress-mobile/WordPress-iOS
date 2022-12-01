@@ -24,11 +24,11 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.two, .notifications):
             fallthrough
         case (.two, .reader):
-            return false // TODO: Change this to true when other phase 2 tasks are ready
+            return true
 
         // Phase Three: Show all overlays
         case (.three, _):
-            return false // TODO: Change this to true when other phase 3 tasks are ready
+            return true
 
         // Phase Four: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
         case (.four, _):
