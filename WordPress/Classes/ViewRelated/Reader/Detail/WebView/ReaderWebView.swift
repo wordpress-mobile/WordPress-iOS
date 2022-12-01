@@ -159,19 +159,15 @@ class ReaderWebView: WKWebView {
     /// Maps app colors to CSS colors to be applied in the webview
     ///
     private func cssColors() -> String {
-        if #available(iOS 13, *) {
-            return """
-                @media (prefers-color-scheme: dark) {
-                    \(mappedCSSColors(.dark))
-                }
+        return """
+            @media (prefers-color-scheme: dark) {
+                \(mappedCSSColors(.dark))
+            }
 
-                @media (prefers-color-scheme: light) {
-                    \(mappedCSSColors(.light))
-                }
-            """
-        }
-
-        return lightCSSColors()
+            @media (prefers-color-scheme: light) {
+                \(mappedCSSColors(.light))
+            }
+        """
     }
 
     /// If iOS 13, returns light and dark colors
