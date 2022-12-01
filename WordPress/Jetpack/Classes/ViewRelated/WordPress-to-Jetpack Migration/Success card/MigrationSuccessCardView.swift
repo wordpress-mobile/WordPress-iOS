@@ -80,13 +80,10 @@ class MigrationSuccessCardView: UIView {
 extension MigrationSuccessCardView {
 
     @objc static var shouldShowMigrationSuccessCard: Bool {
-        #if JETPACK
+        let isJetpack = AppConfiguration.isJetpack
         let isFeatureFlagEnabled = FeatureFlag.contentMigration.enabled
         let isWordPressInstalled = MigrationAppDetection.getWordPressInstallationState().isWordPressInstalled
         let isMigrationCompleted = UserPersistentStoreFactory.instance().isJPContentImportComplete
-        return isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
-        #else
-        return false
-        #endif
+        return isJetpack && isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
     }
 }
