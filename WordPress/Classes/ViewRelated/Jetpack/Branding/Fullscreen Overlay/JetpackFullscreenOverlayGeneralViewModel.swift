@@ -135,6 +135,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         switch phase {
         case .one:
             return nil
+        case .two:
+            return nil
+        case .three:
+            return Strings.PhaseTwoAndThree.footnote
         default:
             return nil
         }
@@ -261,6 +265,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle",
                                                     value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app on %@.",
                                                     comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed.")
+            static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
+                                                    value: "Switching is free and only takes a minute.",
+                                                    comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
         }
     }
 }
