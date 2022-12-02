@@ -17,13 +17,7 @@ class JetpackWindowManager: WindowManager {
         }
 
         guard AccountHelper.isLoggedIn else {
-            if shouldImportMigrationData {
-                importAndShowMigrationContent(blog) { [weak self] in
-                    self?.showSignInUI()
-                }
-            } else {
-                showSignInUI()
-            }
+            shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
             return
         }
         // If the user doesn't have any blogs, but they're still logged in, log them out
@@ -31,7 +25,7 @@ class JetpackWindowManager: WindowManager {
         AccountHelper.logOutDefaultWordPressComAccount()
     }
 
-    func importAndShowMigrationContent(_ blog: Blog?, failureCompletion: (() -> ())?) {
+    func importAndShowMigrationContent(_ blog: Blog? = nil) {
         DataMigrator().importData() { [weak self] result in
             guard let self else {
                 return
@@ -43,20 +37,35 @@ class JetpackWindowManager: WindowManager {
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
-            case .failure:
-                failureCompletion?()
+            case .failure(let error):
+                self.handleMigrationFailure(error)
             }
         }
     }
+}
 
-    private func sendMigrationEmail() {
+// MARK: - Private Helpers
+
+private extension JetpackWindowManager {
+
+    var shouldShowMigrationUI: Bool {
+        return FeatureFlag.contentMigration.enabled && AccountHelper.isLoggedIn
+    }
+
+    /// Checks whether the WordPress app supports the custom scheme meant to disable notifications.
+    /// Since the scheme is added in 21.3, we can be pretty sure that the WP version also supports migration.
+    var isCompatibleWordPressAppPresent: Bool {
+        JetpackNotificationMigrationService.shared.isMigrationSupported
+    }
+
+    func sendMigrationEmail() {
         Task {
             let service = try? MigrationEmailService()
             try? await service?.sendMigrationEmail()
         }
     }
 
-    private func showMigrationUIIfNeeded(_ blog: Blog?) {
+    func showMigrationUIIfNeeded(_ blog: Blog?) {
         guard shouldShowMigrationUI else {
             return
         }
@@ -73,12 +82,19 @@ class JetpackWindowManager: WindowManager {
         self.show(container.makeInitialViewController())
     }
 
-    private func switchToAppUI(for blog: Blog?) {
+    func switchToAppUI(for blog: Blog?) {
         cancellable = nil
         showAppUI(for: blog)
     }
 
-    private var shouldShowMigrationUI: Bool {
-        return FeatureFlag.contentMigration.enabled && AccountHelper.isLoggedIn
+    func handleMigrationFailure(_ error: DataMigrationError) {
+        guard case .dataNotReadyToImport = error,
+              isCompatibleWordPressAppPresent else {
+            showSignInUI()
+            return
+        }
+
+        // TODO: Show UI that provides WP pre-flight action.
+
     }
 }
