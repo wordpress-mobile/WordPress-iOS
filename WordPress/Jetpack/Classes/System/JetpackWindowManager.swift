@@ -52,10 +52,8 @@ private extension JetpackWindowManager {
         return FeatureFlag.contentMigration.enabled && AccountHelper.isLoggedIn
     }
 
-    /// Checks whether the WordPress app supports the custom scheme meant to disable notifications.
-    /// Since the scheme is added in 21.3, we can be pretty sure that the WP version also supports migration.
     var isCompatibleWordPressAppPresent: Bool {
-        JetpackNotificationMigrationService.shared.isMigrationSupported
+        MigrationAppDetection.getWordPressInstallationState() == .wordPressInstalledAndMigratable
     }
 
     func sendMigrationEmail() {
