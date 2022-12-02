@@ -6,7 +6,7 @@ class JetpackWindowManager: WindowManager {
     private var cancellable: AnyCancellable?
 
     /// Migration events tracking
-    private let migrationTacker = MigrationAnalyticsTracker()
+    private let migrationTracker = MigrationAnalyticsTracker()
 
     var shouldImportMigrationData: Bool {
         return !AccountHelper.isLoggedIn && !UserPersistentStoreFactory.instance().isJPContentImportComplete
@@ -20,7 +20,7 @@ class JetpackWindowManager: WindowManager {
         }
 
         guard AccountHelper.isLoggedIn else {
-            self.migrationTacker.trackContentImportEligibility(eligible: shouldImportMigrationData)
+            self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
             shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
             return
         }
@@ -31,7 +31,7 @@ class JetpackWindowManager: WindowManager {
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
-        self.migrationTacker.trackWordPressMigrationEligibility()
+        self.migrationTracker.trackWordPressMigrationEligibility()
 
         DataMigrator().importData() { [weak self] result in
             guard let self else {
@@ -40,14 +40,14 @@ class JetpackWindowManager: WindowManager {
 
             switch result {
             case .success:
-                self.migrationTacker.trackContentImportSucceeded()
+                self.migrationTracker.trackContentImportSucceeded()
                 UserPersistentStoreFactory.instance().isJPContentImportComplete = true
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
             case .failure(let error):
                 self.handleMigrationFailure(error)
-                self.migrationTacker.trackContentImportFailed(reason: error.localizedDescription)
+                self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
             }
         }
     }
