@@ -64,9 +64,7 @@ struct MigrationViewControllerFactory {
         let viewModel = makeWelcomeViewModel(handlers: handlers)
 
         let viewController = MigrationWelcomeViewController(viewModel: viewModel)
-        handlers.primary = { [weak coordinator] in
-            coordinator?.transitionToNextStep()
-        }
+        handlers.primary = { [weak coordinator] in coordinator?.transitionToNextStep() }
         handlers.secondary = makeSupportViewControllerRouter(with: viewController)
 
         return viewController

@@ -36,7 +36,7 @@ class MigrationNavigationController: UINavigationController {
         } else {
             super.init(nibName: nil, bundle: nil)
         }
-        self.configure()
+        configure()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +73,6 @@ class MigrationNavigationController: UINavigationController {
         guard let viewController = factory.viewController(for: step) else {
             return
         }
-
         // if we want to support backwards navigation, we need to set
         // also the previous steps in the stack
         setViewControllers([viewController], animated: true)
