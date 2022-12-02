@@ -3,6 +3,8 @@ import UIKit
 @objc
 class MigrationSuccessCell: UITableViewCell {
 
+    var onTap: (() -> Void)?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
@@ -14,7 +16,7 @@ class MigrationSuccessCell: UITableViewCell {
 
     private func setup() {
         let view = MigrationSuccessCardView() {
-            // TODO: add card presentation logic here
+            self.onTap?()
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(view)

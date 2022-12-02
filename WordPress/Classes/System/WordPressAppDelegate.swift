@@ -196,6 +196,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         uploadsManager.resume()
         updateFeatureFlags()
         updateRemoteConfig()
+
+        #if JETPACK
+        if let windowManager = windowManager as? JetpackWindowManager,
+           windowManager.shouldImportMigrationData {
+            windowManager.importAndShowMigrationContent(nil, failureCompletion: nil)
+        }
+        #endif
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -319,6 +326,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupWordPressExtensions()
+
+        // Start proactively exporting WP data in the background if the conditions are fulfilled.
+        // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
+        DispatchQueue.global().async {
+            ContentMigrationCoordinator.shared.startOnceIfNeeded()
+        }
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
