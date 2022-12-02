@@ -47,6 +47,11 @@ final class MigrationWelcomeViewController: UIViewController {
         self.setupNavigationBar()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tracker.track(.welcomeScreenShown)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.sizeToFitHeaderView()
