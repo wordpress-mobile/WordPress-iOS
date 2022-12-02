@@ -51,12 +51,6 @@ final class SharedDataIssueSolver: NSObject {
                                  password: token,
                                  serviceName: WPAccountConstants.authToken.valueForJetpack,
                                  updateExisting: true)
-
-        migrateExtensionsKeychainData()
-    }
-
-    func migrateExtensionsKeychainData() {
-        copyTodayWidgetKeychain()
     }
 
     func migrateExtensionsData() {
@@ -73,7 +67,6 @@ final class SharedDataIssueSolver: NSObject {
     /// It requires time to properly mock the dependencies in `importData`.
     ///
     func copyTodayWidgetDataToJetpack() {
-        copyTodayWidgetKeychain()
         copyTodayWidgetUserDefaults()
         copyTodayWidgetCacheFiles()
     }
@@ -131,19 +124,6 @@ private extension SharedDataIssueSolver {
 
 private extension SharedDataIssueSolver {
 
-    func copyTodayWidgetKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPWidgetConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPWidgetConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPWidgetConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPWidgetConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
     func copyTodayWidgetUserDefaults() {
         let userDefaultKeys: [WPWidgetConstants] = [
             .userDefaultsSiteIdKey,
@@ -186,8 +166,6 @@ private extension SharedDataIssueSolver {
     ///
     enum WPWidgetConstants: String, MigratableConstant {
         // Constants for Home Widget
-        case keychainTokenKey = "OAuth2Token"
-        case keychainServiceName = "TodayWidget"
         case userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
         case userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
         case todayFilename = "HomeWidgetTodayData.plist" // HomeWidgetTodayData
@@ -205,10 +183,6 @@ private extension SharedDataIssueSolver {
 
         var valueForJetpack: String {
             switch self {
-            case .keychainTokenKey:
-                return "OAuth2Token"
-            case .keychainServiceName:
-                return "JetpackTodayWidget"
             case .userDefaultsSiteIdKey:
                 return "JetpackHomeWidgetsSiteId"
             case .userDefaultsLoggedInKey:
