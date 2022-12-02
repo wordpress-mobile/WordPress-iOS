@@ -29,15 +29,6 @@ import AutomatticTracks
             return true
         }
 
-        /// Jetpack only. Handle intent from WP that signals that the data is ready for migration.
-        let jetpackMigrationRouter = MigrationDeepLinkRouter(scheme: JetpackNotificationMigrationService.jetpackScheme,
-                                                             routes: [JetpackImportRoute()])
-        if AppConfiguration.isJetpack,
-           jetpackMigrationRouter.canHandle(url: url) {
-            jetpackMigrationRouter.handle(url: url)
-            return true
-        }
-
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }
