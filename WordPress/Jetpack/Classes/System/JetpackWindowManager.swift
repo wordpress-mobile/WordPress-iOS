@@ -46,8 +46,8 @@ class JetpackWindowManager: WindowManager {
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
             case .failure(let error):
-                self.handleMigrationFailure(error)
                 self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
+                self.handleMigrationFailure(error)
             }
         }
     }
