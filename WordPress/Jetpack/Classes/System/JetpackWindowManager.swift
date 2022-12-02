@@ -5,6 +5,9 @@ class JetpackWindowManager: WindowManager {
     /// receives migration flow updates in order to dismiss it when needed.
     private var cancellable: AnyCancellable?
 
+    /// Migration events tracking
+    private let migrationTacker = MigrationAnalyticsTracker()
+
     var shouldImportMigrationData: Bool {
         return !AccountHelper.isLoggedIn && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
@@ -17,6 +20,9 @@ class JetpackWindowManager: WindowManager {
         }
 
         guard AccountHelper.isLoggedIn else {
+            let shouldImportMigrationData = shouldImportMigrationData
+            self.migrationTacker.trackContentImportEligibility(eligible: shouldImportMigrationData)
+
             if shouldImportMigrationData {
                 importAndShowMigrationContent(blog) { [weak self] in
                     self?.showSignInUI()
@@ -24,8 +30,10 @@ class JetpackWindowManager: WindowManager {
             } else {
                 showSignInUI()
             }
+
             return
         }
+
         // If the user doesn't have any blogs, but they're still logged in, log them out
         // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
         AccountHelper.logOutDefaultWordPressComAccount()
@@ -39,11 +47,13 @@ class JetpackWindowManager: WindowManager {
 
             switch result {
             case .success:
+                self.migrationTacker.trackContentImportSucceeded()
                 UserPersistentStoreFactory.instance().isJPContentImportComplete = true
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
-            case .failure:
+            case .failure(let error):
+                self.migrationTacker.trackContentImportFailed(reason: error.localizedDescription)
                 failureCompletion?()
             }
         }

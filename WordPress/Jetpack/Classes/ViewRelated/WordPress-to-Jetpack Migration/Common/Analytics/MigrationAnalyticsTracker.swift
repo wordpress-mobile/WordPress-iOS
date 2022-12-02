@@ -9,11 +9,27 @@ struct MigrationAnalyticsTracker {
         WPAnalytics.track(event)
     }
 
+    // MARK: - Content Import
+
+    func trackContentImportEligibility(eligible: Bool) {
+        let properties = ["eligible": String(eligible)]
+        self.track(.contentImportEligibility, properties: properties)
+    }
+
+    func trackContentImportSucceeded() {
+        self.track(.contentImportSucceeded)
+    }
+
+    func trackContentImportFailed(reason: String) {
+        let properties = ["error_type": reason]
+        self.track(.contentImportFailed, properties: properties)
+    }
+
     // MARK: - WordPress Migration Eligibility
 
     /// Tracks an event representing the WordPress migratable state.
     /// If WordPress is not installed, nothing is tracked.
-    func trackWordPressMigrationEligibility(compatible: Bool) {
+    func trackWordPressMigrationEligibility() {
         let state = MigrationAppDetection.getWordPressInstallationState()
         switch state {
         case .wordPressInstalledAndMigratable:
