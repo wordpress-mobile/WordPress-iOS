@@ -784,8 +784,7 @@ extension WordPressAppDelegate {
     @objc fileprivate func handleDefaultAccountChangedNotification(_ notification: NSNotification) {
         // If the notification object is not nil, then it's a login
         if notification.object != nil {
-            setupShareExtensionToken()
-            configureNotificationExtension()
+            setupWordPressExtensions()
             startObservingAppleIDCredentialRevoked()
             AccountService.loadDefaultAccountCookies()
         } else {

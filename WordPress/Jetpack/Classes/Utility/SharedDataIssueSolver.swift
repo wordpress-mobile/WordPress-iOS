@@ -51,51 +51,28 @@ final class SharedDataIssueSolver: NSObject {
                                  password: token,
                                  serviceName: WPAccountConstants.authToken.valueForJetpack,
                                  updateExisting: true)
-
-        migrateExtensionsKeychainData()
-    }
-
-    func migrateExtensionsKeychainData() {
-        copyTodayWidgetKeychain()
-        copyShareExtensionKeychain()
-        copyNotificationExtensionKeychain()
     }
 
     func migrateExtensionsData() {
         copyTodayWidgetDataToJetpack()
         copyShareExtensionDataToJetpack()
-        copyNotificationsExtensionDataToJetpack()
     }
 
-    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
-    ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
-    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
-    ///
+    /// Copies WP's Today Widget data (in User Defaults and local files) into JP.
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
     ///
     func copyTodayWidgetDataToJetpack() {
-        copyTodayWidgetKeychain()
         copyTodayWidgetUserDefaults()
         copyTodayWidgetCacheFiles()
     }
 
-    /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
+    /// Copies WP's Share extension data (in User Defaults) into JP.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
     func copyShareExtensionDataToJetpack() {
-        copyShareExtensionKeychain()
         copyShareExtensionUserDefaults()
-    }
-
-    /// Copies WP's Notifications extension data (in Keychain) into JP.
-    ///
-    /// Note: This method is not private for unit testing purposes.
-    /// It requires time to properly mock the dependencies in `importData`.
-    func copyNotificationsExtensionDataToJetpack() {
-        copyNotificationExtensionKeychain()
     }
 
     private func copySharedDefaults(_ keys: [MigratableConstant]) {
@@ -143,19 +120,6 @@ private extension SharedDataIssueSolver {
 
 private extension SharedDataIssueSolver {
 
-    func copyTodayWidgetKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPWidgetConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPWidgetConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPWidgetConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPWidgetConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
     func copyTodayWidgetUserDefaults() {
         let userDefaultKeys: [WPWidgetConstants] = [
             .userDefaultsSiteIdKey,
@@ -198,8 +162,6 @@ private extension SharedDataIssueSolver {
     ///
     enum WPWidgetConstants: String, MigratableConstant {
         // Constants for Home Widget
-        case keychainTokenKey = "OAuth2Token"
-        case keychainServiceName = "TodayWidget"
         case userDefaultsSiteIdKey = "WordPressHomeWidgetsSiteId"
         case userDefaultsLoggedInKey = "WordPressHomeWidgetsLoggedIn"
         case todayFilename = "HomeWidgetTodayData.plist" // HomeWidgetTodayData
@@ -217,10 +179,6 @@ private extension SharedDataIssueSolver {
 
         var valueForJetpack: String {
             switch self {
-            case .keychainTokenKey:
-                return "OAuth2Token"
-            case .keychainServiceName:
-                return "JetpackTodayWidget"
             case .userDefaultsSiteIdKey:
                 return "JetpackHomeWidgetsSiteId"
             case .userDefaultsLoggedInKey:
@@ -254,19 +212,6 @@ private extension SharedDataIssueSolver {
 
 private extension SharedDataIssueSolver {
 
-    func copyShareExtensionKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPShareExtensionConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPShareExtensionConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPShareExtensionConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPShareExtensionConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
     func copyShareExtensionUserDefaults() {
         let userDefaultKeys: [WPShareExtensionConstants] = [
             .userDefaultsPrimarySiteName,
@@ -284,9 +229,6 @@ private extension SharedDataIssueSolver {
     ///
     enum WPShareExtensionConstants: String, MigratableConstant {
 
-        case keychainUsernameKey = "Username"
-        case keychainTokenKey = "OAuth2Token"
-        case keychainServiceName = "ShareExtension"
         case userDefaultsPrimarySiteName = "WPShareUserDefaultsPrimarySiteName"
         case userDefaultsPrimarySiteID = "WPShareUserDefaultsPrimarySiteID"
         case userDefaultsLastUsedSiteName = "WPShareUserDefaultsLastUsedSiteName"
@@ -296,12 +238,6 @@ private extension SharedDataIssueSolver {
 
         var valueForJetpack: String {
             switch self {
-            case .keychainUsernameKey:
-                return "JPUsername"
-            case .keychainTokenKey:
-                return "JPOAuth2Token"
-            case .keychainServiceName:
-                return "JPShareExtension"
             case .userDefaultsPrimarySiteName:
                 return "JPShareUserDefaultsPrimarySiteName"
             case .userDefaultsPrimarySiteID:
@@ -314,47 +250,6 @@ private extension SharedDataIssueSolver {
                 return "JPShareExtensionMaximumMediaDimensionKey"
             case .recentSitesKey:
                 return "JPShareExtensionRecentSitesKey"
-            }
-        }
-    }
-}
-
-// MARK: - Notifications Extension Helpers
-
-private extension SharedDataIssueSolver {
-
-    func copyNotificationExtensionKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPNotificationsExtensionConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPNotificationsExtensionConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPNotificationsExtensionConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPNotificationsExtensionConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
-    /// Keys relevant for migration, copied from ExtensionConfiguration.
-    ///
-    enum WPNotificationsExtensionConstants: String {
-
-        case keychainServiceName = "NotificationServiceExtension"
-        case keychainTokenKey = "OAuth2Token"
-        case keychainUsernameKey = "Username"
-        case keychainUserIDKey = "UserID"
-
-        var valueForJetpack: String {
-            switch self {
-            case .keychainServiceName:
-                return "JPNotificationServiceExtension"
-            case .keychainTokenKey:
-                return "JPOAuth2Token"
-            case .keychainUsernameKey:
-                return "JPUsername"
-            case .keychainUserIDKey:
-                return "JPUserID"
             }
         }
     }
