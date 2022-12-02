@@ -116,7 +116,7 @@ private extension JetpackWindowManager {
         guard
             case .dataNotReadyToImport = error,
             isCompatibleWordPressAppPresent,
-            let schemeUrl = URL(string: AppScheme.wordpressMigrationV1.rawValue)
+            let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
         else {
             showSignInUI()
             return
