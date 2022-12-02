@@ -3413,6 +3413,8 @@
 		F49B9A032939373E000CEFCE /* MigratableStateTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A022939373E000CEFCE /* MigratableStateTracker.swift */; };
 		F49B9A06293A21BF000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
 		F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */; };
+		F49B9A09293A3243000CEFCE /* MigrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */; };
+		F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
@@ -20271,6 +20273,7 @@
 				D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */,
 				7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */,
 				7E504D4A21A5B8D400E341A8 /* PostEditorNavigationBarManager.swift in Sources */,
+				F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
 				73CB13972289BEFB00265F49 /* Charts+LargeValueFormatter.swift in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */,
@@ -20333,6 +20336,7 @@
 				C7AFF87C283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */,
 				436D55DB210F862A00CEAA33 /* NibReusable.swift in Sources */,
+				F49B9A09293A3243000CEFCE /* MigrationEvent.swift in Sources */,
 				98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */,
 				82FC61241FA8ADAD00A1757E /* ActivityTableViewCell.swift in Sources */,
 				435D101A2130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift in Sources */,
