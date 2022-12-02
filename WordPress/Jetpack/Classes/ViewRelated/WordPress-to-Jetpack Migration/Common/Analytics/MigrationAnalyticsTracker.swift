@@ -47,4 +47,3 @@ struct MigrationAnalyticsTracker {
 
     typealias Properties = [String: String]
 }
-

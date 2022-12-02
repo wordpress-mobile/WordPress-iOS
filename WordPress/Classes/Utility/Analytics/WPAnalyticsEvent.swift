@@ -1123,7 +1123,7 @@ import Foundation
             return "remove_site_creation_overlay_button_tapped"
         case .jetpackSiteCreationOverlayDismissed:
             return "remove_site_creation_overlay_dismissed"
-            
+
         } // END OF SWITCH
     }
 
