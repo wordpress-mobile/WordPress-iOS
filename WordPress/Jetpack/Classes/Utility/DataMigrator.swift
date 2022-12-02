@@ -9,14 +9,6 @@ enum DataMigrationError: Error {
 }
 
 final class DataMigrator {
-
-    /// `DefaultsWrapper` is used to single out a dictionary for the migration process.
-    /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
-    private struct DefaultsWrapper {
-        static let dictKey = "defaults_staging_dictionary"
-        let defaultsDict: [String: Any]
-    }
-
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
     private let keychainUtils: KeychainUtils
@@ -34,6 +26,16 @@ final class DataMigrator {
         self.localDefaults = localDefaults
         self.sharedDefaults = sharedDefaults
     }
+
+    /// Convenience variable to check whether the export data is ready to be imported.
+    private(set) var isDataReadyToMigrate: Bool {
+        get {
+            sharedDefaults?.bool(forKey: .dataReadyToMigrateKey) ?? false
+        }
+        set {
+            sharedDefaults?.set(newValue, forKey: .dataReadyToMigrateKey)
+        }
+    }
 }
 
 // MARK: - Content Data Migrating
@@ -50,6 +52,9 @@ extension DataMigrator: ContentDataMigrating {
             return
         }
         BloggingRemindersScheduler.handleRemindersMigration()
+
+        isDataReadyToMigrate = true
+
         completion?(.success(()))
     }
 
@@ -58,6 +63,14 @@ extension DataMigrator: ContentDataMigrating {
             completion?(.failure(.databaseCopyError))
             return
         }
+
+        /// Upon successful database restoration, the backup files in the App Group will be deleted.
+        /// This means that the exported data is no longer complete when the user attempts another migration.
+        ///
+        /// After the database is copied, let's mark the data as no longer ready to migrate
+        /// to prevent the user from entering a faulty migration.
+        isDataReadyToMigrate = false
+
         guard populateFromSharedDefaults() else {
             completion?(.failure(.sharedUserDefaultsNil))
             return
@@ -74,6 +87,12 @@ extension DataMigrator: ContentDataMigrating {
 // MARK: - Private Functions
 
 private extension DataMigrator {
+    /// `DefaultsWrapper` is used to single out a dictionary for the migration process.
+    /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
+    struct DefaultsWrapper {
+        static let dictKey = "defaults_staging_dictionary"
+        let defaultsDict: [String: Any]
+    }
 
     func copyDatabase(to destination: URL) -> Bool {
         do {
@@ -121,4 +140,8 @@ private extension DataMigrator {
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
         return true
     }
+}
+
+private extension String {
+    static let dataReadyToMigrateKey = "wp_data_migration_ready"
 }
