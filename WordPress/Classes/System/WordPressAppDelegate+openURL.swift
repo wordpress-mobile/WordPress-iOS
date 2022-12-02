@@ -21,6 +21,13 @@ import AutomatticTracks
         }
 
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
+            let migrationRouter = UniversalLinkRouter(routes: [WordPressExportRoute()])
+
+            if migrationRouter.canHandle(url: url) {
+                migrationRouter.handle(url: url)
+                return true
+            }
+
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }
 
