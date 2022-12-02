@@ -5,6 +5,9 @@ class JetpackWindowManager: WindowManager {
     /// receives migration flow updates in order to dismiss it when needed.
     private var cancellable: AnyCancellable?
 
+    /// Migration events tracking
+    private let migrationTacker = MigrationAnalyticsTracker()
+
     var shouldImportMigrationData: Bool {
         return !AccountHelper.isLoggedIn && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
@@ -18,17 +21,17 @@ class JetpackWindowManager: WindowManager {
 
         guard AccountHelper.isLoggedIn else {
             shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
+            self.migrationTacker.trackContentImportEligibility(eligible: shouldImportMigrationData)
             return
         }
+
         // If the user doesn't have any blogs, but they're still logged in, log them out
         // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
         AccountHelper.logOutDefaultWordPressComAccount()
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
-        /// Track if the WordPress installation was a migratable version
-        let wpInstallationState = MigrationAppDetection.getWordPressInstallationState()
-        MigratableStateTracker().track(wpInstallationState)
+        self.migrationTacker.trackWordPressMigrationEligibility()
 
         DataMigrator().importData() { [weak self] result in
             guard let self else {
@@ -37,12 +40,14 @@ class JetpackWindowManager: WindowManager {
 
             switch result {
             case .success:
+                self.migrationTacker.trackContentImportSucceeded()
                 UserPersistentStoreFactory.instance().isJPContentImportComplete = true
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
             case .failure(let error):
                 self.handleMigrationFailure(error)
+                self.migrationTacker.trackContentImportFailed(reason: error.localizedDescription)
             }
         }
     }

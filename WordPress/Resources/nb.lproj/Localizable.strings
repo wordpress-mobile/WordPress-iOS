@@ -745,8 +745,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Tilbake";
 
 /* Title for the Background Color section */
@@ -1499,9 +1498,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Lag nettstedsikon";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Lag ditt eget, tilpassede kontrollpanel og og velg hvilke rapporter du vil se. Fokuser på de data du bryr deg mest om.";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Lag ditt nettsted";
 
@@ -1550,9 +1546,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "Tilpass dine innstillinger for fulgte sider for nye innlegg og kommentarer";
-
-/* Customize Insights title */
-"Customize your insights" = "Tilpass dine innsikter";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpass sideinnstillinger for liker, kommentarer, følgere og mer.";
@@ -1732,15 +1725,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "Ignorer";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -1972,9 +1957,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Slå på nettstedstatistikk";
 
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "Skru på deling av innlegg";
-
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Aktivere sidevarslinger?";
 
@@ -2181,9 +2163,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Fremhevet bilde";
-
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Valg for fremhevet innlegg";
 
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Fremhevet bilde ble ikke lastet";
@@ -3131,8 +3110,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Mer";
 
 /* Action button to display more available options
@@ -3141,9 +3119,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "Flere innlegg";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "Mer fra %1$@";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Mest populære tidspunkt";
@@ -3252,8 +3227,7 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Trenger oppdatering";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nye";
 
 /* Blocklist Keyword Insertion Title */
@@ -3625,7 +3599,7 @@ translators: Block name. %s: The localized block name */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Åpne full medievelger";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Åpne i Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -4317,9 +4291,7 @@ translators: Block name. %s: The localized block name */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Slett";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -4464,7 +4436,6 @@ translators: Block name. %s: The localized block name */
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Prøv igjen";
 
@@ -5304,9 +5275,6 @@ translators: Block name. %s: The localized block name */
    Accessibility hint to customize insights */
 "Tap to customize insights" = "Trykk for å tilpasse innsikter";
 
-/* Accessibility hint */
-"Tap to dismiss this card" = "Trykk for å avvise dette kortet";
-
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Trykk for å skrive inn en egendefinert verdi";
 
@@ -5803,16 +5771,14 @@ translators: Block name. %s: The localized block name */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Prøv igjen";
 
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -6522,9 +6488,6 @@ translators: Block name. %s: The localized block name */
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oisann, noe gikk galt og vi klarte ikke å logge det deg på. Vennligst prøv igjen!";
 
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Oops, noe gikk galt under deling. Du kan prøve igjen, kanskje det var en svikt.";
-
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oida, det var ikke en gyldig 2-trinnsautentiseringskode. Dobbeltsjekk koden din, og prøv igjen!";
 
@@ -6588,7 +6551,8 @@ translators: Block name. %s: The localized block name */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "WordPress.com-konto";
 
 /* Title for the Plans list header */

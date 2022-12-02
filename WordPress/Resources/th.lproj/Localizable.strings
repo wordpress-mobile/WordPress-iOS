@@ -163,8 +163,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "กลับไป";
 
 /* Text for related post cell preview */
@@ -477,15 +476,7 @@
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
@@ -929,8 +920,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "เพิ่มเติม";
 
 /* Label for a button that moves a page to the draft folder
@@ -1093,7 +1083,7 @@
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "การตั้งค่าแบบเปิด";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "เปิดในซาฟารี";
 
 /* WordPress.com Research Footer Text */
@@ -1353,9 +1343,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "ลบ";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1422,7 +1410,6 @@
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "ลองใหม่";
 
@@ -2090,7 +2077,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "บัญชี WordPress.com";
 
 /* WordPress.com Notification Settings Title */

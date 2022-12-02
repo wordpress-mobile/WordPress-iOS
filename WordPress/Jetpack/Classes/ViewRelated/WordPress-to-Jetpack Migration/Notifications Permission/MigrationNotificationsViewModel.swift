@@ -4,21 +4,25 @@ class MigrationNotificationsViewModel {
 
     let configuration: MigrationStepConfiguration
 
-    init(coordinator: MigrationFlowCoordinator) {
-
+    init(coordinator: MigrationFlowCoordinator, tracker: MigrationAnalyticsTracker = .init()) {
         let headerConfiguration = MigrationHeaderConfiguration(step: .notifications)
-
         let centerViewConfigurartion = MigrationCenterViewConfiguration(step: .notifications)
 
-        let actionsConfiguration = MigrationActionsViewConfiguration(step: .notifications,
-                                                                     primaryHandler: {
+        let primaryHandler = { [weak coordinator] in
+            tracker.track(.notificationsScreenContinueTapped)
             InteractiveNotificationsManager.shared.requestAuthorization { [weak coordinator] authorized in
                 coordinator?.transitionToNextStep()
+                let event: MigrationEvent = authorized ? .notificationsScreenPermissionGranted : .notificationsScreenPermissionDenied
+                tracker.track(event)
             }
-        },
-                                                                     secondaryHandler: { [weak coordinator] in
+        }
+        let secondaryHandler = { [weak coordinator] in
+            tracker.track(.notificationsScreenDecideLaterButtonTapped)
             coordinator?.transitionToNextStep()
-        })
+        }
+        let actionsConfiguration = MigrationActionsViewConfiguration(step: .notifications,
+                                                                     primaryHandler: primaryHandler,
+                                                                     secondaryHandler: secondaryHandler)
 
         configuration = MigrationStepConfiguration(headerConfiguration: headerConfiguration,
                                                    centerViewConfiguration: centerViewConfigurartion,

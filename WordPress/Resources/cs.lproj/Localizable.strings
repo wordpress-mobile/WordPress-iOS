@@ -364,9 +364,6 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Značka s názvem '%@' již existuje.";
 
-/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "Tip, jak rozšířit své publikum";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Přidat název pro tento web";
 
@@ -966,9 +963,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Automaticky sdílejte nové příspěvky se svými účty sociálních médií.";
 
-/* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Automaticky sdílejte nové příspěvky na svých sociálních médiích a začněte přivádět toto publikum na váš web.";
-
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automatická rodina";
 
@@ -996,8 +990,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Zpět";
 
 /* Title for the Background Color section */
@@ -1737,14 +1730,8 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "Připojit k jinému účtu";
 
-/* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Připojte více sítí";
-
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Automaticky připojit ke sdílení příspěvků na blogu %@";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"Connect with other bloggers by following, liking and commenting on their posts." = "Spojte se s ostatními blogery sledováním, lajkováním a komentováním jejich příspěvků.";
 
 /* No comment provided by engineer. */
 "Connect your favorite social media services to automatically share new posts with friends." = "Připojte své oblíbené sociální služby, aby automaticky sdílet nová příspěvky s přáteli.";
@@ -2054,9 +2041,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the card prompting the user to create a new post. */
 "Create your next post" = "Vytvořte svůj další příspěvek";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Vytvořte si vlastní přizpůsobený řídicí panel a vyberte, jaké přehledy chcete zobrazit. Zaměřte se na data, na kterých vám nejvíce záleží.";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Vytvořit stránku";
 
@@ -2141,9 +2125,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "Přizpůsobte si nastavení sledovaného webu pro nové příspěvky a komentáře";
-
-/* Customize Insights title */
-"Customize your insights" = "Přizpůsobte si své postřehy";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Přizpůsobte si nastavení pro To se mi líbí, Komentáře, Sledování a další.";
@@ -2336,9 +2317,6 @@ translators: Block name. %s: The localized block name */
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Objevujte a sledujte své oblíbené blogy";
 
-/* Title for button that will open up the follow topics screen. */
-"Discover blogs to follow" = "Objevte blogy, které chcete sledovat";
-
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Objevte další témata";
 
@@ -2350,15 +2328,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "Skrýt";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2374,9 +2344,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Zobrazované jméno";
-
-/* Title for button that will open up the follow topics screen. */
-"Do it again" = "Udělej to znova";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
 "Document, %@" = "Dokument, %@";
@@ -2624,9 +2591,6 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Upravujte nové příspěvky a stránky pomocí editoru bloků.";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Upravit připomenutí";
-
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Upravit tlačítka pro sdílení";
 
@@ -2744,9 +2708,6 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Povolit oznámení v aplikaci";
-
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "Povolit sdílení příspěvků";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Povolit oznámení na webu?";
@@ -3050,9 +3011,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Náhledový obrázek";
-
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Vybrané možnosti obrázku";
 
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Doporučené obrázky nenačetl";
@@ -3362,8 +3320,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google registrace se nezdařila.";
 
-/* Button title for the follow conversations tooltip.
-   Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "Rozumím";
 
@@ -3890,14 +3847,8 @@ translators: Block name. %s: The localized block name */
    Goes back to editing the post. */
 "Keep Editing" = "Pokračovat v úpravách";
 
-/* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Pokračujte v blogování a vraťte se, abyste viděli návštěvníky přicházející na vaše stránky.";
-
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "Udržujte aktuální";
-
-/* A detailed message to users indicating that they've set up reader discover. */
-"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Pokračuj! Lajkování a komentování je dobrý způsob, jak budovat síť. Přejděte na Reader a vyhledejte další příspěvky.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Mějte aktuální informace o výkonu svého webu.";
@@ -4407,8 +4358,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Více";
 
 /* Action button to display more available options
@@ -4417,12 +4367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "Další příspěvky";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "Více na %1$@";
-
-/* Section title for global related posts. */
-"More on WordPress.com" = "Více informací o WordPress.com";
 
 /* No comment provided by engineer. */
 "More support options" = "Více možností podpory";
@@ -4577,8 +4521,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "Nikdy nevyprší";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nový";
 
 /* Blocklist Keyword Insertion Title */
@@ -5059,7 +5002,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Otevřít úplný výběr médií";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Otevřít v Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -5544,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Aktivita publikování";
 
-/* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "Pravidelné zveřejňování může pomoci vybudovat publikum. Připomenutí vám pomohou udržet si přehled.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Pravidelné zveřejňování pomáhá budovat vaše publikum!";
 
@@ -5888,9 +5828,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Odstranit";
 
 /* Remove Person Alert Title
@@ -6106,7 +6044,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Opakovat";
 
@@ -6535,9 +6472,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Nastavte Jetpack";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Nastavte si připomenutí blogů";
-
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Nastavte připomenutí blogů na dny, které chcete zveřejnit.";
 
@@ -6612,9 +6546,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Chyba sdílení";
-
-/* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Sdílení je nastaveno!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Zobrazit hlavičku";
@@ -7159,9 +7090,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint
    Accessibility hint to customize insights */
 "Tap to customize insights" = "Klepnutím upravíte statistiky";
-
-/* Accessibility hint */
-"Tap to dismiss this card" = "Klepnutím tuto kartu zavřete";
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "Klepnutím zobrazíte webovou stránku odkazujícího zdroje.";
@@ -7836,16 +7764,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Zkus to znovu";
 
 /* No comment provided by engineer. */
 "Try another search term" = "Zkuste vyhledat jiný výraz";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "Zkuste to teď";
 
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
@@ -8388,9 +8314,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "Zobrazit další výzvy";
 
-/* Description for view count. Singular. */
-"View to your site so far" = "Zobrazit zatím svůj web";
-
 /* Title of a Quick Start Tour */
 "View your site" = "Zobrazit stránku";
 
@@ -8409,9 +8332,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Zobrazení";
-
-/* Description for view count. Singular. */
-"Views to your site so far" = "Dosavadní zobrazení vašeho webu";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8827,17 +8747,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Když na svém webu provedete změny, uvidíte zde svoji historii aktivit.";
 
-/* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "Když publikujete svůj další příspěvek, bude automaticky sdílen do vašich připojených sítí.";
-
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Kterou verzi chcete upravit?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Jejda, něco se pokazilo a nemohli jsme vás přihlásit. Zkuste to prosím znovu!";
-
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Jejda, při sdílení se něco pokazilo. Můžete to zkusit znovu, možná to byla závada.";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Jejda, nejde o platný dvoufaktorový ověřovací kód. Zkontrolujte svůj kód a zkuste to znovu!";
@@ -8923,7 +8837,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "WordPress.com Účet";
 
 /* Title for the Plans list header */
@@ -9145,9 +9060,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že jste nainstalovali mobilní plugin DudaMobile. Ten zabraňuje aplikaci propojit se s vaší webovou stránkou. ";
 
-/* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "Nastavíte připomenutí blogů";
-
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Zabezpečení problém byste neměli ignorovat, pokud si nejste zcela jisti, že je neškodný. Pokud se rozhodnete tuto hrozbu ignorovat, zůstane na vašem webu „%1$@“.";
 
@@ -9165,9 +9077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nemáte oprávnění k uzavření účtu.";
-
-/* A hint to users that they've set up reader discover. */
-"You've connected with other blogs" = "Připojili jste se k jiným blogům";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "V tomto příspěvku jste provedli neuložené změny";

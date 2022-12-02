@@ -3,10 +3,18 @@ protocol ContentDataMigrating {
     func importData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
 }
 
-enum DataMigrationError: Error {
+enum DataMigrationError: LocalizedError {
     case databaseCopyError
     case sharedUserDefaultsNil
     case dataNotReadyToImport
+
+    var errorDescription: String? {
+        switch self {
+        case .databaseCopyError: return "The database couldn't be copied from shared directory"
+        case .sharedUserDefaultsNil: return "Shared user defaults not found"
+        case .dataNotReadyToImport: return "The data wasn't ready to import"
+        }
+    }
 }
 
 final class DataMigrator {
