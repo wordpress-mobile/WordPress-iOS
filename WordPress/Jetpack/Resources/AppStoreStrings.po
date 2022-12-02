@@ -81,9 +81,11 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v21.2-whats-new"
+msgctxt "v21.3-whats-new"
 msgid ""
-"We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.\n"
+"We fixed a small visual issue with the Home and Menu control in the My Site dashboard.\n"
+"\n"
+"We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

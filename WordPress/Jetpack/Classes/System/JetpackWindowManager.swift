@@ -49,7 +49,7 @@ class JetpackWindowManager: WindowManager {
             case .success:
                 self.migrationTacker.trackContentImportSucceeded()
                 UserPersistentStoreFactory.instance().isJPContentImportComplete = true
-                NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+                NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUIIfNeeded(blog)
                 self.sendMigrationEmail()
             case .failure(let error):

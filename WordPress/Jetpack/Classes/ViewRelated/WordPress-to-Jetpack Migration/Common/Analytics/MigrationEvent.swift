@@ -40,6 +40,7 @@ enum MigrationEvent: String {
     case pleaseDeleteWordPressScreenShown = "migration_please_delete_wordpress_screen_shown"
     case pleaseDeleteWordPressScreenGotItTapped = "migration_please_delete_wordpress_screen_gotit_tapped"
     case pleaseDeleteWordPressScreenHelpTapped = "migration_please_delete_wordpress_screen_help_tapped"
+    case pleaseDeleteWordPressScreenCloseTapped = "migration_please_delete_wordpress_screen_close_tapped"
 
     // WordPress Migratable Stat
     case wordPressDetected = "migration_wordpressapp_detected"
