@@ -88,13 +88,37 @@ private extension JetpackWindowManager {
     }
 
     func handleMigrationFailure(_ error: DataMigrationError) {
-        guard case .dataNotReadyToImport = error,
-              isCompatibleWordPressAppPresent else {
+        guard
+            case .dataNotReadyToImport = error,
+            isCompatibleWordPressAppPresent,
+            let schemeUrl = URL(string: AppScheme.wordpressMigrationV1.rawValue)
+        else {
             showSignInUI()
             return
         }
 
-        // TODO: Show UI that provides WP pre-flight action.
+        let wpInstallationState = MigrationAppDetection.getWordPressInstallationState()
+        MigratableStateTracker().track(wpInstallationState)
 
+        /// The WordPress pre-flight process hasn't ran, but WordPress is installed.
+        /// Note: We don't know if the user has ever logged into WordPress at this point, only
+        /// that they have a version compatible with migrating.
+        let actions = MigrationLoadWordPressViewModel.Actions()
+        let loadWordPressViewModel = MigrationLoadWordPressViewModel(actions: actions)
+        let loadWordPressViewController = MigrationLoadWordPressViewController(viewModel: loadWordPressViewModel)
+        actions.primary = {
+            UIApplication.shared.open(schemeUrl) { [weak self] _ in
+                loadWordPressViewController.dismiss(animated: true) {
+                    self?.showSignInUI()
+                }
+            }
+        }
+        actions.secondary = { [weak self] in
+            loadWordPressViewController.dismiss(animated: true) {
+                self?.showSignInUI()
+            }
+        }
+        self.show(loadWordPressViewController)
+        return
     }
 }
