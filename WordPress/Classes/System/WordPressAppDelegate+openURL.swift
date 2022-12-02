@@ -20,6 +20,15 @@ import AutomatticTracks
             return true
         }
 
+        /// WordPress only. Handle deeplink from JP that requests data export.
+        let wordPressExportRouter = MigrationDeepLinkRouter(urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
+                                                            routes: [WordPressExportRoute()])
+        if AppConfiguration.isWordPress,
+           wordPressExportRouter.canHandle(url: url) {
+            wordPressExportRouter.handle(url: url)
+            return true
+        }
+
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
         }

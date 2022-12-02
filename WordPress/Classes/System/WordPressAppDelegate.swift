@@ -197,12 +197,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-        #if JETPACK
+#if JETPACK
+        // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager,
            windowManager.shouldImportMigrationData {
-            windowManager.importAndShowMigrationContent(nil, failureCompletion: nil)
+            windowManager.importAndShowMigrationContent()
         }
-        #endif
+#endif
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

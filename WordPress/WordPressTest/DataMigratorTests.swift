@@ -40,6 +40,7 @@ class DataMigratorTests: XCTestCase {
 
         // Then
         XCTAssertTrue(successful)
+        XCTAssertTrue(sharedUserDefaults.bool(forKey: Constants.readyToMigrateKey))
     }
 
     func testUserDefaultsCopiesToSharedOnExport() {
@@ -71,6 +72,24 @@ class DataMigratorTests: XCTestCase {
 
         // Then
         XCTAssertEqual(migratorError, .sharedUserDefaultsNil)
+    }
+
+    func test_importData_givenDataIsNotExported_shouldFail() {
+        // wp_data_migration_ready should be false by default, which should cause `importData` to exit early.
+
+        // When
+        let expect = expectation(description: "Import Data should fail")
+        migrator.importData { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            // Then
+            XCTAssertEqual(error, DataMigrationError.dataNotReadyToImport)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1)
     }
 
 }
@@ -136,6 +155,10 @@ private final class KeychainUtilsMock: KeychainUtils {
 // MARK: - Helpers
 
 private extension DataMigratorTests {
+
+    enum Constants {
+        static let readyToMigrateKey = "wp_data_migration_ready"
+    }
 
     func createInMemoryContext() throws -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
