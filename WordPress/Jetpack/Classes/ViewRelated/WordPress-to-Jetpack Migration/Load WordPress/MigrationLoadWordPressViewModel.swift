@@ -36,7 +36,7 @@ final class MigrationLoadWordPressViewModel {
         )
         static let description = NSLocalizedString(
             "migration.loadWordpress.description",
-            value: "It looks like you're switching from the WordPress app.\n\nOpen WordPress to start transferring your settings, or tap skip to log in to Jetpack.",
+            value: "It looks like you have the WordPress app installed.\n\nWould you like to transfer your data from the WordPress app and sign in automatically?",
             comment: "The description in the Load WordPress screen"
         )
         static let primaryAction = NSLocalizedString(
@@ -46,7 +46,7 @@ final class MigrationLoadWordPressViewModel {
         )
         static let secondaryAction = NSLocalizedString(
             "migration.loadWordpress.secondaryButton",
-            value: "Skip",
+            value: "No thanks",
             comment: "The secondary button title in the Load WordPress screen"
         )
     }
