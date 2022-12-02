@@ -22,6 +22,14 @@ final class MigrationWelcomeViewController: UIViewController {
     private lazy var bottomSheet: MigrationActionsView = {
         let actionsView = MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration)
         actionsView.translatesAutoresizingMaskIntoConstraints = false
+        actionsView.primaryHandler = { [weak self] configuration in
+            self?.tracker.track(.welcomeScreenContinueTapped)
+            configuration.primaryHandler?()
+        }
+        actionsView.secondaryHandler = { [weak self] configuration in
+            self?.tracker.track(.welcomeScreenHelpButtonTapped)
+            configuration.secondaryHandler?()
+        }
         return actionsView
     }()
 
