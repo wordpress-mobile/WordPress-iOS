@@ -25,7 +25,6 @@ class MigrationLoadWordPressViewController: UIViewController {
             actionsView: MigrationActionsView(configuration: viewModel.actions),
             centerView: UIView()
         )
-        migrationView.additionalContentInset.top = 30
         self.view = migrationView
     }
 
