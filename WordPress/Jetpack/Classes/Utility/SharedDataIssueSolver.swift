@@ -58,13 +58,11 @@ final class SharedDataIssueSolver: NSObject {
     func migrateExtensionsKeychainData() {
         copyTodayWidgetKeychain()
         copyShareExtensionKeychain()
-        copyNotificationExtensionKeychain()
     }
 
     func migrateExtensionsData() {
         copyTodayWidgetDataToJetpack()
         copyShareExtensionDataToJetpack()
-        copyNotificationsExtensionDataToJetpack()
     }
 
     /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
@@ -88,14 +86,6 @@ final class SharedDataIssueSolver: NSObject {
     func copyShareExtensionDataToJetpack() {
         copyShareExtensionKeychain()
         copyShareExtensionUserDefaults()
-    }
-
-    /// Copies WP's Notifications extension data (in Keychain) into JP.
-    ///
-    /// Note: This method is not private for unit testing purposes.
-    /// It requires time to properly mock the dependencies in `importData`.
-    func copyNotificationsExtensionDataToJetpack() {
-        copyNotificationExtensionKeychain()
     }
 
     private func copySharedDefaults(_ keys: [MigratableConstant]) {
@@ -314,47 +304,6 @@ private extension SharedDataIssueSolver {
                 return "JPShareExtensionMaximumMediaDimensionKey"
             case .recentSitesKey:
                 return "JPShareExtensionRecentSitesKey"
-            }
-        }
-    }
-}
-
-// MARK: - Notifications Extension Helpers
-
-private extension SharedDataIssueSolver {
-
-    func copyNotificationExtensionKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPNotificationsExtensionConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPNotificationsExtensionConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPNotificationsExtensionConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPNotificationsExtensionConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
-    /// Keys relevant for migration, copied from ExtensionConfiguration.
-    ///
-    enum WPNotificationsExtensionConstants: String {
-
-        case keychainServiceName = "NotificationServiceExtension"
-        case keychainTokenKey = "OAuth2Token"
-        case keychainUsernameKey = "Username"
-        case keychainUserIDKey = "UserID"
-
-        var valueForJetpack: String {
-            switch self {
-            case .keychainServiceName:
-                return "JPNotificationServiceExtension"
-            case .keychainTokenKey:
-                return "JPOAuth2Token"
-            case .keychainUsernameKey:
-                return "JPUsername"
-            case .keychainUserIDKey:
-                return "JPUserID"
             }
         }
     }
