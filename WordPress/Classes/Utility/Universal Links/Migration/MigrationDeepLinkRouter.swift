@@ -1,5 +1,5 @@
 /// A router that specifically handles deeplinks.
-/// Note that the capability of this router is very limited; it can only handles up to one path component (e.g.: `wordpress://intent`).
+/// Note that the capability of this router is very limited; it can only handle up to one path component (e.g.: `wordpress://intent`).
 ///
 /// This is meant to be used during the WP->JP migratory period. Once we decide to move on from this phase, this class may be removed.
 ///
