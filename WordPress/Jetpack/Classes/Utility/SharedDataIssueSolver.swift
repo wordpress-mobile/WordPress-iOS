@@ -58,11 +58,7 @@ final class SharedDataIssueSolver: NSObject {
         copyShareExtensionDataToJetpack()
     }
 
-    /// Copies WP's Today Widget data (in Keychain and User Defaults) into JP.
-    ///
-    /// Both WP and JP's extensions are already reading and storing data in the same location, but in case of Today Widget,
-    /// the keys used for Keychain and User Defaults are differentiated to prevent one app overwriting the other.
-    ///
+    /// Copies WP's Today Widget data (in User Defaults and local files) into JP.
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
     ///
@@ -71,7 +67,7 @@ final class SharedDataIssueSolver: NSObject {
         copyTodayWidgetCacheFiles()
     }
 
-    /// Copies WP's Share extension data (in Keychain and User Defaults) into JP.
+    /// Copies WP's Share extension data (in User Defaults) into JP.
     ///
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
