@@ -3411,6 +3411,8 @@
 		F49B9A0029393049000CEFCE /* MigrationAppDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A5ADB2935848F00961E3A /* MigrationAppDetection.swift */; };
 		F49B9A0129393097000CEFCE /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
 		F49B9A032939373E000CEFCE /* MigratableStateTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A022939373E000CEFCE /* MigratableStateTracker.swift */; };
+		F49B9A06293A21BF000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
+		F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */; };
 		F4BECD1B288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4BECD1C288EE5220078391A /* SuggestionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
@@ -8571,6 +8573,8 @@
 		F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAppearance.swift; sourceTree = "<group>"; };
 		F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F49B9A022939373E000CEFCE /* MigratableStateTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigratableStateTracker.swift; sourceTree = "<group>"; };
+		F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAnalyticsTracker.swift; sourceTree = "<group>"; };
+		F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEvent.swift; sourceTree = "<group>"; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
@@ -11024,6 +11028,7 @@
 		3FFDEF7D29177F4200B625CE /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F49B9A04293A21A7000CEFCE /* Analytics */,
 				F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */,
 				3FFDEF8229179CD000B625CE /* MigrationDependencyContainer.swift */,
 				F41BDD772910AFB900B7F2B0 /* Navigation */,
@@ -16580,6 +16585,15 @@
 				F41E4E9128F20801001880C6 /* white-on-pink-icon-app-83.5@2x.png */,
 			);
 			path = "white-on-pink";
+			sourceTree = "<group>";
+		};
+		F49B9A04293A21A7000CEFCE /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */,
+				F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */,
+			);
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		F4D829602930E9DD00038726 /* Delete WordPress */ = {
@@ -23174,6 +23188,7 @@
 				3FD9CB7E28998ADB00CF76DE /* JetpackOverlayView.swift in Sources */,
 				FABB22DD2602FC2C00C8785C /* RevisionsTableViewCell.swift in Sources */,
 				E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
+				F49B9A06293A21BF000CEFCE /* MigrationAnalyticsTracker.swift in Sources */,
 				E62CE58F26B1D14200C9D147 /* AccountService+Cookies.swift in Sources */,
 				FABB22DE2602FC2C00C8785C /* KeyboardInfo.swift in Sources */,
 				FABB22DF2602FC2C00C8785C /* PlanDetailViewModel.swift in Sources */,
@@ -23779,6 +23794,7 @@
 				FABB24BC2602FC2C00C8785C /* RevisionOperationViewController.swift in Sources */,
 				FABB24BD2602FC2C00C8785C /* WPBlogSelectorButton.m in Sources */,
 				FABB24BE2602FC2C00C8785C /* ReaderTabView.swift in Sources */,
+				F49B9A08293A21F4000CEFCE /* MigrationEvent.swift in Sources */,
 				FABB24BF2602FC2C00C8785C /* EpilogueUserInfoCell.swift in Sources */,
 				FABB24C02602FC2C00C8785C /* MenuItemTypeSelectionView.m in Sources */,
 				FABB24C12602FC2C00C8785C /* WordPressAppDelegate+openURL.swift in Sources */,
