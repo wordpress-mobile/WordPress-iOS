@@ -57,7 +57,6 @@ final class SharedDataIssueSolver: NSObject {
 
     func migrateExtensionsKeychainData() {
         copyTodayWidgetKeychain()
-        copyShareExtensionKeychain()
     }
 
     func migrateExtensionsData() {
@@ -84,7 +83,6 @@ final class SharedDataIssueSolver: NSObject {
     /// Note: This method is not private for unit testing purposes.
     /// It requires time to properly mock the dependencies in `importData`.
     func copyShareExtensionDataToJetpack() {
-        copyShareExtensionKeychain()
         copyShareExtensionUserDefaults()
     }
 
@@ -244,19 +242,6 @@ private extension SharedDataIssueSolver {
 
 private extension SharedDataIssueSolver {
 
-    func copyShareExtensionKeychain() {
-        guard let authToken = try? keychainUtils.password(for: WPShareExtensionConstants.keychainTokenKey.rawValue,
-                                                          serviceName: WPShareExtensionConstants.keychainServiceName.rawValue,
-                                                          accessGroup: WPAppKeychainAccessGroup) else {
-            return
-        }
-
-        try? keychainUtils.store(username: WPShareExtensionConstants.keychainTokenKey.valueForJetpack,
-                                 password: authToken,
-                                 serviceName: WPShareExtensionConstants.keychainServiceName.valueForJetpack,
-                                 updateExisting: true)
-    }
-
     func copyShareExtensionUserDefaults() {
         let userDefaultKeys: [WPShareExtensionConstants] = [
             .userDefaultsPrimarySiteName,
@@ -274,9 +259,6 @@ private extension SharedDataIssueSolver {
     ///
     enum WPShareExtensionConstants: String, MigratableConstant {
 
-        case keychainUsernameKey = "Username"
-        case keychainTokenKey = "OAuth2Token"
-        case keychainServiceName = "ShareExtension"
         case userDefaultsPrimarySiteName = "WPShareUserDefaultsPrimarySiteName"
         case userDefaultsPrimarySiteID = "WPShareUserDefaultsPrimarySiteID"
         case userDefaultsLastUsedSiteName = "WPShareUserDefaultsLastUsedSiteName"
@@ -286,12 +268,6 @@ private extension SharedDataIssueSolver {
 
         var valueForJetpack: String {
             switch self {
-            case .keychainUsernameKey:
-                return "JPUsername"
-            case .keychainTokenKey:
-                return "JPOAuth2Token"
-            case .keychainServiceName:
-                return "JPShareExtension"
             case .userDefaultsPrimarySiteName:
                 return "JPShareUserDefaultsPrimarySiteName"
             case .userDefaultsPrimarySiteID:
