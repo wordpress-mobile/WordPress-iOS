@@ -8,6 +8,8 @@ class MigrationNavigationController: UINavigationController {
     private let factory: MigrationViewControllerFactory
     /// Receives state changes to set the navigation stack accordingly
     private var cancellable: AnyCancellable?
+    /// Migration evetns tracker
+    private let migrationTracker = MigrationAnalyticsTracker()
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if let presentedViewController {
@@ -73,8 +75,27 @@ class MigrationNavigationController: UINavigationController {
         guard let viewController = factory.viewController(for: step) else {
             return
         }
+        
         // if we want to support backwards navigation, we need to set
         // also the previous steps in the stack
         setViewControllers([viewController], animated: true)
+
+        // Track step screen shown event
+        self.trackScreenShown(for: step)
+    }
+
+    private func trackScreenShown(for step: MigrationStep) {
+        var event: MigrationEvent?
+
+        switch step {
+        case .welcome: event = .welcomeScreenShown
+        case .done: event = .thanksScreenShown
+        case .notifications: event = .notificationsScreenShown
+        default: break
+        }
+
+        if let event {
+            migrationTracker.track(event)
+        }
     }
 }
