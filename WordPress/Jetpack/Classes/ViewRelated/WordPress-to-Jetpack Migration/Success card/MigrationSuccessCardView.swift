@@ -79,11 +79,25 @@ class MigrationSuccessCardView: UIView {
 // TODO: Remove `shouldShowMigrationSuccessCard` when the migration feature is no longer needed
 extension MigrationSuccessCardView {
 
+    private static var cachedShouldShowMigrationSuccessCard = false
+
     @objc static var shouldShowMigrationSuccessCard: Bool {
-        let isJetpack = AppConfiguration.isJetpack
+        guard AppConfiguration.isJetpack else {
+            return false
+        }
+
         let isFeatureFlagEnabled = FeatureFlag.contentMigration.enabled
         let isWordPressInstalled = MigrationAppDetection.getWordPressInstallationState().isWordPressInstalled
         let isMigrationCompleted = UserPersistentStoreFactory.instance().isJPContentImportComplete
-        return isJetpack && isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
+        let newValue = isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
+
+        if newValue != Self.cachedShouldShowMigrationSuccessCard {
+            let tracker = MigrationAnalyticsTracker()
+            let event: MigrationEvent = newValue ? .pleaseDeleteWordPressCardShown : .pleaseDeleteWordPressCardHidden
+            tracker.track(event)
+            Self.cachedShouldShowMigrationSuccessCard = newValue
+        }
+
+        return newValue
     }
 }

@@ -415,11 +415,6 @@ import Foundation
     case jetpackSiteCreationOverlayButtonTapped
     case jetpackSiteCreationOverlayDismissed
 
-    // WordPress to Jetpack Migration
-    case migrationEmailTriggered
-    case migrationEmailSent
-    case migrationEmailFailed
-
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1128,14 +1123,6 @@ import Foundation
             return "remove_site_creation_overlay_button_tapped"
         case .jetpackSiteCreationOverlayDismissed:
             return "remove_site_creation_overlay_dismissed"
-
-        // WordPress to Jetpack Migration
-        case .migrationEmailTriggered:
-            return "migration_email_triggered"
-        case .migrationEmailSent:
-            return "migration_email_sent"
-        case .migrationEmailFailed:
-            return "migration_email_failed"
 
         } // END OF SWITCH
     }

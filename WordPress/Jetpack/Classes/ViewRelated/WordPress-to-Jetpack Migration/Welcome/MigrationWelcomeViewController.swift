@@ -2,7 +2,9 @@ import UIKit
 
 final class MigrationWelcomeViewController: UIViewController {
 
-    // MARK: - Data
+    // MARK: - Dependencies
+
+    private let tracker: MigrationAnalyticsTracker
 
     private let viewModel: MigrationWelcomeViewModel
 
@@ -20,13 +22,22 @@ final class MigrationWelcomeViewController: UIViewController {
     private lazy var bottomSheet: MigrationActionsView = {
         let actionsView = MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration)
         actionsView.translatesAutoresizingMaskIntoConstraints = false
+        actionsView.primaryHandler = { [weak self] configuration in
+            self?.tracker.track(.welcomeScreenContinueTapped)
+            configuration.primaryHandler?()
+        }
+        actionsView.secondaryHandler = { [weak self] configuration in
+            self?.tracker.track(.welcomeScreenHelpButtonTapped)
+            configuration.secondaryHandler?()
+        }
         return actionsView
     }()
 
     // MARK: - Lifecycle
 
-    init(viewModel: MigrationWelcomeViewModel) {
+    init(viewModel: MigrationWelcomeViewModel, tracker: MigrationAnalyticsTracker = .init()) {
         self.viewModel = viewModel
+        self.tracker = tracker
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,6 +53,11 @@ final class MigrationWelcomeViewController: UIViewController {
         self.setupTableView()
         self.setupBottomSheet()
         self.setupNavigationBar()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tracker.track(.welcomeScreenShown)
     }
 
     override func viewDidLayoutSubviews() {
@@ -66,7 +82,11 @@ final class MigrationWelcomeViewController: UIViewController {
 
     private func setupNavigationBar() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail) { [weak self] () -> Void in
-            self?.viewModel.configuration.actionsConfiguration.secondaryHandler?()
+            guard let self else {
+                return
+            }
+            self.tracker.track(.welcomeScreenAvatarTapped)
+            self.viewModel.configuration.actionsConfiguration.secondaryHandler?()
         }
     }
 

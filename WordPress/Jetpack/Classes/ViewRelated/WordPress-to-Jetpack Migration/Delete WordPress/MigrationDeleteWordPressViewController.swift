@@ -6,10 +6,13 @@ final class MigrationDeleteWordPressViewController: UIViewController {
 
     private let viewModel: MigrationDeleteWordPressViewModel
 
+    private let tracker: MigrationAnalyticsTracker
+
     // MARK: - Init
 
-    init(viewModel: MigrationDeleteWordPressViewModel) {
+    init(viewModel: MigrationDeleteWordPressViewModel, tracker: MigrationAnalyticsTracker = .init()) {
         self.viewModel = viewModel
+        self.tracker = tracker
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -51,6 +54,11 @@ final class MigrationDeleteWordPressViewController: UIViewController {
         self.setupDismissButton()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tracker.track(.pleaseDeleteWordPressScreenShown)
+    }
+
     // MARK: - Setup
 
     private func setupNavigationBar() {
@@ -75,14 +83,17 @@ final class MigrationDeleteWordPressViewController: UIViewController {
     // MARK: - User Interaction
 
     @objc private func closeButtonTapped() {
+        self.tracker.track(.pleaseDeleteWordPressScreenCloseTapped)
         self.dismiss(animated: true)
     }
 
     private func primaryButtonTapped() {
+        self.tracker.track(.pleaseDeleteWordPressScreenGotItTapped)
         self.dismiss(animated: true)
     }
 
     private func secondaryButtonTapped() {
+        self.tracker.track(.pleaseDeleteWordPressScreenHelpTapped)
         let destination = SupportTableViewController()
         self.present(UINavigationController(rootViewController: destination), animated: true)
     }
