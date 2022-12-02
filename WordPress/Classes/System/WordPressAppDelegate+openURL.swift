@@ -20,18 +20,20 @@ import AutomatticTracks
             return true
         }
 
-        /// handle the migration-related deeplink intents.
-        /// `UniversalLinkRouter` requires that it's in a universal link format (https://wordpress.com/<path>),
-        /// so we'll hackily converts the deeplink into an acceptable form.
-        if let migrationScheme = URL(string: AppScheme.wordpressMigrationV1.rawValue)?.scheme,
-           url.scheme == migrationScheme,
-           let path = url.host,
-           let convertedURL = URL(string: "https://wordpress.com/\(path)") {
-            let migrationRouter = UniversalLinkRouter(routes: [WordPressExportRoute()])
-            if migrationRouter.canHandle(url: convertedURL) {
-                migrationRouter.handle(url: convertedURL, shouldTrack: false)
-                return true
-            }
+        /// WordPress only. Handle deeplink from JP that requests data export.
+        let wordPressExportRouter = MigrationDeepLinkRouter(urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
+                                                            routes: [WordPressExportRoute()])
+        if wordPressExportRouter.canHandle(url: url) {
+            wordPressExportRouter.handle(url: url)
+            return true
+        }
+
+        /// Jetpack only. Handle intent from WP that signals that the data is ready for migration.
+        let jetpackMigrationRouter = MigrationDeepLinkRouter(scheme: JetpackNotificationMigrationService.jetpackScheme,
+                                                             routes: [JetpackImportRoute()])
+        if jetpackMigrationRouter.canHandle(url: url) {
+            jetpackMigrationRouter.handle(url: url)
+            return true
         }
 
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
