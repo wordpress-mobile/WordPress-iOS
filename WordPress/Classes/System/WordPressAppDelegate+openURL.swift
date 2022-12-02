@@ -23,7 +23,8 @@ import AutomatticTracks
         /// WordPress only. Handle deeplink from JP that requests data export.
         let wordPressExportRouter = MigrationDeepLinkRouter(urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
                                                             routes: [WordPressExportRoute()])
-        if wordPressExportRouter.canHandle(url: url) {
+        if AppConfiguration.isWordPress,
+           wordPressExportRouter.canHandle(url: url) {
             wordPressExportRouter.handle(url: url)
             return true
         }
@@ -31,7 +32,8 @@ import AutomatticTracks
         /// Jetpack only. Handle intent from WP that signals that the data is ready for migration.
         let jetpackMigrationRouter = MigrationDeepLinkRouter(scheme: JetpackNotificationMigrationService.jetpackScheme,
                                                              routes: [JetpackImportRoute()])
-        if jetpackMigrationRouter.canHandle(url: url) {
+        if AppConfiguration.isJetpack,
+           jetpackMigrationRouter.canHandle(url: url) {
             jetpackMigrationRouter.handle(url: url)
             return true
         }
