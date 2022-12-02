@@ -26,34 +26,6 @@ class SharedDataIssueSolverTests: XCTestCase {
 
     // MARK: Widget Migration Tests
 
-    func test_widgetMigration_keychainShouldMigrateSuccessfully() {
-        // Given
-        let expectedUsername = "OAuth2Token"
-        let expectedPassword = "password"
-        let expectedServiceName = "JetpackTodayWidget"
-        keychainUtils.passwordToReturn = expectedPassword
-
-        // When
-        sharedDataIssueSolver.copyTodayWidgetDataToJetpack()
-
-        // Then
-        XCTAssertNotNil(keychainUtils.storedPassword)
-        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
-        XCTAssertNotNil(keychainUtils.storedUsername)
-        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
-        XCTAssertNotNil(keychainUtils.storedServiceName)
-        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
-        XCTAssertNil(keychainUtils.storedAccessGroup)
-    }
-
-    func test_widgetMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
-        // When
-        sharedDataIssueSolver.copyTodayWidgetDataToJetpack()
-
-        // Then
-        XCTAssertNil(keychainUtils.storedPassword)
-    }
-
     func test_widgetMigration_userDefaultsShouldMigrateSuccessfully() {
         // Given
         sharedUserDefaults.set("test1", forKey: "WordPressHomeWidgetsSiteId")
@@ -115,34 +87,6 @@ class SharedDataIssueSolverTests: XCTestCase {
 
     // MARK: Share Extension Migration Tests
 
-    func test_shareExtensionMigration_keychainShouldMigrateSuccessfully() {
-        // Given
-        let expectedUsername = "JPOAuth2Token"
-        let expectedPassword = "password"
-        let expectedServiceName = "JPShareExtension"
-        keychainUtils.passwordToReturn = expectedPassword
-
-        // When
-        sharedDataIssueSolver.copyShareExtensionDataToJetpack()
-
-        // Then
-        XCTAssertNotNil(keychainUtils.storedPassword)
-        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
-        XCTAssertNotNil(keychainUtils.storedUsername)
-        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
-        XCTAssertNotNil(keychainUtils.storedServiceName)
-        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
-        XCTAssertNil(keychainUtils.storedAccessGroup)
-    }
-
-    func test_shareExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
-        // When
-        sharedDataIssueSolver.copyShareExtensionDataToJetpack()
-
-        // Then
-        XCTAssertNil(keychainUtils.storedPassword)
-    }
-
     func test_shareExtensionMigration_userDefaultsShouldMigrateSuccessfully() {
         // Given
         sharedUserDefaults.set("test1", forKey: "WPShareUserDefaultsPrimarySiteName")
@@ -162,36 +106,6 @@ class SharedDataIssueSolverTests: XCTestCase {
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareUserDefaultsLastUsedSiteID"), "test4")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
-    }
-
-    // MARK: Notifications Extension Migration Tests
-
-    func test_notificationsExtensionMigration_keychainShouldMigrateSuccessfully() {
-        // Given
-        let expectedUsername = "JPOAuth2Token"
-        let expectedPassword = "password"
-        let expectedServiceName = "JPNotificationServiceExtension"
-        keychainUtils.passwordToReturn = expectedPassword
-
-        // When
-        sharedDataIssueSolver.copyNotificationsExtensionDataToJetpack()
-
-        // Then
-        XCTAssertNotNil(keychainUtils.storedPassword)
-        XCTAssertEqual(keychainUtils.storedPassword, expectedPassword)
-        XCTAssertNotNil(keychainUtils.storedUsername)
-        XCTAssertEqual(keychainUtils.storedUsername, expectedUsername)
-        XCTAssertNotNil(keychainUtils.storedServiceName)
-        XCTAssertEqual(keychainUtils.storedServiceName, expectedServiceName)
-        XCTAssertNil(keychainUtils.storedAccessGroup)
-    }
-
-    func test_notificationsExtensionMigration_whenKeychainDoesNotExist_itShouldNotBeCopied() {
-        // When
-        sharedDataIssueSolver.copyNotificationsExtensionDataToJetpack()
-
-        // Then
-        XCTAssertNil(keychainUtils.storedPassword)
     }
 
 }
