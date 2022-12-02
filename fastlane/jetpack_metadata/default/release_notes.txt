@@ -1,1 +1,3 @@
-We fixed the positioning of the “No media matching your search” message in the Media Library. It’s now visible when there are no search results. Keep calm and search on.
+We fixed a small visual issue with the Home and Menu control in the My Site dashboard.
+
+We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.
