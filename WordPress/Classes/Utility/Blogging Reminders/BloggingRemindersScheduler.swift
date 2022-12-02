@@ -160,14 +160,24 @@ class BloggingRemindersScheduler {
 
     private static func copyStoreToSharedFile() {
         guard let store = try? defaultStore(),
-              let fileUrl = try? defaultDataFileURL(),
               let sharedFileUrl = sharedDataFileURL() else {
             return
         }
 
-        // Only copy the file if we have at least one reminder schedule
-        if store.configuration.count > 0 {
-            try? FileManager.default.copyItem(at: fileUrl, to: sharedFileUrl)
+        ContextManager.shared.performAndSave { context in
+            var configuration = [String: ScheduledReminders]()
+            for (blogIdentifier, schedule) in store.configuration {
+                guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogIdentifier),
+                      let blog = context.object(with: objectID) as? Blog,
+                      let url = blog.url else {
+                    continue
+                }
+                configuration[url] = schedule
+            }
+
+            if configuration.count > 0 {
+                try? PropertyListEncoder().encode(configuration).write(to: sharedFileUrl)
+            }
         }
     }
 
@@ -175,15 +185,22 @@ class BloggingRemindersScheduler {
         guard let localStore = try? defaultStore(),
               let sharedFileUrl = sharedDataFileURL(),
               FileManager.default.fileExists(at: sharedFileUrl),
-              let sharedStore = try? BloggingRemindersStore(dataFileURL: sharedFileUrl) else {
+              let data = try? Data(contentsOf: sharedFileUrl),
+              let sharedConfig = try? PropertyListDecoder().decode([String: ScheduledReminders].self, from: data) else {
             return
         }
 
         // Only copy if the existing local store contains no schedules
         if localStore.configuration.count == 0 {
-            for blogIdentifier in sharedStore.configuration.keys {
-                let schedule = sharedStore.scheduledReminders(for: blogIdentifier)
-                try? localStore.save(scheduledReminders: schedule, for: blogIdentifier)
+            ContextManager.shared.performAndSave { context in
+                for (blogUrl, schedule) in sharedConfig {
+                    guard let blog = try? BlogQuery().hostname(matching: blogUrl).blog(in: context) else {
+                        continue
+                    }
+                    let blogIdentifier = blog.objectID.uriRepresentation()
+                    try? localStore.save(scheduledReminders: schedule, for: blogIdentifier)
+                }
+                try? FileManager.default.removeItem(at: sharedFileUrl)
             }
         }
     }
