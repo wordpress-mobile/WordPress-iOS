@@ -628,17 +628,28 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     var currentlySelectedScreen: String {
-        // Check if the post editor or login view is up
-        let rootViewController = window?.rootViewController
-        if let presentedViewController = rootViewController?.presentedViewController {
-            if presentedViewController is EditPostViewController {
-                return "Post Editor"
-            } else if presentedViewController is LoginNavigationController {
-                return "Login View"
-            }
+        guard let rootViewController = window?.rootViewController else {
+            DDLogInfo("\(#function) is called when `rootViewController` is nil.")
+            return String()
         }
 
-        return WPTabBarController.sharedInstance().currentlySelectedScreen()
+        // NOTE: This logic doesn't cover all the scenarios properly yet. If we want to know what screen was actually seen,
+        // there should be a recursive check to get to the visible view controller (or call `UINavigationController`'s `visibleViewController`).
+        //
+        // Read more here: https://github.com/wordpress-mobile/WordPress-iOS/pull/19677#pullrequestreview-1199885009
+        //
+        switch rootViewController.presentedViewController ?? rootViewController {
+        case is EditPostViewController:
+            return "Post Editor"
+        case is LoginNavigationController:
+            return "Login View"
+#if JETPACK
+        case is MigrationNavigationController:
+            return "Jetpack Migration View"
+#endif
+        default:
+            return WPTabBarController.sharedInstance().currentlySelectedScreen()
+        }
     }
 
     var isWelcomeScreenVisible: Bool {
