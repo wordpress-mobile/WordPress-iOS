@@ -14,14 +14,14 @@ struct MigratableStateTracker {
 
     /// Tracks an event representing the WordPress migratable state.
     /// If WordPress is not installed, nothing is tracked.
-    func track() {
-        let installationState = MigrationAppDetection.getWordPressInstallationState()
+    func track(_ installationState: WordPressInstallationState) {
         switch installationState {
         case .wordPressInstalledAndMigratable:
             self.trackMigratable()
         case .wordPressInstalledNotMigratable:
             self.trackNotMigratable()
-        default:
+        case .wordPressNotInstalled:
+            /// Not tracked.
             break
         }
     }
