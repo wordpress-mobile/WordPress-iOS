@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-22 15:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-30 16:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: he_IL */
@@ -394,9 +394,6 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "תגית בשם '%@' כבר קיימת.";
 
-/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "עצה להגדלת הקהל שלך";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "כותרת אתר";
 
@@ -693,6 +690,9 @@ translators: Block name. %s: The localized block name */
 
 /* Settings: Comments Enabled */
 "Allow Comments" = "פתוח לתגובות";
+
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "להפעיל הודעות";
 
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "הפעלת ההרשאה לשליחת הודעות דחיפה על ידי WordPress";
@@ -1020,9 +1020,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "שיתוף אוטומטי של פוסטים חדשים בחשבונות שלך ברשתות החברתיות.";
 
-/* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "ניתן לשתף באופן אוטומטי פוסטים חדשים ברשתות החברתיות כדי להביא עוד קהל לאתר שלך.";
-
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "משפחת Automattic";
 
@@ -1050,8 +1047,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "חזרה";
 
 /* Title for the Background Color section */
@@ -1833,14 +1829,8 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "חיבור חשבון נוסף";
 
-/* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "לחבר רשתות נוספות";
-
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "יש להתחבר כדי לשתף את הפוסטים בבלוג שלך אוטומטית עם %@";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"Connect with other bloggers by following, liking and commenting on their posts." = "כדאי להתחבר עם בלוגרים אחרים באמצעות מעקב אחר הפוסטים שלהם, סימון לייקים והוספת תגובות בפוסטים.";
 
 /* Title of a Quick Start Tour */
 "Connect with other sites" = "להתחבר עם אתרים אחרים";
@@ -2159,9 +2149,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the card prompting the user to create a new post. */
 "Create your next post" = "ליצור את הפוסט הבא שלך";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Create your own customized dashboard and choose what reports to see. Focus on the data you care most about.";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "יצירת האתר שלך";
 
@@ -2246,9 +2233,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "התאמה אישית של הגדרות האתרים שבמעקב אחר פוסטים ותגובות חדשים";
-
-/* Customize Insights title */
-"Customize your insights" = "Customize your insights";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "התאמה אישית של הגדרות האתר שלך עבור לייקים, תגובות, עוקבים ועוד.";
@@ -2444,9 +2428,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "לגלות אתרים שמספקים לך השראה ולעקוב אחריהם.";
 
-/* Title for button that will open up the follow topics screen. */
-"Discover blogs to follow" = "לגלות בלוגים למעקב";
-
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "לגלות נושאים נוספים";
 
@@ -2458,15 +2439,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "בטל";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2482,9 +2455,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "שם תצוגה";
-
-/* Title for button that will open up the follow topics screen. */
-"Do it again" = "לחזור על הפעולה";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
 "Document, %@" = "מסמך, ‎%@";
@@ -2738,9 +2708,6 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "לעריכת פוסטים ועמודים חדשים עם עורך הבלוקים.";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "לערוך תזכורות";
-
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "עריכת כפתורי שיתוף";
 
@@ -2867,9 +2834,6 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "להפעיל הודעות בתוך האפליקציה";
-
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "הפעלת השיתוף של הפוסטים";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "האם להפעיל הודעות אתר?";
@@ -3180,9 +3144,6 @@ translators: Block name. %s: The localized block name */
    Title for the Featured Image view */
 "Featured Image" = "תמונה ראשית";
 
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "אפשרויות לתמונה המרכזית";
-
 /* No comment provided by engineer. */
 "Featured Image did not load" = "התמונה הראשית לא נטענה";
 
@@ -3281,9 +3242,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. An option to follow a site. */
 "Follow site" = "לעקוב אחרי האתר";
-
-/* Title of follow conversations tooltip. */
-"Follow the conversation" = "לעקוב אחר השיחה";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "לעקוב אחר נושאים";
@@ -3438,9 +3396,6 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "לבלוט בשטח: הוספת תגובה על פוסטים שקראת.";
 
-/* Message for the follow conversations tooltip. */
-"Get notified when new comments are added to this post." = "לקבל הודעות כשתגובות חדשות מתווספות לפוסט הזה.";
-
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "לקבל עדכונים בזמן אמת למכשיר הנייד.";
 
@@ -3515,8 +3470,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "ההרשמה ל-Google נכשלה.";
 
-/* Button title for the follow conversations tooltip.
-   Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "הבנתי";
 
@@ -4086,14 +4040,8 @@ translators: Block name. %s: The localized block name */
    Goes back to editing the post. */
 "Keep Editing" = "המשך לערוך";
 
-/* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "כדאי להמשיך לכתוב בבלוג ולבדוק כאן שוב כדי לראות את המבקרים שנכנסים לאתר שלך.";
-
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "לשמור על הנוכחית";
-
-/* A detailed message to users indicating that they've set up reader discover. */
-"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "ההתמדה משתלמת! סימון לייק והוספת תגובות הן פעולות מומלצות להרחבת הרשת שלך. כדאי לעבור ל-Reader כדי למצוא פוסטים נוספים.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "קבלת עדכונים על הביצועים של האתר שלך.";
@@ -4644,8 +4592,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "עוד";
 
 /* Action button to display more available options
@@ -4654,12 +4601,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "פוסטים נוספים";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "תוכן נוסף של %1$@";
-
-/* Section title for global related posts. */
-"More on WordPress.com" = "עוד מ-WordPress.com";
 
 /* No comment provided by engineer. */
 "More support options" = "אפשרויות תמיכה נוספות";
@@ -4814,8 +4755,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "לעולם לא יפוג";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "חדש";
 
 /* Blocklist Keyword Insertion Title */
@@ -5314,7 +5254,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "פתיחה של בוחר המדיה המלא";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "פתח בדפדפן";
 
 /* Label for the description of openening a link using a new window */
@@ -5805,9 +5745,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "פעילות פרסום";
 
-/* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "פרסום באופן קבוע יכול לעזור לך להגדיל את הקהל. התזכורות יעזרו לך לשמור על הקצב.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "פרסום פוסטים באופן קבוע יעזור לך לבנות את הקהל!";
 
@@ -6161,9 +6098,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "מחק";
 
 /* Remove Person Alert Title
@@ -6379,7 +6314,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "נסה שנית";
 
@@ -6832,9 +6766,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "הגדרת Jetpack";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "להגדיר תזכורת לכתיבת בלוג";
-
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "להגדיר את התזכורות שלך לכתוב בלוג בימים שבחרת לפרסם.";
 
@@ -6918,9 +6849,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "שגיאה בשיתוף";
-
-/* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "השיתוף הוגדר!";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "הצגת כותרת";
@@ -7462,9 +7390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "יש להקיש על [bookmark-outline] כדי לשמור את הפוסט ברשימה שלך.";
 
-/* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "יש להקיש על 'ביטול' ולחזור לדפדפן האינטרנט כדי להמשיך.";
-
 /* Accessibility hint */
 "Tap for more detail." = "יש להקיש לפרטים נוספים.";
 
@@ -7486,9 +7411,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint
    Accessibility hint to customize insights */
 "Tap to customize insights" = "Tap to customize insights";
-
-/* Accessibility hint */
-"Tap to dismiss this card" = "Tap to dismiss this card";
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "יש להקיש כדי להציג את אתר האינטרנט של המפנה.";
@@ -8202,16 +8124,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "לנסות שוב";
 
 /* No comment provided by engineer. */
 "Try another search term" = "נסה מונח חיפוש אחר";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "כדאי לנסות עכשיו";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -8243,6 +8163,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "ההודעות של האתר הופעלו";
+
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "הפסקת הפעולה של המתג תשבית את כל סוגי ההודעות באפליקציה.";
 
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "טוויטר";
@@ -8778,9 +8701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "להציג הצעות נוספות";
 
-/* Description for view count. Singular. */
-"View to your site so far" = "צפייה באתר שלך עד כה";
-
 /* Title of a Quick Start Tour */
 "View your site" = "הצגת האתר שלך";
 
@@ -8802,9 +8722,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "צפיות ומבקרים";
-
-/* Description for view count. Singular. */
-"Views to your site so far" = "צפיות באתר שלך עד כה";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -9235,17 +9152,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "בעת ביצוע שינויים באתר שלך, אפשר לראות את היסטוריית הפעילות כאן.";
 
-/* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "כאשר הפוסט הבא שלך יפורסם, הוא ישותף באופן אוטומטי ברשתות המחוברות שלך.";
-
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "איזו גרסה ברצונך לערוך?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "משהו השתבש ולא ניתן לבצע חיבור לחשבון. יש לנסות שוב!";
-
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "אופס, משהו השתבש במהלך השיתוף. ניתן לשנות שוב, ייתכן שזו שגיאה זמנית.";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "הקוד לאימות דו-שלבי אינו תקף. יש לבדוק שוב את הקוד ולנסות שנית!";
@@ -9331,7 +9242,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "חשבון וורדפרס.קום";
 
 /* Title for the Plans list header */
@@ -9565,9 +9477,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "נראה שהתקנת תוסף למכשירים ניידים מ-DudaMobile שמונע מהאפליקציה להתחבר לבלוג שלך";
 
-/* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "הגדרת תזכורת לכתיבת בלוג";
-
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "לא כדאי להתעלם מבעיות אבטחה אלא אם אין לך ספק שהתוכן בטוח. אם ברצונך להתעלם מהאיום הזה, הוא יישאר באתר \"%1$@\".";
 
@@ -9587,14 +9496,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "הכול מעודכן!";
 
-/* Title for the success view when the user has successfully logged in */
-"You're logged in!" = "התחברת בהצלחה לחשבון!";
-
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "אין לך הרשאה לסגור את החשבון הזה.";
-
-/* A hint to users that they've set up reader discover. */
-"You've connected with other blogs" = "התחברת עם בלוגים אחרים";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "ביצעת שינויים שלא נשמרו בפוסט הזה";
@@ -9815,6 +9718,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "חשבונות מקושרים";
 
+/* Customize Insights description */
+"customizeInsightsCell.content" = "ניתן ליצור לוח בקרה מותאם ולבחור אילו דוחות ברצונך להציג. להתמקד במידע שהכי חשוב לך.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "יש להקיש כדי לבטל את הכרטיס";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "ביטול";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "להתאים אישית את התובנות";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "יש להקיש כדי להתאים אישית את התובנות";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "כדאי לנסות עכשיו";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
@@ -9831,6 +9752,63 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "לעקוב";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "להגדיר תזכורת לכתיבת בלוג";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "לערוך תזכורות";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "כדאי להמשיך לכתוב בבלוג ולבדוק כאן שוב כדי לראות את המבקרים שנכנסים לאתר שלך.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "הגדרת תזכורת לכתיבת בלוג";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "פרסום באופן קבוע יכול לעזור לך להגדיל את הקהל. התזכורות יעזרו לך לשמור על הקצב.";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "ביטול";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "לגלות בלוגים למעקב";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "לחזור על הפעולה";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "ההתמדה משתלמת! סימון לייק והוספת תגובות הן פעולות מומלצות להרחבת הרשת שלך. כדאי לעבור ל-Reader כדי למצוא פוסטים נוספים.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "התחברת עם בלוגים אחרים";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "כדאי להתחבר עם בלוגרים אחרים באמצעות מעקב אחר הפוסטים שלהם, סימון לייקים והוספת תגובות בפוסטים.";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "הפעלת השיתוף של הפוסטים";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "לחבר רשתות נוספות";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "כאשר הפוסט הבא שלך יפורסם, הוא ישותף באופן אוטומטי ברשתות המחוברות שלך.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "השיתוף הוגדר!";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "ניתן לשתף באופן אוטומטי פוסטים חדשים ברשתות החברתיות כדי להביא עוד קהל לאתר שלך.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "עצה להגדלת הקהל שלך";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "צפיות באתר שלך עד כה";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "צפייה באתר שלך עד כה";
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "ביטול";
@@ -9916,8 +9894,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "השירות של WordPress טוב יותר עם Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "לעבור לאפליקציה החדשה של Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "מידע נוסף באתר Jetpack.com";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "להמשיך להודעות";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "יש לעבור לאפליקציה של Jetpack כדי להמשיך לקבל התראות בזמן אמת אל המכשיר שלך.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "אפשר לקבל הודעות דרך האפליקציה של Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "כדאי לעבור לאפליקציה של Jetpack כדי למצוא, לעקוב ולסמן לייק בכל האתרים והפוסטים האהובים עליך עם Reader.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "אפשר לעקוב אחרי כל אתר דרך האפליקציה של Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "השירות של Jetpack מאפשר גישה לנתונים סטטיסטיים, להודעות ולפרטים נוספים כדי לעזור לך לבנות ולפתח את האתר של WordPress שתמיד רצית.";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "יש לעבור לאפליקציה של Jetpack כדי לראות איך התעבורה של האתר שלך גדלה הודות לנתונים סטטיסטיים ולתובנות.";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "אפשר לקבל את הנתונים הסטטיסטיים שלך דרך האפליקציה החדשה של Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "השירות של Jetpack מאפשר גישה לנתונים סטטיסטיים, להודעות ולפרטים נוספים כדי לעזור לך לבנות ולפתח את האתר של WordPress שתמיד רצית.\n\nהאפליקציה של WordPress כבר לא תומכת ביצירת אתר חדש.";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "להמשיך ל-Reader";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "להמשיך בלי Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "כדאי לנסות את האפליקציה החדשה של Jetpack";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "ליצור אתר WordPress.com חדש עם האפליקציה של Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "להמשיך לנתונים הסטטיסטיים";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "להוסיף מחבר";
@@ -9973,8 +9996,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "ביטול";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "נראה שהאפליקציה של WordPress עדיין מותקנת אצלך. אנחנו ממליצים למחוק את האפליקציה של WordPress כדי להימנע מהתנגשויות נתונים.";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "הבנתי";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "נדרשת לך עזרה?";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "כבר אין לך צורך באפליקציה של WordPress";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "סיום";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "יש למחוק את האפליקציה של WordPress כדי להימנע מהתנגשויות נתונים.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "למחוק את האפליקציה של WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "העברנו את כל הנתונים וההגדרות שלך. השארנו הכול במקום.";
@@ -9985,11 +10026,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "אני אחליט מאוחר יותר";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "כאשר ההתראה מופיעה, יש להקיש על 'להרשות' כדי להמשיך לקבל את כל ההודעות מ-WordPress.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "להרשות";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "אותן הודעות ימשיכו להישלח אליך אבל כעת הן יגיעו מהאפליקציה של Jetpack.";
 
 /* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "השבתנו את ההודעות מהאפליקציה של WordPress.";
+"migration.notifications.secondaryDescription" = "אנחנו נשבית את ההודעות מאפליקציה של WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "לאפשר להודעות להתעדכן מול האתר שלך";
@@ -10006,6 +10053,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "ברוך בואך אל Jetpack!";
 
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "ביטול";
+
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "ביטול";
 
@@ -10020,6 +10070,81 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "מספר טלפון";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "ביטול";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "להסיר";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "יש לנסות שנית";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "אפשרויות לתמונה המרכזית";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "ביטול";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "יש להקיש על '%@' ולחזור לדפדפן האינטרנט כדי להמשיך.";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "התחברת בהצלחה לחשבון!";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "חזרה";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "ביטול";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "הבנתי";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "לקבל הודעות כשתגובות חדשות מתווספות לפוסט הזה.";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "לעקוב אחר השיחה";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "עוד ב-WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "תוכן נוסף של %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "עוד";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "פתיחה ב-Safari";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "לשתף";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "חדש";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "ביטול";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "להסיר";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "אפשרויות מדיה";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "לנסות שוב";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "ביטול";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "אופס, משהו השתבש במהלך השיתוף. ניתן לנסות שוב, ייתכן שזו שגיאה זמנית.";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "שגיאה בשיתוף";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "תגובות";
@@ -10194,6 +10319,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "WordPress, אתרים, אתר, בלוגים, בלוג";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "יש למחוק את האפליקציה של WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "האתר שלך";
