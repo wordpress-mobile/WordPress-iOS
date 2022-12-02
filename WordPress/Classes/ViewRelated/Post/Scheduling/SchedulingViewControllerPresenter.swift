@@ -25,7 +25,7 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
                                                onDismiss: onDismiss)
     }
 
-    static func wrappedSchedulingViewController(_ schedulingViewController: SchedulingViewControllerProtocol,
+    static func wrappedSchedulingViewController(_ schedulingViewController: SchedulingDatePickerViewController,
                                                 sourceView: UIView?,
                                                 sourceRect: CGRect?,
                                                 transitioningDelegate: UIViewControllerTransitioningDelegate?,
@@ -48,7 +48,7 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
         return vc
     }
 
-    static func schedulingViewController(with viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) -> SchedulingViewControllerProtocol {
+    static func schedulingViewController(with viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) -> SchedulingDatePickerViewController {
         let schedulingViewController = SchedulingDatePickerViewController()
         schedulingViewController.coordinator = DateCoordinator(date: viewModel.date,
                                                                timeZone: viewModel.timeZone,
@@ -57,15 +57,6 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
                                                                updated: updated)
         return schedulingViewController
     }
-}
-
-// FIXME: This protocol is redundant as of dropping iOS 13.
-//
-// It was used as a facade in between `SchedulingCalendarViewController` (iOS 13) and
-// `SchedulingDatePickerViewController` (iOS 14+). `SchedulingCalendarViewController` has been
-// deleted so we can remove this as well.
-protocol SchedulingViewControllerProtocol: UIViewController, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
-    var coordinator: DateCoordinator? { get set }
 }
 
 class SchedulingLightNavigationController: LightNavigationController {

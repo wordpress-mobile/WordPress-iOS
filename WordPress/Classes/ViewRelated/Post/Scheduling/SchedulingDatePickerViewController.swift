@@ -26,7 +26,7 @@ class DateCoordinator {
 // MARK: - Date Picker
 
 @available(iOS, introduced: 14.0)
-class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
+class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
 
     var coordinator: DateCoordinator? = nil
 
