@@ -6,6 +6,7 @@ protocol ContentDataMigrating {
 enum DataMigrationError: Error {
     case databaseCopyError
     case sharedUserDefaultsNil
+    case dataNotReadyToImport
 }
 
 final class DataMigrator {
@@ -25,16 +26,6 @@ final class DataMigrator {
         self.keychainUtils = keychainUtils
         self.localDefaults = localDefaults
         self.sharedDefaults = sharedDefaults
-    }
-
-    /// Convenience variable to check whether the export data is ready to be imported.
-    private(set) var isDataReadyToMigrate: Bool {
-        get {
-            sharedDefaults?.bool(forKey: .dataReadyToMigrateKey) ?? false
-        }
-        set {
-            sharedDefaults?.set(newValue, forKey: .dataReadyToMigrateKey)
-        }
     }
 }
 
@@ -59,6 +50,11 @@ extension DataMigrator: ContentDataMigrating {
     }
 
     func importData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
+        guard isDataReadyToMigrate else {
+            completion?(.failure(.dataNotReadyToImport))
+            return
+        }
+
         guard let backupLocation, restoreDatabase(from: backupLocation) else {
             completion?(.failure(.databaseCopyError))
             return
@@ -66,9 +62,6 @@ extension DataMigrator: ContentDataMigrating {
 
         /// Upon successful database restoration, the backup files in the App Group will be deleted.
         /// This means that the exported data is no longer complete when the user attempts another migration.
-        ///
-        /// After the database is copied, let's mark the data as no longer ready to migrate
-        /// to prevent the user from entering a faulty migration.
         isDataReadyToMigrate = false
 
         guard populateFromSharedDefaults() else {
@@ -92,6 +85,17 @@ private extension DataMigrator {
     struct DefaultsWrapper {
         static let dictKey = "defaults_staging_dictionary"
         let defaultsDict: [String: Any]
+    }
+
+    /// Convenience wrapper to check whether the export data is ready to be imported.
+    /// The value is stored in the App Group space so it is accessible from both apps.
+    var isDataReadyToMigrate: Bool {
+        get {
+            sharedDefaults?.bool(forKey: .dataReadyToMigrateKey) ?? false
+        }
+        set {
+            sharedDefaults?.set(newValue, forKey: .dataReadyToMigrateKey)
+        }
     }
 
     func copyDatabase(to destination: URL) -> Bool {
