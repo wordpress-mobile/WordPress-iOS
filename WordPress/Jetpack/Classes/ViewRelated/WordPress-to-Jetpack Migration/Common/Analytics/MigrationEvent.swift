@@ -1,11 +1,6 @@
 import Foundation
 
 enum MigrationEvent: String {
-    // Content Export
-    case contentExportEligibility = "migration_content_export_eligibility"
-    case contentExportSucceeded = "migration_content_export_succeeded"
-    case contentExportFailed = "migration_content_export_failed"
-
     // Content Import
     case contentImportEligibility = "migration_content_import_eligibility"
     case contentImportSucceeded = "migration_content_import_succeeded"
