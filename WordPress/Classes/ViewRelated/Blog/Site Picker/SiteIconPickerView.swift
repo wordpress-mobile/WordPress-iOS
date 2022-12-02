@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 
-@available(iOS 14.0, *)
 struct SiteIconPickerView: View {
     private let initialIcon = Image("blavatar-default")
 

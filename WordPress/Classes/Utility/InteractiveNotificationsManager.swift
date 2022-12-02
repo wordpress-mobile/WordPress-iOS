@@ -619,11 +619,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
             || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
 
-            if #available(iOS 14.0, *) {
-                completionHandler([.banner, .list, .sound])
-            } else {
-                completionHandler([.alert, .sound])
-            }
+            completionHandler([.banner, .list, .sound])
             return
         }
 

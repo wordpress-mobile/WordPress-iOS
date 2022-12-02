@@ -18,34 +18,22 @@ class StatsWidgetsStore {
 
         if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
             HomeWidgetTodayData.write(items: newTodayData)
-
-            if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
-            }
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
         }
 
         if let newAllTimeData = refreshStats(type: HomeWidgetAllTimeData.self) {
             HomeWidgetAllTimeData.write(items: newAllTimeData)
-
-            if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
-            }
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
         }
 
         if let newThisWeekData = refreshStats(type: HomeWidgetThisWeekData.self) {
             HomeWidgetThisWeekData.write(items: newThisWeekData)
-
-            if #available(iOS 14.0, *) {
-                WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
-            }
+            WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
         }
     }
 
     /// Initialize the local cache for widgets, if it does not exist
     func initializeStatsWidgetsIfNeeded() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
         if HomeWidgetTodayData.read() == nil {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
@@ -70,8 +58,7 @@ class StatsWidgetsStore {
     ///   - widgetType: concrete type of the widget
     ///   - stats: stats to be stored
     func storeHomeWidgetData<T: HomeWidgetData>(widgetType: T.Type, stats: Codable) {
-        guard #available(iOS 14.0, *),
-              let siteID = SiteStatsInformation.sharedInstance.siteID else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
 
@@ -243,9 +230,6 @@ private extension StatsWidgetsStore {
 // MARK: - Extract this week data
 extension StatsWidgetsStore {
     func updateThisWeekHomeWidget(summary: StatsSummaryTimeIntervalData?) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
         switch summary?.period {
         case .day:
             guard summary?.periodEndDate == StatsDataHelper.currentDateForSite().normalizedDate() else {
@@ -269,10 +253,6 @@ private extension StatsWidgetsStore {
     /// Observes WPAccountDefaultWordPressComAccountChanged notification and reloads widget data based on the state of account.
     /// The site data is not yet loaded after this notification and widget data cannot be cached for newly signed in account.
     func observeAccountChangesForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
         NotificationCenter.default.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged,
                                                object: nil,
                                                queue: nil) { notification in
@@ -294,10 +274,6 @@ private extension StatsWidgetsStore {
     /// Observes WPSigninDidFinishNotification notification and initializes the widget.
     /// The site data is loaded after this notification and widget data can be cached.
     func observeAccountSignInForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
                                                object: nil,
                                                queue: nil) { [weak self] _ in
@@ -307,10 +283,6 @@ private extension StatsWidgetsStore {
 
     /// Observes applicationLaunchCompleted notification and runs migration.
     func observeApplicationLaunched() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
         NotificationCenter.default.addObserver(forName: NSNotification.Name.applicationLaunchCompleted,
                                                object: nil,
                                                queue: nil) { [weak self] _ in
