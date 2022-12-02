@@ -2,7 +2,9 @@ import UIKit
 
 final class MigrationWelcomeViewController: UIViewController {
 
-    // MARK: - Data
+    // MARK: - Dependencies
+
+    private let tracker: MigrationAnalyticsTracker
 
     private let viewModel: MigrationWelcomeViewModel
 
@@ -25,8 +27,9 @@ final class MigrationWelcomeViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(viewModel: MigrationWelcomeViewModel) {
+    init(viewModel: MigrationWelcomeViewModel, tracker: MigrationAnalyticsTracker = .init()) {
         self.viewModel = viewModel
+        self.tracker = tracker
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -66,7 +69,11 @@ final class MigrationWelcomeViewController: UIViewController {
 
     private func setupNavigationBar() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(email: viewModel.gravatarEmail) { [weak self] () -> Void in
-            self?.viewModel.configuration.actionsConfiguration.secondaryHandler?()
+            guard let self else {
+                return
+            }
+            self.tracker.track(.welcomeScreenAvatarTapped)
+            self.viewModel.configuration.actionsConfiguration.secondaryHandler?()
         }
     }
 

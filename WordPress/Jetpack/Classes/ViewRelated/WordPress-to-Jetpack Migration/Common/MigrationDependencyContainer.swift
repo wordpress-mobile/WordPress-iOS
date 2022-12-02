@@ -64,7 +64,11 @@ struct MigrationViewControllerFactory {
         let viewModel = makeWelcomeViewModel(handlers: handlers)
 
         let viewController = MigrationWelcomeViewController(viewModel: viewModel)
-        handlers.primary = { [weak coordinator] in coordinator?.transitionToNextStep() }
+        handlers.primary = { [weak coordinator] in
+            let tracker = MigrationAnalyticsTracker()
+            tracker.track(.welcomeScreenContinueTapped)
+            coordinator?.transitionToNextStep()
+        }
         handlers.secondary = makeSupportViewControllerRouter(with: viewController)
 
         return viewController
@@ -90,6 +94,8 @@ struct MigrationViewControllerFactory {
 
     private func makeSupportViewControllerRouter(with presenter: UIViewController) -> () -> Void {
         return { [weak presenter] in
+            let tracker = MigrationAnalyticsTracker()
+            tracker.track(.welcomeScreenHelpButtonTapped)
             let destination = SupportTableViewController(configuration: .currentAccountConfiguration(), style: .insetGrouped)
             presenter?.present(UINavigationController(rootViewController: destination), animated: true)
         }
