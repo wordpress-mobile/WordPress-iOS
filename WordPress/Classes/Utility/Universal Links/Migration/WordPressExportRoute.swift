@@ -21,6 +21,7 @@ extension WordPressExportRoute: NavigationAction {
             let jetpackUrl: URL? = {
                 var components = URLComponents()
                 components.scheme = JetpackNotificationMigrationService.jetpackScheme
+                components.host = JetpackImportRoute().path.removingPrefix("/")
                 return components.url
             }()
 
