@@ -23,7 +23,8 @@ import AutomatticTracks
         /// handle the migration-related deeplink intents.
         /// `UniversalLinkRouter` requires that it's in a universal link format (https://wordpress.com/<path>),
         /// so we'll hackily converts the deeplink into an acceptable form.
-        if url.scheme == AppScheme.wordpressMigrationV1.rawValue,
+        if let migrationScheme = URL(string: AppScheme.wordpressMigrationV1.rawValue)?.scheme,
+           url.scheme == migrationScheme,
            let path = url.host,
            let convertedURL = URL(string: "https://wordpress.com/\(path)") {
             let migrationRouter = UniversalLinkRouter(routes: [WordPressExportRoute()])
