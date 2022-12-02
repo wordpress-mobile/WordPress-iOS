@@ -5,11 +5,13 @@ final class MigrationEmailService {
     // MARK: - Dependencies
 
     private let api: WordPressComRestApi
+    private let tracker: MigrationAnalyticsTracker
 
     // MARK: - Init
 
-    init(api: WordPressComRestApi) {
+    init(api: WordPressComRestApi, tracker: MigrationAnalyticsTracker = .init()) {
         self.api = api
+        self.tracker = tracker
     }
 
     convenience init(account: WPAccount) {
@@ -34,15 +36,15 @@ final class MigrationEmailService {
 
     func sendMigrationEmail() async throws {
         do {
-            WPAnalytics.track(.migrationEmailTriggered)
+            tracker.track(.emailTriggered)
             let response = try await sendMigrationEmail(path: Endpoint.migrationEmail)
             if !response.success {
                 throw MigrationError.unsuccessfulResponse
             }
-            WPAnalytics.track(.migrationEmailSent)
+            tracker.track(.emailSent)
         } catch let error {
             let properties = ["error_type": error.localizedDescription]
-            WPAnalytics.track(.migrationEmailFailed, properties: properties)
+            tracker.track(.emailFailed, properties: properties)
             DDLogError("[\(MigrationError.domain)] Migration email sending failed: \(error.localizedDescription)")
             throw error
         }
