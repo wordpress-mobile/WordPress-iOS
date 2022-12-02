@@ -15,7 +15,7 @@ final class MigrationLoadWordPressViewModel {
             title: Strings.title,
             image: UIImage(named: "wp-migration-welcome"),
             primaryDescription: Strings.description,
-            secondaryDescription: nil
+            secondaryDescription: Strings.secondaryDescription
         )
         self.content = .init(step: .done)
         self.actions = .init(
@@ -36,8 +36,13 @@ final class MigrationLoadWordPressViewModel {
         )
         static let description = NSLocalizedString(
             "migration.loadWordpress.description",
-            value: "It looks like you have the WordPress app installed.\n\nWould you like to transfer your data from the WordPress app and sign in automatically?",
+            value: "It looks like you have the WordPress app installed.",
             comment: "The description in the Load WordPress screen"
+        )
+        static let secondaryDescription = NSLocalizedString(
+            "migration.loadWordpress.description",
+            value: "Would you like to transfer your data from the WordPress app and sign in automatically?",
+            comment: "The secondary description in the Load WordPress screen"
         )
         static let primaryAction = NSLocalizedString(
             "migration.loadWordpress.primaryButton",
