@@ -20,8 +20,8 @@ class JetpackWindowManager: WindowManager {
         }
 
         guard AccountHelper.isLoggedIn else {
-            shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
             self.migrationTacker.trackContentImportEligibility(eligible: shouldImportMigrationData)
+            shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
             return
         }
 
