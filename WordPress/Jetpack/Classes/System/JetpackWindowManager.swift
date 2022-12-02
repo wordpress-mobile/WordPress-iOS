@@ -26,6 +26,10 @@ class JetpackWindowManager: WindowManager {
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
+        /// Track if the WordPress installation was a migratable version
+        let wpInstallationState = MigrationAppDetection.getWordPressInstallationState()
+        MigratableStateTracker().track(wpInstallationState)
+
         DataMigrator().importData() { [weak self] result in
             guard let self else {
                 return
@@ -87,22 +91,11 @@ private extension JetpackWindowManager {
         showAppUI(for: blog)
     }
 
-    func handleMigrationFailure(_ error: DataMigrationError) {
-        guard
-            case .dataNotReadyToImport = error,
-            isCompatibleWordPressAppPresent,
-            let schemeUrl = URL(string: AppScheme.wordpressMigrationV1.rawValue)
-        else {
-            showSignInUI()
-            return
-        }
-
-        let wpInstallationState = MigrationAppDetection.getWordPressInstallationState()
-        MigratableStateTracker().track(wpInstallationState)
-
-        /// The WordPress pre-flight process hasn't ran, but WordPress is installed.
-        /// Note: We don't know if the user has ever logged into WordPress at this point, only
-        /// that they have a version compatible with migrating.
+    /// Shown when the WordPress pre-flight process hasn't ran, but WordPress is installed.
+    /// Note: We don't know if the user has ever logged into WordPress at this point, only
+    /// that they have a version compatible with migrating.
+    /// - Parameter schemeUrl: Deep link URL used to open the WordPress app
+    func showLoadWordPressUI(schemeUrl: URL) {
         let actions = MigrationLoadWordPressViewModel.Actions()
         let loadWordPressViewModel = MigrationLoadWordPressViewModel(actions: actions)
         let loadWordPressViewController = MigrationLoadWordPressViewController(viewModel: loadWordPressViewModel)
@@ -119,6 +112,19 @@ private extension JetpackWindowManager {
             }
         }
         self.show(loadWordPressViewController)
-        return
+    }
+
+    func handleMigrationFailure(_ error: DataMigrationError) {
+        guard
+            case .dataNotReadyToImport = error,
+            isCompatibleWordPressAppPresent,
+            let schemeUrl = URL(string: AppScheme.wordpressMigrationV1.rawValue)
+        else {
+            showSignInUI()
+            return
+        }
+
+        /// WordPress is a compatible version for migrations, but needs to be loaded to prepare the data
+        showLoadWordPressUI(schemeUrl: schemeUrl)
     }
 }
