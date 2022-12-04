@@ -101,12 +101,17 @@ private extension JetpackWindowManager {
     func showLoadWordPressUI(schemeUrl: URL) {
         let actions = MigrationLoadWordPressViewModel.Actions()
         let loadWordPressViewModel = MigrationLoadWordPressViewModel(actions: actions)
-        let loadWordPressViewController = MigrationLoadWordPressViewController(viewModel: loadWordPressViewModel)
-        actions.primary = {
+        let loadWordPressViewController = MigrationLoadWordPressViewController(
+            viewModel: loadWordPressViewModel,
+            tracker: migrationTracker
+        )
+        actions.primary = { [weak self] in
+            self?.migrationTracker.track(.loadWordPressScreenOpenTapped)
             UIApplication.shared.open(schemeUrl)
         }
-        actions.secondary = { [weak self] in
-            loadWordPressViewController.dismiss(animated: true) {
+        actions.secondary = { [weak self, weak loadWordPressViewController] in
+            self?.migrationTracker.track(.loadWordPressScreenNoThanksTapped)
+            loadWordPressViewController?.dismiss(animated: true) {
                 self?.showSignInUI()
             }
         }

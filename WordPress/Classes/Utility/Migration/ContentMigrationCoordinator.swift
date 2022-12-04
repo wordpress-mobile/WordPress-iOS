@@ -12,21 +12,32 @@ class ContentMigrationCoordinator {
     private let dataMigrator: ContentDataMigrating
     private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
+    private let tracker: MigrationAnalyticsTracker
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          dataMigrator: ContentDataMigrating = DataMigrator(),
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
-         eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration()) {
+         eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
+         tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
         self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
+        self.tracker = tracker
     }
 
-    enum ContentMigrationCoordinatorError: Error {
+    enum ContentMigrationCoordinatorError: LocalizedError {
         case ineligible
         case exportFailure
         case localDraftsNotSynced
+
+        var errorDescription: String? {
+            switch self {
+            case .ineligible: return "Content export is ineligible"
+            case .exportFailure: return "Content export failed"
+            case .localDraftsNotSynced: return "Local drafts not synced"
+            }
+        }
     }
 
     // MARK: Methods
@@ -41,22 +52,27 @@ class ContentMigrationCoordinator {
     /// - Parameter completion: Closure called after the export process completes.
     func startAndDo(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
         guard eligibilityProvider.isEligibleForMigration else {
+            tracker.trackContentExportEligibility(eligible: false)
             completion?(.failure(.ineligible))
             return
         }
 
         guard isLocalPostsSynced() else {
-            completion?(.failure(.localDraftsNotSynced))
+            let error = ContentMigrationCoordinatorError.localDraftsNotSynced
+            tracker.trackContentExportFailed(reason: error.localizedDescription)
+            completion?(.failure(error))
             return
         }
 
-        dataMigrator.exportData { result in
+        dataMigrator.exportData { [weak self] result in
             switch result {
             case .success:
+                self?.tracker.trackContentExportSucceeded()
                 completion?(.success(()))
 
             case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
+                self?.tracker.trackContentExportFailed(reason: error.localizedDescription)
                 completion?(.failure(.exportFailure))
             }
         }
