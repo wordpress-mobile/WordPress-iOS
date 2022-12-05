@@ -11,12 +11,14 @@ protocol JetpackNotificationMigrationServiceProtocol {
 final class JetpackNotificationMigrationService: JetpackNotificationMigrationServiceProtocol {
     private let remoteNotificationRegister: RemoteNotificationRegister
     private let featureFlagStore: RemoteFeatureFlagStore
+    private let userDefaults: UserDefaults
     private let isWordPress: Bool
 
     static let shared = JetpackNotificationMigrationService()
 
     static let wordPressScheme = "wordpressnotificationmigration"
     static let jetpackScheme = "jetpacknotificationmigration"
+    private let wordPressNotificationsToggledDefaultsKey = "wordPressNotificationsToggledDefaultsKey"
     private let jetpackNotificationMigrationDefaultsKey = "jetpackNotificationMigrationDefaultsKey"
 
     private var jetpackMigrationPreventDuplicateNotifications: Bool {
@@ -38,6 +40,8 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         }
 
         set {
+            userDefaults.set(true, forKey: wordPressNotificationsToggledDefaultsKey)
+
             if newValue, isWordPress {
                 remoteNotificationRegister.registerForRemoteNotifications()
                 rescheduleLocalNotifications()
@@ -63,18 +67,20 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     /// disableWordPressNotificationsFromJetpack may get triggered multiple times from Jetpack app but it only needs to be executed the first time
     private var isMigrationDone: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: jetpackNotificationMigrationDefaultsKey)
+            return userDefaults.bool(forKey: jetpackNotificationMigrationDefaultsKey)
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: jetpackNotificationMigrationDefaultsKey)
+            userDefaults.setValue(newValue, forKey: jetpackNotificationMigrationDefaultsKey)
         }
     }
 
     init(remoteNotificationRegister: RemoteNotificationRegister = UIApplication.shared,
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+         userDefaults: UserDefaults = .standard,
          isWordPress: Bool = AppConfiguration.isWordPress) {
         self.remoteNotificationRegister = remoteNotificationRegister
         self.featureFlagStore = featureFlagStore
+        self.userDefaults = userDefaults
         self.isWordPress = isWordPress
     }
 
@@ -85,6 +91,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     func shouldPresentNotifications() -> Bool {
         let disableNotifications = jetpackMigrationPreventDuplicateNotifications
             && isWordPress
+            && userDefaults.bool(forKey: wordPressNotificationsToggledDefaultsKey)
             && !wordPressNotificationsEnabled
 
         if disableNotifications {

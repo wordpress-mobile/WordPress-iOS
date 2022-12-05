@@ -245,6 +245,31 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
         XCTAssertEqual(phase, .two)
     }
 
+    // MARK: Removal Deadline
+
+    func testFetchingRemovalDeadline() {
+        // Given
+        let remoteConfigStore = RemoteConfigStore(persistenceStore: mockUserDefaults)
+        mockUserDefaults.set(["jp-deadline": "2022-10-10"], forKey: RemoteConfigStore.Constants.CachedResponseKey)
+
+        // When
+        let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
+
+        XCTAssertEqual(deadline?.components.year, 2022)
+        XCTAssertEqual(deadline?.components.month, 10)
+        XCTAssertEqual(deadline?.components.day, 10)
+    }
+
+    func testRemovalDeadlineDoesNotExist() {
+        // Given
+        let remoteConfigStore = RemoteConfigStore(persistenceStore: mockUserDefaults)
+
+        // When
+        let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
+
+        XCTAssertNil(deadline)
+    }
+
     // MARK: Helpers
 
     private func generateFlags(phaseOne: Bool,
@@ -259,5 +284,12 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
             .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey ?? "", value: phaseFour),
             .init(title: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey ?? "", value: phaseNewUsers),
         ]
+    }
+}
+
+private extension Date {
+    var components: DateComponents {
+        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                               from: self)
     }
 }

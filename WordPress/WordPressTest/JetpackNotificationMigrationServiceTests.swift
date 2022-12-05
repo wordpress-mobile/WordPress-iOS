@@ -6,16 +6,19 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
     private var sut: JetpackNotificationMigrationService!
     private var remoteNotificationsRegister: RemoteNotificationRegisterMock!
     private var remoteFeatureFlagStore: RemoteFeatureFlagStoreMock!
+    private var userDefaults: UserDefaultsMock!
 
     override func setUpWithError() throws {
         remoteNotificationsRegister = RemoteNotificationRegisterMock()
         remoteFeatureFlagStore = RemoteFeatureFlagStoreMock()
+        userDefaults = UserDefaultsMock()
     }
 
     override func tearDownWithError() throws {
         sut = nil
         remoteNotificationsRegister = nil
         remoteFeatureFlagStore = nil
+        userDefaults = nil
     }
 
     // MARK: - Should show notification control
@@ -69,6 +72,14 @@ final class JetpackNotificationMigrationServiceTests: XCTestCase {
         XCTAssertFalse(sut.shouldPresentNotifications())
     }
 
+    func testShouldPresentNotificationsBeforeWordPressNotificationsToggledAndNotificationsRegistered() {
+        setup(preventDuplicateNotificationsFlag: true, isWordPress: true)
+        remoteNotificationsRegister.isRegisteredForRemoteNotifications = false
+        userDefaults.wordPressNotificationsToggled = false
+
+        XCTAssertTrue(sut.shouldPresentNotifications())
+    }
+
     func testShouldPresentNotificationsInWordPressWhenFeatureFlagDisabledAndWordPressNotificationsDisabled() {
         setup(preventDuplicateNotificationsFlag: false, isWordPress: true)
         sut.wordPressNotificationsEnabled = false
@@ -101,8 +112,10 @@ private extension JetpackNotificationMigrationServiceTests {
         sut = JetpackNotificationMigrationService(
             remoteNotificationRegister: remoteNotificationsRegister,
             featureFlagStore: remoteFeatureFlagStore,
+            userDefaults: userDefaults,
             isWordPress: isWordPress
         )
+        userDefaults.wordPressNotificationsToggled = true
         sut.wordPressNotificationsEnabled = true
         remoteNotificationsRegister.isRegisteredForRemoteNotifications = true
     }
@@ -129,5 +142,17 @@ private class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
 
     override func value(for flag: OverrideableFlag) -> Bool {
         return value
+    }
+}
+
+private class UserDefaultsMock: UserDefaults {
+    var wordPressNotificationsToggled = false
+
+    override func bool(forKey defaultName: String) -> Bool {
+        if defaultName == "wordPressNotificationsToggledDefaultsKey" {
+            return wordPressNotificationsToggled
+        }
+
+        return super.bool(forKey: defaultName)
     }
 }

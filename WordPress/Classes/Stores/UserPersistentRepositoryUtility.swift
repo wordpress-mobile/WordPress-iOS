@@ -15,6 +15,7 @@ private enum UPRUConstants {
     static let currentAnnouncementsKey = "currentAnnouncements"
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
+    static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -162,6 +163,15 @@ extension UserPersistentRepositoryUtility {
         }
         set {
             UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.announcementsVersionDisplayedKey)
+        }
+    }
+
+    var isJPContentImportComplete: Bool {
+        get {
+            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.isJPContentImportCompleteKey)
         }
     }
 }

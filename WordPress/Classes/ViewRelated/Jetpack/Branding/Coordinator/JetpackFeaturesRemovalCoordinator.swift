@@ -84,6 +84,15 @@ class JetpackFeaturesRemovalCoordinator {
         return .normal
     }
 
+    static func removalDeadline(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) -> Date? {
+        guard let dateString = RemoteConfig(store: remoteConfigStore).jetpackDeadline.value else {
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: dateString)
+    }
+
     /// Used to display feature-specific or feature-collection overlays.
     /// - Parameters:
     ///   - source: The source that triggers the display of the overlay.

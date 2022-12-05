@@ -8,13 +8,16 @@ class ContentMigrationCoordinator {
 
     // MARK: Dependencies
 
+    private let coreDataStack: CoreDataStack
     private let dataMigrator: ContentDataMigrating
     private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
 
-    init(dataMigrator: ContentDataMigrating = DataMigrator(),
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         dataMigrator: ContentDataMigrating = DataMigrator(),
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration()) {
+        self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
         self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
@@ -23,6 +26,7 @@ class ContentMigrationCoordinator {
     enum ContentMigrationCoordinatorError: Error {
         case ineligible
         case exportFailure
+        case localDraftsNotSynced
     }
 
     // MARK: Methods
@@ -41,7 +45,10 @@ class ContentMigrationCoordinator {
             return
         }
 
-        // TODO: Sync local post drafts here.
+        guard isLocalPostsSynced() else {
+            completion?(.failure(.localDraftsNotSynced))
+            return
+        }
 
         dataMigrator.exportData { result in
             switch result {
@@ -76,6 +83,26 @@ class ContentMigrationCoordinator {
             completion?()
         }
     }
+}
+
+// MARK: - Preflights Local Draft Check
+
+private extension ContentMigrationCoordinator {
+
+    func isLocalPostsSynced() -> Bool {
+        let fetchRequest = NSFetchRequest<Post>(entityName: String(describing: Post.self))
+        fetchRequest.predicate = NSPredicate(format: "remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@ || remoteStatusNumber = %@",
+                                             NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue),
+                                             NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
+                                             NSNumber(value: AbstractPostRemoteStatus.local.rawValue),
+                                             NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
+        guard let count = try? coreDataStack.mainContext.count(for: fetchRequest) else {
+            return false
+        }
+
+        return count == 0
+    }
+
 }
 
 // MARK: - Content Migration Eligibility Provider

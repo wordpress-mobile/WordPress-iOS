@@ -72,16 +72,35 @@ class MainShareViewController: UIViewController {
 private extension MainShareViewController {
     func setupAppearance() {
 
-        if editorController.originatingExtension == .saveToDraft {
-            // This should probably be showing over current context but this just matches previous behavior
-            view.backgroundColor = .basicBackground
-        }
-
+        // Notice that this will set the apparence of _all_ `UINavigationBar` instances.
+        //
+        // Such a catch-all approach wouldn't be good in the context of a fully fledged application,
+        // but is acceptable here, given we are in an app extension.
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.isTranslucent = false
         navigationBarAppearace.tintColor = .appBarTint
         navigationBarAppearace.barTintColor = .appBarBackground
         navigationBarAppearace.barStyle = .default
+
+        // Extension-specif settings
+        //
+        // This view controller is shared via target membership by multiple extensions, resulting
+        // in the need to apply some extension-specific settings.
+        //
+        // If we had the time, it would be great to extract all this logic in a standalone
+        // framework or package, and then make the individual extensions import it, and instantiate
+        // and configure the view controller to their liking, without making the code more complex
+        // with branch-logic such as this.
+        switch editorController.originatingExtension {
+        case .saveToDraft:
+            // This should probably be showing over current context but this just matches previous
+            // behavior.
+            view.backgroundColor = .basicBackground
+        case .share:
+            // Without this, the modal view controller will have a semi-transparent bar with a
+            // very low alpha, making it close to fully transparent.
+            navigationBarAppearace.backgroundColor = .basicBackground
+        }
     }
 
     func loadAndPresentNavigationVC() {
@@ -96,14 +115,8 @@ private extension MainShareViewController {
 
         let shareNavController = UINavigationController(rootViewController: editorController)
 
-        if #available(iOS 13, *), editorController.originatingExtension == .saveToDraft {
-            // iOS 13 has proper animations and presentations for share and action sheets. So the `else` case should be removed when iOS 13 is minimum.
-            // We  need to make sure we don't end up with stacked modal view controllers by using this:
-            shareNavController.modalPresentationStyle = .overFullScreen
-        } else {
-            shareNavController.transitioningDelegate = extensionTransitioningManager
-            shareNavController.modalPresentationStyle = .custom
-        }
+        // We need to make sure we don't end up with stacked modal view controllers by using this:
+        shareNavController.modalPresentationStyle = .overCurrentContext
 
         present(shareNavController, animated: true)
     }
