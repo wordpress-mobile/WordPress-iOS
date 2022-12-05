@@ -15,21 +15,25 @@ class JetpackWindowManager: WindowManager {
     }
 
     override func showUI(for blog: Blog?) {
-        // If the user is logged in and has blogs sync'd to their account
-        if AccountHelper.isLoggedIn && AccountHelper.hasBlogs {
-            showAppUI(for: blog)
+        if AccountHelper.isLoggedIn {
+            if AccountHelper.hasBlogs {
+                // If the user is logged in and has blogs sync'd to their account
+                showAppUI(for: blog)
+            } else {
+                // If the user doesn't have any blogs, but they're still logged in, log them out
+                // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
+                AccountHelper.logOutDefaultWordPressComAccount()
+            }
             return
         }
 
-        guard AccountHelper.isLoggedIn else {
-            self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
-            shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
+        guard FeatureFlag.contentMigration.enabled else {
+            showSignInUI()
             return
         }
 
-        // If the user doesn't have any blogs, but they're still logged in, log them out
-        // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
-        AccountHelper.logOutDefaultWordPressComAccount()
+        self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
+        shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
