@@ -47,6 +47,8 @@ msgstr ""
 
 msgctxt "v21.3-whats-new"
 msgid ""
+"You can now migrate your site content to the Jetpack app without a hitch.\n"
+"\n"
 "We fixed a small visual issue with the Home and Menu control in the My Site dashboard.\n"
 "\n"
 "We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.\n"
