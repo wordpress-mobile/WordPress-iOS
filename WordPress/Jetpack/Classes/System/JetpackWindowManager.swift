@@ -9,7 +9,9 @@ class JetpackWindowManager: WindowManager {
     private let migrationTracker = MigrationAnalyticsTracker()
 
     var shouldImportMigrationData: Bool {
-        return !AccountHelper.isLoggedIn && !UserPersistentStoreFactory.instance().isJPContentImportComplete
+        return FeatureFlag.contentMigration.enabled
+        && !AccountHelper.isLoggedIn
+        && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
 
     override func showUI(for blog: Blog?) {
