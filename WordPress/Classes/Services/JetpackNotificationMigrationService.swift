@@ -152,7 +152,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         }
     }
 
-    private func rescheduleLocalNotifications() {
+    func rescheduleLocalNotifications() {
         DispatchQueue.main.async { [weak self] in
             self?.rescheduleWeeklyRoundupNotifications()
             self?.rescheduleBloggingReminderNotifications()
