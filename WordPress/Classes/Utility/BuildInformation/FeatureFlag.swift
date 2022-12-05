@@ -113,9 +113,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackPowered:
             return true
         case .jetpackPoweredBottomSheet:
-            return true
+            return false
         case .contentMigration:
-            return true
+            return false
         case .newJetpackLandingScreen:
             return true
         case .newWordPressLandingScreen:
