@@ -494,8 +494,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Späť";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
@@ -1183,15 +1182,7 @@
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "Zrušiť";
 
 /* Display Name label text.
@@ -1480,9 +1471,6 @@
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Ilustračný obrázok";
-
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Možnosti ilustračného obrázku";
 
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Ilustračný obrázok sa nenačítal";
@@ -2231,8 +2219,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Viac";
 
 /* Action button to display more available options
@@ -2300,8 +2287,7 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nový";
 
 /* Blocklist Keyword Insertion Title */
@@ -2594,7 +2580,7 @@
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Otvoriť výber všetkých médií";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Otvoriť v Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -3085,9 +3071,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Odstrániť";
 
 /* Remove Person Alert Title
@@ -3212,7 +3196,6 @@
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Obnoviť";
 
@@ -4210,8 +4193,7 @@
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Pokus zopakujte";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -4695,9 +4677,6 @@
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hups, niečo sa pokazilo a nepodarilo sa nám prihlásiť vás. Prosím, skúste ešte raz!";
 
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Hups, niečo sa pokazilo počas zdieľania. Neskôr môžete pokus zopakovať, možno došlo k poruche.";
-
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hups, dvojfaktorový overovací kód nie je platný. Skontrolujte kód a skúste ešte raz!";
 
@@ -4758,7 +4737,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "Účet WordPress.com";
 
 /* Title for the Plans list header */

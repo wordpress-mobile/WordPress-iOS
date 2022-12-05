@@ -2,6 +2,7 @@
 #import "WordPress-Swift.h"
 
 static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.wordpress.com";
+static NSString * const JetpackComOAuthKeychainServiceName = @"jetpack.public-api.wordpress.com";
 
 @interface WPAccount ()
 
@@ -85,7 +86,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:authToken
-                          forServiceName:WordPressComOAuthKeychainServiceName
+                          forServiceName:[WPAccount authKeychainServiceName]
                              accessGroup:nil
                           updateExisting:YES
                                    error:&error];
@@ -97,7 +98,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     } else {
         NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:WordPressComOAuthKeychainServiceName
+                                  andServiceName:[WPAccount authKeychainServiceName]
                                      accessGroup:nil
                                            error:&error];
         if (error) {
@@ -133,8 +134,9 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 + (NSString *)tokenForUsername:(NSString *)username
 {
     NSError *error = nil;
+    [WPAccount migrateAuthKeyForUsername:username];
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
-                                                     andServiceName:WordPressComOAuthKeychainServiceName
+                                                     andServiceName:[WPAccount authKeychainServiceName]
                                                         accessGroup:nil
                                                               error:&error];
     if (error) {
@@ -142,6 +144,22 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     }
 
     return authToken;
+}
+
++ (void)migrateAuthKeyForUsername:(NSString *)username
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if ([AppConfiguration isJetpack]) {
+            SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
+            [sharedDataIssueSolver migrateAuthKeyFor:username];
+        }
+    });
+}
+
++ (NSString *)authKeychainServiceName
+{
+    return [AppConfiguration isWordPress] ? WordPressComOAuthKeychainServiceName : JetpackComOAuthKeychainServiceName;
 }
 
 #pragma mark - API Helpers

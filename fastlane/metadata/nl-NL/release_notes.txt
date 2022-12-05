@@ -1,1 +1,0 @@
-We hebben de positie van het bericht 'Er komen geen media overeen met je zoekopdracht' verbeterd in de mediabibliotheek. Deze is nu zichtbaar als er geen zoekresultaten zijn. Blijf kalm en zoek verder.

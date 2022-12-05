@@ -4,8 +4,11 @@ class MigrationDoneViewController: UIViewController {
 
     private let viewModel: MigrationDoneViewModel
 
-    init(viewModel: MigrationDoneViewModel) {
+    private let tracker: MigrationAnalyticsTracker
+
+    init(viewModel: MigrationDoneViewModel, tracker: MigrationAnalyticsTracker = .init()) {
         self.viewModel = viewModel
+        self.tracker = tracker
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -31,5 +34,10 @@ class MigrationDoneViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tracker.track(.thanksScreenShown)
     }
 }

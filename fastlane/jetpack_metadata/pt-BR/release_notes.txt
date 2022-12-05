@@ -1,1 +1,0 @@
-Corrigimos o posicionamento da mensagem “Nenhuma mídia corresponde à sua pesquisa” na Biblioteca de mídia. Agora fica visível quando não há resultados de pesquisa. Mantenha a calma e pesquise.

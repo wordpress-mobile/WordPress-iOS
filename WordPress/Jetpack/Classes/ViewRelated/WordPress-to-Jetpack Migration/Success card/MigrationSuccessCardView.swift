@@ -73,13 +73,31 @@ class MigrationSuccessCardView: UIView {
     }
 }
 
-// TODO: This extension is temporary, and should be replaced by the actual condition to check, and placed in the proper location
+// Ideally, this logic should be handled elsewhere. But since the whole migration feature is temporary
+// Perhaps that's not worth the trouble.
+//
+// TODO: Remove `shouldShowMigrationSuccessCard` when the migration feature is no longer needed
 extension MigrationSuccessCardView {
-    @objc
-    static var shouldShowMigrationSuccessCard: Bool {
 
-        AppConfiguration.isJetpack && showCard
+    private static var cachedShouldShowMigrationSuccessCard = false
+
+    @objc static var shouldShowMigrationSuccessCard: Bool {
+        guard AppConfiguration.isJetpack else {
+            return false
+        }
+
+        let isFeatureFlagEnabled = FeatureFlag.contentMigration.enabled
+        let isWordPressInstalled = MigrationAppDetection.getWordPressInstallationState().isWordPressInstalled
+        let isMigrationCompleted = UserPersistentStoreFactory.instance().isJPContentImportComplete
+        let newValue = isFeatureFlagEnabled && isWordPressInstalled && isMigrationCompleted
+
+        if newValue != Self.cachedShouldShowMigrationSuccessCard {
+            let tracker = MigrationAnalyticsTracker()
+            let event: MigrationEvent = newValue ? .pleaseDeleteWordPressCardShown : .pleaseDeleteWordPressCardHidden
+            tracker.track(event)
+            Self.cachedShouldShowMigrationSuccessCard = newValue
+        }
+
+        return newValue
     }
-
-    private static let showCard = false
 }

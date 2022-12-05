@@ -34,6 +34,20 @@ final class MigrationActionsView: UIView {
         return stackView
     }()
 
+    // MARK: - Tap Handlers
+
+    lazy var primaryHandler: (MigrationActionsViewConfiguration) -> Void = {
+        return { configuration in
+            configuration.primaryHandler?()
+        }
+    }()
+
+    lazy var secondaryHandler: (MigrationActionsViewConfiguration) -> Void = {
+        return { configuration in
+            configuration.secondaryHandler?()
+        }
+    }()
+
     // MARK: - Init
 
     init(configuration: MigrationActionsViewConfiguration) {
@@ -85,11 +99,11 @@ final class MigrationActionsView: UIView {
     }
 
     @objc private func didTapPrimaryButton() {
-        configuration.primaryHandler?()
+        primaryHandler(configuration)
     }
 
     @objc private func didTapSecondaryButton() {
-        configuration.secondaryHandler?()
+        secondaryHandler(configuration)
     }
 
     // MARK: - Button Factory

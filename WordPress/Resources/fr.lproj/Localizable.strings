@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-22 13:54:07+0000 */
+/* Translation-Revision-Date: 2022-11-30 16:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -394,9 +394,6 @@ translators: Block name. %s: The localized block name */
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "Un étiquette appelée « %@ » existe déjà.";
 
-/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "Un conseil pour faire croître votre lectorat";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Titre du site";
 
@@ -693,6 +690,9 @@ translators: Block name. %s: The localized block name */
 
 /* Settings: Comments Enabled */
 "Allow Comments" = "Autoriser les commentaires";
+
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "Autoriser les notifications";
 
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "Autoriser WordPress à vous envoyer des notifications push";
@@ -1020,9 +1020,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "Partagez automatiquement les nouveaux articles sur vos comptes de réseaux sociaux.";
 
-/* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "Partagez automatiquement les nouveaux articles sur vos médias sociaux pour attirer ce public sur votre site.";
-
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Famille Automattic";
 
@@ -1050,8 +1047,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Retour";
 
 /* Title for the Background Color section */
@@ -1833,14 +1829,8 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "Connecter un autre compte";
 
-/* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "Connecter d’autres réseaux";
-
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "Connectez-vous pour partager automatiquement vos articles sur %@";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"Connect with other bloggers by following, liking and commenting on their posts." = "Entrez en contact avec d’autres blogueurs en suivant, aimant et commentant leurs articles.";
 
 /* Title of a Quick Start Tour */
 "Connect with other sites" = "Se connecter à d’autres sites";
@@ -2159,9 +2149,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the card prompting the user to create a new post. */
 "Create your next post" = "Créer votre prochain article";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Créez votre propre tableau de bord personnalisé et choisissez quel rapport afficher. Concentrez-vous sur les données qui vous intéressent le plus.";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Créez votre site";
 
@@ -2246,9 +2233,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "Personnalisez les réglages de vos suivis de sites pour les nouveaux articles et commentaires.";
-
-/* Customize Insights title */
-"Customize your insights" = "Personnalisez vos thématiques";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personnaliser les réglages de votre site concernant les « J'aime », commentaires, abonnements et plus encore.";
@@ -2444,9 +2428,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Découvrez et abonnez-vous aux sites qui vous inspirent.";
 
-/* Title for button that will open up the follow topics screen. */
-"Discover blogs to follow" = "Découvrir des blogs à suivre";
-
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "Découvrir plus de sujets";
 
@@ -2458,15 +2439,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title.
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options. */
+   Dismiss a view. Verb */
 "Dismiss" = "Ignorer";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2482,9 +2455,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Nom affiché";
-
-/* Title for button that will open up the follow topics screen. */
-"Do it again" = "Recommencer";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
 "Document, %@" = "Document : %@";
@@ -2738,9 +2708,6 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Modifier les nouveaux articles et pages avec le nouvel éditeur de block.";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "Modifier les rappels";
-
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Modifier les boutons de partage";
 
@@ -2867,9 +2834,6 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Activer les notifications dans l’application";
-
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "Activer le partage d’articles";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Activer les notifications de site ?";
@@ -3180,9 +3144,6 @@ translators: Block name. %s: The localized block name */
    Title for the Featured Image view */
 "Featured Image" = "Image à la une";
 
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Options de l’image mise en avant";
-
 /* No comment provided by engineer. */
 "Featured Image did not load" = "L'image à la une n'a pas pu être chargée";
 
@@ -3281,9 +3242,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. An option to follow a site. */
 "Follow site" = "S’abonner au site";
-
-/* Title of follow conversations tooltip. */
-"Follow the conversation" = "S’abonner à la conversation";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Suivre des sujets";
@@ -3438,9 +3396,6 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Faites vous remarquer : commentez sur les articles que vous avez lus.";
 
-/* Message for the follow conversations tooltip. */
-"Get notified when new comments are added to this post." = "Recevez des notifications lorsque de nouveaux commentaires sont ajoutés à cette publication.";
-
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "Suivez l’activité de votre site en temps réel, depuis votre poche !";
 
@@ -3515,8 +3470,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "La connexion Google a échoué.";
 
-/* Button title for the follow conversations tooltip.
-   Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "J’ai compris";
 
@@ -4086,14 +4040,8 @@ translators: Block name. %s: The localized block name */
    Goes back to editing the post. */
 "Keep Editing" = "Continuer d'écrire";
 
-/* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "Continuez à bloguer et revenez plus tard voir les visiteurs qui arrivent sur votre site.";
-
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "Garder l’image actuelle";
-
-/* A detailed message to users indicating that they've set up reader discover. */
-"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "Continuez ! Ajouter des mentions J’aime et des commentaires est un bon moyen de développer un réseau. Accédez au Lecteur pour trouver plus d’articles.";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "Surveillez les performances de votre site.";
@@ -4644,8 +4592,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Plus";
 
 /* Action button to display more available options
@@ -4654,12 +4601,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "Plus d’articles";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "Articles connexes de %1$@";
-
-/* Section title for global related posts. */
-"More on WordPress.com" = "Articles connexes sur WordPress.com";
 
 /* No comment provided by engineer. */
 "More support options" = "Plus d‘options d‘aide";
@@ -4814,8 +4755,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "N'expire jamais";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nouveautés";
 
 /* Blocklist Keyword Insertion Title */
@@ -5314,7 +5254,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Ouvrir le sélecteur de média complet.";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Ouvrir dans Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -5805,9 +5745,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "Calendrier des publications";
 
-/* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "La publication régulière d’articles peut vous ramener plus de lecteurs. Les rappels vous aident à rester sur la bonne voie.";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "Publier régulièrement vous aidera à élargir votre audience !";
 
@@ -6161,9 +6098,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Retirer";
 
 /* Remove Person Alert Title
@@ -6379,7 +6314,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Réessayer";
 
@@ -6832,9 +6766,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Réglage de Jetpack";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "Définir vos rappels de blog";
-
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "Définissez vos rappels de blog les jours où vous souhaitez publier.";
 
@@ -6918,9 +6849,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "Erreur de partage";
-
-/* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "Le partagé est configuré !";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "Afficher l'en-tête";
@@ -7462,9 +7390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Touchez [bookmark-outline] pour enregistrer un article dans votre liste.";
 
-/* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "Appuyez sur Ignorer et revenez à votre navigateur Web pour continuer.";
-
 /* Accessibility hint */
 "Tap for more detail." = "Toucher pour plus de détails.";
 
@@ -7486,9 +7411,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint
    Accessibility hint to customize insights */
 "Tap to customize insights" = "Toucher pour personnaliser les thématiques";
-
-/* Accessibility hint */
-"Tap to dismiss this card" = "Toucher pour ignorer cette carte";
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "Appuyez pour afficher la page Web du référent.";
@@ -8202,16 +8124,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Réessayez ";
 
 /* No comment provided by engineer. */
 "Try another search term" = "Essayez un autre terme de recherche";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "Essayer maintenant !";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -8243,6 +8163,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Notifications de site activées";
+
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "En désactivant le curseur, vous désactivez toutes les notifications de cette application, quel qu’en soit le type.";
 
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
@@ -8778,9 +8701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "Afficher plus d’incitations";
 
-/* Description for view count. Singular. */
-"View to your site so far" = "vue sur votre site jusqu’à présent";
-
 /* Title of a Quick Start Tour */
 "View your site" = "Voir votre site";
 
@@ -8802,9 +8722,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Vues et visiteurs";
-
-/* Description for view count. Singular. */
-"Views to your site so far" = "vues sur votre site jusqu’à présent";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -9235,17 +9152,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Quand vous faites des changements à votre site vous pourrez voir l’historique de votre activité ici.";
 
-/* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "Lorsque vous publierez votre prochain article, il sera automatiquement partagé avec vos réseaux connectés.";
-
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "Quelle version voulez-vous modifier ?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oups, quelque chose s’est mal passé et nous ne pouvons pas vous connecter. Veuillez réessayer !";
-
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Oups, quelque chose s’est mal passé pendant le partage. Vous pouvez essayer à nouveau, ça doit être un problème technique. ";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oups, ce n’est pas un code de vérification deux facteurs valide. Vérifiez à nouveau et réessayez.";
@@ -9331,7 +9242,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "Compte WordPress.com";
 
 /* Title for the Plans list header */
@@ -9565,9 +9477,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Il semble que vous ayez installé une extension mobile à partir de DudaMobile qui empêche l'application de se connecter à votre blog";
 
-/* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "Vous avez défini vos rappels de blog";
-
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "Vous ne devriez pas ignorer un problème de sécurité, à moins d’avoir la certitude qu’il n’y a aucun danger. Si vous choisissez d’ignorer cette menace, elle restera présente sur votre site « %1$@ ».";
 
@@ -9587,14 +9496,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "Vous êtes à jour !";
 
-/* Title for the success view when the user has successfully logged in */
-"You're logged in!" = "Connexion établie.";
-
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nous n’êtes pas autorisé à clôturer le compte.";
-
-/* A hint to users that they've set up reader discover. */
-"You've connected with other blogs" = "Vous avez établi une connexion avec d’autres blogs";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "Vous avez apporté des modifications non enregistrées à cet article.";
@@ -9815,6 +9718,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "connexions";
 
+/* Customize Insights description */
+"customizeInsightsCell.content" = "Créez votre propre tableau de bord personnalisé et choisissez quels rapports afficher. Concentrez-vous sur les données qui vous importent le plus.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Toucher pour ignorer cette carte";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "Ignorer";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "Personnalisez vos thématiques";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "Toucher pour personnaliser les thématiques";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "Essayer maintenant";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "appuyer deux fois pour modifier l’unité";
 
@@ -9831,6 +9752,63 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "suivre";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Définir vos rappels de blog";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "Modifier les rappels";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Continuez à bloguer et revenez plus tard voir les visiteurs qui arrivent sur votre site.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "Vous avez défini vos rappels de blog";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "Publier régulièrement peut contribuer au développement de l’audience. Les rappels vous permettent de garder le contrôle.";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "Ignorer";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Découvrir des blogs à suivre";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "Recommencer";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "Continuez ! Ajouter des mentions J’aime et des commentaires est un bon moyen de développer un réseau. Accédez au Lecteur pour trouver plus d’articles.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "Vous avez établi une connexion avec d’autres blogs";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Entrez en contact avec d’autres blogueurs en suivant, aimant et commentant leurs articles.";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "Activer le partage d’article";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "Connecter d’autres réseaux";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "Lorsque vous publierez votre prochain article, il sera automatiquement partagé avec vos réseaux connectés.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "Le partagé est configuré !";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "Partagez automatiquement les nouveaux articles sur vos médias sociaux pour attirer ce public sur votre site.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "Un conseil pour faire croître votre lectorat";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "vues sur votre site jusqu’à présent";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "vue sur votre site jusqu’à présent";
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Ignorer";
@@ -9916,8 +9894,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress est mieux avec Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "Passer à la nouvelle application Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Lire la suite sur jetpack.com";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Poursuivre vers la section Notifications";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passez à l’application Jetpack pour continuer de recevoir des notifications en temps réel sur votre appareil.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Obtenir des notifications avec l’application JetPack";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Passez à l’application Jetpack pour trouver, suivre et aimer tous vos sites et articles favoris avec le Lecteur.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Suivre un site à l’aide de l’application Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack fournit des statistiques, des notifications et plus encore, afin de vous permettre de concevoir et de développer le site WordPress de vos rêves.";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Passez à l’application Jetpack pour avoir le contrôle du trafic de votre site grâce aux statistiques et aux tendances.";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Obtenir des statistiques grâce à la nouvelle application Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack fournit des statistiques, des notifications et plus encore, afin de vous permettre de concevoir et de développer le site WordPress de vos rêves.\n\nL’application WordPress ne prend plus en charge la création de site.";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "Poursuivre vers la section Lecteur";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continuer sans Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "Essayer la nouvelle application Jetpack";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "Créer un site WordPress avec l’application Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "Poursuivre vers la section Statistiques";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Ajouter un auteur";
@@ -9973,8 +9996,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Ignorer";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Il semblerait que l’application WordPress soit toujours installée. Nous vous recommandons de supprimer l’application WordPress pour éviter les conflits de données.";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "J’ai compris";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "Besoin d’aide ?";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Vous n’avez plus besoin de l’application WordPress";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Terminer";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Veuillez supprimer l’application WordPress pour éviter les conflits de données.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "supprimer l’application WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Nous avons transféré tous vos réglages et données. Tout se trouve au même endroit qu’avant.";
@@ -9985,11 +10026,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Décider ultérieurement";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Lorsque l’alerte s’affiche à l’écran, sélectionnez Autoriser pour continuer de recevoir l’ensemble de vos notifications WordPress.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "Autoriser";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Vous recevrez les mêmes notifications, mais elles proviendront maintenant de l’application Jetpack.";
 
 /* Secondary description in the migration notifications screen */
-"migration.notifications.secondaryDescription" = "Nous avons désactivé les notifications pour l’application WordPress.";
+"migration.notifications.secondaryDescription" = "Nous désactiverons les notifications pour l’application WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Autoriser les notifications pour suivre l’évolution de votre site";
@@ -10006,6 +10053,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Bienvenue dans Jetpack !";
 
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "Ignorer";
+
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Ignorer";
 
@@ -10020,6 +10070,81 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numéro de téléphone";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "Ignorer";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "Supprimer";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "Réessayer";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "Options de l’image mise en avant";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignorer";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Appuyez sur « %@ » et revenez à votre navigateur Web pour continuer.";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "Connexion établie.";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "Retour";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "Ignorer";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "J’ai compris";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Recevez des notifications lorsque de nouveaux commentaires sont ajoutés à cette publication.";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "S’abonner à la conversation";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "Articles connexes sur WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "Articles connexes de %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "Plus";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "Ouvrir dans Safari";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "Partager";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nouveau";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "Ignorer";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "Supprimer";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "Options de média";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "Réessayer";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "Ignorer";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "Oups, une erreur s’est produite durant le partage. N’hésitez pas à réessayer. Il s’agissait peut-être d’un problème technique.";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "Erreur de partage";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Commentaires";
@@ -10194,6 +10319,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "Supprimer l’application WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "votre site";
