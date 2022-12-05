@@ -1,6 +1,6 @@
 #  UI Tests
 
-WordPress for iOS has UI acceptance tests for critical user flows through the app, such as login, signup, and publishing a post. The tests use mocked network requests with [WireMock](http://wiremock.org/), defined in [WordPressMocks](https://github.com/wordpress-mobile/WordPressMocks).
+WordPress for iOS has UI acceptance tests for critical user flows through the app, such as login, signup, and publishing a post. The tests use mocked network requests with [WireMock](http://wiremock.org/), defined in the `API-Mocks` folder in the project's root.
 
 ## Running tests
 
@@ -18,7 +18,7 @@ When adding a new UI test, consider:
 * Whether you need to test a user flow (to accomplish a task or goal) or a specific feature (e.g. boundary testing).
 * What screens are being tested (defined as page objects in `Screens/`).
 * Whether there are repeated flows across tests (defined in `Flows/`).
-* What network requests are made during the test (defined in the `WordPressMocks` repo).
+* What network requests are made during the test (defined in `API-Mocks/`).
 
 It's preferred to focus UI tests on entire user flows, and group tests with related flows or goals in the same test suite.
 
@@ -26,8 +26,6 @@ When you add a new test, you may need to add new screens, methods, and flows. We
 
 ## Adding or updating network mocks
 
-When you add a test (or when the app changes), the request definitions for WireMock need to be updated. You can read WireMock’s documentation [here](http://wiremock.org/docs/).
+When you add a test (or when the app changes), the request definitions for WireMock need to be updated in `API-Mocks/`. You can read WireMock’s documentation [here](http://wiremock.org/docs/).
 
 If you are unsure what network requests need to be mocked for a test, an easy way to find out is to run the app through [Charles Proxy](https://www.charlesproxy.com/) and observe the required requests.
-
-Since `WordPressMocks` is included as a pod in `WordPress-iOS`, you can update your `Podfile` to point to your local version and make changes there. Submit a pull request to the `WordPressMocks` repo so a new version of the pod can be released with those changes.

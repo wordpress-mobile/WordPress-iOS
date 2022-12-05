@@ -31,7 +31,15 @@ extension BlogDetailsViewController {
     }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
-        let controller = DomainCreditRedemptionSuccessViewController(domain: domain, delegate: self)
+        let controller = DomainCreditRedemptionSuccessViewController(domain: domain) { [weak self] _ in
+            self?.dismiss(animated: true) {
+                guard let email = self?.accountEmail() else {
+                    return
+                }
+                let title = String(format: NSLocalizedString("Verify your email address - instructions sent to %@", comment: "Notice displayed after domain credit redemption success."), email)
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+            }
+        }
         present(controller, animated: true) { [weak self] in
             self?.updateTableView {
                 guard
@@ -44,23 +52,9 @@ extension BlogDetailsViewController {
             }
         }
     }
-}
-
-extension BlogDetailsViewController: DomainCreditRedemptionSuccessViewControllerDelegate {
-    func continueButtonPressed(domain: String) {
-        dismiss(animated: true) { [weak self] in
-            guard let email = self?.accountEmail() else {
-                return
-            }
-            let title = String(format: NSLocalizedString("Verify your email address - instructions sent to %@", comment: "Notice displayed after domain credit redemption success."), email)
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
-        }
-    }
 
     private func accountEmail() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
+        guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) else {
             return nil
         }
         return defaultAccount.email

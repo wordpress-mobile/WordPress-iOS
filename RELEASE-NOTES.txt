@@ -1,10 +1,102 @@
+21.4
+-----
+* [*] Share extension navigation bar is no longer transparent [#19700]
+
+21.3
+-----
+* [***] Adds a smooth, opt-in transition to the Jetpack app. [#19714]
+* [*] [internal] When a user migrates to the Jetpack app and allows notifications, WordPress app notifications are disabled. This is released disabled and is behind a feature flag. [#19616, #19611, #19590]
+* [*] Fixed a minor UI issue where the segmented control under My SIte was being clipped when "Home" is selected. [#19595]
+* [*] Fixed an issue where the site wasn't removed and the app wasn't refreshed after disconnecting the site from WordPress.com. [#19634]
+* [*] [internal] Fixed an issue where Jetpack extensions were conflicting with WordPress extensions. [#19665]
+
+21.2
+-----
+* [*] [internal] Refactored fetching posts in the Reader tab. [#19539]
+* [*] Fixed an issue where the message "No media matching your search" for the media picker is not visible [#19555]
+
+21.1
+-----
+* [**] [Jetpack-only] We added a new landing screen with a cool animation that responds to device motion! [#19251, #19264, #19277, #19381, #19404, #19410, #19432, #19434, #19442, #19443, #19468, #19469]
+* [*] [internal] Database access change: the 'new Core Data context structure' feature flag is turned on by default. [#19433]
+* [***] [Jetpack-only] Widgets are now on Jetpack. Find Today, This Week, and All Time Widgets to display your Stats on your home screen. [#19479]
+* [*] Block Editor: Fixed iOS Voice Control support within Image block captions. [https://github.com/WordPress/gutenberg/pull/44850]
+* [***] Dropped support for iOS 13. Now supporting iOS 14.0 and above. [#19509]
+
+21.0
+-----
+* [*] Fixed an issue where the cached notifications are retained after logging out of WordPress.com account [#19360]
+* [**] [Jetpack-only] Added a share extension. Now users can share content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19383]
+* [*] Update launch screen. [#19341]
+* [*] [Jetpack-only] Add ability to set custom app icon for Jetpack app. [#19378]
+* [**] [Jetpack-only] Added a "Save as Draft" extension. Now users can save content to Jetpack through iOS's share sheet. This was previously only available on the WordPress app. [#19414]
+* [**] [Jetpack-only] Enables Rich Notifications for the Jetpack app. Now we display more details on most of the push notifications. This was previously only available on the WordPress app. [#19415]
+* [*] Reader: Comment Details have been redesigned. [#19387]
+* [*] [internal] A refactor in weekly roundup notification scheduler. [#19422]
+* [*] [internal] A low level database refactor around fetching cards in the Reader tab. [#19427]
+* [*] Stories: Fixed an issue where the keyboard would overlap with the publish dialog in landscape. [#19350]
+* [*] [internal] A refactor in fetch Reader posts and their comments. [#19458]
+* [*] Fixed an issue where the navigation bar becomes invisible when swiping back to Login Prologue screen.  [#19461]
+
+20.9
+-----
+* [*] Login Flow: Provide ability for user to cancel login WP.com flow when already logged in to a self-hosted site [#19349]
+* [*] [WordPress-only] Powered by Jetpack banner: Fixed an edge case where some scroll views could momentarily become unresponsive to touch. [#19369]
+* [*] [Jetpack-only] Weekly roundup: Adds support for weekly roundup notifications to the Jetpack app. [#19364]
+* [*] Fixed an issue where the push notifications prompt button would overlap on iPad. [#19304]
+* [*] Story Post: Fixed an issue where deleting one image in a story draft would cause the following image not to load. [#16966]
+* [*] Fixed an issue where the no result label on the side menu is oversize on iPad. [#19305]
+* [*] [internal] Various low level database refactors around posts, pages, and comments. [#19353, #19363, #19386]
+
+20.8
+-----
+* [*] User Mention: When replying to a post or a comment, sort user-mentions suggestions by prefix first then alphabetically. [#19218]
+* [*] User Mention: Fixed an issue where the user-mentions suggestions were disappearing after expanding/collapsing the reply field. [#19248]
+* [***] [internal] Update Sentry, our crash monitoring tool, to its latest major version [#19315]
+
+20.7
+-----
+* [*] [Jetpack-only] Block Editor: Update link colors in action sheets from green to blue [https://github.com/WordPress/gutenberg/pull/42996]
+* [*] Jetpack Social: Rebrand Publicize to Jetpack Social [https://github.com/wordpress-mobile/WordPress-iOS/pull/19262]
+
+20.6
+-----
+* [*] [Jetpack-only] Recommend App: you can now share the Jetpack app with your friends. [#19174]
+* [*] [Jetpack-only] Feature Announcements: new features are highlighted via the What's New modals. [#19176]
+* [**] [Jetpack-only] Self-hosted sites: enables logging in via a self-hosted site / adding a self-hosted site [#19194]
+* [*] Pages List: Fixed an issue where the app would freeze when opening the pages list if one of the featured images is a GIF. [#19184]
+* [*] Stats: Fixed an issue where File Downloads section was being displayed for Jetpack sites even though it's not supported. [#19200]
+
+20.5
+-----
+* [*] [Jetpack-only] Block Editor: Makes some small changes to the editor's accent colours for consistency. [#19113]
+* [*] User Mention: Split the suggestions list into a prominent section and a regular section. [#19064]
+* [*] Use larger thumbnail previews for recommended themes during site creation [https://github.com/wordpress-mobile/WordPress-iOS/pull/18972]
+* [***] [internal] Block Editor: List block: Adds support for V2 behind a feature flag [https://github.com/WordPress/gutenberg/pull/42702]
+* [**] Fix for Referrers Card Not Showing Search Engine Details [https://github.com/wordpress-mobile/WordPress-iOS/pull/19158]
+* [*] WeeklyRoundupBackgroundTask - format notification body [https://github.com/wordpress-mobile/WordPress-iOS/pull/19144]
+
+20.4
+-----
+* [*] Site Creation: Fixed a bug in the design picker where the horizontal position of designs could be reset. [#19020]
+* [*] [internal] Block Editor: Add React Native FastImage [https://github.com/WordPress/gutenberg/pull/42009]
+* [*] Block Editor: Inserter displays block collections [https://github.com/WordPress/gutenberg/pull/42405]
+* [*] Block Editor: Fix incorrect spacing within Image alt text footnote [https://github.com/WordPress/gutenberg/pull/42504]
+* [***] Block Editor: Gallery and Image block - Performance improvements [https://github.com/WordPress/gutenberg/pull/42178]
+* [**] [WP.com and Jetpack sites with VideoPress] Prevent validation error when viewing VideoPress markup within app [https://github.com/Automattic/jetpack/pull/24548]
+* [*] [internal] Add Jetpack branding elements (badges and banners) [#19007, #19040, #19049, #19059, #19062, #19065, #19071, #19073, #19103, #19074, #19085, #19094, #19102, #19104]
+
 20.3
 -----
-
+* [*] Stories: Fixed a crash that could occur when adding multiple items to a Story post. [#18967]
+* [*] User Mention: When replying to a post or a comment, the post author or comment author shows up at the top of the suggestions list. [#18979]
+* [*] Block Editor: Fixed an issue where the media picker search query was being retained after dismissing the picker and opening it again. [#18980]
+* [*] Block Editor: Add 'Insert from URL' option to Video block [https://github.com/WordPress/gutenberg/pull/41493]
+* [*] Block Editor: Image block copies the alt text from the media library when selecting an item [https://github.com/WordPress/gutenberg/pull/41839]
+* [*] Block Editor: Introduce "block recovery" option for invalid blocks [https://github.com/WordPress/gutenberg/pull/41988]
 
 20.2
 -----
-* [***] [Jetpack-only] The Insights view in Stats has been revamped with a cleaner look and a new set of cards to make it easier than ever to see at a glance how your site's performing. [#18945]
 * [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
 * [***] [Jetpack-only] Enables QR Code Login scanning from the Me menu. [#18904]
 * [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]

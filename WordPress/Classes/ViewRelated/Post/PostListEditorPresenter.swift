@@ -55,9 +55,7 @@ struct PostListEditorPresenter {
 
     private static func openEditorWithCopy(with post: Post, in postListViewController: EditorPresenterViewController) {
         // Copy Post
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let newPost = postService.createDraftPost(for: post.blog)
+        let newPost = post.blog.createDraftPost()
         newPost.postTitle = post.postTitle
         newPost.content = post.content
         newPost.categories = post.categories

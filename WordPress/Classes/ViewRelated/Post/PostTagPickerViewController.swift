@@ -41,6 +41,7 @@ class PostTagPickerViewController: UIViewController {
         WPStyleGuide.configureTableViewColors(tableView: tableView)
 
         view.backgroundColor = .listBackground
+        view.tintColor = .editorPrimary
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -144,9 +145,7 @@ class PostTagPickerViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 13, *) {
-            textViewContainer.layer.borderColor = UIColor.divider.cgColor
-        }
+        textViewContainer.layer.borderColor = UIColor.divider.cgColor
     }
 
     @objc func doneButtonPressed() {

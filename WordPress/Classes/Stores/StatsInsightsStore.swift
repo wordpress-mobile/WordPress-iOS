@@ -890,7 +890,7 @@ private extension StatsInsightsStore {
     }
 
     func lastRefreshDate(for siteID: NSNumber) -> Date? {
-        if let date = UserDefaults.standard.object(forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)") as? Date {
+        if let date = UserPersistentStoreFactory.instance().object(forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)") as? Date {
             return date
         }
 
@@ -902,7 +902,7 @@ private extension StatsInsightsStore {
             return
         }
 
-        UserDefaults.standard.set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
+        UserPersistentStoreFactory.instance().set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
     }
 
     private enum CacheUserDefaultsKeys {
@@ -1216,7 +1216,7 @@ private extension InsightStoreState {
     func widgetUsingCurrentSite() -> Bool {
         // Only store data if the widget is using the current site.
         guard let sharedDefaults = UserDefaults(suiteName: WPAppGroupName),
-            let widgetSiteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber,
+            let widgetSiteID = sharedDefaults.object(forKey: AppConfiguration.Widget.StatsToday.userDefaultsSiteIdKey) as? NSNumber,
             widgetSiteID == SiteStatsInformation.sharedInstance.siteID  else {
                 return false
         }

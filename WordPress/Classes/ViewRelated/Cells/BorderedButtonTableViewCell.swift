@@ -25,6 +25,7 @@ class BorderedButtonTableViewCell: UITableViewCell {
     private var normalColor = Defaults.normalColor
     private var highlightedColor = Defaults.highlightedColor
     private var borderColor = Defaults.normalColor
+    private var buttonBackgroundColor: UIColor = .basicBackground
 
     // Toggles the loading state of the cell.
     var isLoading: Bool = false {
@@ -57,6 +58,8 @@ class BorderedButtonTableViewCell: UITableViewCell {
 
         view.addSubview(loadingBackgroundView)
         view.pinSubviewToAllEdges(loadingBackgroundView)
+        loadingBackgroundView.backgroundColor = buttonBackgroundColor
+        loadingBackgroundView.layer.cornerRadius = 8
 
         view.addSubview(activityIndicator)
         view.pinSubviewAtCenter(activityIndicator)
@@ -71,13 +74,15 @@ class BorderedButtonTableViewCell: UITableViewCell {
                    normalColor: UIColor = Defaults.normalColor,
                    highlightedColor: UIColor = Defaults.highlightedColor,
                    borderColor: UIColor? = nil,
-                   buttonInsets: UIEdgeInsets = Defaults.buttonInsets) {
+                   buttonInsets: UIEdgeInsets = Defaults.buttonInsets,
+                   backgroundColor: UIColor = .basicBackground) {
         self.buttonTitle = buttonTitle
         self.titleFont = titleFont
         self.normalColor = normalColor
         self.highlightedColor = highlightedColor
         self.borderColor = borderColor ?? normalColor
         self.buttonInsets = buttonInsets
+        self.buttonBackgroundColor = backgroundColor
         configureView()
     }
 
@@ -115,6 +120,8 @@ private extension BorderedButtonTableViewCell {
         button.titleLabel?.font = titleFont
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
+        button.backgroundColor = buttonBackgroundColor
+        button.layer.cornerRadius = 8
 
         // Add constraints to the title label, so the button can contain it properly in multi-line cases.
         if let label = button.titleLabel {

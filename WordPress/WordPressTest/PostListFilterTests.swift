@@ -3,19 +3,6 @@ import XCTest
 import Nimble
 
 class PostListFilterTests: CoreDataTestCase {
-    private var context: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-
-        context = contextManager.newDerivedContext()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        context = nil
-    }
-
     func testSortDescriptorForPublished() {
         let filter = PostListFilter.publishedFilter()
         let descriptors = filter.sortDescriptors
@@ -89,8 +76,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testDraftFilterIncludesExistingDraftsAndPendingPostsTransitionedToOtherStatuses() {
@@ -111,7 +98,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testPublishedFilterIncludesExistingPrivateAndRemotePublishedPosts() {
@@ -137,8 +124,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testPublishedFilterIncludesExistingPublishedAndPrivatePostsTransitionedToOtherStatuses() {
@@ -159,7 +146,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsOnly() {
@@ -184,8 +171,8 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
-        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0!) == false })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
+        expect(nonMatchingPosts).to(allPass { predicate.evaluate(with: $0) == false })
     }
 
     func testScheduledFilterIncludesExistingScheduledPostsTransitionedToOtherStatuses() {
@@ -200,7 +187,7 @@ class PostListFilterTests: CoreDataTestCase {
         ]
 
         // Assert
-        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0!) == true })
+        expect(matchingPosts).to(allPass { predicate.evaluate(with: $0) == true })
     }
 }
 
@@ -208,7 +195,7 @@ private extension PostListFilterTests {
     func createPost(_ status: BasePost.Status,
                     hasRemote: Bool = false,
                     statusAfterSync: BasePost.Status? = nil) -> Post {
-        let post = Post(context: context)
+        let post = Post(context: mainContext)
         post.status = status
         post.statusAfterSync = statusAfterSync
 

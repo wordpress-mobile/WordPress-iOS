@@ -90,12 +90,7 @@ final class SearchTextField: UITextField {
     }()
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator: UIActivityIndicatorView
-        if #available(iOS 13, *) {
-            activityIndicator = UIActivityIndicatorView(style: .medium)
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .gray)
-        }
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.backgroundColor = UIColor.clear
 
         return activityIndicator

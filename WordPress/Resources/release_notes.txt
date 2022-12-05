@@ -1,2 +1,3 @@
-* [*] Preview: Post preview now resizes to account for device orientation change. [#18921]
-* [*] Reverted the app icon back to Cool Blue. Users can reselect last month's icon in Me > App Settings > App Icon if they'd like. [#18934]
+We fixed a small visual issue with the Home and Menu control in the My Site dashboard.
+
+We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.

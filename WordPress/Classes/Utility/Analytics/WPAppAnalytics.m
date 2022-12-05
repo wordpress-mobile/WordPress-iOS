@@ -158,7 +158,8 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 - (void)accountSettingsDidChange:(NSNotification*)notification
 {
-    WPAccount *defaultAccount = [self.accountService defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     if (!defaultAccount.settings) {
         return;
     }
@@ -372,13 +373,13 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 + (BOOL)isTrackingUsage
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
+    return [[UserPersistentStoreFactory userDefaultsInstance] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
 }
 
 - (void)setTrackingUsage:(BOOL)trackingUsage
 {
     if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
-        [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
+        [[UserPersistentStoreFactory userDefaultsInstance] setBool:trackingUsage
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
     }
 }
@@ -391,9 +392,9 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
         return;
     }
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
+    if ([[UserPersistentStoreFactory userDefaultsInstance] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
         [self setUserHasOptedOutValue:NO];
-    } else if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
+    } else if ([[UserPersistentStoreFactory userDefaultsInstance] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
         // If the user has already explicitly disabled tracking,
         // then we should mirror that to the new setting
         [self setUserHasOptedOutValue:YES];
@@ -403,18 +404,18 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 }
 
 + (BOOL)userHasOptedOutIsSet {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil;
+    return [[UserPersistentStoreFactory userDefaultsInstance] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil;
 }
 
 + (BOOL)userHasOptedOut {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
+    return [[UserPersistentStoreFactory userDefaultsInstance] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
 
 /// This method just sets the user defaults value for UserOptedOut, and doesn't
 /// do any additional configuration of sessions or trackers.
 - (void)setUserHasOptedOutValue:(BOOL)optedOut
 {
-    [[NSUserDefaults standardUserDefaults] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
+    [[UserPersistentStoreFactory userDefaultsInstance] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
 
 - (void)setUserHasOptedOut:(BOOL)optedOut

@@ -1,7 +1,0 @@
-¿Necesitas un poco de inspiración para escribir? Te ofrecemos estímulos para bloguear completamente nuevos. Obtén un estímulo nuevo cada día, escribe una entrada sobre ello y crea un hábito de escritura en poco tiempo.
-
-Jetpack ha entrado en el chat. Ahora verás la descripción emergente "Seguir conversación" que te animará a seguir una entrada y recibir notificaciones sobre los comentarios nuevos.
-
-Hemos hecho mejoras en la pantalla de selección donde puedes escoger el diseño de tu sitio durante el proceso de creación de sitios.
-
-Finalmente, hemos corregido un error que afectaba al desplazamiento de notificaciones cuando el teléfono móvil estaba en modo horizontal. Desplázate hacia abajo, amigo.

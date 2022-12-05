@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,11 +17,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meU-pl-4m0">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ARE-aC-ip9">
-                            <rect key="frame" x="16" y="12" width="242.5" height="20"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ARE-aC-ip9">
+                            <rect key="frame" x="16" y="12" width="248" height="20"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fewer Posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FnP-mY-N0W" userLabel="Fewer Posts Label">
-                                    <rect key="frame" x="0.0" y="0.0" width="74" height="20"/>
+                                    <rect key="frame" x="0.0" y="2" width="74" height="16"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -35,21 +33,26 @@
                                     </constraints>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="More Posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uAC-fC-aPR" userLabel="More Posts Label">
-                                    <rect key="frame" x="174" y="0.0" width="68.5" height="20"/>
+                                    <rect key="frame" x="174" y="2" width="74" height="16"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <constraints>
+                                <constraint firstItem="uAC-fC-aPR" firstAttribute="width" secondItem="FnP-mY-N0W" secondAttribute="width" id="Uan-jL-ClD"/>
+                            </constraints>
                         </stackView>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="ARE-aC-ip9" secondAttribute="bottom" constant="12" id="1R0-gc-zaa"/>
                         <constraint firstItem="ARE-aC-ip9" firstAttribute="leading" secondItem="meU-pl-4m0" secondAttribute="leading" constant="16" id="Oiu-FI-wYs"/>
                         <constraint firstItem="ARE-aC-ip9" firstAttribute="top" secondItem="meU-pl-4m0" secondAttribute="top" constant="12" id="PA6-Ot-8ss"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ARE-aC-ip9" secondAttribute="trailing" constant="16" id="Uqz-21-2i7"/>
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="meU-pl-4m0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="3M2-yi-jf4"/>
                 <constraint firstItem="meU-pl-4m0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="4af-BS-OXx"/>
@@ -57,7 +60,6 @@
                 <constraint firstItem="meU-pl-4m0" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="wGv-0S-Tig"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="colorsStackView" destination="T4z-BI-Pdv" id="Db2-0w-czW"/>
                 <outlet property="fewerPostsLabel" destination="FnP-mY-N0W" id="fkh-2s-Jzd"/>

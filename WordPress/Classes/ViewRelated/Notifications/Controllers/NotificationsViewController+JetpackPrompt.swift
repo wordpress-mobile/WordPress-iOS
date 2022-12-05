@@ -1,7 +1,11 @@
 extension NotificationsViewController {
 
+    var blogForJetpackPrompt: Blog? {
+        return Blog.lastUsed(in: managedObjectContext())
+    }
+
     func promptForJetpackCredentials() {
-        guard let blog = blogService.lastUsedBlog() else {
+        guard let blog = blogForJetpackPrompt else {
             return
         }
 
@@ -14,9 +18,16 @@ extension NotificationsViewController {
             controller.promptType = .notifications
             addChild(controller)
             tableView.addSubview(withFadeAnimation: controller.view)
-            controller.view.frame = CGRect(origin: .zero, size: view.frame.size)
+            controller.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                controller.view.topAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.topAnchor),
+                controller.view.leadingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.leadingAnchor),
+                controller.view.trailingAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.trailingAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor)
+            ])
             configureControllerCompletion(controller, withBlog: blog)
             jetpackLoginViewController = controller
+            controller.didMove(toParent: self)
         }
     }
 
@@ -29,19 +40,13 @@ extension NotificationsViewController {
                 controller?.view.removeFromSuperview()
                 controller?.removeFromParent()
                 self?.jetpackLoginViewController = nil
+                self?.configureJetpackBanner()
                 self?.tableView.reloadData()
             } else {
                 self?.activityIndicator.stopAnimating()
                 controller?.updateMessageAndButton()
             }
         }
-    }
-
-
-    // MARK: - Private Computed Properties
-
-    fileprivate var blogService: BlogService {
-        return BlogService(managedObjectContext: managedObjectContext())
     }
 
 }

@@ -6,6 +6,25 @@ SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
 
+# Shared options to use when invoking `gym` / `build_app`.
+#
+# - `manageAppVersionAndBuildNumber: false` prevents `xcodebuild` from bumping
+#   the build number when extracting an archive into an IPA file. We want to
+#   use the build number we set!
+COMMON_EXPORT_OPTIONS = { manageAppVersionAndBuildNumber: false }.freeze
+
+# https://buildkite.com/docs/test-analytics/ci-environments
+TEST_ANALYTICS_ENVIRONMENT = %w[
+  BUILDKITE_ANALYTICS_TOKEN
+  BUILDKITE_BUILD_ID
+  BUILDKITE_BUILD_NUMBER
+  BUILDKITE_JOB_ID
+  BUILDKITE_BRANCH
+  BUILDKITE_COMMIT
+  BUILDKITE_MESSAGE
+  BUILDKITE_BUILD_URL
+].freeze
+
 # Lanes related to Building and Testing the code
 #
 platform :ios do
@@ -62,11 +81,13 @@ platform :ios do
     # Find the referenced .xctestrun file based on its name
     build_products_path = File.join(DERIVED_DATA_PATH, 'Build', 'Products')
 
-    test_plan_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
+    xctestrun_path = Dir.glob(File.join(build_products_path, '*.xctestrun')).select do |path|
       path.include?(options[:name])
     end.first
 
-    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if test_plan_path.nil? || !File.exist?((test_plan_path))
+    UI.user_error!("Unable to find .xctestrun file at #{build_products_path}") if xctestrun_path.nil? || !File.exist?((xctestrun_path))
+
+    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -75,7 +96,7 @@ platform :ios do
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
       test_without_building: true,
-      xctestrun: test_plan_path,
+      xctestrun: xctestrun_path,
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true
@@ -106,7 +127,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      export_options: { method: 'app-store' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     testflight(
@@ -156,7 +177,7 @@ platform :ios do
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
       derived_data_path: DERIVED_DATA_PATH,
-      export_options: { method: 'app-store' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
     testflight(
@@ -198,7 +219,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
@@ -247,7 +268,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
@@ -300,7 +321,7 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
       export_method: 'enterprise',
-      export_options: { method: 'enterprise' }
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
     appcenter_upload(
@@ -383,18 +404,25 @@ platform :ios do
     )
   end
 
-  # Returns the value of `VERSION_SHORT`` from the `Version.public.xcconfig` file
-  #
-  # FIXME: This ought to be extracted into the release toolkit, ideally in a configurable way but with smart defaults.
-  #        See discussion in https://github.com/wordpress-mobile/WordPress-iOS/pull/16805/files/5f3009c5e0d01448cf0369656dddc1fe3757e45f#r664069046
-  #
-  def read_version_from_config
-    fastlane_require 'Xcodeproj'
+  def inject_buildkite_analytics_environment(xctestrun_path:)
+    require 'plist'
 
-    # If the file is not available, the method will raise so we should be fine not handling that case. We'll never return an empty string.
-    File.open(File.join(PROJECT_ROOT_FOLDER, 'Config', 'Version.public.xcconfig')) do |config|
-      configuration = Xcodeproj::Config.new(config)
-      configuration.attributes['VERSION_SHORT']
+    xctestrun = Plist.parse_xml(xctestrun_path)
+    xctestrun['TestConfigurations'].each do |configuration|
+      configuration['TestTargets'].each do |target|
+        TEST_ANALYTICS_ENVIRONMENT.each do |key|
+          value = ENV.fetch(key)
+          next if value.nil?
+
+          target['EnvironmentVariables'][key] = value
+        end
+      end
     end
+
+    File.write(xctestrun_path, Plist::Emit.dump(xctestrun))
+  end
+
+  def buildkite_ci?
+    ENV.fetch('BUILDKITE', false)
   end
 end

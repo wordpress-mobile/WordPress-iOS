@@ -1,7 +1,3 @@
-Need a little writing inspiration? We have you covered with brand-new blogging prompts. Get a new prompt each day, write a post about it, and build a writing habit in no time.
+We fixed a small visual issue with the Home and Menu control in the My Site dashboard.
 
-Jetpack has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
-
-We made some improvements to the selection screen where you choose your site design during the Site Creation process.
-
-Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.
+We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.

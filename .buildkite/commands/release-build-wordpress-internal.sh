@@ -1,9 +1,5 @@
 #!/bin/bash -eu
 
-# FIXIT-13.1: Temporary fix until we're on the Xcode 13.1 VM
-echo "--- :rubygems: Fixing Ruby Setup"
-gem install bundler
-
 echo "--- :arrow_down: Installing Release Dependencies"
 brew update # Update homebrew to temporarily fix a bintray issue
 brew install imagemagick
@@ -20,4 +16,6 @@ echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane build_and_upload_app_center skip_confirm:true
+bundle exec fastlane build_and_upload_app_center \
+  skip_confirm:true \
+  skip_prechecks:true

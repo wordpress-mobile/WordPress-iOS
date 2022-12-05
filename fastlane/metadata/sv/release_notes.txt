@@ -1,5 +1,0 @@
-Nu är WordPress med i chatteran – verktyget ”Följ konversationen” låter dig följa ett inlägg och få aviseringar om nya kommentarer.
-
-Vi har genomfört några förbättringar på skärmen där du väljer design för din webbplats i flödet där du skapar webbplatsen.
-
-Slutligen har vi rättat ett fel som störde skrollning av aviseringar med telefonen i horisontellt läge. Nu ska det gå bra att skrolla igen.

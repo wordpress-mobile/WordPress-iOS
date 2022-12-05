@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -53,9 +53,6 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "ใช้งาน";
-
-/* About this app (information page title) */
-"About" = "เกี่ยวกับ";
 
 /* My Profile 'About me' label */
 "About Me" = "เกี่ยวกับฉัน";
@@ -166,8 +163,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "กลับไป";
 
 /* Text for related post cell preview */
@@ -177,8 +173,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "ปิดกั้นการโค้ดข้อความ";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "บล็อก";
 
 /* Accessibility label for bold button on formatting toolbar.
@@ -196,6 +191,7 @@
 "Camera" = "กล้อง";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -241,6 +237,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -318,7 +315,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -479,22 +475,8 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
@@ -555,7 +537,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "อีเมล์";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -805,7 +788,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -938,8 +920,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "เพิ่มเติม";
 
 /* Label for a button that moves a page to the draft folder
@@ -948,6 +929,7 @@
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -985,7 +967,6 @@
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "ต่อไป";
@@ -1098,10 +1079,11 @@
    Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
 "Oops!" = "โอ๊ะ";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "การตั้งค่าแบบเปิด";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "เปิดในซาฟารี";
 
 /* WordPress.com Research Footer Text */
@@ -1239,9 +1221,9 @@
 "Post moved to trash." = "ย้ายเรื่องไปถังขยะ";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "เรื่อง";
@@ -1270,8 +1252,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "ส่วนตัว";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
 /* Name for the status of a post that is marked private.
@@ -1286,9 +1267,6 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "สาธารณะ";
-
-/* Insights 'Publicize' header */
-"Publicize" = "การเผยแพร่";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -1319,9 +1297,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "ให้คะแนนบนแอพสโตร์";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -1368,9 +1343,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "ลบ";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1434,11 +1407,9 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "ลองใหม่";
 
@@ -1649,8 +1620,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "เรียงตาม";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "ซอร์สโค้ด";
 
 /* Button title for Spam comment state.
@@ -1714,8 +1684,7 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "ลำดับขั้น";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "เงื่อนไขการใช้บริการ";
 
 /* Message of alert when theme activation succeeds */
@@ -1808,7 +1777,7 @@
 /* Explaining to the user there was an generic error accesing media. */
 "There was a problem when trying to access your media. Please try again later." = "มีปัญหาในการพยายามเข้าถึงไฟล์สื่อของคุณ  โปรดลองใหม่อีกครั้งภายหลัง";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "แอพนี้ต้องการการอนุญาตเข้าถึงกล้องเพื่อถ่ายรูป\/วีดีโอใหม่  โปรดเปลี่ยนการตั้งค่าความเป็นส่วนตัวถ้าคุณต้องการที่จะอนุญาตสิ่งนี้";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -1844,7 +1813,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "วันนี้";
 
@@ -1892,8 +1860,7 @@
    Try to load the list of interests again. */
 "Try Again" = "ลองใหม่อีกครั้ง";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* URL text field placeholder */
@@ -1920,6 +1887,7 @@
 "Underline" = "ขีดเส้นใต้";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -2012,8 +1980,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "รุ่น";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
@@ -2047,7 +2014,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -2067,7 +2033,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -2112,7 +2077,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "บัญชี WordPress.com";
 
 /* WordPress.com Notification Settings Title */

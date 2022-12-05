@@ -45,13 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v20.1-whats-new"
+msgctxt "v21.3-whats-new"
 msgid ""
-"WordPress has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.\n"
+"We fixed a small visual issue with the Home and Menu control in the My Site dashboard.\n"
 "\n"
-"We made some improvements to the selection screen where you choose your site design during the Site Creation process.\n"
-"\n"
-"Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.\n"
+"We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

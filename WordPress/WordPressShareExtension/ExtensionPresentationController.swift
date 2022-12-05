@@ -63,10 +63,6 @@ class ExtensionPresentationController: UIPresentationController {
             presentedView?.layer.cornerRadius = Appearance.cornerRadius
             presentedView?.clipsToBounds = true
         }
-        guard #available(iOS 13, *) else {
-            presentedView?.frame = frameOfPresentedViewInContainerView
-            return
-        }
         presentedView?.frame = viewFrame
     }
 

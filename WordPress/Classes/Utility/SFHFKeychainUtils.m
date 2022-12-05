@@ -528,5 +528,49 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                           error:error];
 }
 
++ (NSArray<NSDictionary<NSString *, NSString *> *> *)getAllPasswordsForAccessGroup:(NSString *)accessGroup
+                                                                             error:(NSError **)error {
+    NSMutableDictionary *query = [[@{
+            (__bridge id)kSecClass: (__bridge NSString *)kSecClassGenericPassword,
+            (__bridge id)kSecMatchLimit: (__bridge NSString *)kSecMatchLimitAll,
+            (__bridge id)kSecReturnAttributes: @YES,
+            (__bridge id)kSecReturnRef: @YES
+    } mutableCopy] autorelease];
+
+    if (accessGroup.length > 0) {
+        query[(__bridge id)kSecAttrAccessGroup] = accessGroup;
+    }
+
+    CFTypeRef result = NULL;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)[NSDictionary dictionaryWithDictionary:query], &result);
+
+    if (status != noErr) {
+        if (error != nil) {
+            *error = [NSError errorWithDomain:SFHFKeychainUtilsErrorDomain code:status userInfo:nil];
+        }
+
+        return nil;
+    }
+
+    if (result != NULL) {
+        NSMutableArray *items = [[NSMutableArray alloc] init];
+        NSArray *resultsArray = (__bridge NSArray *)result;
+        for (NSDictionary<id, id> *item in resultsArray) {
+            NSString *username = item[(__bridge NSString *)kSecAttrAccount];
+            NSString *serviceName = item[(__bridge NSString *)kSecAttrService];
+            NSString *password = [[[NSString alloc] initWithData:item[(__bridge NSString *)kSecValueData] encoding:NSUTF8StringEncoding] autorelease];
+            [items addObject:@{
+                    @"username": username,
+                    @"serviceName": serviceName,
+                    @"password": password,
+            }];
+        }
+        CFRelease(result);
+
+        return [items autorelease];
+    }
+
+    return nil;
+}
 
 @end

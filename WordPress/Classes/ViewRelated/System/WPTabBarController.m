@@ -12,7 +12,6 @@
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-#import "AMScrollingNavbar-Swift.h"
 
 @import Gridicons;
 @import WordPressShared;
@@ -324,9 +323,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     // Ignore taps on the post tab and instead show the modal.
-    if ([blogService blogCountForAllAccounts] == 0) {
+    if ([Blog countInContext:context] == 0) {
         [self.mySitesCoordinator showAddNewSite];
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
@@ -336,8 +334,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)showPostTabForBlog:(Blog *)blog
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] == 0) {
+    if ([Blog countInContext:context] == 0) {
         [self.mySitesCoordinator showAddNewSite];
     } else {
         [self showPostTabAnimated:YES toMedia:NO blog:blog];
@@ -447,8 +444,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     if (blog == nil) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog = [blogService lastUsedOrFirstBlog];
+        blog = [Blog lastUsedOrFirstInContext: context];
     }
     
     return blog;
@@ -556,8 +552,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 -(BOOL) welcomeNotificationSeen
 {
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *welcomeNotificationSeenKey = standardUserDefaults.welcomeNotificationSeenKey;
+    NSUserDefaults *standardUserDefaults = [UserPersistentStoreFactory userDefaultsInstance];
+    NSString *welcomeNotificationSeenKey = @"welcomeNotificationSeen";
     return [standardUserDefaults boolForKey: welcomeNotificationSeenKey];
 }
 

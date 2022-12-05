@@ -386,10 +386,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     // MARK: - Account
 
     private func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        return service.defaultWordPressComAccount()
+        try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
     // MARK: - Main Blog
@@ -399,7 +396,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     /// - Returns:the main blog for an account (last selected, or first blog in list).
     ///
     private func mainBlog() -> Blog? {
-        return blogService.lastUsedOrFirstBlog()
+        return Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext)
     }
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
@@ -550,6 +547,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         hideBlogDetails()
+        hideSplitDetailsView()
         blogDetailsViewController = nil
 
         guard noResultsViewController.view.superview == nil else {
@@ -699,12 +697,19 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     func launchSiteCreation(source: String) {
-        let wizardLauncher = SiteCreationWizardLauncher()
-        guard let wizard = wizardLauncher.ui else {
-            return
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source) {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                return
+            }
+
+            // Display site creation flow if not in phase two
+            let wizardLauncher = SiteCreationWizardLauncher()
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+            self.present(wizard, animated: true)
+            WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
         }
-        present(wizard, animated: true)
-        WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
     }
 
     @objc
@@ -847,6 +852,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         blogDashboardViewController.update(blog: blog)
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
+        stackView.sendSubviewToBack(blogDashboardViewController.view)
     }
 
     // MARK: - Model Changes
@@ -914,7 +920,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) else {
             return
         }
 
@@ -961,6 +967,16 @@ extension MySiteViewController: WPSplitViewControllerDetailProvider {
         }
 
         return blogDetailsViewController.initialDetailViewControllerForSplitView(splitView)
+    }
+
+    /// Removes all view controllers from the details view controller stack and leaves split view details in an empty state.
+    ///
+    private func hideSplitDetailsView() {
+        if let splitViewController = splitViewController as? WPSplitViewController,
+           splitViewController.viewControllers.count > 1,
+           let detailsNavigationController = splitViewController.viewControllers.last as? UINavigationController {
+            detailsNavigationController.setViewControllers([], animated: false)
+        }
     }
 }
 

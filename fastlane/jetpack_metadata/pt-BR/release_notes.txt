@@ -1,7 +1,0 @@
-Precisa de um pouco de inspiração para escrever? Nós podemos ajudá-lo com as novas sugestões de publicação. Receba uma nova sugestão todos os dias, escreva um post e crie o hábito de escrever.
-
-O Jetpack entrou no chat. Agora você verá uma dica de ferramenta "Seguir conversa" solicitando que você siga um post e receba notificações sobre novos comentários.
-
-Fizemos algumas melhorias na tela de seleção onde você escolhe o design do seu site durante o processo de criação.
-
-Por fim, eliminamos um bug que afetava a rolagem de notificações quando o telefone estava no modo paisagem. A rolagem está liberada!

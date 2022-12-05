@@ -1,5 +1,0 @@
-WordPress sohbet alanına girdi; artık bir gönderiyi takip etmenizi ve yeni yorumlar hakkında bildirim almanızı sağlayan bir "Sohbeti Takip Et" araç ipucunu göreceksiniz.
-
-Site Oluşturma sürecinde site tasarımınızı seçtiğiniz seçim ekranında bazı iyileştirmeler yaptık.
-
-Son olarak, telefonunuz yatay moddayken bildirim kaydırmayı etkileyen bir hatayı ortadan kaldırdık. Artık istediğiniz gibi kaydırın.

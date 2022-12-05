@@ -19,6 +19,8 @@ extension QRLoginVerifyAuthorizationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.delegate = self
+
         coordinator?.start()
 
         applyStyles()
@@ -34,6 +36,17 @@ extension QRLoginVerifyAuthorizationViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
        return [.portrait, .portraitUpsideDown]
+    }
+}
+
+// MARK: - UINavigation Controller Delegate
+extension QRLoginVerifyAuthorizationViewController: UINavigationControllerDelegate {
+    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+        return supportedInterfaceOrientations
+    }
+
+    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+        return .portrait
     }
 }
 
@@ -183,9 +196,22 @@ extension QRLoginVerifyAuthorizationViewController {
 
         enum completed {
             static let imageName = "domains-success"
-            static let title = NSLocalizedString("You're logged in!", comment: "Title for the success view when the user has successfully logged in")
-            static let subtitle = NSLocalizedString("Tap dismiss and head back to your web browser to continue.", comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow")
-            static let confirmButton = NSLocalizedString("Dismiss", comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen")
+            static let title = NSLocalizedString(
+                "qrLoginVerifyAuthorization.completedInstructions.title",
+                value: "You're logged in!",
+                comment: "Title for the success view when the user has successfully logged in"
+            )
+            private static let subtitleFormat = NSLocalizedString(
+                "qrLoginVerifyAuthorization.completedInstructions.subtitle",
+                value: "Tap '%@' and head back to your web browser to continue.",
+                comment: "Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name."
+            )
+            static let confirmButton = NSLocalizedString(
+                "qrLoginVerifyAuthorization.completedInstructions.dismiss",
+                value: "Dismiss",
+                comment: "Button label that dismisses the qr log in flow and returns the user back to the previous screen"
+            )
+            static let subtitle = String(format: subtitleFormat, Self.confirmButton)
         }
 
         enum noConnection {

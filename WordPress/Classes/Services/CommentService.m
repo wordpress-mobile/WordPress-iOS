@@ -85,12 +85,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return !isSyncing && (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds);
 }
 
-- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"postID = %@", postID];
-    return [blog.comments filteredSetUsingPredicate:predicate];
-}
-
 #pragma mark Public methods
 
 #pragma mark Blog-centric methods
@@ -172,7 +166,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         }
         return;
     }
-    
+
     // If the comment status is not specified, default to all.
     CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
     NSDictionary *options = @{ @"status": [NSNumber numberWithInt:commentStatus] };
@@ -184,7 +178,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                 success:^(NSArray *comments) {
         [self.managedObjectContext performBlock:^{
             Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-            
+
             if (!blogInContext) {
                 return;
             }
@@ -201,13 +195,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 }
                 fetchedComments = [self filterUnrepliedComments:comments forAuthor:author];
             }
-            
+
             [self mergeComments:fetchedComments
                         forBlog:blog
                   purgeExisting:YES
               completionHandler:^{
                 [[self class] stopSyncingCommentsForBlog:blogID];
-                
+
                 [self.managedObjectContext performBlock:^{
                     blogInContext.lastCommentsSync = [NSDate date];
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -313,13 +307,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    
+
     // If the comment status is not specified, default to all.
     CommentStatusFilter commentStatus = status ?: CommentStatusFilterAll;
     options[@"status"] = [NSNumber numberWithInt:commentStatus];
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    
+
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
         Comment *oldestComment = [self oldestCommentForBlog:blog];
         if (oldestComment.dateCreated) {
@@ -330,7 +324,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    
+
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
@@ -347,7 +341,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 }
             }];
         }];
-        
+
     } failure:^(NSError *error) {
         [[self class] stopSyncingCommentsForBlog:blogID];
         if (failure) {
@@ -362,10 +356,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                   forBlog:(Blog *)blog
                   success:(void (^)(Comment *comment))success
                   failure:(void (^)(NSError *))failure {
-    
+
     NSManagedObjectID *blogID = blog.objectID;
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    
+
     [remote getCommentWithID:commentID
                      success:^(RemoteComment *remoteComment) {
         [self.managedObjectContext performBlock:^{
@@ -373,14 +367,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             if (!blog) {
                 return;
             }
-            
-            Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+
+            Comment *comment = [blog commentWithID:remoteComment.commentID];
             if (!comment) {
                 comment = [self createCommentForBlog:blog];
             }
-            
+
             [self updateComment:comment withRemoteComment:remoteComment];
-            
+
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -416,8 +410,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             if (!post) {
                 return;
             }
-            
-            Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+
+            Comment *comment = [post commentWithID:remoteComment.commentID];
 
             if (!comment) {
                 comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
@@ -426,7 +420,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
             comment.post = post;
             [self updateComment:comment withRemoteComment:remoteComment];
-            
+
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -507,19 +501,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
-    
+
     // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
     if (!comment.deleteWillBePermanent) {
         [self moderateComment:comment
                    withStatus:CommentStatusTypeSpam
                       success:success
                       failure:failure];
-        
+
         return;
     }
 
     NSManagedObjectID *commentID = comment.objectID;
-    
+
     [self moderateComment:comment
                withStatus:CommentStatusTypeSpam
                   success:^{
@@ -530,8 +524,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             success();
         }
     } failure: failure];
-    
-    
+
+
 }
 
 // Trash comment
@@ -562,7 +556,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
-    
+
     // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
     if (!comment.deleteWillBePermanent) {
         [remote trashComment:remoteComment success:success failure:failure];
@@ -632,10 +626,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSManagedObjectID *postObjectID = post.objectID;
     NSNumber *siteID = post.siteID;
     NSNumber *postID = post.postID;
-    
+
     NSUInteger commentsPerPage = number ?: WPTopLevelHierarchicalCommentsPerPage;
     NSUInteger pageNumber = page ?: 1;
-    
+
     [self.managedObjectContext performBlock:^{
         CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
         [service syncHierarchicalCommentsForPost:postID
@@ -730,7 +724,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
-    
+
     // This fixes an issue where the comment may not appear for some posts after a successful posting
     // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
     comment.post = post;
@@ -784,7 +778,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID];
     BOOL isPrivateSite = post.isPrivate;
-    
+
     // This fixes an issue where the comment may not appear for some posts after a successful posting
     // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
     comment.post = post;
@@ -1036,7 +1030,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (RemoteComment *remoteComment in comments) {
-        Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
+        Comment *comment = [blog commentWithID:remoteComment.commentID];
         if (!comment) {
             comment = [self createCommentForBlog:blog];
         }
@@ -1063,12 +1057,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             dispatch_async(dispatch_get_main_queue(), completion);
         }
     }];
-}
-
-- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog
-{
-    NSSet *comments = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
-    return [comments anyObject];
 }
 
 #pragma mark - Post centric methods
@@ -1135,9 +1123,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // In theory a sync could include a newly created comment before the request that created it returned.
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
 
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *account = [service defaultWordPressComAccount];
-    comment.author = account.username;
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    comment.author = [account username];
     comment.authorID = [account.userID intValue];
     comment.content = content;
     comment.dateCreated = [NSDate date];
@@ -1147,13 +1134,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     comment.status = [Comment descriptionFor:CommentStatusTypeDraft];
     comment.post = post;
 
-    // Increment the post's comment count. 
+    // Increment the post's comment count.
     post.commentCount = @([post.commentCount integerValue] + 1);
 
     // Find its parent comment (if it exists)
     Comment *parentComment;
     if (parentID.intValue != 0) {
-        parentComment = [self findCommentWithID:parentID fromPost:post];
+        parentComment = [post commentWithID:parentID];
     }
 
     // Update depth and hierarchy
@@ -1200,7 +1187,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     Comment *parentComment;
     if (comment.parentID != 0) {
         NSNumber *parentID = [NSNumber numberWithInt:comment.parentID];
-        parentComment = [self findCommentWithID:parentID fromPost:(ReaderPost *)comment.post];
+        parentComment = [(ReaderPost *)comment.post commentWithID:parentID];
     }
 
     // Update depth and hierarchy
@@ -1222,7 +1209,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSUInteger newCommentCount = 0;
 
     for (RemoteComment *remoteComment in comments) {
-        Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+        Comment *comment = [post commentWithID:remoteComment.commentID];
         if (!comment) {
             newCommentCount++;
             comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
@@ -1333,13 +1320,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return [fetchedObjects lastObject];
 }
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post
-{
-    NSSet *comments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
-    return [comments anyObject];
-}
-
-
 #pragma mark - Transformations
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
@@ -1366,8 +1346,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
-        PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        comment.post = [postService findPostWithID:[NSNumber numberWithInt:comment.postID] inBlog:comment.blog];
+        comment.post = [comment.blog lookupPostWithID:[NSNumber numberWithInt:comment.postID] inContext:self.managedObjectContext];
     }
 }
 
@@ -1404,8 +1383,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // Try to find the Blog locally first, as it should exist if the user has a role on the site.
     if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
         ReaderPost *readerPost = (ReaderPost *)comment.post;
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        return [self remoteForBlog:[blogService blogByHostname:readerPost.blogURL]];
+        return [self remoteForBlog:[Blog lookupWithHostname:readerPost.blogURL inContext:self.managedObjectContext]];
     }
 
     return [self remoteForBlog:comment.blog];
@@ -1426,8 +1404,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
  */
 - (WordPressComRestApi *)apiForRESTRequest
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     //Sergio Estevao: Do we really want to do this? If the call going to be valid if no credential is available?
     if (![api hasCredentials]) {

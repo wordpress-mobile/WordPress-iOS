@@ -1,3 +1,4 @@
+import Nimble
 import ScreenObject
 import XCTest
 
@@ -71,6 +72,8 @@ public class EditorPostSettings: ScreenObject {
         let imageCount = settingsTable.images.count
         if hasImage {
             XCTAssertTrue(imageCount == 1, "Featured image not set")
+            expect(self.changeFeaturedImageButton.images.descendants(matching: .other).element.exists)
+                .toEventually(beFalse(), timeout: .seconds(30), description: "Featured image is not displayed")
         } else {
             XCTAssertTrue(imageCount == 0, "Featured image is set but should not be")
         }

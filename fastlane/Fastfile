@@ -27,20 +27,26 @@ APP_STORE_CONNECT_KEY_PATH = File.join(SECRETS_DIR, 'app_store_connect_fastlane_
 # Other defines used across multiple lanes
 REPOSITORY_NAME = 'WordPress-iOS'
 
-APP_STORE_VERSION_BUNDLE_IDENTIFIER = 'org.wordpress'
-EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
+WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   WordPressShare
   WordPressDraftAction
-  WordPressTodayWidget
   WordPressStatsWidgets
   WordPressNotificationServiceExtension
   WordPressNotificationContentExtension
-  WordPressAllTimeWidget
-  WordPressThisWeekWidget
   WordPressIntents
-].map { |suffix| "#{APP_STORE_VERSION_BUNDLE_IDENTIFIER}.#{suffix}" }
-ALL_BUNDLE_IDENTIFIERS = [APP_STORE_VERSION_BUNDLE_IDENTIFIER, *EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
-JETPACK_APP_IDENTIFIER = 'com.automattic.jetpack'
+].map { |suffix| "#{WORDPRESS_BUNDLE_IDENTIFIER}.#{suffix}" }
+ALL_WORDPRESS_BUNDLE_IDENTIFIERS = [WORDPRESS_BUNDLE_IDENTIFIER, *WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
+
+JETPACK_BUNDLE_IDENTIFIER = 'com.automattic.jetpack'
+JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
+  JetpackShare
+  JetpackDraftAction
+  JetpackStatsWidgets
+  JetpackNotificationServiceExtension
+  JetpackIntents
+].map { |suffix| "#{JETPACK_BUNDLE_IDENTIFIER}.#{suffix}" }
+ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
 
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
@@ -58,6 +64,31 @@ def get_required_env(key)
   ENV.fetch(key, nil)
 end
 
+
+########################################################################
+# Group buildkite logs by action
+########################################################################
+
+# A module that defines methods to be used as overrides to `Fastlane::Actions`
+# module methods.
+module FastlaneActionLogGroup
+  def print_group(action_name)
+    return if %w[is_ci].include?(action_name)
+
+    puts "~~~ :fastlane: #{ENV.fetch('FASTLANE_LANE_NAME', '[root]')} >> #{action_name}"
+  end
+
+  def execute_action(action_name)
+    print_group(action_name)
+    super(action_name)
+  end
+end
+
+if ENV.key?('BUILDKITE')
+  Fastlane::Actions.singleton_class.class_eval do
+    prepend FastlaneActionLogGroup
+  end
+end
 
 ########################################################################
 # Imports domain-specific lanes

@@ -26,7 +26,7 @@ class DateCoordinator {
 // MARK: - Date Picker
 
 @available(iOS, introduced: 14.0)
-class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
+class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
 
     var coordinator: DateCoordinator? = nil
 
@@ -61,7 +61,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         return item
     }()
 
-    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
+    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingDatePickerViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +73,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         navigationItem.setRightBarButton(doneButton, animated: false)
 
         setup(topView: chosenValueRow, pickerView: datePickerView)
+        view.tintColor = .editorPrimary
 
         setupForAccessibility()
     }

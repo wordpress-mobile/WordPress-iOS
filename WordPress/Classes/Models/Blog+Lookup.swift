@@ -46,6 +46,17 @@ public extension Blog {
         try? lookup(withID: id.int64Value, in: context)
     }
 
+    /// Lookup a Blog by its hostname
+    ///
+    /// - Parameters:
+    ///   - hostname: The hostname of the blog.
+    ///   - context:  An `NSManagedObjectContext` containing the `Blog` object with the given `hostname`.
+    /// - Returns: The `Blog` object associated with the given `hostname`, if it exists.
+    @objc(lookupWithHostname:inContext:)
+    static func lookup(hostname: String, in context: NSManagedObjectContext) -> Blog? {
+        try? BlogQuery().hostname(containing: hostname).blog(in: context)
+    }
+
     /// Lookup a Blog by WP.ORG Credentials
     ///
     /// - Parameters:
@@ -58,4 +69,37 @@ public extension Blog {
 
         return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
     }
+
+    @objc(countInContext:)
+    static func count(in context: NSManagedObjectContext) -> Int {
+        BlogQuery().count(in: context)
+    }
+
+    @objc(wpComBlogCountInContext:)
+    static func wpComBlogCount(in context: NSManagedObjectContext) -> Int {
+        BlogQuery().hostedByWPCom(true).count(in: context)
+    }
+
+    @objc(selfHostedInContext:)
+    static func selfHosted(in context: NSManagedObjectContext) -> [Blog] {
+        (try? BlogQuery().hostedByWPCom(false).blogs(in: context)) ?? []
+    }
+
+    /// Find a cached comment with given ID.
+    ///
+    /// - Parameter id: The comment id
+    /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
+    @objc
+    func comment(withID id: NSNumber) -> Comment? {
+        comment(withID: id.int32Value)
+    }
+
+    /// Find a cached comment with given ID.
+    ///
+    /// - Parameter id: The comment id
+    /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
+    func comment(withID id: Int32) -> Comment? {
+        (comments as? Set<Comment>)?.first { $0.commentID == id }
+    }
+
 }

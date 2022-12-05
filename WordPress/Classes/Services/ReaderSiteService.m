@@ -167,9 +167,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+        [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
+    }];
 }
 
 - (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure
@@ -242,8 +243,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
  */
 - (WordPressComRestApi *)apiForRequest
 {
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
         return nil;

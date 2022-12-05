@@ -78,9 +78,7 @@
 {
     if (onlyDefault) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        self.dataSource.account = defaultAccount;
+        self.dataSource.account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     } else {
         self.dataSource.account = nil;
     }
@@ -238,17 +236,13 @@
 
 - (void)syncBlogs
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    
-    [context performBlock:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
         if (!defaultAccount) {
             return;
         }
-        
+
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
 }

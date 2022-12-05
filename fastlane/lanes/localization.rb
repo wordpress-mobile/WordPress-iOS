@@ -93,6 +93,7 @@ JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br
 MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'Resources', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
   File.join('WordPress', 'WordPressDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-sharesheet.', # CFBundleDisplayName for the "Save as Draft" share action
+  File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.', # CFBundleDisplayName for the "Save to Jetpack" share action
   File.join('WordPress', 'WordPressIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
@@ -100,7 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: read_version_from_config,
+  app_version: ios_get_app_version,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,
@@ -122,7 +123,7 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do
+  lane :generate_strings_file_for_glotpress do |options|
     cocoapods
 
     wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
@@ -140,14 +141,14 @@ platform :ios do
       destination: File.join(wordpress_en_lproj, 'Localizable.strings')
     )
 
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
+    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
   end
 
 
 
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file with the latest data'
   lane :update_appstore_strings do |options|
@@ -157,12 +158,13 @@ platform :ios do
 
   # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
   lane :update_wordpress_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
+    version = options.fetch(:version, ios_get_app_version)
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
@@ -186,18 +188,19 @@ platform :ios do
     ios_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: options[:version]
+      release_version: version
     )
   end
 
   # Updates the `AppStoreStrings.po` file for Jetpack, with the latest content from the `release_notes.txt` file and the other text sources
   #
-  # @option [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
   #
   desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
   lane :update_jetpack_appstore_strings do |options|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+    version = options.fetch(:version, ios_get_app_version)
 
     files = {
       whats_new: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'release_notes.txt'),
@@ -216,7 +219,7 @@ platform :ios do
     ios_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: options[:version]
+      release_version: version
     )
   end
 
@@ -244,6 +247,9 @@ platform :ios do
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
+    # Manually add files in case there are entirely new localization files.
+    # Fastlane's `git_commit` can only commit changes to existing files.
+    git_add(path: modified_files, shell_escape: false)
     git_commit(
       path: modified_files,
       message: 'Update app translations – Other `.strings`',
@@ -299,6 +305,9 @@ platform :ios do
     )
   end
 
+  # rubocop:disable Metrics/AbcSize
+  #
+  # Reference: http://wiki.c2.com/?AbcMetric
   def download_localized_app_store_metadata(glotpress_project_url:, locales:, metadata_directory:, commit_message:)
     # FIXME: Replace this with a call to the future replacement of `gp_downloadmetadata` once it's implemented in the release-toolkit (see paaHJt-31O-p2).
 
@@ -346,8 +355,7 @@ platform :ios do
       allow_nothing_to_commit: true
     )
   end
-
-
+  # rubocop:enable Metrics/AbcSize
 
   # Uploads the localized metadata for WordPress and Jetpack (from `fastlane/{metadata,jetpack_metadata}/`) to App Store Connect
   #
@@ -373,7 +381,7 @@ platform :ios do
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-      app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
@@ -393,7 +401,7 @@ platform :ios do
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-      app_identifier: JETPACK_APP_IDENTIFIER,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
       skip_screenshots: skip_screenshots

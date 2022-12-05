@@ -92,6 +92,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
 
         postTimestampLabel.textColor = .textSubtle
         postTimestampLabel.font = .preferredFont(forTextStyle: .subheadline)
+        postTimestampLabel.adjustsFontSizeToFitWidth = true
 
         postInfoStackView.addArrangedSubviews([postTitleLabel, postTimestampLabel])
 
@@ -148,10 +149,12 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         topLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         topLabel.textColor = .text
         topLabel.text = title
+        topLabel.adjustsFontSizeToFitWidth = true
 
         countLabel.font = Style.insightsCountFont
         countLabel.textColor = .text
         countLabel.adjustsFontSizeToFitWidth = true
+        countLabel.adjustsFontForContentSizeCategory = true
         countLabel.text = "0"
 
         stackView.addArrangedSubviews([topLabel, countLabel])

@@ -4,21 +4,13 @@ import Nimble
 @testable import WordPress
 
 class ReaderCardTests: CoreDataTestCase {
-    private var testContext: NSManagedObjectContext!
-
-    override func setUp() {
-        super.setUp()
-
-        testContext = contextManager.newDerivedContext()
-    }
-
     /// Create a Card of the type post from a RemoteReaderCard
     ///
     func testCreateCardPostFromRemote() {
         let expectation = self.expectation(description: "Create a Reader Card of type post")
 
         remoteCard(ofType: .post) { remoteCard in
-            let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let card = ReaderCard(context: self.mainContext, from: remoteCard)
 
             expect(card?.post).toNot(beNil())
             expect(card?.post?.postTitle).to(equal("Pats, Please"))
@@ -35,7 +27,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Create a Reader Card of type interests")
 
         remoteCard(ofType: .interests) { remoteCard in
-            let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let card = ReaderCard(context: self.mainContext, from: remoteCard)
             let topics = card?.topicsArray
 
             expect(topics?.count).to(equal(2))
@@ -53,7 +45,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Create a Reader Card of type sites")
 
         remoteCard(ofType: .sites) { remoteCard in
-            let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let card = ReaderCard(context: self.mainContext, from: remoteCard)
             let topics = card?.sitesArray
 
             expect(topics?.count).to(equal(1))
@@ -71,7 +63,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Don't create a Reader Card")
 
         remoteCard(ofType: .unknown) { remoteCard in
-            let card = ReaderCard(context: self.testContext, from: remoteCard)
+            let card = ReaderCard(context: self.mainContext, from: remoteCard)
 
             expect(card).to(beNil())
             expectation.fulfill()

@@ -132,6 +132,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        mediaLibraryDataSource.searchCancelled()
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 

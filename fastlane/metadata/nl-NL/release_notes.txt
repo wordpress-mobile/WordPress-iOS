@@ -1,5 +1,0 @@
-WordPress is toegevoegd aan de chat – vanaf nu zie je de tooltip 'Conversatie volgen' om een bericht te volgen en meldingen te ontvangen over nieuwe opmerkingen.
-
-We hebben wat verbeteringen doorgevoerd aan het selectiescherm waar je je site-ontwerp kunt kiezen tijdens het aanmaken van je site.
-
-Ten slotte hebben we een probleem verholpen met het scrollen door meldingen wanneer je je telefoon in landschapsmodus gebruikt. Scrol maar door.

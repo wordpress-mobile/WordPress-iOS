@@ -10,9 +10,9 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 @interface SuggestionsTableView ()
 
+@property (nonatomic, readonly, nonnull, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIView *separatorView;
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSLayoutConstraint *headerMinimumHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
@@ -26,17 +26,24 @@ CGFloat const STVSeparatorHeight = 1.f;
                 suggestionType:(SuggestionType)suggestionType
                       delegate:(id <SuggestionsTableViewDelegate>)suggestionsDelegate
 {
+    NSManagedObjectContext *contextManager = [ContextManager sharedInstance].mainContext;
+    SuggestionsListViewModel *viewModel = [[SuggestionsListViewModel alloc] initWithSiteID:siteID context:contextManager];
+    viewModel.suggestionType = suggestionType;
+    return [self initWithViewModel:viewModel delegate:suggestionsDelegate];
+}
+
+- (nonnull instancetype) initWithViewModel:(id <SuggestionsListViewModelType>)viewModel
+                                  delegate:(id <SuggestionsTableViewDelegate>)suggestionsDelegate
+{
     self = [super initWithFrame:CGRectZero];
     if (self) {
-        _siteID = siteID;
-        _suggestionType = suggestionType;
         _suggestionsDelegate = suggestionsDelegate;
-        _searchText = @"";
         _enabled = YES;
-        _searchResults = [[NSMutableArray alloc] init];
         _useTransparentHeader = NO;
         _animateWithKeyboard = YES;
         _showLoading = NO;
+        _viewModel = viewModel;
+        [self setupViewModel];
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
@@ -45,18 +52,26 @@ CGFloat const STVSeparatorHeight = 1.f;
     return self;
 }
 
+#pragma mark - Custom Setters
+
+- (void)setProminentSuggestionsIds:(NSArray<NSNumber *> *)prominentSuggestionsIds
+{
+    _prominentSuggestionsIds = prominentSuggestionsIds;
+    self.viewModel.prominentSuggestionsIds = prominentSuggestionsIds;
+}
+
 - (void)setUseTransparentHeader:(BOOL)useTransparentHeader
 {
     _useTransparentHeader = useTransparentHeader;
     [self updateHeaderStyles];
 }
 
+#pragma mark - View Lifecycle
 
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
-
-    if (!_suggestions && _siteID != nil) {
-        [self fetchSuggestionsFor:_siteID];
+    if (self.superview) {
+        [self.viewModel reloadData];
     }
 }
 
@@ -71,6 +86,18 @@ CGFloat const STVSeparatorHeight = 1.f;
         [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
         [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
     }
+}
+
+- (void)setupViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    self.viewModel.searchResultUpdated = ^(id<SuggestionsListViewModelType> viewModel) {
+        if (!weakSelf) return;
+        [weakSelf.tableView reloadData];
+        [weakSelf setNeedsUpdateConstraints];
+        [weakSelf setNeedsLayout];
+        [weakSelf layoutIfNeeded];
+    };
 }
 
 - (void)setupHeaderView
@@ -90,14 +117,22 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (void)setupTableView
 {
-    _tableView = [[UITableView alloc] init];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [_tableView registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_tableView setRowHeight:STVRowHeight];
+    [_tableView setBackgroundColor:[UIColor systemBackgroundColor]];
+
+    // Removes a small padding at the bottom of the tableView
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    footerView.backgroundColor = [UIColor clearColor];
+    [_tableView setTableFooterView:footerView];
+
     // Table separator insets defined to match left edge of username in cell.
     [_tableView setSeparatorInset:UIEdgeInsetsMake(0.f, 47.f, 0.f, 0.f)];
+
     // iOS8 added and requires the following in order for that separator inset to be used
     if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
         [_tableView setLayoutMargins:UIEdgeInsetsZero];
@@ -172,8 +207,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    NSUInteger suggestionCount = self.searchResults.count;
-    BOOL showTable = (self.showLoading && self.suggestions == nil) || (suggestionCount > 0);
+    NSUInteger suggestionCount = self.viewModel.sections.count;
+    BOOL isSearchApplied = !self.viewModel.searchText.isEmpty;
+    BOOL isLoadingSuggestions = self.viewModel.isLoading;
+    BOOL showTable = (self.showLoading && isSearchApplied && isLoadingSuggestions) || suggestionCount > 0;
     [self setHidden:!showTable];
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didChangeTableBounds:)]) {
         [self.suggestionsDelegate suggestionsTableView:self didChangeTableBounds:self.tableView.bounds];
@@ -189,33 +226,29 @@ CGFloat const STVSeparatorHeight = 1.f;
     }
     self.headerMinimumHeightConstraint.constant = minimumHeaderHeight;
 
-    // Take the height of the table frame and make it so only whole results are displayed
-    NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
-
+    // Get the number of max rows from the delegate.
+    NSNumber *maxRows = nil;
     if([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewMaxDisplayedRows:)]){
-        NSInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
-
-        maxRows = delegateMaxRows;
+        NSUInteger delegateMaxRows = [self.suggestionsDelegate suggestionsTableViewMaxDisplayedRows:self];
+        maxRows = [NSNumber numberWithUnsignedInteger:delegateMaxRows];
     }
 
-    if (maxRows < 1) {
-        maxRows = 1;
-    }    
-    
-    if (!self.suggestions) {
-        self.heightConstraint.constant = STVRowHeight;
-    } else if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = ceilf((maxRows * STVRowHeight) + (STVRowHeight*0.4));
+    // Set height constraint
+    [self.tableView setNeedsLayout];
+    [self.tableView layoutIfNeeded];
+    if (maxRows) {
+        self.heightConstraint.constant = [SuggestionsTableView maximumHeightForTableView:self.tableView
+                                                                maxNumberOfRowsToDisplay:maxRows];
     } else {
-        self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
+        self.heightConstraint.constant = [SuggestionsTableView heightForTableView:self.tableView
+                                                                    maximumHeight:self.bounds.size.height - minimumHeaderHeight];
     }
-    
     [super updateConstraints];
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
-    if ( !self.animateWithKeyboard ) {
+    if (!self.animateWithKeyboard) {
         return;
     }
     
@@ -223,7 +256,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     [self setNeedsUpdateConstraints];
-    
+
     [UIView animateWithDuration:animationDuration animations:^{
         [self layoutIfNeeded];
     }];
@@ -236,30 +269,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 #pragma mark - Public methods
 
-- (BOOL)showSuggestionsForWord:(NSString *)word
+- (BOOL)showSuggestionsForWord:(NSString *)string
 {
-    if (!self.enabled) {
-        return NO;
-    }
-    
-    if ([word hasPrefix:[self suggestionTrigger]]) {
-        self.searchText = word;
-        if (self.searchText.length > 1) {
-            NSString *searchQuery = [word substringFromIndex:1];
-            NSPredicate *predicate = [self predicateFor: searchQuery];
-            self.searchResults = [[self.suggestions filteredArrayUsingPredicate:predicate] mutableCopy];
-        } else {
-            self.searchResults = [self.suggestions mutableCopy];
-        }
-    } else {
-        self.searchText = @"";
-        [self.searchResults removeAllObjects];
-    }
-    
-    [self.tableView reloadData];
-    [self setNeedsUpdateConstraints];
-    
-    return ([self.searchResults count] > 0);
+    if (!self.enabled) { return false; }
+    return [self.viewModel searchSuggestionsWithWord: string];
 }
 
 - (void)hideSuggestions
@@ -267,59 +280,17 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self showSuggestionsForWord:@""];
 }
 
-- (NSInteger)numberOfSuggestions {
-    return self.searchResults.count;
-}
-
-- (void)selectSuggestionAtPosition:(NSInteger)position {
-    if ([self.suggestions count] == 0) {
-        return;
+- (void)selectSuggestionAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray<SuggestionsListSection *> *sections = self.viewModel.sections;
+    if (indexPath.section < sections.count && indexPath.row < sections[indexPath.section].rows.count) {
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     }
-    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:0]];
 }
 
 - (void)didTapHeader {
     if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableViewDidTapHeader:)]) {
         [self.suggestionsDelegate suggestionsTableViewDidTapHeader:self];
     }
-}
-
-#pragma mark - UITableViewDataSource methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (!self.suggestions) {
-        return 1;
-    }
-    
-    return self.searchResults.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
-                                                                forIndexPath:indexPath];
-    
-    if (!self.suggestions) {
-        cell.titleLabel.text = NSLocalizedString(@"Loading...", @"Suggestions loading message");
-        cell.subtitleLabel.text = nil;
-        [cell.iconImageView setImage:nil];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-
-    id suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    cell.titleLabel.text = [self titleFor:suggestion];
-    cell.subtitleLabel.text = [self subtitleFor:suggestion];
-    [self loadImageFor:suggestion in:cell at:indexPath];
-    return cell;
 }
 
 @end

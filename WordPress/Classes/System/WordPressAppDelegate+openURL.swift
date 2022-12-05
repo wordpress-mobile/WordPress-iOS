@@ -20,6 +20,19 @@ import AutomatticTracks
             return true
         }
 
+        /// WordPress only. Handle deeplink from JP that requests data export.
+        let wordPressExportRouter = MigrationDeepLinkRouter(urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
+                                                            routes: [WordPressExportRoute()])
+        if AppConfiguration.isWordPress,
+           wordPressExportRouter.canHandle(url: url) {
+            wordPressExportRouter.handle(url: url)
+            return true
+        }
+
+        if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
+            return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
+        }
+
         guard url.scheme == WPComScheme else {
             return false
         }
@@ -143,15 +156,14 @@ import AutomatticTracks
         let tags = params.value(of: NewPostKey.tags)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirst(in: context) else {
             return false
         }
 
         // Should more formats be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        let post = blog.createDraftPost()
         post.postTitle = title
         post.content = contentEscaped
         post.tags = tags
@@ -181,8 +193,7 @@ import AutomatticTracks
         let title = params.value(of: NewPostKey.title)
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.lastUsedOrFirstBlog() else {
+        guard let blog = Blog.lastUsedOrFirst(in: context) else {
             return false
         }
 

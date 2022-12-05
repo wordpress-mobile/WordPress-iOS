@@ -79,37 +79,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 }
 
 - (void)trackString:(NSString *)event withProperties:(NSDictionary *)properties {
-    if ([Feature enabled:FeatureFlagMySiteDashboard]) {
-
-        /// If the Dashboard is enabled, we add this property for all events
-        /// about what is the default tab assigned
-        /// This value can be: `site_menu`, `dashboard` or `nonexistent`
-        NSMutableDictionary *propertiesWithTabExperiment = properties != nil ? properties.mutableCopy : @{}.mutableCopy;
-        propertiesWithTabExperiment[@"default_tab_experiment"] = [[MySiteSettings alloc] experimentAssignment];
-
-        NSArray<NSString *> *propertyKeys = [[propertiesWithTabExperiment allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    if (properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", event);
+    } else {
+        NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
         NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-            return [NSString stringWithFormat:@"%@: %@", key, propertiesWithTabExperiment[key]];
+            return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
         }] componentsJoinedByString:@", "];
         DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
-
-        [self.tracksService trackEventName:event withCustomProperties:propertiesWithTabExperiment];
-
-    } else {
-
-        if (properties == nil) {
-            DDLogInfo(@"🔵 Tracked: %@", event);
-        } else {
-            NSArray<NSString *> *propertyKeys = [[properties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-            NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
-                return [NSString stringWithFormat:@"%@: %@", key, properties[key]];
-            }] componentsJoinedByString:@", "];
-            DDLogInfo(@"🔵 Tracked: %@ <%@>", event, propertiesDescription);
-        }
-
-        [self.tracksService trackEventName:event withCustomProperties:properties];
-
     }
+
+    [self.tracksService trackEventName:event withCustomProperties:properties];
 }
 
 - (void)beginSession
@@ -140,12 +120,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     __block WPAccount *account;
 
     [context performBlockAndWait:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        account = [accountService defaultWordPressComAccount];
+        account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
 
-
-        blogCount = [blogService blogCountForAllAccounts];
+        blogCount = [Blog countInContext:context];
         jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];
         if (account != nil) {
             username = account.username;
@@ -216,10 +194,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 - (NSString *)anonymousID
 {
     if (_anonymousID == nil || _anonymousID.length == 0) {
-        NSString *anonymousID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsAnonymousUserIDKey];
+        NSString *anonymousID = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:TracksUserDefaultsAnonymousUserIDKey];
         if (anonymousID == nil) {
             anonymousID = [[NSUUID UUID] UUIDString];
-            [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+            [[UserPersistentStoreFactory userDefaultsInstance] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
         }
         
         _anonymousID = anonymousID;
@@ -233,17 +211,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     _anonymousID = anonymousID;
 
     if (anonymousID == nil) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
 }
 
 - (NSString *)loggedInID
 {
     if (_loggedInID == nil || _loggedInID.length == 0) {
-        NSString *loggedInID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
+        NSString *loggedInID = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
         if (loggedInID != nil) {
             _loggedInID = loggedInID;
         }
@@ -257,11 +235,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     _loggedInID = loggedInID;
 
     if (loggedInID == nil) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
         return;
     }
 
-    [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat

@@ -1,5 +1,0 @@
-WordPress has entered the chat—you’ll now see a “Follow Conversation” tooltip prompting you to follow a post and get notifications about new comments.
-
-We made some improvements to the selection screen where you choose your site design during the Site Creation process.
-
-Finally, we squashed a bug that affected notification scrolling when your phone is in landscape mode. Scroll away, friend.

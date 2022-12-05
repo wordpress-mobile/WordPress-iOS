@@ -76,6 +76,10 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
         self.delegate = delegate
     }
 
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
+        // Do nothing, since this cell doesn't have an action to present an action sheet.
+    }
+
     private enum Constants {
         static let defaultMargin: CGFloat = 16
         static let compactMargin: CGFloat = 0

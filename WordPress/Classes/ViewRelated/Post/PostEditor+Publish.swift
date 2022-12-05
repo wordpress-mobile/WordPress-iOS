@@ -247,7 +247,9 @@ extension PublishingEditor {
             }
         }
 
-        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing)
+        let isTitleDisplayed = prepublishingIdentifiers.contains { $0 == .title }
+        let shouldDisplayPortrait = WPDeviceIdentification.isiPhone() && isTitleDisplayed
+        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: shouldDisplayPortrait)
         let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
         if let sourceView = prepublishingSourceView {
             bottomSheet.show(from: self, sourceView: sourceView)
@@ -515,7 +517,8 @@ extension PublishingEditor {
 
         PostCoordinator.shared.save(post)
 
-        dismissOrPopView(presentBloggingReminders: true)
+        let presentBloggingReminders = Feature.enabled(.bloggingReminders) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+        dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -92,8 +92,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ ble koblet til på nytt.";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -290,14 +289,8 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* About this app (information page title) */
-"About" = "Om";
-
 /* My Profile 'About me' label */
 "About Me" = "Om meg";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Om WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
@@ -315,8 +308,7 @@ translators: Block name. %s: The localized block name */
    Link to Account Settings section */
 "Account Settings" = "Kontoinnstillinger";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "Takk til";
 
 /* Theme Activate action title */
@@ -753,8 +745,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Tilbake";
 
 /* Title for the Background Color section */
@@ -795,8 +786,7 @@ translators: Block name. %s: The localized block name */
 /* 'Best Hour' label for Most Popular stat. */
 "Best Hour" = "Beste time";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "Beste visninger noensinne";
 
 /* Text for related post cell preview */
@@ -837,8 +827,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Blocklist */
 "Blocklist" = "Blokkeringsliste";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
 
 /* Create new Blog Post button title */
@@ -923,6 +912,7 @@ translators: Block name. %s: The localized block name */
 "Can't publish an empty post" = "Kan ikke publisere et tomt innlegg";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -968,6 +958,7 @@ translators: Block name. %s: The localized block name */
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -1102,9 +1093,6 @@ translators: Block name. %s: The localized block name */
    Title of a Quick Start Tour */
 "Choose a theme" = "Velg et tema";
 
-/* Label for Publish time picker */
-"Choose a time" = "Velg en tid";
-
 /* Menu option for selecting media from the device's photo library. */
 "Choose from My Device" = "Velg fra min enhet";
 
@@ -1225,7 +1213,6 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -1317,9 +1304,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Tilkobling ikke tilgjengelig";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Tilkoblinger";
-
 /* Support email label. */
 "Contact Email" = "Kontakt-epost";
 
@@ -1344,6 +1328,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1382,9 +1367,6 @@ translators: Block name. %s: The localized block name */
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Kopier lenke til kommentar";
-
-/* No comment provided by engineer. */
-"Copy block" = "Kopier blokk";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "Could Be Better" = "Kan bli bedre";
@@ -1516,9 +1498,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Lag nettstedsikon";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "Lag ditt eget, tilpassede kontrollpanel og og velg hvilke rapporter du vil se. Fokuser på de data du bryr deg mest om.";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "Lag ditt nettsted";
 
@@ -1567,9 +1546,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "Tilpass dine innstillinger for fulgte sider for nye innlegg og kommentarer";
-
-/* Customize Insights title */
-"Customize your insights" = "Tilpass dine innsikter";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpass sideinnstillinger for liker, kommentarer, følgere og mer.";
@@ -1748,22 +1724,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "Ignorer";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -1773,15 +1735,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "Visningsnavn";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "Vis all nettstedsstatistikk her. Konfigurer i WordPress-appen under nettsidestatistikk.";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "Vis nettstedets statistikk for denne siden her. Konfigurer i nettstedsstatistikken i WordPress-appen.";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "Vis statistikk for nettstedet ditt for i dag her. Konfigurer det i WordPress-appen i din nettstedsstatistkk.";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
@@ -1948,7 +1901,8 @@ translators: Block name. %s: The localized block name */
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-post";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -2002,9 +1956,6 @@ translators: Block name. %s: The localized block name */
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Slå på nettstedstatistikk";
-
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "Skru på deling av innlegg";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "Aktivere sidevarslinger?";
@@ -2212,9 +2163,6 @@ translators: Block name. %s: The localized block name */
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Fremhevet bilde";
-
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Valg for fremhevet innlegg";
 
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Fremhevet bilde ble ikke lastet";
@@ -2825,7 +2773,6 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -3163,8 +3110,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Mer";
 
 /* Action button to display more available options
@@ -3173,9 +3119,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "Flere innlegg";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "Mer fra %1$@";
 
 /* Insights 'Most Popular Time' header */
 "Most Popular Time" = "Mest populære tidspunkt";
@@ -3219,6 +3162,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -3273,7 +3217,8 @@ translators: Block name. %s: The localized block name */
 /* A button title. */
 "Need help finding your site address?" = "Trenger du hjelp med å finne sideadressen?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Trenger du hjelp?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -3282,8 +3227,7 @@ translators: Block name. %s: The localized block name */
 /* Describes a status of a plugin */
 "Needs Update" = "Trenger oppdatering";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nye";
 
 /* Blocklist Keyword Insertion Title */
@@ -3318,7 +3262,6 @@ translators: Block name. %s: The localized block name */
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Neste";
@@ -3443,9 +3386,6 @@ translators: Block name. %s: The localized block name */
 
 /* Menus text shown when no menus were available for loading the Menus editor. */
 "No menus available" = "Ingen menyer funnet";
-
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "Intet nettverk tilgjengelig";
 
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Ingen varslinger ennå";
@@ -3652,16 +3592,14 @@ translators: Block name. %s: The localized block name */
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Åpne Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åpne innstillinger";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Åpne WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Åpne full medievelger";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Åpne i Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -4072,9 +4010,9 @@ translators: Block name. %s: The localized block name */
 "Posting Activity" = "Innleggsaktivitet";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Innlegg";
@@ -4148,8 +4086,7 @@ translators: Block name. %s: The localized block name */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Personvern";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Personvern";
 
 /* Register Domain - Privacy Protection section header title */
@@ -4167,9 +4104,6 @@ translators: Block name. %s: The localized block name */
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Privat";
-
-/* No comment provided by engineer. */
-"Problem displaying block" = "Problem under visning av blokk";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem med å laste innhold";
@@ -4192,18 +4126,6 @@ translators: Block name. %s: The localized block name */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Offentlig";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Publiser";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Synkronisering av Publicize-tilkobling feilet";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Synkronisering av Publicize-tjenesten feilet";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Del på %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -4273,9 +4195,6 @@ translators: Block name. %s: The localized block name */
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Hurtigstart";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Vurder oss på App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Les på";
@@ -4372,9 +4291,7 @@ translators: Block name. %s: The localized block name */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Slett";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -4516,11 +4433,9 @@ translators: Block name. %s: The localized block name */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Prøv igjen";
 
@@ -4652,9 +4567,6 @@ translators: Block name. %s: The localized block name */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Søk WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Søk WordPress\nfor et nettsted eller innlegg";
 
 /* No comment provided by engineer. */
 "Search blocks" = "Søk blokker";
@@ -4883,8 +4795,7 @@ translators: Block name. %s: The localized block name */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Del din historie her...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Deling";
@@ -5070,7 +4981,9 @@ translators: Block name. %s: The localized block name */
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalenke";
 
-/* Follower Totals label for social media followers */
+/* Follower Totals label for social media followers
+   Label for social followers
+   Title of Stats section that shows social followers. */
 "Social" = "Sosialt";
 
 /* Confirms with the user if they save the post all media that failed to upload will be removed from it. */
@@ -5156,8 +5069,7 @@ translators: Block name. %s: The localized block name */
    Settings: Comments Sort Order */
 "Sort By" = "Sorter etter";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Kildekode";
 
 /* Label for showing the available disk space quota available for media */
@@ -5204,9 +5116,6 @@ translators: Block name. %s: The localized block name */
 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistikk ikke lastet inn";
-
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "Statistikken vil bli oppdatert neste gang du er på nett.";
 
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
@@ -5366,9 +5275,6 @@ translators: Block name. %s: The localized block name */
    Accessibility hint to customize insights */
 "Tap to customize insights" = "Trykk for å tilpasse innsikter";
 
-/* Accessibility hint */
-"Tap to dismiss this card" = "Trykk for å avvise dette kortet";
-
 /* Message in a row indicating to tap to enter a custom value */
 "Tap to enter a custom value" = "Trykk for å skrive inn en egendefinert verdi";
 
@@ -5399,8 +5305,7 @@ translators: Block name. %s: The localized block name */
 /* The underlined title sentence */
 "Terms and Conditions" = "Vilkår for bruk";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Bruksregler";
 
 /* Menu item label for linking a testimonial post. */
@@ -5653,7 +5558,7 @@ translators: Block name. %s: The localized block name */
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Denne handlingen <b>kan ikke<\/b> angres. Sletting av siden vil fjerne alt innhold, alle bidragsytere, alle domener og alle oppgraderinger fra siden.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Denne appen trenger tilgang til kameraet for å ta bilder og video, vennligst endre personverninnstillingene hvis du ønsker dette.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -5764,7 +5669,6 @@ translators: Block name. %s: The localized block name */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
 
@@ -5804,13 +5708,15 @@ translators: Block name. %s: The localized block name */
 /* Label for total followers */
 "Total" = "Totalt";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "Antall kommentarer";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Totalt antall e-postfølgere: %@";
 
-/* 'This Year' label for total number of likes. */
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "Antall liker";
 
 /* 'This Year' label for the total number of posts. */
@@ -5865,15 +5771,14 @@ translators: Block name. %s: The localized block name */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Prøv igjen";
 
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -5888,8 +5793,7 @@ translators: Block name. %s: The localized block name */
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Skru på sidevarslinger";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -6009,6 +5913,7 @@ translators: Block name. %s: The localized block name */
 "Underline" = "Understrek";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -6231,8 +6136,7 @@ translators: Block name. %s: The localized block name */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Bekreft din e-postadresse - instruksjoner sendt til %@";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Versjon";
 
 /* Description for the version label in the What's new page. */
@@ -6308,7 +6212,6 @@ translators: Block name. %s: The localized block name */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -6337,7 +6240,6 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -6586,9 +6488,6 @@ translators: Block name. %s: The localized block name */
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oisann, noe gikk galt og vi klarte ikke å logge det deg på. Vennligst prøv igjen!";
 
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Oops, noe gikk galt under deling. Du kan prøve igjen, kanskje det var en svikt.";
-
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oida, det var ikke en gyldig 2-trinnsautentiseringskode. Dobbeltsjekk koden din, og prøv igjen!";
 
@@ -6597,6 +6496,9 @@ translators: Block name. %s: The localized block name */
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Vil ikke vises offentlig.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Innstillinger for WorfPress-appen";
@@ -6649,7 +6551,8 @@ translators: Block name. %s: The localized block name */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "WordPress.com-konto";
 
 /* Title for the Plans list header */
@@ -7034,9 +6937,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} Logg inn med Google.";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domener";

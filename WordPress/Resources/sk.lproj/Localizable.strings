@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-05-03 21:58:52+0000 */
+/* Translation-Revision-Date: 2022-11-01 10:41:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -165,14 +165,8 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTÍVNA";
 
-/* About this app (information page title) */
-"About" = "O";
-
 /* My Profile 'About me' label */
 "About Me" = "O mne";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "O aplikácií WordPress pre iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Zrýchlené mobilné stránky (AMP)";
@@ -296,6 +290,12 @@
 
 /* No comment provided by engineer. */
 "Allow this connection to be used by all admins and users of your site." = "Povoliť toto pripojenie používať všetkým administrátorom a používateľom Vašej webovej stránke.";
+
+/* Allowlisted IP Addresses Title */
+"Allowlisted IP Addresses" = "Zoznam povolených IP adries";
+
+/* Jetpack Settings: Allowlisted IP addresses */
+"Allowlisted IP addresses" = "Zoznam povolených IP adries";
 
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Už to skoro je hotové! Prosím zadajte overovací kód z aplikácie overovania.";
@@ -494,8 +494,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Späť";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
@@ -514,8 +513,11 @@
 /* The title of a button that triggers blocking a site from the user's reader. */
 "Block this site" = "Blokovať túto webovú stránku";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Blocklist Title
+   Settings: Comments Blocklist */
+"Blocklist" = "Blacklist";
+
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
@@ -566,6 +568,7 @@
 "Can Not Request Link" = "Nieje možné načítať adresu";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -611,6 +614,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -785,7 +789,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -871,9 +874,6 @@
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Pripojenie nie je dostupné";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Pripojenia";
-
 /* Support email label. */
 "Contact Email" = "Kontaktný e-mail";
 
@@ -898,6 +898,7 @@
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -911,6 +912,13 @@
 
 /* Title of a Quick Start Tour */
 "Continue with site setup" = "Pokračovať s nastaveniami webovej stránky";
+
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Prispieť";
+
+/* Copy the post url and paste anywhere in phone
+   Label for page copy link. Tapping copy the url of page */
+"Copy Link" = "Kopírovať odkaz";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Skopírovať odkaz do komentáru";
@@ -1173,22 +1181,8 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "Zrušiť";
 
 /* Display Name label text.
@@ -1198,6 +1192,9 @@
 
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
+
+/* Message shown when all tours have been completed */
+"Doesn't it feel good to cross things off a list?" = "Nie je to dobrý pocit odškrtávať veci zo zoznamu?";
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domény";
@@ -1246,6 +1243,9 @@
 /* Title for the edit more button section */
 "Edit \"More\" button" = "Upraviť tlačidlo \"Viac\"";
 
+/* Blocklist Keyword Edition Title */
+"Edit Blocklist Word" = "Upraviť slová blacklistu";
+
 /* View title when editing a comment. */
 "Edit Comment" = "Upraviť komentár";
 
@@ -1277,7 +1277,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1381,6 +1382,9 @@
 /* Notice displayed after attempt to install a plugin fails. */
 "Error installing %@." = "Došlo k chybe pri inštalovaní %@.";
 
+/* Text displayed when there is a failure loading notification likes. */
+"Error loading likes" = "Chyba pri načítavaní stránky";
+
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Došlo k chybe pri načítavaní pluginov.";
 
@@ -1467,9 +1471,6 @@
 /* Label for the Featured Image area in post settings.
    Title for the Featured Image view */
 "Featured Image" = "Ilustračný obrázok";
-
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "Možnosti ilustračného obrázku";
 
 /* No comment provided by engineer. */
 "Featured Image did not load" = "Ilustračný obrázok sa nenačítal";
@@ -1813,6 +1814,9 @@
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Inštaluje sa prvý plugin na webovej stránke. Môže to trvať 1 minútu. Počas tohto času, nebudete môcť vykonávať zmeny na webovej stránke.";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Neplatná e-mailová adresa.";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Neplatná adresa webovej stránky";
 
@@ -1824,6 +1828,9 @@
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a valid URL. */
 "Invalid URL, please check if you wrote a valid site address." = "Neplatná URL adresa, skontrolujte, či ste napísali platnú adresu webu.";
+
+/* No comment provided by engineer. */
+"Invalid URL." = "Nesprávna URL adresa";
 
 /* No comment provided by engineer. */
 "Invalid username" = "Neplatné používateľske meno";
@@ -1923,7 +1930,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -2213,8 +2219,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Viac";
 
 /* Action button to display more available options
@@ -2230,6 +2235,7 @@
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -2271,7 +2277,8 @@
 /* A button title. */
 "Need help finding your site address?" = "Potrebujete pomoc pri hľadaní adresy vašej webovej stránky?";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Potrebujete pomoc?";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -2280,9 +2287,11 @@
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "Nový";
+
+/* Blocklist Keyword Insertion Title */
+"New Blocklist Word" = "Nové slovo na blackliste";
 
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Nová IP adresa alebo rozsah IP adries";
@@ -2310,7 +2319,6 @@
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Ďalší";
@@ -2420,6 +2428,9 @@
 
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Žiadne výsledky. Prosím, skúste iné vyhľadávanie.";
+
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "Žiadne uložené články";
 
 /* A message title */
 "No sites found" = "Neboli nájdené žiadne webové stránky";
@@ -2562,16 +2573,14 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Otvoriť Mail";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
-
-/* Today widget label to launch WP app */
-"Open WordPress" = "Otvoriť WordPress";
 
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "Otvoriť výber všetkých médií";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Otvoriť v Safari";
 
 /* Label for the description of openening a link using a new window */
@@ -2851,9 +2860,9 @@
 "Posting Activity" = "Aktivita prispievania";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Články";
@@ -2894,6 +2903,9 @@
 /* No comment provided by engineer. */
 "Preview post" = "Predchádzajúce články";
 
+/* Description of a Quick Start Tour */
+"Preview your site to see what your visitors will see." = "Prezrite si svoje webové stránky, aby ste videli to, čo uvidia vaši návštevníci.";
+
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Predchádzajúce upozornenie";
 
@@ -2906,8 +2918,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Súkromné";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Zásady ochrany osobných údajov";
 
 /* Link to privacy settings page
@@ -2932,18 +2943,6 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Verejné";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Propagovať";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Zverejnenie pripojenia synchronizácie zlyhalo";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Zverejnenie pripojenia servisu zlyhalo";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publikovať na %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -3003,9 +3002,6 @@
 
 /* The menu item to select during a guided tour. */
 "Quick Start" = "Rýchly štart";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Ohodnoťte nás na App Store";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "Prečítať na ";
@@ -3075,10 +3071,12 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Odstrániť";
+
+/* Remove Person Alert Title
+   Remove User. Verb */
+"Remove %@" = "Odstrániť %@";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Odstrániť ilustračný obrázok";
@@ -3137,6 +3135,9 @@
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text odpovede";
 
+/* Placeholder text for replying to a post */
+"Reply to post" = "Odpovedať na článok...";
+
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovať schválenie pre komentáre, ktoré obsahujú viacej než tento počet odkazov.";
 
@@ -3192,11 +3193,9 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Obnoviť";
 
@@ -3314,9 +3313,6 @@
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "Prehľadávať WordPress";
 
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "Prehľadávať WordPress\npre webovú stránku alebo príspevok";
-
 /* Text displayed when the search controller will be presented */
 "Search pages" = "Vyhľadať stránky";
 
@@ -3418,6 +3414,9 @@
    Navigation title displayed on the navigation bar */
 "Set Parent" = "Nastaviť Nadradený";
 
+/* No comment provided by engineer. */
+"Set as Featured Image" = "Nastaviť ako ilustračný obrázok";
+
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "Nastaviť Jetpack";
 
@@ -3457,8 +3456,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podeľte sa o svoj príbeh...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Zdieľanie";
@@ -3649,6 +3647,9 @@
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Ospravedlňujeme sa, adresu tejto webovej stránky nemôžete použiť.";
 
+/* A short error message letting the user know the requested reader content could not be loaded. */
+"Sorry. The content could not be loaded." = "Ľutujeme. Stránku sa nepodarilo načítať.";
+
 /* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
 "Sorry. The social service did not tell us which account could be used for sharing." = "Prepáčte. Sociálna služba nám neuviedla, ktorý účet sa dá použiť na zdieľanie.";
 
@@ -3659,8 +3660,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Zoradiť podľa";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Zdrojový kód";
 
 /* Label for showing the available disk space quota available for media */
@@ -3814,8 +3814,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Povedz nám niečo o sebe.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Zmluvné podmienky";
 
 /* Menu item label for linking a testimonial post. */
@@ -3998,6 +3997,9 @@
 /* Explaining to the user there was an generic error accesing media. */
 "There was a problem when trying to access your media. Please try again later." = "Vyskytol sa problém pri pokuse sprístupniť vaše súbory. Skúste to znovu neskôr.";
 
+/* Message for stories unknown error. */
+"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Vyskytol sa problém so sledovaním webovej stránky. Ak problém aj naďalej trvá, kontaktujte nás cez Profil > Pomocník & Podpora.";
+
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Došlo k chybe pri načítavaní aktivít";
 
@@ -4025,7 +4027,7 @@
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Túto akciu <b> nie je možné <\/b>zrušiť. Odstránením stránky odstránite všetok obsah, užívateľov, domény a aktualizácie zo stránky.";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -4121,7 +4123,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Dnes";
 
@@ -4192,8 +4193,7 @@
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Pokus zopakujte";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -4208,8 +4208,7 @@
 /* Verb. An option to switch on site notifications. */
 "Turn on site notifications" = "Zapnúť upozornenia stránky";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -4253,6 +4252,9 @@
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nepodarilo sa prehrať video";
+
+/* No comment provided by engineer. */
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nenašla sa webová stránka WordPress na tejto URL adrese. Ťuknite \"Potrebujete pomoc?\" na zobrazenie FAQ.";
 
 /* Text displayed when a site restore fails. */
 "Unable to restore your site, please try again later or contact support." = "Nepodarilo sa obnoviť webovú stránku, prosím pokus zopakujte alebo kontaktujte podporu.";
@@ -4302,6 +4304,7 @@
 "Underline" = "Podčiarknuť";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -4481,8 +4484,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Overte prihlásenie";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Verzia";
 
 /* Version of a plugin to install
@@ -4552,7 +4554,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -4581,7 +4582,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -4677,14 +4677,14 @@
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hups, niečo sa pokazilo a nepodarilo sa nám prihlásiť vás. Prosím, skúste ešte raz!";
 
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "Hups, niečo sa pokazilo počas zdieľania. Neskôr môžete pokus zopakovať, možno došlo k poruche.";
-
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hups, dvojfaktorový overovací kód nie je platný. Skontrolujte kód a skúste ešte raz!";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Táto adresa nebude zverejnená.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
 
 /* Siri Suggestion to open App Settings */
 "WordPress App Settings" = "Nastavenia aplikácie WordPress";
@@ -4737,7 +4737,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "Účet WordPress.com";
 
 /* Title for the Plans list header */
@@ -4860,6 +4861,9 @@
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Nepublikovali ste ešte žiadny článok";
+
+/* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
+"You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Na zoznam povolených môžete pridať IP adresu alebo viacero adries, čím zabránite, aby ich Jetpack zablokoval. IPv4 a IPv6 sú prijateľné. Zadajte spodnú a hornú hodnotu oddelenú polmčkou, ak chcete určiť rozsah. Napríklad: 12.12.12.1-12.12.12.100.";
 
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Na to, aby ste mohli vykonať túto akciu musíte byť prihlásený cez účet WordPress.com.";

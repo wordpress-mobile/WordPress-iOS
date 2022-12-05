@@ -11,6 +11,7 @@ typedef void (^EditCommentCompletion)(BOOL hasNewContent, NSString *newContent);
 @property (readonly, nonatomic, assign) CGRect keyboardFrame;
 
 + (instancetype)newEditViewController;
++ (NSString *)nibName;
 
 /// Triggered to indicate the content of the text view has changed
 /// Automatically called when the user enters text into the `textView`

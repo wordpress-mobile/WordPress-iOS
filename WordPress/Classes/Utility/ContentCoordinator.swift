@@ -82,7 +82,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
            let timePeriod = action.timePeriod {
             // Initializing a StatsPeriodType to ensure we have a valid period
             let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
+            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
         }
     }
 
@@ -161,8 +161,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     private func jetpackSiteReff(with slug: String) -> JetpackSiteRef? {
-        let service = BlogService(managedObjectContext: mainContext)
-        guard let blog = service.blog(byHostname: slug), let jetpack = JetpackSiteRef(blog: blog) else {
+        guard let blog = Blog.lookup(hostname: slug, in: mainContext), let jetpack = JetpackSiteRef(blog: blog) else {
             return nil
         }
         return jetpack

@@ -36,6 +36,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         }
     }
 
+    @IBOutlet weak var jetpackBadgeView: UIView!
+
     //TODO: remove!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
@@ -153,6 +155,29 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         warningButton.titleLabel?.lineBreakMode = .byWordWrapping
         warningButton.naturalContentHorizontalAlignment = .leading
         warningButton.backgroundColor = view.backgroundColor
+        setupJetpackBadge()
+    }
+
+    private func setupJetpackBadge() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        jetpackBadgeView.isHidden = false
+        let jetpackBadgeButton = JetpackButton(style: .badge)
+        jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
+        jetpackBadgeButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
+        jetpackBadgeView.addSubview(jetpackBadgeButton)
+        NSLayoutConstraint.activate([
+            jetpackBadgeButton.centerXAnchor.constraint(equalTo: jetpackBadgeView.centerXAnchor),
+            jetpackBadgeButton.topAnchor.constraint(equalTo: jetpackBadgeView.topAnchor, constant: Constants.jetpackBadgeTopInset),
+            jetpackBadgeButton.bottomAnchor.constraint(equalTo: jetpackBadgeView.bottomAnchor)
+        ])
+        jetpackBadgeView.backgroundColor = .listBackground
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .activityDetail)
     }
 
     private func setupText() {
@@ -268,6 +293,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
         static let supportUrl = "https://jetpack.com/support/backup/"
+        // the distance ought to be 30, and the stackView spacing is 16, thus the top inset is 14.
+        static let jetpackBadgeTopInset: CGFloat = 14
     }
 }
 

@@ -474,18 +474,17 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshNoResultsView];
     
     __typeof(self) __weak weakSelf = self;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    NSManagedObjectID *blogObjectID = self.blog.objectID;
 
+    NSManagedObjectID *blogObjectID = self.blog.objectID;
     BOOL filterUnreplied = [self isUnrepliedFilterSelected:self.filterTabBar];
 
-    [context performBlock:^{
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
             return;
         }
 
+        CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
         [commentService syncCommentsForBlog:blogInContext
                                  withStatus:self.currentStatusFilter
                             filterUnreplied:filterUnreplied
@@ -515,16 +514,15 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     __typeof(self) __weak weakSelf = self;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
-    
-    [context performBlock:^{
+
+    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext * _Nonnull context) {
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
             return;
         }
 
+        CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
         [commentService loadMoreCommentsForBlog:blogInContext
                                      withStatus:self.currentStatusFilter
                                         success:^(BOOL hasMore) {

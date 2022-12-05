@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -89,9 +89,6 @@
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
-
-/* About this app (information page title) */
-"About" = "Ynghylch";
 
 /* My Profile 'About me' label */
 "About Me" = "Amdanaf Fi";
@@ -269,8 +266,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Nôl";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
@@ -283,8 +279,7 @@
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Dyfyniad Bloc";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Blog's User Profile. Displayed when the name is empty! */
@@ -317,6 +312,7 @@
 "Can Not Request Link" = "Methu gwneud Cais am Ddnolen";
 
 /* Alert dismissal title
+   Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
@@ -362,6 +358,7 @@
    Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
+   Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
@@ -475,7 +472,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -550,9 +546,6 @@
 
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Nid oes cysylltiad ar gael";
-
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Cysylltiadau";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -732,22 +725,8 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "Cau";
 
 /* Display Name label text.
@@ -817,7 +796,8 @@
    Email address text field placeholder
    Email Notifications Channel
    Label for email followers
-   Register Domain - Domain contact information field Email */
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
 "Email" = "E-bost";
 
 /* Header for a comment author's email address, shown when editing a comment. */
@@ -1147,7 +1127,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -1321,8 +1300,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Rhagor";
 
 /* Label for a button that moves a page to the draft folder
@@ -1331,6 +1309,7 @@
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -1366,7 +1345,6 @@
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Nesaf";
@@ -1531,13 +1509,11 @@
    Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
 "Open Mail" = "Agor E-bost";
 
-/* Go to the settings app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Agor y Gosodiadau";
 
-/* Today widget label to launch WP app */
-"Open WordPress" = "Agor WordPress";
-
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Agor yn Safari";
 
 /* Menus label for checkbox when editig item as a link. */
@@ -1706,9 +1682,9 @@
 "Posting Activity" = "Gweithgaredd Cofnodi";
 
 /* All Time Stats 'Posts' label
+   Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Cofnodion";
@@ -1744,8 +1720,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Preifatrwydd";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Polisi Preifatrwydd";
 
 /* Name for the status of a post that is marked private.
@@ -1763,18 +1738,6 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Cyhoeddus";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Publicize";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "Methodd Publicize gydweddu eich cyhoeddusrwydd";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "Methodd Publicize gydweddu eich cyhoeddusrwydd";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicize i %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -1811,9 +1774,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Barnwch ni yn yr App Store";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -1875,9 +1835,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Tynnu";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1953,11 +1911,9 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Ceisiwch eto";
 
@@ -2095,8 +2051,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Rhanwch eich stori yma...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Rhannu";
@@ -2231,8 +2186,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Trefnu yn ôl";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Cod Ffynhonnell";
 
 /* Button title for Spam comment state.
@@ -2307,8 +2261,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Dywedwch wrthym amdanoch eich hun.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
 
 /* Menu item label for linking a testimonial post. */
@@ -2449,7 +2402,7 @@
 /* Text displayed when there is a failure loading the plan details */
 "There was an error loading the plan" = "Bu gwall wrth lwytho'r cynllun";
 
-/* No comment provided by engineer. */
+/* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad at y Camera i gipio cyfryngau newydd, newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
 
 /* Explaining to the user why the app needs access to the device media library. */
@@ -2492,7 +2445,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Heddiw";
 
@@ -2543,8 +2495,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Ceisiwch Eto";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -2586,6 +2537,7 @@
 "Underline" = "Tanlinellu";
 
 /* Button in the notification presented in Reader when a post removed from saved for later
+   Button in the notification presented when a prompt is skipped
    Button title. Reverts a comment moderation action.
    Button title. Reverts the previous notification operation
    Revert an operation
@@ -2698,8 +2650,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Fersiwn";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
@@ -2739,7 +2690,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -2765,7 +2715,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -2808,6 +2757,9 @@
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Ni fydd yn cael ei ddangos yn gyhoeddus";
 
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
+
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
@@ -2829,7 +2781,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "Cyfrif WordPress.com";
 
 /* Title for the Plans list header */

@@ -1,5 +1,0 @@
-WordPress telah memiliki fitur komentar — Anda sekarang akan melihat tooltip “Ikuti Komentar” yang meminta Anda untuk mengikuti pos dan mendapatkan pemberitahuan tentang komentar baru.
-
-Kami meningkatkan layar pemilihan desain situs dalam proses Pembuatan Situs.
-
-Terakhir, kami memperbaiki bug yang memengaruhi pengguliran notifikasi saat ponsel Anda dalam mode lanskap. Gulir saja, teman.

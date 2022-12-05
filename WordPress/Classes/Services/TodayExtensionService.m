@@ -1,7 +1,6 @@
 #import "TodayExtensionService.h"
 #import <NotificationCenter/NotificationCenter.h>
 #import "Constants.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPress-Swift.h"
 
 @implementation TodayExtensionService
@@ -20,22 +19,23 @@
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     
     // If the widget site has changed, clear the widgets saved data.
-    NSNumber *previousSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    NSNumber *previousSiteID = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
     if (siteID != previousSiteID) {
         [StatsDataHelper clearWidgetsData];
         [WPAnalytics track:WPAnalyticsStatWidgetActiveSiteChanged];
     }
 
     // Save the site information to shared user defaults for use in the today widgets.
-    [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults setObject:blogUrl forKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
+    [sharedDefaults setObject:timeZone.name forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteTimeZoneKey];
+    [sharedDefaults setObject:siteID forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    [sharedDefaults setObject:blogName forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
+    [sharedDefaults setObject:blogUrl forKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
+    
+    [SFHFKeychainUtils storeUsername:AppConfigurationWidgetStats.keychainTokenKey
                          andPassword:oauth2Token
-                      forServiceName:WPStatsTodayWidgetKeychainServiceName
+                      forServiceName:AppConfigurationWidgetStats.keychainServiceName
                          accessGroup:WPAppKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
@@ -48,13 +48,13 @@
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
 
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteUrlKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteTimeZoneKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
+    [sharedDefaults removeObjectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
     
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
-                              andServiceName:WPStatsTodayWidgetKeychainServiceName
+    [SFHFKeychainUtils deleteItemForUsername:AppConfigurationWidgetStats.keychainTokenKey
+                              andServiceName:AppConfigurationWidgetStats.keychainServiceName
                                  accessGroup:WPAppKeychainAccessGroup
                                        error:nil];
 }
@@ -62,9 +62,9 @@
 - (BOOL)widgetIsConfigured
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-    NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
-                                                       andServiceName:WPStatsTodayWidgetKeychainServiceName
+    NSString *siteId = [sharedDefaults stringForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteIdKey];
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:AppConfigurationWidgetStats.keychainTokenKey
+                                                       andServiceName:AppConfigurationWidgetStats.keychainServiceName
                                                           accessGroup:WPAppKeychainAccessGroup
                                                                 error:nil];
     

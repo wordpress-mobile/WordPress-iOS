@@ -101,7 +101,7 @@ class WPSplitViewController: UISplitViewController {
         super.viewDidLoad()
 
         delegate = self
-        preferredDisplayMode = .allVisible
+        preferredDisplayMode = .oneBesideSecondary
 
         extendedLayoutIncludesOpaqueBars = true
     }
@@ -146,9 +146,7 @@ class WPSplitViewController: UISplitViewController {
         // This is to work around an apparent bug in iOS 13 where the detail view is assuming the system is in dark
         // mode when switching out of the app and then back in. Here we ensure the overridden user interface style
         // traits are replaced with the correct current traits before we use them.
-        if #available(iOS 12.0, *) {
-            traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
-        }
+        traits.append(UITraitCollection(userInterfaceStyle: traitCollection.userInterfaceStyle))
 
         return UITraitCollection(traitsFrom: traits)
     }
@@ -206,7 +204,7 @@ class WPSplitViewController: UISplitViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if hasHorizontallyCompactView() && preferredDisplayMode == .primaryHidden {
+        if hasHorizontallyCompactView() && preferredDisplayMode == .secondaryOnly {
             setPrimaryViewControllerHidden(false, animated: false)
         }
     }
@@ -379,7 +377,7 @@ class WPSplitViewController: UISplitViewController {
         }
 
         let updateDisplayMode = {
-            self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
+            self.preferredDisplayMode = (hidden) ? .secondaryOnly : .oneBesideSecondary
         }
 
         if animated {
@@ -566,7 +564,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
 
         let hasFullscreenViewControllersInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count > 0
-        let isCurrentlyFullscreen = preferredDisplayMode != .allVisible
+        let isCurrentlyFullscreen = preferredDisplayMode != .oneBesideSecondary
 
         // Handle popping from fullscreen view controllers
         //

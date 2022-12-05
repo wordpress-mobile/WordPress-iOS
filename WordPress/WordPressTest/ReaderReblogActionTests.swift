@@ -11,45 +11,15 @@ class MockReblogPresenter: ReaderReblogPresenter {
     }
 }
 
-class MockBlogService: BlogService {
-    var blogsForAllAccountsExpectation: XCTestExpectation?
-    var lastUsedOrFirstBlogExpectation: XCTestExpectation?
-
-    var blogCount = 1
-
-    override func blogCountVisibleForWPComAccounts() -> Int {
-        return blogCount
-    }
-
-    override func visibleBlogsForWPComAccounts() -> [Blog] {
-        blogsForAllAccountsExpectation?.fulfill()
-        return [Blog(context: self.managedObjectContext), Blog(context: self.managedObjectContext)]
-    }
-    override func lastUsedOrFirstBlog() -> Blog? {
-        lastUsedOrFirstBlogExpectation?.fulfill()
-        return Blog(context: self.managedObjectContext)
-    }
-}
-
-class MockPostService: PostService {
-    var draftPostExpectation: XCTestExpectation?
-
-    override func createDraftPost(for blog: Blog) -> Post {
-        draftPostExpectation?.fulfill()
-        return Post(context: self.managedObjectContext)
-    }
-}
-
-
 class ReblogTestCase: CoreDataTestCase {
     var readerPost: ReaderPost?
-    var blogService: MockBlogService?
-    var postService: MockPostService?
+    var blogService: BlogService?
+    var postService: PostService?
 
     override func setUp() {
         readerPost = ReaderPost(context: self.mainContext)
-        blogService = MockBlogService(managedObjectContext: self.mainContext)
-        postService = MockPostService(managedObjectContext: self.mainContext)
+        blogService = BlogService(managedObjectContext: self.mainContext)
+        postService = PostService(managedObjectContext: self.mainContext)
     }
 
     override func tearDown() {
@@ -80,28 +50,31 @@ class ReaderReblogActionTests: ReblogTestCase {
 
 class ReblogPresenterTests: ReblogTestCase {
 
-    func testPresentEditorForOneSite() {
+    func testPresentEditorForOneSite() throws {
         // Given
-        postService!.draftPostExpectation = expectation(description: "createDraftPost was called")
-        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
+        BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+        // TODO: Replace this expectation with other ways to assert the `ReaderReblogPresenter.presentEditor` is called.
+//        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
+        let draftPosts = NSFetchRequest<Post>(entityName: "Post")
+        draftPosts.predicate = NSPredicate(format: "status = %@", Post.Status.draft.rawValue)
+        try XCTAssertEqual(mainContext.count(for: draftPosts), 0)
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
         presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
         // Then
-        waitForExpectations(timeout: 4) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
+        try XCTAssertEqual(mainContext.count(for: draftPosts), 1)
     }
 
     func testPresentEditorForMultipleSites() {
         // Given
-        blogService!.lastUsedOrFirstBlogExpectation = expectation(description: "lastUsedOrFirstBlog was called")
-        blogService!.blogCount = 2
+        for _ in 1...2 {
+            BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+        }
         let presenter = ReaderReblogPresenter(postService: postService!)
+        let origin = MockViewController()
+        origin.presentExpectation = expectation(description: "blog selector is presented")
         // When
-        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: origin)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {
@@ -144,4 +117,15 @@ class ReblogFormatterTests: XCTestCase {
                        "</figure>\n<!-- /wp:image -->",
                        wpImage)
     }
+}
+
+private class MockViewController: UIViewController {
+
+    var presentExpectation: XCTestExpectation?
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        presentExpectation?.fulfill()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
+
 }

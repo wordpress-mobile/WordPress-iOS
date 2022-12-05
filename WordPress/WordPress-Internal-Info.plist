@@ -443,6 +443,7 @@
 			<string>org.wordpress</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wordpressnotificationmigration</string>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
 			</array>
@@ -464,6 +465,7 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>jetpacknotificationmigration</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
 	</array>
@@ -492,8 +494,6 @@
 	<array>
 		<string>Noticons.ttf</string>
 	</array>
-	<key>UIApplicationShortcutWidget</key>
-	<string>org.wordpress.internal.WordPressTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

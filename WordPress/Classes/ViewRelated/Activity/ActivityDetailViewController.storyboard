@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,13 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xW5-sj-AVr" customClass="MultilineButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="16" y="330.5" width="343" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="warningTapped:" destination="yav-nF-cx7" eventType="touchUpInside" id="XPM-6H-44L"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2EY-TD-6V1" userLabel="container view">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="314.5"/>
                                 <subviews>
@@ -164,15 +157,34 @@
                                     <constraint firstItem="mSI-6P-kcW" firstAttribute="top" secondItem="2EY-TD-6V1" secondAttribute="top" constant="16" id="oHE-K6-Sua"/>
                                 </constraints>
                             </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BXA-iq-lC2">
+                                <rect key="frame" x="16" y="330.5" width="343" height="0.0"/>
+                                <subviews>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xW5-sj-AVr" customClass="MultilineButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="T42-yy-8v5"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="warningTapped:" destination="yav-nF-cx7" eventType="touchUpInside" id="XPM-6H-44L"/>
+                                        </connections>
+                                    </button>
+                                    <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="vfz-Oz-LdY">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fnA-qw-vPe"/>
                         <constraints>
                             <constraint firstItem="fnA-qw-vPe" firstAttribute="trailing" secondItem="2EY-TD-6V1" secondAttribute="trailing" id="36M-yw-daV"/>
-                            <constraint firstItem="xW5-sj-AVr" firstAttribute="top" secondItem="2EY-TD-6V1" secondAttribute="bottom" constant="16" id="3Cu-TX-FLB"/>
-                            <constraint firstItem="xW5-sj-AVr" firstAttribute="width" secondItem="2EY-TD-6V1" secondAttribute="width" multiplier="0.914667" id="CQu-jj-lR9"/>
                             <constraint firstItem="2EY-TD-6V1" firstAttribute="top" secondItem="fnA-qw-vPe" secondAttribute="top" id="KcE-uG-uhl"/>
-                            <constraint firstItem="xW5-sj-AVr" firstAttribute="centerX" secondItem="2EY-TD-6V1" secondAttribute="centerX" id="alD-65-Gzc"/>
+                            <constraint firstItem="BXA-iq-lC2" firstAttribute="top" secondItem="2EY-TD-6V1" secondAttribute="bottom" constant="16" id="pgh-qe-kLy"/>
+                            <constraint firstItem="BXA-iq-lC2" firstAttribute="leading" secondItem="fnA-qw-vPe" secondAttribute="leading" constant="16" id="uoZ-PA-gzE"/>
                             <constraint firstItem="2EY-TD-6V1" firstAttribute="leading" secondItem="fnA-qw-vPe" secondAttribute="leading" id="uy5-pe-WY6"/>
+                            <constraint firstItem="fnA-qw-vPe" firstAttribute="trailing" secondItem="BXA-iq-lC2" secondAttribute="trailing" constant="16" id="xFF-qM-W7h"/>
                         </constraints>
                     </view>
                     <connections>
@@ -184,6 +196,7 @@
                         <outlet property="dateLabel" destination="YIh-B5-5mX" id="k3s-5c-AXy"/>
                         <outlet property="headerStackView" destination="DDN-1Y-KHk" id="FTi-Sr-BFK"/>
                         <outlet property="imageView" destination="PGi-rI-w2P" id="wgx-g9-MgO"/>
+                        <outlet property="jetpackBadgeView" destination="vfz-Oz-LdY" id="xt2-RM-oIk"/>
                         <outlet property="nameLabel" destination="aJZ-Nu-hmA" id="yNG-9h-DUP"/>
                         <outlet property="rewindButton" destination="qzN-1h-59z" id="Xpx-fu-poI"/>
                         <outlet property="rewindStackView" destination="Ouv-sN-axZ" id="wix-es-Jrg"/>
@@ -197,7 +210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsR-ne-8K9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="199" y="-36"/>
+            <point key="canvasLocation" x="197.59999999999999" y="-36.431784107946029"/>
         </scene>
     </scenes>
     <resources>

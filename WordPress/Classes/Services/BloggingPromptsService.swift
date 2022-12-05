@@ -182,7 +182,7 @@ class BloggingPromptsService {
     required init?(contextManager: CoreDataStack = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
-        guard let account = AccountService(managedObjectContext: contextManager.mainContext).defaultWordPressComAccount(),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
               let siteID = blog?.dotComID ?? account.primaryBlogID else {
             return nil
         }
@@ -286,41 +286,30 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = predicate
 
-        let derivedContext = contextManager.newDerivedContext()
-        derivedContext.perform {
-            do {
-                // Update existing prompts
-                var foundExistingIDs = [Int32]()
-                let results = try derivedContext.fetch(fetchRequest)
-                results.forEach { prompt in
-                    guard let remotePrompt = remotePromptsDictionary[prompt.promptID] else {
-                        return
-                    }
-
-                    foundExistingIDs.append(prompt.promptID)
-                    prompt.configure(with: remotePrompt, for: self.siteID.int32Value)
+        contextManager.performAndSave { derivedContext in
+            var foundExistingIDs = [Int32]()
+            let results = try derivedContext.fetch(fetchRequest)
+            results.forEach { prompt in
+                guard let remotePrompt = remotePromptsDictionary[prompt.promptID] else {
+                    return
                 }
 
-                // Insert new prompts
-                let newPromptIDs = remoteIDs.subtracting(foundExistingIDs)
-                newPromptIDs.forEach { newPromptID in
-                    guard let remotePrompt = remotePromptsDictionary[newPromptID],
-                          let newPrompt = BloggingPrompt.newObject(in: derivedContext) else {
-                        return
-                    }
-                    newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
-                }
+                foundExistingIDs.append(prompt.promptID)
+                prompt.configure(with: remotePrompt, for: self.siteID.int32Value)
+            }
 
-                self.contextManager.save(derivedContext) {
-                    DispatchQueue.main.async {
-                        completion(.success(()))
-                    }
+            // Insert new prompts
+            let newPromptIDs = remoteIDs.subtracting(foundExistingIDs)
+            newPromptIDs.forEach { newPromptID in
+                guard let remotePrompt = remotePromptsDictionary[newPromptID],
+                      let newPrompt = BloggingPrompt.newObject(in: derivedContext) else {
+                    return
                 }
-
-            } catch let error {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
+                newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
+            }
+        } completion: { result in
+            DispatchQueue.main.async {
+                completion(result)
             }
         }
     }
@@ -331,15 +320,12 @@ private extension BloggingPromptsService {
     ///   - remoteSettings: The blogging prompt settings from the remote.
     ///   - completion: Closure to be called on completion.
     func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping () -> Void) {
-        let derivedContext = contextManager.newDerivedContext()
-        derivedContext.perform {
+        contextManager.performAndSave { derivedContext in
             let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
             settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
-
-            self.contextManager.save(derivedContext) {
-                DispatchQueue.main.async {
-                    completion()
-                }
+        } completion: {
+            DispatchQueue.main.async {
+                completion()
             }
         }
     }

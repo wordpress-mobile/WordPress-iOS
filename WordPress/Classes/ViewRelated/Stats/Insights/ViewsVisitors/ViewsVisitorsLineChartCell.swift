@@ -54,11 +54,38 @@ struct StatsSegmentedControlData {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)")
-        return String.localizedStringWithFormat(stringFormat,
-                difference < 0 ? "" : "+",
+        // We want to show something like "+10.2K (+5%)" if we have a percentage difference and "1.2K" if we don't.
+        //
+        // Negative cases automatically appear with a negative sign "-10.2K (-5%)" by using `abbreviatedString()`.
+        // `abbreviatedString()` also handles formatting big numbers, i.e. 10,200 will become 10.2K.
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        let plusSign = difference <= 0 ? "" : "\(formatter.plusSign ?? "")"
+
+        if differencePercent != 0 {
+            let stringFormat = NSLocalizedString(
+                "insights.visitorsLineChartCell.differenceLabelWithPercentage",
+                value: "%1$@%2$@ (%3$@%%)",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign."
+            )
+            return String.localizedStringWithFormat(
+                stringFormat,
+                plusSign,
                 difference.abbreviatedString(),
-                differencePercent.abbreviatedString())
+                differencePercent.abbreviatedString()
+            )
+        } else {
+            let stringFormat = NSLocalizedString(
+                "insights.visitorsLineChartCell.differenceLabelWithoutPercentage",
+                value: "%1$@%2$@",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value."
+            )
+            return String.localizedStringWithFormat(
+                stringFormat,
+                plusSign,
+                difference.abbreviatedString()
+            )
+        }
     }
 
     var differenceTextColor: UIColor {
@@ -188,10 +215,17 @@ private extension ViewsVisitorsLineChartCell {
 
     func styleLabels() {
         latestData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        latestData.adjustsFontSizeToFitWidth = true
+        latestLabel.adjustsFontSizeToFitWidth = true
+
         previousData.font = UIFont.preferredFont(forTextStyle: .title2).bold()
+        previousData.adjustsFontSizeToFitWidth = true
+        previousLabel.adjustsFontSizeToFitWidth = true
 
         legendLatestLabel.text = NSLocalizedString("This week", comment: "This week legend label")
+        legendLatestLabel.adjustsFontSizeToFitWidth = true
         legendPreviousLabel.text = NSLocalizedString("Previous week", comment: "Previous week legend label")
+        legendPreviousLabel.adjustsFontSizeToFitWidth = true
     }
 
     func updateLabels() {

@@ -17,12 +17,18 @@ public class LoginEpilogueScreen: ScreenObject {
         )
     }
 
-    public func continueWithSelectedSite() throws -> MySiteScreen {
-        let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
-        firstSite.tap()
+    public func continueWithSelectedSite(title: String? = nil) throws -> MySiteScreen {
+        if let title = title {
+            let selectedSite = loginEpilogueTable.cells[title]
+            selectedSite.tap()
+        } else {
+            let firstSite = loginEpilogueTable.cells.element(boundBy: 2)
+            firstSite.tap()
+        }
 
         try dismissQuickStartPromptIfNeeded()
         try dismissOnboardingQuestionsPromptIfNeeded()
+        try dismissFeatureIntroductionIfNeeded()
         return try MySiteScreen()
     }
 
@@ -75,6 +81,15 @@ public class LoginEpilogueScreen: ScreenObject {
 
             Logger.log(message: "Dismissing onboarding questions prompt...", event: .i)
             _ = try OnboardingQuestionsPromptScreen().selectSkip()
+        }
+    }
+
+    private func dismissFeatureIntroductionIfNeeded() throws {
+        try XCTContext.runActivity(named: "Dismiss feature introduction screen if needed.") { _ in
+            guard FeatureIntroductionScreen.isLoaded() else { return }
+
+            Logger.log(message: "Dismissing feature introduction screen...", event: .i)
+            _ = try FeatureIntroductionScreen().dismiss()
         }
     }
 }

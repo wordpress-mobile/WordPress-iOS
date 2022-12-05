@@ -14,10 +14,8 @@ class GutenGhostView: UIView {
     @IBOutlet var toolbarViews: [UIView]!
     @IBOutlet weak var toolbarTopBorderView: UIView! {
         didSet {
-            if #available(iOS 12.0, *) {
-                let isDarkStyle = traitCollection.userInterfaceStyle == .dark
-                toolbarTopBorderView.isHidden = isDarkStyle
-            }
+            let isDarkStyle = traitCollection.userInterfaceStyle == .dark
+            toolbarTopBorderView.isHidden = isDarkStyle
         }
     }
 
@@ -95,22 +93,11 @@ class GutenGhostView: UIView {
 }
 
 private extension UIColor {
-    static var ghostToolbarBackground: UIColor {
-        if #available(iOS 13, *) {
-            return UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
-        }
-        return .clear
-    }
+    static let ghostToolbarBackground = UIColor(light: .clear, dark: UIColor.colorFromHex("2e2e2e"))
 
-    static var ghostBlockBackground: UIColor {
-        return UIColor(light: .clear, dark: .systemGray5)
-    }
+    static let ghostBlockBackground = UIColor(light: .clear, dark: .systemGray5)
 
-    static var beatEndColor: UIColor {
-        return UIColor(light: .systemGray6, dark: .clear)
-    }
+    static let beatEndColor = UIColor(light: .systemGray6, dark: .clear)
 
-    static var background: UIColor {
-        return .systemBackground
-    }
+    static let background = UIColor.systemBackground
 }
