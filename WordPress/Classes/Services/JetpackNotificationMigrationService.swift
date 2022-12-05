@@ -25,6 +25,9 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
         return featureFlagStore.value(for: FeatureFlag.jetpackMigrationPreventDuplicateNotifications)
     }
 
+    private var notificationSettingsService: NotificationSettingsService?
+    private var bloggingRemindersScheduler: BloggingRemindersScheduler?
+
     var wordPressNotificationsEnabled: Bool {
         get {
             /// UIApplication.shared.isRegisteredForRemoteNotifications should be always accessed from main thread
@@ -164,21 +167,33 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     private func rescheduleBloggingReminderNotifications() {
-        guard let bloggingRemindersScheduler = try? BloggingRemindersScheduler(notificationCenter: UNUserNotificationCenter.current(),
-                                                                               pushNotificationAuthorizer: InteractiveNotificationsManager.shared) else {
-            return
-        }
+        bloggingRemindersScheduler = try? BloggingRemindersScheduler(
+            notificationCenter: UNUserNotificationCenter.current(),
+            pushNotificationAuthorizer: InteractiveNotificationsManager.shared
+        )
+        notificationSettingsService = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
-        NotificationSettingsService(coreDataStack: ContextManager.sharedInstance()).getAllSettings { settings in
+        notificationSettingsService?.getAllSettings { [weak self] settings in
+            let group = DispatchGroup()
+
             for setting in settings {
-                if let blog = setting.blog {
-                    let schedule = bloggingRemindersScheduler.schedule(for: blog)
-                    let time = bloggingRemindersScheduler.scheduledTime(for: blog)
+                if let blog = setting.blog,
+                   let schedule = self?.bloggingRemindersScheduler?.schedule(for: blog),
+                   let time = self?.bloggingRemindersScheduler?.scheduledTime(for: blog) {
                     if schedule != .none {
-                        bloggingRemindersScheduler.schedule(schedule, for: blog, time: time) { _ in }
+                        group.enter()
+                        self?.bloggingRemindersScheduler?.schedule(schedule, for: blog, time: time) { _ in
+                            group.leave()
+                        }
                     }
                 }
             }
+
+            group.notify(queue: .main) {
+                self?.bloggingRemindersScheduler = nil
+                self?.notificationSettingsService = nil
+            }
+
         } failure: { _ in }
     }
 }
