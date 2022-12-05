@@ -1,6 +1,11 @@
 import Foundation
 
 enum MigrationEvent: String {
+    // Content Export
+    case contentExportEligibility = "migration_content_export_eligibility"
+    case contentExportSucceeded = "migration_content_export_succeeded"
+    case contentExportFailed = "migration_content_export_failed"
+
     // Content Import
     case contentImportEligibility = "migration_content_import_eligibility"
     case contentImportSucceeded = "migration_content_import_succeeded"
@@ -37,6 +42,11 @@ enum MigrationEvent: String {
     case pleaseDeleteWordPressScreenHelpTapped = "migration_please_delete_wordpress_screen_help_tapped"
     case pleaseDeleteWordPressScreenCloseTapped = "migration_please_delete_wordpress_screen_close_tapped"
 
-    // WordPress Migratable Stat
+    // Load WordPress
+    case loadWordPressScreenShown = "migration_load_wordpress_screen_shown"
+    case loadWordPressScreenOpenTapped = "migration_load_wordpress_screen_open_tapped"
+    case loadWordPressScreenNoThanksTapped = "migration_load_wordpress_screen_no_thanks_tapped"
+
+    // WordPress Migratable State
     case wordPressDetected = "migration_wordpressapp_detected"
 }

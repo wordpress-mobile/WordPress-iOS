@@ -5,11 +5,13 @@ class MigrationLoadWordPressViewController: UIViewController {
     // MARK: - Dependencies
 
     private let viewModel: MigrationLoadWordPressViewModel
+    private let tracker: MigrationAnalyticsTracker
 
     // MARK: - Init
 
-    init(viewModel: MigrationLoadWordPressViewModel) {
+    init(viewModel: MigrationLoadWordPressViewModel, tracker: MigrationAnalyticsTracker = .init()) {
         self.viewModel = viewModel
+        self.tracker = tracker
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -31,5 +33,10 @@ class MigrationLoadWordPressViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = MigrationAppearance.backgroundColor
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tracker.track(.loadWordPressScreenShown)
     }
 }
