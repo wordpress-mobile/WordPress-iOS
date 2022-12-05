@@ -48,11 +48,7 @@ class AuthorFilterViewController: UITableViewController {
         tableView.separatorColor = .clear
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
-        if #available(iOS 13, *) {
-            tableView.contentInset = .zero
-        } else {
-            tableView.contentInset = UIEdgeInsets(top: -Metrics.topinset, left: 0, bottom: 0, right: 0)
-        }
+        tableView.contentInset = .zero
     }
 
     required init?(coder aDecoder: NSCoder) {

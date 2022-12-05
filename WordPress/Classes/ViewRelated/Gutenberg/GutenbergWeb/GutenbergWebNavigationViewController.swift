@@ -32,9 +32,7 @@ class GutenbergWebNavigationController: UINavigationController {
             super.present(viewControllerToPresent, animated: flag, completion: completion)
         }
 
-        guard
-            #available(iOS 13, *),
-            let menuViewControllerClass = NSClassFromString("UIDocumentMenuViewController"), // Silence deprecation warning.
+        guard let menuViewControllerClass = NSClassFromString("UIDocumentMenuViewController"), // Silence deprecation warning.
             viewControllerToPresent.isKind(of: menuViewControllerClass),
             UIDevice.current.userInterfaceIdiom == .phone
         else {

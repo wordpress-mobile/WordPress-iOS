@@ -262,12 +262,7 @@ extension WPStyleGuide {
             static let selectedDay = UIColor.accent
         }
 
-        static var mapBackground: UIColor {
-            if #available(iOS 13, *) {
-                return .systemGray4
-            }
-            return .neutral(.shade10)
-        }
+        static let mapBackground: UIColor = .systemGray4
 
         // MARK: - Posting Activity Collection View Styles
 
