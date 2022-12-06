@@ -84,8 +84,9 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 
         NoticesDispatch.lock()
 
-        if !FeatureFlag.siteIconCreator.enabled {
+        guard FeatureFlag.siteIconCreator.enabled else {
             showUpdateSiteIconAlert()
+            return
         }
 
         showSiteIconSelectionAlert()
