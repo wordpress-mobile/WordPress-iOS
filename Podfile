@@ -77,7 +77,6 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
-  gutenberg_pods
 end
 
 def shared_with_extension_pods
@@ -88,10 +87,6 @@ end
 
 def shared_style_pods
   pod 'Gridicons', '~> 1.1.0'
-end
-
-def gutenberg_pods
-  gutenberg tag: 'v1.86.0-alpha1'
 end
 
 def gutenberg(options)
@@ -186,7 +181,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg commit: 'ed6de0ebcdfd1b6d2899bcdf045ccc307e923ea9'
+  gutenberg tag: 'v1.86.0-alpha1'
 
   ## Third party libraries
   ## =====================
