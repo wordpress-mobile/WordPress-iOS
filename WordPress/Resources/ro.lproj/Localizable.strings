@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-29 15:27:05+0000 */
+/* Translation-Revision-Date: 2022-12-02 21:16:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -5811,7 +5811,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Preview Device" = "Dispozitiv de previzualizare";
 
 /* Title on display preview error */
-"Preview Unavailable" = "Previzualizare indisponibilă";
+"Preview Unavailable" = "Previzualizarea nu este disponibilă";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "Preview media" = "Previzualizează elementul media";
