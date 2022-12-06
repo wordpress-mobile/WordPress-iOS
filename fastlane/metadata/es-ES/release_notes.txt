@@ -1,0 +1,3 @@
+Hemos corregido un pequeño problema visual con el control de inicio y menú en el escritorio de «Mi sitio».
+
+También hemos corregido un fallo en «Mi sitio». El botón de «Desconectar de WordPress.com» ahora desconecta cuando se toca y recargará la aplicación.
