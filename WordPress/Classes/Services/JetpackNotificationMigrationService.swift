@@ -22,7 +22,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     private let jetpackNotificationMigrationDefaultsKey = "jetpackNotificationMigrationDefaultsKey"
 
     private var jetpackMigrationPreventDuplicateNotifications: Bool {
-        return featureFlagStore.value(for: FeatureFlag.jetpackMigrationPreventDuplicateNotifications)
+        return FeatureFlag.jetpackMigrationPreventDuplicateNotifications.enabled
     }
 
     var wordPressNotificationsEnabled: Bool {
