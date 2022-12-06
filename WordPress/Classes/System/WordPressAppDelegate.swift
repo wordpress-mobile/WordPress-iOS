@@ -329,10 +329,12 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         setupWordPressExtensions()
 
-        // Start proactively exporting WP data in the background if the conditions are fulfilled.
-        // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
-        DispatchQueue.global().async {
-            ContentMigrationCoordinator.shared.startOnceIfNeeded()
+        if FeatureFlag.contentMigration.enabled {
+            // Start proactively exporting WP data in the background if the conditions are fulfilled.
+            // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
+            DispatchQueue.global().async {
+                ContentMigrationCoordinator.shared.startOnceIfNeeded()
+            }
         }
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)

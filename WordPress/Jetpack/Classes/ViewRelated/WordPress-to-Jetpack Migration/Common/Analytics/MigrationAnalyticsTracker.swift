@@ -9,6 +9,22 @@ struct MigrationAnalyticsTracker {
         WPAnalytics.track(event)
     }
 
+    // MARK: - Content Export
+
+    func trackContentExportEligibility(eligible: Bool) {
+        let properties = ["eligible": String(eligible)]
+        self.track(.contentExportEligibility, properties: properties)
+    }
+
+    func trackContentExportSucceeded() {
+        self.track(.contentExportSucceeded)
+    }
+
+    func trackContentExportFailed(reason: String) {
+        let properties = ["error_type": reason]
+        self.track(.contentExportFailed, properties: properties)
+    }
+
     // MARK: - Content Import
 
     func trackContentImportEligibility(eligible: Bool) {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 14:54:27+0000 */
+/* Translation-Revision-Date: 2022-12-03 05:25:36+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -8080,7 +8080,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button title for Trash comment state.
    Trashes a comment
    Trashes the comment */
-"Trash" = "移至垃圾桶";
+"Trash" = "移至回收桶";
 
 /* Accessibility hint for trash button to delete items from the user's media library */
 "Trash selected media" = "將選取的媒體移至垃圾桶";

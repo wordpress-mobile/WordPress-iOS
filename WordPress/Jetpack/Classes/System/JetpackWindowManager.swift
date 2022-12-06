@@ -9,25 +9,32 @@ class JetpackWindowManager: WindowManager {
     private let migrationTracker = MigrationAnalyticsTracker()
 
     var shouldImportMigrationData: Bool {
-        return !AccountHelper.isLoggedIn && !UserPersistentStoreFactory.instance().isJPContentImportComplete
+        return FeatureFlag.contentMigration.enabled
+        && !AccountHelper.isLoggedIn
+        && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
 
     override func showUI(for blog: Blog?) {
-        // If the user is logged in and has blogs sync'd to their account
-        if AccountHelper.isLoggedIn && AccountHelper.hasBlogs {
-            showAppUI(for: blog)
+        if AccountHelper.isLoggedIn {
+            if AccountHelper.hasBlogs {
+                // If the user is logged in and has blogs sync'd to their account
+                showAppUI(for: blog)
+                return
+            } else {
+                // If the user doesn't have any blogs, but they're still logged in, log them out
+                // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
+                AccountHelper.logOutDefaultWordPressComAccount()
+                return
+            }
+        }
+
+        guard FeatureFlag.contentMigration.enabled else {
+            showSignInUI()
             return
         }
 
-        guard AccountHelper.isLoggedIn else {
-            self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
-            shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
-            return
-        }
-
-        // If the user doesn't have any blogs, but they're still logged in, log them out
-        // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
-        AccountHelper.logOutDefaultWordPressComAccount()
+        self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
+        shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
@@ -101,12 +108,17 @@ private extension JetpackWindowManager {
     func showLoadWordPressUI(schemeUrl: URL) {
         let actions = MigrationLoadWordPressViewModel.Actions()
         let loadWordPressViewModel = MigrationLoadWordPressViewModel(actions: actions)
-        let loadWordPressViewController = MigrationLoadWordPressViewController(viewModel: loadWordPressViewModel)
-        actions.primary = {
+        let loadWordPressViewController = MigrationLoadWordPressViewController(
+            viewModel: loadWordPressViewModel,
+            tracker: migrationTracker
+        )
+        actions.primary = { [weak self] in
+            self?.migrationTracker.track(.loadWordPressScreenOpenTapped)
             UIApplication.shared.open(schemeUrl)
         }
-        actions.secondary = { [weak self] in
-            loadWordPressViewController.dismiss(animated: true) {
+        actions.secondary = { [weak self, weak loadWordPressViewController] in
+            self?.migrationTracker.track(.loadWordPressScreenNoThanksTapped)
+            loadWordPressViewController?.dismiss(animated: true) {
                 self?.showSignInUI()
             }
         }
