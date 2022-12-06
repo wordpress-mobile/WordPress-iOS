@@ -35,4 +35,11 @@ else
 fi
 annotate_test_failures "build/results/report.junit"
 
+echo "--- :speaker: Report test failures to the PR"
+cat << EOF > /tmp/Dangerfile
+junit.parse "build/results/report.junit"
+junit.report
+EOF
+bundle exec danger --dangerfile=/tmp/Dangerfile --danger_id=unit-tests --fail-on-errors=false
+
 exit $TESTS_EXIT_STATUS
