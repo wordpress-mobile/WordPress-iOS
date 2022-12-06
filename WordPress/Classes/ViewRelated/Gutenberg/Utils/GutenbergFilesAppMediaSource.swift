@@ -74,20 +74,16 @@ extension Gutenberg.MediaType {
     private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
 
         return allTypes.filter {
-            if #available(iOS 14.0, *) {
-                guard let allowedType = UTType($0), let requiredType = UTType(uttype as String) else {
-                    return false
-                }
-                // Sometimes the compared type could be a supertype
-                // For example a self-hosted site without Jetpack may have "public.content" as allowedType
-                // Although "public.audio" conforms to "public.content", it's not true the other way around
-                if allowedType.isSupertype(of: requiredType) {
-                    return true
-                }
-                return allowedType.conforms(to: requiredType)
-            } else {
-                return UTTypeConformsTo($0 as CFString, uttype)
+            guard let allowedType = UTType($0), let requiredType = UTType(uttype as String) else {
+                return false
             }
+            // Sometimes the compared type could be a supertype
+            // For example a self-hosted site without Jetpack may have "public.content" as allowedType
+            // Although "public.audio" conforms to "public.content", it's not true the other way around
+            if allowedType.isSupertype(of: requiredType) {
+                return true
+            }
+            return allowedType.conforms(to: requiredType)
         }
     }
 

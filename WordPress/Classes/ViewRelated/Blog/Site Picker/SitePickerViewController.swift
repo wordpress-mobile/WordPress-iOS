@@ -88,11 +88,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
             showUpdateSiteIconAlert()
         }
 
-        if #available(iOS 14.0, *) {
-            showSiteIconSelectionAlert()
-        } else {
-            showUpdateSiteIconAlert()
-        }
+        showSiteIconSelectionAlert()
     }
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {

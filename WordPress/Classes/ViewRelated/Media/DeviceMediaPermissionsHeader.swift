@@ -4,7 +4,6 @@ import PhotosUI
 /// Displays a notice at the top of a media picker view in the event that the user has only given the app
 /// limited photo library permissions. Contains buttons allowing the user to select more images or review their settings.
 ///
-@available(iOS 14.0, *)
 class DeviceMediaPermissionsHeader: UICollectionReusableView {
 
     weak var presenter: UIViewController?

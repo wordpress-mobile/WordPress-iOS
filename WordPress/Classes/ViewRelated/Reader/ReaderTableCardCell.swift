@@ -34,11 +34,9 @@ class ReaderTopicsTableCardCell: UITableViewCell {
         setupTableView()
         applyStyles()
 
-        // iOS 14 puts the contentView in the top of the view hierarchy
-        // This conflicts with the tableView interaction, so we disable it
-        if #available(iOS 14, *) {
-            contentView.isUserInteractionEnabled = false
-        }
+        // Since iOS 14, the contentView is in the top of the view hierarchy.
+        // This conflicts with the tableView interaction, so we disable it.
+        contentView.isUserInteractionEnabled = false
     }
 
     required init?(coder: NSCoder) {

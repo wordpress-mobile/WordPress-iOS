@@ -402,8 +402,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         // Required to work around an issue present in iOS 14 beta 2
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if #available(iOS 14.0, *),
-            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
             dismiss(animated: true)
         }
     }
