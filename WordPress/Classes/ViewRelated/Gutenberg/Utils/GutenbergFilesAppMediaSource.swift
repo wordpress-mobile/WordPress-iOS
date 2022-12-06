@@ -72,9 +72,12 @@ extension Gutenberg.MediaType {
     }
 
     private func getTypesFrom(_ allTypes: [String], conformingTo uttype: CFString) -> [String] {
+        guard let requiredType = UTType(uttype as String) else {
+            return []
+        }
 
         return allTypes.filter {
-            guard let allowedType = UTType($0), let requiredType = UTType(uttype as String) else {
+            guard let allowedType = UTType($0) else {
                 return false
             }
             // Sometimes the compared type could be a supertype
