@@ -77,6 +77,7 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
+  gutenberg_pods
 end
 
 def shared_with_extension_pods
@@ -87,6 +88,10 @@ end
 
 def shared_style_pods
   pod 'Gridicons', '~> 1.1.0'
+end
+
+def gutenberg_pods
+  gutenberg tag: 'v1.86.0-alpha1'
 end
 
 def gutenberg(options)
@@ -153,6 +158,8 @@ def gutenberg_dependencies(options)
     RNCMaskedView
     RNCClipboard
     RNFastImage
+    React-Codegen
+    React-bridging
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -179,7 +186,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.85.1'
+  gutenberg_pods
 
   ## Third party libraries
   ## =====================
