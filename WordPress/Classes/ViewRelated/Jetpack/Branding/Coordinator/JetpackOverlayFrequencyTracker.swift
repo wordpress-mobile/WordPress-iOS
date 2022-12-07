@@ -88,7 +88,7 @@ extension JetpackOverlayFrequencyTracker {
 
         // MARK: Static Variables
         static let defaultConfig = FrequencyConfig(featureSpecificInDays: 0, generalInDays: 0)
-        private static let secondsInDay: TimeInterval = 0 // TODO: Revert this
+        private static let secondsInDay: TimeInterval = 86_400
 
         // MARK: Computed Variables
         var featureSpecificInSeconds: TimeInterval {
