@@ -1,0 +1,3 @@
+We hebben een visueel probleempje met het Startpagina- en Menu-besturingselement in het dashboard Mijn site opgelost.
+
+We hebben ook een bug in Mijn site verholpen. Als je op de knop Loskoppelen van WordPress.com klikt, wordt je site nu losgekoppeld en wordt de app vernieuwd.
