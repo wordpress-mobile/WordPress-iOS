@@ -261,7 +261,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 #pragma mark - Drop Interaction Handler
 
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
-       canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+       canHandleSession:(id<UIDropSession>)session
 {
     BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
     BOOL isSingleImage = [session.items count] == 1;
@@ -269,13 +269,13 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-        sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+        sessionDidEnter:(id<UIDropSession>)session
 {
     [self.gravatarImageView depressSpringAnimation:nil];
 }
 
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
-                   sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+                   sessionDidUpdate:(id<UIDropSession>)session
 {
     CGPoint dropLocation = [session locationInView:self.gravatarDropTarget];
     
@@ -291,7 +291,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-            performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+            performDrop:(id<UIDropSession>)session
 {
     [self setShowsActivityIndicator:YES];
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
@@ -303,19 +303,19 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-           concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+           concludeDrop:(id<UIDropSession>)session
 {
     [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-         sessionDidExit:(id<UIDropSession>)session  API_AVAILABLE(ios(11.0))
+         sessionDidExit:(id<UIDropSession>)session
 {
     [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-         sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+         sessionDidEnd:(id<UIDropSession>)session
 {
     [self.gravatarImageView normalizeSpringAnimation:nil];
 }

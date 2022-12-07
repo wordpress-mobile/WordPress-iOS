@@ -10,14 +10,6 @@ class WidgetStyles: NSObject {
 
     static let separatorColor: UIColor = .separator
 
-    static var separatorVibrancyEffect: UIVibrancyEffect = {
-        if #available(iOS 13, *) {
-            return .widgetEffect(forVibrancyStyle: .separator)
-        } else {
-            return .widgetSecondary()
-        }
-    }()
-
     static func configureSeparator(_ separator: UIView) {
         // Both colors are need for the vibrancy effect.
         separator.backgroundColor = separatorColor
