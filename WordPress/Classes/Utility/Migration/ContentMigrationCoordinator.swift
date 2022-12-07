@@ -10,20 +10,26 @@ class ContentMigrationCoordinator {
 
     private let coreDataStack: CoreDataStack
     private let dataMigrator: ContentDataMigrating
+    private let notificationCenter: NotificationCenter
     private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          dataMigrator: ContentDataMigrating = DataMigrator(),
+         notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
+        self.notificationCenter = notificationCenter
         self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
+
+        // register for account change notification.
+        ensureBackupDataDeletedOnLogout()
     }
 
     enum ContentMigrationCoordinatorError: LocalizedError {
@@ -99,6 +105,12 @@ class ContentMigrationCoordinator {
             completion?()
         }
     }
+
+    /// Deletes any exported user content in the shared location if it exists.
+    ///
+    func cleanupExportedData() {
+        dataMigrator.deleteExportedData()
+    }
 }
 
 // MARK: - Preflights Local Draft Check
@@ -119,17 +131,41 @@ private extension ContentMigrationCoordinator {
         return count == 0
     }
 
+    /// When the user logs out, ensure that any exported data is deleted if it exists at the backup location.
+    /// This prevents the user from entering the migration flow and immediately gets shown with a login pop-up (since we couldn't migrate the authToken anymore).
+    ///
+    func ensureBackupDataDeletedOnLogout() {
+        notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
+            guard let self,
+                  notification.object == nil, // nil object means it's a logout event.
+                  self.eligibilityProvider.isEligibleForCleanup else {
+                return
+            }
+
+            self.cleanupExportedData()
+        }
+    }
 }
 
 // MARK: - Content Migration Eligibility Provider
 
 protocol ContentMigrationEligibilityProvider {
+    /// Determines if we should export user's content data in the current app state.
     var isEligibleForMigration: Bool { get }
+
+    /// Determines if we should clean up any exported content.
+    var isEligibleForCleanup: Bool { get }
 }
 
 extension AppConfiguration: ContentMigrationEligibilityProvider {
     var isEligibleForMigration: Bool {
         FeatureFlag.contentMigration.enabled && Self.isWordPress && AccountHelper.isLoggedIn && AccountHelper.hasBlogs
+    }
+
+    /// Note: This checks `isDotcomAvailable` instead of `isLoggedIn` because if the user is also logged in to a self-hosted site
+    /// on top of their dotcom account, `isLoggedIn` will still return `true` after they log out of their dotcom account.
+    var isEligibleForCleanup: Bool {
+        FeatureFlag.contentMigration.enabled && Self.isWordPress && !AccountHelper.isDotcomAvailable()
     }
 }
 

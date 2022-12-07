@@ -1,6 +1,16 @@
 protocol ContentDataMigrating {
+    /// Exports user content data to a shared location that's accessible by the Jetpack app.
+    ///
+    /// - Parameter completion: Closure called after the export process completes.
     func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+
+    /// Imports user's WordPress content data from the shared location.
+    ///
+    /// - Parameter completion: Closure called after the export process completes.
     func importData(completion: ((Result<Void, DataMigrationError>) -> Void)?)
+
+    /// Deletes any exported user content at the shared location if it exists.
+    func deleteExportedData()
 }
 
 enum DataMigrationError: LocalizedError {
@@ -82,6 +92,26 @@ extension DataMigrator: ContentDataMigrating {
         sharedDataIssueSolver.migrateExtensionsData()
         BloggingRemindersScheduler.handleRemindersMigration()
         completion?(.success(()))
+    }
+
+    func deleteExportedData() {
+        guard let backupLocation,
+              let sharedDefaults else {
+            return
+        }
+
+        // mark this as false regardless if any of the steps below fails.
+        // this serves as the first stopgap that prevents the migration process on the Jetpack side.
+        isDataReadyToMigrate = false
+
+        // remove database backup
+        try? coreDataStack.removeBackupData(from: backupLocation)
+
+        // remove user defaults backup
+        sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
+
+        // remove blogging reminders backup
+        BloggingRemindersScheduler.deleteBackupReminders()
     }
 }
 

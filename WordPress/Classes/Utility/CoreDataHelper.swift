@@ -220,6 +220,8 @@ extension CoreDataStack {
         }
     }
 
+    // MARK: - Database Migration
+
     /// Creates a copy of the current open store and saves it to the specified destination
     /// - Parameter backupLocation: Location to save the store copy to
     func createStoreCopy(to backupLocation: URL) throws {
@@ -243,6 +245,15 @@ extension CoreDataStack {
         try storeCoordinatorCopy.migratePersistentStore(storeCopy,
                                                         to: backupLocation,
                                                         withType: storeCopy.type)
+    }
+
+    /// Removes any copy of the store from the backup location.
+    /// - Parameter backupLocation: Where the backup store is located.
+    func removeBackupData(from backupLocation: URL) throws {
+        let (databaseBackup, shmBackup, walBackup) = backupFiles(for: backupLocation)
+        try FileManager.default.removeItem(at: databaseBackup)
+        try FileManager.default.removeItem(at: shmBackup)
+        try FileManager.default.removeItem(at: walBackup)
     }
 
     /// Replaces the current active store with the database at the specified location.
