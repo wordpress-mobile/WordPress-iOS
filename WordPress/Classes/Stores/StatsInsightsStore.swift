@@ -1087,19 +1087,6 @@ extension StatsInsightsStore {
         }
     }
 
-    var followersInsightsDetailsStatus: StoreFetchingStatus {
-        switch (followersTotalsStatus, state.dotComFollowersStatus, state.emailFollowersStatus) {
-        case (let a, let b, let c) where a == .loading || b == .loading || c == .loading:
-            return .loading
-        case (let a, let b, let c) where a == .error || b == .error || c == .error:
-            return .error
-        case (.success, .success, .success):
-            return .success
-        default:
-            return .idle
-        }
-    }
-
     var annualAndMostPopularTimeStatus: StoreFetchingStatus {
         return state.annualAndMostPopularTimeStatus
     }

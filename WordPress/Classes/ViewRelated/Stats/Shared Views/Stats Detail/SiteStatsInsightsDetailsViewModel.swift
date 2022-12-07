@@ -319,7 +319,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 }
             }
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
-            let status = insightsStore.followersInsightsDetailsStatus
+            let status = insightsStore.followersTotalsStatus
             let type: InsightType = .followersTotals
             return insightsImmuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
