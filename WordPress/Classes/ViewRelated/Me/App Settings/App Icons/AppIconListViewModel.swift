@@ -38,11 +38,13 @@ final class AppIconListViewModel: AppIconListViewModelType {
         let currentLightIcons = allIcons.filter({ $0.isLegacy == false && $0.isBordered == true })
             .sorted(by: sortWithPriority(toItemsWithPrefix: AppIcon.defaultIconName))
         let legacyIcons = {
-            var icons = allIcons.filter({ $0.isLegacy == true })
-            if let legacyIconName = AppIcon.defaultLegacyIconName {
-                return icons.sorted(by: sortWithPriority(toItemsWithPrefix: legacyIconName))
+            let icons = allIcons.filter({ $0.isLegacy == true })
+
+            guard let legacyIconName = AppIcon.defaultLegacyIconName else {
+                return icons
             }
-            return icons
+
+            return icons.sorted(by: sortWithPriority(toItemsWithPrefix: legacyIconName))
         }()
 
         // Set icons

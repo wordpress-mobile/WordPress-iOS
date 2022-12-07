@@ -656,7 +656,6 @@ private extension ZendeskUtils {
     static func getTags() -> [String] {
 
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
         let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         var tags = [String]()
 
