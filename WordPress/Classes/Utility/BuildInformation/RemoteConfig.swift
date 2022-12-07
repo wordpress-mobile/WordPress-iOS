@@ -17,7 +17,7 @@ struct RemoteConfig {
     // MARK: Remote Config Parameters
 
     var jetpackDeadline: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "jp-deadline", defaultValue: "2022-12-31", store: store) // TODO: Revert this
+        RemoteConfigParameter<String>(key: "jp-deadline", defaultValue: nil, store: store)
     }
 
     var phaseTwoBlogPostUrl: RemoteConfigParameter<String> {
