@@ -27,9 +27,9 @@ PODS:
   - boost (1.76.0)
   - BVLinearGradient (2.5.6-wp-3):
     - React-Core
-  - CocoaLumberjack (3.7.4):
-    - CocoaLumberjack/Core (= 3.7.4)
-  - CocoaLumberjack/Core (3.7.4)
+  - CocoaLumberjack/Core (3.8.0)
+  - CocoaLumberjack/Swift (3.8.0):
+    - CocoaLumberjack/Core
   - CropViewController (2.5.3)
   - DoubleConversion (1.1.5)
   - Down (0.6.6)
@@ -42,9 +42,6 @@ PODS:
     - React-jsi (= 0.69.4)
     - ReactCommon/turbomodule/core (= 0.69.4)
   - fmt (6.2.1)
-  - FormatterKit/Resources (1.9.0)
-  - FormatterKit/TimeIntervalFormatter (1.9.0):
-    - FormatterKit/Resources
   - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
   - glog (0.3.5)
@@ -505,29 +502,24 @@ PODS:
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
     - WordPress-Aztec-iOS (= 1.19.8)
-  - WordPressAuthenticator (3.2.2):
-    - Alamofire (~> 4.8)
-    - CocoaLumberjack (~> 3.5)
+  - WordPressAuthenticator (5.0.0):
     - GoogleSignIn (~> 6.0.1)
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
-    - WordPressKit (~> 4.18-beta)
-    - WordPressShared (~> 1.12-beta)
+    - WordPressKit (~> 5.0-beta)
+    - WordPressShared (~> 2.0-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (4.58.2):
+  - WordPressKit (5.0.0):
     - Alamofire (~> 4.8.0)
-    - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
-    - WordPressShared (~> 1.15-beta)
+    - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.9)
-  - WordPressShared (1.18.0):
-    - CocoaLumberjack (~> 3.4)
-    - FormatterKit/TimeIntervalFormatter (~> 1.8)
+  - WordPressShared (2.0.0-beta.2)
   - WordPressUI (1.12.5)
   - WPMediaPicker (1.8.7)
-  - wpxmlrpc (0.9.0)
+  - wpxmlrpc (0.10.0)
   - Yoga (1.14.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -553,7 +545,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (~> 0.13)
   - boost (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.86.0/third-party-podspecs/boost.podspec.json`)
   - BVLinearGradient (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.86.0/third-party-podspecs/BVLinearGradient.podspec.json`)
-  - CocoaLumberjack (~> 3.0)
+  - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
   - FBLazyVector (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.86.0/third-party-podspecs/FBLazyVector.podspec.json`)
@@ -617,9 +609,9 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.19.8)
-  - WordPressAuthenticator (>= 3.2.2, ~> 3.2)
-  - WordPressKit (>= 4.58.2, ~> 4.58)
-  - WordPressShared (~> 1.18.0)
+  - WordPressAuthenticator (~> 5.0)
+  - WordPressKit (~> 5.0)
+  - WordPressShared (~> 2.0.0-beta.1)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.7)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.86.0/third-party-podspecs/Yoga.podspec.json`)
@@ -629,7 +621,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -642,7 +633,6 @@ SPEC REPOS:
     - DoubleConversion
     - Down
     - fmt
-    - FormatterKit
     - Gifu
     - GoogleSignIn
     - Gridicons
@@ -667,6 +657,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -809,14 +800,13 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 63e55654f500b3e8fb35087e64575e00d12eb2f5
   boost: 32a63928ef0a5bf8b60f6b930c8864113fa28779
   BVLinearGradient: 708898fab8f7113d927b0ef611a321e759f6ad3e
-  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
+  CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FBLazyVector: 16fdf30fcbc7177c6a4bdf35ef47225577eb9636
   FBReactNativeSpec: e3694d0bbf17c0373609c975874d46a6b2abe5b7
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   glog: 741689bdd65551bc8fb59d633e55c34293030d3e
@@ -886,12 +876,12 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: e6a801d25f4f178de5bdf475ffe29050d0148176
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
-  WordPressAuthenticator: 5110c62de1b1b1eb1f2a43fd2599f7f6c7a6659d
-  WordPressKit: d8bc00bce09273fc241cf171b0e61ef8f4f29479
-  WordPressShared: e5a479220643f46dc4d7726ef8dd45f18bf0c53b
+  WordPressAuthenticator: 0cdf1bff75bd3f58fe733d6457221f27bbbdc9f4
+  WordPressKit: 202f529323b079a344f7bc1493b7ebebfd9ed4b5
+  WordPressShared: 04403b43f821c4ed2b84a2112ef9f64f1e7cdceb
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 0d45dfd7b3c5651c5236ffd48c1b0b2f60a2d5d2
-  wpxmlrpc: bf55a43a7e710bd2a4fb8c02dfe83b1246f14f13
+  wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   Yoga: 5e12f4deb20582f86f6323e1cdff25f07afc87f6
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -902,6 +892,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 059f279d74b5fa8127378df5fea172eb2cdefed9
+PODFILE CHECKSUM: 0868f232c488e3fae041fc136bc30eeb4b7ba6ae
 
 COCOAPODS: 1.11.2
