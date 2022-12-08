@@ -65,7 +65,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     self?.emitChange()
                 }
 
-                refreshPeriodOverviewData(date: date, period: StatsPeriodUnit.day, forceRefresh: false)
+                refreshViewsAndVisitorsData(date: date)
             case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -199,7 +199,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
         case .insightsViewsVisitors:
-            return periodStore.isFetchingReferrers
+            return periodStore.isFetchingReferrers || periodStore.isFetchingSummary || periodStore.isFetchingCountries
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
@@ -311,12 +311,9 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                   siteStatsPeriodDelegate: nil,
                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
                     return rows
-                } else {
-                    rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                            dataSubtitle: StatSection.periodReferrers.dataSubtitle))
-                    rows.append(contentsOf: referrersRows(for: status))
-                    return rows
                 }
+
+                return rows
             }
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             let status = insightsStore.followersTotalsStatus
@@ -531,6 +528,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     func refreshFollowers(forceRefresh: Bool = true) {
         ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
+    }
+
+    func refreshViewsAndVisitorsData(date: Date) {
+        ActionDispatcher.dispatch(PeriodAction.refreshViewsAndVisitors(date: date))
     }
 
     func refreshComments() {
