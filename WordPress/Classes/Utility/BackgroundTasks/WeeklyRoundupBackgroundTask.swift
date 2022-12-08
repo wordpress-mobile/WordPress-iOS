@@ -357,8 +357,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     func run(onError: @escaping (Error) -> Void, completion: @escaping (Bool) -> Void) {
 
-        // This will no longer run for WordPress as part of JetPack migration.
-        // This can be removed once JetPack migration is complete.
+        // This will no longer run for WordPress as part of Jetpack migration.
+        // This can be removed once Jetpack migration is complete.
         guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
             notificationScheduler.cancellAll()
             notificationScheduler.cancelStaticNotification()
