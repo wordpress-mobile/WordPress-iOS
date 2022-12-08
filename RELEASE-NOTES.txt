@@ -1,5 +1,6 @@
 21.4
 -----
+* [*] Fixed an issue where publishing Posts and Pages could fail under certain conditions. [#19717]
 * [*] Share extension navigation bar is no longer transparent [#19700]
 
 21.3
