@@ -105,12 +105,6 @@ class ContentMigrationCoordinator {
             completion?()
         }
     }
-
-    /// Deletes any exported user content in the shared location if it exists.
-    ///
-    func cleanupExportedData() {
-        dataMigrator.deleteExportedData()
-    }
 }
 
 // MARK: - Preflights Local Draft Check
@@ -142,7 +136,8 @@ private extension ContentMigrationCoordinator {
                 return
             }
 
-            self.cleanupExportedData()
+            // deletes any exported user content in the shared location if it exists.
+            self.dataMigrator.deleteExportedData()
         }
     }
 }

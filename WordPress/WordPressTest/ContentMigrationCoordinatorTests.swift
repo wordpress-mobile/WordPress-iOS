@@ -186,12 +186,6 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     // MARK: Export data cleanup tests
 
-    func test_cleanupExportedData_shouldDeleteExportedData() {
-        coordinator.cleanupExportedData()
-
-        XCTAssertTrue(mockDataMigrator.deleteExportedDataCalled)
-    }
-
     func test_coordinatorShouldObserveLogoutNotifications() {
         XCTAssertNotNil(mockNotificationCenter.observerBlock)
         XCTAssertNotNil(mockNotificationCenter.observedNotificationName)
