@@ -39,9 +39,7 @@ public class BlockEditorScreen: ScreenObject {
      */
     public func enterTextInTitle(text: String) -> BlockEditorScreen {
         let titleView = app.otherElements["Post title. Empty"].firstMatch // Uses a localized string
-        guard titleView.waitForExistence(timeout: 3) else {
-            return self
-        }
+        XCTAssert(titleView.waitForExistence(timeout: 3), "Title View does not exist!")
 
         titleView.tap()
         titleView.typeText(text)
