@@ -832,7 +832,7 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
 
-        // Because we can't get what's the self-hosted non JetPack site capabilities
+        // Because we can't get what's the self-hosted non Jetpack site capabilities
         // only Admin users are allowed to set a post as sticky.
         // This doesn't affect WPcom sites.
         //
