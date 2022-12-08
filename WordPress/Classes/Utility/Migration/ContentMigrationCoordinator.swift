@@ -1,8 +1,8 @@
 /// Encapsulates logic related to content migration from WordPress to Jetpack.
 ///
-class ContentMigrationCoordinator {
+@objc class ContentMigrationCoordinator: NSObject {
 
-    static var shared: ContentMigrationCoordinator = {
+    @objc static var shared: ContentMigrationCoordinator = {
         .init()
     }()
 
@@ -27,6 +27,8 @@ class ContentMigrationCoordinator {
         self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
+
+        super.init()
 
         // register for account change notification.
         ensureBackupDataDeletedOnLogout()
@@ -105,9 +107,25 @@ class ContentMigrationCoordinator {
             completion?()
         }
     }
+
+    /// Attempts to clean up the exported data by re-exporting user content if they're still eligible, or deleting them otherwise.
+    /// Re-exporting user content ensures that the exported data will match the latest state of Account and Blogs.
+    ///
+    @objc func cleanupExportedDataIfNeeded() {
+        // try to re-export the user content if they're still eligible.
+        startAndDo { [weak self] result in
+            switch result {
+            case .failure(let error) where error == .ineligible:
+                // if the user is no longer eligible, ensure that any exported contents are deleted.
+                self?.dataMigrator.deleteExportedData()
+            default:
+                break
+            }
+        }
+    }
 }
 
-// MARK: - Preflights Local Draft Check
+// MARK: - Private Helpers
 
 private extension ContentMigrationCoordinator {
 
@@ -130,14 +148,13 @@ private extension ContentMigrationCoordinator {
     ///
     func ensureBackupDataDeletedOnLogout() {
         notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
+            // nil notification object means it's a logout event.
             guard let self,
-                  notification.object == nil, // nil object means it's a logout event.
-                  self.eligibilityProvider.isEligibleForCleanup else {
+                  notification.object == nil else {
                 return
             }
 
-            // deletes any exported user content in the shared location if it exists.
-            self.dataMigrator.deleteExportedData()
+            self.cleanupExportedDataIfNeeded()
         }
     }
 }
@@ -147,20 +164,11 @@ private extension ContentMigrationCoordinator {
 protocol ContentMigrationEligibilityProvider {
     /// Determines if we should export user's content data in the current app state.
     var isEligibleForMigration: Bool { get }
-
-    /// Determines if we should clean up any exported content.
-    var isEligibleForCleanup: Bool { get }
 }
 
 extension AppConfiguration: ContentMigrationEligibilityProvider {
     var isEligibleForMigration: Bool {
         FeatureFlag.contentMigration.enabled && Self.isWordPress && AccountHelper.isLoggedIn && AccountHelper.hasBlogs
-    }
-
-    /// Note: This checks `isDotcomAvailable` instead of `isLoggedIn` because if the user is also logged in to a self-hosted site
-    /// on top of their dotcom account, `isLoggedIn` will still return `true` after they log out of their dotcom account.
-    var isEligibleForCleanup: Bool {
-        FeatureFlag.contentMigration.enabled && Self.isWordPress && !AccountHelper.isDotcomAvailable()
     }
 }
 

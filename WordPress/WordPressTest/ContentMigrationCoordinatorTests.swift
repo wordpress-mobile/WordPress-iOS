@@ -186,6 +186,25 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     // MARK: Export data cleanup tests
 
+    func test_cleanupExportedData_givenUserIsIneligible_shouldDeleteData() {
+        // Given
+        mockEligibilityProvider.isEligibleForMigration = false
+
+        // When
+        coordinator.cleanupExportedDataIfNeeded()
+
+        // Then
+        XCTAssertTrue(mockDataMigrator.deleteExportedDataCalled)
+    }
+
+    func test_cleanupExportedData_givenUserIsEligible_shouldExportData() {
+        // When
+        coordinator.cleanupExportedDataIfNeeded()
+
+        // Then
+        XCTAssertTrue(mockDataMigrator.exportCalled)
+    }
+
     func test_coordinatorShouldObserveLogoutNotifications() {
         XCTAssertNotNil(mockNotificationCenter.observerBlock)
         XCTAssertNotNil(mockNotificationCenter.observedNotificationName)
@@ -194,25 +213,26 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_givenLoginNotifications_coordinatorShouldDoNothing() {
         // Given
-        mockEligibilityProvider.isEligibleForCleanup = true // improbable, but we are testing the notification payload check.
-        let notification = mockNotificationCenter.makeLoginNotification()
+        let loginNotification = mockNotificationCenter.makeLoginNotification()
 
         // When
-        mockNotificationCenter.observerBlock?(notification)
+        mockNotificationCenter.observerBlock?(loginNotification)
 
         // Then
+        XCTAssertFalse(mockDataMigrator.exportCalled)
         XCTAssertFalse(mockDataMigrator.deleteExportedDataCalled)
     }
 
     func test_givenLogoutNotifications_coordinatorShouldPerformCleanup() {
         // Given
-        mockEligibilityProvider.isEligibleForCleanup = true
-        let notification = mockNotificationCenter.makeLogoutNotification()
+        mockEligibilityProvider.isEligibleForMigration = false
+        let logoutNotification = mockNotificationCenter.makeLogoutNotification()
 
         // When
-        mockNotificationCenter.observerBlock?(notification)
+        mockNotificationCenter.observerBlock?(logoutNotification)
 
         // Then
+        XCTAssertFalse(mockDataMigrator.exportCalled)
         XCTAssertTrue(mockDataMigrator.deleteExportedDataCalled)
     }
 }
@@ -227,7 +247,6 @@ private extension ContentMigrationCoordinatorTests {
 
     final class MockEligibilityProvider: ContentMigrationEligibilityProvider {
         var isEligibleForMigration = true
-        var isEligibleForCleanup = false
     }
 
     final class MockDataMigrator: ContentDataMigrating {
