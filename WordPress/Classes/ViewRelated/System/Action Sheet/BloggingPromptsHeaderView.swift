@@ -58,7 +58,7 @@ private extension BloggingPromptsHeaderView {
     func configureStrings() {
         titleLabel.text = Strings.title
         infoButton.accessibilityLabel = Strings.infoButtonAccessibilityLabel
-        answerPromptButton.titleLabel?.text = Strings.answerButtonTitle
+        answerPromptButton.setTitle(Strings.answerButtonTitle, for: .normal)
         answeredLabel.text = Strings.answeredLabelTitle
         shareButton.titleLabel?.text = Strings.shareButtonTitle
     }
