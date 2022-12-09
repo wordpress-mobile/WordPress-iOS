@@ -37,6 +37,14 @@ class TopicsCollectionView: DynamicHeightCollectionView {
     func collapse() {
         coordinator?.changeState(.collapsed)
     }
+
+    override func accessibilityElementCount() -> Int {
+        guard let dataSource else {
+            return 0
+        }
+
+        return dataSource.collectionView(self, numberOfItemsInSection: 0)
+    }
 }
 
 extension TopicsCollectionView: ReaderTopicCollectionViewCoordinatorDelegate {
