@@ -814,7 +814,11 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
-    remotePost.authorID = post.authorID;
+    // If a Post's authorID is 0 (the default Core Data value)
+    // or nil, don't send it to the API.
+    if (post.authorID.integerValue != 0) {
+        remotePost.authorID = post.authorID;
+    }
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
 
