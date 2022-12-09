@@ -3,6 +3,7 @@
 * [*] Share extension navigation bar is no longer transparent [#19700]
 * [***] [Jetpack-only] Adds a smooth, opt-in transition to the Jetpack app. [#19759]
 * [***] You can now migrate your site content to the Jetpack app without a hitch. [#19759]
+* [**] [internal] Upgrade React Native from 0.66.2 to 0.69.4 [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5193]
 
 21.3
 -----
