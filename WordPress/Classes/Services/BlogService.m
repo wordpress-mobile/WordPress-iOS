@@ -481,7 +481,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         [accountService purgeAccountIfUnused:account];
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     [WPAnalytics refreshMetadata];
 }
 

@@ -8,6 +8,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     private var mockEligibilityProvider: MockEligibilityProvider!
     private var mockDataMigrator: MockDataMigrator!
+    private var mockNotificationCenter: MockNotificationCenter!
     private var mockPersistentRepository: InMemoryUserDefaults!
     private var coordinator: ContentMigrationCoordinator!
 
@@ -16,6 +17,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
         mockEligibilityProvider = MockEligibilityProvider()
         mockDataMigrator = MockDataMigrator()
+        mockNotificationCenter = MockNotificationCenter()
         mockPersistentRepository = InMemoryUserDefaults()
         coordinator = makeCoordinator()
     }
@@ -23,6 +25,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     override func tearDown() {
         mockEligibilityProvider = nil
         mockDataMigrator = nil
+        mockNotificationCenter = nil
         mockPersistentRepository = nil
         coordinator = nil
 
@@ -181,6 +184,57 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         wait(for: [expect], timeout: timeout)
     }
 
+    // MARK: Export data cleanup tests
+
+    func test_cleanupExportedData_givenUserIsIneligible_shouldDeleteData() {
+        // Given
+        mockEligibilityProvider.isEligibleForMigration = false
+
+        // When
+        coordinator.cleanupExportedDataIfNeeded()
+
+        // Then
+        XCTAssertTrue(mockDataMigrator.deleteExportedDataCalled)
+    }
+
+    func test_cleanupExportedData_givenUserIsEligible_shouldExportData() {
+        // When
+        coordinator.cleanupExportedDataIfNeeded()
+
+        // Then
+        XCTAssertTrue(mockDataMigrator.exportCalled)
+    }
+
+    func test_coordinatorShouldObserveLogoutNotifications() {
+        XCTAssertNotNil(mockNotificationCenter.observerBlock)
+        XCTAssertNotNil(mockNotificationCenter.observedNotificationName)
+        XCTAssertEqual(mockNotificationCenter.observedNotificationName, Foundation.Notification.Name.WPAccountDefaultWordPressComAccountChanged)
+    }
+
+    func test_givenLoginNotifications_coordinatorShouldDoNothing() {
+        // Given
+        let loginNotification = mockNotificationCenter.makeLoginNotification()
+
+        // When
+        mockNotificationCenter.observerBlock?(loginNotification)
+
+        // Then
+        XCTAssertFalse(mockDataMigrator.exportCalled)
+        XCTAssertFalse(mockDataMigrator.deleteExportedDataCalled)
+    }
+
+    func test_givenLogoutNotifications_coordinatorShouldPerformCleanup() {
+        // Given
+        mockEligibilityProvider.isEligibleForMigration = false
+        let logoutNotification = mockNotificationCenter.makeLogoutNotification()
+
+        // When
+        mockNotificationCenter.observerBlock?(logoutNotification)
+
+        // Then
+        XCTAssertFalse(mockDataMigrator.exportCalled)
+        XCTAssertTrue(mockDataMigrator.deleteExportedDataCalled)
+    }
 }
 
 // MARK: - Helpers
@@ -192,7 +246,7 @@ private extension ContentMigrationCoordinatorTests {
     }
 
     final class MockEligibilityProvider: ContentMigrationEligibilityProvider {
-        var isEligibleForMigration: Bool = true
+        var isEligibleForMigration = true
     }
 
     final class MockDataMigrator: ContentDataMigrating {
@@ -200,6 +254,7 @@ private extension ContentMigrationCoordinatorTests {
         var exportCalled = false
         var importErrorToReturn: DataMigrationError? = nil
         var importCalled = false
+        var deleteExportedDataCalled = false
 
         func exportData(completion: ((Result<Void, DataMigrationError>) -> Void)? = nil) {
             exportCalled = true
@@ -218,11 +273,16 @@ private extension ContentMigrationCoordinatorTests {
             }
             completion?(.failure(importErrorToReturn))
         }
+
+        func deleteExportedData() {
+            deleteExportedDataCalled = true
+        }
     }
 
     func makeCoordinator() -> ContentMigrationCoordinator {
         return .init(coreDataStack: contextManager,
                      dataMigrator: mockDataMigrator,
+                     notificationCenter: mockNotificationCenter,
                      userPersistentRepository: mockPersistentRepository,
                      eligibilityProvider: mockEligibilityProvider)
     }
@@ -234,4 +294,26 @@ private extension ContentMigrationCoordinatorTests {
             .build()
     }
 
+}
+
+private final class MockNotificationCenter: NotificationCenter {
+    var observedNotificationName: NSNotification.Name? = nil
+    var observerBlock: ((Foundation.Notification) -> Void)? = nil
+
+    override func addObserver(forName name: NSNotification.Name?,
+                              object obj: Any?,
+                              queue: OperationQueue?,
+                              using block: @escaping @Sendable (Foundation.Notification) -> Void) -> NSObjectProtocol {
+        observedNotificationName = name
+        observerBlock = block
+        return NSNull()
+    }
+
+    func makeLoginNotification() -> Foundation.Notification {
+        return Foundation.Notification(name: .WPAccountDefaultWordPressComAccountChanged, object: String())
+    }
+
+    func makeLogoutNotification() -> Foundation.Notification {
+        return Foundation.Notification(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
 }

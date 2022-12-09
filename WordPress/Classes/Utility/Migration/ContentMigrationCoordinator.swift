@@ -1,8 +1,8 @@
 /// Encapsulates logic related to content migration from WordPress to Jetpack.
 ///
-class ContentMigrationCoordinator {
+@objc class ContentMigrationCoordinator: NSObject {
 
-    static var shared: ContentMigrationCoordinator = {
+    @objc static var shared: ContentMigrationCoordinator = {
         .init()
     }()
 
@@ -10,20 +10,28 @@ class ContentMigrationCoordinator {
 
     private let coreDataStack: CoreDataStack
     private let dataMigrator: ContentDataMigrating
+    private let notificationCenter: NotificationCenter
     private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          dataMigrator: ContentDataMigrating = DataMigrator(),
+         notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
+        self.notificationCenter = notificationCenter
         self.userPersistentRepository = userPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
+
+        super.init()
+
+        // register for account change notification.
+        ensureBackupDataDeletedOnLogout()
     }
 
     enum ContentMigrationCoordinatorError: LocalizedError {
@@ -99,9 +107,25 @@ class ContentMigrationCoordinator {
             completion?()
         }
     }
+
+    /// Attempts to clean up the exported data by re-exporting user content if they're still eligible, or deleting them otherwise.
+    /// Re-exporting user content ensures that the exported data will match the latest state of Account and Blogs.
+    ///
+    @objc func cleanupExportedDataIfNeeded() {
+        // try to re-export the user content if they're still eligible.
+        startAndDo { [weak self] result in
+            switch result {
+            case .failure(let error) where error == .ineligible:
+                // if the user is no longer eligible, ensure that any exported contents are deleted.
+                self?.dataMigrator.deleteExportedData()
+            default:
+                break
+            }
+        }
+    }
 }
 
-// MARK: - Preflights Local Draft Check
+// MARK: - Private Helpers
 
 private extension ContentMigrationCoordinator {
 
@@ -119,11 +143,26 @@ private extension ContentMigrationCoordinator {
         return count == 0
     }
 
+    /// When the user logs out, ensure that any exported data is deleted if it exists at the backup location.
+    /// This prevents the user from entering the migration flow and immediately gets shown with a login pop-up (since we couldn't migrate the authToken anymore).
+    ///
+    func ensureBackupDataDeletedOnLogout() {
+        notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
+            // nil notification object means it's a logout event.
+            guard let self,
+                  notification.object == nil else {
+                return
+            }
+
+            self.cleanupExportedDataIfNeeded()
+        }
+    }
 }
 
 // MARK: - Content Migration Eligibility Provider
 
 protocol ContentMigrationEligibilityProvider {
+    /// Determines if we should export user's content data in the current app state.
     var isEligibleForMigration: Bool { get }
 }
 
