@@ -8,9 +8,9 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let widgetKind: StatsWidgetKind
 
     // refresh interval of the widget, in minutes
-    let refreshInterval = 60
+    let refreshInterval = 30
     // minimum elapsed time, in minutes, before new data are fetched from the backend.
-    let minElapsedTimeToRefresh = 10
+    let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
 
