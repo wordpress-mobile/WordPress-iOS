@@ -833,12 +833,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         alertController.addAction(dismissAction)
 
-        if media.remoteStatus == .pushing || media.remoteStatus == .processing {
+        if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local || media.remoteStatus == .pushing {
             let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (action) in
                 self.mediaInserterHelper.cancelUploadOf(media: media)
             }
             alertController.addAction(cancelUploadAction)
-        } else if media.remoteStatus == .failed, let error = media.error {
+        }
+
+        if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
             let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
                 self.mediaInserterHelper.retryUploadOf(media: media)

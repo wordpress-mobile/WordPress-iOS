@@ -1,3 +1,3 @@
-Ein geringfügiges visuelles Problem mit dem Home- und Menü-Steuerelement im Dashboard „Meine Website“ wurde behoben.
+Ein kleines visuelles Problem mit dem Home- und Menü-Steuerelement im Dashboard „Meine Website“ wurde behoben.
 
 Wir haben ebenfalls einige Fehler im Bereich „Meine Website“ beseitigt. Der Button „Verbindung mit WordPress.com trennen“ trennt jetzt bei Antippen die Verbindung und lädt daraufhin die App erneut.

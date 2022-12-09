@@ -365,7 +365,7 @@ FeaturedImageViewControllerDelegate>
                                   stickyPostSection,
                                   @(PostSettingsSectionShare),
                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
-    // Remove sticky post section for self-hosted non JetPack site
+    // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
     if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {

@@ -22,14 +22,14 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return Strings.title
     }
 
-    var subtitle: String {
+    var subtitle: NSAttributedString {
         switch phase {
         case .one:
-            return Strings.phaseOneSubtitle
+            return .init(string: Strings.phaseOneSubtitle)
         case .two:
-            return Strings.phaseTwoSubtitle
+            return .init(string: Strings.phaseTwoSubtitle)
         default:
-            return ""
+            return .init(string: "")
         }
     }
 
@@ -45,8 +45,8 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return nil
     }
 
-    var shouldShowLearnMoreButton: Bool {
-        return false
+    var learnMoreButtonURL: String? {
+        return nil
     }
 
     var switchButtonText: String {

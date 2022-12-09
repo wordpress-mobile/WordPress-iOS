@@ -14,6 +14,10 @@ class MigrationNotificationsViewModel {
                 coordinator?.transitionToNextStep()
                 let event: MigrationEvent = authorized ? .notificationsScreenPermissionGranted : .notificationsScreenPermissionDenied
                 tracker.track(event)
+
+                if authorized {
+                    JetpackNotificationMigrationService.shared.rescheduleLocalNotifications()
+                }
             }
         }
         let secondaryHandler = { [weak coordinator] in

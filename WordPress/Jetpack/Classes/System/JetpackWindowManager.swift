@@ -16,16 +16,8 @@ class JetpackWindowManager: WindowManager {
 
     override func showUI(for blog: Blog?) {
         if AccountHelper.isLoggedIn {
-            if AccountHelper.hasBlogs {
-                // If the user is logged in and has blogs sync'd to their account
-                showAppUI(for: blog)
-                return
-            } else {
-                // If the user doesn't have any blogs, but they're still logged in, log them out
-                // the `logOutDefaultWordPressComAccount` method will trigger the `showSignInUI` automatically
-                AccountHelper.logOutDefaultWordPressComAccount()
-                return
-            }
+            showAppUI(for: blog)
+            return
         }
 
         guard FeatureFlag.contentMigration.enabled else {

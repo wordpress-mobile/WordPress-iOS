@@ -1,3 +1,3 @@
 Kami memperbaiki sedikit masalah tampilan pada kontrol Beranda dan Menu di dasbor Situs Saya.
 
-Kami juga mengatasi bug di Situs Saya. Sekarang mengetuk tombol "Putuskan koneksi dari WordPress.com” akan segera memutuskan koneksi dan menyegarkan aplikasi.
+Kami juga mengatasi bug di Situs Saya. Sekarang, mengetuk tombol "Putuskan koneksi dari WordPress.com” akan segera memutuskan koneksi dan menyegarkan aplikasi.
