@@ -17,7 +17,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case weeklyRoundupBGProcessingTask
     case domains
     case timeZoneSuggester
-    case aboutScreen
     case mySiteDashboard
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
@@ -32,6 +31,17 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case betaSiteDesigns
     case featureHighlightTooltip
     case jetpackPowered
+    case jetpackPoweredBottomSheet
+    case contentMigration
+    case newJetpackLandingScreen
+    case newWordPressLandingScreen
+    case newCoreDataContext
+    case jetpackMigrationPreventDuplicateNotifications
+    case jetpackFeaturesRemovalPhaseOne
+    case jetpackFeaturesRemovalPhaseTwo
+    case jetpackFeaturesRemovalPhaseThree
+    case jetpackFeaturesRemovalPhaseFour
+    case jetpackFeaturesRemovalPhaseNewUsers
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -74,8 +84,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .timeZoneSuggester:
             return true
-        case .aboutScreen:
-            return true
         case .mySiteDashboard:
             return true
         case .mediaPickerPermissionsNotice:
@@ -104,6 +112,28 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return true
         case .jetpackPowered:
             return true
+        case .jetpackPoweredBottomSheet:
+            return false
+        case .contentMigration:
+            return false
+        case .newJetpackLandingScreen:
+            return true
+        case .newWordPressLandingScreen:
+            return false
+        case .newCoreDataContext:
+            return true
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return false
+        case .jetpackFeaturesRemovalPhaseOne:
+            return false
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return false
+        case .jetpackFeaturesRemovalPhaseThree:
+            return false
+        case .jetpackFeaturesRemovalPhaseFour:
+            return false
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return false
         }
     }
 
@@ -114,6 +144,18 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     /// This key must match the server-side one for remote feature flagging
     var remoteKey: String? {
         switch self {
+        case .jetpackFeaturesRemovalPhaseOne:
+            return "jp_removal_one"
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return "jp_removal_two"
+        case .jetpackFeaturesRemovalPhaseThree:
+            return "jp_removal_three"
+        case .jetpackFeaturesRemovalPhaseFour:
+            return "jp_removal_four"
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return "jp_removal_new_users"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "prevent_duplicate_notifs_remote_field"
             default:
                 return nil
         }
@@ -164,8 +206,6 @@ extension FeatureFlag {
             return "Domain Purchases"
         case .timeZoneSuggester:
             return "TimeZone Suggester"
-        case .aboutScreen:
-            return "New Unified About Screen"
         case .mySiteDashboard:
             return "My Site Dashboard"
         case .mediaPickerPermissionsNotice:
@@ -194,6 +234,28 @@ extension FeatureFlag {
             return "Feature Highlight Tooltip"
         case .jetpackPowered:
             return "Jetpack powered banners and badges"
+        case .jetpackPoweredBottomSheet:
+            return "Jetpack powered bottom sheet"
+        case .contentMigration:
+            return "Content Migration"
+        case .newJetpackLandingScreen:
+            return "New Jetpack landing screen"
+        case .newWordPressLandingScreen:
+            return "New WordPress landing screen"
+        case .newCoreDataContext:
+            return "Use new Core Data context structure (Require app restart)"
+        case .jetpackMigrationPreventDuplicateNotifications:
+            return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
+        case .jetpackFeaturesRemovalPhaseOne:
+            return "Jetpack Features Removal Phase One"
+        case .jetpackFeaturesRemovalPhaseTwo:
+            return "Jetpack Features Removal Phase Two"
+        case .jetpackFeaturesRemovalPhaseThree:
+            return "Jetpack Features Removal Phase Three"
+        case .jetpackFeaturesRemovalPhaseFour:
+            return "Jetpack Features Removal Phase Four"
+        case .jetpackFeaturesRemovalPhaseNewUsers:
+            return "Jetpack Features Removal Phase For New Users"
         }
     }
 

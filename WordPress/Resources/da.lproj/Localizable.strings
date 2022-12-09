@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -21,9 +21,6 @@
 
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(ingen titel)";
-
-/* About this app (information page title) */
-"About" = "Om";
 
 /* Account Settings Title
    Link to Account Settings section */
@@ -100,8 +97,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Tilbage";
 
 /* The title of a button that triggers blocking a site from the user's reader. */
@@ -110,8 +106,7 @@
 /* Notice title when blocking a site succeeds. */
 "Blocked site" = "Bloker websted";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
@@ -236,7 +231,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -395,23 +389,8 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "Afvis";
 
 /* Accessibility label for the Done button in the Me screen.
@@ -799,8 +778,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Mere";
 
 /* Action button to display more available options
@@ -830,7 +808,6 @@
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Næste";
@@ -941,7 +918,7 @@
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åbn Indstillinger";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Åbn i Safari";
 
 /* Placeholder to indicate that filling out the field is optional. */
@@ -1063,7 +1040,6 @@
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Indlæg";
@@ -1085,8 +1061,7 @@
    Primary Web Site */
 "Primary Site" = "Primært websted";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privatlivspolitik";
 
 /* Name for the status of a post that is marked private.
@@ -1154,9 +1129,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Fjern";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -1218,11 +1191,9 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Prøv igen";
 
@@ -1427,8 +1398,7 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taksonomi";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Servicevilkår";
 
 /* Title of a button style */
@@ -1499,7 +1469,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "I dag";
 
@@ -1532,8 +1501,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Prøv igen";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -1616,8 +1584,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Brugernavne skal være på mindst 4 tegn.";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Version";
 
 /* Description for the version label in the What's new page. */
@@ -1654,7 +1621,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -1671,7 +1637,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -1698,7 +1663,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "WordPress.com konto";
 
 /* WordPress.com Notification Settings Title */

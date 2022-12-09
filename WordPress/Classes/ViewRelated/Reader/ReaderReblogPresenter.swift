@@ -28,22 +28,18 @@ class ReaderReblogPresenter {
                        readerPost: ReaderPost,
                        origin: UIViewController) {
 
-        let blogCount = blogService.blogCountVisibleForWPComAccounts()
+        let blogCount = BlogQuery().visible(true).hostedByWPCom(true).count(in: blogService.managedObjectContext)
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = blogService.visibleBlogsForWPComAccounts().first else {
+            guard let blog = try? BlogQuery().visible(true).hostedByWPCom(true).blog(in: blogService.managedObjectContext) else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
         default:
-            guard let blog = blogService.lastUsedOrFirstBlog() else {
-                return
-            }
             presentBlogPicker(from: origin,
-                              blog: blog,
                               blogService: blogService,
                               readerPost: readerPost)
         }
@@ -55,7 +51,6 @@ class ReaderReblogPresenter {
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
     func presentBlogPicker(from origin: UIViewController,
-                           blog: Blog,
                            blogService: BlogService,
                            readerPost: ReaderPost) {
 
@@ -98,7 +93,7 @@ private extension ReaderReblogPresenter {
                                origin: UIViewController) {
 
         // get post and put content in it
-        let post = postService.createDraftPost(for: blog)
+        let post = blog.createDraftPost()
         // size used for photon url. Set height to 0 will preserve aspect ratio
         let photonSize = CGSize(width: min(origin.view.frame.width,
                                            origin.view.frame.height),

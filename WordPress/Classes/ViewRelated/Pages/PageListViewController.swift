@@ -533,8 +533,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Analytics
         WPAnalytics.track(.postListDuplicateAction, withProperties: propertiesForAnalytics())
         // Copy Page
-        let postService = PostService(managedObjectContext: managedObjectContext())
-        let newPage = postService.createDraftPage(for: page.blog)
+        let newPage = page.blog.createDraftPage()
         newPage.postTitle = page.postTitle
         newPage.content = page.content
         // Open Editor

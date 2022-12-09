@@ -56,7 +56,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
-    private var database: KeyValueDatabase = UserDefaults.standard
+    private var database: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
     private lazy var _tableViewHandler: PostListTableViewHandler = {
         let tableViewHandler = PostListTableViewHandler(tableView: tableView)
@@ -559,7 +559,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate?(self)
+        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
 

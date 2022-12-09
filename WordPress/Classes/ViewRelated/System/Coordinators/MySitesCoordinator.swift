@@ -126,12 +126,12 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog)
 
         if let date = date {
-            UserDefaults.standard.set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
+            UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)
         }
 
         if let siteID = blog.dotComID?.intValue {
             let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserDefaults.standard.set(timePeriod.rawValue, forKey: key)
+            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
         }
 
         mySiteViewController.showBlogDetailsSubsection(.stats)
@@ -158,8 +158,7 @@ class MySitesCoordinator: NSObject {
 
     func showCreateSheet(for blog: Blog?) {
         let context = ContextManager.shared.mainContext
-        let service = BlogService(managedObjectContext: context)
-        guard let targetBlog = blog ?? service.lastUsedOrFirstBlog() else {
+        guard let targetBlog = blog ?? Blog.lastUsedOrFirst(in: context) else {
             return
         }
 

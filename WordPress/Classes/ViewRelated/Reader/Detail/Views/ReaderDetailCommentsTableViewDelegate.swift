@@ -114,11 +114,32 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         return header
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        /// We used this method to show the Jetpack badge rather than setting `tableFooterView` because it scaled better with Dynamic type.
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return nil
+        }
+        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding,
+                                           target: self,
+                                           selector: #selector(jetpackButtonTapped))
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return ReaderDetailCommentsHeader.estimatedHeight
     }
 
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return ReaderDetailCommentsHeader.estimatedHeight
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 0, JetpackBrandingVisibility.all.enabled else {
+            return 0
+        }
         return UITableView.automaticDimension
     }
 }
@@ -133,11 +154,20 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
+    @objc func jetpackButtonTapped() {
+        guard let presentingViewController = presentingViewController else {
+            return
+        }
+        JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .readerDetail)
+    }
+
     struct Constants {
         static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }

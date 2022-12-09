@@ -78,8 +78,8 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     fileprivate func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
-        if blogService.blogCountForAllAccounts() > 1 {
-            defaultBlogName = blogService.lastUsedOrFirstBlog()?.settings?.name
+        if Blog.count(in: mainContext) > 1 {
+            defaultBlogName = Blog.lastUsedOrFirst(in: mainContext)?.settings?.name
         }
 
         let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
@@ -154,7 +154,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func doesCurrentBlogSupportStats() -> Bool {
-        guard let currentBlog = blogService.lastUsedOrFirstBlog() else {
+        guard let currentBlog = Blog.lastUsedOrFirst(in: mainContext) else {
             return false
         }
 
@@ -162,6 +162,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func hasBlog() -> Bool {
-        return blogService.blogCountForAllAccounts() > 0
+        return Blog.count(in: mainContext) > 0
     }
 }

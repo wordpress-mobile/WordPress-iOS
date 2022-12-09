@@ -196,7 +196,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
 extension PostCompactCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
-
+        // Do nothing, since this cell doesn't support actions in `InteractivePostViewDelegate`.
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {

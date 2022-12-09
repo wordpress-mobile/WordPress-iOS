@@ -24,7 +24,7 @@ final class FeatureHighlightStoreTests: XCTestCase {
     }
 
     func testShouldShowTooltipReturnsTrueWhenCounterIsBelow3() {
-        var sut = FeatureHighlightStore(userDefaults: MockUserDefaults())
+        var sut = FeatureHighlightStore(userStore: MockUserDefaults())
         sut.didDismissTooltip = false
         sut.followConversationTooltipCounter = 2
 
@@ -32,7 +32,7 @@ final class FeatureHighlightStoreTests: XCTestCase {
     }
 
     func testShouldShowTooltipReturnsFalseWhenCounterIs3() {
-        var sut = FeatureHighlightStore(userDefaults: MockUserDefaults())
+        var sut = FeatureHighlightStore(userStore: MockUserDefaults())
         sut.didDismissTooltip = false
         sut.followConversationTooltipCounter = 3
 
@@ -40,7 +40,7 @@ final class FeatureHighlightStoreTests: XCTestCase {
     }
 
     func testShouldShowTooltipReturnsFalseWhenCounterIsBelow3DidDismissIsTrue() {
-        var sut = FeatureHighlightStore(userDefaults: MockUserDefaults())
+        var sut = FeatureHighlightStore(userStore: MockUserDefaults())
         sut.didDismissTooltip = true
         sut.followConversationTooltipCounter = 0
 
@@ -48,7 +48,7 @@ final class FeatureHighlightStoreTests: XCTestCase {
     }
 
     func testShouldShowTooltipReturnsFalseWhenCounterIsAbove3DidDismissIsTrue() {
-        var sut = FeatureHighlightStore(userDefaults: MockUserDefaults())
+        var sut = FeatureHighlightStore(userStore: MockUserDefaults())
         sut.didDismissTooltip = true
         sut.followConversationTooltipCounter = 7
 

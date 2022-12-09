@@ -1,6 +1,9 @@
 import Foundation
 import WordPressKit
 
+/// - Warning:
+/// This configuration class has a **WordPress** counterpart in the WordPress bundle.
+/// Make sure to keep them in sync to avoid build errors when builing the WordPress target.
 @objc class AppConstants: NSObject {
     static let itunesAppID = "1565481562"
     static let productTwitterHandle = "@jetpack"
@@ -9,6 +12,7 @@ import WordPressKit
     static let productBlogDisplayURL = "jetpack.com/blog"
     static let zendeskSourcePlatform = "mobile_-_jp_ios"
     static let shareAppName: ShareAppName = .jetpack
+    static let mobileAnnounceAppId = "6"
     @objc static let eventNamePrefix = "jpios"
 
     /// Notifications Constants
@@ -19,7 +23,11 @@ import WordPressKit
     #if INTERNAL_BUILD
     static let pushNotificationAppId = "com.jetpack.internal"
     #else
+    #if ALPHA_BUILD
+    static let pushNotificationAppId = "com.jetpack.alpha"
+    #else
     static let pushNotificationAppId = "com.jetpack.appstore"
+    #endif
     #endif
     #endif
 }
@@ -34,12 +42,20 @@ import WordPressKit
 // MARK: - Localized Strings
 extension AppConstants {
 
+    struct AboutScreen {
+        static let blogName = NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress.com blog")
+        static let workWithUs = NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page")
+        static let workWithUsURL = "https://automattic.com/work-with-us"
+    }
+
     struct PostSignUpInterstitial {
         static let welcomeTitleText = NSLocalizedString("Welcome to Jetpack", comment: "Post Signup Interstitial Title Text for Jetpack iOS")
     }
 
     struct Settings {
         static let aboutTitle = NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+        static let shareButtonTitle = NSLocalizedString("Share Jetpack with a friend", comment: "Title for a button that recommends the app to others")
+        static let whatIsNewTitle = NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
     }
 
     struct Login {

@@ -84,15 +84,12 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
 
         NoticesDispatch.lock()
 
-        if !FeatureFlag.siteIconCreator.enabled {
+        guard FeatureFlag.siteIconCreator.enabled else {
             showUpdateSiteIconAlert()
+            return
         }
 
-        if #available(iOS 14.0, *) {
-            showSiteIconSelectionAlert()
-        } else {
-            showUpdateSiteIconAlert()
-        }
+        showSiteIconSelectionAlert()
     }
 
     func siteIconReceivedDroppedImage(_ image: UIImage?) {

@@ -345,7 +345,7 @@ FeaturedImageViewControllerDelegate>
                                   stickyPostSection,
                                   @(PostSettingsSectionShare),
                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
-    // Remove sticky post section for self-hosted non JetPack site
+    // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
     if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {
@@ -410,7 +410,7 @@ FeaturedImageViewControllerDelegate>
         return NSLocalizedString(@"Mark as Sticky", @"Label for the Mark as Sticky option in post settings.");
         
     } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
-        return NSLocalizedString(@"Sharing", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
+        return NSLocalizedString(@"Jetpack Social", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");

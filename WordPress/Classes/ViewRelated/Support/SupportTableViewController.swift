@@ -5,6 +5,9 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    /// Configures the appearance of the support screen.
+    let configuration: Configuration
+
     var sourceTag: WordPressSupportSourceTag?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
@@ -12,7 +15,7 @@ class SupportTableViewController: UITableViewController {
     var showHelpFromViewController: UIViewController?
 
     private var tableHandler: ImmuTableViewHandler?
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults = UserPersistentStoreFactory.instance()
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.
@@ -21,7 +24,8 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    override init(style: UITableView.Style) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
+        self.configuration = configuration
         super.init(style: style)
     }
 
@@ -44,6 +48,11 @@ class SupportTableViewController: UITableViewController {
         checkForAutomatticEmail()
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.tableView.sizeToFitHeaderView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -78,7 +87,6 @@ class SupportTableViewController: UITableViewController {
         dismissTapped?()
         dismiss(animated: true)
     }
-
 }
 
 // MARK: - Private Extension
@@ -107,14 +115,18 @@ private extension SupportTableViewController {
                                 NavigationItemRow.self,
                                 TextRow.self,
                                 HelpRow.self,
+                                DestructiveButtonRow.self,
                                 SupportEmailRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-        // remove empty cells
-        tableView.tableFooterView = UIView()
-
+        tableView.tableFooterView = UIView() // remove empty cells
+        if let headerConfig = configuration.meHeaderConfiguration {
+            let headerView = MeHeaderView()
+            headerView.update(with: headerConfig)
+            tableView.tableHeaderView = headerView
+        }
         registerObservers()
     }
 
@@ -144,19 +156,34 @@ private extension SupportTableViewController {
             footerText: LocalizedText.helpFooter)
 
         // Information Section
-        let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-        let switchRow = SwitchRow(title: LocalizedText.extraDebug,
-                                  value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
-                                  onChange: extraDebugToggled())
-        let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+        var informationSection: ImmuTableSection?
+        if configuration.showsLogsSection {
+            let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
+            let switchRow = SwitchRow(title: LocalizedText.extraDebug,
+                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
+                                      onChange: extraDebugToggled())
+            let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+            informationSection = ImmuTableSection(
+                headerText: nil,
+                rows: [versionRow, switchRow, logsRow],
+                footerText: LocalizedText.informationFooter
+            )
+        }
 
-        let informationSection = ImmuTableSection(
-            headerText: nil,
-            rows: [versionRow, switchRow, logsRow],
-            footerText: LocalizedText.informationFooter)
+        // Log out Section
+        var logOutSections: ImmuTableSection?
+        if configuration.showsLogOutButton {
+            let logOutRow = DestructiveButtonRow(
+                title: LocalizedText.logOutButtonTitle,
+                action: logOutTapped(),
+                accessibilityIdentifier: ""
+            )
+            logOutSections = .init(headerText: LocalizedText.wpAccount, optionalRows: [logOutRow])
+        }
 
         // Create and return table
-        return ImmuTable(sections: [helpSection, informationSection])
+        let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
+        return ImmuTable(sections: sections)
     }
 
     @objc func refreshNotificationIndicator(_ notification: Foundation.Notification) {
@@ -274,6 +301,17 @@ private extension SupportTableViewController {
         }
     }
 
+    private func logOutTapped() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self else {
+                return
+            }
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            let actionHandler = LogOutActionHandler()
+            actionHandler.logOut(with: self)
+        }
+    }
+
     // MARK: - ImmuTableRow Struct
 
     struct HelpRow: ImmuTableRow {
@@ -345,6 +383,8 @@ private extension SupportTableViewController {
         static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
         static let contactEmailAccessibilityHint = NSLocalizedString("Shows a dialog for changing the Contact Email.", comment: "Accessibility hint describing what happens if the Contact Email button is tapped.")
         static let emailNotSet = NSLocalizedString("Not Set", comment: "Display value for Support email field if there is no user email address.")
+        static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-out section header title")
+        static let logOutButtonTitle = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
 
     // MARK: - User Defaults Keys

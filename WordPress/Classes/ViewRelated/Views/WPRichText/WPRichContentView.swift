@@ -76,7 +76,6 @@ class WPRichContentView: UITextView {
         return formattedAttributedString(for: string, style: style)
     }
 
-    @available(iOS 13, *)
     class func formattedAttributedString(for string: String, style: UIUserInterfaceStyle) -> NSAttributedString {
         let trait = UITraitCollection(userInterfaceStyle: style)
         let style = AttributedStringStyle(textColorHex: UIColor.text.color(for: trait).hexString() ?? fallbackTextColorHex,

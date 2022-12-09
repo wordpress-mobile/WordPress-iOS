@@ -1,16 +1,12 @@
 import UIKit
 import WordPressUI
 
-protocol DomainCreditRedemptionSuccessViewControllerDelegate: AnyObject {
-    func continueButtonPressed(domain: String)
-}
-
 /// Displays messaging after user successfully redeems domain credit.
 class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     private let domain: String
 
-    private weak var delegate: DomainCreditRedemptionSuccessViewControllerDelegate?
+    private var continueButtonPressed: (String) -> Void
 
     // MARK: - Views
 
@@ -102,9 +98,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
 
     // MARK: - View lifecycle
 
-    init(domain: String, delegate: DomainCreditRedemptionSuccessViewControllerDelegate) {
+    init(domain: String, continueButtonPressed: @escaping (String) -> Void) {
         self.domain = domain
-        self.delegate = delegate
+        self.continueButtonPressed = continueButtonPressed
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -196,7 +192,7 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
     // MARK: - Actions
 
     @objc func doneButtonTapped() {
-        delegate?.continueButtonPressed(domain: domain)
+        continueButtonPressed(domain)
     }
 
     // MARK: - Constants

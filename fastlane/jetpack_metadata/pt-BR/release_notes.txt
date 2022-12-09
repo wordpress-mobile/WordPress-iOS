@@ -1,3 +1,3 @@
-Precisa trocar para o navegador? Agora você pode fazer login lendo um código QR no menu Meu perfil do aplicativo.
+Corrigimos um pequeno problema visual nos controles Início e Menu do painel Meu site.
 
-Na visualização de um post, agora você pode trocar a orientação de retrato para paisagem e vice-versa, sem deixar de fora nenhum conteúdo. Muito bem.
+Também eliminamos um bug nesse painel. Agora o botão "Desconectar do WordPress.com" faz a desconexão ao ser tocado e atualiza o aplicativo.

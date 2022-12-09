@@ -67,7 +67,7 @@ class GutenbergSettings {
     func performGutenbergPhase2MigrationIfNeeded() {
         guard
             ReachabilityUtils.isInternetReachable(),
-            let account = AccountService(managedObjectContext: context).defaultWordPressComAccount()
+            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         else {
             return
         }
@@ -81,7 +81,7 @@ class GutenbergSettings {
     }
 
     private func setGutenbergEnabledForAllSites() {
-        let allBlogs = BlogService(managedObjectContext: context).blogsForAllAccounts()
+        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         allBlogs.forEach { blog in
             if blog.editor == .aztec {
                 setShowPhase2Dialog(true, for: blog)

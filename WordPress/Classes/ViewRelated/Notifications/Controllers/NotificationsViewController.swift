@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import CoreData
 import CocoaLumberjack
 import WordPressShared
@@ -55,7 +56,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     /// Indicates whether the view is required to reload results on viewWillAppear, or not
     ///
-    fileprivate var needsReloadResults = false
+    var needsReloadResults = false
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
@@ -133,6 +134,19 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return markButton
     }()
 
+    /// Used by JPScrollViewDelegate to send scroll position
+    internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
+
+    /// The last time when user seen notifications
+    var lastSeenTime: String? {
+        get {
+            return userDefaults.string(forKey: Settings.lastSeenTime)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Settings.lastSeenTime)
+        }
+    }
+
     // MARK: - View Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -166,6 +180,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .notifications, in: self)
+
         syncNotificationsWithModeratedComments()
         setupInlinePrompt()
 
@@ -196,11 +212,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             reloadTableViewPreservingSelection()
         }
 
-        if !AccountHelper.isDotcomAvailable() {
+        if shouldDisplayJetpackPrompt {
             promptForJetpackCredentials()
         } else {
-            jetpackLoginViewController?.view.removeFromSuperview()
-            jetpackLoginViewController?.removeFromParent()
+            jetpackLoginViewController?.remove()
         }
 
         showNoResultsViewIfNeeded()
@@ -545,10 +560,16 @@ private extension NotificationsViewController {
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
         filterTabBar.tabBarHeightConstraintPriority = 999
 
+        let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
+        let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+
+        leading.priority = UILayoutPriority(999)
+        trailing.priority = UILayoutPriority(999)
+
         NSLayoutConstraint.activate([
             tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor),
-            tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor),
-            tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
+            leading,
+            trailing
         ])
     }
 
@@ -602,12 +623,26 @@ private extension NotificationsViewController {
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
-
-    func configureJetpackBanner() {
-        jetpackBannerView.isHidden = AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled
-    }
 }
 
+// MARK: - Jetpack banner UI Initialization
+//
+extension NotificationsViewController {
+
+    /// Called on view load to determine whether the Jetpack banner should be shown on the view
+    /// Also called in the completion block of the JetpackLoginViewController to show the banner once the user connects to a .com account
+    func configureJetpackBanner() {
+        guard JetpackBrandingVisibility.all.enabled else {
+            return
+        }
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
+        }
+        jetpackBannerView.isHidden = false
+        addTranslationObserver(jetpackBannerView)
+    }
+}
 
 
 // MARK: - Notifications
@@ -662,14 +697,14 @@ private extension NotificationsViewController {
     }
 
     @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
-        guard isViewLoaded == true && view.window != nil else {
-            return
-        }
-
-        needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
         resetApplicationBadge()
+        guard isViewLoaded == true && view.window != nil else {
+            needsReloadResults = true
+            return
+        }
+        reloadResultsController()
         syncNewNotifications()
     }
 
@@ -1534,7 +1569,11 @@ private extension NotificationsViewController {
             return
         }
 
-        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/14547
+        // Don't attempt to resize the columns for full width.
+        let columnWidth: WPSplitViewControllerPrimaryColumnWidth = .default
+        // The above line should be replace with the following line when the full width issue is resolved.
+        // let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
 
         if splitViewController.wpPrimaryColumnWidth != columnWidth {
             splitViewController.wpPrimaryColumnWidth = columnWidth
@@ -1568,7 +1607,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayJetpackPrompt: Bool {
-        return AccountHelper.isDotcomAvailable() == false
+        return AccountHelper.isDotcomAvailable() == false && blogForJetpackPrompt != nil
     }
 
     var shouldDisplaySettingsButton: Bool {
@@ -1734,7 +1773,6 @@ private extension NotificationsViewController {
             selectedNotification = nil
             mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
-            tableView.reloadData()
         } catch {
             DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
@@ -1823,17 +1861,8 @@ private extension NotificationsViewController {
         return NotificationActionsService(managedObjectContext: mainContext)
     }
 
-    var userDefaults: UserDefaults {
-        return UserDefaults.standard
-    }
-
-    var lastSeenTime: String? {
-        get {
-            return userDefaults.string(forKey: Settings.lastSeenTime)
-        }
-        set {
-            userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
-        }
+    var userDefaults: UserPersistentRepository {
+        return UserPersistentStoreFactory.instance()
     }
 
     var filter: Filter {
@@ -2004,17 +2033,16 @@ extension NotificationsViewController: UIViewControllerTransitioningDelegate {
 
     private func showNotificationAlert(_ alertController: FancyAlertViewController) {
         let mainContext = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        guard accountService.defaultWordPressComAccount() != nil else {
+        guard (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil else {
             return
         }
+
         PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
             guard enabled == .notDetermined else {
                 return
             }
 
-            UserDefaults.standard.notificationPrimerAlertWasDisplayed = true
+            UserPersistentStoreFactory.instance().notificationPrimerAlertWasDisplayed = true
 
             let alert = alertController
             alert.modalPresentationStyle = .custom
@@ -2046,5 +2074,21 @@ extension NotificationsViewController: WPScrollableViewController {
     // Used to scroll view to top when tapping on tab bar item when VC is already visible.
     func scrollViewToTop() {
         tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+    }
+}
+
+// MARK: - Jetpack banner delegate
+//
+extension NotificationsViewController: JPScrollViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        processJetpackBannerVisibility(scrollView)
+    }
+}
+
+// MARK: - StoryboardLoadable
+
+extension NotificationsViewController: StoryboardLoadable {
+    static var defaultStoryboardName: String {
+        return "Notifications"
     }
 }

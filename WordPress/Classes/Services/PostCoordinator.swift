@@ -11,9 +11,11 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private let backgroundContext: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
-    private let mainContext: NSManagedObjectContext
+    private var mainContext: NSManagedObjectContext {
+        coreDataStack.mainContext
+    }
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
@@ -21,7 +23,6 @@ class PostCoordinator: NSObject {
 
     private let mediaCoordinator: MediaCoordinator
 
-    private let backgroundService: PostService
     private let mainService: PostService
     private let failedPostsFetcher: FailedPostsFetcher
 
@@ -30,21 +31,15 @@ class PostCoordinator: NSObject {
     // MARK: - Initializers
 
     init(mainService: PostService? = nil,
-         backgroundService: PostService? = nil,
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
-         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade()) {
-        let contextManager = ContextManager.sharedInstance()
+         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
+         coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
+        self.coreDataStack = coreDataStack
 
-        let mainContext = contextManager.mainContext
-        let backgroundContext = contextManager.newDerivedContext()
-        backgroundContext.automaticallyMergesChangesFromParent = true
-
-        self.mainContext = mainContext
-        self.backgroundContext = backgroundContext
+        let mainContext = self.coreDataStack.mainContext
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
-        self.backgroundService = backgroundService ?? PostService(managedObjectContext: backgroundContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
@@ -228,7 +223,7 @@ class PostCoordinator: NSObject {
     /// The main cause of wrong status is the app being killed while uploads of posts are happening.
     ///
     @objc func refreshPostStatus() {
-        backgroundService.refreshPostStatus()
+        Post.refreshStatus(with: coreDataStack)
     }
 
     private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
@@ -329,6 +324,13 @@ class PostCoordinator: NSObject {
             let remoteURLStr = media.remoteURL else {
             return
         }
+        var imageURL = remoteURLStr
+
+        if let remoteLargeURL = media.remoteLargeURL {
+            imageURL = remoteLargeURL
+        } else if let remoteMediumURL = media.remoteMediumURL {
+            imageURL = remoteMediumURL
+        }
 
         let mediaLink = media.link
         let mediaUploadID = media.uploadID
@@ -344,10 +346,10 @@ class PostCoordinator: NSObject {
         gutenbergProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
-            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
             gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
             gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
@@ -429,7 +431,7 @@ class PostCoordinator: NSObject {
 
         context.perform {
             if status == .failed {
-                self.mainService.markAsFailedAndDraftIfNeeded(post: post)
+                post.markAsFailedAndDraftIfNeeded()
             } else {
                 post.remoteStatus = status
             }
@@ -503,24 +505,22 @@ extension PostCoordinator: Uploader {
 extension PostCoordinator {
     /// Fetches failed posts that should be retried when there is an internet connection.
     class FailedPostsFetcher {
-        private let postService: PostService
-
-        init(_ postService: PostService) {
-            self.postService = postService
-        }
+        private let managedObjectContext: NSManagedObjectContext
 
         init(_ managedObjectContext: NSManagedObjectContext) {
-            postService = PostService(managedObjectContext: managedObjectContext)
+            self.managedObjectContext = managedObjectContext
         }
 
         func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
             let interactor = PostAutoUploadInteractor()
+            managedObjectContext.perform {
+                let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+                request.predicate = NSPredicate(format: "remoteStatusNumber == %d", AbstractPostRemoteStatus.failed.rawValue)
+                let posts = (try? self.managedObjectContext.fetch(request)) ?? []
 
-            postService.getFailedPosts { posts in
                 let postsAndActions = posts.reduce(into: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction]()) { result, post in
                     result[post] = interactor.autoUploadAction(for: post)
                 }
-
                 result(postsAndActions)
             }
         }

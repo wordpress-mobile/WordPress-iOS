@@ -60,10 +60,11 @@ final class InteractiveNotificationsManager: NSObject {
         let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: options) { (allowed, _)  in
+        notificationCenter.requestAuthorization(options: options) { [weak self] (allowed, _)  in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
+                    self?.disableWordPressNotificationsIfNeeded()
                 } else {
                     WPAnalytics.track(.pushNotificationOSAlertDenied)
                 }
@@ -516,7 +517,11 @@ extension InteractiveNotificationsManager {
             case .answerPrompt:
                 return NSLocalizedString("Answer", comment: "Verb. Opens the editor to answer the blogging prompt.")
             case .dismissPrompt:
-                return NSLocalizedString("Dismiss", comment: "Verb. Dismisses the blogging prompt notification.")
+                return NSLocalizedString(
+                    "bloggingPrompt.pushNotification.customActionDescription.dismiss",
+                    value: "Dismiss",
+                    comment: "Verb. Dismisses the blogging prompt notification."
+                )
             }
         }
 
@@ -614,11 +619,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         if notification.request.content.categoryIdentifier == NoteCategoryDefinition.bloggingReminderWeekly.rawValue
             || notification.request.content.categoryIdentifier == NoteCategoryDefinition.weeklyRoundup.rawValue {
 
-            if #available(iOS 14.0, *) {
-                completionHandler([.banner, .list, .sound])
-            } else {
-                completionHandler([.alert, .sound])
-            }
+            completionHandler([.banner, .list, .sound])
             return
         }
 
@@ -681,5 +682,13 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
         MeNavigationAction.notificationSettings.perform(router: UniversalLinkRouter.shared)
+    }
+}
+
+private extension InteractiveNotificationsManager {
+    /// A temporary setting to allow controlling WordPress notifications when they are disabled after Jetpack installation
+    /// Disable WordPress notifications when they are enabled on Jetpack
+    func disableWordPressNotificationsIfNeeded() {
+        JetpackNotificationMigrationService.shared.disableWordPressNotificationsFromJetpack()
     }
 }

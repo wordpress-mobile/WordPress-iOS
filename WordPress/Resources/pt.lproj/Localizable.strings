@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -111,14 +111,8 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "MORADA";
 
-/* About this app (information page title) */
-"About" = "Sobre";
-
 /* My Profile 'About me' label */
 "About Me" = "Sobre mim";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "Sobre a aplicação WordPress para iOS";
 
 /* Title for the account section in site settings screen */
 "Account" = "Conta";
@@ -350,8 +344,7 @@
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "Voltar";
 
 /* Message shown encouraging the user to leave a comment on a post in the reader. */
@@ -367,8 +360,7 @@
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Bloquear tentativas maliciosas de iniciar sessão";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "Site";
 
 /* Blog's Follower Profile. Displayed when the name is empty! */
@@ -589,7 +581,6 @@
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
@@ -665,9 +656,6 @@
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Ligação indisponível";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "Ligações";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -689,6 +677,7 @@
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -903,23 +892,8 @@
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "Ignorar";
 
 /* Display Name label text.
@@ -1449,7 +1423,6 @@
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
@@ -1678,8 +1651,7 @@
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "Mais";
 
 /* Action button to display more available options
@@ -1692,6 +1664,7 @@
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -1735,7 +1708,6 @@
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Seguinte";
@@ -1916,10 +1888,7 @@
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir definições";
 
-/* Today widget label to launch WP app */
-"Open WordPress" = "Abrir WordPress";
-
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "Abrir no Safari";
 
 /* Menus label for checkbox when editig item as a link. */
@@ -2135,7 +2104,6 @@
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Conteúdos";
@@ -2180,8 +2148,7 @@
    Title for screen to select the privacy options for a blog */
 "Privacy" = "Privacidade";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Política de privacidade";
 
 /* Register Domain - Privacy Protection section header title */
@@ -2203,12 +2170,6 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Público";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Publicitar";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "Publicitar em %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -2253,9 +2214,6 @@
 
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Notificações push foram desligadas nas definições do iOS. Toque em \"Permitir notificações\" para voltar a ligar.";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "Classifique-nos na App Store";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -2306,9 +2264,7 @@
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Remover";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
@@ -2408,11 +2364,9 @@
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "Tentar de novo";
 
@@ -2550,8 +2504,7 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Partilhe aqui a sua história...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partilha";
@@ -2696,8 +2649,7 @@
    Settings: Comments Sort Order */
 "Sort By" = "Ordenar por";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "Código fonte";
 
 /* Label for showing the available disk space quota available for media */
@@ -2790,8 +2742,7 @@
 /* My Profile 'About me' hint text */
 "Tell us a bit about you." = "Escreva algo sobre si.";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos do serviço";
 
 /* Menu item label for linking a testimonial post. */
@@ -2981,7 +2932,6 @@
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "Hoje";
 
@@ -3042,8 +2992,7 @@
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Tentar de novo";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */
@@ -3052,8 +3001,7 @@
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Tente com o endereço do site";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -3245,8 +3193,7 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verificar sessão";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "Versão";
 
 /* Version of a plugin to install
@@ -3307,7 +3254,6 @@
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -3333,7 +3279,6 @@
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -3403,7 +3348,8 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "Conta do WordPress.com";
 
 /* Title for the Plans list header */

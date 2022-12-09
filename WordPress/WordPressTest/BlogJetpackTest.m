@@ -81,13 +81,13 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     [self waitForExpectations:@[saveExpectation] timeout:2.0];
-    WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
     saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
     [self waitForExpectations:@[saveExpectation] timeout:2.0];
-    defaultAccount = [accountService defaultWordPressComAccount];
+    defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];;
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 
@@ -133,7 +133,7 @@
     // test.blog + wp.com + jetpack
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)
-    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com
     XCTAssertEqual(1, wpComAccount.blogs.count);
     Blog *testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
@@ -152,7 +152,7 @@
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)
-    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
 
     testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
     XCTAssertNotNil(testBlog);
@@ -193,7 +193,7 @@
 
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)
-    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com
     XCTAssertEqual(1, wpComAccount.blogs.count);
 
@@ -210,7 +210,7 @@
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)
-    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
 }
 
 @end

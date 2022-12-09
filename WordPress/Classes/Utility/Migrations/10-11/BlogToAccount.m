@@ -1,8 +1,8 @@
 #import "BlogToAccount.h"
 #import <NSURL_IDN/NSURL+IDN.h>
-#import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
 #import "Constants.h"
+#import "WordPress-Swift.h"
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
@@ -19,7 +19,7 @@
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSString *const WPComDefaultAccountUsernameKey = @"wpcom_username_preference";
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
+    NSString *username = [[UserPersistentStoreFactory userDefaultsInstance] objectForKey:WPComDefaultAccountUsernameKey];
     if (!username) {
         // There is no default WordPress.com account, nothing to do here
         return YES;
@@ -42,11 +42,10 @@
         NSString *newKey = WPComXMLRPCUrl;
 
         NSError *error;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password 
-                                  forServiceName:newKey updateExisting:YES error:&error]) {
-                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {
@@ -55,7 +54,7 @@
     }
 
     NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
+    [[UserPersistentStoreFactory userDefaultsInstance] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
 
     return YES;
 }
@@ -113,10 +112,10 @@
             newKey = xmlrpc;
         }
         NSError *error;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey updateExisting:YES error:&error]) {
-                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey accessGroup:nil updateExisting:YES error:&error]) {
+                [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey accessGroup:nil error:&error];
             }
         }
         if (error) {

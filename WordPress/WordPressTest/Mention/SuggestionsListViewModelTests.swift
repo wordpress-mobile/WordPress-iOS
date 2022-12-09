@@ -33,7 +33,7 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     /// Tests that the user suggestions array is loaded.
     func testUserSuggestionsCount() {
-        XCTAssertEqual(userSuggestions.count, 100)
+        XCTAssertEqual(userSuggestions.count, 103)
     }
 
     // MARK: - Test searchSuggestions(forWord:) -> Bool
@@ -44,13 +44,14 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         let word = "+"
         self.viewModel.suggestionType = .xpost
         self.viewModel.reloadData()
-        let expectedResult = viewModel.suggestions.sites.map { SuggestionViewModel(suggestion: $0) }
+        let expectedResult = SuggestionsListSection()
+        expectedResult.rows = viewModel.suggestions.sites.map { SuggestionViewModel(suggestion: $0) }
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(isEqual(expectedResult, viewModel.items))
+        XCTAssertTrue(isEqual([expectedResult], viewModel.sections))
         XCTAssertTrue(result)
     }
 
@@ -60,17 +61,18 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         let word = "+bitwolf"
         self.viewModel.suggestionType = .xpost
         self.viewModel.reloadData()
-        let expectedResult = SuggestionViewModel(suggestion: viewModel.suggestions.sites[2])
+        let expectedResult = SuggestionsListSection()
+        expectedResult.rows = [SuggestionViewModel(suggestion: viewModel.suggestions.sites[2])]
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(isEqual(expectedResult, viewModel.items[0]))
+        XCTAssertTrue(isEqual([expectedResult], viewModel.sections))
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result is empty when an empty word is provided
+    /// Tests that the search result is empty when an empty word is provided
     func testSearchSuggestionsWithEmptyWord() {
         // Given
         let word = ""
@@ -79,83 +81,109 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(viewModel.items.isEmpty)
+        XCTAssertTrue(viewModel.sections.isEmpty)
         XCTAssertFalse(result)
     }
 
-    /// Tests that the seach result is not empty when @ sign is provided
+    /// Tests that the search result is not empty when @ sign is provided
     func testSearchSuggestionsWithAtSignWord() {
         // Given
         let word = "@"
-        let expectedSuggestions = userSuggestions.map { SuggestionViewModel(suggestion: $0) }
+        let expectedResult = SuggestionsListSection()
+        expectedResult.rows = userSuggestions.map { SuggestionViewModel(suggestion: $0) }
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(isEqual(viewModel.items, expectedSuggestions))
+        XCTAssertTrue(isEqual(viewModel.sections, [expectedResult]))
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has an exact match
+    /// Tests that the search result has an exact match
     func testSearchSuggestionsWithExactMatch() throws {
         // Given
         let word = "@glegrandx"
-        let expectedSuggestion = SuggestionViewModel(suggestion: userSuggestions[33])
+        let expectedResult = SuggestionsListSection()
+        expectedResult.rows = [SuggestionViewModel(suggestion: userSuggestions[33])]
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(viewModel.items.count == 1)
-        XCTAssertTrue(isEqual(viewModel.items[0], expectedSuggestion))
+        XCTAssertTrue(isEqual([expectedResult], viewModel.sections))
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches
-    func testSearchSuggestionsWithPartialMatch() throws {
+    /// Tests that the search result has one match with case-insensitive and diacritic-insensitive
+    func testSearchSuggestionsWithOneMatch() throws {
+        // Given
+        let word = "@Caa"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the search result has a few matches
+    func testSearchSuggestionsWithPartialUpperCaseMatch() throws {
+        // Given
+        let word = "@Ca"
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
+
+        // When
+        let result = self.viewModel.searchSuggestions(withWord: word)
+
+        // Then
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
+        XCTAssertTrue(result)
+    }
+
+    /// Tests that the search result has a few matches
+    func testSearchSuggestionsWithPartialLowerCaseMatch() throws {
         // Given
         let word = "@ca"
-        let expectedSuggestions = suggestionViewModels(fromIds: [17, 22, 38, 44, 71, 80, 81, 88, 91], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [], regularIds: [101, 81, 71, 102, 38, 17, 103, 88, 80, 91, 44, 22])
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(viewModel.items.count == 9)
-        XCTAssertTrue(isEqual(expectedSuggestions, viewModel.items))
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with one prominent suggestion at the top
+    /// Tests that the search result has a few matches with one prominent suggestion at the top
     func testSearchSuggestionsWithPartialMatchAndOneProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedSuggestions = suggestionViewModels(fromIds: [88, 17, 22, 38, 44, 71, 80, 81, 91], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [88], regularIds: [101, 81, 71, 102, 38, 17, 103, 80, 91, 44, 22])
         self.viewModel.prominentSuggestionsIds = [88]
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(viewModel.items.count == 9)
-        XCTAssertTrue(isEqual(expectedSuggestions, viewModel.items))
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
         XCTAssertTrue(result)
     }
 
-    /// Tests that the seach result has a few matches with two prominent suggestions at the top
+    /// Tests that the search result has a few matches with two prominent suggestions at the top
     func testSearchSuggestionsWithPartialMatchAndTwoProminentSuggestion() throws {
         // Given
         let word = "@ca"
-        let expectedSuggestions = suggestionViewModels(fromIds: [91, 88, 17, 22, 38, 44, 71, 80, 81], in: userSuggestions)
+        let expectedResult = suggestionsList(fromProminentIds: [91, 88], regularIds: [101, 81, 71, 102, 38, 17, 103, 80, 44, 22])
         self.viewModel.prominentSuggestionsIds = [91, 88]
 
         // When
         let result = self.viewModel.searchSuggestions(withWord: word)
 
         // Then
-        XCTAssertTrue(viewModel.items.count == 9)
-        XCTAssertTrue(isEqual(expectedSuggestions, viewModel.items))
+        XCTAssertTrue(isEqual(expectedResult, viewModel.sections))
         XCTAssertTrue(result)
     }
 
@@ -190,15 +218,38 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
 
     // MARK: - Helpers
 
-    private func suggestionViewModels(fromIds ids: [Int], in userSuggestions: [UserSuggestion]) -> [SuggestionViewModel] {
-        return ids.compactMap { id -> SuggestionViewModel? in
+    private func suggestionsList(fromProminentIds prominentIds: [Int], regularIds: [Int]) -> [SuggestionsListSection] {
+        let prominentSection = suggestionsSection(fromIds: prominentIds)
+        let regularSection = suggestionsSection(fromIds: regularIds)
+        return [prominentSection, regularSection].compactMap { $0 }
+    }
+
+    private func suggestionsSection(fromIds ids: [Int]) -> SuggestionsListSection? {
+        guard !ids.isEmpty else { return nil }
+        let rows = ids.compactMap { id -> SuggestionViewModel? in
             let suggestion = userSuggestions.first(where: { $0.userID == NSNumber(value: id) })
             return suggestion == nil ? nil : SuggestionViewModel(suggestion: suggestion!)
         }
+        let section = SuggestionsListSection()
+        section.rows = rows
+        return section
     }
 
     private func isEqual(_ left: SuggestionViewModel, _ right: SuggestionViewModel) -> Bool {
         return [left.title, left.subtitle, left.imageURL?.absoluteString] == [right.title, right.subtitle, right.imageURL?.absoluteString]
+    }
+
+    private func isEqual(_ left: SuggestionsListSection, _ right: SuggestionsListSection) -> Bool {
+        return isEqual(left.rows, right.rows)
+    }
+
+    private func isEqual(_ left: [SuggestionsListSection], _ right: [SuggestionsListSection]) -> Bool {
+        guard left.count == right.count else { return false }
+        for (index, element) in left.enumerated() {
+            guard !isEqual(element, right[index]) else { continue }
+            return false
+        }
+        return true
     }
 
     private func isEqual(_ left: [SuggestionViewModel], _ right: [SuggestionViewModel]) -> Bool {
@@ -209,5 +260,4 @@ class SuggestionsListViewModelTests: CoreDataTestCase {
         }
         return true
     }
-
 }

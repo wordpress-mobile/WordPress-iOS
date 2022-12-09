@@ -25,8 +25,7 @@ class DateCoordinator {
 
 // MARK: - Date Picker
 
-@available(iOS, introduced: 14.0)
-class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, SchedulingViewControllerProtocol {
+class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
 
     var coordinator: DateCoordinator? = nil
 
@@ -61,7 +60,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         return item
     }()
 
-    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingCalendarViewController.publishImmediately))
+    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingDatePickerViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +72,7 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
         navigationItem.setRightBarButton(doneButton, animated: false)
 
         setup(topView: chosenValueRow, pickerView: datePickerView)
+        view.tintColor = .editorPrimary
 
         setupForAccessibility()
     }
@@ -128,7 +128,6 @@ class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, Dat
     }
 }
 
-@available(iOS 14.0, *)
 extension SchedulingDatePickerViewController {
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = PartScreenPresentationController(presentedViewController: presented, presenting: presenting)
@@ -142,7 +141,7 @@ extension SchedulingDatePickerViewController {
 }
 
 // MARK: Accessibility
-@available(iOS 14.0, *)
+
 private extension SchedulingDatePickerViewController {
     func setupForAccessibility() {
         let notificationNames = [

@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 /// Displays search results from a reader site search.
 ///
@@ -50,6 +51,10 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
                                coder: NSCoder) -> UIViewController? {
         return ReaderSiteSearchViewController()
     }
+
+    // MARK: - JPScrollViewDelegate
+
+    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     // MARK: - View lifecycle
 
@@ -399,5 +404,13 @@ class ReaderSiteSearchFooterView: UIView {
             frame.size.height = collapsedHeaderFooterHeight
             delegate?.readerSiteSearchFooterViewDidChangeFrame(self)
         }
+    }
+}
+
+// MARK: - JPScrollViewDelegate
+
+extension ReaderSiteSearchViewController: JPScrollViewDelegate {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        processJetpackBannerVisibility(scrollView)
     }
 }

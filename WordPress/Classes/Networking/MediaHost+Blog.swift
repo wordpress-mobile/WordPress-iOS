@@ -9,9 +9,14 @@ extension MediaHost {
     }
 
     init(with blog: Blog, failure: (BlogError) -> ()) {
+        let isAtomic = blog.isAtomic()
+        self.init(with: blog, isAtomic: isAtomic, failure: failure)
+    }
+
+    init(with blog: Blog, isAtomic: Bool, failure: (BlogError) -> ()) {
         self.init(isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
             isPrivate: blog.isPrivate(),
-            isAtomic: blog.isAtomic(),
+            isAtomic: isAtomic,
             siteID: blog.dotComID?.intValue,
             username: blog.usernameForSite,
             authToken: blog.authToken,

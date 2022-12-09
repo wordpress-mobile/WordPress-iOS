@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.55.0'
+  pod 'WordPressKit', '~> 4.58', '>= 4.58.2'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -55,7 +55,7 @@ def wordpress_kit
 end
 
 def kanvas
-  pod 'Kanvas', '~> 1.4.3'
+  pod 'Kanvas', '~> 1.4.4'
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
   # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
   # pod 'Kanvas', :path => '../Kanvas-iOS'
@@ -77,12 +77,21 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
+  gutenberg_pods
 end
 
 def shared_with_extension_pods
-  pod 'Gridicons', '~> 1.1.0'
+  shared_style_pods
   pod 'ZIPFoundation', '~> 0.9.8'
   pod 'Down', '~> 0.6.6'
+end
+
+def shared_style_pods
+  pod 'Gridicons', '~> 1.1.0'
+end
+
+def gutenberg_pods
+  gutenberg tag: 'v1.86.0-alpha1'
 end
 
 def gutenberg(options)
@@ -99,6 +108,11 @@ def gutenberg(options)
 end
 
 def gutenberg_dependencies(options)
+  # Note that the pods in this array might seem unused if you look for
+  # `import` statements in this codebase. However, make sure to also check
+  # whether they are used in the gutenberg-mobile and Gutenberg projects.
+  #
+  # See https://github.com/wordpress-mobile/gutenberg-mobile/issues/5025
   dependencies = %w[
     FBLazyVector
     React
@@ -144,6 +158,8 @@ def gutenberg_dependencies(options)
     RNCMaskedView
     RNCClipboard
     RNFastImage
+    React-Codegen
+    React-bridging
   ]
   if options[:path]
     podspec_prefix = options[:path]
@@ -170,7 +186,7 @@ abstract_target 'Apps' do
   ## Gutenberg (React Native)
   ## =====================
   ##
-  gutenberg tag: 'v1.80.0-alpha2'
+  gutenberg_pods
 
   ## Third party libraries
   ## =====================
@@ -190,7 +206,6 @@ abstract_target 'Apps' do
   pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.2'
-  pod 'AMScrollingNavbar', '5.6.0'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries
@@ -202,7 +217,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 0.11.1'
+  pod 'Automattic-Tracks-iOS', '~> 0.13'
   # While in PR
   # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
   # Local Development
@@ -210,7 +225,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WPMediaPicker', '~> 1.8.4'
+  pod 'WPMediaPicker', '~> 1.8.7'
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
   ## while PR is in review:
   # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
@@ -218,10 +233,10 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 2.0.0'
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/prologue-nav-bar'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2.1'
   # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
@@ -238,7 +253,6 @@ abstract_target 'Apps' do
       inherit! :search_paths
 
       shared_test_pods
-      pod 'Nimble', '~> 9.0.0'
     end
   end
 
@@ -252,6 +266,17 @@ end
 ## ===============
 ##
 target 'WordPressShareExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_extension_pods
+
+  aztec
+  shared_with_all_pods
+  shared_with_networking_pods
+  wordpress_ui
+end
+
+target 'JetpackShareExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_extension_pods
@@ -276,43 +301,18 @@ target 'WordPressDraftActionExtension' do
   wordpress_ui
 end
 
-## Today Widget
-## ============
-##
-target 'WordPressTodayWidget' do
+target 'JetpackDraftActionExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
+  shared_with_extension_pods
+
+  aztec
   shared_with_all_pods
   shared_with_networking_pods
-
   wordpress_ui
 end
 
-## All Time Widget
-## ============
-##
-target 'WordPressAllTimeWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## This Week Widget
-## ============
-##
-target 'WordPressThisWeekWidget' do
-  project 'WordPress/WordPress.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  wordpress_ui
-end
-
-## iOS 14 Today Widget
+## Home Screen Widgets
 ## ============
 ##
 target 'WordPressStatsWidgets' do
@@ -320,6 +320,17 @@ target 'WordPressStatsWidgets' do
 
   shared_with_all_pods
   shared_with_networking_pods
+  shared_style_pods
+
+  wordpress_ui
+end
+
+target 'JetpackStatsWidgets' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+  shared_style_pods
 
   wordpress_ui
 end
@@ -336,10 +347,27 @@ target 'WordPressIntents' do
   wordpress_ui
 end
 
+target 'JetpackIntents' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  wordpress_ui
+end
+
 ## Notification Service Extension
 ## ==============================
 ##
 target 'WordPressNotificationServiceExtension' do
+  project 'WordPress/WordPress.xcodeproj'
+
+  wordpress_kit
+  wordpress_shared
+  wordpress_ui
+end
+
+target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
   wordpress_kit
@@ -450,6 +478,19 @@ post_install do |installer|
       configuration.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET' if pod_ios_deployment_target <= app_ios_deployment_target
     end
   end
+
+  # Fix a code signing issue in Xcode 14 beta.
+  # This solution is suggested here: https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1189861270
+  # ====================================
+  #
+  # TODO: fix the linting issue if this workaround is still needed in Xcode 14 GM.
+  # rubocop:disable Style/CombinableLoops
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+    end
+  end
+  # rubocop:enable Style/CombinableLoops
 
   # Flag Alpha builds for Tracks
   # ============================

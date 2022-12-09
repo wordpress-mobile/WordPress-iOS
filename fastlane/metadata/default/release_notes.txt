@@ -1,3 +1,3 @@
-When you’re previewing a post, you can now switch between portrait and landscape orientation without cutting off any content. Nice.
+We fixed a small visual issue with the Home and Menu control in the My Site dashboard.
 
-Your WordPress app icon has gone back to its usual cool blue, but not to worry—you can still keep a little color in your life. Just go into your app settings and choose our Pride-themed app icon again.
+We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.

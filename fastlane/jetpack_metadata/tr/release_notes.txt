@@ -1,3 +1,3 @@
-Tarayıcınıza geçmeniz mi gerekiyor? Artık uygulamanın Ben menüsünde bir QR kodunu taratarak oturum açabilirsiniz.
+Sitem panosundaki Ana Sayfa ve Menü kontrolüyle ilgili küçük bir görsel sorunu düzelttik.
 
-Bir gönderiyi önizlerken, artık içeriğin hiçbir bir kısmını engellemeden dikey ve yatay yön arasında geçiş yapabilirsiniz. Güzel.
+Sitem'deki bir hatayı da ortadan kaldırdık. "WordPress.com Bağlantısını Kes" düğmesi artık dokunulduğunda bağlantıyı keser ve uygulamayı yeniler.

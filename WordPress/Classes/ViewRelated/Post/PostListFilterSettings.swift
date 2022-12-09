@@ -104,7 +104,7 @@ class PostListFilterSettings: NSObject {
     /// currentPostListFilter: returns the index of the last active PostListFilter
     @objc func currentFilterIndex() -> Int {
 
-        let userDefaults = UserDefaults.standard
+        let userDefaults = UserPersistentStoreFactory.instance()
 
         if let filter = userDefaults.object(forKey: keyForCurrentListStatusFilter()) as? Int, filter < availablePostListFilters().count {
 
@@ -122,7 +122,7 @@ class PostListFilterSettings: NSObject {
             return
         }
 
-        UserDefaults.standard.set(newIndex, forKey: self.keyForCurrentListStatusFilter())
+        UserPersistentStoreFactory.instance().set(newIndex, forKey: self.keyForCurrentListStatusFilter())
         UserDefaults.resetStandardUserDefaults()
     }
 
@@ -150,7 +150,7 @@ class PostListFilterSettings: NSObject {
             return .everyone
         }
 
-        if let filter = UserDefaults.standard.object(forKey: type(of: self).currentPostAuthorFilterKey) {
+        if let filter = UserPersistentStoreFactory.instance().object(forKey: type(of: self).currentPostAuthorFilterKey) {
             if (filter as AnyObject).uintValue == AuthorFilter.everyone.rawValue {
                 return .everyone
             }
@@ -168,7 +168,7 @@ class PostListFilterSettings: NSObject {
 
         WPAnalytics.track(.postListAuthorFilterChanged, withProperties: propertiesForAnalytics())
 
-        UserDefaults.standard.set(filter.rawValue, forKey: type(of: self).currentPostAuthorFilterKey)
+        UserPersistentStoreFactory.instance().set(filter.rawValue, forKey: type(of: self).currentPostAuthorFilterKey)
         UserDefaults.resetStandardUserDefaults()
     }
 

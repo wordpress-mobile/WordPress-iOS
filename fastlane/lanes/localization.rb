@@ -93,6 +93,7 @@ JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br
 MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'Resources', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
   File.join('WordPress', 'WordPressDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-sharesheet.', # CFBundleDisplayName for the "Save as Draft" share action
+  File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.', # CFBundleDisplayName for the "Save to Jetpack" share action
   File.join('WordPress', 'WordPressIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
@@ -100,7 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 # Used in `update_*_metadata_on_app_store_connect` lanes.
 #
 UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: read_version_from_config,
+  app_version: ios_get_app_version,
   skip_binary_upload: true,
   overwrite_screenshots: true,
   phased_release: true,
@@ -122,7 +123,7 @@ platform :ios do
   #
   # @called_by complete_code_freeze
   #
-  lane :generate_strings_file_for_glotpress do
+  lane :generate_strings_file_for_glotpress do |options|
     cocoapods
 
     wordpress_en_lproj = File.join('WordPress', 'Resources', 'en.lproj')
@@ -140,7 +141,7 @@ platform :ios do
       destination: File.join(wordpress_en_lproj, 'Localizable.strings')
     )
 
-    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true)
+    git_commit(path: [wordpress_en_lproj], message: 'Update strings for localization', allow_nothing_to_commit: true) unless options[:skip_commit]
   end
 
 
@@ -246,6 +247,9 @@ platform :ios do
       source_parent_dir: parent_dir_for_lprojs,
       target_original_files: MANUALLY_MAINTAINED_STRINGS_FILES
     )
+    # Manually add files in case there are entirely new localization files.
+    # Fastlane's `git_commit` can only commit changes to existing files.
+    git_add(path: modified_files, shell_escape: false)
     git_commit(
       path: modified_files,
       message: 'Update app translations – Other `.strings`',
@@ -377,7 +381,7 @@ platform :ios do
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-      app_identifier: APP_STORE_VERSION_BUNDLE_IDENTIFIER,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
       skip_screenshots: skip_screenshots
     )
@@ -397,7 +401,7 @@ platform :ios do
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
-      app_identifier: JETPACK_APP_IDENTIFIER,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
       skip_screenshots: skip_screenshots

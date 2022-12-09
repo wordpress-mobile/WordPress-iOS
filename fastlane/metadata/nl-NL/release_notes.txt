@@ -1,3 +1,3 @@
-Als je een voorbeeldweergave van een bericht bekijkt, kun je vanaf nu schakelen tussen een staande en liggende weergave zonder een deel van het bericht af te snijden. Wel zo handig.
+We hebben een visueel probleempje met het Startpagina- en Menu-besturingselement in het dashboard Mijn site opgelost.
 
-Het pictogram van de WordPress-app is weer als vanouds blauw. Maar wil je nou toch wat meer kleur in je leven, dan kun je in de app-instellingen het app-pictogram weer het regenboogthema geven.
+We hebben ook een bug in Mijn site verholpen. Als je op de knop Loskoppelen van WordPress.com klikt, wordt je site nu losgekoppeld en wordt de app vernieuwd.

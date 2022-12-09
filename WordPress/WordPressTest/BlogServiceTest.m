@@ -21,9 +21,9 @@
 - (void)setUp
 {
     [super setUp];
- 
+
     self.coreDataStack = [[ContextManagerMock alloc] init];
-    
+
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:[self.coreDataStack mainContext]];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
     WPAccount *account = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
@@ -46,7 +46,7 @@
                                                                        inManagedObjectContext:self.coreDataStack.mainContext];
 
     self.blogServiceMock = OCMPartialMock(self.blogService);
-    
+
     [service setDefaultWordPressComAccount:account];
 }
 
@@ -62,26 +62,9 @@
     [super tearDown];
 }
 
-- (void)testHasVisibleWPComAccountsWithVisibleWPComAccounts
-{
-    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(1);
-    
-    XCTAssertTrue([self.blogService hasVisibleWPComAccounts]);
-}
-
-- (void)testHasVisibleWPComAccountsWithNoVisibleWPComAccounts
-{
-    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(0);
-    
-    XCTAssertFalse([self.blogService hasVisibleWPComAccounts]);
-}
-
 - (void)cleanUpNSUserDefaultValues
 {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
-    if ([service defaultWordPressComAccount]) {
-        [service removeDefaultWordPressComAccount];
-    }
+    [UserSettings setDefaultDotComUUID:nil];
 }
 
 @end

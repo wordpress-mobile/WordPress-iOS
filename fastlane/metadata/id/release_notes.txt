@@ -1,3 +1,3 @@
-Saat mempratinjau artikel, kini Anda dapat beralih orientasi potret maupun lanskap tanpa memangkas konten apa pun. Bagus.
+Kami memperbaiki sedikit masalah tampilan pada kontrol Beranda dan Menu di dasbor Situs Saya.
 
-Ikon aplikasi WordPress Anda telah kembali ke warna biru dingin biasanya, tetapi jangan khawatir—Anda masih dapat memilih warna yang Anda suka. Cukup masuk ke pengaturan aplikasi Anda dan pilih kembali tema ikon aplikasi kebanggaan kami.
+Kami juga mengatasi bug di Situs Saya. Sekarang, mengetuk tombol "Putuskan koneksi dari WordPress.com” akan segera memutuskan koneksi dan menyegarkan aplikasi.

@@ -168,13 +168,13 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 struct LatestPostSummaryRow: ImmuTableRow {
 
-    static let cell: ImmuTableCell = {
+    static var cell: ImmuTableCell {
         if FeatureFlag.statsNewInsights.enabled {
             return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
         } else {
             return ImmuTableCell.nib(LatestPostSummaryCell.defaultNib, LatestPostSummaryCell.self)
         }
-    }()
+    }
 
     let summaryData: StatsLastPostInsight?
     let chartData: StatsPostDetails?
@@ -336,7 +336,7 @@ struct TotalInsightStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(count: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage, sparklineData: dataRow.sparklineData, guideText: dataRow.guideText, guideURL: dataRow.guideURL, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(dataRow: dataRow, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 
@@ -350,6 +350,9 @@ struct AddInsightRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = StatSection.insightsAddInsight.title
         cell.accessoryView = UIImageView(image: WPStyleGuide.Stats.imageForGridiconType(.plus, withTint: .darkGrey))
+        cell.accessibilityTraits = .button
+        cell.accessibilityLabel = StatSection.insightsAddInsight.title
+        cell.accessibilityHint = NSLocalizedString("Tap to add new stats cards.", comment: "Accessibility hint for a button that opens a view that allows to add new stats cards.")
     }
 }
 

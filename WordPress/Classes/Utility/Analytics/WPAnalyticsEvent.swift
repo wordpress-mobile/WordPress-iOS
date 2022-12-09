@@ -403,6 +403,18 @@ import Foundation
     case promptsNotificationTapped
     case promptsNotificationDismissed
 
+    // Jetpack branding
+    case jetpackPoweredBadgeTapped
+    case jetpackPoweredBannerTapped
+    case jetpackPoweredBottomSheetButtonTapped
+    case jetpackFullscreenOverlayDisplayed
+    case jetpackFullscreenOverlayLinkTapped
+    case jetpackFullscreenOverlayButtonTapped
+    case jetpackFullscreenOverlayDismissed
+    case jetpackSiteCreationOverlayDisplayed
+    case jetpackSiteCreationOverlayButtonTapped
+    case jetpackSiteCreationOverlayDismissed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1089,6 +1101,29 @@ import Foundation
             return "blogging_reminders_notification_prompt_tapped"
         case .promptsNotificationDismissed:
             return "blogging_reminders_notification_prompt_dismissed"
+
+        // Jetpack branding
+        case .jetpackPoweredBadgeTapped:
+            return "jetpack_powered_badge_tapped"
+        case .jetpackPoweredBannerTapped:
+            return "jetpack_powered_banner_tapped"
+        case .jetpackPoweredBottomSheetButtonTapped:
+            return "jetpack_powered_bottom_sheet_button_tapped"
+        case .jetpackFullscreenOverlayDisplayed:
+            return "remove_feature_overlay_displayed"
+        case .jetpackFullscreenOverlayLinkTapped:
+            return "remove_feature_overlay_link_tapped"
+        case .jetpackFullscreenOverlayButtonTapped:
+            return "remove_feature_overlay_button_tapped"
+        case .jetpackFullscreenOverlayDismissed:
+            return "remove_feature_overlay_dismissed"
+        case .jetpackSiteCreationOverlayDisplayed:
+            return "remove_site_creation_overlay_displayed"
+        case .jetpackSiteCreationOverlayButtonTapped:
+            return "remove_site_creation_overlay_button_tapped"
+        case .jetpackSiteCreationOverlayDismissed:
+            return "remove_site_creation_overlay_dismissed"
+
         } // END OF SWITCH
     }
 

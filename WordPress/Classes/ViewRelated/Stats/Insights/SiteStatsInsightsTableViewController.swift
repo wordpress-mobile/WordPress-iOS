@@ -473,10 +473,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        let controller: UIViewController = SharingViewController(blog: blog, delegate: self)
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return
+        }
 
-        let navigationController = UINavigationController(rootViewController: controller)
-
+        let navigationController = UINavigationController(rootViewController: sharingVC)
         present(navigationController, animated: true)
 
         applyTableUpdates()

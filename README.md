@@ -42,7 +42,7 @@ We use a few tools to help with development. Running `rake dependencies` will co
 
 #### CocoaPods
 
-WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.  
+WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.
 Third party libraries and resources managed by CocoaPods will be installed by the `rake dependencies` command above.
 
 #### SwiftLint
@@ -83,7 +83,8 @@ In order to login to WordPress.com with the app you need to create an account ov
 
 After you create an account you can create an application on the [WordPress.com applications manager](https://developer.wordpress.com/apps/).
 
-When creating your application, select "Native client" for the application type. The applications manager currently requires a "redirect URL", but this isn't used for mobile apps. Just use "https://localhost".
+When creating your application, you should select "Native client" for the application type.
+The "**Website URL**", "**Redirect URLs**", and "**Javascript Origins**" fields are required but not used for the mobile apps. Just use `https://localhost`.
 
 Your new application will have an associated client ID and a client secret key. These are used to authenticate the API calls made by your application.
 

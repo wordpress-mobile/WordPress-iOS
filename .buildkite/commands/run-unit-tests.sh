@@ -1,19 +1,19 @@
 #!/bin/bash -eu
 
+# Run this at the start to fail early if value not available
+echo '--- :test-analytics: Configuring Test Analytics'
+export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
+
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products.tar
 tar -xf build-products.tar
-
-# Temporary fix until we're on the Xcode 13.1 VM
-echo "--- :rubygems: Fixing Ruby Setup"
-gem install bundler
 
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
 echo "--- 🔬 Testing"
 set +e
-bundle exec fastlane test_without_building name:WordPressUnitTests try_count:3
+bundle exec fastlane test_without_building name:WordPressUnitTests
 TESTS_EXIT_STATUS=$?
 set -e
 

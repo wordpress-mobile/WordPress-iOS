@@ -68,7 +68,7 @@ platform :ios do
       bypass: ENV.fetch('RELEASE_TOOLKIT_SKIP_PUSH_CONFIRM', nil)
     )
       push_to_git_remote(tags: false)
-      trigger_beta_build(branch_to_build: "release/#{ios_get_app_version}")
+      trigger_beta_build
     else
       UI.message('Aborting code freeze completion. See you later.')
     end
@@ -86,8 +86,7 @@ platform :ios do
     download_localized_strings_and_metadata(options)
     ios_lint_localizations(input_dir: 'WordPress/Resources', allow_retry: true)
     ios_bump_version_beta
-    version = ios_get_app_version
-    trigger_beta_build(branch_to_build: "release/#{version}")
+    trigger_beta_build
   end
 
   # Sets the stage to start working on a hotfix
@@ -116,9 +115,7 @@ platform :ios do
   lane :finalize_hotfix_release do |options|
     ios_finalize_prechecks(options)
     git_pull
-
-    version = ios_get_app_version
-    trigger_release_build(branch_to_build: "release/#{version}")
+    trigger_release_build
   end
 
   # Finalizes a release at the end of a sprint to submit to the App Store
@@ -145,29 +142,30 @@ platform :ios do
 
     # Wrap up
     version = ios_get_app_version
-    removebranchprotection(repository: GHHELPER_REPO, branch: "release/#{version}")
+    removebranchprotection(repository: GHHELPER_REPO, branch: release_branch_name)
     setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GHHELPER_REPO)
     close_milestone(repository: GHHELPER_REPO, milestone: version)
 
-    # Start the build
-    trigger_release_build(branch_to_build: "release/#{version}")
+    trigger_release_build
   end
 
   # Triggers a beta build on CI
   #
-  # @option [String] branch_to_build The name of the branch we want the CI to build, e.g. `release/19.3`
+  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: true)
+    branch = options[:branch] || release_branch_name
+    trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
   # Triggers a stable release build on CI
   #
-  # @option [String] branch_to_build The name of the branch we want the CI to build, e.g. `release/19.3`
+  # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    trigger_buildkite_release_build(branch: options[:branch_to_build], beta: false)
+    branch = options[:branch] || release_branch_name
+    trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
 
@@ -186,7 +184,8 @@ def trigger_buildkite_release_build(branch:, beta:)
     buildkite_pipeline: 'wordpress-ios',
     branch: branch,
     environment: { BETA_RELEASE: beta },
-    pipeline_file: 'release-builds.yml'
+    pipeline_file: 'release-builds.yml',
+    message: beta ? 'Beta Builds' : 'Release Builds'
   )
 end
 
@@ -209,7 +208,7 @@ lane :gutenberg_dep_check do
     end
   end
 
-  UI.message("Gutenberg version: #{(res.scan(/'([^']*)'/))[0][0]}")
+  UI.message("Gutenberg version: #{res.scan(/'([^']*)'/)[0][0]}")
 end
 
 # Returns the path to the extracted Release Notes file for the given `app`.
@@ -249,4 +248,8 @@ def prompt_for_confirmation(message:, bypass:)
   return true if bypass
 
   UI.confirm(message)
+end
+
+def release_branch_name
+  "release/#{ios_get_app_version}"
 end

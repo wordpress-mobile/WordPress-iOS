@@ -3,7 +3,7 @@ import CoreData
 
 /// The main data provider for Weekly Roundup information.
 ///
-class WeeklyRoundupDataProvider {
+private class WeeklyRoundupDataProvider {
 
     // MARK: - Definitions
 
@@ -19,7 +19,7 @@ class WeeklyRoundupDataProvider {
 
     // MARK: - Misc Properties
 
-    private let context: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
     /// Method to report errors that won't interrupt the execution.
     ///
@@ -29,8 +29,8 @@ class WeeklyRoundupDataProvider {
     ///
     private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
-    init(context: NSManagedObjectContext, onError: @escaping (Error) -> Void) {
-        self.context = context
+    init(coreDataStack: CoreDataStack, onError: @escaping (Error) -> Void) {
+        self.coreDataStack = coreDataStack
         self.onError = onError
     }
 
@@ -55,7 +55,7 @@ class WeeklyRoundupDataProvider {
         }
     }
 
-    func getTopSiteStats(from sites: [Blog], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
+    private func getTopSiteStats(from sites: [Blog], completion: @escaping (Result<SiteStats?, Error>) -> Void) {
         var endDateComponents = DateComponents()
         endDateComponents.weekday = 1
 
@@ -164,7 +164,7 @@ class WeeklyRoundupDataProvider {
     /// Filters the sites that have the Weekly Roundup notification setting enabled.
     ///
     private func filterWeeklyRoundupEnabledSites(_ sites: [Blog], result: @escaping (Result<[Blog], Error>) -> Void) {
-        let noteService = NotificationSettingsService(managedObjectContext: context)
+        let noteService = NotificationSettingsService(coreDataStack: coreDataStack)
 
         noteService.getAllSettings { settings in
             let weeklyRoundupEnabledSites = sites.filter { site in
@@ -193,7 +193,7 @@ class WeeklyRoundupDataProvider {
         ]
 
         do {
-            let result = try context.fetch(request)
+            let result = try coreDataStack.mainContext.fetch(request)
             return .success(result)
         } catch {
             return .failure(DataRequestError.siteFetchingError(error))
@@ -218,11 +218,11 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
         private let lastRunDateKey = "weeklyRoundup.lastExecutionDate"
 
         func getLastRunDate() -> Date? {
-            UserDefaults.standard.object(forKey: lastRunDateKey) as? Date
+            UserPersistentStoreFactory.instance().object(forKey: lastRunDateKey) as? Date
         }
 
         func setLastRunDate(_ date: Date) {
-            UserDefaults.standard.set(date, forKey: lastRunDateKey)
+            UserPersistentStoreFactory.instance().set(date, forKey: lastRunDateKey)
         }
     }
 
@@ -357,6 +357,14 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
 
     func run(onError: @escaping (Error) -> Void, completion: @escaping (Bool) -> Void) {
 
+        // This will no longer run for WordPress as part of Jetpack migration.
+        // This can be removed once Jetpack migration is complete.
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            notificationScheduler.cancellAll()
+            notificationScheduler.cancelStaticNotification()
+            return
+        }
+
         // We use multiple operations in series so that if the expiration handler is
         // called, the operation queue will cancell any pending operations, ensuring
         // that the task will exit as soon as possible.
@@ -382,8 +390,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             }
         }
 
-        let context = ContextManager.shared.newDerivedContext()
-        let dataProvider = WeeklyRoundupDataProvider(context: context, onError: onError)
+        let dataProvider = WeeklyRoundupDataProvider(coreDataStack: ContextManager.shared, onError: onError)
         var siteStats: [Blog: StatsSummaryData]? = nil
 
         let requestData = BlockOperation {
@@ -428,8 +435,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
                     views: stats.viewsCount,
                     comments: stats.commentsCount,
                     likes: stats.likesCount,
-                    periodEndDate: self.currentRunPeriodEndDate(),
-                    context: context) { result in
+                    periodEndDate: self.currentRunPeriodEndDate()
+                ) { result in
 
                     switch result {
                     case .success:
@@ -538,24 +545,22 @@ class WeeklyRoundupNotificationScheduler {
         comments: Int,
         likes: Int,
         periodEndDate: Date,
-        context: NSManagedObjectContext,
-        completion: @escaping (Result<Void, Error>) -> Void) {
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        var siteTitle: String?
+        var dotComID: Int?
 
-            var siteTitle: String?
-            var dotComID: Int?
+        site.managedObjectContext?.performAndWait {
+            siteTitle = site.title
+            dotComID = site.dotComID?.intValue
+        }
 
-            context.performAndWait {
-                dotComID = site.dotComID?.intValue
-                siteTitle = site.title
-            }
-
-            guard let dotComID = dotComID else {
-                // Error
-                return
-            }
+        guard let dotComID = dotComID else {
+            fatalError("The argument site is not a WordPress.com site. Site: \(site)")
+        }
 
         let title = notificationTitle(siteTitle)
-        let body = String(format: TextContent.dynamicNotificationBody, views, comments, likes)
+        let body = notificationBodyWith(views: views, comments: likes, likes: comments)
 
         // The dynamic notification date is defined by when the background task is run.
         // Since these lines of code execute when the BG Task is run, we can just schedule
@@ -587,6 +592,25 @@ class WeeklyRoundupNotificationScheduler {
             }
     }
 
+    func notificationBodyWith(views: Int, comments: Int, likes: Int) -> String {
+        var body = ""
+        let hideLikesCount = likes <= 0
+        let hideCommentsCount = comments <= 0
+
+        switch (hideLikesCount, hideCommentsCount) {
+        case (true, true):
+            body = String(format: TextContent.dynamicNotificationBodyViewsOnly, views.abbreviatedString())
+        case (false, true):
+            body = String(format: TextContent.dynamicNotificationBodyViewsAndLikes, views.abbreviatedString(), likes.abbreviatedString())
+        case (true, false):
+            body = String(format: TextContent.dynamicNotificationBodyViewsAndComments, views.abbreviatedString(), comments.abbreviatedString())
+        default:
+            body = String(format: TextContent.dynamicNotificationBodyAll, views.abbreviatedString(), comments.abbreviatedString(), likes.abbreviatedString())
+        }
+
+        return body
+    }
+
     private func scheduleNotification(
         identifier: String,
         title: String,
@@ -594,6 +618,10 @@ class WeeklyRoundupNotificationScheduler {
         userInfo: [AnyHashable: Any] = [:],
         dateComponents: DateComponents,
         completion: @escaping (Result<Void, Error>) -> Void) {
+
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            return
+        }
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -633,7 +661,7 @@ class WeeklyRoundupNotificationScheduler {
         }
     }
 
-    func cancelStaticNotification(completion: @escaping (Bool) -> Void) {
+    func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
         userNotificationCenter.getPendingNotificationRequests { requests in
             if Feature.enabled(.weeklyRoundupStaticNotification) {
                 guard requests.contains( where: { $0.identifier == self.staticNotificationIdentifier }) else {
@@ -664,6 +692,9 @@ class WeeklyRoundupNotificationScheduler {
         static let staticNotificationTitle = NSLocalizedString("Weekly Roundup", comment: "Title of Weekly Roundup push notification")
         static let dynamicNotificationTitle = NSLocalizedString("Weekly Roundup: %@", comment: "Title of Weekly Roundup push notification. %@ is a placeholder and will be replaced with the title of one of the user's websites.")
         static let staticNotificationBody = NSLocalizedString("Your weekly roundup is ready, tap here to see the details!", comment: "Prompt displayed as part of the stats Weekly Roundup push notification.")
-        static let dynamicNotificationBody = NSLocalizedString("Last week you had %1$d views, %2$d comments and %3$d likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes.")
+        static let dynamicNotificationBodyViewsOnly = NSLocalizedString("Last week you had %@ views.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views")
+        static let dynamicNotificationBodyViewsAndLikes = NSLocalizedString("Last week you had %1$@ views and %2$@ likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes.")
+        static let dynamicNotificationBodyViewsAndComments = NSLocalizedString("Last week you had %1$@ views and %2$@ comments.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments.")
+        static let dynamicNotificationBodyAll = NSLocalizedString("Last week you had %1$@ views, %2$@ comments and %3$@ likes.", comment: "Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes.")
     }
 }

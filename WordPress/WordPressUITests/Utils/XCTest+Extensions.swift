@@ -3,24 +3,22 @@ import XCTest
 
 extension XCTestCase {
 
-    public func setUpTestSuite() {
+    public func setUpTestSuite(for appName: String? = nil, app: XCUIApplication = XCUIApplication()) {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        let app = XCUIApplication()
-        app.terminate()
         app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations", "-ui-testing"]
+
+        if let appName = appName {
+            removeApp(appName)
+        }
+
         app.activate()
 
         // Media permissions alert handler
-        let alertButtonTitle: String
-        if #available(iOS 14.0, *) {
-            alertButtonTitle = "Allow Access to All Photos"
-        } else {
-            alertButtonTitle = "OK"
-        }
+        let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
     }
 
@@ -76,5 +74,21 @@ extension XCTestCase {
         static let sentences = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec.", "Nam congue efficitur leo eget porta.", "Proin dictum non ligula aliquam varius.", "Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."]
         static let category = "iOS Test"
         static let tag = "tag \(Date().toString())"
+    }
+
+    public func removeApp(_ appName: String = "WordPress", app: XCUIApplication = XCUIApplication()) {
+        app.terminate()
+
+        let appToRemove = Constants.homeApp.icons[appName]
+        if appToRemove.exists {
+            appToRemove.firstMatch.press(forDuration: 1)
+            waitAndTap(Constants.homeApp.buttons["Remove App"])
+            waitAndTap(Constants.homeApp.alerts.buttons["Delete App"])
+            waitAndTap(Constants.homeApp.alerts.buttons["Delete"])
+        }
+    }
+
+    private enum Constants {
+        static let homeApp = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }
 }

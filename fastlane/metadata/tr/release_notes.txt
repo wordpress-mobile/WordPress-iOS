@@ -1,4 +1,3 @@
-Bir yazıya önizleme yaparken, herhangi bir içeriği kesmeden yatay ve dikey konumlandırma arasında geçiş yapabilirsiniz. Harika.
+Sitem panosundaki Ana Sayfa ve Menü kontrolüyle ilgili küçük bir görsel sorunu düzelttik.
 
-WordPress uygulama simgeniz alıştığınız havalı maviye döndü, ama merak etmeyin—hayatınıza hala biraz renk barındırabilirsiniz. Uygulama ayarlarına gidin ve Pride temalı uygulama simgesini tekrar seçin.
-
+Sitem'deki bir hatayı da ortadan kaldırdık. "WordPress.com Bağlantısını Kes" düğmesi artık dokunulduğunda bağlantıyı keser ve uygulamayı yeniler.

@@ -402,10 +402,17 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         // Required to work around an issue present in iOS 14 beta 2
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if #available(iOS 14.0, *),
-            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
             dismiss(animated: true)
         }
+    }
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+
+        // Update the tint color for React Native modals when presented
+        let presentedView = presentedViewController?.view
+        presentedView?.tintColor = .editorPrimary
     }
 
     // MARK: - Functions
@@ -554,12 +561,16 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 extension GutenbergViewController {
     private func setupGutenbergView() {
         view.backgroundColor = .white
+        view.tintColor = .editorPrimary
         gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
         gutenberg.rootView.backgroundColor = .basicBackground
         view.addSubview(gutenberg.rootView)
 
         view.pinSubviewToAllEdges(gutenberg.rootView)
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
+
+        // Update the tint color of switches within React Native modals, as they require direct mutation
+        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = .editorPrimary
     }
 }
 
@@ -822,12 +833,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         alertController.addAction(dismissAction)
 
-        if media.remoteStatus == .pushing || media.remoteStatus == .processing {
+        if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local || media.remoteStatus == .pushing {
             let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (action) in
                 self.mediaInserterHelper.cancelUploadOf(media: media)
             }
             alertController.addAction(cancelUploadAction)
-        } else if media.remoteStatus == .failed, let error = media.error {
+        }
+
+        if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
             let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
                 self.mediaInserterHelper.retryUploadOf(media: media)
@@ -1158,6 +1171,10 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return post is Page ? "page" : "post"
     }
 
+    func gutenbergHostAppNamespace() -> String {
+        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+    }
+
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
         return attachmentDelegate
     }
@@ -1322,7 +1339,11 @@ private extension GutenbergViewController {
 
     struct MediaAttachmentActionSheet {
         static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let dismissActionTitle = NSLocalizedString(
+            "gutenberg.mediaAttachmentActionSheet.dismiss",
+            value: "Dismiss",
+            comment: "User action to dismiss media options."
+        )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")

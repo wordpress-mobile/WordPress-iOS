@@ -20,10 +20,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.tokenKey) ?? String()
+            return UserPersistentStoreFactory.instance().string(forKey: Device.tokenKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.tokenKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Device.tokenKey)
         }
     }
 
@@ -32,10 +32,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceId: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.idKey) ?? String()
+            return UserPersistentStoreFactory.instance().string(forKey: Device.idKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.idKey)
+            UserPersistentStoreFactory.instance().set(newValue, forKey: Device.idKey)
         }
     }
 
@@ -57,6 +57,10 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     @objc func registerForRemoteNotifications() {
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            return
+        }
+
         sharedApplication.registerForRemoteNotifications()
     }
 
@@ -101,7 +105,7 @@ final public class PushNotificationsManager: NSObject {
         deviceToken = newToken
 
         // Register against WordPress.com
-        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         noteService.registerDeviceForPushNotifications(newToken, success: { deviceId in
             DDLogVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
@@ -138,7 +142,7 @@ final public class PushNotificationsManager: NSObject {
 
         ZendeskUtils.unregisterDevice()
 
-        let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let noteService = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
             DDLogInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")

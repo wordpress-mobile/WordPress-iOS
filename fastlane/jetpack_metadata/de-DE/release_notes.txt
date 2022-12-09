@@ -1,3 +1,3 @@
-Du willst zu deinem Browser wechseln? Dann scanne einfach einen QR-Code im App-Menü „Ich“, um dich anzumelden.
+Ein kleines visuelles Problem mit dem Home- und Menü-Steuerelement im Dashboard „Meine Website“ wurde behoben.
 
-In der Beitragsvorschau kannst du ab sofort zwischen Hoch- und Querformat wechseln, ohne dass Inhalte abgeschnitten werden. Sehr gut.
+Wir haben ebenfalls einige Fehler im Bereich „Meine Website“ beseitigt. Der Button „Verbindung mit WordPress.com trennen“ trennt jetzt bei Antippen die Verbindung und lädt daraufhin die App erneut.

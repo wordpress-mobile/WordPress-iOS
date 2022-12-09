@@ -66,13 +66,7 @@ extension GravatarButtonView {
 extension GravatarButtonView {
 
     private struct StandardBorder {
-        static var color: UIColor {
-            if #available(iOS 13, *) {
-                return .separator
-            }
-
-            return .gray(.shade20)
-        }
+        static let color: UIColor = .separator
 
         static let width = CGFloat(0.5)
     }

@@ -1,3 +1,3 @@
-När du förhandsgranskar ett inlägg kan du nu växla mellan horisontellt och vertikalt orienterad enhet utan att något innehåll tappas bort – det är väl trevligt!
+Vi har rättat ett litet visuellt problem med reglaget för startsida och meny i adminpanelen “Min webbplats“.
 
-Ikonen för din WordPress-app har nu återgått till sin tuffa blå nyans. Men om du vill fortsätta att leva färgrikt kan du helt enkelt gå in i appens inställningar och där välja att appens ikon ska vara Pride-mönstrad.
+Dessutom har vi fixat ett fel under “Min webbplats”. Om du trycker på ”Koppla bort från WordPress.com” bryts nu anslutningen, varefter appen laddas om.

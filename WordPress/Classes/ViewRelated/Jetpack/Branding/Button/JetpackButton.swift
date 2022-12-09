@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 /// A "Jetpack powered" button with two different styles (`badge` or    `banner`)
-class JetpackButton: UIButton {
+class JetpackButton: CircularImageButton {
 
     enum ButtonStyle {
         case badge
@@ -10,13 +10,6 @@ class JetpackButton: UIButton {
     }
 
     private let style: ButtonStyle
-
-    private lazy var imageBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = imageBackgroundColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
 
     init(style: ButtonStyle) {
         self.style = style
@@ -68,8 +61,7 @@ class JetpackButton: UIButton {
     }
 
     private func configureButton() {
-        // TODO: Remove this when the modal presentation is added
-        isUserInteractionEnabled = false
+        isUserInteractionEnabled = FeatureFlag.jetpackPoweredBottomSheet.enabled
         setTitle(Appearance.title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
@@ -84,18 +76,8 @@ class JetpackButton: UIButton {
         imageEdgeInsets = Appearance.iconInsets
         contentEdgeInsets = Appearance.contentInsets
         imageView?.contentMode = .scaleAspectFit
-
-        // sets the background of the jp logo to white
-        if let imageView = imageView {
-            insertSubview(imageBackgroundView, belowSubview: imageView)
-            imageBackgroundView.clipsToBounds = true
-            NSLayoutConstraint.activate([
-                imageBackgroundView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-                imageBackgroundView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-                imageBackgroundView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
-                imageBackgroundView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: Appearance.imageBackgroundViewMultiplier),
-            ])
-        }
+        flipInsetsForRightToLeftLayoutDirection()
+        setImageBackgroundColor(imageBackgroundColor)
     }
 
     private enum Appearance {
@@ -107,7 +89,7 @@ class JetpackButton: UIButton {
         static let maximumFontPointSize: CGFloat = 22
         static let imageBackgroundViewMultiplier: CGFloat = 0.75
         static var titleFont: UIFont {
-            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .callout)
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
             return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
         }
@@ -115,10 +97,39 @@ class JetpackButton: UIButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageBackgroundView.layer.cornerRadius = imageBackgroundView.frame.height / 2
         if style == .badge {
             layer.cornerRadius = frame.height / 2
             layer.cornerCurve = .continuous
         }
+    }
+}
+
+// MARK: Badge view
+extension JetpackButton {
+
+    /// Instantiates a view containing a Jetpack powered badge
+    /// - Parameter topPadding: top padding, defaults to 30 pt
+    /// - Parameter bottomPadding: bottom padding, defaults to 30 pt
+    /// - Parameter target: optional target for the button action
+    /// - Parameter selector: optional selector for the button action
+    /// - Returns: the view containing the badge
+    @objc
+    static func makeBadgeView(topPadding: CGFloat = 30,
+                              bottomPadding: CGFloat = 30,
+                              target: Any? = nil,
+                              selector: Selector? = nil) -> UIView {
+        let view = UIView()
+        let badge = JetpackButton(style: .badge)
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(badge)
+        NSLayoutConstraint.activate([
+            badge.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            badge.topAnchor.constraint(equalTo: view.topAnchor, constant: topPadding),
+            badge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding)
+        ])
+        if let target = target, let selector = selector {
+            badge.addTarget(target, action: selector, for: .touchUpInside)
+        }
+        return view
     }
 }

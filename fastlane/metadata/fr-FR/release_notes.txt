@@ -1,3 +1,3 @@
-Lorsque vous prévisualisez un article, vous pouvez maintenant passer de la vue Portrait à la vue Paysage et inversement, sans que cela masque une partie du contenu. Intéressant, non ?
+Nous avons résolu un problème visuel mineur avec les commandes « Accueil » et « Menu » du tableau de bord « Mon site ».
 
-L’icône de votre application WordPress a repris sa couleur bleue habituelle, mais pas d’inquiétude : vous pouvez toujours mettre un peu de couleur dans votre vie. Il vous suffit de vous rendre dans les réglages de votre application et de sélectionner notre icône spéciale Mois des fiertés.
+Nous avons également corrigé un bug dans « Mon site ». Désormais, lorsque vous appuyez sur le bouton « Déconnecter de WordPress.com », vous êtes déconnecté, et l’application est actualisée.

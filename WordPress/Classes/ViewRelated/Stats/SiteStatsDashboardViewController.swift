@@ -94,6 +94,11 @@ class SiteStatsDashboardViewController: UIViewController {
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .stats, in: self)
+    }
+
     func configureInsightsTableView() {
         insightsTableViewController.tableStyle = FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped
         insightsTableViewController.bannerView = jetpackBannerView
@@ -108,8 +113,13 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureJetpackBanner() {
-        if AppConfiguration.isJetpack || !FeatureFlag.jetpackPowered.enabled {
+        guard JetpackBrandingVisibility.all.enabled else {
             jetpackBannerView.removeFromSuperview()
+            return
+        }
+        jetpackBannerView.buttonAction = { [unowned self] in
+            JetpackBrandingCoordinator.presentOverlay(from: self)
+            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .stats)
         }
     }
 
@@ -193,19 +203,24 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
-              !insightsTableViewController.isGrowAudienceShowing else {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
             return
         }
 
         let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-        UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: key)
+
+        guard !insightsTableViewController.isGrowAudienceShowing else {
+            UserPersistentStoreFactory.instance().set(StatsPeriodType.insights.rawValue, forKey: key)
+            return
+        }
+
+        UserPersistentStoreFactory.instance().set(currentSelectedPeriod.rawValue, forKey: key)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
-              let periodType = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
+              let periodType = StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
             return .insights
         }
 
@@ -213,11 +228,11 @@ private extension SiteStatsDashboardViewController {
     }
 
     func getLastSelectedDateFromUserDefaults() -> Date? {
-        UserDefaults.standard.object(forKey: Self.lastSelectedStatsDateKey) as? Date
+        UserPersistentStoreFactory.instance().object(forKey: Self.lastSelectedStatsDateKey) as? Date
     }
 
     func removeLastSelectedDateFromUserDefaults() {
-        UserDefaults.standard.removeObject(forKey: Self.lastSelectedStatsDateKey)
+        UserPersistentStoreFactory.instance().removeObject(forKey: Self.lastSelectedStatsDateKey)
     }
 
     func restoreSelectedDateFromUserDefaults() {

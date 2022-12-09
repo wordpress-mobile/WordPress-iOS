@@ -570,7 +570,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func showDeprecationNotice() {
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =
         (
-            title: NSLocalizedString("Dismiss", comment: "The title of a button to close the classic editor deprecation notice alert dialog."),
+            title: NSLocalizedString(
+                "aztecPost.deprecationNotice.dismiss",
+                value: "Dismiss",
+                comment: "The title of a button to close the classic editor deprecation notice alert dialog."
+            ),
             handler: { alert, _ in
                 alert.dismiss(animated: true, completion: nil)
             }
@@ -632,8 +636,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Required to work around an issue present in iOS 14 beta 2
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
-        if #available(iOS 14.0, *),
-            presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
+        if presentedViewController?.view.accessibilityIdentifier == MoreSheetAlert.accessibilityIdentifier {
             dismiss(animated: true)
         }
     }
@@ -1322,8 +1325,7 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        if #available(iOS 14.0, *),
-            let button = navigationBarManager.moreBarButtonItem.customView {
+        if let button = navigationBarManager.moreBarButtonItem.customView {
             // Required to work around an issue present in iOS 14 beta 2
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/14460
             alert.popoverPresentationController?.sourceRect = button.convert(button.bounds, to: navigationController?.navigationBar)
@@ -3459,7 +3461,11 @@ extension AztecPostViewController {
 
     struct MediaAttachmentActionSheet {
         static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let dismissActionTitle = NSLocalizedString(
+            "aztecPost.mediaAttachmentActionSheet.dismiss",
+            value: "Dismiss",
+            comment: "User action to dismiss media options."
+        )
         static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")

@@ -467,6 +467,12 @@ protocol LocalFileStore {
 
     @discardableResult
     func save(contents: Data, at url: URL) -> Bool
+
+    func containerURL(forAppGroup appGroup: String) -> URL?
+
+    func removeItem(at url: URL) throws
+
+    func copyItem(at srcURL: URL, to dstURL: URL) throws
 }
 
 extension LocalFileStore {
@@ -476,6 +482,10 @@ extension LocalFileStore {
 }
 
 extension FileManager: LocalFileStore {
+    func containerURL(forAppGroup appGroup: String) -> URL? {
+        return containerURL(forSecurityApplicationGroupIdentifier: appGroup)
+    }
+
     func fileExists(at url: URL) -> Bool {
         return fileExists(atPath: url.path)
     }

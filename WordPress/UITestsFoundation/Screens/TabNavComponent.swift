@@ -50,7 +50,7 @@ public class TabNavComponent: ScreenObject {
 
     public func goToAztecEditorScreen() throws -> AztecEditorScreen {
         let mySiteScreen = try goToMySiteScreen()
-        let actionSheet = try mySiteScreen.gotoCreateSheet()
+        let actionSheet = try mySiteScreen.goToCreateSheet()
         actionSheet.goToBlogPost()
 
         return try AztecEditorScreen(mode: .rich)
@@ -58,7 +58,7 @@ public class TabNavComponent: ScreenObject {
 
     public func gotoBlockEditorScreen() throws -> BlockEditorScreen {
         let mySite = try goToMySiteScreen()
-        let actionSheet = try mySite.gotoCreateSheet()
+        let actionSheet = try mySite.goToCreateSheet()
         actionSheet.goToBlogPost()
 
         return try BlockEditorScreen()
@@ -71,6 +71,7 @@ public class TabNavComponent: ScreenObject {
 
     public func goToNotificationsScreen() throws -> NotificationsScreen {
         notificationsTabButton.tap()
+        try dismissNotificationAlertIfNeeded()
         return try NotificationsScreen()
     }
 

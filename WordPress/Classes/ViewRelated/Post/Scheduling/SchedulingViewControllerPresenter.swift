@@ -25,7 +25,7 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
                                                onDismiss: onDismiss)
     }
 
-    static func wrappedSchedulingViewController(_ schedulingViewController: SchedulingViewControllerProtocol,
+    static func wrappedSchedulingViewController(_ schedulingViewController: SchedulingDatePickerViewController,
                                                 sourceView: UIView?,
                                                 sourceRect: CGRect?,
                                                 transitioningDelegate: UIViewControllerTransitioningDelegate?,
@@ -48,13 +48,8 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
         return vc
     }
 
-    static func schedulingViewController(with viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) -> SchedulingViewControllerProtocol {
-        let schedulingViewController: SchedulingViewControllerProtocol
-        if #available(iOS 14.0, *) {
-            schedulingViewController = SchedulingDatePickerViewController()
-        } else {
-            schedulingViewController = SchedulingCalendarViewController()
-        }
+    static func schedulingViewController(with viewModel: PublishSettingsViewModel, updated: @escaping (Date?) -> Void) -> SchedulingDatePickerViewController {
+        let schedulingViewController = SchedulingDatePickerViewController()
         schedulingViewController.coordinator = DateCoordinator(date: viewModel.date,
                                                                timeZone: viewModel.timeZone,
                                                                dateFormatter: viewModel.dateFormatter,
@@ -62,10 +57,6 @@ class PresentableSchedulingViewControllerProvider: PresentableSchedulingViewCont
                                                                updated: updated)
         return schedulingViewController
     }
-}
-
-protocol SchedulingViewControllerProtocol: UIViewController, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate {
-    var coordinator: DateCoordinator? { get set }
 }
 
 class SchedulingLightNavigationController: LightNavigationController {

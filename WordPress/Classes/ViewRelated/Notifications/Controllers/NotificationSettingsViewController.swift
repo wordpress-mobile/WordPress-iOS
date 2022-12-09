@@ -1,5 +1,5 @@
-import Foundation
-import WordPressShared.WPStyleGuide
+import UIKit
+import WordPressShared
 
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com
@@ -7,7 +7,61 @@ import WordPressShared.WPStyleGuide
 /// On Row Press, we'll push the list of available Streams, which will, in turn, push the Details View
 /// itself, which is in charge of rendering the actual available settings.
 ///
-open class NotificationSettingsViewController: UIViewController {
+class NotificationSettingsViewController: UIViewController {
+
+    // MARK: - Properties
+
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionFooterHeight = UITableView.automaticDimension
+        return tableView
+    }()
+
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        return indicatorView
+    }()
+
+    private lazy var mainView: UIView = {
+        let view = UIView()
+        view.addSubviews([tableView, activityIndicatorView])
+        return view
+    }()
+
+
+    // MARK: - Private Constants
+
+    fileprivate let blogReuseIdentifier = WPBlogTableViewCell.classNameWithoutNamespaces()
+    fileprivate let blogRowHeight = CGFloat(54.0)
+
+    fileprivate let defaultReuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
+    fileprivate let switchReuseIdentifier = SwitchTableViewCell.classNameWithoutNamespaces()
+
+    fileprivate let emptyCount = 0
+    fileprivate let loadMoreRowIndex = 3
+    fileprivate let loadMoreRowCount = 4
+
+
+    // MARK: - Private Properties
+
+    fileprivate var groupedSettings: [Section: [NotificationSettings]] = [:]
+    fileprivate var displayBlogMoreWasAccepted = false
+    fileprivate var displayFollowedMoreWasAccepted = false
+    fileprivate var followedSites: [ReaderSiteTopic] = []
+    fileprivate var tableSections: [Section] = []
+
+    private var notificationsEnabled = false
+
+    override func loadView() {
+        mainView.pinSubviewToAllEdges(tableView)
+        mainView.pinSubviewAtCenter(activityIndicatorView)
+
+        view = mainView
+    }
+
     // MARK: - View Lifecycle
 
     open override func viewDidLoad() {
@@ -48,6 +102,9 @@ open class NotificationSettingsViewController: UIViewController {
         // Register the cells
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
+        tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: switchReuseIdentifier)
+        tableView.dataSource = self
+        tableView.delegate = self
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -63,7 +120,7 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Service Helpers
 
     fileprivate func reloadSettings() {
-        let service = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         let dispatchGroup = DispatchGroup()
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -89,6 +146,12 @@ open class NotificationSettingsViewController: UIViewController {
             self?.handleLoadError()
         })
 
+        dispatchGroup.enter()
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            self?.notificationsEnabled = settings.authorizationStatus == .authorized
+            dispatchGroup.leave()
+        }
+
         dispatchGroup.notify(queue: .main) { [weak self] in
             self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isExternal }
             self?.setupSections()
@@ -99,14 +162,13 @@ open class NotificationSettingsViewController: UIViewController {
 
     fileprivate func groupSettings(_ settings: [NotificationSettings]) -> [Section: [NotificationSettings]] {
         // Find the Default Blog ID
-        let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let defaultAccount  = service.defaultWordPressComAccount()
-        let primaryBlogId   = defaultAccount?.defaultBlog?.dotComID as? Int
+        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
+        let primaryBlogId = defaultAccount?.defaultBlog?.dotComID as? Int
 
         // Proceed Grouping
-        var blogSettings    = [NotificationSettings]()
-        var otherSettings   = [NotificationSettings]()
-        var wpcomSettings   = [NotificationSettings]()
+        var blogSettings = [NotificationSettings]()
+        var otherSettings = [NotificationSettings]()
+        var wpcomSettings = [NotificationSettings]()
 
         for setting in settings {
             switch setting.channel {
@@ -144,6 +206,10 @@ open class NotificationSettingsViewController: UIViewController {
             section.append(.followedSites)
         }
 
+        if JetpackNotificationMigrationService.shared.shouldShowNotificationControl() && notificationsEnabled {
+            section.insert(.notificationControl, at: 0)
+        }
+
         tableSections = section
     }
 
@@ -157,11 +223,11 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Error Handling
 
     fileprivate func handleLoadError() {
-        let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
-        let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
+        let title = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
+        let message = NSLocalizedString("There has been a problem while loading your Notification Settings",
                                             comment: "Displayed after Notification Settings failed to load")
-        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
-        let retryText   = NSLocalizedString("Try Again", comment: "Try Again. Action")
+        let cancelText = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText = NSLocalizedString("Try Again", comment: "Try Again. Action")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -175,11 +241,12 @@ open class NotificationSettingsViewController: UIViewController {
 
         present(alertController, animated: true)
     }
+}
 
+// MARK: - UITableView Datasource Methods
+extension NotificationSettingsViewController: UITableViewDataSource {
 
-    // MARK: - UITableView Datasource Methods
-
-    @objc open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tableSections.count
     }
 
@@ -190,21 +257,24 @@ open class NotificationSettingsViewController: UIViewController {
             return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
             return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : min(loadMoreRowCount, rowCountForFollowedSite)
+        case .notificationControl:
+            return 1
         default:
             return groupedSettings[section]?.count ?? 0
         }
     }
 
-    @objc open func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
-        let identifier  = reusableIdentifierForIndexPath(indexPath)
-        let cell        = tableView.dequeueReusableCell(withIdentifier: identifier)!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let identifier = reusableIdentifierForIndexPath(indexPath)
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
 
         configureCell(cell, indexPath: indexPath)
 
         return cell
     }
 
-    @objc open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Hide when the section is empty!
         if isSectionEmpty(section) {
             return nil
@@ -213,25 +283,12 @@ open class NotificationSettingsViewController: UIViewController {
         let theSection = self.section(at: section)
         return theSection.headerText()
     }
+}
 
-    @objc open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return nil
-        }
+// MARK: - UITableView Delegate Methods
+extension NotificationSettingsViewController: UITableViewDelegate {
 
-        let theSection = self.section(at: section)
-        return theSection.footerText()
-    }
-
-    @objc open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionFooter(view)
-    }
-
-
-    // MARK: - UITableView Delegate Methods
-
-    @objc open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isPaginationRow(indexPath) {
             toggleDisplayMore(at: indexPath)
         } else if let siteTopic = siteTopic(at: indexPath) {
@@ -243,24 +300,82 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let currentSection = self.section(at: section)
 
-    // MARK: - UITableView Helpers
+        guard !isSectionEmpty(section), let text = currentSection.footerText() else {
+            return nil
+        }
+        return makeFooterView(showBadge: currentSection.showBadge, text: text)
+    }
+}
 
-    fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
+// MARK: - UITableView Helpers
+private extension NotificationSettingsViewController {
+
+    /// Creates a label to be inserted in the sites section footer
+    /// - Parameter text: the text of the label
+    /// - Returns: the label
+    func makeFooterLabelView(text: String) -> UIView {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = WPStyleGuide.fontForTextStyle(.footnote)
+        label.numberOfLines = 0
+        label.text = text
+        label.textColor = .secondaryLabel
+
+        let labelView = UIView()
+        labelView.addSubview(label)
+        labelView.pinSubviewToAllEdges(label, insets: FooterMetrics.footerLabelInsets)
+        return labelView
+    }
+
+
+    /// Creates the footer for the my sites section
+    /// - Parameter text: the text to be used in the label
+    /// - Returns: the footer view
+    func makeFooterView(showBadge: Bool = false, text: String) -> UIView {
+        let labelView = makeFooterLabelView(text: text)
+
+        guard showBadge else {
+            return labelView
+        }
+
+        labelView.translatesAutoresizingMaskIntoConstraints = false
+
+        let badgeView = JetpackButton.makeBadgeView(topPadding: FooterMetrics.jetpackBadgeTopPadding,
+                                                    bottomPadding: FooterMetrics.jetpackBadgeBottomPatting,
+                                                    target: self,
+                                                    selector: #selector(jetpackButtonTapped))
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stackView = UIStackView(arrangedSubviews: [labelView, badgeView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+
+        let view = UIView()
+        view.addSubview(stackView)
+        view.pinSubviewToAllEdges(stackView)
+        return view
+    }
+
+    func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
         switch section(at: indexPath.section) {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
+        case .notificationControl:
+            return switchReuseIdentifier
         default:
             return defaultReuseIdentifier
         }
     }
 
-    fileprivate func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         // Pagination Rows don't really have a Settings entity
         if isPaginationRow(indexPath) {
-            cell.textLabel?.text            = paginationRowDescription(indexPath)
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
+            cell.textLabel?.text = paginationRowDescription(indexPath)
+            cell.textLabel?.textAlignment = .natural
+            cell.accessoryType = .none
             WPStyleGuide.configureTableViewCell(cell)
             return
         }
@@ -280,6 +395,11 @@ open class NotificationSettingsViewController: UIViewController {
             return
         }
 
+        if let cell = cell as? SwitchTableViewCell {
+            configureNotificationSwitchCell(cell)
+            return
+        }
+
         // Proceed rendering the settings
         guard let settings = settingsForRowAtIndexPath(indexPath) else {
             return
@@ -287,9 +407,9 @@ open class NotificationSettingsViewController: UIViewController {
 
         switch settings.channel {
         case .blog:
-            cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
-            cell.detailTextLabel?.text      = settings.blog?.displayURL as String? ?? String()
-            cell.accessoryType              = .disclosureIndicator
+            cell.textLabel?.text = settings.blog?.settings?.name ?? settings.channel.description()
+            cell.detailTextLabel?.text = settings.blog?.displayURL as String? ?? String()
+            cell.accessoryType = .disclosureIndicator
 
             if let blog = settings.blog {
                 cell.imageView?.downloadSiteIcon(for: blog)
@@ -300,16 +420,16 @@ open class NotificationSettingsViewController: UIViewController {
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
 
         default:
-            cell.textLabel?.text            = settings.channel.description()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .disclosureIndicator
+            cell.textLabel?.text = settings.channel.description()
+            cell.textLabel?.textAlignment = .natural
+            cell.accessoryType = .disclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
     }
 
-    fileprivate func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
+    func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
         guard !followedSites.isEmpty,
-            index.row <= (followedSites.count - 1) else {
+              index.row <= (followedSites.count - 1) else {
             return nil
         }
 
@@ -322,7 +442,7 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
-    fileprivate func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
+    func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
         let section = self.section(at: indexPath.section)
         guard let settings = groupedSettings[section] else {
             return nil
@@ -331,7 +451,7 @@ open class NotificationSettingsViewController: UIViewController {
         return settings[indexPath.row]
     }
 
-    fileprivate func isSectionEmpty(_ sectionIndex: Int) -> Bool {
+    func isSectionEmpty(_ sectionIndex: Int) -> Bool {
         let section = self.section(at: sectionIndex)
         switch section {
         case .followedSites:
@@ -342,8 +462,67 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
+    enum Section: Int {
+        case blog
+        case followedSites
+        case other
+        case wordPressCom
+        case notificationControl
 
-    // MARK: - Load More Helpers
+        func headerText() -> String? {
+            switch self {
+            case .blog:
+                return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
+            case .followedSites:
+                return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
+            case .other:
+                return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
+            case .wordPressCom:
+                return nil
+            case .notificationControl:
+                return nil
+            }
+        }
+
+        func footerText() -> String? {
+            switch self {
+            case .blog:
+                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
+                                         comment: "Notification Settings for your own blogs")
+            case .followedSites:
+                return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
+                                         comment: "Notification Settings for your followed sites")
+            case .other:
+                return nil
+            case .wordPressCom:
+                return NSLocalizedString("We’ll always send important emails regarding your account, " +
+                                         "but you can get some helpful extras, too.",
+                                         comment: "Title displayed in the Notification Settings for WordPress.com")
+            case .notificationControl:
+                return NSLocalizedString("Turning the switch off will disable all notifications from this app, regardless of type.",
+                                         comment: "Notification Settings switch for the app.")
+            }
+        }
+
+        var showBadge: Bool {
+            switch self {
+            case .blog:
+                return JetpackBrandingVisibility.all.enabled
+            default:
+                return false
+            }
+        }
+    }
+
+    enum FooterMetrics {
+        static let footerLabelInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        static let jetpackBadgeTopPadding: CGFloat = 22
+        static let jetpackBadgeBottomPatting: CGFloat = 8
+    }
+}
+
+// MARK: - Load More Helpers
+extension NotificationSettingsViewController {
 
     fileprivate var rowCountForFollowedSite: Int {
         return followedSites.count
@@ -417,21 +596,21 @@ open class NotificationSettingsViewController: UIViewController {
         default:
             return
         }
-
         // And refresh the section
         let sections = IndexSet(integer: index.section)
         tableView.reloadSections(sections, with: .fade)
     }
+}
 
+// MARK: - Navigation
+private extension NotificationSettingsViewController {
 
-    // MARK: - Segue Helpers
-
-    fileprivate func displayDetails(for siteId: Int) {
+    func displayDetails(for siteId: Int) {
         let siteSubscriptionsViewController = NotificationSiteSubscriptionViewController(siteId: siteId)
         navigationController?.pushViewController(siteSubscriptionsViewController, animated: true)
     }
 
-    fileprivate func displayDetailsForSettings(_ settings: NotificationSettings) {
+    func displayDetailsForSettings(_ settings: NotificationSettings) {
         switch settings.channel {
         case .wordPressCom:
             // WordPress.com Row will push the SettingDetails ViewController, directly
@@ -444,85 +623,15 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
-
-    // MARK: - Table Sections
-
-    fileprivate enum Section: Int {
-        case blog
-        case followedSites
-        case other
-        case wordPressCom
-
-        func headerText() -> String {
-            switch self {
-            case .blog:
-                return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
-            case .followedSites:
-                return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
-            case .other:
-                return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
-            case .wordPressCom:
-                return String()
-            }
-        }
-
-        func footerText() -> String {
-            switch self {
-            case .blog:
-                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
-                                         comment: "Notification Settings for your own blogs")
-            case .followedSites:
-                return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
-                                         comment: "Notification Settings for your followed sites")
-            case .other:
-                return String()
-            case .wordPressCom:
-                return NSLocalizedString("We’ll always send important emails regarding your account, " +
-                    "but you can get some helpful extras, too.",
-                    comment: "Title displayed in the Notification Settings for WordPress.com")
-            }
-        }
-
-
-        // MARK: - Private Constants
-
-        fileprivate static let paddingZero      = CGFloat(0)
-        fileprivate static let paddingWordPress = CGFloat(40)
+    @objc func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .notificationsSettings)
     }
-
-
-
-    // MARK: - Private Outlets
-
-    @IBOutlet fileprivate var tableView: UITableView!
-    @IBOutlet fileprivate var activityIndicatorView: UIActivityIndicatorView!
-
-
-    // MARK: - Private Constants
-
-    fileprivate let blogReuseIdentifier             = WPBlogTableViewCell.classNameWithoutNamespaces()
-    fileprivate let blogRowHeight                   = CGFloat(54.0)
-
-    fileprivate let defaultReuseIdentifier          = WPTableViewCell.classNameWithoutNamespaces()
-
-    fileprivate let emptyCount                      = 0
-    fileprivate let loadMoreRowIndex                = 3
-    fileprivate let loadMoreRowCount                = 4
-
-
-    // MARK: - Private Properties
-
-    fileprivate var groupedSettings: [Section: [NotificationSettings]] = [:]
-    fileprivate var displayBlogMoreWasAccepted          = false
-    fileprivate var displayFollowedMoreWasAccepted      = false
-    fileprivate var followedSites: [ReaderSiteTopic] = []
-    fileprivate var tableSections: [Section] = []
 }
 
-
 // MARK: - SearchableActivity Conformance
-
 extension NotificationSettingsViewController: SearchableActivityConvertable {
+
     var activityType: String {
         return WPActivityType.notificationSettings.rawValue
     }
@@ -539,7 +648,17 @@ extension NotificationSettingsViewController: SearchableActivityConvertable {
         guard !keywordArray.isEmpty else {
             return nil
         }
-
         return Set(keywordArray)
+    }
+}
+
+// MARK: - Notification Switch Cell
+extension NotificationSettingsViewController {
+    private func configureNotificationSwitchCell(_ cell: SwitchTableViewCell) {
+        cell.name = NSLocalizedString("Allow Notifications", comment: "Title for a cell with switch control that allows to enable or disable notifications")
+        cell.on = JetpackNotificationMigrationService.shared.wordPressNotificationsEnabled
+        cell.onChange = { newValue in
+            JetpackNotificationMigrationService.shared.wordPressNotificationsEnabled = newValue
+        }
     }
 }

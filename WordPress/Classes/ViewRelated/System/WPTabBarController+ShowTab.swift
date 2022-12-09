@@ -53,10 +53,10 @@ extension WPTabBarController {
             return
         }
 
-        if UserDefaults.standard.storiesIntroWasAcknowledged == false {
+        if UserPersistentStoreFactory.instance().storiesIntroWasAcknowledged == false {
             // Show Intro screen
             let intro = StoriesIntroViewController(continueTapped: { [weak self] in
-                UserDefaults.standard.storiesIntroWasAcknowledged = true
+                UserPersistentStoreFactory.instance().storiesIntroWasAcknowledged = true
                 self?.showStoryEditor()
             }, openURL: { [weak self] url in
                 let webViewController = WebViewControllerFactory.controller(url: url, source: "show_story_example")

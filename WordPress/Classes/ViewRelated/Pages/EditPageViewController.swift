@@ -61,9 +61,7 @@ class EditPageViewController: UIViewController {
         if let page = self.page {
             return page
         } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-            let newPage = postService.createDraftPage(for: blog)
+            let newPage = blog.createDraftPage()
             newPage.content = self.content
             newPage.postTitle = self.postTitle
             self.page = newPage

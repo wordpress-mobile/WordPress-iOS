@@ -52,6 +52,20 @@ final class BlogTests: CoreDataTestCase {
         XCTAssertNil(try Blog.lookup(withID: Int64(1), in: mainContext))
     }
 
+    // MARK: - Post lookup
+    func testThatLookupPostWorks() {
+        let context = contextManager.newDerivedContext()
+        let blog = BlogBuilder(context)
+            .set(blogOption: "foo", value: "bar")
+            .build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.postID = NSNumber(value: Int64.max)
+        contextManager.saveContextAndWait(context)
+
+        XCTAssertIdentical(blog.lookupPost(withID: post.postID!, in: mainContext)?.managedObjectContext, mainContext)
+        XCTAssertIdentical(blog.lookupPost(withID: post.postID!, in: context)?.managedObjectContext, context)
+    }
+
     // MARK: - Plugin Management
     func testThatPluginManagementIsDisabledForSimpleSites() {
         let blog = BlogBuilder(mainContext)

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2022-06-30 09:54:10+0000 */
+/* Translation-Revision-Date: 2022-11-30 09:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.1 */
+/* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -71,9 +71,6 @@
 
 /* Format string for plural unseen posts count. The %1$d is a placeholder for the count. */
 "%1$d unseen posts" = "%1$d 篇未读文章";
-
-/* translators: %1$s: Select control font size name e.g. Small, %2$s: Select control font size e.g. 12px */
-"%1$s (%2$s)" = "%1$s (%2$s)";
 
 /* translators: 1: From block title, e.g. Paragraph. 2: To block title, e.g. Header. */
 "%1$s transformed to %2$s" = "%1$s转换为%2$s";
@@ -152,8 +149,7 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "已重新连接 %@。";
 
-/* Difference label for Insights Overview stat, indicating change from previous period. Ex: +99.9K(5%)
-   Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
+/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
 "%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
@@ -371,6 +367,9 @@ translators: Block name. %s: The localized block name */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "“更多”按钮包含显示共享按钮的下拉菜单";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com 账户已关联您的商店凭据。 要继续，我们将向上述电子邮件地址发送一个验证链接。";
+
 /* Label for image that is set as a feature image for post/page */
 "A featured image is set. Tap to change it." = "已设置特色图片。轻点以更改该图片。";
 
@@ -394,9 +393,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
 "A tag named '%@' already exists." = "名为“%@”的标签已存在。";
-
-/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
-"A tip to grow your audience" = "增加受众的技巧";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "站点标题";
@@ -434,9 +430,6 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "地址";
 
-/* About this app (information page title) */
-"About" = "关于";
-
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "关于Jetpack iOS版";
 
@@ -445,9 +438,6 @@ translators: Block name. %s: The localized block name */
 
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "关于 WordPress";
-
-/* Link to About screen for WordPress for iOS */
-"About WordPress for iOS" = "关于 WordPress for iOS";
 
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "加速移动页面 (AMP)";
@@ -468,8 +458,7 @@ translators: Block name. %s: The localized block name */
 /* Overlay message displayed when account successfully closed */
 "Account closed" = "账户已关闭";
 
-/* Displays the list of third-party libraries we use
-   Title of button that displays the App's acknoledgements */
+/* Title of button that displays the App's acknoledgements */
 "Acknowledgements" = "确认";
 
 /* Theme Activate action title */
@@ -702,6 +691,9 @@ translators: Block name. %s: The localized block name */
 /* Settings: Comments Enabled */
 "Allow Comments" = "允许评论";
 
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "允许通知";
+
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "允许 WordPress 向您发送推送通知";
 
@@ -739,7 +731,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "替代文本";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping \"Convert to regular blocks\"." = "您也可以通过点击“转换为常规区块”来单独分离和编辑这些区块。";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "或者，您可以轻点“转换为常规区块”单独分离和编辑这些区块。";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "此外，您也可以输入此账户的密码。";
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "其他方式：";
@@ -1025,9 +1020,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Automatically share new posts to your social media accounts." = "自动将新文章共享到社交媒体账户。";
 
-/* A detailed message to users about growing the audience for their site through enabling post sharing. */
-"Automatically share new posts to your social media to start bringing that audience over to your site." = "自动将新文章分享到您的社交媒体，让这些受众流向您的站点。";
-
 /* Title of button that displays information about the other apps available from Automattic */
 "Automattic Family" = "Automattic 家族";
 
@@ -1055,8 +1047,7 @@ translators: Block name. %s: The localized block name */
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
-   Previous web page
-   Spoken accessibility label */
+   Previous web page */
 "Back" = "返回";
 
 /* Title for the Background Color section */
@@ -1115,8 +1106,7 @@ translators: Block name. %s: The localized block name */
 /* Title for a section of recommended site designs. The %@ will be replaced with the related site intent topic, such as Food or Blogging. */
 "Best for %@" = "最适合 %@";
 
-/* All Time Stats 'Best views ever' label
-   Stats 'Best views ever' Label */
+/* All Time Stats 'Best views ever' label */
 "Best views ever" = "最受欢迎的文章";
 
 /* Text for related post cell preview */
@@ -1169,8 +1159,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "区块是您不需要知道如何编写代码就能够插入、重新排列和设置样式的内容。 区块让您能够以轻松而现代的方式创建精美的布局。";
 
-/* Opens the WordPress Mobile Blog
-   Title of a button that displays the WordPress product blog */
+/* Title of a button that displays the WordPress.com blog */
 "Blog" = "博客";
 
 /* Create new Blog Post button title */
@@ -1364,6 +1353,9 @@ translators: Block name. %s: The localized block name */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消...";
 
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "无法访问此地址的站点。 请仔细检查，然后重试。";
+
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "决定不了？ 您可以随时更改主题。";
 
@@ -1451,6 +1443,9 @@ translators: Block name. %s: The localized block name */
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "查看我们的重要贴士，增加您的阅读量和流量";
 
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "检查此设备上的电子邮件！";
+
 /* Instruction text after a login Magic Link was requested. */
 "Check your email on this device, and tap the link in the email you receive from WordPress.com." = "请在此设备上查看电子邮件，并轻点您从 WordPress.com 收到的电子邮件中的链接。";
 
@@ -1528,9 +1523,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
 "Choose a theme" = "选择主题";
-
-/* Label for Publish time picker */
-"Choose a time" = "选择时间";
 
 /* Select the site's intent. Subtitle */
 "Choose a topic from the list below or type your own." = "请从以下列表中选择主题或输入自己的主题。";
@@ -1725,15 +1717,11 @@ translators: Block name. %s: The localized block name */
    Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
-   Stats Comments Label
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "评论";
-
-/* Insights 'Comments Total' header */
-"Comments Total" = "评论总数";
 
 /* Displayed on the post details page when there are no post comments and commenting is closed. */
 "Comments are closed" = "评论功能已关闭";
@@ -1841,14 +1829,8 @@ translators: Block name. %s: The localized block name */
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "连接其他账户";
 
-/* Title for button that will open up the social media Sharing screen. */
-"Connect more networks" = "连接更多网络";
-
 /* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Connect to automatically share your blog posts to %@" = "连接以自动将您的博客文章分享至 %@";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"Connect with other bloggers by following, liking and commenting on their posts." = "通过关注、点赞和评论其他博主的文章，与他们联系。";
 
 /* Title of a Quick Start Tour */
 "Connect with other sites" = "连接其他站点";
@@ -1889,9 +1871,6 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "连接不可用";
 
-/* Section title for Publicize services in Sharing screen */
-"Connections" = "连接";
-
 /* Support email label. */
 "Contact Email" = "联系电子邮件地址";
 
@@ -1919,6 +1898,7 @@ translators: Block name. %s: The localized block name */
    Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
+   The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen.
    Title of the Continue button in the Site Name screen. */
@@ -1945,6 +1925,9 @@ translators: Block name. %s: The localized block name */
 /* Shown while logging in with Apple and the app waits for the site creation process to complete. */
 "Continuing with Apple" = "继续使用 Apple";
 
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "贡献";
+
 /* No comment provided by engineer. */
 "Convert to link" = "转换为链接";
 
@@ -1963,9 +1946,6 @@ translators: Block name. %s: The localized block name */
 
 /* translators: Copy URL from the clipboard, https://sample.url */
 "Copy URL from the clipboard, %s" = "从剪贴板复制 URL，%s";
-
-/* No comment provided by engineer. */
-"Copy block" = "复制区块";
 
 /* No comment provided by engineer. */
 "Copy file URL" = "复制文件 URL";
@@ -2050,9 +2030,6 @@ translators: Block name. %s: The localized block name */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem." = "无法连接。您的主机会阻止 POST 请求，而应用程序需要通过该请求与您的站点通信。请联系您的托管服务提供商以解决此问题。";
-
-/* Message displayed when a Stats widget failed to load data. */
-"Couldn't load data" = "无法加载数据";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "无法加载标签。";
@@ -2172,9 +2149,6 @@ translators: Block name. %s: The localized block name */
 /* Title for the card prompting the user to create a new post. */
 "Create your next post" = "撰写下一篇文章";
 
-/* Customize Insights description */
-"Create your own customized dashboard and choose what reports to see. Focus on the data you care most about." = "创建专属于您的自定义控制面板并选择查看哪些报告。重点关注您最关心的数据。";
-
 /* Title of a Quick Start Tour */
 "Create your site" = "创建站点";
 
@@ -2259,9 +2233,6 @@ translators: Block name. %s: The localized block name */
 
 /* Notification Settings for your followed sites */
 "Customize your followed site settings for New Posts and Comments" = "自定义您关注的站点的设置，以获取新文章和新评论";
-
-/* Customize Insights title */
-"Customize your insights" = "自定义您的数据分析";
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "针对赞、评论、关注等项目自定义您的站点设置。";
@@ -2457,9 +2428,6 @@ translators: Block name. %s: The localized block name */
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "发现并关注能激发您灵感的站点。";
 
-/* Title for button that will open up the follow topics screen. */
-"Discover blogs to follow" = "发现可关注的博客";
-
 /* Button title. Tapping shows the Follow Topics screen. */
 "Discover more topics" = "探索更多兴趣";
 
@@ -2470,23 +2438,8 @@ translators: Block name. %s: The localized block name */
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
-   Action shown in a bottom notice to dismiss it.
    Action to show on alert when view asset fails.
-   Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Customize Insights button title
-   Dismiss a view. Verb
-   Dismiss button title
-   Dismiss button title.
-   Dismiss the AlertView
-   Share extension error dialog cancel button label.
-   Spoken accessibility label
-   The title of a button to close the classic editor deprecation notice alert dialog.
-   Title for button that will dismiss the Grow Your Audience card.
-   User action to dismiss featured media options.
-   User action to dismiss media options.
-   Verb. Button title. Tapping dismisses a prmopt.
-   Verb. Dismisses the blogging prompt notification.
-   Verb. User action to dismiss error alert when failing to load media item. */
+   Dismiss a view. Verb */
 "Dismiss" = "关闭";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
@@ -2502,18 +2455,6 @@ translators: Block name. %s: The localized block name */
    My Profile display name label
    User's Display Name */
 "Display Name" = "显示名称";
-
-/* Unconfigured stats all-time widget helper text */
-"Display your all-time site stats here. Configure in the WordPress app in your site stats." = "在此处显示您站点在所有时间的统计信息。在 WordPress 应用程序的站点统计信息中进行配置。";
-
-/* Unconfigured stats this week widget helper text */
-"Display your site stats for this week here. Configure in the WordPress app in your site stats." = "在此处显示您站点本周的统计数据。在 WordPress 应用程序的站点统计信息中进行配置。";
-
-/* Unconfigured stats today widget helper text */
-"Display your site stats for today here. Configure in the WordPress app in your site stats." = "在此处显示您站点当天的统计数据。在 WordPress 应用程序的站点统计信息中进行配置。";
-
-/* Title for button that will open up the follow topics screen. */
-"Do it again" = "再次尝试";
 
 /* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
 "Document, %@" = "文档，%@";
@@ -2767,9 +2708,6 @@ translators: Block name. %s: The localized block name */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "使用区块编辑器编辑新文章和页面。";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Edit reminders" = "编辑提醒";
-
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "编辑共享按钮";
 
@@ -2896,9 +2834,6 @@ translators: Block name. %s: The localized block name */
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "启用应用内通知";
-
-/* Title for button that will open up the social media Sharing screen. */
-"Enable post sharing" = "启用文章共享";
 
 /* Message prompting user to enable site notifications. */
 "Enable site notifications?" = "是否启用站点通知？";
@@ -3209,9 +3144,6 @@ translators: Block name. %s: The localized block name */
    Title for the Featured Image view */
 "Featured Image" = "特色图片";
 
-/* Title for action sheet with featured media options. */
-"Featured Image Options" = "特色图片选项";
-
 /* No comment provided by engineer. */
 "Featured Image did not load" = "特色图片未加载";
 
@@ -3310,9 +3242,6 @@ translators: Block name. %s: The localized block name */
 
 /* Verb. An option to follow a site. */
 "Follow site" = "关注站点";
-
-/* Title of follow conversations tooltip. */
-"Follow the conversation" = "关注对话";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "关注话题";
@@ -3467,9 +3396,6 @@ translators: Block name. %s: The localized block name */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "敬请注意：评论您已读过的文章。";
 
-/* Message for the follow conversations tooltip. */
-"Get notified when new comments are added to this post." = "在向此文章添加新评论时接收通知。";
-
 /* Description of a Quick Start Tour */
 "Get real time updates from your pocket." = "方便您随时随地实时获取更新。";
 
@@ -3544,8 +3470,7 @@ translators: Block name. %s: The localized block name */
 /* Message shown on screen after the Google sign up process failed. */
 "Google sign up failed." = "Google 注册失败。";
 
-/* Button title for the follow conversations tooltip.
-   Button title on the blogging prompt's feature introduction view to dismiss the view.
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
 "Got it" = "知道了";
 
@@ -3554,6 +3479,9 @@ translators: Block name. %s: The localized block name */
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "抓取站点 URL";
+
+/* No comment provided by engineer. */
+"Gradient" = "渐变色";
 
 /* No comment provided by engineer. */
 "Gradient Type" = "渐变类型";
@@ -3756,6 +3684,9 @@ translators: Block name. %s: The localized block name */
 
 /* Message explaining that they will need to install Jetpack on one of their sites. */
 "If you already have a site, you’ll need to install the free Jetpack plugin and connect it to your WordPress.com account." = "如果您已经拥有一个站点，则需要安装免费的 Jetpack 插件并将其连接到您的 WordPress.com 账户。";
+
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "如果您找不到该电子邮件，请检查您的垃圾邮件文件夹";
 
 /* Legal disclaimer for signing up. The underscores _..._ denote underline. */
 "If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果您继续使用 Apple 或 Google，并且还没有 WordPress.com 账户，则需要创建一个账户，并同意我们的_服务条款_。";
@@ -3964,7 +3895,13 @@ translators: Block name. %s: The localized block name */
 "Invalid URL, please check if you wrote a valid site address." = "URL 无效，请检查您输入的网址是否有效。";
 
 /* No comment provided by engineer. */
+"Invalid URL." = "URL 无效。";
+
+/* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "无效的URL。找不到音频文件。";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL 无效。 请仔细检查，然后重试。";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "无效 URL。请输入有效 URL。";
@@ -4057,6 +3994,19 @@ translators: Block name. %s: The localized block name */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack设置";
 
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Jetpack Social 连接";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Jetpack Social 连接同步失败";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Jetpack Social 服务同步失败";
+
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "当前无法安装Jetpack";
 
@@ -4065,6 +4015,9 @@ translators: Block name. %s: The localized block name */
 
 /* The Jetpack view title for the success state */
 "Jetpack installed" = "Jetpack 安装成功";
+
+/* No comment provided by engineer. */
+"Jetpack powered" = "由 Jetpack 提供支持";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack将修复检测到的活跃威胁。";
@@ -4087,14 +4040,8 @@ translators: Block name. %s: The localized block name */
    Goes back to editing the post. */
 "Keep Editing" = "保存编辑";
 
-/* A detailed message to users indicating that they've set up blogging reminders. */
-"Keep blogging and check back to see visitors arriving at your site." = "继续发布博客，并查看您站点的访客。";
-
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "保留当前图片";
-
-/* A detailed message to users indicating that they've set up reader discover. */
-"Keep going! Liking and commenting is a good way to build a network. Go to Reader to find more posts." = "继续！ 点赞和评论是建立联系的好方式。 返回阅读器，发现更多文章。";
 
 /* Description of a Quick Start Tour */
 "Keep up to date on your site’s performance." = "使您站点的性能始终不会落伍。";
@@ -4127,8 +4074,17 @@ translators: Block name. %s: The localized block name */
    User's Last Name */
 "Last Name" = "姓氏";
 
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "上周共计 %1$@ 次查看和 %2$@ 条评论。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "上周共计 %1$@ 次查看和 %2$@ 个赞。";
+
 /* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views, comments, and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments, 3 is likes. */
-"Last week you had %1$d views, %2$d comments and %3$d likes." = "上周共计 %1$d 次查看、%2$d 条评论和 %3$d 个赞。";
+"Last week you had %1$@ views, %2$@ comments and %3$@ likes." = "上周共计 %1$@ 次查看、%2$@ 条评论和 %3$@ 个赞。";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "上周共计 %@ 次查看。";
 
 /* Insights latest post summary header */
 "Latest Post Summary" = "最新的文章摘要";
@@ -4204,14 +4160,10 @@ translators: Block name. %s: The localized block name */
 /* Filters Likes Notifications
    Label for Period Overview likes
    Label for post likes count.
-   Stats Likes Label
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "赞";
-
-/* Insights 'Likes Total' header */
-"Likes Total" = "赞总数";
 
 /* Setting: indicates if Comment Likes will be notified */
 "Likes on my comments" = "我的评论收到的赞";
@@ -4246,6 +4198,9 @@ translators: Block name. %s: The localized block name */
 
 /* Link name field placeholder */
 "Link Name" = "链接名称";
+
+/* No comment provided by engineer. */
+"Link Rel" = "链接 Rel";
 
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "链接设置";
@@ -4414,6 +4369,9 @@ translators: Block name. %s: The localized block name */
 
 /* Login Request Expired */
 "Login Request Expired" = "登录请求已过期";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "使用账户密码登录";
 
 /* No comment provided by engineer. */
 "Logs" = "日志";
@@ -4634,8 +4592,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the More button on Reader Cell
    Accessibility label for the More button on Reader's post details
    Action button to display more available options
-   Label for the more post button. Tapping displays an action sheet with post options.
-   Spoken accessibility label */
+   Label for the more post button. Tapping displays an action sheet with post options. */
 "More" = "更多";
 
 /* Action button to display more available options
@@ -4644,12 +4601,6 @@ translators: Block name. %s: The localized block name */
 
 /* Label for the posting activity legend. */
 "More Posts" = "更多文章";
-
-/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
-"More from %1$@" = "更多来自%1$@的文章";
-
-/* Section title for global related posts. */
-"More on WordPress.com" = "WordPress.com 的更多内容";
 
 /* No comment provided by engineer. */
 "More support options" = "更多支持选项";
@@ -4705,6 +4656,7 @@ translators: Block name. %s: The localized block name */
 
 /* Label for a button that moves a page to the trash folder
    Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
    Trash option in the trash confirmation alert.
    Trash option in the trash page confirmation alert.
    Trashes the comment */
@@ -4790,7 +4742,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A button title. */
 "Need help finding your site address?" = "查找站点地址时需要帮助？";
 
-/* Takes the user to get help */
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "需要帮助？";
 
 /* Title of the more help button on alert helping users understand their site address */
@@ -4802,8 +4755,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Label indicating that a domain name registration has no expiry date. */
 "Never expires" = "永不到期";
 
-/* Header of section in Plugin Directory showing newest plugins
-   Title for the tooltip anchor. */
+/* Header of section in Plugin Directory showing newest plugins */
 "New" = "新";
 
 /* Blocklist Keyword Insertion Title */
@@ -4839,12 +4791,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Sort Order */
 "Newest first" = "最新评论在先";
 
-/* News site intent topic */
+/* News site intent topic
+   Title of a button that displays the WordPress.org blog */
 "News" = "新闻";
 
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
-   Next screen button title
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "继续";
@@ -5009,9 +4961,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "无需在此等待，我们会在网站完全恢复后通知您。";
 
-/* Displayed in the Stats widgets when there is no network */
-"No network available" = "没有可用网络";
-
 /* Message shown when there are no new topics to follow. */
 "No new topics to follow" = "没有新的话题可关注";
 
@@ -5060,6 +5009,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "无结果。请尝试其他搜索词。";
+
+/* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
+"No saved posts" = "没有已保存的文章";
 
 /* A message title */
 "No sites found" = "找不到站点";
@@ -5280,6 +5232,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops!" = "糟糕！";
 
 /* No comment provided by engineer. */
+"Opacity" = "不透明度";
+
+/* No comment provided by engineer. */
 "Open Block Actions Menu" = "打开区块操作菜单";
 
 /* Opens iOS's Device Settings for WordPress App */
@@ -5296,13 +5251,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "打开设置";
 
-/* Today widget label to launch WP app */
-"Open WordPress" = "打开 WordPress";
-
 /* Editor button to swich the media picker from quick mode to full picker */
 "Open full media picker" = "打开完整媒体选择器";
 
-/* Spoken accessibility label */
+/* No comment provided by engineer. */
 "Open in Safari" = "用 Safari 打开";
 
 /* Label for the description of openening a link using a new window */
@@ -5343,6 +5295,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "或通过 _输入您的站点地址_ 登录。";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "或者通过免密链接登录";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "有序列表";
@@ -5790,9 +5745,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for stats Posting Activity view. */
 "Posting Activity" = "博文发布情况";
 
-/* A detailed message to users about growing the audience for their site through blogging reminders. */
-"Posting regularly can help build an audience. Reminders help keep you on track." = "定期发布可帮助吸引受众。 提醒可帮助您按计划执行。";
-
 /* Description for the card prompting the user to create a new post. */
 "Posting regularly helps build your audience!" = "定期发表有助于吸引受众！";
 
@@ -5800,7 +5752,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Insights 'Posts' header
    Noun. Title for posts button.
    Noun. Title. Links to the blog's Posts screen.
-   Stats Posts Label
    Title of a Reader tab showing Posts matching a user's search query
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "文章";
@@ -5901,8 +5852,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for screen to select the privacy options for a blog */
 "Privacy" = "隐私";
 
-/* Opens the Privacy Policy Web
-   Title of button that displays the App's privacy policy */
+/* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "隐私政策";
 
 /* Register Domain - Privacy Protection section header title */
@@ -5922,7 +5872,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Private" = "私密";
 
 /* No comment provided by engineer. */
-"Problem displaying block" = "显示区块时出现问题";
+"Problem displaying block. \nTap to attempt block recovery." = "显示区块时出现问题。 \n点击尝试恢复区块。";
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "内容加载出现问题";
@@ -5956,18 +5906,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "公开";
-
-/* Insights 'Publicize' header */
-"Publicize" = "Publicize";
-
-/* Message to show when Publicize connection synchronization failed */
-"Publicize connection synchronization failed" = "发布连接同步失败";
-
-/* Message to show when Publicize service synchronization failed */
-"Publicize service synchronization failed" = "发布服务同步失败";
-
-/* Title. `Publicize` is used as a verb here but `Share` (verb) would also work here. The `%@` is a placeholder for the service name. */
-"Publicize to %@" = "发布 %@";
 
 /* Button shown when the author is asked for publishing confirmation.
    Button title. Publishes a post.
@@ -6046,9 +5984,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "给我们评分";
-
-/* Prompts the user to rate us on the store */
-"Rate us on the App Store" = "在 App Store 中给我们评分";
 
 /* In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation. */
 "Read on" = "在以下网站上阅读：";
@@ -6163,9 +6098,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Remove Action
    Remove an image/posts/etc
    Removes a self hosted site from the app
-   Title for button that will confirm removing the next steps/quick start menus.
-   User action to remove featured media.
-   User action to remove media. */
+   Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "移除";
 
 /* Remove Person Alert Title
@@ -6378,11 +6311,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Retry uploading the post.
    Retry. Action
    Retry. Verb – retry a failed media upload.
-   Stats widgets label to reload the widget.
    The Jetpack view button title used when an error occurred
    Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
    title for action that tries to connect to the reader after a loading error.
-   User action to retry featured media upload.
    User action to retry media upload. */
 "Retry" = "重试";
 
@@ -6432,6 +6363,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* One Time Code has been sent via SMS */
 "SMS Sent" = "短信已发送";
+
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "状态";
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
@@ -6564,9 +6498,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Placeholder text for the Reader search feature. */
 "Search WordPress" = "搜索 WordPress";
-
-/* A short message that is a call to action for the Reader's Search feature. */
-"Search WordPress\nfor a site or post" = "在WordPress\n查找站点或文章";
 
 /* No comment provided by engineer. */
 "Search block label. Current text is" = "搜索区块标签。当前文字为";
@@ -6705,6 +6636,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select paragraph style" = "选择段落样式";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select the %@ tab to get updates on the go." = "选择“%@”选项卡，随时随地获取更新。";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select the %@ to add your social media accounts" = "选择“%@”，添加您的社交媒体账户";
 
 /* Instructional text about the Sharing feature. */
@@ -6789,6 +6723,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "发送测试崩溃";
 
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "发送电子邮件验证链接";
+
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "通过电子邮件发送通知";
 
@@ -6829,9 +6766,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Installation & Connection */
 "Set up Jetpack" = "设置 Jetpack";
 
-/* Title for button that will open up the blogging reminders screen. */
-"Set up blogging reminders" = "设置博客发布提醒";
-
 /* Description on the first screen of the Blogging Reminders Settings flow called from site settings. */
 "Set up your blogging reminders on days you want to post." = "在希望发布文章的日期设置博客发布提醒。";
 
@@ -6870,11 +6804,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "分享";
 
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "与朋友分享 Jetpack";
+
 /* Label for action to share post. */
 "Share Post" = "分享文章";
 
-/* Label for a button that recommends the app to others */
+/* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "将 WordPress 与您的朋友分享";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "共享评论";
 
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "登录到您的 WordPress.com 账户时，使用分析工具共享关于您使用服务的信息。";
@@ -6885,6 +6825,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "分享链接";
 
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "将文章共享至 %@";
+
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "分享给朋友";
 
@@ -6892,8 +6835,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "在此处分享您的故事...";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core.
-   Noun. Title. Links to a blog's sharing options.
+/* Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "共享";
@@ -6907,9 +6849,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension dialog title - displayed when user is missing a login token. */
 "Sharing error" = "共享错误";
-
-/* A hint to users that they've set up post sharing. */
-"Sharing is set up!" = "已设置共享！";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
 "Show Header" = "显示标题";
@@ -6992,6 +6931,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* View title during the sign up process. */
 "Sign Up" = "注册";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "使用站点凭据登录";
 
 /* When social login fails, this button offers to let them signup for a new WordPress.com account */
 "Sign up" = "注册";
@@ -7210,8 +7152,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Settings: Comments Sort Order */
 "Sort By" = "排序方式";
 
-/* Opens the Github Repository Web
-   Title of button that displays the App's source code information */
+/* Title of button that displays the App's source code information */
 "Source Code" = "源代码";
 
 /* Label for showing the available disk space quota available for media */
@@ -7264,9 +7205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "未加载统计信息";
-
-/* Displayed in the Stats widgets when there is no network */
-"Stats will be updated next time you're online" = "统计信息会在您下次上线时更新";
 
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "状态";
@@ -7452,14 +7390,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "轻点“[bookmark-outline]”以将文章保存到您的列表中。";
 
-/* Subtitle instructing the user to tap the dismiss button to leave the log in flow */
-"Tap dismiss and head back to your web browser to continue." = "点击关闭，然后返回您的网页浏览器继续下一步。";
-
 /* Accessibility hint */
 "Tap for more detail." = "点按以获取更多细节。";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
+
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "轻点以添加新的统计信息卡片。";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "点按即可取消上传。";
@@ -7473,9 +7411,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint
    Accessibility hint to customize insights */
 "Tap to customize insights" = "轻点可自定义数据分析";
-
-/* Accessibility hint */
-"Tap to dismiss this card" = "轻点可退出此卡片";
 
 /* Accessibility hint for referrer details row. */
 "Tap to display referrer web page." = "点击以显示推荐来源网页。";
@@ -7519,6 +7454,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "Tap to view media in full screen" = "轻点可全屏查看媒体";
 
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "轻点以查看更多详细信息。";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to access more stats about this week */
 "Tap to view more stats for this week" = "点击查看本周的更多统计数据";
 
@@ -7546,8 +7484,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The underlined title sentence */
 "Terms and Conditions" = "条款和条件";
 
-/* Opens the Terms of Service Web
-   Title of button that displays the App's terms of service */
+/* Title of button that displays the App's terms of service */
 "Terms of Service" = "使用条款";
 
 /* Menu item label for linking a testimonial post. */
@@ -7555,9 +7492,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button style */
 "Text Only" = "仅显示文字";
-
-/* No comment provided by engineer. */
-"Text color" = "文字颜色";
 
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "编辑文本区块时，文本格式控件位于键盘上方的工具栏内";
@@ -8023,9 +7957,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "分类目录名必填。";
 
-/* Error message displayed when unable to close user account due to having active atomic site. */
-"To close this account now, contact our support team." = "要立即关闭此帐户，请联系我们的支持团队。";
-
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "请输入您的电子邮件地址和名称以继续。";
 
@@ -8067,7 +7998,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comments Today Section Header
    Insights 'Today' header
-   Label for most recent stat row.
    Notifications Today Section Header */
 "Today" = "今日";
 
@@ -8113,13 +8043,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for total followers */
 "Total" = "总计";
 
-/* 'This Year' label for total number of comments. */
+/* 'This Year' label for total number of comments.
+   Insights 'Total Comments' header */
 "Total Comments" = "评论总数";
 
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "电子邮件粉丝总数：%@";
 
-/* 'This Year' label for total number of likes. */
+/* Insights 'Total Followers' header */
+"Total Followers" = "粉丝总数";
+
+/* 'This Year' label for total number of likes.
+   Insights 'Total Likes' header */
 "Total Likes" = "总赞数";
 
 /* 'This Year' label for the total number of posts. */
@@ -8189,16 +8124,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
-   Re-load the history again. It appears if the loading call fails.
-   Share extension error dialog retry button label. */
+   Re-load the history again. It appears if the loading call fails. */
 "Try again" = "请重试";
 
 /* No comment provided by engineer. */
 "Try another search term" = "尝试其他搜索字词";
 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen.
-   Customize Insights button title */
+   Button title to take user to the new Stats Insights screen. */
 "Try it now" = "立即试用";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -8231,8 +8164,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "已打开站点通知";
 
-/* Launches the Twitter App
-   Title of button that displays the app's Twitter profile */
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "关闭此开关将停止接收来自此应用的所有类型的通知。";
+
+/* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
@@ -8567,6 +8502,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "升级重点：婚礼 VideoPress";
 
+/* No comment provided by engineer. */
+"Upgrade your plan to upload audio" = "升级您的套餐即可上传音频";
+
+/* No comment provided by engineer. */
+"Upgrade your plan to use video covers" = "升级您的套餐即可使用视频封面";
+
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "上传媒体文件";
 
@@ -8642,6 +8583,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Use icon button" = "使用图标按钮";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "使用密码登录";
+
 /* No comment provided by engineer. */
 "Use this site" = "使用此站点";
 
@@ -8683,8 +8627,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "请验证您的电子邮件地址（说明已发送至 %@）";
 
-/* Displays the version of the App
-   Label in Support view displaying the app version. */
+/* Label in Support view displaying the app version. */
 "Version" = "版本";
 
 /* Description for the version label in the What's new page. */
@@ -8758,9 +8701,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Menu title to show more prompts. */
 "View more prompts" = "查看更多提示";
 
-/* Description for view count. Singular. */
-"View to your site so far" = "到目前为止您站点的浏览次数";
-
 /* Title of a Quick Start Tour */
 "View your site" = "查看您的站点";
 
@@ -8775,7 +8715,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for number of views.
    Label for Period Overview views
    Label for post views count.
-   Stats Views Label
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8783,9 +8722,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "浏览次数和访客人数";
-
-/* Description for view count. Singular. */
-"Views to your site so far" = "到目前为止您站点的浏览次数";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -8813,7 +8749,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
-   Stats Visitors Label
    This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
@@ -8978,6 +8913,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* message to ask a user to check their email for a WordPress.com email */
 "We just emailed a link to %@. Please check your mail app and tap the link to log in." = "我们刚刚通过电子邮件向 %@ 发送了一个链接。请查看您的邮箱应用程序，点击链接登录。";
+
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "我们刚刚发送了一个免密链接至";
 
 /* Popup content about why this post is being opened in block editor */
 "We made big improvements to the block editor and think it's worth a try!\n\nWe enabled it for new posts and pages but if you'd like to change to the classic editor, go to 'My Site' > 'Site Settings'." = "我们对区块编辑器进行了重大改进，绝对值得一试！\n\n我们已为新文章和页面启用该编辑器，但是，如果您想改用经典编辑器，请转到“我的站点”>“站点设置”。";
@@ -9166,6 +9104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "您想要使用此文件完成的操作：上传此文件并在文章中添加指向此文件的链接，还是直接在文章中添加该文件的内容？";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "什么是 WordPress.com?";
+
 /* No comment provided by engineer. */
 "What is a block?" = "什么是区块？";
 
@@ -9181,8 +9122,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of section that contains plugins' change log */
 "What's New" = "有何新内容？";
 
-/* Opens the What's New / Feature Announcement modal
-   Title of the What's new page. */
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Jetpack 的新变化";
+
+/* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 的新变化";
 
 /* Title of alert helping users understand their site address */
@@ -9209,17 +9152,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "在对站点进行更改时，您可在此处查看您的活动历史记录。";
 
-/* A detailed message to users indicating that they've set up post sharing. */
-"When you publish your next post it will be automatically shared to your connected networks." = "当您发布下一篇文章时，它将自动共享到您连接的网络。";
-
 /* Title displayed in popup when user has the option to load unsaved changes */
 "Which version would you like to edit?" = "您想要编辑哪个版本？";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，出问题了，您无法登录。请重试！";
-
-/* Share extension error dialog text. */
-"Whoops, something went wrong while sharing. You can try again, maybe it was a glitch." = "糟糕，共享时出错。您可以重试，这可能只是一个小问题。";
 
 /* Error message shown when an incorrect two factor code is provided. */
 "Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，双因素验证码无效。请仔细检查代码，然后重试！";
@@ -9305,7 +9242,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
 "WordPress.com Account" = "WordPress.com 账户";
 
 /* Title for the Plans list header */
@@ -9539,9 +9477,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "您似乎安装了来自 DudaMobile 的移动插件，该插件会阻止应用程序连接到您的博客";
 
-/* A hint to users that they've set up blogging reminders. */
-"You set up blogging reminders" = "您已设置博客发布提醒";
-
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
 "You shouldn’t ignore a security issue unless you are absolutely sure it’s harmless. If you choose to ignore this threat, it will remain on your site \"%1$@\"." = "您不应忽视安全性问题，除非您确信该问题不会带来负面影响。如果您选择忽略此威胁，它将继续存留在您的站点“%1$@”。";
 
@@ -9561,14 +9496,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */
 "You're all up to date!" = "您已看完所有内容！";
 
-/* Title for the success view when the user has successfully logged in */
-"You're logged in!" = "您已登录！";
-
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "您不具备关闭此账户的权限";
-
-/* A hint to users that they've set up reader discover. */
-"You've connected with other blogs" = "您已与其他博客建立连接";
 
 /* Message displayed on a post's card when the post has unsaved changes */
 "You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
@@ -9608,6 +9537,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the site address section in the Domains Dashboard. */
 "Your free WordPress.com address is" = "您的免费 WordPress.com 地址是";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "您的最新文章 <a href=\"\">%1$@<\/a> 收到了 <strong>%2$d<\/strong> 个赞。";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "您的最新文章 <a href=\"\">%@<\/a> 收到了 <strong>1<\/strong> 个赞。";
@@ -9750,6 +9682,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one year. */
 "a year" = "1 年后";
 
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "无法立即关闭此用户账户，因为该账户存在已启用的购买。 请联系我们的支持团队，完成删除账户操作。";
+
+/* Dismiss button title */
+"activityList.dismiss.title" = "忽略";
+
 /* Age between dates equaling one hour. */
 "an hour" = "一小时";
 
@@ -9759,6 +9697,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "忽略";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "忽略";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "忽略";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "忽略";
+
 /* Used when displaying author of a plugin. */
 "by %@" = "作者：%@";
 
@@ -9767,6 +9717,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
+
+/* Customize Insights description */
+"customizeInsightsCell.content" = "创建专属于您的定制仪表盘并选择查看哪些报告。 重点关注您最关心的数据。";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "点击可退出此卡片";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "忽略";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "定制您的数据分析";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "点击可定制数据分析";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "立即试用";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
@@ -9784,6 +9752,66 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "关注";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "设置博客发布提醒";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "编辑提醒";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "继续发布博客，并查看您站点的访客。";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "您已设置博客发布提醒";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "定期发布可帮助吸引受众。 提醒可帮助您按计划执行。";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "忽略";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "发现可关注的博客";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "再次尝试";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "继续！ 点赞和评论是建立联系的好方式。 返回阅读器，发现更多文章。";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "您已与其他博客建立连接";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "通过关注、点赞和评论其他博主的文章，与他们联系。";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "启用文章共享";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "连接更多网络";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "当您发布下一篇文章时，它将自动共享到您连接的网络。";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "已设置共享！";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "自动将新文章共享到您的社交媒体，让这些受众流向您的站点。";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "增加受众的技巧";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "到目前为止您站点的浏览次数";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "到目前为止您站点的浏览次数";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "忽略";
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
@@ -9815,8 +9843,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在您的文章内添加照片或视频。";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "使用此链接请团队成员加入，而不必逐个邀请团队成员。 使用此 URL 的任何人都可以注册您的组织（即使他们收到了其他人的链接），因此请确保与值得信任的人共享。";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "保存到 Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "保存到 Jetpack";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "保存为草稿";
@@ -9842,6 +9882,102 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "选择“站点意图”";
 
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title" = "由 Jetpack 提供支持";
+
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "试用新版 Jetpack 应用程序";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "新的 Jetpack 应用程序具有“统计信息”、“阅读器”、“通知”等功能，让您的 WordPress 变得更好。";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "安装 Jetpack 的 WordPress 性能更优";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "切换到新版 Jetpack 应用";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "请访问 jetpack.com 以了解详情";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "继续以使用通知功能";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切换到 Jetpack 应用，以在设备上接收实时通知。";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "使用 Jetpack 应用获取通知";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "切换到 Jetpack 应用，使用阅读器来查找、关注和点赞所有您喜欢的站点和文章。";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "借助 Jetpack 应用以关注任何站点状况";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack 可提供统计数据、通知等，帮助您创建和扩展理想中的 WordPress 站点。";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "切换到 Jetpack 应用，通过统计数据和数据分析查看站点的流量增长情况。";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "使用新版 Jetpack 应用获取统计数据";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack 可提供统计数据、通知等，帮助您创建和扩展理想中的 WordPress 站点。\n\nWordPress 应用不再支持创建新站点。";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "继续以使用阅读器功能";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "继续，不使用 Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "试用新版 Jetpack 应用";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "使用 Jetpack 应用创建新的 WordPress 站点";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "继续以使用统计数据功能";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "添加作者";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "构建站点";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "查看通知";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "在 Facebook 上共享";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "修复安全问题";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "发表图片";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "回复评论";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "恢复备份";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "搜索插件";
+
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "更新插件";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "观看统计数据";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "撰写博客";
+
 /* Later today */
 "later today" = "稍后再说";
 
@@ -9850,6 +9986,78 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "忽略";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "忽略";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "忽略";
+
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "似乎您仍然安装了 WordPress 应用。 我们建议您删除 WordPress 应用以避免发生数据冲突。";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "知道了";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "需要帮助？";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "您不再需要 WordPress 应用";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "完成";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "请删除 WordPress 应用以避免发生数据冲突。";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "删除 WordPress 应用";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "我们已转移您的所有数据和设置。 一切都完好如初。";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "感谢您切换至 Jetpack！";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "稍后再决定";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "出现警报时，点击“允许”可继续接收所有 WordPress 通知。";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "允许";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "您将收到所有相同的通知，但现在这些通知来自 Jetpack 应用程序。";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "我们将禁用 WordPress 应用的通知。";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "允许通知，持续关注您的站点";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "您似乎即将从 WordPress 应用程序转移过来。";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "我们找到了您的站点。 继续转移您的所有数据并自动登录至 Jetpack。";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "我们找到了您的站点。 继续转移您的所有数据并自动登录至 Jetpack。";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "欢迎使用 Jetpack！";
+
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "忽略";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "忽略";
 
 /* Word separating the current index from the total amount. I.e.: 7 of 9 */
 "of" = "\/";
@@ -9862,6 +10070,81 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "忽略";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "移除";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "重试";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "忽略";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "点击“%@”，然后返回您的网页浏览器以继续。";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "返回";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "忽略";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "知道了";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "在向此文章添加新评论时接收通知。";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "关注会话";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "有关 WordPress.com 的更多信息";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "更多来自 %1$@ 的文章";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "更多";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "在 Safari 中打开";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "共享";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新建";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "忽略";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "移除";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "媒体选项";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "重试";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "忽略";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "糟糕，共享时出错。 您可以重试，这可能只是一个小问题。";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "共享错误";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "评论数";
@@ -9886,6 +10169,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header title indicating which Stats Insights cards the user currently has disabled. */
 "stats.insights.management.inactiveCards" = "非活跃的卡片";
+
+/* Prompt displayed on the Stats Insights management screen telling the user that all Stats cards are enabled. */
+"stats.insights.management.noCardsPrompt" = "没有剩余未启用的卡";
 
 /* Title of button to cancel an alert and take no action. */
 "stats.insights.management.savePrompt.cancelButton" = "取消";
@@ -9914,6 +10200,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
 
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "忽略";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "此会话中";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "站点成员";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "即将删除以下项目：";
 
@@ -9938,6 +10233,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "访问我们的文档页面";
 
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "忽略";
+
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最受欢迎的文章";
 
@@ -9952,6 +10250,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the unconfigured view in all time widget */
 "widget.alltime.unconfigured.view.title" = "登录WordPress以查看全部时间统计数据。";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "登录 Jetpack，查看所有时间的统计信息。";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "登录 Jetpack，查看本周的统计信息。";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
 
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "在您的WordPress网站上了解本周活动更新。";
@@ -10013,14 +10320,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog wordpress, 站点, 博客";
 
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "请删除 WordPress 应用";
+
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "您的站点";
 
 /* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
 "{G} Log in with Google." = "{G} 使用 Google 登录。";
-
-/* About View's Footer Text. The variable is the current year */
-"© %ld Automattic, Inc." = "© %ld Automattic, Inc.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "•域";
