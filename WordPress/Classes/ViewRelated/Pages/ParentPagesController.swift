@@ -1,8 +1,9 @@
 import Foundation
 import CoreData
 
-/// Provides an API to access the current parent of a page, and list of parent pages available for editing.
+/// Pages can have a parent and children. Given "Page A", all pages are eligible to become "Page A"'s parent except "Page A"'s children pages.
 ///
+/// This class doesn't change a page's parent, rather it provides an API to access a page's eligible parents.
 @objc class ParentPagesController: NSObject {
 
     // MARK: - Dependencies
@@ -25,8 +26,7 @@ import CoreData
 
     // MARK: - Fetching Parent Posts
 
-    /// Returns the proviced page's parent.
-    ///
+    /// Returns the page's parent.
     @objc func selectedParent(forPage page: Page) -> Page? {
         guard let page = pages.first(where: { $0.postID == page.parentID }) else { return nil }
         return page
@@ -35,7 +35,6 @@ import CoreData
     /// Returns a list of pages that can be selected as a parent for the provided page.
     /// - Parameter page: The child page that's changing their parent.
     /// - Returns: List of pages eligible to become a parent.
-    ///
     @objc func availableParentsForEditing(forPage page: Page) -> [Page] {
         guard let index = pages.firstIndex(of: page) else { return pages }
         return pages.remove(from: index)
@@ -43,8 +42,7 @@ import CoreData
 
     /// Refreshes the underlying pages.
     ///
-    /// Call this method whenever a new page is added, or existing one is updated.
-    ///
+    /// Call this method whenever a new page is added, or an existing one is updated.
     @objc func refreshPages() {
         do {
             let result = try self.managedObjectContext.fetch(fetchRequest(blog: blog))
@@ -65,5 +63,4 @@ import CoreData
         ])
         return fetchRequest
     }
-
 }
