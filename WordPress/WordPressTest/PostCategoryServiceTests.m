@@ -27,7 +27,7 @@
 
 @interface PostCategoryServiceTests : XCTestCase
 
-@property (nonatomic, strong) ContextManagerMock *manager;
+@property (nonatomic, strong) ContextManager *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostCategoryServiceForStubbing *service;
 
@@ -39,7 +39,7 @@
 {
     [super setUp];
 
-    self.manager = [ContextManagerMock new];
+    self.manager = [ContextManager forTesting];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
 
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:self.manager.mainContext];

@@ -142,7 +142,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     func testSaveDerivedContextWithChangesInMainContext() throws {
-        let contextManager = ContextManagerMock()
+        let contextManager = ContextManager.forTesting()
         let derivedContext = contextManager.newDerivedContext()
 
         derivedContext.perform {
@@ -179,15 +179,14 @@ class ContextManagerTests: XCTestCase {
         // It's not great to be accessing global state here, but ContextManager accesses this
         // feature flag under the hood and injecting it is out of scope at this point in time.
         if FeatureFlag.newCoreDataContext.enabled == false {
-            // ContextManagerMock subclasses ContextManager, which uses LegacyContextFactory unless
-            // the newCoreDataContext feature flag is on.
+            // ContextManager uses LegacyContextFactory unless the newCoreDataContext feature flag is on.
             XCTExpectFailure("Known issue of `LegacyContextFactory`: the `mainContext` is saved along with the `ContextManager.save` functions")
         }
         expect(try findFirstUser()?.username) == "First User"
     }
 
     func testSaveUsingBlock() async {
-        let contextManager = ContextManagerMock()
+        let contextManager = ContextManager.forTesting()
         let numberOfAccounts: () -> Int = {
             contextManager.mainContext.countObjects(ofType: WPAccount.self)
         }
@@ -233,7 +232,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     func testSaveUsingBlockWithNestedCalls() {
-        let contextManager = ContextManagerMock()
+        let contextManager = ContextManager.forTesting()
         let accounts: () -> Set<String> = {
             let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
             return Set(all.map { $0.username! })

@@ -12,7 +12,7 @@
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) id blogServiceMock;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) ContextManagerMock *coreDataStack;
+@property (nonatomic, strong) ContextManager *coreDataStack;
 
 @end
 
@@ -22,7 +22,7 @@
 {
     [super setUp];
 
-    self.coreDataStack = [[ContextManagerMock alloc] init];
+    self.coreDataStack = [ContextManager forTesting];
 
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:[self.coreDataStack mainContext]];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];

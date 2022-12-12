@@ -4,8 +4,8 @@ import XCTest
 /// from this class to use the `CoreDataStack` mock instance in your test case.
 class CoreDataTestCase: XCTestCase {
 
-    private(set) lazy var contextManager: ContextManagerMock = {
-        ContextManagerMock()
+    private(set) lazy var contextManager: ContextManager = {
+        ContextManager.forTesting()
     }()
 
     var mainContext: NSManagedObjectContext {

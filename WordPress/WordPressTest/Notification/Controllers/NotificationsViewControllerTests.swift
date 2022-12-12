@@ -4,11 +4,11 @@ import XCTest
 final class NotificationsViewControllerTests: XCTestCase {
 
     private var controller: NotificationsViewController!
-    private var contextManager: ContextManagerMock!
+    private var contextManager: ContextManager!
     private var utility: NotificationUtility!
 
     override func setUpWithError() throws {
-        contextManager = ContextManagerMock()
+        contextManager = ContextManager.forTesting()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         utility = NotificationUtility(coreDataStack: contextManager)
         controller = NotificationsViewController.loadFromStoryboard()
