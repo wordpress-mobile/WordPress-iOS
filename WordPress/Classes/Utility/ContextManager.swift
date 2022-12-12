@@ -107,6 +107,12 @@ private extension ContextManager {
             }
         }
 
+        /// Ensure that the `context`'s concurrency type is not `confinementConcurrencyType`, since it will crash if `perform` or `performAndWait` is called.
+        guard context.concurrencyType == .mainQueueConcurrencyType || context.concurrencyType == .privateQueueConcurrencyType else {
+            block()
+            return
+        }
+
         if wait {
             context.performAndWait(block)
         } else {
