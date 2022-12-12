@@ -9,7 +9,7 @@
 @end
 
 @interface BlogSiteVisibilityHelperTest ()
-@property (nonatomic, strong) ContextManagerMock *coreDataStack;
+@property (nonatomic, strong) ContextManager *coreDataStack;
 @end
 
 @implementation BlogSiteVisibilityHelperTest
@@ -18,7 +18,7 @@
 {
     [super setUp];
     
-    self.coreDataStack = [ContextManagerMock new];
+    self.coreDataStack = [ContextManager forTesting];
 }
 
 - (void)tearDown

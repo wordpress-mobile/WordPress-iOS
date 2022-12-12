@@ -54,7 +54,7 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let schedule = BloggingRemindersScheduler.Schedule.weekdays(days)
         let store: BloggingRemindersStore
 
-        let contextManager = ContextManagerMock()
+        let contextManager = ContextManager.forTesting()
         let context = contextManager.mainContext
         let blog = BlogBuilder(context).build()
 
@@ -93,7 +93,7 @@ class BloggingRemindersSchedulerTests: XCTestCase {
         let cancelExpectation = expectation(description: "The notification is cancelled")
         cancelExpectation.expectedFulfillmentCount = days.count
 
-        let contextManager = ContextManagerMock()
+        let contextManager = ContextManager.forTesting()
         let context = contextManager.mainContext
         let blog = BlogBuilder(context).build()
 

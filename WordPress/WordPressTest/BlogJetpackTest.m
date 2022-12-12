@@ -17,15 +17,14 @@
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) ContextManagerMock *testContextManager;
+@property (nonatomic, strong) ContextManager *testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
-    self.testContextManager = [[ContextManagerMock alloc] init];
-    [self.testContextManager useAsSharedInstanceUntilTestFinished:self];
+    self.testContextManager = [ContextManager forTesting];
 
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];
