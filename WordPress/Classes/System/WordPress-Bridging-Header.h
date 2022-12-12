@@ -21,7 +21,7 @@
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
 #import "Constants.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 

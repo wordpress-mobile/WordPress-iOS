@@ -1,6 +1,6 @@
 #import "WPAppAnalytics.h"
 
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"

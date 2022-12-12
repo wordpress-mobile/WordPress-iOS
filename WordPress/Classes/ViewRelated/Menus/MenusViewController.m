@@ -9,7 +9,7 @@
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "Menu+ViewDesign.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>

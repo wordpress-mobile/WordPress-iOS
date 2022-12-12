@@ -1,7 +1,7 @@
 #import "ReaderCommentsViewController.h"
 
 #import "CommentService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "UIView+Subviews.h"

@@ -5,7 +5,7 @@
 #import "WordPressTest-Swift.h"
 
 @interface BlogTimeZoneTests : XCTestCase
-@property (nonatomic, strong) ContextManager *coreDataStack;
+@property (nonatomic, strong) id<CoreDataStack> coreDataStack;
 @property (nonatomic, strong) Blog *blog;
 @end
 
@@ -15,7 +15,7 @@
 {
     [super setUp];
 
-    self.coreDataStack = [ContextManager forTesting];
+    self.coreDataStack = [self coreDataStackForTesting];
 
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext: self.coreDataStack.mainContext];
     WPAccount *account = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];

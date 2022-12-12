@@ -3,7 +3,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "CommentsViewController.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"

@@ -55,7 +55,7 @@ private extension NSExceptionName {
     static let coreDataSaveDerivedException = NSExceptionName("Unresolved Core Data save error (Derived Context)")
 }
 
-extension ManagedObjectContextFactory {
+extension ContextManager {
 
     func internalSave(_ context: NSManagedObjectContext) {
         guard context.hasChanges else {
@@ -78,7 +78,7 @@ extension ManagedObjectContextFactory {
 
 }
 
-private extension ManagedObjectContextFactory {
+private extension ContextManager {
 
     func handleSaveError(_ error: NSError, in context: NSManagedObjectContext) {
         let isMainContext = context == mainContext
