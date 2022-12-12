@@ -319,15 +319,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 }
             }
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
-            let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
-            let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
+            let status = insightsStore.followersTotalsStatus
+            let type: InsightType = .followersTotals
             return insightsImmuTable(for: (type, status)) {
                 var rows = [ImmuTableRow]()
                 rows.append(TotalInsightStatsRow(dataRow: createFollowerTotalInsightsRow(), statSection: .insightsFollowerTotals, siteStatsInsightsDelegate: nil))
 
-                let dotComFollowersCount = insightsStore.getAllDotComFollowers()?.dotComFollowersCount ?? 0
-                let emailFollowersCount = insightsStore.getAllEmailFollowers()?.emailFollowersCount ?? 0
+                let dotComFollowersCount = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
+                let emailFollowersCount = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
                 let publicizeCount = insightsStore.getPublicizeCount()
+                let totalFollowers = insightsStore.getTotalFollowerCount()
+                let totalFollowersCountManual = dotComFollowersCount + emailFollowersCount + publicizeCount
 
                 if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
                     let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
@@ -527,8 +529,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 forceRefresh: forceRefresh))
     }
 
-    func refreshFollowers() {
-        ActionDispatcher.dispatch(InsightAction.refreshFollowers)
+    func refreshFollowers(forceRefresh: Bool = true) {
+        ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
     }
 
     func refreshComments() {
@@ -634,7 +636,7 @@ private extension SiteStatsInsightsDetailsViewModel {
     func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
-            return .allFollowers
+            return .insights // use .insights here which is same as top level insights screen
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
             return .allComments
         case .insightsTagsAndCategories:
@@ -692,11 +694,11 @@ private extension SiteStatsInsightsDetailsViewModel {
 
         switch followerType {
         case .insightsFollowersWordPress:
-            followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
-            totalFollowers = insightsStore.getAllDotComFollowers()?.dotComFollowersCount
+            followers = insightsStore.getDotComFollowers()?.topDotComFollowers ?? []
+            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
-            followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
-            totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
+            followers = insightsStore.getEmailFollowers()?.topEmailFollowers ?? []
+            totalFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount
         default:
             break
         }

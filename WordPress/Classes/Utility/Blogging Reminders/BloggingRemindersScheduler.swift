@@ -158,6 +158,17 @@ class BloggingRemindersScheduler {
         }
     }
 
+    /// Deletes backup reminders if it exists.
+    ///
+    static func deleteBackupReminders() {
+        guard FeatureFlag.contentMigration.enabled,
+              let sharedFileURL = sharedDataFileURL() else {
+            return
+        }
+
+        try? FileManager.default.removeItem(at: sharedFileURL)
+    }
+
     private static func copyStoreToSharedFile() {
         guard let store = try? defaultStore(),
               let sharedFileUrl = sharedDataFileURL() else {

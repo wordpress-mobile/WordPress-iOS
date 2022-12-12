@@ -1699,6 +1699,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:self.blog];
     [[WordPressAppDelegate shared] trackLogoutIfNeeded];
+
+    if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
+        [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

@@ -105,6 +105,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     [super prepareForDeletion];
 
+    // delete stored password in the keychain for self-hosted sites.
+    if ([self.username length] > 0 && [self.xmlrpc length] > 0) {
+        self.password = nil;
+    }
+
     [_xmlrpcApi invalidateAndCancelTasks];
     [_wordPressOrgRestApi invalidateAndCancelTasks];
 }

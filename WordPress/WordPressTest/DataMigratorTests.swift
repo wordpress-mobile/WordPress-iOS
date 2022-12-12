@@ -92,6 +92,29 @@ class DataMigratorTests: XCTestCase {
         wait(for: [expect], timeout: 1)
     }
 
+    // MARK: Exported data deletion tests
+
+    func test_deleteExportedData_shouldMarkDataNotReadyToMigrate() {
+        // Given
+        sharedUserDefaults.set(true, forKey: Constants.readyToMigrateKey)
+
+        // When
+        migrator.deleteExportedData()
+
+        // Then
+        XCTAssertFalse(sharedUserDefaults.bool(forKey: Constants.readyToMigrateKey))
+    }
+
+    func test_deleteExportedData_shouldRemoveExportedDefaults() {
+        // Given
+        sharedUserDefaults.set(["test": 1], forKey: Constants.defaultsWrapperKey)
+
+        // When
+        migrator.deleteExportedData()
+
+        // Then
+        XCTAssertNil(sharedUserDefaults.object(forKey: Constants.defaultsWrapperKey))
+    }
 }
 
 // MARK: - CoreDataStackMock
@@ -158,6 +181,7 @@ private extension DataMigratorTests {
 
     enum Constants {
         static let readyToMigrateKey = "wp_data_migration_ready"
+        static let defaultsWrapperKey = "defaults_staging_dictionary"
     }
 
     func createInMemoryContext() throws -> NSManagedObjectContext {

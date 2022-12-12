@@ -293,6 +293,49 @@ class PostServiceWPComTests: CoreDataTestCase {
         wait(for: [expectation], timeout: timeout)
     }
 
+    /// The default `Post.authorID` value (currently 0 in the Core Data model) should
+    /// be `nil` for `RemotePost`s.
+    func testRemotePostAuthorIDNilForDefaultPostAuthorID() {
+        // Given
+        let post = PostBuilder(mainContext).build()
+        try! mainContext.save()
+
+        // When
+        let remotePost = self.service.remotePost(with: post)
+
+        // Then
+        XCTAssertNil(remotePost.authorID)
+    }
+
+    /// `Post.authorID`s set to `nil` should be `nil` for `RemotePost`s.
+    func testRemotePostAuthorIDNilForNilPostAuthorID() {
+        // Given
+        let post = PostBuilder(mainContext).build()
+        post.authorID = nil
+        try! mainContext.save()
+
+        // When
+        let remotePost = self.service.remotePost(with: post)
+
+        // Then
+        XCTAssertNil(remotePost.authorID)
+    }
+
+    /// `Post.authorID`s set to a valid value should be reflected in `RemotePost`s.
+    func testRemotePostAuthorSetForValidPostAuthorID() {
+        // Given
+        let expectedAuthorID: NSNumber = 1
+        let post = PostBuilder(mainContext).build()
+        post.authorID = expectedAuthorID
+        try! mainContext.save()
+
+        // When
+        let remotePost = self.service.remotePost(with: post)
+
+        // Then
+        XCTAssertEqual(remotePost.authorID, expectedAuthorID)
+    }
+
     private func createRemotePost(_ status: BasePost.Status = .draft) -> RemotePost {
         let remotePost = RemotePost(siteID: 1,
                                     status: status.rawValue,
