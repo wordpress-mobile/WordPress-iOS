@@ -5205,7 +5205,7 @@
 		FE25C235271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */; };
-		FE320CC5294705990046899B /* ContainerContextFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320CC4294705990046899B /* ContainerContextFactoryTests.swift */; };
+		FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320CC4294705990046899B /* ReaderPostBackupTests.swift */; };
 		FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */; };
 		FE32EFFF275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
 		FE32F000275914390040BE67 /* MenuSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */; };
@@ -8803,7 +8803,7 @@
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
 		FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsServiceTests.swift; sourceTree = "<group>"; };
-		FE320CC4294705990046899B /* ContainerContextFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerContextFactoryTests.swift; sourceTree = "<group>"; };
+		FE320CC4294705990046899B /* ReaderPostBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostBackupTests.swift; sourceTree = "<group>"; };
 		FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinatorTests.swift; sourceTree = "<group>"; };
 		FE32E7F32846A68800744D80 /* WordPress 142.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 142.xcdatamodel"; sourceTree = "<group>"; };
 		FE32EFFE275914390040BE67 /* MenuSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSheetViewController.swift; sourceTree = "<group>"; };
@@ -14558,7 +14558,7 @@
 				93E9050319E6F242005513C9 /* ContextManagerTests.swift */,
 				B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */,
 				931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */,
-				FE320CC4294705990046899B /* ContainerContextFactoryTests.swift */,
+				FE320CC4294705990046899B /* ReaderPostBackupTests.swift */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -22307,7 +22307,7 @@
 				C738CB1128626606001BE107 /* QRLoginVerifyCoordinatorTests.swift in Sources */,
 				FF0B2567237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift in Sources */,
 				FF1B11E7238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift in Sources */,
-				FE320CC5294705990046899B /* ContainerContextFactoryTests.swift in Sources */,
+				FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */,
 				F4D9AF51288AE23500803D40 /* SuggestionTableViewTests.swift in Sources */,
 				8BC12F72231FEBA1004DDA72 /* PostCoordinatorTests.swift in Sources */,
 				C3C2F84628AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift in Sources */,
