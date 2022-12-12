@@ -1524,31 +1524,10 @@ private extension StatsPeriodStore {
             return
         }
 
-        guard let service = statsRemote() else {
-            return
-        }
+        setViewsAndVisitorsFetchingStatus(.loading)
 
-        scheduler.debounce { [weak self] in
-            self?.setViewsAndVisitorsFetchingStatus(.loading)
-
-            DDLogInfo("Stats Period: Cancel all operations")
-
-            self?.operationQueue.cancelAllOperations()
-
-            let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
-                if error != nil {
-                    DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
-                }
-
-                DDLogInfo("Stats Period: Finished fetching summary.")
-
-                DispatchQueue.main.async {
-                    self?.receivedSummary(summary, error)
-                    self?.fetchViewsAndVisitorsDetailsData(date: date)
-                }
-            }
-
-            self?.operationQueue.addOperation(chartOperation)
+        fetchSummary(date: date) { [weak self] in
+            self?.fetchViewsAndVisitorsDetailsData(date: date)
         }
     }
 
@@ -1639,31 +1618,10 @@ private extension StatsPeriodStore {
             return
         }
 
-        guard let service = statsRemote() else {
-            return
-        }
+        setTotalLikesDetailsFetchingStatus(.loading)
 
-        scheduler.debounce { [weak self] in
-            self?.setTotalLikesDetailsFetchingStatus(.loading)
-
-            DDLogInfo("Stats Period: Cancel all operations")
-
-            self?.operationQueue.cancelAllOperations()
-
-            let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
-                if error != nil {
-                    DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
-                }
-
-                DDLogInfo("Stats Period: Finished fetching summary.")
-
-                DispatchQueue.main.async {
-                    self?.receivedSummary(summary, error)
-                    self?.fetchTotalLikesDetailsData(date: date)
-                }
-            }
-
-            self?.operationQueue.addOperation(chartOperation)
+        fetchSummary(date: date) { [weak self] in
+            self?.fetchTotalLikesDetailsData(date: date)
         }
     }
 
@@ -1704,6 +1662,35 @@ private extension StatsPeriodStore {
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
             DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
+        }
+    }
+}
+
+private extension StatsPeriodStore {
+    func fetchSummary(date: Date, _ completion: @escaping () -> ()) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        scheduler.debounce { [weak self] in
+            DDLogInfo("Stats Period: Cancel all operations")
+
+            self?.operationQueue.cancelAllOperations()
+
+            let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching summary.")
+
+                DispatchQueue.main.async {
+                    self?.receivedSummary(summary, error)
+                    completion()
+                }
+            }
+
+            self?.operationQueue.addOperation(chartOperation)
         }
     }
 }
