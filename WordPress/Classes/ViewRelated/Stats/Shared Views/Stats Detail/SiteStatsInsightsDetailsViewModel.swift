@@ -356,19 +356,24 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: periodStore.summaryStatus) { status in
+            return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: statSection, siteStatsInsightsDelegate: nil))
+                if periodStore.getSummary() != nil {
+                    rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: statSection, siteStatsInsightsDelegate: nil))
+                }
 
-                rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                    dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                    dataRows: postsAndPagesRowData(),
-                                                    statSection: StatSection.periodPostsAndPages,
-                                                    siteStatsPeriodDelegate: nil,
-                                                    siteStatsReferrerDelegate: nil,
-                                                    siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
-                                                    siteStatsDetailsDelegate: detailsDelegate))
+                if periodStore.getTopPostsAndPages() != nil {
+                    rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                        dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                                                        dataRows: postsAndPagesRowData(),
+                                                        statSection: StatSection.periodPostsAndPages,
+                                                        siteStatsPeriodDelegate: nil,
+                                                        siteStatsReferrerDelegate: nil,
+                                                        siteStatsInsightsDetailsDelegate: insightsDetailsDelegate,
+                                                        siteStatsDetailsDelegate: detailsDelegate))
+                }
+
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
