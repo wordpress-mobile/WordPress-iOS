@@ -48,6 +48,7 @@ enum PeriodAction: Action {
 
     // Insight Details Period
     case refreshViewsAndVisitors(date: Date)
+    case refreshTotalLikes(date: Date)
 }
 
 enum PeriodQuery {
@@ -250,6 +251,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshViewsAndVisitors(let date):
             refreshViewsAndVisitorsData(date: date)
+        case .refreshTotalLikes(let date):
+            refreshTotalLikesData(date: date)
         }
     }
 
@@ -592,6 +595,10 @@ private extension StatsPeriodStore {
 
     func refreshViewsAndVisitorsData(date: Date) {
         fetchViewsAndVisitorsData(date: date)
+    }
+
+    func refreshTotalLikesData(date: Date) {
+        fetchTotalLikesData(date: date)
     }
 
     func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
@@ -1596,6 +1603,106 @@ private extension StatsPeriodStore {
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topReferrers = referrers.flatMap { StatsTopReferrersTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
+            DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
+        }
+    }
+}
+
+// MARK: - Data Total Likes weekly details
+/// We require to fetch summary for .day period and post and pages for .week period for insights
+/// Since StatsPeriodStore is designed to function with one stats period at one time, we require separate methods
+/// that explicitly set "week" or "day" period when fetching particular data
+
+private extension StatsPeriodStore {
+    func shouldFetchTotalLikes() -> Bool {
+        return [state.summaryStatus,
+                state.topPostsAndPagesStatus].first { $0 == .loading } == nil
+    }
+
+    func setTotalLikesDetailsFetchingStatus(_ status: StoreFetchingStatus) {
+        if FeatureFlag.statsPerformanceImprovements.enabled {
+            transaction { state in
+                state.summaryStatus = status
+                state.topPostsAndPagesStatus = status
+            }
+        } else {
+            state.summaryStatus = status
+            state.topPostsAndPagesStatus = status
+        }
+    }
+
+    func fetchTotalLikesData(date: Date) {
+        loadTotalLikesCache(date: date)
+
+        guard shouldFetchTotalLikes() else {
+            DDLogInfo("Stats Views and Visitors details refresh triggered while one was in progress.")
+            return
+        }
+
+        guard let service = statsRemote() else {
+            return
+        }
+
+        scheduler.debounce { [weak self] in
+            self?.setTotalLikesDetailsFetchingStatus(.loading)
+
+            DDLogInfo("Stats Period: Cancel all operations")
+
+            self?.operationQueue.cancelAllOperations()
+
+            let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+                if error != nil {
+                    DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
+                }
+
+                DDLogInfo("Stats Period: Finished fetching summary.")
+
+                DispatchQueue.main.async {
+                    self?.receivedSummary(summary, error)
+                    self?.fetchTotalLikesDetailsData(date: date)
+                }
+            }
+
+            self?.operationQueue.addOperation(chartOperation)
+        }
+    }
+
+    func fetchTotalLikesDetailsData(date: Date) {
+        guard let service = statsRemote() else {
+            return
+        }
+
+        let topPostsOperation = PeriodOperation(service: service, for: .week, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching posts.")
+
+            DispatchQueue.main.async {
+                self?.receivedPostsAndPages(posts, error)
+            }
+        }
+
+        operationQueue.addOperations([topPostsOperation],
+                                     waitUntilFinished: false)
+    }
+
+    private func loadTotalLikesCache(date: Date) {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                return
+        }
+
+        let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: .day), date: date)
+        let posts = StatsRecord.timeIntervalData(for: blog, type: .topViewedPost, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
+
+        DDLogInfo("Stats Period: Finished loading Period data from Core Data.")
+
+        transaction { state in
+            state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
             DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
         }
     }

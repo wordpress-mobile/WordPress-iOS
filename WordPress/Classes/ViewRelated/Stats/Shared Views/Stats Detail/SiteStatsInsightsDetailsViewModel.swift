@@ -94,8 +94,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                     let date = selectedDate ?? StatsDataHelper.currentDateForSite()
 
-                    refreshPeriodOverviewData(date: date, period: StatsPeriodUnit.day, forceRefresh: false)
-                    refreshPostsAndPages()
+                    refreshTotalLikesData(date: date)
                 }
             case .insightsCommentsTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
@@ -532,6 +531,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     func refreshViewsAndVisitorsData(date: Date) {
         ActionDispatcher.dispatch(PeriodAction.refreshViewsAndVisitors(date: date))
+    }
+
+    func refreshTotalLikesData(date: Date) {
+        ActionDispatcher.dispatch(PeriodAction.refreshTotalLikes(date: date))
     }
 
     func refreshComments() {
