@@ -1,18 +1,22 @@
 import WordPressKit
+import WordPressFlux
 import XCTest
 
 @testable import WordPress
 
 class StatsPeriodStoreTests: XCTestCase {
+    private var dispatcher: ActionDispatcher!
     private var sut: StatsPeriodStore!
 
     override func setUp() {
         super.setUp()
-        sut = StatsPeriodStore()
+        dispatcher = ActionDispatcher()
+        sut = StatsPeriodStore(dispatcher: dispatcher)
         sut.statsServiceRemote = StatsServiceRemoteV2Mock(wordPressComRestApi: WordPressComRestApi(oAuthToken: nil, userAgent: nil), siteID: 123, siteTimezone: .autoupdatingCurrent)
     }
 
     override func tearDown() {
+        dispatcher = nil
         sut = nil
         super.tearDown()
     }
@@ -50,6 +54,21 @@ class StatsPeriodStoreTests: XCTestCase {
 
         XCTAssertFalse(sut.state.topReferrers!.referrers[0].isSpam)
         XCTAssertFalse(sut.state.topReferrers!.referrers[1].isSpam)
+    }
+
+    func testRefreshViewsAndVisitorsLoadingState() {
+        dispatcher.dispatch(PeriodAction.refreshViewsAndVisitors(date: Date()))
+
+        XCTAssertTrue(sut.state.summaryStatus == .loading)
+        XCTAssertTrue(sut.state.topCountriesStatus == .loading)
+        XCTAssertTrue(sut.state.topReferrersStatus == .loading)
+    }
+
+    func testRefreshTotalLikesLoadingState() {
+        dispatcher.dispatch(PeriodAction.refreshTotalLikes(date: Date()))
+
+        XCTAssertTrue(sut.state.summaryStatus == .loading)
+        XCTAssertTrue(sut.state.topPostsAndPagesStatus == .loading)
     }
 }
 

@@ -192,8 +192,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
     weak var delegate: StatsPeriodStoreDelegate?
 
-    init() {
-        super.init(initialState: PeriodStoreState())
+    override init(initialState: PeriodStoreState = PeriodStoreState(), dispatcher: ActionDispatcher = .global) {
+        super.init(initialState: initialState, dispatcher: dispatcher)
     }
 
     override func onDispatch(_ action: Action) {
