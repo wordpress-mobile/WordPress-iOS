@@ -3,7 +3,7 @@
 
 @interface WPAccount_ObjCLookupTests : XCTestCase
 
-@property(strong, nonatomic) ContextManagerMock *contextManager;
+@property(strong, nonatomic) ContextManager *contextManager;
 
 @end
 
@@ -11,7 +11,7 @@
 
 - (void) setUp {
     [super setUp];
-    _contextManager = [ContextManagerMock new];
+    _contextManager = [ContextManager forTesting];
 }
 
 - (void) testLookupDefaultWordPressComAccountReturnsNilWhenNoAccountIsSet {

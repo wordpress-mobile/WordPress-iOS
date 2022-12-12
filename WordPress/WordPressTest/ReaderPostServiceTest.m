@@ -34,7 +34,7 @@
 }
 
 - (void)testDeletePostsWithoutATopic {
-    id<CoreDataStack> coreDataStack = [ContextManagerMock new];
+    id<CoreDataStack> coreDataStack = [ContextManager forTesting];
     NSManagedObjectContext *context = [coreDataStack mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 

@@ -709,6 +709,11 @@ static NSInteger HideSearchMinSites = 3;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:blog];
+
+    if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
+        [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
+    }
+
     [self.tableView reloadData];
 }
 

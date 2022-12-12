@@ -12,7 +12,7 @@
 @end
 
 @interface MenusServiceTests : XCTestCase
-@property (nonatomic, strong) ContextManagerMock *manager;
+@property (nonatomic, strong) ContextManager *manager;
 @end
 
 @implementation MenusServiceTests
@@ -20,7 +20,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.manager = [ContextManagerMock new];
+    self.manager = [ContextManager forTesting];
 }
 
 - (void)tearDown

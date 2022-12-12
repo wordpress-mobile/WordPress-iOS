@@ -2,13 +2,13 @@
 #import "WordPressTest-Swift.h"
 
 @interface Blog_ObjcTests : XCTestCase
-@property (strong, nonatomic) ContextManagerMock *contextManager;
+@property (strong, nonatomic) ContextManager *contextManager;
 @end
 
 @implementation Blog_ObjcTests
 
 - (void)setUp {
-    self.contextManager = [ContextManagerMock new];
+    self.contextManager = [ContextManager forTesting];
     [super setUp];
 }
 
