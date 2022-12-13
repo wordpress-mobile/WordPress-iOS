@@ -50,7 +50,9 @@ public class ContextManager: NSObject, CoreDataStack {
     }
 
     public func newDerivedContext() -> NSManagedObjectContext {
-        persistentContainer.newBackgroundContext()
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
     }
 
     @objc(performAndSaveUsingBlock:)
@@ -65,7 +67,8 @@ public class ContextManager: NSObject, CoreDataStack {
 
     @objc(performAndSaveUsingBlock:completion:)
     public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void) {
-        persistentContainer.performBackgroundTask { context in
+        let context = newDerivedContext()
+        context.perform {
             block(context)
 
             self.save(context, andWait: false, withCompletionBlock: completion)
