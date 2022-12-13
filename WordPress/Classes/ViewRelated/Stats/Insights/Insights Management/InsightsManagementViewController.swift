@@ -21,6 +21,10 @@ class InsightsManagementViewController: UITableViewController {
         }
     }
 
+    private var insightsInactive: [StatSection] {
+        InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+    }
+
     private var hasChanges: Bool {
         return insightsShown != originalInsightsShown
     }
@@ -250,7 +254,7 @@ private extension InsightsManagementViewController {
     }
 
     func inactiveCardsSection() -> ImmuTableSection {
-        let rows = InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+        let rows = insightsInactive
 
         guard rows.count > 0 else {
             return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [inactivePlaceholderRow])
@@ -310,6 +314,7 @@ private extension InsightsManagementViewController {
         }
 
         reloadViewModel()
+        selectToggledRowForAccessibility(for: statSection)
     }
 
     var placeholderRow: ImmuTableRow {
@@ -374,4 +379,14 @@ private extension InsightsManagementViewController {
         }
     }
 
+}
+
+private extension InsightsManagementViewController {
+    func selectToggledRowForAccessibility(for statSection: StatSection) {
+        if let shownIndex = insightsShown.firstIndex(of: statSection) {
+            UIAccessibility.post(notification: .screenChanged, argument: tableView.cellForRow(at: .init(item: shownIndex, section: 0)))
+        } else if let inactiveIndex = insightsInactive.firstIndex(of: statSection) {
+            UIAccessibility.post(notification: .screenChanged, argument: tableView.cellForRow(at: .init(item: inactiveIndex, section: 1)))
+        }
+    }
 }
