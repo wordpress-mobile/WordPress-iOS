@@ -422,7 +422,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         if FeatureFlag.statsNewInsights.enabled {
             switch statSection {
-            case .insightsViewsVisitors, .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
+            case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
                 segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
             default:
                 segueToDetails(statSection: statSection, selectedDate: selectedDate)
