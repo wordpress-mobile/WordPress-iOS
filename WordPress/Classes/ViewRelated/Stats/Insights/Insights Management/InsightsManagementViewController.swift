@@ -259,7 +259,7 @@ private extension InsightsManagementViewController {
         return ImmuTableSection(headerText: TextContent.inactiveCardsHeader,
                                 rows: rows.map {
                                     return AddInsightStatRow(title: $0.insightManagementTitle,
-                                                             enabled: true,
+                                                             enabled: false,
                                                              action: rowActionFor($0)) }
         )
     }
