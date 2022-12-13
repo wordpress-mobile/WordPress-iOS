@@ -159,7 +159,7 @@ private extension ContextManager {
                 return
             }
 
-            DDLogError("Error opening the database. \(error)\nDeleting the file and trying again");
+            DDLogError("Error opening the database. \(error)\nDeleting the file and trying again")
             startupEvent.add(error: error)
 
             // make a backup of the old database
