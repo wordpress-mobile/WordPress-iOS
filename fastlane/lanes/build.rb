@@ -278,7 +278,7 @@ platform :ios do
       app_name: 'WPiOS-One-Offs',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      destinations: 'All-users-of-WPiOS-One-Offs',
+      destinations: 'Collaborators',
       notify_testers: false
     )
 
