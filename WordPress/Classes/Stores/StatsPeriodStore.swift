@@ -516,6 +516,11 @@ private extension StatsPeriodStore {
                                       topVideos,
                                       topFileDownloads],
                                      waitUntilFinished: false)
+
+        operationQueue.addBarrierBlock { [weak self] in
+            DDLogInfo("Stats Period: Finished fetchAsyncData.")
+            self?.persistToCoreData()
+        }
     }
 
     func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
