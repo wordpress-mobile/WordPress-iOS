@@ -315,7 +315,7 @@ private extension InsightsManagementViewController {
             moveRowToInactive(at: index)
         } else if let inactiveIndex = insightsInactive.firstIndex(of: statSection) {
             insightsShown.append(statSection)
-            moveRowToActive(at: index)
+            moveRowToActive(at: inactiveIndex)
         }
     }
 
