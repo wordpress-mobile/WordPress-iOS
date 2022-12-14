@@ -466,6 +466,7 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>$(JP_SCHEME)</string>
 		<string>jetpacknotificationmigration</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
