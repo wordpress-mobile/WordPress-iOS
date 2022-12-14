@@ -79,10 +79,12 @@ class DonutChartView: UIView {
         titleLabel = UILabel()
         titleLabel.textAlignment = .center
         titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.adjustsFontForContentSizeCategory = true
 
         totalCountLabel = UILabel()
         totalCountLabel.textAlignment = .center
         totalCountLabel.font = .preferredFont(forTextStyle: .title1).bold()
+        totalCountLabel.adjustsFontForContentSizeCategory = true
 
         titleStackView = UIStackView(arrangedSubviews: [titleLabel, totalCountLabel])
 
@@ -98,6 +100,7 @@ class DonutChartView: UIView {
         legendStackView.translatesAutoresizingMaskIntoConstraints = false
         legendStackView.spacing = Constants.legendStackViewSpacing
         legendStackView.distribution = .equalSpacing
+        legendStackView.alignment = .center
 
         addSubview(legendStackView)
     }
@@ -252,6 +255,20 @@ class DonutChartView: UIView {
         }
     }
 
+    // MARK: - Dynamic Type
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            legendStackView.axis = .vertical
+            legendStackView.alignment = .leading
+        } else {
+            legendStackView.axis = .horizontal
+            legendStackView.alignment = .center
+        }
+    }
+
     // MARK: Helpers
 
     private func makeSegmentLayer(_ segment: Segment) -> CAShapeLayer {
@@ -320,22 +337,28 @@ private class LegendView: UIView {
     }
 
     private func configureSubviews() {
+        let indicatorContainer = UIView()
         let indicator = UIView()
         indicator.backgroundColor = segment.color
         indicator.layer.cornerRadius = 6.0
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicatorContainer.addSubview(indicator)
 
         let titleLabel = UILabel()
         titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.text = segment.title
 
-        let stackView = UIStackView(arrangedSubviews: [indicator, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [indicatorContainer, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 8.0
+        stackView.spacing = 16.0
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
             indicator.widthAnchor.constraint(equalToConstant: 12.0),
             indicator.heightAnchor.constraint(equalToConstant: 12.0),
+            indicator.centerXAnchor.constraint(equalTo: indicatorContainer.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: indicatorContainer.centerYAnchor),
 
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
