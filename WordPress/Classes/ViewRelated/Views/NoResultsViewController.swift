@@ -588,11 +588,11 @@ private extension NoResultsViewController {
             view.accessibilityLabel = titleLabel.text
             view.accessibilityTraits = .staticText
         } else {
-            view.accessibilityElements = [noResultsView!, actionButton!]
+            view.accessibilityElements = [labelStackView!, actionButton!]
 
-            noResultsView.isAccessibilityElement = true
-            noResultsView.accessibilityTraits = .staticText
-            noResultsView.accessibilityLabel = [
+            labelStackView.accessibilityTraits = .staticText
+            labelStackView.isAccessibilityElement = true
+            labelStackView.accessibilityLabel = [
                 titleLabel.text,
                 subtitleTextView.isHidden ? nil : subtitleTextView.attributedText.string
             ].compactMap { $0 }.joined(separator: ". ")

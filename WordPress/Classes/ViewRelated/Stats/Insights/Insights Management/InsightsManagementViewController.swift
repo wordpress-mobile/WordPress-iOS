@@ -21,6 +21,10 @@ class InsightsManagementViewController: UITableViewController {
         }
     }
 
+    private var insightsInactive: [StatSection] {
+        InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+    }
+
     private var hasChanges: Bool {
         return insightsShown != originalInsightsShown
     }
@@ -30,7 +34,9 @@ class InsightsManagementViewController: UITableViewController {
     private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped))
 
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        let handler = ImmuTableViewHandler(takeOver: self)
+        handler.automaticallyReloadTableView = false
+        return handler
     }()
 
     // MARK: - Init
@@ -214,6 +220,7 @@ private extension InsightsManagementViewController {
 
     func reloadViewModel() {
         tableHandler.viewModel = tableViewModel()
+        tableView.reloadData()
     }
 
     func tableViewModel() -> ImmuTable {
@@ -250,7 +257,7 @@ private extension InsightsManagementViewController {
     }
 
     func inactiveCardsSection() -> ImmuTableSection {
-        let rows = InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+        let rows = insightsInactive
 
         guard rows.count > 0 else {
             return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [inactivePlaceholderRow])
@@ -259,7 +266,7 @@ private extension InsightsManagementViewController {
         return ImmuTableSection(headerText: TextContent.inactiveCardsHeader,
                                 rows: rows.map {
                                     return AddInsightStatRow(title: $0.insightManagementTitle,
-                                                             enabled: true,
+                                                             enabled: false,
                                                              action: rowActionFor($0)) }
         )
     }
@@ -305,11 +312,67 @@ private extension InsightsManagementViewController {
     func toggleRow(for statSection: StatSection) {
         if let index = insightsShown.firstIndex(of: statSection) {
             insightsShown.remove(at: index)
-        } else {
+            moveRowToInactive(at: index, statSection: statSection)
+        } else if let inactiveIndex = insightsInactive.firstIndex(of: statSection) {
             insightsShown.append(statSection)
+            moveRowToActive(at: inactiveIndex, statSection: statSection)
+        }
+    }
+
+    // Animates the movement of a row from the inactive to active section, supports accessibility
+    func moveRowToActive(at index: Int, statSection: StatSection) {
+        tableHandler.viewModel = tableViewModel()
+
+        let origin = IndexPath(row: index, section: 1)
+        let row = insightsShown.firstIndex(of: statSection) ?? (insightsShown.count - 1)
+        let destination = IndexPath(row: row, section: 0)
+
+        tableView.performBatchUpdates {
+            tableView.moveRow(at: origin, to: destination)
+
+            /// Account for placeholder cell addition to inactive section
+            if insightsInactive.isEmpty {
+                tableView.insertRows(at: [.init(row: 0, section: 1)], with: .none)
+            }
+
+            /// Account for placeholder cell removal from active section
+            if insightsShown.count == 1 {
+                tableView.deleteRows(at: [.init(row: 0, section: 0)], with: .automatic)
+            }
         }
 
-        reloadViewModel()
+        /// Reload the data of the row to update the accessibility information
+        if let cell = tableView.cellForRow(at: destination), insightsShown.count > 0 {
+            tableHandler.viewModel.rowAtIndexPath(destination).configureCell(cell)
+        }
+    }
+
+    // Animates the movement of a row from the active to inactive section, supports accessibility
+    func moveRowToInactive(at index: Int, statSection: StatSection) {
+        tableHandler.viewModel = tableViewModel()
+
+        let origin = IndexPath(row: index, section: 0)
+        let row = insightsInactive.firstIndex(of: statSection) ?? 0
+        let destination = IndexPath(row: row, section: 1)
+
+        tableView.performBatchUpdates {
+            tableView.moveRow(at: origin, to: destination)
+
+            /// Account for placeholder cell addition to active section
+            if insightsShown.isEmpty {
+                tableView.insertRows(at: [.init(row: 0, section: 0)], with: .none)
+            }
+
+            /// Account for placeholder cell removal from inactive section
+            if insightsInactive.count == 1 {
+                tableView.deleteRows(at: [.init(row: 0, section: 1)], with: .automatic)
+            }
+        }
+
+        /// Reload the data of the row to update the accessibility information
+        if let cell = tableView.cellForRow(at: destination), insightsInactive.count > 0 {
+            tableHandler.viewModel.rowAtIndexPath(destination).configureCell(cell)
+        }
     }
 
     var placeholderRow: ImmuTableRow {
