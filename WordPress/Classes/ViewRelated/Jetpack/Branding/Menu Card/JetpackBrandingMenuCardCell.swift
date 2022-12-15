@@ -27,7 +27,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
             // assign an empty closure so the button appears.
             frameView.onEllipsisButtonTap = {}
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-//            frameView.ellipsisButton.menu = contextMenu
+            frameView.ellipsisButton.menu = contextMenu
         } else {
             // Show a fallback implementation using `MenuSheetViewController`.
             // iOS 13 doesn't support showing UIMenu programmatically.
@@ -173,6 +173,43 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 }
 
 private extension JetpackBrandingMenuCardCell {
+    
+    // MARK: Items
+    
+    // Defines the structure of the contextual menu items.
+    private var contextMenuItems: [MenuItem] {
+        return [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
+    }
+    
+    // MARK: Menu Creation
+    
+    @available(iOS 15.0, *)
+    private var contextMenu: UIMenu {
+        return .init(title: String(), options: .displayInline, children: [
+            // Use an uncached deferred element so we can track each time the menu is shown
+            UIDeferredMenuElement.uncached { [weak self] completion in
+                guard let self = self else {
+                    return
+                }
+                // TODO: Track menu shown
+                print("Tracked: contextual menu shown")
+                completion(self.contextMenuItems.map { $0.toAction })
+            }
+        ])
+    }
+    
+    // MARK: Actions
+    
+    private func remindMeLaterTapped() {
+        
+    }
+    
+    private func hideThisTapped() {
+        
+    }
+}
+
+private extension JetpackBrandingMenuCardCell {
 
     enum Metrics {
         // General
@@ -201,12 +238,66 @@ private extension JetpackBrandingMenuCardCell {
         static let animationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
         static let animationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
         static let analyticsSource = "jetpack_menu_card"
+        static let remindMeLaterSystemImageName = "alarm"
+        static let hideThisLaterSystemImageName = "eye.slash"
     }
 
     enum Strings {
         static let learnMoreButtonText = NSLocalizedString("jetpack.menuCard.learnMore",
                                                            value: "Learn more",
                                                            comment: "Title of a button that displays a blog post in a web view.")
+        static let remindMeLaterMenuItemTitle = NSLocalizedString("jetpack.menuCard.remindLater",
+                                                                  value: "Remind me later",
+                                                                  comment: "Menu item title to hide the card for now and show it later.")
+        static let hideCardMenuItemTitle = NSLocalizedString("jetpack.menuCard.hide",
+                                                                  value: "Hide this",
+                                                                  comment: "Menu item title to hide the card.")
+    }
+    
+    enum MenuItem {
+        case remindLater(_ handler: () -> Void)
+        case hide(_ handler: () -> Void)
+
+        var title: String {
+            switch self {
+            case .remindLater:
+                return Strings.remindMeLaterMenuItemTitle
+            case .hide:
+                return Strings.hideCardMenuItemTitle
+            }
+        }
+
+        var image: UIImage? {
+            switch self {
+            case .remindLater:
+                return .init(systemName: Constants.remindMeLaterSystemImageName)
+            case .hide:
+                return .init(systemName: Constants.hideThisLaterSystemImageName)
+            }
+        }
+
+        var toAction: UIAction {
+            switch self {
+            case .remindLater(let handler),
+                 .hide(let handler):
+                return UIAction(title: title, image: image, attributes: []) { _ in
+                    handler()
+                }
+            }
+        }
+
+        var toMenuSheetItem: MenuSheetViewController.MenuItem {
+            switch self {
+            case .remindLater(let handler),
+                 .hide(let handler):
+                return MenuSheetViewController.MenuItem(
+                        title: title,
+                        image: image,
+                        destructive: false,
+                        handler: handler
+                )
+            }
+        }
     }
 }
 
