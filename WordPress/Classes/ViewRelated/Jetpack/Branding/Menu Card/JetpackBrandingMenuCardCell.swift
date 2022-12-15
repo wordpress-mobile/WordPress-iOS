@@ -177,7 +177,7 @@ private extension JetpackBrandingMenuCardCell {
     enum Metrics {
         // General
         static let spacing: CGFloat = 10
-        static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 12, right: 20)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
 
         // Animation view
