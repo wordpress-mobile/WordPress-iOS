@@ -22,20 +22,11 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         frameView.configureButtonContainerStackView()
         frameView.hideHeader()
 
-        // NOTE: Remove the logic when support for iOS 14 is dropped
-        if #available (iOS 15.0, *) {
-            // assign an empty closure so the button appears.
-            frameView.onEllipsisButtonTap = {}
-            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            frameView.ellipsisButton.menu = contextMenu
-        } else {
-            // Show a fallback implementation using `MenuSheetViewController`.
-            // iOS 13 doesn't support showing UIMenu programmatically.
-            // iOS 14 doesn't support `UIDeferredMenuElement.uncached`.
-            frameView.onEllipsisButtonTap = { [weak self] in
-//                self?.showMenuSheet()
-            }
+        frameView.onEllipsisButtonTap = {
+            // TODO: Track menu shown
         }
+        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+        frameView.ellipsisButton.menu = contextMenu
 
         return frameView
     }()
@@ -173,39 +164,29 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 }
 
 private extension JetpackBrandingMenuCardCell {
-    
+
     // MARK: Items
-    
+
     // Defines the structure of the contextual menu items.
     private var contextMenuItems: [MenuItem] {
         return [.remindLater(remindMeLaterTapped), .hide(hideThisTapped)]
     }
-    
+
     // MARK: Menu Creation
-    
-    @available(iOS 15.0, *)
+
     private var contextMenu: UIMenu {
-        return .init(title: String(), options: .displayInline, children: [
-            // Use an uncached deferred element so we can track each time the menu is shown
-            UIDeferredMenuElement.uncached { [weak self] completion in
-                guard let self = self else {
-                    return
-                }
-                // TODO: Track menu shown
-                print("Tracked: contextual menu shown")
-                completion(self.contextMenuItems.map { $0.toAction })
-            }
-        ])
+        let actions = contextMenuItems.map { $0.toAction }
+        return .init(title: String(), options: .displayInline, children: actions)
     }
-    
+
     // MARK: Actions
-    
+
     private func remindMeLaterTapped() {
-        
+
     }
-    
+
     private func hideThisTapped() {
-        
+
     }
 }
 
@@ -253,7 +234,7 @@ private extension JetpackBrandingMenuCardCell {
                                                                   value: "Hide this",
                                                                   comment: "Menu item title to hide the card.")
     }
-    
+
     enum MenuItem {
         case remindLater(_ handler: () -> Void)
         case hide(_ handler: () -> Void)
@@ -283,19 +264,6 @@ private extension JetpackBrandingMenuCardCell {
                 return UIAction(title: title, image: image, attributes: []) { _ in
                     handler()
                 }
-            }
-        }
-
-        var toMenuSheetItem: MenuSheetViewController.MenuItem {
-            switch self {
-            case .remindLater(let handler),
-                 .hide(let handler):
-                return MenuSheetViewController.MenuItem(
-                        title: title,
-                        image: image,
-                        destructive: false,
-                        handler: handler
-                )
             }
         }
     }
