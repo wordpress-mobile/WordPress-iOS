@@ -82,7 +82,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        label.font = Metrics.descriptionFont
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
 
@@ -116,7 +116,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private func setupContent() {
         logosAnimationView.play()
-        descriptionLabel.text = "Hello there!!!!!!!!!!!!!"
+        let config = JetpackBrandingMenuCardCoordinator.cardConfig
+        descriptionLabel.text = config?.description
     }
 
 }
@@ -124,10 +125,16 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 private extension JetpackBrandingMenuCardCell {
 
     enum Metrics {
-        static let spacing: CGFloat = 12
+        static let spacing: CGFloat = 10
         static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let animationsViewHeight: CGFloat = 32
+        static var descriptionFont: UIFont {
+            let maximumFontPointSize: CGFloat = 16
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
+        }
     }
 
     enum Constants {
