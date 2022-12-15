@@ -208,12 +208,7 @@ private extension StatsRevampStore {
     }
 
     func setLikesTotalsDetailsFetchingStatus(_ status: StoreFetchingStatus) {
-        if FeatureFlag.statsPerformanceImprovements.enabled {
-            transaction { state in
-                state.summaryStatus = status
-                state.topPostsAndPagesStatus = status
-            }
-        } else {
+        transaction { state in
             state.summaryStatus = status
             state.topPostsAndPagesStatus = status
         }

@@ -20,7 +20,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case mySiteDashboard
     case mediaPickerPermissionsNotice
     case notificationCommentDetails
-    case statsPerformanceImprovements
     case siteIntentQuestion
     case landInTheEditor
     case statsNewAppearance
@@ -89,8 +88,6 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .mediaPickerPermissionsNotice:
             return true
         case .notificationCommentDetails:
-            return true
-        case .statsPerformanceImprovements:
             return true
         case .siteIntentQuestion:
             return true
@@ -212,8 +209,6 @@ extension FeatureFlag {
             return "Media Picker Permissions Notice"
         case .notificationCommentDetails:
             return "Notification Comment Details"
-        case .statsPerformanceImprovements:
-            return "Stats Performance Improvements"
         case .siteIntentQuestion:
             return "Site Intent Question"
         case .landInTheEditor:
