@@ -1579,6 +1579,9 @@
 		80535DBC294ABBF000873161 /* JetpackAllFeaturesLogosAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 80535DBA294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_ltr.json */; };
 		80535DBE294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */; };
 		80535DC0294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
+		80535DC1294BDE1900873161 /* JetpackBrandingMenuCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */; };
+		80535DC2294BDE2500873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */; };
+		80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
@@ -22919,6 +22922,7 @@
 				FABB21A52602FC2C00C8785C /* Follow.swift in Sources */,
 				FABB21A62602FC2C00C8785C /* BlogJetpackSettingsService.swift in Sources */,
 				FABB21A72602FC2C00C8785C /* MenuItemTypeViewController.m in Sources */,
+				80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */,
 				FABB21A82602FC2C00C8785C /* WPStyleGuide+WebView.m in Sources */,
 				FABB21A92602FC2C00C8785C /* HomeWidgetData.swift in Sources */,
 				FABB21AA2602FC2C00C8785C /* WPStyleGuide+Activity.swift in Sources */,
@@ -23009,6 +23013,7 @@
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */,
 				17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */,
+				80535DC2294BDE2500873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */,
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */,
 				F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */,
@@ -24197,6 +24202,7 @@
 				FABB25932602FC2C00C8785C /* StatsChartLegendView.swift in Sources */,
 				C7B7CC712812FDCE007B9807 /* MySiteViewController+OnboardingPrompt.swift in Sources */,
 				C3FF78E928354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,
+				80535DC1294BDE1900873161 /* JetpackBrandingMenuCardCell.swift in Sources */,
 				FABB25942602FC2C00C8785C /* FindOutMoreCell.swift in Sources */,
 				FABB25952602FC2C00C8785C /* NSURL+Exporters.swift in Sources */,
 				FABB25962602FC2C00C8785C /* FileDownloadsStatsRecordValue+CoreDataProperties.swift in Sources */,
