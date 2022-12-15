@@ -90,6 +90,16 @@ private extension JetpackBrandingMenuCardCell {
     }
 }
 
+// TODO: Consider moving to a different file
+extension JetpackBrandingMenuCardCell {
+
+    @objc(configureWithViewController:)
+    func configure(with viewController: UIViewController) {
+        // TODO: To be implemented
+    }
+}
+
+// TODO: Consider moving to a different file
 extension BlogDetailsViewController {
 
     @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
