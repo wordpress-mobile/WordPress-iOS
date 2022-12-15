@@ -136,6 +136,8 @@
 		0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
+		0147D64E294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
+		0147D64F294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
 		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
 		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -5486,6 +5488,7 @@
 		0107E1842900059300DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
+		0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStore.swift; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -15934,6 +15937,7 @@
 				08E39B4428A3DEB200874CB8 /* UserPersistentStoreFactory.swift */,
 				0878580228B4CF950069F96C /* UserPersistentRepositoryUtility.swift */,
 				803DE81228FFAE36007D4E9C /* RemoteConfigStore.swift */,
+				0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -20005,6 +20009,7 @@
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
 				F1655B4822A6C2FA00227BFB /* Routes+Mbar.swift in Sources */,
 				32CA6EC02390C61F00B51347 /* PostListEditorPresenter.swift in Sources */,
+				0147D64E294B1E1600AA6410 /* StatsRevampStore.swift in Sources */,
 				F580C3C123D22E2D0038E243 /* PreviewDeviceLabel.swift in Sources */,
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
 				40C403F62215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
@@ -24279,6 +24284,7 @@
 				FABB25E32602FC2C00C8785C /* RouteMatcher.swift in Sources */,
 				FABB25E42602FC2C00C8785C /* WPGUIConstants.m in Sources */,
 				FABB25E52602FC2C00C8785C /* UIColor+Notice.swift in Sources */,
+				0147D64F294B1E1600AA6410 /* StatsRevampStore.swift in Sources */,
 				FABB25E62602FC2C00C8785C /* JetpackBackupOptionsCoordinator.swift in Sources */,
 				FABB25E72602FC2C00C8785C /* PluginStore.swift in Sources */,
 				FABB25E82602FC2C00C8785C /* JetpackBackupStatusViewController.swift in Sources */,

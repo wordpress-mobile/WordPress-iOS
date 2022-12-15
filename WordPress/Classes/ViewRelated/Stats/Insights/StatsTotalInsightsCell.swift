@@ -19,8 +19,8 @@ struct StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodStore: StatsPeriodStore, insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType, guideText: NSAttributedString? = nil) -> StatsTotalInsightsData {
-        guard let periodSummary = periodStore.getSummary() else {
+    public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?, insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType, guideText: NSAttributedString? = nil) -> StatsTotalInsightsData {
+        guard let periodSummary = periodSummary else {
             return StatsTotalInsightsData(count: 0)
         }
 

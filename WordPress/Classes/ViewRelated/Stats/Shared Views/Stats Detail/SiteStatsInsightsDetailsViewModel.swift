@@ -26,6 +26,9 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
+    private let revampStore = StoreContainer.shared.statsRevamp
+    private var revampChangeReceipt: Receipt?
+
     private(set) var selectedDate: Date?
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
@@ -61,7 +64,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                 let date = selectedDate ?? StatsDataHelper.currentDateForSite()
 
-                periodChangeReceipt = periodStore.onChange { [weak self] in
+                revampChangeReceipt = revampStore.onChange { [weak self] in
                     self?.emitChange()
                 }
 
@@ -79,23 +82,15 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 refreshFollowers()
             case .insightsLikesTotals:
                 self.selectedPeriod = .week
-                if  let storeQuery = queryForInsightStatSection(statSection) {
-                    insightsChangeReceipt = insightsStore.onChange { [weak self] in
-                        self?.emitChange()
-                    }
 
-                    insightsReceipt = insightsStore.query(storeQuery)
+                let date = selectedDate ?? StatsDataHelper.currentDateForSite()
+
+                revampChangeReceipt = revampStore.onChange { [weak self] in
+                    self?.emitChange()
                 }
 
-                if queryForPeriodStatSection(StatSection.periodPostsAndPages) != nil {
-                    periodChangeReceipt = periodStore.onChange { [weak self] in
-                        self?.emitChange()
-                    }
 
-                    let date = selectedDate ?? StatsDataHelper.currentDateForSite()
-
-                    refreshTotalLikesData(date: date)
-                }
+                refreshTotalLikesData(date: date)
             case .insightsCommentsTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -149,28 +144,16 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         case let statSection where StatSection.allInsights.contains(statSection):
             switch statSection {
             case .insightsViewsVisitors:
-                guard let storeQueryViewsVisitors = queryForPeriodStatSection(statSection),
-                      let storeQueryReferrers = queryForPeriodStatSection(.periodReferrers),
-                      let storeQueryCountries = queryForPeriodStatSection(.periodCountries) else {
-                    return true
-                }
-
-                return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
-                        periodStore.fetchingFailed(for: storeQueryReferrers) &&
-                        periodStore.fetchingFailed(for: storeQueryCountries)
+                return revampStore.state.summaryStatus == .error &&
+                revampStore.state.topReferrersStatus == .error &&
+                revampStore.state.topCountriesStatus == .error
             case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
                 }
                 return insightsStore.fetchingFailed(for: storeQuery)
             case .insightsLikesTotals:
-                guard let storeQueryViewsVisitors = queryForPeriodStatSection(.insightsLikesTotals),
-                      let storeQueryPostPages = queryForPeriodStatSection(.periodPostsAndPages) else {
-                    return true
-                }
-
-                return periodStore.fetchingFailed(for: storeQueryViewsVisitors) &&
-                        periodStore.fetchingFailed(for: storeQueryPostPages)
+                return revampStore.state.summaryStatus == .error && revampStore.state.topPostsAndPagesStatus == .error
             case .insightsCommentsTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
@@ -198,7 +181,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
         case .insightsViewsVisitors:
-            return periodStore.isFetchingReferrers || periodStore.isFetchingSummary || periodStore.isFetchingCountries
+            let state = revampStore.state
+            return state.topReferrersStatus == .loading || state.summaryStatus == .loading || state.topCountriesStatus == .loading
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
@@ -208,7 +192,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         case .insightsAnnualSiteStats:
             return insightsStore.isFetchingAnnual
         case .insightsLikesTotals:
-            return periodStore.isFetchingSummary && periodStore.isFetchingPostsAndPages
+            let state = revampStore.state
+            return state.summaryStatus == .loading && state.topPostsAndPagesStatus == .loading
         case .periodPostsAndPages:
             return periodStore.isFetchingPostsAndPages
         case .periodSearchTerms:
@@ -267,12 +252,12 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: periodStore.topReferrersStatus) { status in
+            return periodImmuTable(for: revampStore.state.topReferrersStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if let periodSummary = periodStore.getSummary(),
-                   let referrers = periodStore.getTopReferrers() {
-                    let referrersData = referrersRowData()
+                if let periodSummary = revampStore.state.summary,
+                   let referrers = revampStore.state.topReferrers {
+                    let referrersData = referrersRowData(topReferrers: referrers)
                     let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
                     let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
                     let week = StatsPeriodHelper().weekIncludingDate(periodSummary.periodEndDate)
@@ -306,7 +291,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     }
                     rows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                   dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                  dataRows: countriesRowData(),
+                                                  dataRows: countriesRowData(topCountries: revampStore.state.topCountries),
                                                   siteStatsPeriodDelegate: nil,
                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
                     return rows
@@ -356,17 +341,20 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
+            return periodImmuTable(for: revampStore.state.topPostsAndPagesStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if periodStore.getSummary() != nil {
-                    rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: statSection, siteStatsInsightsDelegate: nil))
+                if let summary = revampStore.state.summary {
+                    rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(periodSummary: summary),
+                                                     statSection: statSection,
+                                                     siteStatsInsightsDelegate: nil)
+                    )
                 }
 
-                if periodStore.getTopPostsAndPages() != nil {
+                if let topPostsAndPages = revampStore.state.topPostsAndPages {
                     rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                         dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                        dataRows: postsAndPagesRowData(),
+                                                        dataRows: postsAndPagesRowData(topPostsAndPages: topPostsAndPages),
                                                         statSection: StatSection.periodPostsAndPages,
                                                         siteStatsPeriodDelegate: nil,
                                                         siteStatsReferrerDelegate: nil,
@@ -508,15 +496,19 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
     }
 
-    func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+    func createLikesTotalInsightsRow(periodSummary: StatsSummaryTimeIntervalData?) -> StatsTotalInsightsData {
+        var data = StatsTotalInsightsData.createTotalInsightsData(
+            periodSummary: periodSummary,
+            insightsStore: insightsStore,
+            statsSummaryType: .likes
+        )
         // We don't show guide text at the detail level
         data.guideText = nil
         return data
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodStore.getSummary(), insightsStore: insightsStore, statsSummaryType: .comments)
         // We don't show guide text at the detail level
         data.guideText = nil
         return data
@@ -535,11 +527,11 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func refreshViewsAndVisitorsData(date: Date) {
-        ActionDispatcher.dispatch(PeriodAction.refreshViewsAndVisitors(date: date))
+        ActionDispatcher.dispatch(StatsRevampStoreAction.refreshViewsAndVisitors(date: date))
     }
 
     func refreshTotalLikesData(date: Date) {
-        ActionDispatcher.dispatch(PeriodAction.refreshTotalLikes(date: date))
+        ActionDispatcher.dispatch(StatsRevampStoreAction.refreshTotalLikes(date: date))
     }
 
     func refreshComments() {
@@ -826,11 +818,11 @@ private extension SiteStatsInsightsDetailsViewModel {
     // MARK: - Posts and Pages
 
     func postsAndPagesRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
-        return dataRowsFor(postsAndPagesRowData(), status: status)
+        return dataRowsFor(postsAndPagesRowData(topPostsAndPages: periodStore.getTopPostsAndPages()), status: status)
     }
 
-    func postsAndPagesRowData() -> [StatsTotalRowData] {
-        let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
+    func postsAndPagesRowData(topPostsAndPages: StatsTopPostsTimeIntervalData?) -> [StatsTotalRowData] {
+        let postsAndPages = topPostsAndPages?.topPosts ?? []
 
         return postsAndPages.map {
             let icon: UIImage?
@@ -949,11 +941,11 @@ private extension SiteStatsInsightsDetailsViewModel {
     // MARK: - Referrers
 
     func referrersRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
-        return expandableDataRowsFor(referrersRowData(), status: status)
+        return expandableDataRowsFor(referrersRowData(topReferrers: periodStore.getTopReferrers()), status: status)
     }
 
-    func referrersRowData() -> [StatsTotalRowData] {
-        let referrers = periodStore.getTopReferrers()?.referrers ?? []
+    func referrersRowData(topReferrers: StatsTopReferrersTimeIntervalData?) -> [StatsTotalRowData] {
+        let referrers = topReferrers?.referrers ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
             var icon: UIImage? = nil
@@ -1010,11 +1002,11 @@ private extension SiteStatsInsightsDetailsViewModel {
     // MARK: - Countries
 
     func countriesRows(for status: StoreFetchingStatus) -> [DetailDataRow] {
-        return dataRowsFor(countriesRowData(), status: status)
+        return dataRowsFor(countriesRowData(topCountries: periodStore.getTopCountries()), status: status)
     }
 
-    func countriesRowData() -> [StatsTotalRowData] {
-        return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
+    func countriesRowData(topCountries: StatsTopCountryTimeIntervalData?) -> [StatsTotalRowData] {
+        return topCountries?.countries.map { StatsTotalRowData(name: $0.name,
                 data: $0.viewsCount.abbreviatedString(),
                 icon: UIImage(named: $0.code),
                 statSection: .periodCountries) }
