@@ -142,7 +142,7 @@ class BloggingRemindersScheduler {
     }
 
     private static func sharedDataFileURL() -> URL? {
-        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.org.wordpress")
+        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName)
         return sharedDirectory?.appendingPathComponent(defaultDataFileName)
     }
 
