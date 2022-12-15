@@ -5,6 +5,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Private Variables
 
+    private weak var viewController: UIViewController?
+
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
         traitCollection.layoutDirection == .leftToRight ?
@@ -88,7 +90,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
         return label
     }()
-    
+
     private lazy var learnMoreSuperview: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -101,14 +103,15 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
         return view
     }()
-    
+
     private lazy var learnMoreButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = Metrics.learnMoreButtonTextColor
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         button.setTitle(Strings.learnMoreButtonText, for: .normal)
-        
+        button.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
+
         if #available(iOS 15.0, *) {
             var learnMoreButtonConfig: UIButton.Configuration = .plain()
             learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
@@ -117,7 +120,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
             button.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
             button.flipInsetsForRightToLeftLayoutDirection()
         }
-        
+
         return button
     }()
 
@@ -153,6 +156,19 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
 
+    // MARK: Actions
+
+    @objc private func learnMoreButtonTapped() {
+        guard let config = JetpackBrandingMenuCardCoordinator.cardConfig,
+              let urlString = config.learnMoreButtonURL,
+              let url = URL(string: urlString) else {
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.analyticsSource)
+        let navController = UINavigationController(rootViewController: webViewController)
+        viewController?.present(navController, animated: true)
+    }
 }
 
 private extension JetpackBrandingMenuCardCell {
@@ -162,10 +178,10 @@ private extension JetpackBrandingMenuCardCell {
         static let spacing: CGFloat = 10
         static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
-        
+
         // Animation view
         static let animationsViewHeight: CGFloat = 32
-        
+
         // Description Label
         static var descriptionFont: UIFont {
             let maximumFontPointSize: CGFloat = 16
@@ -173,7 +189,7 @@ private extension JetpackBrandingMenuCardCell {
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
             return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
         }
-        
+
         // Learn more button
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
@@ -183,8 +199,9 @@ private extension JetpackBrandingMenuCardCell {
     enum Constants {
         static let animationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
         static let animationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
+        static let analyticsSource = "jetpack_menu_card"
     }
-    
+
     enum Strings {
         static let learnMoreButtonText = NSLocalizedString("jetpack.menuCard.learnMore",
                                                            value: "Learn more",
@@ -197,7 +214,7 @@ extension JetpackBrandingMenuCardCell {
 
     @objc(configureWithViewController:)
     func configure(with viewController: UIViewController) {
-        // TODO: To be implemented
+        self.viewController = viewController
     }
 }
 
