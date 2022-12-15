@@ -165,6 +165,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     }
 }
 
+// MARK: Contexual Menu
+
 private extension JetpackBrandingMenuCardCell {
 
     // MARK: Items
