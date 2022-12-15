@@ -89,7 +89,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     self?.emitChange()
                 }
 
-
                 refreshTotalLikesData(date: date)
             case .insightsCommentsTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
@@ -144,16 +143,14 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         case let statSection where StatSection.allInsights.contains(statSection):
             switch statSection {
             case .insightsViewsVisitors:
-                return revampStore.state.summaryStatus == .error &&
-                revampStore.state.topReferrersStatus == .error &&
-                revampStore.state.topCountriesStatus == .error
+                return revampStore.viewsAndVisitorsStatus == .error
             case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
                 }
                 return insightsStore.fetchingFailed(for: storeQuery)
             case .insightsLikesTotals:
-                return revampStore.state.summaryStatus == .error && revampStore.state.topPostsAndPagesStatus == .error
+                return revampStore.likesTotalsStatus == .error
             case .insightsCommentsTotals:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
@@ -181,8 +178,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
         case .insightsViewsVisitors:
-            let state = revampStore.state
-            return state.topReferrersStatus == .loading || state.summaryStatus == .loading || state.topCountriesStatus == .loading
+            return revampStore.viewsAndVisitorsStatus == .loading
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             return insightsStore.isFetchingAllFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
@@ -192,8 +188,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         case .insightsAnnualSiteStats:
             return insightsStore.isFetchingAnnual
         case .insightsLikesTotals:
-            let state = revampStore.state
-            return state.summaryStatus == .loading && state.topPostsAndPagesStatus == .loading
+            return revampStore.likesTotalsStatus == .loading
         case .periodPostsAndPages:
             return periodStore.isFetchingPostsAndPages
         case .periodSearchTerms:
@@ -252,11 +247,13 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: revampStore.state.topReferrersStatus) { status in
+            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if let periodSummary = revampStore.state.summary,
-                   let referrers = revampStore.state.topReferrers {
+                let viewsAndVisitorsData = revampStore.getViewsAndVisitorsData()
+
+                if let periodSummary = viewsAndVisitorsData.summary,
+                   let referrers = viewsAndVisitorsData.topReferrers {
                     let referrersData = referrersRowData(topReferrers: referrers)
                     let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
                     let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
@@ -291,7 +288,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     }
                     rows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                   dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                  dataRows: countriesRowData(topCountries: revampStore.state.topCountries),
+                                                  dataRows: countriesRowData(topCountries: viewsAndVisitorsData.topCountries),
                                                   siteStatsPeriodDelegate: nil,
                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
                     return rows
@@ -341,17 +338,19 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: revampStore.state.topPostsAndPagesStatus) { status in
+            return periodImmuTable(for: revampStore.likesTotalsStatus) { status in
                 var rows = [ImmuTableRow]()
 
-                if let summary = revampStore.state.summary {
+                let likesTotalsData = revampStore.getLikesTotalsData()
+
+                if let summary = likesTotalsData.summary {
                     rows.append(TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(periodSummary: summary),
                                                      statSection: statSection,
                                                      siteStatsInsightsDelegate: nil)
                     )
                 }
 
-                if let topPostsAndPages = revampStore.state.topPostsAndPages {
+                if let topPostsAndPages = likesTotalsData.topPostsAndPages {
                     rows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                         dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                         dataRows: postsAndPagesRowData(topPostsAndPages: topPostsAndPages),
@@ -531,7 +530,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func refreshTotalLikesData(date: Date) {
-        ActionDispatcher.dispatch(StatsRevampStoreAction.refreshTotalLikes(date: date))
+        ActionDispatcher.dispatch(StatsRevampStoreAction.refreshLikesTotals(date: date))
     }
 
     func refreshComments() {

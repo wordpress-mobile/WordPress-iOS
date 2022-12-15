@@ -17,19 +17,19 @@ struct StatsRevampStoreState {
 
 enum StatsRevampStoreAction: Action {
     case refreshViewsAndVisitors(date: Date)
-    case refreshTotalLikes(date: Date)
+    case refreshLikesTotals(date: Date)
 }
 
-enum StatsRevampStoreQuery {
-
-}
+enum StatsRevampStoreQuery {}
 
 class StatsRevampStore: QueryStore<StatsRevampStoreState, StatsRevampStoreQuery> {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
-    var statsServiceRemote: StatsServiceRemoteV2?
+    private var statsServiceRemote: StatsServiceRemoteV2?
 
     private var operationQueue = OperationQueue()
     private let scheduler = Scheduler(seconds: 0.3)
+
+    // MARK: - Query Store
 
     override init(initialState: StatsRevampStoreState = StatsRevampStoreState(), dispatcher: ActionDispatcher = .global) {
         super.init(initialState: initialState, dispatcher: dispatcher)
@@ -41,10 +41,70 @@ class StatsRevampStore: QueryStore<StatsRevampStoreState, StatsRevampStoreQuery>
         }
 
         switch action {
-        case .refreshTotalLikes(let date):
-            fetchTotalLikesData(date: date)
+        case .refreshLikesTotals(let date):
+            fetchLikesTotalsData(date: date)
         case .refreshViewsAndVisitors(let date):
             fetchViewsAndVisitorsData(date: date)
+        }
+    }
+}
+
+// MARK: - Status
+
+extension StatsRevampStore {
+    var viewsAndVisitorsStatus: StoreFetchingStatus {
+        let statuses = [state.summaryStatus, state.topReferrersStatus, state.topCountriesStatus]
+        return aggregateStatus(for: statuses)
+    }
+
+    var likesTotalsStatus: StoreFetchingStatus {
+        let statuses = [state.summaryStatus, state.topPostsAndPagesStatus]
+        return aggregateStatus(for: statuses)
+    }
+}
+
+// MARK: - Getters
+
+extension StatsRevampStore {
+    struct ViewsAndVisitorsData {
+        let summary: StatsSummaryTimeIntervalData?
+        let topReferrers: StatsTopReferrersTimeIntervalData?
+        let topCountries: StatsTopCountryTimeIntervalData?
+    }
+
+    struct TotalLikesData {
+        let summary: StatsSummaryTimeIntervalData?
+        let topPostsAndPages: StatsTopPostsTimeIntervalData?
+    }
+
+    func getViewsAndVisitorsData() -> StatsRevampStore.ViewsAndVisitorsData {
+        return ViewsAndVisitorsData(
+            summary: state.summary,
+            topReferrers: state.topReferrers,
+            topCountries: state.topCountries
+        )
+    }
+
+    func getLikesTotalsData() -> StatsRevampStore.TotalLikesData {
+        return TotalLikesData(
+            summary: state.summary,
+            topPostsAndPages: state.topPostsAndPages
+        )
+    }
+}
+
+// MARK: - Helpers
+
+private extension StatsRevampStore {
+    func aggregateStatus(for statuses: [StoreFetchingStatus]) -> StoreFetchingStatus {
+        if statuses.first(where: { $0 == .loading }) != nil {
+            return .loading
+        } else if statuses.first(where: { $0 == .success }) != nil {
+            return .success
+        } else if statuses.first(where: { $0 == .error }) != nil {
+            return .error
+        } else {
+            return .idle
         }
     }
 }
@@ -53,9 +113,7 @@ class StatsRevampStore: QueryStore<StatsRevampStoreState, StatsRevampStoreQuery>
 
 private extension StatsRevampStore {
     func shouldFetchViewsAndVisitors() -> Bool {
-        return [state.summaryStatus,
-                state.topReferrersStatus,
-                state.topCountriesStatus].first { $0 == .loading } == nil
+        return viewsAndVisitorsStatus != .loading
     }
 
     func setViewsAndVisitorsFetchingStatus(_ status: StoreFetchingStatus) {
@@ -140,12 +198,11 @@ private extension StatsRevampStore {
 // MARK: - Data Total Likes weekly details
 
 private extension StatsRevampStore {
-    func shouldFetchTotalLikes() -> Bool {
-        return [state.summaryStatus,
-                state.topPostsAndPagesStatus].first { $0 == .loading } == nil
+    func shouldFetchLikesTotals() -> Bool {
+        return likesTotalsStatus != .loading
     }
 
-    func setTotalLikesDetailsFetchingStatus(_ status: StoreFetchingStatus) {
+    func setLikesTotalsDetailsFetchingStatus(_ status: StoreFetchingStatus) {
         if FeatureFlag.statsPerformanceImprovements.enabled {
             transaction { state in
                 state.summaryStatus = status
@@ -157,22 +214,22 @@ private extension StatsRevampStore {
         }
     }
 
-    func fetchTotalLikesData(date: Date) {
-        loadTotalLikesCache(date: date)
+    func fetchLikesTotalsData(date: Date) {
+        loadLikesTotalsCache(date: date)
 
-        guard shouldFetchTotalLikes() else {
+        guard shouldFetchLikesTotals() else {
             DDLogInfo("Stats Views and Visitors details refresh triggered while one was in progress.")
             return
         }
 
-        setTotalLikesDetailsFetchingStatus(.loading)
+        setLikesTotalsDetailsFetchingStatus(.loading)
 
         fetchSummary(date: date) { [weak self] in
-            self?.fetchTotalLikesDetailsData(date: date)
+            self?.fetchLikesTotalsDetailsData(date: date)
         }
     }
 
-    func fetchTotalLikesDetailsData(date: Date) {
+    func fetchLikesTotalsDetailsData(date: Date) {
         guard let service = statsRemote() else {
             return
         }
@@ -193,7 +250,7 @@ private extension StatsRevampStore {
                                      waitUntilFinished: false)
     }
 
-    private func loadTotalLikesCache(date: Date) {
+    private func loadLikesTotalsCache(date: Date) {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {

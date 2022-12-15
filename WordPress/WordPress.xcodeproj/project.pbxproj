@@ -138,6 +138,7 @@
 		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0147D64E294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
 		0147D64F294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
+		0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */; };
 		0148CC292859127F00CF5D96 /* StatsWidgetsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */; };
 		0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */; };
 		01CE5007290A889F00A9C2E0 /* TracksConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */; };
@@ -5489,6 +5490,7 @@
 		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
 		0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStore.swift; sourceTree = "<group>"; };
+		0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStoreTests.swift; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -11492,6 +11494,7 @@
 				937250ED267A492D0086075F /* StatsPeriodStoreTests.swift */,
 				0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */,
 				08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */,
+				0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -22517,6 +22520,7 @@
 				8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */,
 				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
+				0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */,
 				D81C2F5C20F872C2002AE1F1 /* ReplyToCommentActionTests.swift in Sources */,
