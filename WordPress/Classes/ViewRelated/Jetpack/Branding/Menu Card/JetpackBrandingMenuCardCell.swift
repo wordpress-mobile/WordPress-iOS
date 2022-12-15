@@ -271,26 +271,10 @@ private extension JetpackBrandingMenuCardCell {
     }
 }
 
-// TODO: Consider moving to a different file
 extension JetpackBrandingMenuCardCell {
 
     @objc(configureWithViewController:)
     func configure(with viewController: UIViewController) {
         self.viewController = viewController
-    }
-}
-
-// TODO: Consider moving to a different file
-extension BlogDetailsViewController {
-
-    @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
-        let row = BlogDetailsRow()
-        row.callback = {}
-
-        let section = BlogDetailsSection(title: nil,
-                                         rows: [row],
-                                         footerTitle: nil,
-                                         category: .jetpackBrandingCard)
-        return section
     }
 }

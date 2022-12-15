@@ -1578,6 +1578,7 @@
 		80535DBB294ABBF000873161 /* JetpackAllFeaturesLogosAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 80535DB9294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_rtl.json */; };
 		80535DBC294ABBF000873161 /* JetpackAllFeaturesLogosAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 80535DBA294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_ltr.json */; };
 		80535DBE294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */; };
+		80535DC0294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
@@ -6887,6 +6888,7 @@
 		80535DB9294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackAllFeaturesLogosAnimation_rtl.json; sourceTree = "<group>"; };
 		80535DBA294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackAllFeaturesLogosAnimation_ltr.json; sourceTree = "<group>"; };
 		80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardCoordinator.swift; sourceTree = "<group>"; };
+		80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+JetpackBrandingMenuCard.swift"; sourceTree = "<group>"; };
 		8058730C28F7B70B00340C11 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
@@ -12514,6 +12516,7 @@
 			children = (
 				80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */,
 				80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */,
+				80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */,
 			);
 			path = "Menu Card";
 			sourceTree = "<group>";
@@ -20484,6 +20487,7 @@
 				3F5B9B43288AFE4B001D17E9 /* DashboardBadgeCell.swift in Sources */,
 				C743535627BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
+				80535DC0294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */,
 				B543D2B520570B5A00D3D4CC /* WordPressComSyncService.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
 				46638DF6244904A3006E8439 /* GutenbergBlockProcessor.swift in Sources */,
