@@ -618,7 +618,7 @@ private extension NotificationsViewController {
 
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.superview?.backgroundColor = .filterBarBackground
+        filterTabBar.superview?.backgroundColor = .systemBackground
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)

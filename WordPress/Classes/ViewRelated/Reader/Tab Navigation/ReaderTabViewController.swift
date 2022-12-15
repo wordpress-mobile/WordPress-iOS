@@ -198,3 +198,14 @@ extension ReaderTabViewController {
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
     }
 }
+
+// MARK: - WPScrollableViewController conformance
+extension ReaderTabViewController: WPScrollableViewController {
+    /// Scrolls the first child VC to the top if it's a `ReaderStreamViewController`.
+    func scrollViewToTop() {
+        guard let readerStreamVC = children.first as? ReaderStreamViewController else {
+            return
+        }
+        readerStreamVC.scrollViewToTop()
+    }
+}

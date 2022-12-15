@@ -8,12 +8,14 @@ class JetpackRedirector {
     /// Note: The string values should kept in-sync with Jetpack's URL scheme.
     ///
     static var jetpackDeepLinkScheme: String {
+        /// Important: Multiple compiler flags are set for some builds
+        /// so ordering matters.
         #if DEBUG
         return "jpdebug"
-        #elseif INTERNAL_BUILD
-        return "jpinternal"
         #elseif ALPHA_BUILD
         return "jpalpha"
+        #elseif INTERNAL_BUILD
+        return "jpinternal"
         #else
         return "jetpack"
         #endif

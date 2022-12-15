@@ -441,6 +441,7 @@
 			<string>org.wordpress</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wordpressmigration+v1</string>
 				<string>wordpressnotificationmigration</string>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
@@ -464,6 +465,7 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>$(JP_SCHEME)</string>
 		<string>jetpacknotificationmigration</string>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
