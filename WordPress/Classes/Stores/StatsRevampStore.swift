@@ -1,6 +1,11 @@
 import Foundation
 import WordPressFlux
 
+/// StatsRevampStore is created to support use cases in Stats that can combine
+/// different periods and endpoints.
+///
+/// The class hides the complexity and exposes actions and data for specific use cases.
+
 struct StatsRevampStoreState {
     var summary: StatsSummaryTimeIntervalData?
     var summaryStatus: StoreFetchingStatus = .idle
