@@ -151,10 +151,10 @@ private extension StatsRevampStore {
 
         let topReferrers = PeriodOperation(service: service, for: .week, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
+                DDLogError("Stats Revamp Store: Error fetching referrers: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Period: Finished fetching referrers.")
+            DDLogInfo("Stats Revamp Store: Finished fetching referrers.")
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
@@ -163,10 +163,10 @@ private extension StatsRevampStore {
 
         let topCountries = PeriodOperation(service: service, for: .week, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
+                DDLogError("Stats Revamp Store: Error fetching countries: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Period: Finished fetching countries.")
+            DDLogInfo("Stats Revamp Store: Finished fetching countries.")
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
@@ -189,13 +189,13 @@ private extension StatsRevampStore {
         let referrers = StatsRecord.timeIntervalData(for: blog, type: .referrers, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
         let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
 
-        DDLogInfo("Stats Period: Finished loading Period data from Core Data.")
+        DDLogInfo("Stats Revamp Store: Finished loading Period data from Core Data.")
 
         transaction { state in
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topReferrers = referrers.flatMap { StatsTopReferrersTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
-            DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
+            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from Core Data.")
         }
     }
 }
@@ -236,10 +236,10 @@ private extension StatsRevampStore {
 
         let topPostsOperation = PeriodOperation(service: service, for: .week, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
+                DDLogError("Stats Revamp Store: Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
 
-            DDLogInfo("Stats Period: Finished fetching posts.")
+            DDLogInfo("Stats Revamp Store: Finished fetching posts.")
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
@@ -260,12 +260,12 @@ private extension StatsRevampStore {
         let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: .day), date: date)
         let posts = StatsRecord.timeIntervalData(for: blog, type: .topViewedPost, period: StatsRecordPeriodType(remoteStatus: .week), date: date)
 
-        DDLogInfo("Stats Period: Finished loading Period data from Core Data.")
+        DDLogInfo("Stats Revamp Store: Finished loading Period data from Core Data.")
 
         transaction { state in
             state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
             state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
-            DDLogInfo("Stats Period: Finished setting data to Period store from Core Data.")
+            DDLogInfo("Stats Revamp Store: Finished setting data to Period store from Core Data.")
         }
     }
 }
@@ -277,16 +277,16 @@ private extension StatsRevampStore {
         }
 
         scheduler.debounce { [weak self] in
-            DDLogInfo("Stats Period: Cancel all operations")
+            DDLogInfo("Stats Revamp Store: Cancel all operations")
 
             self?.operationQueue.cancelAllOperations()
 
             let chartOperation = PeriodOperation(service: service, for: .day, date: date, limit: 14) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
                 if error != nil {
-                    DDLogError("Stats Period: Error fetching summary: \(String(describing: error?.localizedDescription))")
+                    DDLogError("Stats Revamp Store: Error fetching summary: \(String(describing: error?.localizedDescription))")
                 }
 
-                DDLogInfo("Stats Period: Finished fetching summary.")
+                DDLogInfo("Stats Revamp Store: Finished fetching summary.")
 
                 DispatchQueue.main.async {
                     self?.receivedSummary(summary, error)
