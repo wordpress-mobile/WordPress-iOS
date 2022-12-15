@@ -46,7 +46,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         stackView.spacing = Metrics.spacing
         stackView.layoutMargins = Metrics.containerMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([logosSuperview, descriptionLabel])
+        stackView.addArrangedSubviews([logosSuperview, descriptionLabel, learnMoreSuperview])
         return stackView
     }()
 
@@ -88,6 +88,38 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
         return label
     }()
+    
+    private lazy var learnMoreSuperview: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.addSubview(learnMoreButton)
+
+        view.topAnchor.constraint(equalTo: learnMoreButton.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: learnMoreButton.bottomAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: learnMoreButton.leadingAnchor).isActive = true
+
+        return view
+    }()
+    
+    private lazy var learnMoreButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = Metrics.learnMoreButtonTextColor
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        button.setTitle(Strings.learnMoreButtonText, for: .normal)
+        
+        if #available(iOS 15.0, *) {
+            var learnMoreButtonConfig: UIButton.Configuration = .plain()
+            learnMoreButtonConfig.contentInsets = Metrics.learnMoreButtonContentInsets
+            button.configuration = learnMoreButtonConfig
+        } else {
+            button.contentEdgeInsets = Metrics.learnMoreButtonContentEdgeInsets
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
+        
+        return button
+    }()
 
     // MARK: Initializers
 
@@ -118,6 +150,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         logosAnimationView.play()
         let config = JetpackBrandingMenuCardCoordinator.cardConfig
         descriptionLabel.text = config?.description
+        learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
 
 }
@@ -125,21 +158,37 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 private extension JetpackBrandingMenuCardCell {
 
     enum Metrics {
+        // General
         static let spacing: CGFloat = 10
         static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
+        
+        // Animation view
         static let animationsViewHeight: CGFloat = 32
+        
+        // Description Label
         static var descriptionFont: UIFont {
             let maximumFontPointSize: CGFloat = 16
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
             return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
         }
+        
+        // Learn more button
+        static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
+        static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
+        static let learnMoreButtonTextColor: UIColor = UIColor.muriel(color: .jetpackGreen, .shade40)
     }
 
     enum Constants {
         static let animationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
         static let animationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
+    }
+    
+    enum Strings {
+        static let learnMoreButtonText = NSLocalizedString("jetpack.menuCard.learnMore",
+                                                           value: "Learn more",
+                                                           comment: "Title of a button that displays a blog post in a web view.")
     }
 }
 
