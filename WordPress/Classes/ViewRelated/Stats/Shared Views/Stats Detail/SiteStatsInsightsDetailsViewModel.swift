@@ -252,11 +252,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                 let viewsAndVisitorsData = revampStore.getViewsAndVisitorsData()
 
-                if let periodSummary = viewsAndVisitorsData.summary,
-                   let referrers = viewsAndVisitorsData.topReferrers {
-                    let referrersData = referrersRowData(topReferrers: referrers)
-                    let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
-                    let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
+                if let periodSummary = viewsAndVisitorsData.summary {
                     let week = StatsPeriodHelper().weekIncludingDate(periodSummary.periodEndDate)
 
                     // Views Visitors
@@ -270,15 +266,21 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     }
 
                     // Referrers
-                    var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                               dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                                                               dataRows: referrersData,
-                                                               statSection: StatSection.periodReferrers,
-                                                               siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
-                                                               siteStatsReferrerDelegate: nil,
-                                                               siteStatsInsightsDetailsDelegate: insightsDetailsDelegate)
-                    referrersRow.topAccessoryView = chartView
-                    rows.append(referrersRow)
+                    if let referrers = viewsAndVisitorsData.topReferrers {
+                        let referrersData = referrersRowData(topReferrers: referrers)
+                        let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
+                        let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
+
+                        var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                                   dataSubtitle: StatSection.periodReferrers.dataSubtitle,
+                                                                   dataRows: referrersData,
+                                                                   statSection: StatSection.periodReferrers,
+                                                                   siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
+                                                                   siteStatsReferrerDelegate: nil,
+                                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate)
+                        referrersRow.topAccessoryView = chartView
+                        rows.append(referrersRow)
+                    }
 
 
                     // Countries
