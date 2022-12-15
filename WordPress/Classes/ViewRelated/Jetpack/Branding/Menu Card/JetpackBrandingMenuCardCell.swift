@@ -109,6 +109,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = Metrics.learnMoreButtonTextColor
         button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitle(Strings.learnMoreButtonText, for: .normal)
         button.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
 
@@ -187,7 +188,7 @@ private extension JetpackBrandingMenuCardCell {
             let maximumFontPointSize: CGFloat = 16
             let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
             let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
-            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumFontPointSize)
+            return UIFontMetrics.default.scaledFont(for: font)
         }
 
         // Learn more button
