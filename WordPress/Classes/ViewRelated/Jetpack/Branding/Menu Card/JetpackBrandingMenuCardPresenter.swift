@@ -52,7 +52,7 @@ class JetpackBrandingMenuCardPresenter {
 
     func remindLaterTapped() {
         let now = currentDateProvider.date()
-        let duration = Constants.remindLaterDurationInDays * Constants.secondInDay
+        let duration = Constants.remindLaterDurationInDays * Constants.secondsInDay
         let newDate = now.addingTimeInterval(TimeInterval(duration))
         showCardOnDate = newDate
     }
@@ -86,7 +86,7 @@ private extension JetpackBrandingMenuCardPresenter {
 
 private extension JetpackBrandingMenuCardPresenter {
     enum Constants {
-        static let secondInDay = 86_400
+        static let secondsInDay = 86_400
         static let remindLaterDurationInDays = 7
         static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
         static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"

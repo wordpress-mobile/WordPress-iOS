@@ -17,4 +17,9 @@ extension BlogDetailsViewController {
                                          category: .jetpackBrandingCard)
         return section
     }
+
+    func reloadTableView() {
+        configureTableViewData()
+        reloadTableViewPreservingSelection()
+    }
 }
