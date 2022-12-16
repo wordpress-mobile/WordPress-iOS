@@ -6,8 +6,12 @@
         .init()
     }()
 
-    var storedExportErrorDescription: String? {
-        sharedPersistentRepository?.string(forKey: .exportErrorSharedKey)
+    var previousMigrationError: Errors? {
+        guard let storedErrorValue = sharedPersistentRepository?.string(forKey: .exportErrorSharedKey) else {
+            return nil
+        }
+
+        return .init(rawValue: storedErrorValue)
     }
 
     // MARK: Dependencies
@@ -41,7 +45,7 @@
         ensureBackupDataDeletedOnLogout()
     }
 
-    enum ContentMigrationCoordinatorError: LocalizedError {
+    enum Errors: String, LocalizedError {
         case ineligible
         case exportFailure
         case localDraftsNotSynced
@@ -65,7 +69,7 @@
     /// just let the user continue with the original intent in case of failure.
     ///
     /// - Parameter completion: Closure called after the export process completes.
-    func startAndDo(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
+    func startAndDo(completion: ((Result<Void, Errors>) -> Void)? = nil) {
         guard eligibilityProvider.isEligibleForMigration else {
             tracker.trackContentExportEligibility(eligible: false)
             processResult(.failure(.ineligible), completion: completion)
@@ -73,7 +77,7 @@
         }
 
         guard isLocalPostsSynced() else {
-            let error = ContentMigrationCoordinatorError.localDraftsNotSynced
+            let error = Errors.localDraftsNotSynced
             tracker.trackContentExportFailed(reason: error.localizedDescription)
             processResult(.failure(error), completion: completion)
             return
@@ -171,16 +175,13 @@ private extension ContentMigrationCoordinator {
     /// - Parameters:
     ///   - result: The `Result` object from the export process.
     ///   - completion: Closure that'll be executed after the process completes.
-    func processResult(_ result: Result<Void, ContentMigrationCoordinatorError>, completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)?) {
+    func processResult(_ result: Result<Void, Errors>, completion: ((Result<Void, Errors>) -> Void)?) {
         switch result {
         case .success:
             sharedPersistentRepository?.removeObject(forKey: .exportErrorSharedKey)
 
         case .failure(let error):
-            guard let description = error.errorDescription else {
-                break
-            }
-            sharedPersistentRepository?.set(description, forKey: .exportErrorSharedKey)
+            sharedPersistentRepository?.set(error.rawValue, forKey: .exportErrorSharedKey)
         }
 
         completion?(result)

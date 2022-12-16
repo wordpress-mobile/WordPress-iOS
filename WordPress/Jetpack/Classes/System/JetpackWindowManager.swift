@@ -66,7 +66,7 @@ private extension JetpackWindowManager {
 
     /// Checks whether the WordPress app has previously failed to export user content.
     var hasFailedExportAttempts: Bool {
-        !(ContentMigrationCoordinator.shared.storedExportErrorDescription ?? String()).isEmpty
+        ContentMigrationCoordinator.shared.previousMigrationError != nil
     }
 
     func sendMigrationEmail() {

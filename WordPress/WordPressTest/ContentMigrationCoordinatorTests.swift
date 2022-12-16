@@ -45,7 +45,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
                 return
             }
 
-            XCTAssertNil(self.coordinator.storedExportErrorDescription)
+            XCTAssertNil(self.coordinator.previousMigrationError)
             XCTAssertTrue(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
@@ -62,7 +62,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
                 return
             }
 
-            XCTAssertNotNil(self.coordinator.storedExportErrorDescription)
+            XCTAssertNotNil(self.coordinator.previousMigrationError)
             XCTAssertFalse(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
@@ -79,7 +79,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
                 return
             }
 
-            XCTAssertNotNil(self.coordinator.storedExportErrorDescription)
+            XCTAssertNotNil(self.coordinator.previousMigrationError)
             XCTAssertEqual(error, .exportFailure)
             expect.fulfill()
         }
@@ -88,7 +88,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
 
     func test_startAndDo_givenExistingError_andSubsequentExportSucceeds_shouldClearStoredError() {
         // Given
-        mockSharedPersistentRepository.set("Content export is ineligible", forKey: exportFailureSharedKey)
+        mockSharedPersistentRepository.set("ineligible", forKey: exportFailureSharedKey)
 
         // When
         let expect = expectation(description: "Content migration should succeed")
@@ -99,7 +99,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
             }
 
             // Then
-            XCTAssertNil(self.coordinator.storedExportErrorDescription)
+            XCTAssertNil(self.coordinator.previousMigrationError)
             XCTAssertTrue(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
