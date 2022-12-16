@@ -1577,10 +1577,10 @@
 		80535DB82946C79700873161 /* JetpackBrandingMenuCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */; };
 		80535DBB294ABBF000873161 /* JetpackAllFeaturesLogosAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 80535DB9294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_rtl.json */; };
 		80535DBC294ABBF000873161 /* JetpackAllFeaturesLogosAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 80535DBA294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_ltr.json */; };
-		80535DBE294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */; };
+		80535DBE294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift */; };
 		80535DC0294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
 		80535DC1294BDE1900873161 /* JetpackBrandingMenuCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */; };
-		80535DC2294BDE2500873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */; };
+		80535DC2294BDE2500873161 /* JetpackBrandingMenuCardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBD294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift */; };
 		80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
 		80535DC5294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DC4294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift */; };
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
@@ -6891,7 +6891,7 @@
 		80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardCell.swift; sourceTree = "<group>"; };
 		80535DB9294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackAllFeaturesLogosAnimation_rtl.json; sourceTree = "<group>"; };
 		80535DBA294ABBEF00873161 /* JetpackAllFeaturesLogosAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackAllFeaturesLogosAnimation_ltr.json; sourceTree = "<group>"; };
-		80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardCoordinator.swift; sourceTree = "<group>"; };
+		80535DBD294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardPresenter.swift; sourceTree = "<group>"; };
 		80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+JetpackBrandingMenuCard.swift"; sourceTree = "<group>"; };
 		80535DC4294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardPresenterTests.swift; sourceTree = "<group>"; };
 		8058730C28F7B70B00340C11 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -12521,7 +12521,7 @@
 			isa = PBXGroup;
 			children = (
 				80535DB72946C79700873161 /* JetpackBrandingMenuCardCell.swift */,
-				80535DBD294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift */,
+				80535DBD294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift */,
 				80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */,
 			);
 			path = "Menu Card";
@@ -21203,7 +21203,7 @@
 				171096CB270F01EA001BCDD6 /* DomainSuggestionsTableViewController.swift in Sources */,
 				469CE07124BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.swift in Sources */,
 				7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */,
-				80535DBE294AC89200873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */,
+				80535DBE294AC89200873161 /* JetpackBrandingMenuCardPresenter.swift in Sources */,
 				F53FF3AA23EA725C001AD596 /* SiteIconView.swift in Sources */,
 				FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */,
 				7E7947AD210BAC7B005BB851 /* FormattableNoticonRange.swift in Sources */,
@@ -23017,7 +23017,7 @@
 				98622EA0274C59A400061A5F /* ReaderDetailCommentsTableViewDelegate.swift in Sources */,
 				FABB21EA2602FC2C00C8785C /* RestoreWarningView.swift in Sources */,
 				17039225282E6D2800F602E9 /* ViewsVisitorsLineChartCell.swift in Sources */,
-				80535DC2294BDE2500873161 /* JetpackBrandingMenuCardCoordinator.swift in Sources */,
+				80535DC2294BDE2500873161 /* JetpackBrandingMenuCardPresenter.swift in Sources */,
 				C7D30C652638B07A00A1695B /* JetpackPrologueStyleGuide.swift in Sources */,
 				FABB21EB2602FC2C00C8785C /* GutenbergWebNavigationViewController.swift in Sources */,
 				F4F9D5EC29096CF500502576 /* MigrationHeaderView.swift in Sources */,
