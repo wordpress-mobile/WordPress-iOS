@@ -45,15 +45,18 @@ class JetpackBrandingMenuCardPresenter {
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let featureFlagStore: RemoteFeatureFlagStore
+    private let currentDateProvider: CurrentDateProvider
 
     // MARK: Initializers
 
     init(remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-         persistenceStore: UserPersistentRepository = UserDefaults.standard) {
+         persistenceStore: UserPersistentRepository = UserDefaults.standard,
+         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.remoteConfigStore = remoteConfigStore
         self.featureFlagStore = featureFlagStore
         self.persistenceStore = persistenceStore
+        self.currentDateProvider = currentDateProvider
     }
 
     // MARK: Public Functions
@@ -71,11 +74,17 @@ class JetpackBrandingMenuCardPresenter {
     }
 
     func shouldShowCard() -> Bool {
-        return cardConfig() != nil
+        let showCardOnDate = showCardOnDate ?? .distantPast // If not set, then return distant past so that the condition below always succeeds
+        guard shouldHideCard == false, // Card not hidden
+              showCardOnDate < currentDateProvider.date(), // Interval has passed if temporarily hidden
+              let _ = cardConfig() else { // Card is enabled in the current phase
+            return false
+        }
+        return true
     }
 
     func remindLaterTapped() {
-        let now = Date()
+        let now = currentDateProvider.date()
         let duration = Constants.remindLaterDurationInDays * Constants.secondInDay
         let newDate = now.addingTimeInterval(TimeInterval(duration))
         showCardOnDate = newDate
