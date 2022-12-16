@@ -79,6 +79,10 @@ extension JetpackBrandingMenuCardPresenter {
         WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
     }
 
+    func trackContexualMenuAccessed() {
+        WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
+    }
+
     func trackHideThisTapped() {
         WPAnalytics.track(.jetpackBrandingMenuCardHidden, properties: analyticsProperties)
     }

@@ -23,8 +23,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         frameView.configureButtonContainerStackView()
         frameView.hideHeader()
 
-        frameView.onEllipsisButtonTap = {
-            // TODO: Track menu shown
+        frameView.onEllipsisButtonTap = { [weak self] in
+            self?.presenter.trackContexualMenuAccessed()
         }
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu

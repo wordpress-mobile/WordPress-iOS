@@ -419,6 +419,7 @@ import Foundation
     case jetpackBrandingMenuCardLinkTapped
     case jetpackBrandingMenuCardHidden
     case jetpackBrandingMenuCardRemindLater
+    case jetpackBrandingMenuCardContextualMenuAccessed
 
     /// A String that represents the event
     var value: String {
@@ -1138,6 +1139,8 @@ import Foundation
             return "remove_feature_card_hide"
         case .jetpackBrandingMenuCardRemindLater:
             return "remove_feature_card_remind_later"
+        case .jetpackBrandingMenuCardContextualMenuAccessed:
+            return "remove_feature_card_menu_accessed"
 
         } // END OF SWITCH
     }
