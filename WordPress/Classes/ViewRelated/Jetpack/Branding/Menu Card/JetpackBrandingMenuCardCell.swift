@@ -134,7 +134,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private func commonInit() {
         setupViews()
         setupContent()
-        
+
         presenter.trackCardShown()
     }
 

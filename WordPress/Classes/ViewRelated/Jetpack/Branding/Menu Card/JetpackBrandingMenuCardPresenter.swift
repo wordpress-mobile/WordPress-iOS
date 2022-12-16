@@ -66,27 +66,27 @@ class JetpackBrandingMenuCardPresenter {
 // MARK: Analytics
 
 extension JetpackBrandingMenuCardPresenter {
-    
+
     func trackCardShown() {
         WPAnalytics.track(.jetpackBrandingMenuCardDisplayed, properties: analyticsProperties)
     }
-    
+
     func trackLinkTapped() {
         WPAnalytics.track(.jetpackBrandingMenuCardLinkTapped, properties: analyticsProperties)
     }
-    
+
     func trackCardTapped() {
         WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
     }
-    
+
     func trackHideThisTapped() {
-        WPAnalytics.track(.jetpackBrandingMenuCardDismissed, properties: analyticsProperties)
-    }
-    
-    func trackRemindMeLaterTapped() {
         WPAnalytics.track(.jetpackBrandingMenuCardHidden, properties: analyticsProperties)
     }
-    
+
+    func trackRemindMeLaterTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardRemindLater, properties: analyticsProperties)
+    }
+
     private var analyticsProperties: [String: String] {
         [Constants.phaseAnalyticsKey: phase.rawValue]
     }

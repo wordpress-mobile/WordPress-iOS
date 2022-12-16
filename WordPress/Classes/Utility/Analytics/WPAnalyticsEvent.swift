@@ -417,8 +417,8 @@ import Foundation
     case jetpackBrandingMenuCardDisplayed
     case jetpackBrandingMenuCardTapped
     case jetpackBrandingMenuCardLinkTapped
-    case jetpackBrandingMenuCardDismissed
     case jetpackBrandingMenuCardHidden
+    case jetpackBrandingMenuCardRemindLater
 
     /// A String that represents the event
     var value: String {
@@ -1134,10 +1134,10 @@ import Foundation
             return "remove_feature_card_tapped"
         case .jetpackBrandingMenuCardLinkTapped:
             return "remove_feature_card_link_tapped"
-        case .jetpackBrandingMenuCardDismissed:
-            return "remove_feature_card_dismissed"
         case .jetpackBrandingMenuCardHidden:
-            return "remove_feature_card_hidden"
+            return "remove_feature_card_hide"
+        case .jetpackBrandingMenuCardRemindLater:
+            return "remove_feature_card_remind_later"
 
         } // END OF SWITCH
     }
