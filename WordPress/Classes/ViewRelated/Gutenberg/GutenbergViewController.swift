@@ -1193,7 +1193,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
 
         // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
-        if JetpackFeaturesRemovalCoordinator.generalPhase() == .four {
+        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
             return [
                 .mentions: false,
                 .xposts: false,
