@@ -414,6 +414,11 @@ import Foundation
     case jetpackSiteCreationOverlayDisplayed
     case jetpackSiteCreationOverlayButtonTapped
     case jetpackSiteCreationOverlayDismissed
+    case jetpackBrandingMenuCardDisplayed
+    case jetpackBrandingMenuCardTapped
+    case jetpackBrandingMenuCardLinkTapped
+    case jetpackBrandingMenuCardDismissed
+    case jetpackBrandingMenuCardHidden
 
     /// A String that represents the event
     var value: String {
@@ -1123,6 +1128,16 @@ import Foundation
             return "remove_site_creation_overlay_button_tapped"
         case .jetpackSiteCreationOverlayDismissed:
             return "remove_site_creation_overlay_dismissed"
+        case .jetpackBrandingMenuCardDisplayed:
+            return "remove_feature_card_displayed"
+        case .jetpackBrandingMenuCardTapped:
+            return "remove_feature_card_tapped"
+        case .jetpackBrandingMenuCardLinkTapped:
+            return "remove_feature_card_link_tapped"
+        case .jetpackBrandingMenuCardDismissed:
+            return "remove_feature_card_dismissed"
+        case .jetpackBrandingMenuCardHidden:
+            return "remove_feature_card_hidden"
 
         } // END OF SWITCH
     }
