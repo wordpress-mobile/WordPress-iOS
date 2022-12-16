@@ -9,7 +9,9 @@ extension BlogDetailsViewController {
 
     @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
-        row.callback = {}
+        row.callback = {
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .card, in: self)
+        }
 
         let section = BlogDetailsSection(title: nil,
                                          rows: [row],
