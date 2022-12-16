@@ -5,6 +5,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
 
     private var mockUserDefaults: InMemoryUserDefaults!
     private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
+    private var remoteConfigStore = RemoteConfigStoreMock()
 
     override func setUp() {
         mockUserDefaults = InMemoryUserDefaults()
@@ -39,6 +40,24 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
         XCTAssertFalse(presenter.shouldShowCard())
     }
+
+    func testPhaseThreeCardConfig() throws {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            remoteConfigStore: remoteConfigStore,
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        remoteConfigStore.phaseThreeBlogPostUrl = "example.com"
+
+        // When
+        let config = try XCTUnwrap(presenter.cardConfig())
+
+        // Then
+        XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will soon move to the Jetpack mobile app.")
+        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
+    }
+
 }
 
 private class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
@@ -67,5 +86,17 @@ private class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
         default:
             return super.value(for: flag)
         }
+    }
+}
+
+private class RemoteConfigStoreMock: RemoteConfigStore {
+
+    var phaseThreeBlogPostUrl: String?
+
+    override func value(for key: String) -> Any? {
+        if key == "phase-three-blog-post" {
+            return phaseThreeBlogPostUrl
+        }
+        return super.value(for: key)
     }
 }
