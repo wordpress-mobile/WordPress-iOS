@@ -1136,9 +1136,9 @@ import Foundation
         case .jetpackBrandingMenuCardLinkTapped:
             return "remove_feature_card_link_tapped"
         case .jetpackBrandingMenuCardHidden:
-            return "remove_feature_card_hide"
+            return "remove_feature_card_hide_tapped"
         case .jetpackBrandingMenuCardRemindLater:
-            return "remove_feature_card_remind_later"
+            return "remove_feature_card_remind_later_tapped"
         case .jetpackBrandingMenuCardContextualMenuAccessed:
             return "remove_feature_card_menu_accessed"
 
