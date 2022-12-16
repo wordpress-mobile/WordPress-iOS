@@ -6,9 +6,11 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
     private var mockUserDefaults: InMemoryUserDefaults!
     private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
     private var remoteConfigStore = RemoteConfigStoreMock()
+    private var currentDateProvider: MockCurrentDateProvider!
 
     override func setUp() {
         mockUserDefaults = InMemoryUserDefaults()
+        currentDateProvider = MockCurrentDateProvider()
     }
 
     func testShouldShowCardBasedOnPhase() {
@@ -58,6 +60,58 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         XCTAssertEqual(config.learnMoreButtonURL, "example.com")
     }
 
+    func testHidingTheMenuCard() {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+
+        // When
+        presenter.hideThisTapped()
+
+        // Then
+        XCTAssertFalse(presenter.shouldShowCard())
+    }
+
+    func testRemindMeLaterTappedRecently() {
+        // Given
+        let secondsInDay = TimeInterval(86_400)
+        let currentDate = Date()
+        let presenter = JetpackBrandingMenuCardPresenter(
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults,
+            currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = currentDate
+
+        // When
+        presenter.remindLaterTapped()
+        currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInDay)
+
+        // Then
+        XCTAssertFalse(presenter.shouldShowCard())
+    }
+
+    func testRemindMeLaterTappedAndIntervalPassed() {
+        // Given
+        let secondsInSevenDays = TimeInterval(86_400 * 7)
+        let currentDate = Date()
+        let presenter = JetpackBrandingMenuCardPresenter(
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults,
+            currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = currentDate
+
+        // When
+        presenter.remindLaterTapped()
+        currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInSevenDays + 1)
+
+        // Then
+        XCTAssertTrue(presenter.shouldShowCard())
+    }
+
 }
 
 private class RemoteFeatureFlagStoreMock: RemoteFeatureFlagStore {
@@ -98,5 +152,13 @@ private class RemoteConfigStoreMock: RemoteConfigStore {
             return phaseThreeBlogPostUrl
         }
         return super.value(for: key)
+    }
+}
+
+private class MockCurrentDateProvider: CurrentDateProvider {
+    var dateToReturn: Date?
+
+    func date() -> Date {
+        return dateToReturn ?? Date()
     }
 }
