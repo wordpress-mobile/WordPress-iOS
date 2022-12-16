@@ -1600,7 +1600,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBackup
 {
-    BackupListViewController *controller = [[BackupListViewController alloc] initWithBlog:self.blog];
+    UIViewController *controller = [BackupListViewController withJPBannerForBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
