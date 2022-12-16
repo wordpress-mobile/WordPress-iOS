@@ -35,6 +35,11 @@ private extension JetpackBrandingMenuCardCoordinator {
 
 class JetpackBrandingMenuCardPresenter {
 
+    struct Config {
+        let description: String
+        let learnMoreButtonURL: String?
+    }
+
     // MARK: Private Variables
 
     private let remoteConfigStore: RemoteConfigStore
@@ -53,8 +58,20 @@ class JetpackBrandingMenuCardPresenter {
 
     // MARK: Public Functions
 
+    func cardConfig() -> Config? {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        switch phase {
+        case .three:
+            let description = Strings.phaseThreeDescription
+            let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url)
+        default:
+            return nil
+        }
+    }
+
     func shouldShowCard() -> Bool {
-        return false
+        return cardConfig() != nil
     }
 
     func remindLaterTapped() {
@@ -70,13 +87,6 @@ class JetpackBrandingMenuCardPresenter {
 }
 
 private extension JetpackBrandingMenuCardPresenter {
-    enum Constants {
-        static let secondInDay = 86_400
-        static let remindLaterDurationInDays = 7
-        static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
-        static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
-    }
-
     var shouldHideCard: Bool {
         get {
             persistenceStore.bool(forKey: Constants.shouldHideCardKey)
@@ -95,5 +105,20 @@ private extension JetpackBrandingMenuCardPresenter {
         set {
             persistenceStore.set(newValue, forKey: Constants.showCardOnDateKey)
         }
+    }
+}
+
+private extension JetpackBrandingMenuCardPresenter {
+    enum Constants {
+        static let secondInDay = 86_400
+        static let remindLaterDurationInDays = 7
+        static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
+        static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
+    }
+
+    enum Strings {
+        static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
+                                                           value: "Stats, Reader, Notifications and other features will soon move to the Jetpack mobile app.",
+                                                           comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
     }
 }
