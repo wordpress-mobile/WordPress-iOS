@@ -6,7 +6,7 @@
         .init()
     }()
 
-    var previousMigrationError: Errors? {
+    var previousMigrationError: MigrationError? {
         guard let storedErrorValue = sharedPersistentRepository?.string(forKey: .exportErrorSharedKey) else {
             return nil
         }
@@ -45,7 +45,7 @@
         ensureBackupDataDeletedOnLogout()
     }
 
-    enum Errors: String, LocalizedError {
+    enum MigrationError: String, LocalizedError {
         case ineligible
         case exportFailure
         case localDraftsNotSynced
@@ -69,7 +69,7 @@
     /// just let the user continue with the original intent in case of failure.
     ///
     /// - Parameter completion: Closure called after the export process completes.
-    func startAndDo(completion: ((Result<Void, Errors>) -> Void)? = nil) {
+    func startAndDo(completion: ((Result<Void, MigrationError>) -> Void)? = nil) {
         guard eligibilityProvider.isEligibleForMigration else {
             tracker.trackContentExportEligibility(eligible: false)
             processResult(.failure(.ineligible), completion: completion)
@@ -77,7 +77,7 @@
         }
 
         guard isLocalPostsSynced() else {
-            let error = Errors.localDraftsNotSynced
+            let error = MigrationError.localDraftsNotSynced
             tracker.trackContentExportFailed(reason: error.localizedDescription)
             processResult(.failure(error), completion: completion)
             return
@@ -175,7 +175,7 @@ private extension ContentMigrationCoordinator {
     /// - Parameters:
     ///   - result: The `Result` object from the export process.
     ///   - completion: Closure that'll be executed after the process completes.
-    func processResult(_ result: Result<Void, Errors>, completion: ((Result<Void, Errors>) -> Void)?) {
+    func processResult(_ result: Result<Void, MigrationError>, completion: ((Result<Void, MigrationError>) -> Void)?) {
         switch result {
         case .success:
             sharedPersistentRepository?.removeObject(forKey: .exportErrorSharedKey)
