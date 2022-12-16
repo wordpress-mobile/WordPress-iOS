@@ -6,6 +6,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Private Variables
 
     private weak var viewController: UIViewController?
+    private var presenter: JetpackBrandingMenuCardPresenter
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
@@ -119,11 +120,13 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        presenter = JetpackBrandingMenuCardPresenter()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
+        presenter = JetpackBrandingMenuCardPresenter()
         super.init(coder: coder)
         commonInit()
     }
@@ -144,7 +147,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private func setupContent() {
         logosAnimationView.play()
-        let config = JetpackBrandingMenuCardCoordinator.cardConfig
+        let config = presenter.cardConfig()
         descriptionLabel.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
@@ -152,7 +155,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Actions
 
     @objc private func learnMoreButtonTapped() {
-        guard let config = JetpackBrandingMenuCardCoordinator.cardConfig,
+        guard let config = presenter.cardConfig(),
               let urlString = config.learnMoreButtonURL,
               let url = URL(string: urlString) else {
             return

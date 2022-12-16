@@ -742,7 +742,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
-    if (JetpackBrandingMenuCardCoordinator.shouldShowCard == YES) {
+    if (self.shouldShowJetpackBrandingMenuCard == YES) {
         [marr addObject:[self jetpackCardSectionViewModel]];
     }
 

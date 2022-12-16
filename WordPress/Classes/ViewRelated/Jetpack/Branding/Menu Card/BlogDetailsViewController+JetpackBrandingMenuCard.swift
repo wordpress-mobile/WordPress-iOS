@@ -2,6 +2,11 @@ import Foundation
 
 extension BlogDetailsViewController {
 
+    @objc var shouldShowJetpackBrandingMenuCard: Bool {
+        let presenter = JetpackBrandingMenuCardPresenter()
+        return presenter.shouldShowCard()
+    }
+
     @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {}
