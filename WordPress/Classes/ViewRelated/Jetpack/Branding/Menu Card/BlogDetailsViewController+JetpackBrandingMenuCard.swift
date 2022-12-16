@@ -10,7 +10,9 @@ extension BlogDetailsViewController {
     @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {
+            let presenter = JetpackBrandingMenuCardPresenter()
             JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .card, in: self)
+            presenter.trackCardTapped()
         }
 
         let section = BlogDetailsSection(title: nil,

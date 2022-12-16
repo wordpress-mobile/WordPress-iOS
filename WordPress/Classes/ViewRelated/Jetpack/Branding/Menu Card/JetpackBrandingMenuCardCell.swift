@@ -134,7 +134,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private func commonInit() {
         setupViews()
         setupContent()
-        // TODO: Track card shown
+        
+        presenter.trackCardShown()
     }
 
     // MARK: Helpers
@@ -164,7 +165,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.analyticsSource)
         let navController = UINavigationController(rootViewController: webViewController)
         viewController?.present(navController, animated: true)
-        // TODO: Track button tapped
+        presenter.trackLinkTapped()
     }
 }
 
@@ -191,13 +192,11 @@ private extension JetpackBrandingMenuCardCell {
     private func remindMeLaterTapped() {
         presenter.remindLaterTapped()
         viewController?.reloadTableView()
-        // TODO: Track button tapped
     }
 
     private func hideThisTapped() {
         presenter.hideThisTapped()
         viewController?.reloadTableView()
-        // TODO: Track button tapped
     }
 }
 
