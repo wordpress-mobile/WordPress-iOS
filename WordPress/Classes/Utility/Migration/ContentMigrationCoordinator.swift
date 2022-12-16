@@ -6,12 +6,17 @@
         .init()
     }()
 
+    var storedExportErrorDescription: String? {
+        sharedPersistentRepository?.string(forKey: .exportErrorSharedKey)
+    }
+
     // MARK: Dependencies
 
     private let coreDataStack: CoreDataStack
     private let dataMigrator: ContentDataMigrating
     private let notificationCenter: NotificationCenter
     private let userPersistentRepository: UserPersistentRepository
+    private let sharedPersistentRepository: UserPersistentRepository?
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
 
@@ -19,12 +24,14 @@
          dataMigrator: ContentDataMigrating = DataMigrator(),
          notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
+         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
         self.notificationCenter = notificationCenter
         self.userPersistentRepository = userPersistentRepository
+        self.sharedPersistentRepository = sharedPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
 
@@ -61,14 +68,14 @@
     func startAndDo(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
         guard eligibilityProvider.isEligibleForMigration else {
             tracker.trackContentExportEligibility(eligible: false)
-            completion?(.failure(.ineligible))
+            processResult(.failure(.ineligible), completion: completion)
             return
         }
 
         guard isLocalPostsSynced() else {
             let error = ContentMigrationCoordinatorError.localDraftsNotSynced
             tracker.trackContentExportFailed(reason: error.localizedDescription)
-            completion?(.failure(error))
+            processResult(.failure(error), completion: completion)
             return
         }
 
@@ -76,12 +83,12 @@
             switch result {
             case .success:
                 self?.tracker.trackContentExportSucceeded()
-                completion?(.success(()))
+                self?.processResult(.success(()), completion: completion)
 
             case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
                 self?.tracker.trackContentExportFailed(reason: error.localizedDescription)
-                completion?(.failure(.exportFailure))
+                self?.processResult(.failure(.exportFailure), completion: completion)
             }
         }
     }
@@ -157,6 +164,27 @@ private extension ContentMigrationCoordinator {
             self.cleanupExportedDataIfNeeded()
         }
     }
+
+    /// A "middleware" logic that attempts to record (or clear) any migration error to the App Group space
+    /// before calling the completion block.
+    ///
+    /// - Parameters:
+    ///   - result: The `Result` object from the export process.
+    ///   - completion: Closure that'll be executed after the process completes.
+    func processResult(_ result: Result<Void, ContentMigrationCoordinatorError>, completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)?) {
+        switch result {
+        case .success:
+            sharedPersistentRepository?.removeObject(forKey: .exportErrorSharedKey)
+
+        case .failure(let error):
+            guard let description = error.errorDescription else {
+                break
+            }
+            sharedPersistentRepository?.set(description, forKey: .exportErrorSharedKey)
+        }
+
+        completion?(result)
+    }
 }
 
 // MARK: - Content Migration Eligibility Provider
@@ -176,4 +204,5 @@ extension AppConfiguration: ContentMigrationEligibilityProvider {
 
 private extension String {
     static let oneOffMigrationKey = "wordpress_one_off_export"
+    static let exportErrorSharedKey = "wordpress_shared_export_error"
 }
