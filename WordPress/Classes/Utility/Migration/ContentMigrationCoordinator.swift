@@ -158,6 +158,11 @@ private extension ContentMigrationCoordinator {
     /// This prevents the user from entering the migration flow and immediately gets shown with a login pop-up (since we couldn't migrate the authToken anymore).
     ///
     func ensureBackupDataDeletedOnLogout() {
+        // we only need to listen to changes from the WordPress side.
+        guard AppConfiguration.isWordPress else {
+            return
+        }
+
         notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
             // nil notification object means it's a logout event.
             guard let self,
@@ -176,6 +181,12 @@ private extension ContentMigrationCoordinator {
     ///   - result: The `Result` object from the export process.
     ///   - completion: Closure that'll be executed after the process completes.
     func processResult(_ result: Result<Void, MigrationError>, completion: ((Result<Void, MigrationError>) -> Void)?) {
+        // make sure that we're only intercepting from the WordPress side.
+        guard AppConfiguration.isWordPress else {
+            completion?(result)
+            return
+        }
+
         switch result {
         case .success:
             sharedPersistentRepository?.removeObject(forKey: .exportErrorSharedKey)
