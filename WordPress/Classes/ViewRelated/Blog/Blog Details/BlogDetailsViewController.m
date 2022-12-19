@@ -615,6 +615,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
                 _restorableSelectedIndexPath = nil;
             }
@@ -700,6 +701,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
                 BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
                 BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
@@ -742,7 +744,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
-    if (JetpackBrandingMenuCardCoordinator.shouldShowCard == YES) {
+    if (self.shouldShowJetpackBrandingMenuCard == YES) {
         [marr addObject:[self jetpackCardSectionViewModel]];
     }
 

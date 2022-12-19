@@ -5,7 +5,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Private Variables
 
-    private weak var viewController: UIViewController?
+    private weak var viewController: BlogDetailsViewController?
+    private var presenter: JetpackBrandingMenuCardPresenter
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
@@ -119,11 +120,13 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        presenter = JetpackBrandingMenuCardPresenter()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
+        presenter = JetpackBrandingMenuCardPresenter()
         super.init(coder: coder)
         commonInit()
     }
@@ -144,7 +147,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private func setupContent() {
         logosAnimationView.play()
-        let config = JetpackBrandingMenuCardCoordinator.cardConfig
+        let config = presenter.cardConfig()
         descriptionLabel.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
@@ -152,7 +155,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Actions
 
     @objc private func learnMoreButtonTapped() {
-        guard let config = JetpackBrandingMenuCardCoordinator.cardConfig,
+        guard let config = presenter.cardConfig(),
               let urlString = config.learnMoreButtonURL,
               let url = URL(string: urlString) else {
             return
@@ -186,11 +189,15 @@ private extension JetpackBrandingMenuCardCell {
     // MARK: Actions
 
     private func remindMeLaterTapped() {
-        // TODO: Implement this
+        presenter.remindLaterTapped()
+        viewController?.reloadTableView()
+        // TODO: Track button tapped
     }
 
     private func hideThisTapped() {
-        // TODO: Implement this
+        presenter.hideThisTapped()
+        viewController?.reloadTableView()
+        // TODO: Track button tapped
     }
 }
 
@@ -276,7 +283,7 @@ private extension JetpackBrandingMenuCardCell {
 extension JetpackBrandingMenuCardCell {
 
     @objc(configureWithViewController:)
-    func configure(with viewController: UIViewController) {
+    func configure(with viewController: BlogDetailsViewController) {
         self.viewController = viewController
     }
 }
