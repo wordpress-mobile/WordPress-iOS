@@ -169,8 +169,6 @@ private extension ContextManager {
                 startupEvent.add(error: error)
             }
 
-            // TODO: The original Objective C implement calls `loadPersistentStores` again here, but throws an exception regardless the result.
-
             startupEvent.send(title: "Can't initialize Core Data stack")
             objc_exception_throw(
                 NSException(
