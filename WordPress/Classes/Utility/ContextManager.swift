@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-///A constant representing the current version of the data model.
+/// A constant representing the current version of the data model.
 ///
 /// - SeeAlso: ContextManager.init(modelName:store:)
 let ContextManagerModelNameCurrent = "$CURRENT"
@@ -110,7 +110,7 @@ private extension ContextManager {
             }
         }
 
-        /// Ensure that the `context`'s concurrency type is not `confinementConcurrencyType`, since it will crash if `perform` or `performAndWait` is called.
+        // Ensure that the `context`'s concurrency type is not `confinementConcurrencyType`, since it will crash if `perform` or `performAndWait` is called.
         guard context.concurrencyType == .mainQueueConcurrencyType || context.concurrencyType == .privateQueueConcurrencyType else {
             block()
             return

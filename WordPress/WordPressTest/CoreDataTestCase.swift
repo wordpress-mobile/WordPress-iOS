@@ -1,5 +1,4 @@
 import XCTest
-
 import WordPress
 
 /// A `XCTestCase` subclass which manages a mock implementation of `CoreDataStack`. Inherit
