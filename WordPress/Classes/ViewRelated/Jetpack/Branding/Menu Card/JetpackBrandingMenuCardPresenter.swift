@@ -12,7 +12,7 @@ class JetpackBrandingMenuCardPresenter {
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
-    private let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
+    private let featureFlagStore: RemoteFeatureFlagStore
 
     // MARK: Initializers
 
@@ -23,12 +23,13 @@ class JetpackBrandingMenuCardPresenter {
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
-        self.phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        self.featureFlagStore = featureFlagStore
     }
 
     // MARK: Public Functions
 
     func cardConfig() -> Config? {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
@@ -92,7 +93,8 @@ extension JetpackBrandingMenuCardPresenter {
     }
 
     private var analyticsProperties: [String: String] {
-        [Constants.phaseAnalyticsKey: phase.rawValue]
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        return [Constants.phaseAnalyticsKey: phase.rawValue]
     }
 }
 
