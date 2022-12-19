@@ -56,7 +56,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will soon move to the Jetpack mobile app.")
+        XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.")
         XCTAssertEqual(config.learnMoreButtonURL, "example.com")
     }
 
@@ -95,7 +95,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
 
     func testRemindMeLaterTappedAndIntervalPassed() {
         // Given
-        let secondsInSevenDays = TimeInterval(86_400 * 7)
+        let secondsInSevenDays = TimeInterval(86_400 * 4)
         let currentDate = Date()
         let presenter = JetpackBrandingMenuCardPresenter(
             featureFlagStore: remoteFeatureFlagsStore,
