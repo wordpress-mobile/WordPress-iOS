@@ -87,7 +87,7 @@ private extension JetpackBrandingMenuCardPresenter {
 private extension JetpackBrandingMenuCardPresenter {
     enum Constants {
         static let secondsInDay = 86_400
-        static let remindLaterDurationInDays = 7
+        static let remindLaterDurationInDays = 4
         static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
         static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
     }
