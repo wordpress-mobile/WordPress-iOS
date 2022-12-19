@@ -99,7 +99,7 @@ class DonutChartView: UIView {
         legendStackView = UIStackView()
         legendStackView.translatesAutoresizingMaskIntoConstraints = false
         legendStackView.spacing = Constants.legendStackViewSpacing
-        legendStackView.distribution = .equalSpacing
+        legendStackView.distribution = .fillEqually
         legendStackView.alignment = .center
 
         addSubview(legendStackView)
@@ -110,6 +110,7 @@ class DonutChartView: UIView {
             chartContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             chartContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             chartContainer.topAnchor.constraint(equalTo: topAnchor),
+            chartContainer.heightAnchor.constraint(equalToConstant: Constants.chartHeight),
 
             legendStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             legendStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
@@ -263,9 +264,11 @@ class DonutChartView: UIView {
         if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             legendStackView.axis = .vertical
             legendStackView.alignment = .leading
+            legendStackView.subviews.forEach { ($0 as? LegendView)?.isCentered = false }
         } else {
             legendStackView.axis = .horizontal
             legendStackView.alignment = .center
+            legendStackView.subviews.forEach { ($0 as? LegendView)?.isCentered = true }
         }
     }
 
@@ -310,6 +313,7 @@ class DonutChartView: UIView {
         static let titleStackViewSpacing: CGFloat = 8.0
         static let legendStackViewSpacing: CGFloat = 8.0
         static let chartToLegendSpacing: CGFloat = 32.0
+        static let chartHeight: CGFloat = 180.0
 
         // We'll rotate the chart back by 90 degrees so it starts at the top rather than the right
         static let chartRotationDegrees: CGFloat = -90.0
@@ -324,6 +328,17 @@ class DonutChartView: UIView {
 private class LegendView: UIView {
     let segment: DonutChartView.Segment
 
+    var isCentered: Bool {
+        get {
+            return leadingConstraint?.isActive ?? false
+        }
+
+        set {
+            leadingConstraint?.isActive = !newValue
+        }
+    }
+    private var leadingConstraint: NSLayoutConstraint?
+
     init(segment: DonutChartView.Segment) {
         self.segment = segment
 
@@ -337,33 +352,44 @@ private class LegendView: UIView {
     }
 
     private func configureSubviews() {
-        let indicatorContainer = UIView()
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+
         let indicator = UIView()
         indicator.backgroundColor = segment.color
         indicator.layer.cornerRadius = 6.0
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicatorContainer.addSubview(indicator)
 
         let titleLabel = UILabel()
-        titleLabel.font = .preferredFont(forTextStyle: .subheadline)
+        titleLabel.font = .preferredFont(forTextStyle: .footnote)
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.text = segment.title
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
 
-        let stackView = UIStackView(arrangedSubviews: [indicatorContainer, titleLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 16.0
-        addSubview(stackView)
+        containerView.addSubviews([titleLabel, indicator])
+        addSubview(containerView)
+
+        leadingConstraint = containerView.leadingAnchor.constraint(equalTo: leadingAnchor)
+        leadingConstraint?.priority = .required
 
         NSLayoutConstraint.activate([
             indicator.widthAnchor.constraint(equalToConstant: 12.0),
             indicator.heightAnchor.constraint(equalToConstant: 12.0),
-            indicator.centerXAnchor.constraint(equalTo: indicatorContainer.centerXAnchor),
-            indicator.centerYAnchor.constraint(equalTo: indicatorContainer.centerYAnchor),
+            indicator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            indicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
 
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: indicator.trailingAnchor, constant: 8),
+            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
+
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            containerView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }
