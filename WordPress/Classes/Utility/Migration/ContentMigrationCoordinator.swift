@@ -14,6 +14,8 @@
     private let userPersistentRepository: UserPersistentRepository
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
+    private let lock = NSLock()
+    @Atomic private var completionHandlers = [(Result<Void, ContentMigrationCoordinatorError>) -> Void]()
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          dataMigrator: ContentDataMigrating = DataMigrator(),
@@ -59,16 +61,36 @@
     ///
     /// - Parameter completion: Closure called after the export process completes.
     func startAndDo(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
+        guard lock.try() else {
+            if let completion {
+                completionHandlers.append(completion)
+            }
+            return
+        }
+
+        let wrappedCompletion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void) = { [weak self] result in
+            guard let self else {
+                return
+            }
+            self.lock.unlock()
+            completion?(result)
+            for completionHandler in self.completionHandlers {
+                completionHandler(result)
+            }
+
+            self.completionHandlers = []
+        }
+
         guard eligibilityProvider.isEligibleForMigration else {
             tracker.trackContentExportEligibility(eligible: false)
-            completion?(.failure(.ineligible))
+            wrappedCompletion(.failure(.ineligible))
             return
         }
 
         guard isLocalPostsSynced() else {
             let error = ContentMigrationCoordinatorError.localDraftsNotSynced
             tracker.trackContentExportFailed(reason: error.localizedDescription)
-            completion?(.failure(error))
+            wrappedCompletion(.failure(error))
             return
         }
 
@@ -76,12 +98,12 @@
             switch result {
             case .success:
                 self?.tracker.trackContentExportSucceeded()
-                completion?(.success(()))
+                wrappedCompletion(.success(()))
 
             case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
                 self?.tracker.trackContentExportFailed(reason: error.localizedDescription)
-                completion?(.failure(.exportFailure))
+                wrappedCompletion(.failure(.exportFailure))
             }
         }
     }
