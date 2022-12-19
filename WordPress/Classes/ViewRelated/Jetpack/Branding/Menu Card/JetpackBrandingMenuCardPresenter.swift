@@ -121,7 +121,7 @@ private extension JetpackBrandingMenuCardPresenter {
 private extension JetpackBrandingMenuCardPresenter {
     enum Constants {
         static let secondsInDay = 86_400
-        static let remindLaterDurationInDays = 7
+        static let remindLaterDurationInDays = 4
         static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
         static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
         static let phaseAnalyticsKey = "phase"
@@ -129,7 +129,7 @@ private extension JetpackBrandingMenuCardPresenter {
 
     enum Strings {
         static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
-                                                           value: "Stats, Reader, Notifications and other features will soon move to the Jetpack mobile app.",
+                                                           value: "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.",
                                                            comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
     }
 }
