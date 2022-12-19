@@ -130,7 +130,7 @@ struct WeeklyRoundupDebugScreen: View {
                     .frame(height: settings.spacerHeight)
             }
 
-            Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification.  It will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
+            Text("The first number is when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.  The second number is for the static notification which depend on the weeklyRoundupStaticNotification feature flag being enabled.  The static notification will be shown if either the App is killed or if the dynamic notification isn't shown by iOS before it.")
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(settings.defaultPadding)
 
