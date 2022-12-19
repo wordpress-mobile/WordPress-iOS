@@ -94,7 +94,7 @@ private extension JetpackBrandingMenuCardPresenter {
 
     enum Strings {
         static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
-                                                           value: "Stats, Reader, Notifications and other features will soon move to the Jetpack mobile app.",
+                                                           value: "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.",
                                                            comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
     }
 }
