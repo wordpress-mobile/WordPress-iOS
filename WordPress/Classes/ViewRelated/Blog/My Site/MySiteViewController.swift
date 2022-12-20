@@ -184,6 +184,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        displayOverlayIfNeeded()
+
         workaroundLargeTitleCollapseBug()
 
         if AppConfiguration.showsWhatIsNew {
@@ -1022,5 +1024,13 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
         case .none:
             return
         }
+    }
+}
+
+// MARK: Jetpack Features Removal
+
+private extension MySiteViewController {
+    func displayOverlayIfNeeded() {
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .appOpen, in: self)
     }
 }
