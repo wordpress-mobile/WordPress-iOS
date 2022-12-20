@@ -333,10 +333,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             // To prevent race condition, initialize the shared instance synchronously so it can listen to account change notifications.
             let _ = ContentMigrationCoordinator.shared
 
-            // Start proactively exporting WP data in the background if the conditions are fulfilled.
-            // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
-            DispatchQueue.global().async {
-                ContentMigrationCoordinator.shared.startOnceIfNeeded()
+            let launchUrl = launchOptions[.url] as? URL
+            let exportUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
+            if launchUrl != exportUrl {
+                // Start proactively exporting WP data in the background if the conditions are fulfilled.
+                // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
+                DispatchQueue.global().async {
+                    ContentMigrationCoordinator.shared.startOnceIfNeeded()
+                }
             }
         }
 
