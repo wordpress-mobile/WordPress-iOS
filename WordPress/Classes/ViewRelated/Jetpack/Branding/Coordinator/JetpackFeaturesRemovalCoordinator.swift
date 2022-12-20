@@ -40,6 +40,17 @@ class JetpackFeaturesRemovalCoordinator {
         case card
         case login
         case appOpen = "app_open"
+
+        func frequencyTrackerPhaseString(phase: GeneralPhase) -> String {
+            switch self {
+            case .login:
+                fallthrough
+            case .appOpen:
+                return phase.rawValue // Shown once per phase
+            default:
+                return "" // Phase is irrelevant, it just affects the frequency.
+            }
+        }
     }
 
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
@@ -100,8 +111,11 @@ class JetpackFeaturesRemovalCoordinator {
     static func presentOverlayIfNeeded(from source: OverlaySource, in viewController: UIViewController) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
+        let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
         let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
-        let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig, source: source)
+        let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
+                                                              phaseString: frequencyTrackerPhaseString,
+                                                              source: source)
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow() else {
             return
         }

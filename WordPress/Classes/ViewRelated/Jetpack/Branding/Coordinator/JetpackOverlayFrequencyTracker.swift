@@ -3,6 +3,7 @@ import Foundation
 class JetpackOverlayFrequencyTracker {
 
     private let frequencyConfig: FrequencyConfig
+    private let phaseString: String
     private let source: JetpackFeaturesRemovalCoordinator.OverlaySource
     private let persistenceStore: UserPersistentRepository
 
@@ -19,19 +20,21 @@ class JetpackOverlayFrequencyTracker {
 
     private var lastSavedSourceDate: Date? {
         get {
-            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)"
+            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
             return persistenceStore.object(forKey: sourceKey) as? Date
         }
         set {
-            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)"
+            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
             persistenceStore.set(newValue, forKey: sourceKey)
         }
     }
 
     init(frequencyConfig: FrequencyConfig = .defaultConfig,
+         phaseString: String = "",
          source: JetpackFeaturesRemovalCoordinator.OverlaySource,
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.frequencyConfig = frequencyConfig
+        self.phaseString = phaseString
         self.source = source
         self.persistenceStore = persistenceStore
     }
