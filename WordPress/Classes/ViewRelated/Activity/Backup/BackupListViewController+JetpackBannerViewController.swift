@@ -6,7 +6,7 @@ extension BackupListViewController {
         guard let backupListVC = BackupListViewController(blog: blog) else {
             return nil
         }
-        return JetpackBannerWrapperViewController(childVC: backupListVC)
+        return JetpackBannerWrapperViewController(childVC: backupListVC, analyticsId: .backup)
     }
 }
 
