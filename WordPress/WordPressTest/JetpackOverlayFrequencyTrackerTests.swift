@@ -18,7 +18,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testTrackingOverlay() throws {
         // Given
-        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats-"
+        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = JetpackOverlayFrequencyTracker(source: .stats, persistenceStore: mockUserDefaults)
 
@@ -37,7 +37,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testAlwaysShowCardOverlays() {
         // Given
-        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-card-"
+        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-card"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = JetpackOverlayFrequencyTracker(source: .card, persistenceStore: mockUserDefaults)
         mockUserDefaults.set(Date(), forKey: key)
@@ -49,9 +49,11 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testShowLoginOverlayOnlyOnce() {
         // Given
-        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-login-"
+        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-login-phaseString"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
-        let tracker = JetpackOverlayFrequencyTracker(source: .login, persistenceStore: mockUserDefaults)
+        let tracker = JetpackOverlayFrequencyTracker(phaseString: "phaseString",
+                                                     source: .login,
+                                                     persistenceStore: mockUserDefaults)
 
         // When & Then
         XCTAssertTrue(tracker.shouldShow())
@@ -67,9 +69,11 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testShowAppOpenOverlayOnlyOnce() {
         // Given
-        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-app_open-"
+        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-app_open-phaseString"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
-        let tracker = JetpackOverlayFrequencyTracker(source: .appOpen, persistenceStore: mockUserDefaults)
+        let tracker = JetpackOverlayFrequencyTracker(phaseString: "phaseString",
+                                                     source: .appOpen,
+                                                     persistenceStore: mockUserDefaults)
 
         // When & Then
         XCTAssertTrue(tracker.shouldShow())
@@ -85,7 +89,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testFeatureSpecificFrequency() {
         // Given
-        let statsKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats-"
+        let statsKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let tracker = JetpackOverlayFrequencyTracker(frequencyConfig: Constants.frequencyConfig,
                                                      source: .stats,
@@ -113,7 +117,7 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
 
     func testGeneralFrequency() {
         // Given
-        let statsKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats-"
+        let statsKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
         let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
         let statsTracker = JetpackOverlayFrequencyTracker(frequencyConfig: Constants.frequencyConfig,
                                                           source: .stats,

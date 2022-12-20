@@ -3,9 +3,16 @@ import Foundation
 class JetpackOverlayFrequencyTracker {
 
     private let frequencyConfig: FrequencyConfig
-    private let phaseString: String
+    private let phaseString: String?
     private let source: JetpackFeaturesRemovalCoordinator.OverlaySource
     private let persistenceStore: UserPersistentRepository
+
+    private var sourceDateKey: String {
+        guard let phaseString = phaseString else {
+            return "\(Constants.lastDateKeyPrefix)-\(source.rawValue)"
+        }
+        return "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
+    }
 
     private var lastSavedGenericDate: Date? {
         get {
@@ -20,17 +27,15 @@ class JetpackOverlayFrequencyTracker {
 
     private var lastSavedSourceDate: Date? {
         get {
-            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
-            return persistenceStore.object(forKey: sourceKey) as? Date
+            return persistenceStore.object(forKey: sourceDateKey) as? Date
         }
         set {
-            let sourceKey = "\(Constants.lastDateKeyPrefix)-\(source.rawValue)-\(phaseString)"
-            persistenceStore.set(newValue, forKey: sourceKey)
+            persistenceStore.set(newValue, forKey: sourceDateKey)
         }
     }
 
     init(frequencyConfig: FrequencyConfig = .defaultConfig,
-         phaseString: String = "",
+         phaseString: String? = nil,
          source: JetpackFeaturesRemovalCoordinator.OverlaySource,
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.frequencyConfig = frequencyConfig

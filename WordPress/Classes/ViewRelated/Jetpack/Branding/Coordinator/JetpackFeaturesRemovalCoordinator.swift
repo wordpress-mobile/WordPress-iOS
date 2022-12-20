@@ -43,15 +43,15 @@ class JetpackFeaturesRemovalCoordinator {
 
         /// Used to differentiate between last saved dates for different phases.
         /// Should return a dynamic value if each phase should be treated differently.
-        /// Should return a static value (empty string for example) if all phases should be treated the same.
-        func frequencyTrackerPhaseString(phase: GeneralPhase) -> String {
+        /// Should return nil if all phases should be treated the same.
+        func frequencyTrackerPhaseString(phase: GeneralPhase) -> String? {
             switch self {
             case .login:
                 fallthrough
             case .appOpen:
                 return phase.rawValue // Shown once per phase
             default:
-                return "" // Phase is irrelevant.
+                return nil // Phase is irrelevant.
             }
         }
     }
