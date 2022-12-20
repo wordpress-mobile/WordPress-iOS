@@ -1,6 +1,6 @@
 #import "ReaderPost.h"
 #import "AccountService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WPAvatarSource.h"

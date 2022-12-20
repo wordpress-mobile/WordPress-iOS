@@ -5,7 +5,7 @@
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "Menu+ViewDesign.h"
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPDeviceIdentification.h>

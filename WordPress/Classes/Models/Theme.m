@@ -1,6 +1,6 @@
 #import "Theme.h"
 #import "Blog.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "WordPress-Swift.h"

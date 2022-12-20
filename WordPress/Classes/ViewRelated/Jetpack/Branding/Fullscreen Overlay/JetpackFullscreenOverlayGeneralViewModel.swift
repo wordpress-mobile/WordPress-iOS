@@ -70,6 +70,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return Strings.PhaseTwoAndThree.notificationsTitle
         case (.three, .reader):
             return Strings.PhaseTwoAndThree.readerTitle
+        case (.three, _):
+            return Strings.PhaseThree.generalTitle
         default:
             return ""
         }
@@ -110,7 +112,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .login:
             fallthrough
         case .appOpen:
-            return "" // TODO: Add new animation when ready
+            return Constants.allFeaturesLogosAnimationLtr
         }
     }
 
@@ -127,7 +129,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .login:
             fallthrough
         case .appOpen:
-            return "" // TODO: Add new animation when ready
+            return Constants.allFeaturesLogosAnimationRtl
         }
     }
 
@@ -175,13 +177,15 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     }
 
     var continueButtonText: String? {
-        switch source {
-        case .stats:
+        switch (source, phase) {
+        case (.stats, _):
             return Strings.General.statsContinueButtonTitle
-        case .notifications:
+        case (.notifications, _):
             return Strings.General.notificationsContinueButtonTitle
-        case .reader:
+        case (.reader, _):
             return Strings.General.readerContinueButtonTitle
+        case (_, .three):
+            return Strings.PhaseThree.generalContinueButtonTitle
         default:
             return nil
         }
@@ -242,6 +246,8 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
         static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
         static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
+        static let allFeaturesLogosAnimationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
+        static let allFeaturesLogosAnimationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
     }
 
     enum Strings {
@@ -313,6 +319,16 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
                                                     value: "Switching is free and only takes a minute.",
                                                     comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
+        }
+
+        enum PhaseThree {
+            static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.title",
+                                                                  value: "Jetpack features are moving soon.",
+                                                                  comment: "Title of a screen that showcases the Jetpack app.")
+
+            static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.continue.title",
+                                                                            value: "Continue without Jetpack",
+                                                                            comment: "Title of a button that dismisses an overlay that showcases the Jetpack app.")
         }
     }
 }

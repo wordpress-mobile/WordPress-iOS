@@ -2,7 +2,7 @@
 #import "Media.h"
 #import "MediaService.h"
 #import "Blog.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WordPress-Swift.h"
 
 @interface  MediaLibraryPickerDataSource() <NSFetchedResultsControllerDelegate>

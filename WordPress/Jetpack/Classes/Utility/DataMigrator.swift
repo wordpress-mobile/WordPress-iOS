@@ -179,6 +179,7 @@ private extension DataMigrator {
         for (key, value) in temporaryDictionary {
             localDefaults.set(value, forKey: key)
         }
+        AppAppearance.overrideAppearance()
         sharedDefaults.removeObject(forKey: DefaultsWrapper.dictKey)
         return true
     }
