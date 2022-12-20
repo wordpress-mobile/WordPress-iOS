@@ -162,6 +162,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         subscribeToPostPublished()
         startObservingQuickStart()
         startObservingOnboardingPrompt()
+        subscribeToWillEnterForeground()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -262,6 +263,13 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     private func subscribeToPostPublished() {
         NotificationCenter.default.addObserver(self, selector: #selector(handlePostPublished), name: .newPostPublished, object: nil)
+    }
+
+    private func subscribeToWillEnterForeground() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(displayOverlayIfNeeded),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
     }
 
     func updateNavigationTitle(for blog: Blog) {
@@ -1030,7 +1038,9 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 // MARK: Jetpack Features Removal
 
 private extension MySiteViewController {
-    func displayOverlayIfNeeded() {
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .appOpen, in: self)
+    @objc func displayOverlayIfNeeded() {
+        if isViewOnScreen() {
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .appOpen, in: self)
+        }
     }
 }
