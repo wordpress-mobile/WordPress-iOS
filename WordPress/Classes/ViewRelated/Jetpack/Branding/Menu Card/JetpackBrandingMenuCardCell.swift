@@ -147,7 +147,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     }
 
     private func setupContent() {
-        logosAnimationView.play()
+        logosAnimationView.currentProgress = 1.0
         let config = presenter.cardConfig()
         descriptionLabel.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
