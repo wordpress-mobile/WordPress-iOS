@@ -10,6 +10,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
     private var mockDataMigrator: MockDataMigrator!
     private var mockNotificationCenter: MockNotificationCenter!
     private var mockPersistentRepository: InMemoryUserDefaults!
+    private var mockSharedPersistentRepository: InMemoryUserDefaults!
     private var coordinator: ContentMigrationCoordinator!
 
     override func setUp() {
@@ -19,6 +20,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         mockDataMigrator = MockDataMigrator()
         mockNotificationCenter = MockNotificationCenter()
         mockPersistentRepository = InMemoryUserDefaults()
+        mockSharedPersistentRepository = InMemoryUserDefaults()
         coordinator = makeCoordinator()
     }
 
@@ -27,6 +29,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         mockDataMigrator = nil
         mockNotificationCenter = nil
         mockPersistentRepository = nil
+        mockSharedPersistentRepository = nil
         coordinator = nil
 
         super.tearDown()
@@ -42,6 +45,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
                 return
             }
 
+            XCTAssertNil(self.coordinator.previousMigrationError)
             XCTAssertTrue(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
@@ -58,6 +62,7 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
                 return
             }
 
+            XCTAssertNotNil(self.coordinator.previousMigrationError)
             XCTAssertFalse(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
@@ -68,7 +73,33 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         mockDataMigrator.exportErrorToReturn = .databaseCopyError
 
         let expect = expectation(description: "Content migration should fail")
-        coordinator.startAndDo { _ in
+        coordinator.startAndDo { result in
+            guard case .failure(let error) = result else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertNotNil(self.coordinator.previousMigrationError)
+            XCTAssertEqual(error, .exportFailure)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: timeout)
+    }
+
+    func test_startAndDo_givenExistingError_andSubsequentExportSucceeds_shouldClearStoredError() {
+        // Given
+        mockSharedPersistentRepository.set("ineligible", forKey: exportFailureSharedKey)
+
+        // When
+        let expect = expectation(description: "Content migration should succeed")
+        coordinator.startAndDo { result in
+            guard case .success = result else {
+                XCTFail()
+                return
+            }
+
+            // Then
+            XCTAssertNil(self.coordinator.previousMigrationError)
             XCTAssertTrue(self.mockDataMigrator.exportCalled)
             expect.fulfill()
         }
@@ -245,6 +276,10 @@ private extension ContentMigrationCoordinatorTests {
         "wordpress_one_off_export"
     }
 
+    var exportFailureSharedKey: String {
+        "wordpress_shared_export_error"
+    }
+
     final class MockEligibilityProvider: ContentMigrationEligibilityProvider {
         var isEligibleForMigration = true
     }
@@ -284,6 +319,7 @@ private extension ContentMigrationCoordinatorTests {
                      dataMigrator: mockDataMigrator,
                      notificationCenter: mockNotificationCenter,
                      userPersistentRepository: mockPersistentRepository,
+                     sharedPersistentRepository: mockSharedPersistentRepository,
                      eligibilityProvider: mockEligibilityProvider)
     }
 

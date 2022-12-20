@@ -329,7 +329,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         setupWordPressExtensions()
 
-        if FeatureFlag.contentMigration.enabled {
+        if AppConfiguration.isWordPress,
+           FeatureFlag.contentMigration.enabled {
             // To prevent race condition, initialize the shared instance synchronously so it can listen to account change notifications.
             let _ = ContentMigrationCoordinator.shared
 
