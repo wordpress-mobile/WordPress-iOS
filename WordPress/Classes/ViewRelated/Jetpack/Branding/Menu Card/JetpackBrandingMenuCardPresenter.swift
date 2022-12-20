@@ -11,8 +11,8 @@ class JetpackBrandingMenuCardPresenter {
 
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
-    private let featureFlagStore: RemoteFeatureFlagStore
     private let currentDateProvider: CurrentDateProvider
+    private let featureFlagStore: RemoteFeatureFlagStore
 
     // MARK: Initializers
 
@@ -21,9 +21,9 @@ class JetpackBrandingMenuCardPresenter {
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.remoteConfigStore = remoteConfigStore
-        self.featureFlagStore = featureFlagStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
+        self.featureFlagStore = featureFlagStore
     }
 
     // MARK: Public Functions
@@ -55,10 +55,46 @@ class JetpackBrandingMenuCardPresenter {
         let duration = Constants.remindLaterDurationInDays * Constants.secondsInDay
         let newDate = now.addingTimeInterval(TimeInterval(duration))
         showCardOnDate = newDate
+        trackRemindMeLaterTapped()
     }
 
     func hideThisTapped() {
         shouldHideCard = true
+        trackHideThisTapped()
+    }
+}
+
+// MARK: Analytics
+
+extension JetpackBrandingMenuCardPresenter {
+
+    func trackCardShown() {
+        WPAnalytics.track(.jetpackBrandingMenuCardDisplayed, properties: analyticsProperties)
+    }
+
+    func trackLinkTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardLinkTapped, properties: analyticsProperties)
+    }
+
+    func trackCardTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
+    }
+
+    func trackContexualMenuAccessed() {
+        WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
+    }
+
+    func trackHideThisTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardHidden, properties: analyticsProperties)
+    }
+
+    func trackRemindMeLaterTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardRemindLater, properties: analyticsProperties)
+    }
+
+    private var analyticsProperties: [String: String] {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        return [Constants.phaseAnalyticsKey: phase.rawValue]
     }
 }
 
@@ -90,6 +126,7 @@ private extension JetpackBrandingMenuCardPresenter {
         static let remindLaterDurationInDays = 4
         static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
         static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
+        static let phaseAnalyticsKey = "phase"
     }
 
     enum Strings {
