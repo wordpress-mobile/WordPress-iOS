@@ -339,6 +339,8 @@ private extension StatsRevampStore {
                 state.topReferrers = referrers
             }
         }
+
+        persistData(state.topReferrers)
     }
 
     func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?) {
@@ -349,6 +351,8 @@ private extension StatsRevampStore {
                 state.topCountries = countries
             }
         }
+
+        persistData(state.topCountries)
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
@@ -359,6 +363,8 @@ private extension StatsRevampStore {
                 state.topPostsAndPages = postsAndPages
             }
         }
+
+        persistData(state.topPostsAndPages)
     }
 
     func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
@@ -368,6 +374,27 @@ private extension StatsRevampStore {
             if summaryData != nil {
                 state.summary = summaryData
             }
+        }
+
+        persistData(state.summary)
+    }
+}
+
+private extension StatsRevampStore {
+    func persistData<TimeIntervalType: StatsTimeIntervalData & TimeIntervalStatsRecordValueConvertible>(_ data: TimeIntervalType?) {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+            return
+        }
+
+        data.flatMap { StatsRecord.record(from: $0, for: blog) }
+
+        do {
+            try ContextManager.shared.mainContext.save()
+            DDLogInfo("Stats Revamp Store: finished persisting stats to disk.")
+        } catch {
+            DDLogError("Stats Revamp Store: failed persisting stats to disk.")
         }
     }
 }
