@@ -2630,6 +2630,8 @@
 		C395FB272822148400AE7C11 /* RemoteSiteDesign+Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395FB252821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift */; };
 		C396C80B280F2401006FE7AC /* SiteDesignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C396C80A280F2401006FE7AC /* SiteDesignTests.swift */; };
 		C3AB4879292F114A001F7AF8 /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
+		C3BC86F629528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
+		C3BC86F729528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
 		C3C21EB928385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */; };
 		C3C21EBA28385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */; };
 		C3C2F84628AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2F84528AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift */; };
@@ -7762,6 +7764,7 @@
 		C396C80A280F2401006FE7AC /* SiteDesignTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDesignTests.swift; sourceTree = "<group>"; };
 		C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+AppAvailability.swift"; sourceTree = "<group>"; };
 		C3ABE791263099F7009BD402 /* WordPress 121.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 121.xcdatamodel"; sourceTree = "<group>"; };
+		C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeopleViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSiteDesigns.swift; sourceTree = "<group>"; };
 		C3C2F84528AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerScrollVisibilityTests.swift; sourceTree = "<group>"; };
 		C3C2F84728AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerScrollVisibility.swift; sourceTree = "<group>"; };
@@ -14586,6 +14589,7 @@
 			isa = PBXGroup;
 			children = (
 				E1B912881BB01288003C25B9 /* PeopleViewController.swift */,
+				C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */,
 				B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */,
 				B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */,
 				B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */,
@@ -21414,6 +21418,7 @@
 				988FD74A279B75A400C7E814 /* NotificationCommentDetailCoordinator.swift in Sources */,
 				C81CCD83243BF7A600A83E27 /* TenorDataLoader.swift in Sources */,
 				98797DBC222F434500128C21 /* OverviewCell.swift in Sources */,
+				C3BC86F629528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */,
 				1749965F2271BF08007021BD /* WordPressAppDelegate.swift in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				8BF9E03327B1A8A800915B27 /* DashboardCard.swift in Sources */,
@@ -23002,6 +23007,7 @@
 				FABB21C92602FC2C00C8785C /* ReaderInterestsStyleGuide.swift in Sources */,
 				FABB21CA2602FC2C00C8785C /* SiteStatsInsightsTableViewController.swift in Sources */,
 				FABB21CB2602FC2C00C8785C /* PostCompactCell.swift in Sources */,
+				C3BC86F729528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */,
 				FABB21CC2602FC2C00C8785C /* MeHeaderView.m in Sources */,
 				FABB21CD2602FC2C00C8785C /* WebProgressView.swift in Sources */,
 				FABB21CE2602FC2C00C8785C /* Restorer.swift in Sources */,

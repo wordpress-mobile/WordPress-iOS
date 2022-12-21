@@ -24,6 +24,7 @@ struct JetpackBrandingAnalyticsHelper {
     enum JetpackBannerScreen: String {
         case activityLog = "activity_log"
         case notifications
+        case people
         case reader
         case readerSearch = "reader_search"
         case stats
