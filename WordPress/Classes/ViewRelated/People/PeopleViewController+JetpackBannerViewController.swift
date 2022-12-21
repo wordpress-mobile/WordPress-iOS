@@ -6,6 +6,9 @@ extension PeopleViewController {
         guard let peopleViewVC = PeopleViewController.controllerWithBlog(blog) else {
             return nil
         }
+        guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
+            return peopleViewVC
+        }
         return JetpackBannerWrapperViewController(childVC: peopleViewVC, analyticsId: .people)
     }
 }
