@@ -505,7 +505,11 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        let weekEnd = futureEndOfWeekDate(for: periodStore.getSummary())
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore,
+                                                                  insightsStore: insightsStore,
+                                                                  statsSummaryType: .likes,
+                                                                  periodEndDate: weekEnd)
         // We don't show guide text at the detail level
         data.guideText = nil
         return data
