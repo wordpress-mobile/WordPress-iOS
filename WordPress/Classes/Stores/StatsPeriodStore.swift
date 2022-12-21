@@ -184,6 +184,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
     var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
+    private let group = DispatchGroup()
     private let scheduler = Scheduler(seconds: 0.3)
 
     weak var delegate: StatsPeriodStoreDelegate?
@@ -384,6 +385,10 @@ private extension StatsPeriodStore {
             return
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching likes summary.")
+        }
         let likesOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
@@ -395,6 +400,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching posts.")
+        }
         let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -407,6 +416,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching referrers.")
+        }
         let topReferrers = PeriodOperation(service: service, for: period, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
@@ -419,6 +432,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching published.")
+        }
         let topPublished = PublishedPostOperation(service: service, for: period, date: date) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
@@ -431,6 +448,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching clicks.")
+        }
         let topClicks = PeriodOperation(service: service, for: period, date: date) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
@@ -443,6 +464,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching authors.")
+        }
         let topAuthors = PeriodOperation(service: service, for: period, date: date) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
@@ -455,6 +480,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching search terms.")
+        }
         let topSearchTerms = PeriodOperation(service: service, for: period, date: date) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
@@ -467,6 +496,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching countries.")
+        }
         let topCountries = PeriodOperation(service: service, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
@@ -479,6 +512,10 @@ private extension StatsPeriodStore {
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching videos.")
+        }
         let topVideos = PeriodOperation(service: service, for: period, date: date) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
@@ -493,6 +530,10 @@ private extension StatsPeriodStore {
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
         // 'num' relates to the "number of periods to include in the query".
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching file downloads.")
+        }
         let topFileDownloads = PeriodOperation(service: service, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
@@ -517,9 +558,11 @@ private extension StatsPeriodStore {
                                       topFileDownloads],
                                      waitUntilFinished: false)
 
-        operationQueue.addBarrierBlock { [weak self] in
-            DDLogInfo("Stats Period: Finished fetchAsyncData.")
-            self?.persistToCoreData()
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.notify(queue: .main) { [weak self] in
+                DDLogInfo("Stats Period: Finished fetchAsyncData.")
+                self?.persistToCoreData()
+            }
         }
     }
 
@@ -931,6 +974,10 @@ private extension StatsPeriodStore {
                 transaction { state in
                     state.summaryLikesStatus = error != nil ? .error : .success
                 }
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching likes summary.")
+                    group.leave()
+                }
                 return
         }
 
@@ -951,6 +998,10 @@ private extension StatsPeriodStore {
             state.summary = newSummary
             state.summaryLikesStatus = error != nil ? .error : .success
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching likes summary.")
+            group.leave()
+        }
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
@@ -960,6 +1011,10 @@ private extension StatsPeriodStore {
             if postsAndPages != nil {
                 state.topPostsAndPages = postsAndPages
             }
+        }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching posts.")
+            group.leave()
         }
     }
 
@@ -971,6 +1026,11 @@ private extension StatsPeriodStore {
                 state.topReferrers = referrers
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching referrers.")
+            group.leave()
+        }
+
     }
 
     func receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?, _ error: Error?) {
@@ -981,6 +1041,11 @@ private extension StatsPeriodStore {
                 state.topClicks = clicks
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching clicks.")
+            group.leave()
+        }
+
     }
 
     func receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?, _ error: Error?) {
@@ -991,6 +1056,11 @@ private extension StatsPeriodStore {
                 state.topAuthors = authors
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching authors.")
+            group.leave()
+        }
+
     }
 
     func receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?) {
@@ -1001,6 +1071,11 @@ private extension StatsPeriodStore {
                 state.topPublished = published
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching published.")
+            group.leave()
+        }
+
     }
 
     func receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?) {
@@ -1011,6 +1086,11 @@ private extension StatsPeriodStore {
                 state.topSearchTerms = searchTerms
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching search terms.")
+            group.leave()
+        }
+
     }
 
     func receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?) {
@@ -1021,6 +1101,11 @@ private extension StatsPeriodStore {
                 state.topVideos = videos
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching videos.")
+            group.leave()
+        }
+
     }
 
     func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?) {
@@ -1031,6 +1116,11 @@ private extension StatsPeriodStore {
                 state.topCountries = countries
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching countries.")
+            group.leave()
+        }
+
     }
 
     func receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?) {
@@ -1041,6 +1131,11 @@ private extension StatsPeriodStore {
                 state.topFileDownloads = downloads
             }
         }
+        if FeatureFlag.statsNewAppearance.enabled {
+            DDLogInfo("Stats Period: Leave group fetching file downloads.")
+            group.leave()
+        }
+
     }
 
     func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?) {
