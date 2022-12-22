@@ -299,11 +299,13 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                     // Countries
                     let map = countriesMap()
-                    if !map.data.isEmpty {
-                        rows.append(CountriesMapRow(countriesMap: map))
+                    let isMapShown = !map.data.isEmpty
+                    if isMapShown {
+                        rows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
                     }
                     rows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                   dataSubtitle: StatSection.periodCountries.dataSubtitle,
+                                                  statSection: isMapShown ? nil : .periodCountries,
                                                   dataRows: countriesRowData(),
                                                   siteStatsPeriodDelegate: nil,
                                                   siteStatsInsightsDetailsDelegate: insightsDetailsDelegate))
