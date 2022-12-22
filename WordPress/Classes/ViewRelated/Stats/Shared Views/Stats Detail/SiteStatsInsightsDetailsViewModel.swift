@@ -276,17 +276,14 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     let referrersData = referrersRowData()
                     let chartViewModel = StatsReferrersChartViewModel(referrers: referrers)
                     let chartView: UIView? = referrers.totalReferrerViewsCount > 0 ?  chartViewModel.makeReferrersChartView() : nil
-                    let week = StatsPeriodHelper().weekIncludingDate(periodSummary.periodEndDate)
 
                     // Views Visitors
-                    // when selectedDate is < end of the week we pad forward days to match the weeks view on WordPress.com
-                    if let weekEnd = week?.weekEnd, weekEnd > periodSummary.periodEndDate {
-                        rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!, periodEndDate: weekEnd,
-                                                                                                 statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil))
-                    } else {
-                        rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary, periodDate: selectedDate!,
-                                                                                                 statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil))
-                    }
+                    let weekEnd = futureEndOfWeekDate(for: periodSummary)
+                    rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary,
+                                                                                             periodDate: selectedDate!,
+                                                                                             periodEndDate: weekEnd,
+                                                                                             statsLineChartViewDelegate: nil,
+                                                                                             siteStatsInsightsDelegate: nil))
 
                     // Referrers
                     var referrersRow = TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
@@ -508,7 +505,11 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        let weekEnd = futureEndOfWeekDate(for: periodStore.getSummary())
+        var data = StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore,
+                                                                  insightsStore: insightsStore,
+                                                                  statsSummaryType: .likes,
+                                                                  periodEndDate: weekEnd)
         // We don't show guide text at the detail level
         data.guideText = nil
         return data
@@ -1330,6 +1331,22 @@ private extension SiteStatsInsightsDetailsViewModel {
             static let minRowCount = 1
             static let maxRowCount = 5
             static let rows = 0...maxRowCount
+        }
+    }
+
+    // Return the future end of the week date if current period end date is not an end of the week
+    func futureEndOfWeekDate(for summary: StatsSummaryTimeIntervalData?) -> Date? {
+        guard let summary = summary else {
+            return nil
+        }
+
+        /// When selectedDate is < end of the week we pad forward days to match the weeks view on WordPress.com
+        let week = StatsPeriodHelper().weekIncludingDate(summary.periodEndDate)
+
+        if let weekEnd = week?.weekEnd, weekEnd > summary.periodEndDate {
+            return weekEnd
+        } else {
+            return nil
         }
     }
 }
