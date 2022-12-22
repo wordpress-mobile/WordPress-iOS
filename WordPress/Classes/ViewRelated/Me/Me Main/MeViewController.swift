@@ -59,7 +59,7 @@ class MeViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        refreshAccountDetails()
+        refreshAccountDetailsAndSettings()
 
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
@@ -367,19 +367,47 @@ class MeViewController: UITableViewController {
         return try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
-    fileprivate func refreshAccountDetails() {
-        guard let account = defaultAccount() else {
+    fileprivate func refreshAccountDetailsAndSettings() {
+        guard let account = defaultAccount(), let api = account.wordPressComRestApi else {
             reloadViewModel()
             return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        service.updateUserDetails(for: account, success: { [weak self] in
-            self?.reloadViewModel()
-            }, failure: { error in
+        let context = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        let accountSettingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
+
+        Task {
+            do {
+                async let refreshDetails: Void = self.refreshAccountDetails(with: accountService, account: account)
+                async let refreshSettings: Void = self.refreshAccountSettings(with: accountSettingsService)
+                let _ = try await [refreshDetails, refreshSettings]
+                self.reloadViewModel()
+            } catch let error {
                 DDLogError(error.localizedDescription)
-        })
+            }
+        }
+    }
+
+    fileprivate func refreshAccountDetails(with service: AccountService, account: WPAccount) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            service.updateUserDetails(for: account, success: {
+                continuation.resume()
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
+    }
+
+    fileprivate func refreshAccountSettings(with service: AccountSettingsService) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            service.refreshSettings { result in
+                switch result {
+                case .success: continuation.resume()
+                case .failure(let error): continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 
     // MARK: - LogOut
