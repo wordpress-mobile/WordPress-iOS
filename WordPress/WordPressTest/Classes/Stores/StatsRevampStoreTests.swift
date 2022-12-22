@@ -59,6 +59,17 @@ class StatsRevampStoreTests: XCTestCase {
         XCTAssertTrue(sut.viewsAndVisitorsStatus == .error)
     }
 
+    func testViewsAndVisitorsStatusSuccessWhenAllStatusesAreErroredAndCachedDataExist() {
+        var state = StatsRevampStoreState()
+        state.summaryStatus = .error
+        state.summary = StatsSummaryTimeIntervalData(period: .day, periodEndDate: Date(), summaryData: [])
+        state.topReferrersStatus = .error
+        state.topCountriesStatus = .error
+        sut = StatsRevampStore(initialState: state, dispatcher: dispatcher)
+
+        XCTAssertTrue(sut.viewsAndVisitorsStatus == .success)
+    }
+
     func testViewsAndVisitorsStatusIdleWhenUnrelatedStatusChanged() {
         var state = StatsRevampStoreState()
         state.topPostsAndPagesStatus = .loading

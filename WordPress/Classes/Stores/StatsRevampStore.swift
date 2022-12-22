@@ -59,12 +59,12 @@ class StatsRevampStore: QueryStore<StatsRevampStoreState, StatsRevampStoreQuery>
 extension StatsRevampStore {
     var viewsAndVisitorsStatus: StoreFetchingStatus {
         let statuses = [state.summaryStatus, state.topReferrersStatus, state.topCountriesStatus]
-        return aggregateStatus(for: statuses)
+        return aggregateStatus(for: statuses, data: state.summary)
     }
 
     var likesTotalsStatus: StoreFetchingStatus {
         let statuses = [state.summaryStatus, state.topPostsAndPagesStatus]
-        return aggregateStatus(for: statuses)
+        return aggregateStatus(for: statuses, data: state.summary)
     }
 }
 
@@ -101,10 +101,10 @@ extension StatsRevampStore {
 // MARK: - Helpers
 
 private extension StatsRevampStore {
-    func aggregateStatus(for statuses: [StoreFetchingStatus]) -> StoreFetchingStatus {
+    func aggregateStatus(for statuses: [StoreFetchingStatus], data: Any?) -> StoreFetchingStatus {
         if statuses.first(where: { $0 == .loading }) != nil {
             return .loading
-        } else if statuses.first(where: { $0 == .success }) != nil {
+        } else if statuses.first(where: { $0 == .success }) != nil || data != nil {
             return .success
         } else if statuses.first(where: { $0 == .error }) != nil {
             return .error
