@@ -184,7 +184,6 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
     var statsServiceRemote: StatsServiceRemoteV2?
     private var operationQueue = OperationQueue()
-    private let group = DispatchGroup()
     private let scheduler = Scheduler(seconds: 0.3)
 
     weak var delegate: StatsPeriodStoreDelegate?
@@ -385,6 +384,8 @@ private extension StatsPeriodStore {
             return
         }
 
+        let group = DispatchGroup()
+
         if FeatureFlag.statsNewAppearance.enabled {
             group.enter()
             DDLogInfo("Stats Period: Enter group fetching likes summary.")
@@ -397,6 +398,10 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats Period: Finished fetching likes summary.")
             DispatchQueue.main.async {
                 self?.receivedLikesSummary(likes, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching likes summary.")
+                    group.leave()
+                }
             }
         }
 
@@ -413,6 +418,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching posts.")
+                    group.leave()
+                }
             }
         }
 
@@ -429,6 +438,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching referrers.")
+                    group.leave()
+                }
             }
         }
 
@@ -445,6 +458,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching published.")
+                    group.leave()
+                }
             }
         }
 
@@ -461,6 +478,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedClicks(clicks, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching clicks.")
+                    group.leave()
+                }
             }
         }
 
@@ -477,6 +498,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching authors.")
+                    group.leave()
+                }
             }
         }
 
@@ -493,6 +518,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedSearchTerms(searchTerms, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching search terms.")
+                    group.leave()
+                }
             }
         }
 
@@ -509,6 +538,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching countries.")
+                    group.leave()
+                }
             }
         }
 
@@ -525,6 +558,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching videos.")
+                    group.leave()
+                }
             }
         }
 
@@ -543,6 +580,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching file downloads.")
+                    group.leave()
+                }
             }
         }
 
@@ -974,10 +1015,6 @@ private extension StatsPeriodStore {
                 transaction { state in
                     state.summaryLikesStatus = error != nil ? .error : .success
                 }
-                if FeatureFlag.statsNewAppearance.enabled {
-                    DDLogInfo("Stats Period: Leave group fetching likes summary.")
-                    group.leave()
-                }
                 return
         }
 
@@ -998,10 +1035,6 @@ private extension StatsPeriodStore {
             state.summary = newSummary
             state.summaryLikesStatus = error != nil ? .error : .success
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching likes summary.")
-            group.leave()
-        }
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
@@ -1011,10 +1044,6 @@ private extension StatsPeriodStore {
             if postsAndPages != nil {
                 state.topPostsAndPages = postsAndPages
             }
-        }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching posts.")
-            group.leave()
         }
     }
 
@@ -1026,11 +1055,6 @@ private extension StatsPeriodStore {
                 state.topReferrers = referrers
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching referrers.")
-            group.leave()
-        }
-
     }
 
     func receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?, _ error: Error?) {
@@ -1041,11 +1065,6 @@ private extension StatsPeriodStore {
                 state.topClicks = clicks
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching clicks.")
-            group.leave()
-        }
-
     }
 
     func receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?, _ error: Error?) {
@@ -1056,11 +1075,6 @@ private extension StatsPeriodStore {
                 state.topAuthors = authors
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching authors.")
-            group.leave()
-        }
-
     }
 
     func receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?) {
@@ -1071,11 +1085,6 @@ private extension StatsPeriodStore {
                 state.topPublished = published
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching published.")
-            group.leave()
-        }
-
     }
 
     func receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?) {
@@ -1086,11 +1095,6 @@ private extension StatsPeriodStore {
                 state.topSearchTerms = searchTerms
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching search terms.")
-            group.leave()
-        }
-
     }
 
     func receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?) {
@@ -1101,11 +1105,6 @@ private extension StatsPeriodStore {
                 state.topVideos = videos
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching videos.")
-            group.leave()
-        }
-
     }
 
     func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?) {
@@ -1116,11 +1115,6 @@ private extension StatsPeriodStore {
                 state.topCountries = countries
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching countries.")
-            group.leave()
-        }
-
     }
 
     func receivedFileDownloads(_ downloads: StatsFileDownloadsTimeIntervalData?, _ error: Error?) {
@@ -1131,11 +1125,6 @@ private extension StatsPeriodStore {
                 state.topFileDownloads = downloads
             }
         }
-        if FeatureFlag.statsNewAppearance.enabled {
-            DDLogInfo("Stats Period: Leave group fetching file downloads.")
-            group.leave()
-        }
-
     }
 
     func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?) {
