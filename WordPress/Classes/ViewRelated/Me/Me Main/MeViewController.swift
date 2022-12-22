@@ -78,7 +78,6 @@ class MeViewController: UITableViewController {
 
     @objc fileprivate func reloadViewModel() {
         let account = defaultAccount()
-        let loggedIn = account != nil
 
         // Warning: If you set the header view after the table model, the
         // table's top margin will be wrong.
@@ -88,7 +87,7 @@ class MeViewController: UITableViewController {
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
 
         // Then we'll reload the table view model (prompting a table reload)
-        handler.viewModel = tableViewModel(loggedIn)
+        handler.viewModel = tableViewModel(with: account)
     }
 
     fileprivate func headerViewForAccount(_ account: WPAccount) -> MeHeaderView {
@@ -110,8 +109,9 @@ class MeViewController: UITableViewController {
             accessibilityIdentifier: "appSettings")
     }
 
-    fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
+    fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
         let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
+        let loggedIn = account != nil
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
@@ -152,13 +152,17 @@ class MeViewController: UITableViewController {
 
         let wordPressComAccount = HeaderTitles.wpAccount
 
+        let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled
+        && FeatureFlag.qrLogin.enabled
+        && !(account?.settings.twoStepEnabled ?? false)
+
         return ImmuTable(sections: [
             // first section
             .init(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
                     var loggedInRows = [myProfile, accountSettings]
-                    if AppConfiguration.qrLoginEnabled && FeatureFlag.qrLogin.enabled {
+                    if shouldShowQRLoginRow {
                         loggedInRows.append(qrLogin)
                     }
 
