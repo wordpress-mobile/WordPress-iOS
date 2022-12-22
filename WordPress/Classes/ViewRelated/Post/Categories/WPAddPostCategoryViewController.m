@@ -4,7 +4,7 @@
 #import "Constants.h"
 #import "SiteSettingsViewController.h"
 #import "PostCategoryService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "BlogService.h"
 #import "WordPress-Swift.h"
 #import <WordPressShared/NSString+Util.h>

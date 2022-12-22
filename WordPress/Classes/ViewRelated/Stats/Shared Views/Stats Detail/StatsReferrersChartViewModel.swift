@@ -53,7 +53,7 @@ struct StatsReferrersChartViewModel {
         let chartView = DonutChartView()
         chartView.configure(title: Constants.chartTitle, totalCount: CGFloat(referrers.totalReferrerViewsCount), segments: segments)
         chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartView.heightAnchor.constraint(equalToConstant: Constants.chartHeight).isActive = true
+        chartView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.chartHeight).isActive = true
         return chartView
     }
 

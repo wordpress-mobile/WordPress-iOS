@@ -19,12 +19,17 @@ struct StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?, insightsStore: StatsInsightsStore, statsSummaryType: StatsSummaryType, guideText: NSAttributedString? = nil) -> StatsTotalInsightsData {
+    public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?,
+                                               insightsStore: StatsInsightsStore,
+                                               statsSummaryType: StatsSummaryType,
+                                               guideText: NSAttributedString? = nil,
+                                               periodEndDate: Date? = nil) -> StatsTotalInsightsData {
+
         guard let periodSummary = periodSummary else {
             return StatsTotalInsightsData(count: 0)
         }
 
-        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(periodSummary)
+        let splitSummaryTimeIntervalData = SiteStatsInsightsViewModel.splitStatsSummaryTimeIntervalData(periodSummary, periodEndDate: periodEndDate)
 
         var countKey: KeyPath<StatsSummaryData, Int>
         switch statsSummaryType {
@@ -37,7 +42,7 @@ struct StatsTotalInsightsData {
         }
 
         let sparklineData: [Int] = makeSparklineData(countKey: countKey, splitSummaryTimeIntervalData: splitSummaryTimeIntervalData)
-        let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType)
+        let data = SiteStatsInsightsViewModel.intervalData(periodSummary, summaryType: statsSummaryType, periodEndDate: periodEndDate)
         let guideText = makeTotalInsightsGuideText(lastPostInsight: insightsStore.getLastPostInsight(), statsSummaryType: statsSummaryType)
         let guideURL: URL? = statsSummaryType == .likes ? insightsStore.getLastPostInsight()?.url : nil
 

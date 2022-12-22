@@ -206,7 +206,7 @@ extension WPStyleGuide {
 
         // MARK: - Font Size
 
-        static let maximumChartAxisFontPointSize: CGFloat = 22
+        static let maximumChartAxisFontPointSize: CGFloat = 18
 
         // MARK: - Style Values
 

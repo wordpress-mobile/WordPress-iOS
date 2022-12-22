@@ -1,6 +1,6 @@
 #import "WPTableImageSource.h"
 #import "AccountService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 
