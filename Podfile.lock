@@ -512,7 +512,7 @@ PODS:
     - WordPressUI (~> 1.7-beta)
   - WordPressKit (5.0.0):
     - Alamofire (~> 4.8.0)
-    - NSObject-SafeExpectations (= 0.0.4)
+    - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.9)
@@ -657,7 +657,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
