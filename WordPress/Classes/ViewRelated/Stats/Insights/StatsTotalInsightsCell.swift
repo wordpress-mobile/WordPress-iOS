@@ -267,7 +267,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         }
     }
 
-    // Rebuilds and sest guide view from scratch only if it already exists on the cell
+    // Rebuilds guide view for accessibility only if guide view already exists
     private func rebuildGuideViewIfNeeded() {
         if guideText != nil,
             let statsSummaryType = statsSummaryType,
