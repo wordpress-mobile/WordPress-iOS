@@ -280,7 +280,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
 
                     // Countries
-                    let map = countriesMap()
+                    let map = countriesMap(topCountries: viewsAndVisitorsData.topCountries)
                     let isMapShown = !map.data.isEmpty
                     if isMapShown {
                         rows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
@@ -446,7 +446,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         case .periodCountries:
             return periodImmuTable(for: periodStore.topCountriesStatus) { status in
                 var rows = [ImmuTableRow]()
-                let map = countriesMap()
+                let map = countriesMap(topCountries: periodStore.getTopCountries())
                 if !map.data.isEmpty {
                     rows.append(CountriesMapRow(countriesMap: map))
                 }
@@ -1012,8 +1012,8 @@ private extension SiteStatsInsightsDetailsViewModel {
                 ?? []
     }
 
-    func countriesMap() -> CountriesMap {
-        let countries = periodStore.getTopCountries()?.countries ?? []
+    func countriesMap(topCountries: StatsTopCountryTimeIntervalData?) -> CountriesMap {
+        let countries = topCountries?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                 maxViewsCount: countries.first?.viewsCount ?? 0,
                 data: countries.reduce([String: NSNumber]()) { (dict, country) in
