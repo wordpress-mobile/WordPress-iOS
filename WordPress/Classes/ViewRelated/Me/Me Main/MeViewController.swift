@@ -154,7 +154,7 @@ class MeViewController: UITableViewController {
 
         let shouldShowQRLoginRow = AppConfiguration.qrLoginEnabled
         && FeatureFlag.qrLogin.enabled
-        && !(account?.settings.twoStepEnabled ?? false)
+        && !(account?.settings?.twoStepEnabled ?? false)
 
         return ImmuTable(sections: [
             // first section
