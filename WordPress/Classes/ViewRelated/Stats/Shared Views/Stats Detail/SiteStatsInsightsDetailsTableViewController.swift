@@ -239,6 +239,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
             viewModel?.refreshFileDownloads()
         case .postStatsMonthsYears, .postStatsAverageViews:
             viewModel?.refreshPostStats()
+        case .insightsViewsVisitors:
+            viewModel?.refreshViewsAndVisitorsData(date: selectedDate)
         default:
             refreshControl.endRefreshing()
         }

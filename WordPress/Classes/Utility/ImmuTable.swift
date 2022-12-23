@@ -256,7 +256,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     /// An ImmuTable object representing the table structure.
     open var viewModel = ImmuTable.Empty {
         didSet {
-            if target.isViewLoaded {
+            if target.isViewLoaded && automaticallyReloadTableView {
                 target.tableView.reloadData()
             }
         }
@@ -264,6 +264,9 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
 
     /// Configure the handler to automatically deselect any cell after tapping it.
     @objc var automaticallyDeselectCells = false
+
+    /// Automatically reload table view when view model changes
+    @objc var automaticallyReloadTableView = true
 
     // MARK: UITableViewDataSource
 

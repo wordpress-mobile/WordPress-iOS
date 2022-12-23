@@ -15,7 +15,7 @@ struct StatsFollowersChartViewModel {
         let chartView = DonutChartView()
         chartView.configure(title: "", totalCount: CGFloat(totalCount()), segments: segments())
         chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartView.heightAnchor.constraint(equalToConstant: Constants.chartHeight).isActive = true
+        chartView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.chartHeight).isActive = true
         return chartView
     }
 

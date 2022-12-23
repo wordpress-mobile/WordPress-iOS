@@ -2,7 +2,7 @@
 #import "Coordinate.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"

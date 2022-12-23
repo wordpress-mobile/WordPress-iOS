@@ -2,7 +2,7 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "NSURL+IDN.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "Constants.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"

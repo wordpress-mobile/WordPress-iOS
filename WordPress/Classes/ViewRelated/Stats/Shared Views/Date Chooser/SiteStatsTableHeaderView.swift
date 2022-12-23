@@ -144,8 +144,17 @@ private extension SiteStatsTableHeaderView {
 
     func applyStyles() {
         backgroundColor = .listForeground
+
         Style.configureLabelAsCellRowTitle(dateLabel)
+        dateLabel.font = Metrics.dateLabelFont
+        dateLabel.adjustsFontForContentSizeCategory = true
+        dateLabel.minimumScaleFactor = Metrics.minimumScaleFactor
+
         Style.configureLabelAsChildRowTitle(timezoneLabel)
+        timezoneLabel.font = Metrics.timezoneFont
+        timezoneLabel.adjustsFontForContentSizeCategory = true
+        timezoneLabel.minimumScaleFactor = Metrics.minimumScaleFactor
+
         Style.configureViewAsSeparator(bottomSeparatorLine)
 
         // Required as the Style separator configure method clears all
@@ -309,5 +318,27 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         delegate?.dateChangedTo(self.date)
         reloadView()
+    }
+}
+
+private extension SiteStatsTableHeaderView {
+    enum Metrics {
+        static let dateLabelFontSize: CGFloat = 20
+        static let maximumDateLabelFontSize: CGFloat = 32
+        static let timezoneFontSize: CGFloat = 16
+        static let maximumTimezoneFontSize: CGFloat = 20
+        static let minimumScaleFactor: CGFloat = 0.8
+
+        static var dateLabelFont: UIFont {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .headline)
+            let font = UIFont(descriptor: fontDescriptor, size: dateLabelFontSize)
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumDateLabelFontSize)
+        }
+
+        static var timezoneFont: UIFont {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .callout)
+            let font = UIFont(descriptor: fontDescriptor, size: timezoneFontSize)
+            return UIFontMetrics.default.scaledFont(for: font, maximumPointSize: maximumTimezoneFontSize)
+        }
     }
 }

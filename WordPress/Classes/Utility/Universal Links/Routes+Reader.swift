@@ -66,11 +66,6 @@ extension ReaderRoute: NavigationAction {
             return
         }
 
-        // Bounce back to Safari on failure
-        coordinator.failureBlock = {
-            self.failAndBounce(values)
-        }
-
         switch self {
         case .root:
             coordinator.showReaderTab()
