@@ -270,7 +270,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     // Rebuilds guide view for accessibility only if guide view already exists
     private func rebuildGuideViewIfNeeded() {
         if guideText != nil,
-            let statsSummaryType = statsSummaryType,
+           let statsSummaryType = statsSummaryType,
            let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType) {
             self.guideText = guideText
             updateGuideView(withGuideText: guideText)
