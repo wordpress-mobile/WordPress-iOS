@@ -488,6 +488,7 @@ struct CountriesStatsRow: ImmuTableRow {
 
     let itemSubtitle: String
     let dataSubtitle: String
+    var statSection: StatSection?
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
@@ -504,12 +505,14 @@ struct CountriesStatsRow: ImmuTableRow {
                        dataRows: dataRows,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsInsightsDetailsDelegate: siteStatsInsightsDetailsDelegate)
+        cell.statSection = statSection
     }
 }
 
 struct CountriesMapRow: ImmuTableRow {
     let action: ImmuTableAction? = nil
     let countriesMap: CountriesMap
+    var statSection: StatSection?
 
     typealias CellType = CountriesMapCell
 
@@ -522,6 +525,7 @@ struct CountriesMapRow: ImmuTableRow {
             return
         }
         cell.configure(with: countriesMap)
+        cell.statSection = statSection
     }
 }
 
