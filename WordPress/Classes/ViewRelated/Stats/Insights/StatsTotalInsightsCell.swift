@@ -22,7 +22,6 @@ struct StatsTotalInsightsData {
     public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?,
                                                insightsStore: StatsInsightsStore,
                                                statsSummaryType: StatsSummaryType,
-                                               guideText: NSAttributedString? = nil,
                                                periodEndDate: Date? = nil) -> StatsTotalInsightsData {
 
         guard let periodSummary = periodSummary else {
@@ -115,7 +114,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var lastPostInsight: StatsLastPostInsight?
     private var statsSummaryType: StatsSummaryType?
-    private var guideURL: URL? = nil
+    private var guideURL: URL?
+    private var guideText: NSAttributedString?
 
     private let outerStackView = UIStackView()
     private let topInnerStackView = UIStackView()
@@ -151,7 +151,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        updateGuideView()
+        rebuildGuideViewIfNeeded()
     }
 
     private func configureView() {
@@ -239,6 +239,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         self.statSection = statSection
         self.lastPostInsight = dataRow.lastPostInsight
         self.statsSummaryType = dataRow.statsSummaryType
+        self.guideText = dataRow.guideText
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
@@ -247,14 +248,13 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         countLabel.text = dataRow.count.abbreviatedString()
 
-        updateGuideView()
+        updateGuideView(withGuideText: dataRow.guideText)
         updateComparisonLabel(withCount: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage)
     }
 
-    private func updateGuideView() {
-        if let statsSummaryType = statsSummaryType,
-           let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType),
-           guideText.string.isEmpty == false {
+    private func updateGuideView(withGuideText guideText: NSAttributedString?) {
+        if let guideText = guideText,
+            guideText.string.isEmpty == false {
             outerStackView.addArrangedSubview(guideView)
 
             guideViewLabel.attributedText = addTipEmojiToGuide(guideText)
@@ -264,6 +264,16 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         } else if guideView.superview != nil {
             guideView.removeFromSuperview()
+        }
+    }
+
+    // Rebuilds and sest guide view from scratch only if it already exists on the cell
+    private func rebuildGuideViewIfNeeded() {
+        if guideText != nil,
+            let statsSummaryType = statsSummaryType,
+           let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType) {
+            self.guideText = guideText
+            updateGuideView(withGuideText: guideText)
         }
     }
 
