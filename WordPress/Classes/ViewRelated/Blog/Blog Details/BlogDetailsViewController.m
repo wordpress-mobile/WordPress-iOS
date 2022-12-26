@@ -970,7 +970,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([self.blog supports:BlogFeatureSharing]) {
+    if ([self shouldAddSharingRow]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
                                         image:[UIImage gridiconOfType:GridiconTypeShare]
                                      callback:^{
@@ -980,7 +980,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:row];
     }
 
-    if ([self.blog supports:BlogFeaturePeople]) {
+    if ([self shouldAddPeopleRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[UIImage gridiconOfType:GridiconTypeUser]
                                                      callback:^{
@@ -988,7 +988,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([self.blog supports:BlogFeaturePluginManagement]) {
+    if ([self shouldAddPluginsRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
                                                         image:[UIImage gridiconOfType:GridiconTypePlugins]
                                                      callback:^{
@@ -1006,7 +1006,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [rows addObject:row];
 
-    if ([self shouldShowDomainRegistration]) {
+    if ([self shouldAddDomainRegistrationRow]) {
         BlogDetailsRow *domainsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Domains", @"Noun. Title. Links to the Domains screen.")
                                                                 identifier:BlogDetailsSettingsCellIdentifier
                                                    accessibilityIdentifier:@"Domains Row"
@@ -1400,20 +1400,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadDomains
 {
-    if (![self shouldShowDomainRegistration]) {
+    if (![self shouldAddDomainRegistrationRow]) {
         return;
     }
 
     [self.blogService refreshDomainsFor:self.blog
                                 success:nil
                                 failure:nil];
-}
-
-- (BOOL)shouldShowDomainRegistration
-{
-    return [Feature enabled:FeatureFlagDomains]
-            && [AppConfiguration allowsDomainRegistration]
-            && [self.blog supports:BlogFeatureDomains];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element
