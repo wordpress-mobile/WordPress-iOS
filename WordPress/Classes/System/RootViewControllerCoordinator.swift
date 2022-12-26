@@ -11,7 +11,6 @@ class RootViewControllerCoordinator {
 
     // MARK: Private instance variables
 
-    private var currentAppUIType: AppUIType
     private var rootViewPresenter: RootViewPresenter
 
     // MARK: Initializer
