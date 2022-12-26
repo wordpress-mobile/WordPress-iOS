@@ -39,4 +39,25 @@ extension BlogDetailsViewController {
     @objc func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
         return subsection.sectionCategory(for: blog)
     }
+
+    @objc func shouldAddJetpackSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.shouldShowJetpackSection
+    }
+
+    @objc func shouldAddGeneralSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.shouldShowJetpackSection == false
+    }
+
+    @objc func shouldAddPersonalizeSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.supports(.themeBrowsing) || blog.supports(.menus)
+    }
 }

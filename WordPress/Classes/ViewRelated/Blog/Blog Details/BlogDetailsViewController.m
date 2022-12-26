@@ -758,16 +758,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self isDashboardEnabled] && ![self splitViewControllerIsHorizontallyCompact]) {
         [marr addObject:[self homeSectionViewModel]];
     }
-    if (self.blog.shouldShowJetpackSection) {
+    if ([self shouldAddJetpackSection]) {
         [marr addObject:[self jetpackSectionViewModel]];
-    } else {
+    }
+    
+    if ([self shouldAddGeneralSection]) {
         [marr addObject:[self generalSectionViewModel]];
     }
 
     [marr addObject:[self publishTypeSectionViewModel]];
-    if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+    
+    if ([self shouldAddPersonalizeSection]) {
         [marr addObject:[self personalizeSectionViewModel]];
     }
+    
     [marr addObject:[self configurationSectionViewModel]];
     [marr addObject:[self externalSectionViewModel]];
     if ([self.blog supports:BlogFeatureRemovable]) {
