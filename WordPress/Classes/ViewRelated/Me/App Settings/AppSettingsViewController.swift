@@ -501,7 +501,7 @@ private extension AppSettingsViewController {
             rows.insert(iconRow, at: 0)
         }
 
-        if FeatureFlag.mySiteDashboard.enabled {
+        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
 
             rows.append(initialScreen)
