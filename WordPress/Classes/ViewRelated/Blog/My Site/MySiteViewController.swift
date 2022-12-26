@@ -652,7 +652,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
-        if let blog = blog, tabBarController is WPTabBarController,
+        if let blog = blog,
            noResultsViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }
