@@ -370,7 +370,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             ABTest.start()
 
             self.recentSiteService.touch(blog: blog)
-            self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
+            self.presentOnboardingQuestionsPrompt(in: navigationController, blog: blog, onDismiss: onDismiss)
         }
 
         // If the user has only 1 blog, skip the site selector and go right to the next step
@@ -543,8 +543,17 @@ private extension WordPressAuthenticationManager {
 
 // MARK: - Onboarding Questions Prompt
 private extension WordPressAuthenticationManager {
-    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
         let windowManager = self.windowManager
+
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                self.windowManager.showAppUI(for: blog)
+            }
+            return
+        }
 
         let coordinator = OnboardingQuestionsCoordinator()
         coordinator.navigationController = navigationController
