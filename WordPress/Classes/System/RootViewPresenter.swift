@@ -1,6 +1,6 @@
 import Foundation
 
-protocol RootViewPresenter {
+protocol RootViewPresenter: AnyObject {
 
     // MARK: General
 

@@ -10,6 +10,10 @@ extension WPTabBarController: RootViewPresenter {
         return self
     }
 
+    func showBlogDetails(for blog: Blog) {
+        mySitesCoordinator.showBlogDetails(for: blog)
+    }
+
     func getMeScenePresenter() -> ScenePresenter {
         meScenePresenter
     }
