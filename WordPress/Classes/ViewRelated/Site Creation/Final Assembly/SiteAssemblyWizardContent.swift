@@ -259,16 +259,13 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        guard let tabBar = WPTabBarController.sharedInstance() else {
-            return
-        }
-
+        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {
                 QuickStartTourGuide.shared.setupWithDelay(for: blog, type: .newSite, withCompletedSteps: completedSteps)
             }
         }
-        tabBar.present(quickstartPrompt, animated: true)
+        rootViewController.present(quickstartPrompt, animated: true)
     }
 }

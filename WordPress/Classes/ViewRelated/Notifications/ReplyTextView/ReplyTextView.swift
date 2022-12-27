@@ -173,9 +173,7 @@ import Gridicons
     }
 
     @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
-        guard let presenter = WPTabBarController.sharedInstance() else {
-            return
-        }
+        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
 
         let editViewController = FullScreenCommentReplyViewController()
 
@@ -210,7 +208,7 @@ import Gridicons
             }
 
             // Dismiss the fullscreen view, once it has fully closed process the saving if needed
-            presenter.dismiss(animated: true) {
+            rootViewController.dismiss(animated: true) {
                 let respondsToDidExit = self.delegate?.responds(to: #selector(ReplyTextViewDelegate.replyTextView(_:didExitFullScreen:))) ?? false
 
                 if respondsToDidExit {
@@ -222,7 +220,7 @@ import Gridicons
         self.resignFirstResponder()
 
         let navController = LightNavigationController(rootViewController: editViewController)
-        presenter.present(navController, animated: true)
+        rootViewController.present(navController, animated: true)
     }
 
     // MARK: - Gestures Recognizers
