@@ -312,7 +312,7 @@ class AppSettingsViewController: UITableViewController {
                 return
             }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
+            RootViewControllerCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
 
@@ -511,7 +511,7 @@ private extension AppSettingsViewController {
             rows.append(debugRow)
         }
 
-        if let presenter = WPTabBarController.sharedInstance().whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+        if let presenter = RootViewControllerCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
             let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,

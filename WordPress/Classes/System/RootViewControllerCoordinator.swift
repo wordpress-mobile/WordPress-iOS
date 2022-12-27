@@ -8,6 +8,12 @@ class RootViewControllerCoordinator {
     static var sharedPresenter: RootViewPresenter {
         shared.rootViewPresenter
     }
+    
+    // MARK: Public Variables
+    
+    lazy var whatIsNewScenePresenter: ScenePresenter = {
+        return makeWhatIsNewPresenter()
+    }()
 
     // MARK: Private instance variables
 

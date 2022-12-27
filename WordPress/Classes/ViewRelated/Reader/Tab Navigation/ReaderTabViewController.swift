@@ -57,7 +57,7 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
 
         if AppConfiguration.showsWhatIsNew {
-            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
+            RootViewControllerCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
 

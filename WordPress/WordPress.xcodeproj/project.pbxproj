@@ -722,7 +722,7 @@
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
-		3F6A7E92251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */; };
+		3F6A7E92251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */; };
 		3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */; };
 		3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -4711,7 +4711,7 @@
 		FABB24732602FC2C00C8785C /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		FABB24742602FC2C00C8785C /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
 		FABB24752602FC2C00C8785C /* ReaderSearchSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62079E01CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift */; };
-		FABB24762602FC2C00C8785C /* WPTabBarController+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */; };
+		FABB24762602FC2C00C8785C /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */; };
 		FABB24772602FC2C00C8785C /* CachedAnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */; };
 		FABB24782602FC2C00C8785C /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		FABB24792602FC2C00C8785C /* AutoUploadMessageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */; };
@@ -6135,7 +6135,7 @@
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
-		3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+WhatIsNew.swift"; sourceTree = "<group>"; };
+		3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewControllerCoordinator+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
 		3F6DA04025646F96002AB88F /* HomeWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetData.swift; sourceTree = "<group>"; };
 		3F720C2028899DD900519938 /* JetpackBrandingVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingVisibility.swift; sourceTree = "<group>"; };
@@ -10828,7 +10828,7 @@
 		3F6A7E90251BC1C4005B6A61 /* Dependency container */ = {
 			isa = PBXGroup;
 			children = (
-				3F6A7E91251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift */,
+				3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */,
 			);
 			path = "Dependency container";
 			sourceTree = "<group>";
@@ -21166,7 +21166,7 @@
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
-				3F6A7E92251BC1DC005B6A61 /* WPTabBarController+WhatIsNew.swift in Sources */,
+				3F6A7E92251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */,
 				3FAE0652287C8FC500F46508 /* JPScrollViewDelegate.swift in Sources */,
 				FF8A04E01D9BFE7400523BC4 /* CachedAnimatedImageView.swift in Sources */,
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
@@ -23864,7 +23864,7 @@
 				FADFBD27265F580500039C41 /* MultilineButton.swift in Sources */,
 				C71AF534281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */,
 				FABB24752602FC2C00C8785C /* ReaderSearchSuggestionService.swift in Sources */,
-				FABB24762602FC2C00C8785C /* WPTabBarController+WhatIsNew.swift in Sources */,
+				FABB24762602FC2C00C8785C /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */,
 				FABB24772602FC2C00C8785C /* CachedAnimatedImageView.swift in Sources */,
 				FABB24782602FC2C00C8785C /* AccountToAccount20to21.swift in Sources */,
 				FABB24792602FC2C00C8785C /* AutoUploadMessageProvider.swift in Sources */,

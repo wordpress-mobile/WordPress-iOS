@@ -569,16 +569,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return nil;
 }
 
-#pragma mark - What's New Presentation
-- (id<ScenePresenter>)whatIsNewScenePresenter
-{
-    if (_whatIsNewScenePresenter) {
-        return _whatIsNewScenePresenter;
-    }
-    self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
-    return _whatIsNewScenePresenter;
-}
-
 #pragma mark - Blogging Prompt
 - (BloggingPromptCoordinator *)bloggingPromptCoordinator
 {
