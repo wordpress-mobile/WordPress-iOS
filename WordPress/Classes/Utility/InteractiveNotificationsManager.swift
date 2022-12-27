@@ -346,7 +346,7 @@ private extension InteractiveNotificationsManager {
     /// - Parameter noteID: The Notification's Identifier
     ///
     func showDetailsWithNoteID(_ noteId: NSNumber) {
-        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: noteId.stringValue)
+        RootViewControllerCoordinator.sharedPresenter.showNotificationsTabForNote(withID: noteId.stringValue)
     }
 
 

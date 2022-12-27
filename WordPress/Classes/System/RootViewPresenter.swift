@@ -38,5 +38,6 @@ protocol RootViewPresenter {
     func showNotificationsTab()
     func showNotificationsTabForNote(withID notificationID: String!)
     func switchNotificationsTabToNotificationSettings()
+    func popNotificationsTabToRoot()
 
 }

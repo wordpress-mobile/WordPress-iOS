@@ -92,6 +92,10 @@ extension MySitesCoordinator: RootViewPresenter {
         fallbackBehavior()
     }
 
+    func popNotificationsTabToRoot() {
+        fallbackBehavior()
+    }
+
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.
