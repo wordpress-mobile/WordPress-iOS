@@ -10,6 +10,10 @@ extension MySitesCoordinator: RootViewPresenter {
         meScenePresenter
     }
 
+    func currentlySelectedScreen() -> String! {
+        return "Blog List"
+    }
+
     // MARK: Reader
 
     func showReaderTab() {

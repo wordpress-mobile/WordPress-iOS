@@ -7,6 +7,7 @@ protocol RootViewPresenter {
     var rootViewController: UIViewController { get }
     func showBlogDetails(for blog: Blog)
     func getMeScenePresenter() -> ScenePresenter
+    func currentlySelectedScreen() -> String!
 
     // MARK: Reader
 

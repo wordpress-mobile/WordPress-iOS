@@ -655,7 +655,7 @@ extension WordPressAppDelegate {
             return "Jetpack Migration View"
 #endif
         default:
-            return WPTabBarController.sharedInstance().currentlySelectedScreen()
+            return RootViewControllerCoordinator.sharedPresenter.currentlySelectedScreen()
         }
     }
 
