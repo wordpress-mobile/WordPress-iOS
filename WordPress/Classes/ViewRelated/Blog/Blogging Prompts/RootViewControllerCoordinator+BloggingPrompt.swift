@@ -1,5 +1,5 @@
 
-/// Encapsulates logic related to Blogging Prompts in WPTabBarController.
+/// Encapsulates logic related to Blogging Prompts in RootViewControllerCoordinator.
 ///
 extension RootViewControllerCoordinator {
 
