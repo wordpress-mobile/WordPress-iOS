@@ -20,16 +20,16 @@ protocol RootViewPresenter {
     func navigateToReaderSite(_ topic: ReaderSiteTopic)
     func navigateToReaderTag( _ topic: ReaderTagTopic)
     func navigateToReader(_ pushControlller: UIViewController?)
-    
+
     // MARK: My Site
-    
+
     func showMySitesTab()
     func showPages(for blog: Blog)
     func showPosts(for blog: Blog)
     func showMedia(for blog: Blog)
 
     // MARK: Notifications
-    
+
     func showNotificationsTab()
     func switchNotificationsTabToNotificationSettings()
 
