@@ -11,9 +11,13 @@ protocol RootViewPresenter {
 
     // MARK: Reader
 
+    var readerTabViewController: ReaderTabViewController? { get }
     func showReaderTab()
     func showReaderTab(forPost: NSNumber!, onBlog: NSNumber!)
     func switchToDiscover()
+    func switchToSavedPosts()
+    func resetReaderDiscoverNudgeFlow()
+    func resetReaderTab()
     func navigateToReaderSearch()
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToMyLikes()

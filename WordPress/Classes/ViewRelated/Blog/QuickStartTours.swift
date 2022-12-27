@@ -240,11 +240,7 @@ struct QuickStartFollowTour: QuickStartTour {
     let accessibilityHintText = NSLocalizedString("Guides you through the process of following other sites.", comment: "This value is used to set the accessibility hint text for following the sites of other users.")
 
     func setupReaderTab() {
-        guard let tabBar = WPTabBarController.sharedInstance() else {
-            return
-        }
-
-        tabBar.resetReaderTab()
+        RootViewControllerCoordinator.sharedPresenter.resetReaderTab()
     }
 }
 

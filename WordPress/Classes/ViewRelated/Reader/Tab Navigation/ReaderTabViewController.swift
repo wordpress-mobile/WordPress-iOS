@@ -162,7 +162,7 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
         let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
 
-        let controller = WPTabBarController.sharedInstance().readerTabViewController
+        let controller = RootViewControllerCoordinator.sharedPresenter.readerTabViewController
         controller?.setStartIndex(index)
 
         return controller

@@ -16,11 +16,27 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Reader
 
+    var readerTabViewController: ReaderTabViewController? {
+        return nil
+    }
+
     func showReaderTab() {
         fallbackBehavior()
     }
 
     func switchToDiscover() {
+        fallbackBehavior()
+    }
+
+    func switchToSavedPosts() {
+        fallbackBehavior()
+    }
+
+    func resetReaderDiscoverNudgeFlow() {
+        fallbackBehavior()
+    }
+
+    func resetReaderTab() {
         fallbackBehavior()
     }
 

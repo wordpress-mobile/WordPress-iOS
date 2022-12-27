@@ -1587,7 +1587,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     private func resetReaderDiscoverNudgeFlow() {
         shouldShowCommentSpotlight = false
-        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
+        RootViewControllerCoordinator.sharedPresenter.resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

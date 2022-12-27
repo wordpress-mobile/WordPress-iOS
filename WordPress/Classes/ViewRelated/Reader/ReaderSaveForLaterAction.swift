@@ -65,7 +65,7 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
-                                    WPTabBarController.sharedInstance().switchToSavedPosts()
+                                    RootViewControllerCoordinator.sharedPresenter.switchToSavedPosts()
         })
 
         present(notice)
