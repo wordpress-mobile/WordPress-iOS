@@ -1639,7 +1639,7 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
              .follow,
              .like:
             WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            WPTabBarController.sharedInstance().showReaderTab()
+            RootViewControllerCoordinator.sharedPresenter.showReaderTab()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
             WPTabBarController.sharedInstance().showPostTab()

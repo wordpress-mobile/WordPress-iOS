@@ -518,7 +518,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            WPTabBarController.sharedInstance().showReaderTab()
+            RootViewControllerCoordinator.sharedPresenter.showReaderTab()
             if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
                let vc = nc.topViewController as? ReaderTabViewController {
                 vc.presentDiscoverTab()

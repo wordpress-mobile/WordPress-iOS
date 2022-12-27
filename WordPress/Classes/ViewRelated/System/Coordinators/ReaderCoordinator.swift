@@ -13,35 +13,35 @@ class ReaderCoordinator: NSObject {
     }
 
     func showReaderTab() {
-        WPTabBarController.sharedInstance().showReaderTab()
+        RootViewControllerCoordinator.sharedPresenter.showReaderTab()
     }
 
     func showDiscover() {
-        WPTabBarController.sharedInstance().switchToDiscover()
+        RootViewControllerCoordinator.sharedPresenter.switchToDiscover()
     }
 
     func showSearch() {
-        WPTabBarController.sharedInstance().navigateToReaderSearch()
+        RootViewControllerCoordinator.sharedPresenter.navigateToReaderSearch()
     }
 
     func showA8C() {
-        WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
+        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cSlug
         })
     }
 
     func showP2() {
-        WPTabBarController.sharedInstance()?.switchToTopic(where: { topic in
+        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.p2Slug
         })
     }
 
     func showMyLikes() {
-        WPTabBarController.sharedInstance().switchToMyLikes()
+        RootViewControllerCoordinator.sharedPresenter.switchToMyLikes()
     }
 
     func showManageFollowing() {
-        WPTabBarController.sharedInstance()?.switchToFollowedSites()
+        RootViewControllerCoordinator.sharedPresenter.switchToFollowedSites()
     }
 
     func showList(named listName: String, forUser user: String) {
@@ -53,7 +53,7 @@ class ReaderCoordinator: NSObject {
             return
         }
 
-        WPTabBarController.sharedInstance()?.switchToTopic(where: { $0 == topic })
+        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { $0 == topic })
     }
 
     func showTag(named tagName: String) {
@@ -62,7 +62,7 @@ class ReaderCoordinator: NSObject {
 
         getTagTopic(tagSlug: slug) { result in
             guard let topic = try? result.get() else { return }
-            WPTabBarController.sharedInstance()?.navigateToReaderTag(topic)
+            RootViewControllerCoordinator.sharedPresenter.navigateToReaderTag(topic)
         }
     }
 
@@ -91,7 +91,7 @@ class ReaderCoordinator: NSObject {
                 return
             }
 
-            WPTabBarController.sharedInstance()?.navigateToReaderSite(topic)
+            RootViewControllerCoordinator.sharedPresenter.navigateToReaderSite(topic)
         }
     }
 
@@ -134,7 +134,7 @@ class ReaderCoordinator: NSObject {
         }
 
         detailViewController.postLoadFailureBlock = postLoadFailureBlock
-        WPTabBarController.sharedInstance().navigateToReader(detailViewController)
+        RootViewControllerCoordinator.sharedPresenter.navigateToReader(detailViewController)
     }
 
 }

@@ -798,7 +798,7 @@ import Combine
     }
 
     private func showFollowing() {
-        WPTabBarController.sharedInstance().switchToFollowedSites()
+        RootViewControllerCoordinator.sharedPresenter.switchToFollowedSites()
     }
 
     // MARK: - Blocking

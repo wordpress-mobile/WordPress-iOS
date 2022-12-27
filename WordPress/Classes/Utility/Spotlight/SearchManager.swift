@@ -322,7 +322,7 @@ fileprivate extension SearchManager {
     // MARK: Reader Tab Navigation
 
     func openReaderTab() -> Bool {
-        WPTabBarController.sharedInstance().showReaderTab()
+        RootViewControllerCoordinator.sharedPresenter.showReaderTab()
         return true
     }
 
