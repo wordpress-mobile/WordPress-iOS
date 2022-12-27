@@ -191,7 +191,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 guard let self = self else {
                     return
                 }
-                (self.tabBarController as? WPTabBarController)?.showStoryEditor(blog: self.blog, title: nil, content: nil)
+                let presenter = RootViewControllerCoordinator.sharedPresenter
+                presenter.showStoryEditor(blog: self.blog, title: nil, content: nil)
             }, source: Constants.source), at: 0)
         }
         return CreateButtonCoordinator(self, actions: actions, source: Constants.source, blog: blog)

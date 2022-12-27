@@ -21,9 +21,9 @@ extension MySiteViewController {
             }
         case .writing:
             // Open the editor
-            let controller = tabBarController as? WPTabBarController
-            controller?.showPostTab(completion: {
-                self.startAlertTimer()
+            let presenter = RootViewControllerCoordinator.sharedPresenter
+            presenter.showPostTab(completion: { [weak self] in
+                self?.startAlertTimer()
             })
 
         case .showMeAround:
