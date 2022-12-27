@@ -242,7 +242,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             }
 
             self.dismissTapped(viaDone: true) { [blog, weak self] in
-                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
 
                 // present quick start, and mark site title as complete if they already selected one
                 guard let self = self else {

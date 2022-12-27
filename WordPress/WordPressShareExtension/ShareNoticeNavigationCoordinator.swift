@@ -35,7 +35,7 @@ class ShareNoticeNavigationCoordinator {
     static func navigateToBlogDetails(with userInfo: NSDictionary) {
         fetchBlog(from: userInfo, onSuccess: { blog in
             if let blog = blog {
-                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch blog from share notification.")
