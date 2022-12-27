@@ -25,7 +25,7 @@ open class WP3DTouchShortcutHandler: NSObject {
     @objc static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
     @objc open func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
+        let rootViewPresenter = RootViewControllerCoordinator.sharedPresenter
 
         switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:
@@ -33,23 +33,23 @@ open class WP3DTouchShortcutHandler: NSObject {
                 return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.shortcutNewPost)
-                tabBarController.showPostTab(animated: false, toMedia: false)
+                rootViewPresenter.showPostTab(animated: false, toMedia: false)
                 return true
             case ShortcutIdentifier.NewPhotoPost.type:
                 WPAnalytics.track(.shortcutNewPhotoPost)
-                tabBarController.showPostTab(animated: false, toMedia: true)
+                rootViewPresenter.showPostTab(animated: false, toMedia: true)
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)
                 clearCurrentViewController()
                 if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) {
-                    tabBarController.mySitesCoordinator.showStats(for: mainBlog)
+                    rootViewPresenter.mySitesCoordinator.showStats(for: mainBlog)
                 }
                 return true
             case ShortcutIdentifier.Notifications.type:
                 WPAnalytics.track(.shortcutNotifications)
                 clearCurrentViewController()
-                tabBarController.showNotificationsTab()
+                rootViewPresenter.showNotificationsTab()
                 return true
             default:
                 return false
