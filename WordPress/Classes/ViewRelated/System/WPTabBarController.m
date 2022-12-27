@@ -363,7 +363,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     if (!blog) {
-        blog = [self currentOrLastBlog];
+//        blog = [self currentOrLastBlog];
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
@@ -427,27 +427,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             break;
     }
     return currentlySelectedScreen;
-}
-
-- (Blog *)currentlyVisibleBlog
-{
-    if (self.selectedIndex != WPTabMySites) {
-        return nil;
-    }
-
-    return [self.mySitesCoordinator currentBlog];
-}
-
-- (Blog *)currentOrLastBlog
-{
-    Blog *blog = [self currentlyVisibleBlog];
-
-    if (blog == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        blog = [Blog lastUsedOrFirstInContext: context];
-    }
-    
-    return blog;
 }
 
 #pragma mark - UITabBarControllerDelegate methods

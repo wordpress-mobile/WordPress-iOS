@@ -14,6 +14,10 @@ extension MySitesCoordinator: RootViewPresenter {
         return "Blog List"
     }
 
+    func currentlyVisibleBlog() -> Blog? {
+        currentBlog
+    }
+
     // MARK: Reader
 
     var readerTabViewController: ReaderTabViewController? {

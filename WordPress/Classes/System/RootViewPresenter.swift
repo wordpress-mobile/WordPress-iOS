@@ -8,6 +8,7 @@ protocol RootViewPresenter {
     func showBlogDetails(for blog: Blog)
     func getMeScenePresenter() -> ScenePresenter
     func currentlySelectedScreen() -> String!
+    func currentlyVisibleBlog() -> Blog?
 
     // MARK: Reader
 
@@ -41,4 +42,14 @@ protocol RootViewPresenter {
     func switchNotificationsTabToNotificationSettings()
     func popNotificationsTabToRoot()
 
+}
+
+extension RootViewPresenter {
+    func currentOrLastBlog() -> Blog? {
+        if let blog = currentlyVisibleBlog() {
+            return blog
+        }
+        let context = ContextManager.shared.mainContext
+        return Blog.lastUsedOrFirst(in: context)
+    }
 }

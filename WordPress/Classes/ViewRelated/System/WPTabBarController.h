@@ -51,6 +51,4 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 
-- (Blog *)currentOrLastBlog;
-
 @end

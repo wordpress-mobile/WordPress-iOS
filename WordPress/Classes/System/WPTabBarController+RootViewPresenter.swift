@@ -14,6 +14,13 @@ extension WPTabBarController: RootViewPresenter {
         meScenePresenter
     }
 
+    func currentlyVisibleBlog() -> Blog? {
+        guard selectedIndex == WPTab.mySites.rawValue else {
+            return nil
+        }
+        return mySitesCoordinator.currentBlog
+    }
+
     // MARK: My Site
 
     func showPages(for blog: Blog) {
