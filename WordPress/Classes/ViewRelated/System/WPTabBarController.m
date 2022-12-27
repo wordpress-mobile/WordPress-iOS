@@ -57,7 +57,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
 @property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
-@property (nonatomic, strong) BloggingPromptCoordinator *bloggingPromptCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -72,16 +71,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @implementation WPTabBarController
 
 #pragma mark - Class methods
-
-+ (instancetype)sharedInstance
-{
-    static WPTabBarController *shared = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        shared = [[self alloc] init];
-    });
-    return shared;
-}
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {

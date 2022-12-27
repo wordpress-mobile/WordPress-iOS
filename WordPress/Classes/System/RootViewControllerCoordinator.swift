@@ -31,7 +31,7 @@ class RootViewControllerCoordinator {
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         }
         else {
-            self.rootViewPresenter = WPTabBarController.sharedInstance() // TODO: Remove shared instance and create an instance here
+            self.rootViewPresenter = WPTabBarController()
         }
         updatePromptsIfNeeded()
     }
