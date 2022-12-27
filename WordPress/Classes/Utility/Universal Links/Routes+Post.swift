@@ -15,9 +15,9 @@ struct NewPostForSiteRoute: Route {
 struct NewPostNavigationAction: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         if let blog = blog(from: values) {
-            WPTabBarController.sharedInstance().showPostTab(for: blog)
+            RootViewControllerCoordinator.sharedPresenter.showPostTab(for: blog)
         } else {
-            WPTabBarController.sharedInstance().showPostTab()
+            RootViewControllerCoordinator.sharedPresenter.showPostTab()
         }
     }
 }

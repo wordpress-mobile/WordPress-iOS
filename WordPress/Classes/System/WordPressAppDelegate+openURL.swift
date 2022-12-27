@@ -200,7 +200,7 @@ import AutomatticTracks
         // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        WPTabBarController.sharedInstance().showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
+        RootViewControllerCoordinator.sharedPresenter.showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
 
         return true
     }

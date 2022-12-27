@@ -359,7 +359,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        WPTabBarController.sharedInstance().showPostTab { [weak self] in
+        RootViewControllerCoordinator.sharedPresenter.showPostTab { [weak self] in
             self?.refreshInsights()
         }
     }

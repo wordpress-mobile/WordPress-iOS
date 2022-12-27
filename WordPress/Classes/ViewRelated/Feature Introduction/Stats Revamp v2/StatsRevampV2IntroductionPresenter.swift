@@ -40,7 +40,7 @@ class StatsRevampV2IntroductionPresenter: NSObject {
     func primaryButtonSelected() {
         presentingViewController?.dismiss(animated: true)
 
-        guard let blog = WPTabBarController.sharedInstance().currentOrLastBlog() else {
+        guard let blog = RootViewControllerCoordinator.sharedPresenter.currentOrLastBlog() else {
             return
         }
 
