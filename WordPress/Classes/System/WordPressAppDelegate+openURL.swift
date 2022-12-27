@@ -112,14 +112,14 @@ import AutomatticTracks
             // so the Stats view displays the correct stats.
             SiteStatsInformation.sharedInstance.siteID = currentSiteID
 
-            WPTabBarController.sharedInstance()?.dismiss(animated: true, completion: nil)
+            RootViewControllerCoordinator.sharedPresenter.rootViewController.dismiss(animated: true, completion: nil)
         }
 
         let navController = UINavigationController(rootViewController: statsViewController)
         navController.modalPresentationStyle = .currentContext
         navController.navigationBar.isTranslucent = false
 
-        WPTabBarController.sharedInstance()?.present(navController, animated: true, completion: nil)
+        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(navController, animated: true, completion: nil)
 
         return true
     }
@@ -171,7 +171,7 @@ import AutomatticTracks
         let postVC = EditPostViewController(post: post)
         postVC.modalPresentationStyle = .fullScreen
 
-        WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)
+        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(postVC, animated: true, completion: nil)
 
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"])
 

@@ -428,7 +428,7 @@ extension PushNotificationsManager {
         }
 
         if WPTabBarController.sharedInstance()?.presentedViewController != nil {
-            WPTabBarController.sharedInstance()?.dismiss(animated: false)
+            RootViewControllerCoordinator.sharedPresenter.rootViewController.dismiss(animated: false)
         }
         WPTabBarController.sharedInstance()?.showMySitesTab()
 
