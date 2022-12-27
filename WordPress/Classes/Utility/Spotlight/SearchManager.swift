@@ -311,12 +311,12 @@ fileprivate extension SearchManager {
     // MARK: Site Tab Navigation
 
     func openMySitesTab() -> Bool {
-        WPTabBarController.sharedInstance().showMySitesTab()
+        RootViewControllerCoordinator.sharedPresenter.showMySitesTab()
         return true
     }
 
     func openSiteDetailsScreen(for blog: Blog) {
-        WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+        RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation
@@ -329,29 +329,29 @@ fileprivate extension SearchManager {
     // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
-        WPTabBarController.sharedInstance().showMeScene()
+        RootViewControllerCoordinator.sharedPresenter.showMeScene()
         return true
     }
 
     func openAppSettingsScreen() -> Bool {
-        WPTabBarController.sharedInstance().navigateToAppSettings()
+        RootViewControllerCoordinator.sharedPresenter.navigateToAppSettings()
         return true
     }
 
     func openSupportScreen() -> Bool {
-        WPTabBarController.sharedInstance().navigateToSupport()
+        RootViewControllerCoordinator.sharedPresenter.navigateToSupport()
         return true
     }
 
     // MARK: Notification Tab Navigation
 
     func openNotificationsTab() -> Bool {
-        WPTabBarController.sharedInstance().showNotificationsTab()
+        RootViewControllerCoordinator.sharedPresenter.showNotificationsTab()
         return true
     }
 
     func openNotificationSettingsScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchNotificationsTabToNotificationSettings()
+        RootViewControllerCoordinator.sharedPresenter.switchNotificationsTabToNotificationSettings()
         return true
     }
 
@@ -398,9 +398,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
+            RootViewControllerCoordinator.sharedPresenter.showPosts(for: post.blog)
         } else if let page = apost as? Page {
-            WPTabBarController.sharedInstance().mySitesCoordinator.showPages(for: page.blog)
+            RootViewControllerCoordinator.sharedPresenter.showPages(for: page.blog)
         }
     }
 
@@ -412,7 +412,7 @@ fileprivate extension SearchManager {
                 onFailure()
                 return
         }
-        WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: blogID)
+        RootViewControllerCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: blogID)
     }
 
     func openReader(for postID: NSNumber, siteID: NSNumber, onFailure: () -> Void) {
@@ -421,7 +421,7 @@ fileprivate extension SearchManager {
             onFailure()
             return
         }
-        WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: siteID)
+        RootViewControllerCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: siteID)
     }
 
     // MARK: - Editor
@@ -431,7 +431,7 @@ fileprivate extension SearchManager {
         openListView(for: post)
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(editor, animated: true)
+        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(editor, animated: true)
     }
 
     func openEditor(for page: Page) {
@@ -439,22 +439,23 @@ fileprivate extension SearchManager {
         openListView(for: page)
 
         let editorViewController = EditPageViewController(page: page)
-        WPTabBarController.sharedInstance().present(editorViewController, animated: false)
+        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(editorViewController, animated: false)
     }
 
     // MARK: - Preview
 
     func openPreview(for apost: AbstractPost) {
-        WPTabBarController.sharedInstance().showMySitesTab()
+        RootViewControllerCoordinator.sharedPresenter.showMySitesTab()
         closePreviewIfNeeded(for: apost)
 
         let controller = PreviewWebKitViewController(post: apost, source: "spotlight_preview_post")
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
-        if WPTabBarController.sharedInstance()?.traitCollection.userInterfaceIdiom == .pad {
+        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        if rootViewController.traitCollection.userInterfaceIdiom == .pad {
             navWrapper.modalPresentationStyle = .fullScreen
         }
-        WPTabBarController.sharedInstance().present(navWrapper, animated: true)
+        rootViewController.present(navWrapper, animated: true)
 
         openListView(for: apost)
     }
@@ -463,7 +464,8 @@ fileprivate extension SearchManager {
     /// AbstractPost, leave it open, otherwise close it.
     ///
     func closePreviewIfNeeded(for apost: AbstractPost) {
-        guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController else {
+        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        guard let navController = rootViewController.presentedViewController as? UINavigationController else {
             return
         }
 
@@ -479,7 +481,8 @@ fileprivate extension SearchManager {
     /// If there is any post preview window open, close it.
     ///
     func closeAnyOpenPreview() {
-        guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController,
+        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        guard let navController = rootViewController.presentedViewController as? UINavigationController,
             navController.topViewController is PreviewWebKitViewController else {
                 return
         }
