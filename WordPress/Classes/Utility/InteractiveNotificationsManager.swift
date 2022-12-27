@@ -210,7 +210,7 @@ final class InteractiveNotificationsManager: NSObject {
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
 
-                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showCreateSheet(for: targetBlog)
+                    WPTabBarController.sharedInstance().mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
             case .weeklyRoundup:
                 let targetBlog = blog(from: userInfo)
@@ -226,7 +226,7 @@ final class InteractiveNotificationsManager: NSObject {
 
                     let targetDate = date(from: userInfo)
 
-                    WPTabBarController.sharedInstance()?.mySitesCoordinator.showStats(
+                    WPTabBarController.sharedInstance().mySitesCoordinator.showStats(
                         for: targetBlog,
                         timePeriod: .weeks,
                         date: targetDate)
@@ -236,7 +236,7 @@ final class InteractiveNotificationsManager: NSObject {
                 WPAnalytics.track(.bloggingRemindersNotificationReceived, properties: ["prompt_included": true])
 
                 let answerPromptBlock = {
-                    WPTabBarController.sharedInstance()?.showPromptAnsweringFlow(with: userInfo)
+                    WPTabBarController.sharedInstance().showPromptAnsweringFlow(with: userInfo)
                 }
 
                 // check if user interacted with custom notification actions.

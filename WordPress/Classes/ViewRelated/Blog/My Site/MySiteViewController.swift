@@ -190,7 +190,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         workaroundLargeTitleCollapseBug()
 
         if AppConfiguration.showsWhatIsNew {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)

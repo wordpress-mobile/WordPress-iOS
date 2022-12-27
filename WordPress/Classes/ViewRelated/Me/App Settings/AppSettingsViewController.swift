@@ -511,7 +511,7 @@ private extension AppSettingsViewController {
             rows.append(debugRow)
         }
 
-        if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+        if let presenter = WPTabBarController.sharedInstance().whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
             let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,

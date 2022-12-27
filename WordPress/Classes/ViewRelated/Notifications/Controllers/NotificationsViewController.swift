@@ -227,7 +227,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         defer {
             if AppConfiguration.showsWhatIsNew {
-                WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+                WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
             }
         }
 
