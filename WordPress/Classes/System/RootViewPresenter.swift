@@ -31,6 +31,7 @@ protocol RootViewPresenter {
     // MARK: Notifications
 
     func showNotificationsTab()
+    func showNotificationsTabForNote(withID notificationID: String!)
     func switchNotificationsTabToNotificationSettings()
 
 }

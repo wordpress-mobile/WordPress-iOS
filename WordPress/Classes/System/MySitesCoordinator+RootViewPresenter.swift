@@ -68,6 +68,10 @@ extension MySitesCoordinator: RootViewPresenter {
         fallbackBehavior()
     }
 
+    func showNotificationsTabForNote(withID notificationID: String!) {
+        fallbackBehavior()
+    }
+
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.
