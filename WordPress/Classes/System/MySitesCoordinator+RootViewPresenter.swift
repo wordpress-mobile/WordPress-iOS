@@ -74,6 +74,10 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: My Site
 
+    var mySitesCoordinator: MySitesCoordinator! {
+        return self
+    }
+
     func showMySitesTab() {
         // Do nothing
     }

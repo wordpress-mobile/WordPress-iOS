@@ -44,7 +44,7 @@ class StatsRevampV2IntroductionPresenter: NSObject {
             return
         }
 
-        WPTabBarController.sharedInstance().mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
+        RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
     }
 
     // "Remind Me" prompt

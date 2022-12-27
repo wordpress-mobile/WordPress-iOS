@@ -210,7 +210,7 @@ final class InteractiveNotificationsManager: NSObject {
                 if identifier == UNNotificationDefaultActionIdentifier {
                     let targetBlog: Blog? = blog(from: threadId)
 
-                    WPTabBarController.sharedInstance().mySitesCoordinator.showCreateSheet(for: targetBlog)
+                    RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator.showCreateSheet(for: targetBlog)
                 }
             case .weeklyRoundup:
                 let targetBlog = blog(from: userInfo)
@@ -226,7 +226,7 @@ final class InteractiveNotificationsManager: NSObject {
 
                     let targetDate = date(from: userInfo)
 
-                    WPTabBarController.sharedInstance().mySitesCoordinator.showStats(
+                    RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator.showStats(
                         for: targetBlog,
                         timePeriod: .weeks,
                         date: targetDate)

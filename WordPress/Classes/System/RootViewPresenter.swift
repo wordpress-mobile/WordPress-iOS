@@ -28,6 +28,7 @@ protocol RootViewPresenter {
 
     // MARK: My Site
 
+    var mySitesCoordinator: MySitesCoordinator! { get }
     func showMySitesTab()
     func showPages(for blog: Blog)
     func showPosts(for blog: Blog)
