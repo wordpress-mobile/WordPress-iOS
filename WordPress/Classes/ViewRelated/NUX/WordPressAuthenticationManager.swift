@@ -587,7 +587,7 @@ private extension WordPressAuthenticationManager {
         if option == .reader {
             RootViewControllerCoordinator.sharedPresenter.showReaderTab()
         } else if option == .notifications {
-            WPTabBarController.sharedInstance().showNotificationsTab()
+            RootViewControllerCoordinator.sharedPresenter.showNotificationsTab()
         }
     }
 

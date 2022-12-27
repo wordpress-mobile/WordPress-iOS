@@ -8,7 +8,7 @@ struct NotificationsRoute: Route {
 
 struct NotificationsNavigationAction: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        WPTabBarController.sharedInstance().showNotificationsTab()
+        RootViewControllerCoordinator.sharedPresenter.showNotificationsTab()
         WPTabBarController.sharedInstance().popNotificationsTabToRoot()
     }
 }
