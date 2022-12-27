@@ -5,7 +5,7 @@ class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
     static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
 
-    private let meScenePresenter: ScenePresenter
+    let meScenePresenter: ScenePresenter
 
     let becomeActiveTab: () -> Void
 
