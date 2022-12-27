@@ -236,7 +236,7 @@ final class InteractiveNotificationsManager: NSObject {
                 WPAnalytics.track(.bloggingRemindersNotificationReceived, properties: ["prompt_included": true])
 
                 let answerPromptBlock = {
-                    WPTabBarController.sharedInstance().showPromptAnsweringFlow(with: userInfo)
+                    RootViewControllerCoordinator.shared.showPromptAnsweringFlow(with: userInfo)
                 }
 
                 // check if user interacted with custom notification actions.

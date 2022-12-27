@@ -8,16 +8,20 @@ class RootViewControllerCoordinator {
     static var sharedPresenter: RootViewPresenter {
         shared.rootViewPresenter
     }
-    
+
     // MARK: Public Variables
-    
+
     lazy var whatIsNewScenePresenter: ScenePresenter = {
         return makeWhatIsNewPresenter()
     }()
 
+    lazy var bloggingPromptCoordinator: BloggingPromptCoordinator = {
+       return makeBloggingPromptCoordinator()
+    }()
+
     // MARK: Private instance variables
 
-    private var rootViewPresenter: RootViewPresenter
+    private(set) var rootViewPresenter: RootViewPresenter
 
     // MARK: Initializer
 
@@ -29,5 +33,6 @@ class RootViewControllerCoordinator {
         else {
             self.rootViewPresenter = WPTabBarController.sharedInstance() // TODO: Remove shared instance and create an instance here
         }
+        updatePromptsIfNeeded()
     }
 }

@@ -5,6 +5,7 @@ protocol RootViewPresenter: AnyObject {
     // MARK: General
 
     var rootViewController: UIViewController { get }
+    var currentViewController: UIViewController? { get }
     func showBlogDetails(for blog: Blog)
     func getMeScenePresenter() -> ScenePresenter
     func currentlySelectedScreen() -> String!

@@ -10,6 +10,10 @@ extension WPTabBarController: RootViewPresenter {
         return self
     }
 
+    var currentViewController: UIViewController? {
+        return viewControllers?[selectedIndex]
+    }
+
     func showBlogDetails(for blog: Blog) {
         mySitesCoordinator.showBlogDetails(for: blog)
     }

@@ -1,14 +1,14 @@
 
 /// Encapsulates logic related to Blogging Prompts in WPTabBarController.
 ///
-extension WPTabBarController {
+extension RootViewControllerCoordinator {
 
     @objc func makeBloggingPromptCoordinator() -> BloggingPromptCoordinator {
         return BloggingPromptCoordinator()
     }
 
     @objc func updatePromptsIfNeeded() {
-        guard let blog = currentOrLastBlog() else {
+        guard let blog = rootViewPresenter.currentOrLastBlog() else {
             return
         }
 
@@ -22,7 +22,7 @@ extension WPTabBarController {
         guard Feature.enabled(.bloggingPrompts),
               let siteID = userInfo[BloggingPrompt.NotificationKeys.siteID] as? Int,
               let blog = accountSites?.first(where: { $0.dotComID == NSNumber(value: siteID) }),
-              let viewController = viewControllers?[selectedIndex] else {
+              let viewController = rootViewPresenter.currentViewController else {
             return
         }
 
@@ -40,7 +40,7 @@ extension WPTabBarController {
 
 }
 
-private extension WPTabBarController {
+private extension RootViewControllerCoordinator {
 
     var accountSites: [Blog]? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.visibleBlogs
