@@ -315,66 +315,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self setSelectedIndex:WPTabReader];
 }
 
-- (void)showPostTab
-{
-    [self showPostTabWithCompletion:nil];
-}
-
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    // Ignore taps on the post tab and instead show the modal.
-    if ([Blog countInContext:context] == 0) {
-        [self.mySitesCoordinator showAddNewSite];
-    } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
-    }
-}
-
-- (void)showPostTabForBlog:(Blog *)blog
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    if ([Blog countInContext:context] == 0) {
-        [self.mySitesCoordinator showAddNewSite];
-    } else {
-        [self showPostTabAnimated:YES toMedia:NO blog:blog];
-    }
-}
-
 - (void)showNotificationsTab
 {
     [self setSelectedIndex:WPTabNotifications];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
-{
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
-{
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog afterDismiss:nil];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
-{
-    if (self.presentedViewController) {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    if (!blog) {
-//        blog = [self currentOrLastBlog];
-    }
-
-    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
-    editor.modalPresentationStyle = UIModalPresentationFullScreen;
-    editor.showImmediately = !animated;
-    editor.openWithMediaPicker = openToMedia;
-    editor.afterDismiss = afterDismiss;
-    
-    NSString *tapSource = @"create_button";
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ WPAppAnalyticsKeyTapSource: tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
-    [self presentViewController:editor animated:NO completion:nil];
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
