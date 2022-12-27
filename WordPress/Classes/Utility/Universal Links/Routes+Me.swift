@@ -26,11 +26,11 @@ enum MeNavigationAction: NavigationAction {
     func perform(_ values: [String: String] = [:], source: UIViewController? = nil, router: LinkRouter) {
         switch self {
         case .root:
-            WPTabBarController.sharedInstance().showMeScene()
+            RootViewControllerCoordinator.sharedPresenter.showMeScene()
         case .accountSettings:
-            WPTabBarController.sharedInstance().navigateToAccountSettings()
+            RootViewControllerCoordinator.sharedPresenter.navigateToAccountSettings()
         case .notificationSettings:
-            WPTabBarController.sharedInstance().switchNotificationsTabToNotificationSettings()
+            RootViewControllerCoordinator.sharedPresenter.switchNotificationsTabToNotificationSettings()
         }
     }
 }
