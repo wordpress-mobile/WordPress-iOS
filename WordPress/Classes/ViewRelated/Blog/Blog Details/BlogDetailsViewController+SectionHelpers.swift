@@ -40,6 +40,20 @@ extension BlogDetailsViewController {
         return subsection.sectionCategory(for: blog)
     }
 
+    @objc func defaultSubsection() -> BlogDetailsSubsection {
+        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
+            return .posts
+        }
+        if shouldShowDashboard() {
+            return .home
+        }
+        return .stats
+    }
+
+    @objc func shouldShowStats() -> Bool {
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+    }
+
     @objc func shouldAddJetpackSection() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return false
