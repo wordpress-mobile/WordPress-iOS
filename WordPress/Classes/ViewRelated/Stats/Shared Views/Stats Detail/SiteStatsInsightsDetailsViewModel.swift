@@ -35,6 +35,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     private var allAnnualInsights = [StatsAnnualInsight]()
 
+    private var selectedViewsVisitorsSegment: StatsSegmentedControlData.Segment = .views
+
     // MARK: - Init
 
     init(insightsDetailsDelegate: SiteStatsInsightsDelegate,
@@ -256,10 +258,11 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     // Views Visitors
                     let weekEnd = futureEndOfWeekDate(for: periodSummary)
                     rows.append(contentsOf: SiteStatsImmuTableRows.viewVisitorsImmuTableRows(periodSummary,
+                                                                                             selectedSegment: selectedViewsVisitorsSegment,
                                                                                              periodDate: selectedDate!,
                                                                                              periodEndDate: weekEnd,
                                                                                              statsLineChartViewDelegate: nil,
-                                                                                             siteStatsInsightsDelegate: nil))
+                                                                                             siteStatsInsightsDelegate: insightsDetailsDelegate))
 
                     // Referrers
                     if let referrers = viewsAndVisitorsData.topReferrers {
@@ -622,6 +625,12 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         }
 
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+    }
+
+    // MARK: - Views & Visitors
+
+    func updateViewsAndVisitorsSegment(_ selectedSegment: StatsSegmentedControlData.Segment) {
+        selectedViewsVisitorsSegment = selectedSegment
     }
 }
 
