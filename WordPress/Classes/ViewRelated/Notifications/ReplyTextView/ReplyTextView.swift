@@ -173,7 +173,7 @@ import Gridicons
     }
 
     @IBAction fileprivate func btnEnterFullscreenPressed(_ sender: Any) {
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
 
         let editViewController = FullScreenCommentReplyViewController()
 

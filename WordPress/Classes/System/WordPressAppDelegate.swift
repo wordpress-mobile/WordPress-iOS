@@ -655,7 +655,7 @@ extension WordPressAppDelegate {
             return "Jetpack Migration View"
 #endif
         default:
-            return RootViewControllerCoordinator.sharedPresenter.currentlySelectedScreen()
+            return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }
     }
 

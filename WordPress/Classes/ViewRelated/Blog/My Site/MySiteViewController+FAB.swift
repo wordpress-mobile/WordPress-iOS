@@ -6,20 +6,20 @@ extension MySiteViewController {
     @objc func makeCreateButtonCoordinator() -> CreateButtonCoordinator {
 
         let newPage = {
-            let presenter = RootViewControllerCoordinator.sharedPresenter
+            let presenter = RootViewCoordinator.sharedPresenter
             let blog = presenter.currentOrLastBlog()
             presenter.showPageEditor(forBlog: blog)
         }
 
         let newPost = { [weak self] in
-            let presenter = RootViewControllerCoordinator.sharedPresenter
+            let presenter = RootViewCoordinator.sharedPresenter
             presenter.showPostTab(completion: {
                 self?.startAlertTimer()
             })
         }
 
         let newStory = {
-            let presenter = RootViewControllerCoordinator.sharedPresenter
+            let presenter = RootViewCoordinator.sharedPresenter
             let blog = presenter.currentOrLastBlog()
             presenter.showStoryEditor(forBlog: blog)
         }

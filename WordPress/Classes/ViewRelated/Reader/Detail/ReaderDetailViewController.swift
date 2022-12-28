@@ -144,7 +144,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// allowing Reader Detail to use a blue navbar.
     var useCompatibilityMode: Bool {
         // Use compatibility mode if not presented within the Reader
-        guard let tabBarController = RootViewControllerCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
+        guard let tabBarController = RootViewCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
             return false
         }
         return tabBarController.readerNavigationController.viewControllers.contains(self) == false

@@ -191,7 +191,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 guard let self = self else {
                     return
                 }
-                let presenter = RootViewControllerCoordinator.sharedPresenter
+                let presenter = RootViewCoordinator.sharedPresenter
                 presenter.showStoryEditor(blog: self.blog, title: nil, content: nil)
             }, source: Constants.source), at: 0)
         }

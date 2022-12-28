@@ -34,7 +34,7 @@ extension BlogDetailsSubsection {
 extension BlogDetailsViewController {
 
     @objc class func mySitesCoordinator() -> MySitesCoordinator {
-        RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator
     }
 
     @objc func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {

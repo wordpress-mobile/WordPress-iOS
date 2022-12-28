@@ -311,47 +311,47 @@ fileprivate extension SearchManager {
     // MARK: Site Tab Navigation
 
     func openMySitesTab() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.showMySitesTab()
+        RootViewCoordinator.sharedPresenter.showMySitesTab()
         return true
     }
 
     func openSiteDetailsScreen(for blog: Blog) {
-        RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
+        RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation
 
     func openReaderTab() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.showReaderTab()
+        RootViewCoordinator.sharedPresenter.showReaderTab()
         return true
     }
 
     // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.showMeScene()
+        RootViewCoordinator.sharedPresenter.showMeScene()
         return true
     }
 
     func openAppSettingsScreen() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.navigateToAppSettings()
+        RootViewCoordinator.sharedPresenter.navigateToAppSettings()
         return true
     }
 
     func openSupportScreen() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.navigateToSupport()
+        RootViewCoordinator.sharedPresenter.navigateToSupport()
         return true
     }
 
     // MARK: Notification Tab Navigation
 
     func openNotificationsTab() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.showNotificationsTab()
+        RootViewCoordinator.sharedPresenter.showNotificationsTab()
         return true
     }
 
     func openNotificationSettingsScreen() -> Bool {
-        RootViewControllerCoordinator.sharedPresenter.switchNotificationsTabToNotificationSettings()
+        RootViewCoordinator.sharedPresenter.switchNotificationsTabToNotificationSettings()
         return true
     }
 
@@ -398,9 +398,9 @@ fileprivate extension SearchManager {
     func openListView(for apost: AbstractPost) {
         closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
-            RootViewControllerCoordinator.sharedPresenter.showPosts(for: post.blog)
+            RootViewCoordinator.sharedPresenter.showPosts(for: post.blog)
         } else if let page = apost as? Page {
-            RootViewControllerCoordinator.sharedPresenter.showPages(for: page.blog)
+            RootViewCoordinator.sharedPresenter.showPages(for: page.blog)
         }
     }
 
@@ -412,7 +412,7 @@ fileprivate extension SearchManager {
                 onFailure()
                 return
         }
-        RootViewControllerCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: blogID)
+        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: blogID)
     }
 
     func openReader(for postID: NSNumber, siteID: NSNumber, onFailure: () -> Void) {
@@ -421,7 +421,7 @@ fileprivate extension SearchManager {
             onFailure()
             return
         }
-        RootViewControllerCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: siteID)
+        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: postID, onBlog: siteID)
     }
 
     // MARK: - Editor
@@ -431,7 +431,7 @@ fileprivate extension SearchManager {
         openListView(for: post)
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
-        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(editor, animated: true)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: true)
     }
 
     func openEditor(for page: Page) {
@@ -439,19 +439,19 @@ fileprivate extension SearchManager {
         openListView(for: page)
 
         let editorViewController = EditPageViewController(page: page)
-        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(editorViewController, animated: false)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(editorViewController, animated: false)
     }
 
     // MARK: - Preview
 
     func openPreview(for apost: AbstractPost) {
-        RootViewControllerCoordinator.sharedPresenter.showMySitesTab()
+        RootViewCoordinator.sharedPresenter.showMySitesTab()
         closePreviewIfNeeded(for: apost)
 
         let controller = PreviewWebKitViewController(post: apost, source: "spotlight_preview_post")
         controller.trackOpenEvent()
         let navWrapper = LightNavigationController(rootViewController: controller)
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         if rootViewController.traitCollection.userInterfaceIdiom == .pad {
             navWrapper.modalPresentationStyle = .fullScreen
         }
@@ -464,7 +464,7 @@ fileprivate extension SearchManager {
     /// AbstractPost, leave it open, otherwise close it.
     ///
     func closePreviewIfNeeded(for apost: AbstractPost) {
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         guard let navController = rootViewController.presentedViewController as? UINavigationController else {
             return
         }
@@ -481,7 +481,7 @@ fileprivate extension SearchManager {
     /// If there is any post preview window open, close it.
     ///
     func closeAnyOpenPreview() {
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         guard let navController = rootViewController.presentedViewController as? UINavigationController,
             navController.topViewController is PreviewWebKitViewController else {
                 return

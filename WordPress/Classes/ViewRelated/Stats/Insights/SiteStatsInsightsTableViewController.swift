@@ -359,7 +359,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        RootViewControllerCoordinator.sharedPresenter.showPostTab { [weak self] in
+        RootViewCoordinator.sharedPresenter.showPostTab { [weak self] in
             self?.refreshInsights()
         }
     }
@@ -518,8 +518,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            RootViewControllerCoordinator.sharedPresenter.showReaderTab()
-            if let tabBarController = RootViewControllerCoordinator.sharedPresenter.rootViewController as? WPTabBarController,
+            RootViewCoordinator.sharedPresenter.showReaderTab()
+            if let tabBarController = RootViewCoordinator.sharedPresenter.rootViewController as? WPTabBarController,
                let nc = tabBarController.selectedViewController as? UINavigationController,
                let vc = nc.topViewController as? ReaderTabViewController {
                 vc.presentDiscoverTab()

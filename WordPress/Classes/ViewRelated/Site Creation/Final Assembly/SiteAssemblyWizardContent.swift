@@ -242,7 +242,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             }
 
             self.dismissTapped(viaDone: true) { [blog, weak self] in
-                RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
+                RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
 
                 // present quick start, and mark site title as complete if they already selected one
                 guard let self = self else {
@@ -259,7 +259,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         let quickstartPrompt = QuickStartPromptViewController(blog: blog)
         quickstartPrompt.onDismiss = { blog, showQuickStart in
             if showQuickStart {

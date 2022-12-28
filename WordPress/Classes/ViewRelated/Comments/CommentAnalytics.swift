@@ -11,7 +11,7 @@ import Foundation
     }
 
     static func trackingContext() -> String {
-        let screen = RootViewControllerCoordinator.sharedPresenter.currentlySelectedScreen()
+        let screen = RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         switch screen {
         case WPTabBarCurrentlySelectedScreenSites:
             return Constants.sites

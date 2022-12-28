@@ -150,7 +150,7 @@ extension DashboardEmptyPostsCardCell {
 private extension DashboardEmptyPostsCardCell {
     func presentEditor() {
         BlogDashboardAnalytics.shared.track(.dashboardCardItemTapped, properties: ["type": "post", "sub_type": cardType?.rawValue ?? ""])
-        let presenter = RootViewControllerCoordinator.sharedPresenter
+        let presenter = RootViewCoordinator.sharedPresenter
         presenter.showPostTab()
     }
 }

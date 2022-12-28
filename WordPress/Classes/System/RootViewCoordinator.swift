@@ -1,10 +1,10 @@
 import Foundation
 
-class RootViewControllerCoordinator {
+class RootViewCoordinator {
 
     // MARK: Static shared variables
 
-    static let shared = RootViewControllerCoordinator()
+    static let shared = RootViewCoordinator()
     static var sharedPresenter: RootViewPresenter {
         shared.rootViewPresenter
     }

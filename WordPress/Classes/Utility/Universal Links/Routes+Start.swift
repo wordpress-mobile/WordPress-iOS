@@ -11,7 +11,7 @@ struct StartRoute: Route, NavigationAction {
 
     func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
         guard AccountHelper.isDotcomAvailable(),
-              let coordinator = RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator else {
+              let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator else {
             return
         }
 

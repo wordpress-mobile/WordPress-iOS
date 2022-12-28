@@ -65,7 +65,7 @@ final class ReaderSaveForLaterAction {
                             actionTitle: Strings.viewAll,
                             actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
-                                    RootViewControllerCoordinator.sharedPresenter.switchToSavedPosts()
+                                    RootViewCoordinator.sharedPresenter.switchToSavedPosts()
         })
 
         present(notice)

@@ -1,7 +1,7 @@
 
-/// Encapsulates logic related to Blogging Prompts in RootViewControllerCoordinator.
+/// Encapsulates logic related to Blogging Prompts in RootViewCoordinator.
 ///
-extension RootViewControllerCoordinator {
+extension RootViewCoordinator {
 
     @objc func makeBloggingPromptCoordinator() -> BloggingPromptCoordinator {
         return BloggingPromptCoordinator()
@@ -40,7 +40,7 @@ extension RootViewControllerCoordinator {
 
 }
 
-private extension RootViewControllerCoordinator {
+private extension RootViewCoordinator {
 
     var accountSites: [Blog]? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.visibleBlogs

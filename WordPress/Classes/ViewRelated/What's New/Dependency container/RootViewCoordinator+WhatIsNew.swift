@@ -1,6 +1,6 @@
 
 /// dependency container for the What's New / Feature Announcements scene
-extension RootViewControllerCoordinator {
+extension RootViewCoordinator {
 
     @objc func presentWhatIsNew(on viewController: UIViewController) {
 

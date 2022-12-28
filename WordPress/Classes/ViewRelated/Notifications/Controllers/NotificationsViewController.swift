@@ -227,7 +227,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         defer {
             if AppConfiguration.showsWhatIsNew {
-                RootViewControllerCoordinator.shared.presentWhatIsNew(on: self)
+                RootViewCoordinator.shared.presentWhatIsNew(on: self)
             }
         }
 
@@ -297,7 +297,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
-        guard let tabBarController = RootViewControllerCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
+        guard let tabBarController = RootViewCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
             return nil
         }
         return tabBarController.notificationsViewController
@@ -1642,10 +1642,10 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
              .follow,
              .like:
             WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            RootViewControllerCoordinator.sharedPresenter.showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReaderTab()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            RootViewControllerCoordinator.sharedPresenter.showPostTab()
+            RootViewCoordinator.sharedPresenter.showPostTab()
         }
     }
 }

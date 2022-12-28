@@ -73,7 +73,7 @@ class SupportTableViewController: UITableViewController {
             navigationController.modalPresentationStyle = .formSheet
         }
 
-        let rootViewController = RootViewControllerCoordinator.sharedPresenter.rootViewController
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
         if let presentedVC = rootViewController.presentedViewController {
             presentedVC.present(navigationController, animated: true)
         } else {

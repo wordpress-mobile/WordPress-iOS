@@ -88,7 +88,7 @@ import AutomatticTracks
             return false
         }
 
-        RootViewControllerCoordinator.sharedPresenter.showReaderTab(forPost: NSNumber(value: postId), onBlog: NSNumber(value: blogId))
+        RootViewCoordinator.sharedPresenter.showReaderTab(forPost: NSNumber(value: postId), onBlog: NSNumber(value: blogId))
 
         return true
     }
@@ -112,14 +112,14 @@ import AutomatticTracks
             // so the Stats view displays the correct stats.
             SiteStatsInformation.sharedInstance.siteID = currentSiteID
 
-            RootViewControllerCoordinator.sharedPresenter.rootViewController.dismiss(animated: true, completion: nil)
+            RootViewCoordinator.sharedPresenter.rootViewController.dismiss(animated: true, completion: nil)
         }
 
         let navController = UINavigationController(rootViewController: statsViewController)
         navController.modalPresentationStyle = .currentContext
         navController.navigationBar.isTranslucent = false
 
-        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(navController, animated: true, completion: nil)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(navController, animated: true, completion: nil)
 
         return true
     }
@@ -171,7 +171,7 @@ import AutomatticTracks
         let postVC = EditPostViewController(post: post)
         postVC.modalPresentationStyle = .fullScreen
 
-        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(postVC, animated: true, completion: nil)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(postVC, animated: true, completion: nil)
 
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"])
 
@@ -200,7 +200,7 @@ import AutomatticTracks
         // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        RootViewControllerCoordinator.sharedPresenter.showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
+        RootViewCoordinator.sharedPresenter.showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
 
         return true
     }

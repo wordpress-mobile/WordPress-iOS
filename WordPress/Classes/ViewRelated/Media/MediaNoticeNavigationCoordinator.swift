@@ -16,13 +16,13 @@ class MediaNoticeNavigationCoordinator {
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         editor.insertedMedia = media
-        RootViewControllerCoordinator.sharedPresenter.rootViewController.present(editor, animated: false)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: false)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyPostType: "post"], with: blog)
     }
 
     static func navigateToMediaLibrary(with userInfo: NSDictionary) {
         if let blog = blog(from: userInfo) {
-            RootViewControllerCoordinator.sharedPresenter.showMedia(for: blog)
+            RootViewCoordinator.sharedPresenter.showMedia(for: blog)
         }
     }
 

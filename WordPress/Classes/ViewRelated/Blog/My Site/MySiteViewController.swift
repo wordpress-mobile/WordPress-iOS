@@ -190,7 +190,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         workaroundLargeTitleCollapseBug()
 
         if AppConfiguration.showsWhatIsNew {
-            RootViewControllerCoordinator.shared.presentWhatIsNew(on: self)
+            RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)

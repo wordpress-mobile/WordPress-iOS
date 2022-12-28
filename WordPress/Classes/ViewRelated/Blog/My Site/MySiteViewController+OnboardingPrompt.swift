@@ -17,11 +17,11 @@ extension MySiteViewController {
         case .stats:
             // Show the stats view for the current blog
             if let blog = blog {
-                RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
+                RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
             }
         case .writing:
             // Open the editor
-            let presenter = RootViewControllerCoordinator.sharedPresenter
+            let presenter = RootViewCoordinator.sharedPresenter
             presenter.showPostTab(completion: { [weak self] in
                 self?.startAlertTimer()
             })

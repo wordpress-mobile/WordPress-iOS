@@ -40,11 +40,11 @@ class StatsRevampV2IntroductionPresenter: NSObject {
     func primaryButtonSelected() {
         presentingViewController?.dismiss(animated: true)
 
-        guard let blog = RootViewControllerCoordinator.sharedPresenter.currentOrLastBlog() else {
+        guard let blog = RootViewCoordinator.sharedPresenter.currentOrLastBlog() else {
             return
         }
 
-        RootViewControllerCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
     }
 
     // "Remind Me" prompt

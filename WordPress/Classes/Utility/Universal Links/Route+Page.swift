@@ -15,9 +15,9 @@ struct NewPageForSiteRoute: Route {
 struct NewPageNavigationAction: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
         if let blog = blog(from: values) {
-            RootViewControllerCoordinator.sharedPresenter.showPageEditor(forBlog: blog)
+            RootViewCoordinator.sharedPresenter.showPageEditor(forBlog: blog)
         } else {
-            RootViewControllerCoordinator.sharedPresenter.showPageEditor()
+            RootViewCoordinator.sharedPresenter.showPageEditor()
         }
     }
 }

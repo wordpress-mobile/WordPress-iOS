@@ -25,7 +25,7 @@ open class WP3DTouchShortcutHandler: NSObject {
     @objc static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
     @objc open func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let rootViewPresenter = RootViewControllerCoordinator.sharedPresenter
+        let rootViewPresenter = RootViewCoordinator.sharedPresenter
 
         switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:

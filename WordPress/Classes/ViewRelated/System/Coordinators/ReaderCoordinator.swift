@@ -13,35 +13,35 @@ class ReaderCoordinator: NSObject {
     }
 
     func showReaderTab() {
-        RootViewControllerCoordinator.sharedPresenter.showReaderTab()
+        RootViewCoordinator.sharedPresenter.showReaderTab()
     }
 
     func showDiscover() {
-        RootViewControllerCoordinator.sharedPresenter.switchToDiscover()
+        RootViewCoordinator.sharedPresenter.switchToDiscover()
     }
 
     func showSearch() {
-        RootViewControllerCoordinator.sharedPresenter.navigateToReaderSearch()
+        RootViewCoordinator.sharedPresenter.navigateToReaderSearch()
     }
 
     func showA8C() {
-        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { topic in
+        RootViewCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.a8cSlug
         })
     }
 
     func showP2() {
-        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { topic in
+        RootViewCoordinator.sharedPresenter.switchToTopic(where: { topic in
             return (topic as? ReaderTeamTopic)?.slug == ReaderTeamTopic.p2Slug
         })
     }
 
     func showMyLikes() {
-        RootViewControllerCoordinator.sharedPresenter.switchToMyLikes()
+        RootViewCoordinator.sharedPresenter.switchToMyLikes()
     }
 
     func showManageFollowing() {
-        RootViewControllerCoordinator.sharedPresenter.switchToFollowedSites()
+        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
     }
 
     func showList(named listName: String, forUser user: String) {
@@ -53,7 +53,7 @@ class ReaderCoordinator: NSObject {
             return
         }
 
-        RootViewControllerCoordinator.sharedPresenter.switchToTopic(where: { $0 == topic })
+        RootViewCoordinator.sharedPresenter.switchToTopic(where: { $0 == topic })
     }
 
     func showTag(named tagName: String) {
@@ -62,7 +62,7 @@ class ReaderCoordinator: NSObject {
 
         getTagTopic(tagSlug: slug) { result in
             guard let topic = try? result.get() else { return }
-            RootViewControllerCoordinator.sharedPresenter.navigateToReaderTag(topic)
+            RootViewCoordinator.sharedPresenter.navigateToReaderTag(topic)
         }
     }
 
@@ -91,7 +91,7 @@ class ReaderCoordinator: NSObject {
                 return
             }
 
-            RootViewControllerCoordinator.sharedPresenter.navigateToReaderSite(topic)
+            RootViewCoordinator.sharedPresenter.navigateToReaderSite(topic)
         }
     }
 
@@ -134,7 +134,7 @@ class ReaderCoordinator: NSObject {
         }
 
         detailViewController.postLoadFailureBlock = postLoadFailureBlock
-        RootViewControllerCoordinator.sharedPresenter.navigateToReader(detailViewController)
+        RootViewCoordinator.sharedPresenter.navigateToReader(detailViewController)
     }
 
 }

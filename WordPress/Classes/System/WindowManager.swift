@@ -57,13 +57,13 @@ class WindowManager: NSObject {
     ///
     @objc func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
-        show(RootViewControllerCoordinator.sharedPresenter.rootViewController, completion: completion)
+        show(RootViewCoordinator.sharedPresenter.rootViewController, completion: completion)
 
         guard let blog = blog else {
             return
         }
 
-        RootViewControllerCoordinator.sharedPresenter.showBlogDetails(for: blog)
+        RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
     }
 
     /// Shows the initial UI for unauthenticated users.

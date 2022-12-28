@@ -722,7 +722,7 @@
 		3F662C4A24DC9FAC00CAEA95 /* WhatIsNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */; };
 		3F685B6A26D431FA001C6808 /* DomainSuggestionViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF9CC426D03C7400268EA2 /* DomainSuggestionViewControllerWrapper.swift */; };
 		3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
-		3F6A7E92251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */; };
+		3F6A7E92251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */; };
 		3F6AD0562502A91400080F3B /* AnnouncementsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */; };
 		3F6BC04B25B2474C007369D3 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		3F6BC05C25B24773007369D3 /* FeatureFlagOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A09B98238FE13B0022AE0D /* FeatureFlagOverrideStore.swift */; };
@@ -1558,8 +1558,8 @@
 		8031F34B292FF46E00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34D29302C8100E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
-		803BB9792959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */; };
-		803BB97A2959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */; };
+		803BB9792959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */; };
+		803BB97A2959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */; };
 		803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */; };
 		803BB97D2959559500B3F6D6 /* RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */; };
 		803BB980295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */; };
@@ -4711,7 +4711,7 @@
 		FABB24732602FC2C00C8785C /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		FABB24742602FC2C00C8785C /* ReaderTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */; };
 		FABB24752602FC2C00C8785C /* ReaderSearchSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62079E01CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift */; };
-		FABB24762602FC2C00C8785C /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */; };
+		FABB24762602FC2C00C8785C /* RootViewCoordinator+WhatIsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */; };
 		FABB24772602FC2C00C8785C /* CachedAnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */; };
 		FABB24782602FC2C00C8785C /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		FABB24792602FC2C00C8785C /* AutoUploadMessageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16C35DB23F3F78E00C81331 /* AutoUploadMessageProvider.swift */; };
@@ -5276,8 +5276,8 @@
 		FEAC916F28001FC4005026E7 /* AvatarTrainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAC916D28001FC4005026E7 /* AvatarTrainView.swift */; };
 		FEC26030283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */; };
 		FEC26031283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */; };
-		FEC26033283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift */; };
-		FEC26034283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift */; };
+		FEC26033283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift */; };
+		FEC26034283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC26032283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift */; };
 		FECA442F28350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */; };
 		FECA443028350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */; };
 		FECA44322836647100D01F15 /* PromptRemindersSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */; };
@@ -6135,7 +6135,7 @@
 		3F63B93B258179D100F581BE /* StatsWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetEntry.swift; sourceTree = "<group>"; };
 		3F662C4924DC9FAC00CAEA95 /* WhatIsNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewController.swift; sourceTree = "<group>"; };
 		3F6975FE242D941E001F1807 /* ReaderTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTabViewModel.swift; sourceTree = "<group>"; };
-		3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewControllerCoordinator+WhatIsNew.swift"; sourceTree = "<group>"; };
+		3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewCoordinator+WhatIsNew.swift"; sourceTree = "<group>"; };
 		3F6AD0552502A91400080F3B /* AnnouncementsCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsCache.swift; sourceTree = "<group>"; };
 		3F6DA04025646F96002AB88F /* HomeWidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetData.swift; sourceTree = "<group>"; };
 		3F720C2028899DD900519938 /* JetpackBrandingVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingVisibility.swift; sourceTree = "<group>"; };
@@ -6885,7 +6885,7 @@
 		801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayFrequencyTracker.swift; sourceTree = "<group>"; };
 		801D951C291ADB7E0051993E /* JetpackOverlayFrequencyTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayFrequencyTrackerTests.swift; sourceTree = "<group>"; };
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
-		803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerCoordinator.swift; sourceTree = "<group>"; };
+		803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinator.swift; sourceTree = "<group>"; };
 		803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewPresenter.swift; sourceTree = "<group>"; };
 		803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+RootViewPresenter.swift"; sourceTree = "<group>"; };
 		803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySitesCoordinator+RootViewPresenter.swift"; sourceTree = "<group>"; };
@@ -8867,7 +8867,7 @@
 		FEAC916D28001FC4005026E7 /* AvatarTrainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTrainView.swift; sourceTree = "<group>"; };
 		FEB7A8922718852A00A8CF85 /* WordPress 134.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 134.xcdatamodel"; sourceTree = "<group>"; };
 		FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptCoordinator.swift; sourceTree = "<group>"; };
-		FEC26032283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewControllerCoordinator+BloggingPrompt.swift"; sourceTree = "<group>"; };
+		FEC26032283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewCoordinator+BloggingPrompt.swift"; sourceTree = "<group>"; };
 		FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersScheduler.swift; sourceTree = "<group>"; };
 		FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersSchedulerTests.swift; sourceTree = "<group>"; };
 		FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataIssueSolver.swift; sourceTree = "<group>"; };
@@ -10828,7 +10828,7 @@
 		3F6A7E90251BC1C4005B6A61 /* Dependency container */ = {
 			isa = PBXGroup;
 			children = (
-				3F6A7E91251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift */,
+				3F6A7E91251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift */,
 			);
 			path = "Dependency container";
 			sourceTree = "<group>";
@@ -12521,7 +12521,7 @@
 		803BB97E295957A200B3F6D6 /* Root View */ = {
 			isa = PBXGroup;
 			children = (
-				803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */,
+				803BB9782959543D00B3F6D6 /* RootViewCoordinator.swift */,
 				803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */,
 				803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */,
 				803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */,
@@ -13650,7 +13650,7 @@
 				98517E5828220411001FFD45 /* BloggingPromptTableViewCell.swift */,
 				98517E5B28220474001FFD45 /* BloggingPromptTableViewCell.xib */,
 				FEC2602F283FBA1A003D886A /* BloggingPromptCoordinator.swift */,
-				FEC26032283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift */,
+				FEC26032283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift */,
 			);
 			path = "Blogging Prompts";
 			sourceTree = "<group>";
@@ -21166,7 +21166,7 @@
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				3F6975FF242D941E001F1807 /* ReaderTabViewModel.swift in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
-				3F6A7E92251BC1DC005B6A61 /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */,
+				3F6A7E92251BC1DC005B6A61 /* RootViewCoordinator+WhatIsNew.swift in Sources */,
 				3FAE0652287C8FC500F46508 /* JPScrollViewDelegate.swift in Sources */,
 				FF8A04E01D9BFE7400523BC4 /* CachedAnimatedImageView.swift in Sources */,
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
@@ -21182,7 +21182,7 @@
 				F10465142554260600655194 /* BindableTapGestureRecognizer.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
-				803BB9792959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */,
+				803BB9792959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */,
 				98F537A722496CF300B334F9 /* SiteStatsTableHeaderView.swift in Sources */,
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
 				C7BB60162863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */,
@@ -21552,7 +21552,7 @@
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
-				FEC26033283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift in Sources */,
+				FEC26033283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
@@ -22893,7 +22893,7 @@
 				FABB21762602FC2C00C8785C /* CameraHandler.swift in Sources */,
 				FA73D7EA27987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */,
-				803BB97A2959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */,
+				803BB97A2959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */,
 				FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */,
 				FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */,
 				FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */,
@@ -23864,7 +23864,7 @@
 				FADFBD27265F580500039C41 /* MultilineButton.swift in Sources */,
 				C71AF534281064DE00F9E99E /* OnboardingQuestionsCoordinator.swift in Sources */,
 				FABB24752602FC2C00C8785C /* ReaderSearchSuggestionService.swift in Sources */,
-				FABB24762602FC2C00C8785C /* RootViewControllerCoordinator+WhatIsNew.swift in Sources */,
+				FABB24762602FC2C00C8785C /* RootViewCoordinator+WhatIsNew.swift in Sources */,
 				FABB24772602FC2C00C8785C /* CachedAnimatedImageView.swift in Sources */,
 				FABB24782602FC2C00C8785C /* AccountToAccount20to21.swift in Sources */,
 				FABB24792602FC2C00C8785C /* AutoUploadMessageProvider.swift in Sources */,
@@ -24320,7 +24320,7 @@
 				46F583B02624CE790010A723 /* BlockEditorSettingElement+CoreDataProperties.swift in Sources */,
 				FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */,
 				FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
-				FEC26034283FC902003D886A /* RootViewControllerCoordinator+BloggingPrompt.swift in Sources */,
+				FEC26034283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
 				FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */,
 				9856A3E5261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				FABB25D62602FC2C00C8785C /* ActivityListSectionHeaderView.swift in Sources */,
