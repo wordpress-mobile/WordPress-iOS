@@ -88,6 +88,7 @@ extension MySitesCoordinator: RootViewPresenter {
 
     func showMySitesTab() {
         // Do nothing
+        // Landing here means we're trying to show the My Sites, but it's already showing.
     }
 
     // MARK: Notifications
@@ -111,9 +112,8 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.
-    private func fallbackBehavior() {
-        // TODO: Consider showing an overlay
-        // TODO: Print a log statement
-        // TODO: Consider tracking this
+    private func fallbackBehavior(callingFunction: String = #function) {
+        let properties = ["calling_function": callingFunction]
+        WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
     }
 }
