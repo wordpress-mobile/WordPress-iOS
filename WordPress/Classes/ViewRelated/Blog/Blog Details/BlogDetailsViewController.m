@@ -599,7 +599,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if (!_restorableSelectedIndexPath) {
         // If nil, default to stats subsection.
-        BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+        BlogDetailsSubsection subsection = [self defaultSubsection];
         self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection blog: self.blog];
         NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
@@ -703,7 +703,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
-                BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
+                BlogDetailsSubsection subsection = [self defaultSubsection];
                 BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
                 sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
@@ -1113,11 +1113,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
     splitViewController.isShowingInitialDetail = YES;
-    
-    if ([self shouldShowDashboard]) {
-        [self showDetailViewForSubsection:BlogDetailsSubsectionHome];
-    } else {
-        [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+    BlogDetailsSubsection subsection = [self defaultSubsection];
+    switch (subsection) {
+        case BlogDetailsSubsectionHome:
+            [self showDetailViewForSubsection:BlogDetailsSubsectionHome];
+            break;
+        case BlogDetailsSubsectionStats:
+            [self showDetailViewForSubsection:BlogDetailsSubsectionStats];
+            break;
+        case BlogDetailsSubsectionPosts:
+            [self showDetailViewForSubsection: BlogDetailsSubsectionPosts];
+            break;
+        default:
+            break;
     }
 }
 
@@ -1744,10 +1752,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    StatsViewController *statsView = [StatsViewController new];
-    statsView.blog = self.blog;
-
-    return statsView;
+    if ([self shouldShowStats]) {
+        StatsViewController *statsView = [StatsViewController new];
+        statsView.blog = self.blog;
+        return statsView;
+    } else {
+        PostListViewController *postsView = [PostListViewController controllerWithBlog:self.blog];
+        postsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+        return postsView;
+    }
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
