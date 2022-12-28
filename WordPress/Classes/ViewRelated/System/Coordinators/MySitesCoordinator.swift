@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {
@@ -18,8 +19,9 @@ class MySitesCoordinator: NSObject {
     init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
-
         super.init()
+
+        addSignInObserver()
     }
 
     // MARK: - Root View Controller
@@ -73,8 +75,12 @@ class MySitesCoordinator: NSObject {
     }()
 
     private lazy var mySiteViewController: MySiteViewController = {
-        MySiteViewController(meScenePresenter: self.meScenePresenter)
+        makeMySiteViewController()
     }()
+
+    private func makeMySiteViewController() -> MySiteViewController {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
+    }
 
     // MARK: - Navigation
 
@@ -218,5 +224,20 @@ class MySitesCoordinator: NSObject {
         let listViewController = PluginListViewController(site: site, query: query)
 
         navigationController.pushViewController(listViewController, animated: false)
+    }
+
+    // MARK: Notifications Handling
+
+    private func addSignInObserver() {
+        let notificationName = NSNotification.Name(WordPressAuthenticator.WPSigninDidFinishNotification)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(signinDidFinish),
+                                               name: notificationName,
+                                               object: nil)
+    }
+
+    @objc func signinDidFinish() {
+        mySiteViewController = makeMySiteViewController()
+        navigationController.viewControllers = [rootContentViewController]
     }
 }
