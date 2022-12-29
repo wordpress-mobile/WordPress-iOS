@@ -33,7 +33,7 @@ extension BlogDetailsSubsection {
 
 extension BlogDetailsViewController {
 
-    @objc class func mySitesCoordinator() -> MySitesCoordinator {
+    @objc class func mySitesCoordinator() -> MySitesCoordinator? {
         RootViewCoordinator.sharedPresenter.mySitesCoordinator
     }
 

@@ -15,7 +15,7 @@ extension WPTabBarController: RootViewPresenter {
     }
 
     func showBlogDetails(for blog: Blog) {
-        mySitesCoordinator.showBlogDetails(for: blog)
+        mySitesCoordinator?.showBlogDetails(for: blog)
     }
 
     func getMeScenePresenter() -> ScenePresenter {
@@ -26,20 +26,20 @@ extension WPTabBarController: RootViewPresenter {
         guard selectedIndex == WPTab.mySites.rawValue else {
             return nil
         }
-        return mySitesCoordinator.currentBlog
+        return mySitesCoordinator?.currentBlog
     }
 
     // MARK: My Site
 
     func showPages(for blog: Blog) {
-        mySitesCoordinator.showPages(for: blog)
+        mySitesCoordinator?.showPages(for: blog)
     }
 
     func showPosts(for blog: Blog) {
-        mySitesCoordinator.showPosts(for: blog)
+        mySitesCoordinator?.showPosts(for: blog)
     }
 
     func showMedia(for blog: Blog) {
-        mySitesCoordinator.showMedia(for: blog)
+        mySitesCoordinator?.showMedia(for: blog)
     }
 }

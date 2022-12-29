@@ -17,7 +17,7 @@ extension RootViewPresenter {
         let context = ContextManager.shared.mainContext
         // Ignore taps on the post tab and instead show the modal.
         if Blog.count(in: context) == 0 {
-            mySitesCoordinator.showAddNewSite()
+            mySitesCoordinator?.showAddNewSite()
         } else {
             showPostTab(animated: true, toMedia: false, completion: afterDismiss)
         }
@@ -26,7 +26,7 @@ extension RootViewPresenter {
     func showPostTab(for blog: Blog) {
         let context = ContextManager.shared.mainContext
         if Blog.count(in: context) == 0 {
-            mySitesCoordinator.showAddNewSite()
+            mySitesCoordinator?.showAddNewSite()
         } else {
             showPostTab(animated: true, toMedia: false, blog: blog)
         }

@@ -30,7 +30,7 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: My Site
 
-    var mySitesCoordinator: MySitesCoordinator! { get }
+    var mySitesCoordinator: MySitesCoordinator? { get }
     func showMySitesTab()
     func showPages(for blog: Blog)
     func showPosts(for blog: Blog)
