@@ -28,6 +28,10 @@ extension MySitesCoordinator: RootViewPresenter {
         return nil
     }
 
+    var readerCoordinator: ReaderCoordinator? {
+        return nil
+    }
+
     func showReaderTab() {
         fallbackBehavior()
     }
