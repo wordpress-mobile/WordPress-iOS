@@ -40,6 +40,7 @@ protocol RootViewPresenter: AnyObject {
 
     // MARK: Notifications
 
+    var notificationsViewController: NotificationsViewController? { get }
     func showNotificationsTab()
     func showNotificationsTabForNote(withID notificationID: String)
     func switchNotificationsTabToNotificationSettings()

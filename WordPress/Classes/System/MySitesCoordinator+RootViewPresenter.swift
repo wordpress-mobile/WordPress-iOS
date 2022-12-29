@@ -101,6 +101,10 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Notifications
 
+    var notificationsViewController: NotificationsViewController? {
+        return nil
+    }
+
     func showNotificationsTab() {
         fallbackBehavior()
     }
