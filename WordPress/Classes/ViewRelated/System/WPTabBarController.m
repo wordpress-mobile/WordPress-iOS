@@ -56,7 +56,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
-@property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
