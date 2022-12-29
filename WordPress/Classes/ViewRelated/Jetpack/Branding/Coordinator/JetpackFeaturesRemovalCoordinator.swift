@@ -107,20 +107,14 @@ class JetpackFeaturesRemovalCoordinator {
         return formatter.date(from: dateString)
     }
 
-    /// Used to determine if the Jetpack features should be removed based on the removal phase.
-    static func shouldRemoveJetpackFeatures() -> Bool {
+    /// Used to determine if the Jetpack features are enabled based on the removal phase.
+    static func jetpackFeaturesEnabled() -> Bool {
         switch generalPhase() {
         case .four, .newUsers:
-            return true
-        default:
             return false
+        default:
+            return true
         }
-    }
-
-    /// Inverse of `shouldRemoveJetpackFeatures`.
-    /// Added to enhance verbosity in some areas of the code.
-    static func jetpackFeaturesEnabled() -> Bool {
-        !shouldRemoveJetpackFeatures()
     }
 
     /// Used to display feature-specific or feature-collection overlays.

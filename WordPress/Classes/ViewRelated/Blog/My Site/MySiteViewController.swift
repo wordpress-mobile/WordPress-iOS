@@ -283,7 +283,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
         let hideSegmentedControl =
-            JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() ||
+            !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ||
             !blog.isAccessibleThroughWPCom() ||
             !splitViewControllerIsHorizontallyCompact
 

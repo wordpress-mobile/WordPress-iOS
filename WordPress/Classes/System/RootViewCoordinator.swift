@@ -26,12 +26,12 @@ class RootViewCoordinator {
     // MARK: Initializer
 
     init() {
-        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
-            let meScenePresenter = MeScenePresenter()
-            self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+            self.rootViewPresenter = WPTabBarController()
         }
         else {
-            self.rootViewPresenter = WPTabBarController()
+            let meScenePresenter = MeScenePresenter()
+            self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         }
         updatePromptsIfNeeded()
     }
