@@ -32,6 +32,10 @@ extension MySitesCoordinator: RootViewPresenter {
         return nil
     }
 
+    var readerNavigationController: UINavigationController? {
+        return nil
+    }
+
     func showReaderTab() {
         fallbackBehavior()
     }

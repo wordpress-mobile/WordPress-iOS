@@ -144,10 +144,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// allowing Reader Detail to use a blue navbar.
     var useCompatibilityMode: Bool {
         // Use compatibility mode if not presented within the Reader
-        guard let tabBarController = RootViewCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
+        guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
             return false
         }
-        return tabBarController.readerNavigationController.viewControllers.contains(self) == false
+        return readerNavigationController.viewControllers.contains(self) == false
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
