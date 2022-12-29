@@ -125,10 +125,20 @@ class MySitesCoordinator: NSObject {
     // MARK: - Stats
 
     func showStats(for blog: Blog) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            unsupportedFeatureFallback()
+            return
+        }
+
         showBlogDetails(for: blog, then: .stats)
     }
 
     func showStats(for blog: Blog, timePeriod: StatsPeriodType, date: Date? = nil) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            unsupportedFeatureFallback()
+            return
+        }
+
         showBlogDetails(for: blog)
 
         if let date = date {
