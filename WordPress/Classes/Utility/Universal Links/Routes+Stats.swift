@@ -63,6 +63,10 @@ extension StatsRoute: Route {
             return "/stats/activity/:domain"
         }
     }
+
+    var jetpackPowered: Bool {
+        return true
+    }
 }
 
 extension StatsRoute: NavigationAction {

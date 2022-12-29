@@ -162,6 +162,11 @@ struct UniversalLinkRouter: LinkRouter {
         }
 
         for matchedRoute in matches {
+            if matchedRoute.jetpackPowered && JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
+                let properties = ["calling_function": "deep_link", TracksPropertyKeys.url: url.absoluteString]
+                WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
+                continue
+            }
             matchedRoute.action.perform(matchedRoute.values, source: presentingViewController, router: self)
         }
     }
