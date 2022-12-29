@@ -93,9 +93,7 @@ class BackgroundTasksCoordinator {
             }
 
             scheduler.register(forTaskWithIdentifier: type(of: task).identifier, using: nil) { osTask in
-                guard Feature.enabled(.weeklyRoundup)
-                        && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
-                        && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+                guard Feature.enabled(.weeklyRoundup) && JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
                     osTask.setTaskCompleted(success: false)
                     eventHandler.handle(.taskCompleted(identifier: type(of: task).identifier, cancelled: true))
                     return
