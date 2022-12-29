@@ -25,14 +25,17 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Reader
 
     var readerTabViewController: ReaderTabViewController? {
+        fallbackBehavior()
         return nil
     }
 
     var readerCoordinator: ReaderCoordinator? {
+        fallbackBehavior()
         return nil
     }
 
     var readerNavigationController: UINavigationController? {
+        fallbackBehavior()
         return nil
     }
 
@@ -102,6 +105,7 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Notifications
 
     var notificationsViewController: NotificationsViewController? {
+        fallbackBehavior()
         return nil
     }
 
