@@ -8,7 +8,7 @@ protocol RootViewPresenter: AnyObject {
     var currentViewController: UIViewController? { get }
     func showBlogDetails(for blog: Blog)
     func getMeScenePresenter() -> ScenePresenter
-    func currentlySelectedScreen() -> String!
+    func currentlySelectedScreen() -> String
     func currentlyVisibleBlog() -> Blog?
 
     // MARK: Reader
@@ -16,7 +16,7 @@ protocol RootViewPresenter: AnyObject {
     var readerTabViewController: ReaderTabViewController? { get }
     var readerCoordinator: ReaderCoordinator? { get }
     func showReaderTab()
-    func showReaderTab(forPost: NSNumber!, onBlog: NSNumber!)
+    func showReaderTab(forPost: NSNumber, onBlog: NSNumber)
     func switchToDiscover()
     func switchToSavedPosts()
     func resetReaderDiscoverNudgeFlow()
@@ -40,7 +40,7 @@ protocol RootViewPresenter: AnyObject {
     // MARK: Notifications
 
     func showNotificationsTab()
-    func showNotificationsTabForNote(withID notificationID: String!)
+    func showNotificationsTabForNote(withID notificationID: String)
     func switchNotificationsTabToNotificationSettings()
     func popNotificationsTabToRoot()
 

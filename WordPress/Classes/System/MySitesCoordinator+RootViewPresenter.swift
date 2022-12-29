@@ -14,7 +14,7 @@ extension MySitesCoordinator: RootViewPresenter {
         meScenePresenter
     }
 
-    func currentlySelectedScreen() -> String! {
+    func currentlySelectedScreen() -> String {
         return "Blog List"
     }
 
@@ -80,7 +80,7 @@ extension MySitesCoordinator: RootViewPresenter {
         fallbackBehavior()
     }
 
-    func showReaderTab(forPost: NSNumber!, onBlog: NSNumber!) {
+    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
         fallbackBehavior()
     }
 
@@ -105,7 +105,7 @@ extension MySitesCoordinator: RootViewPresenter {
         fallbackBehavior()
     }
 
-    func showNotificationsTabForNote(withID notificationID: String!) {
+    func showNotificationsTabForNote(withID notificationID: String) {
         fallbackBehavior()
     }
 
