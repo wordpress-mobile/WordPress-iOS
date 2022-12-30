@@ -17,26 +17,26 @@ struct RemoteConfig {
     // MARK: Remote Config Parameters
 
     var jetpackDeadline: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "jp-deadline", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "jp_deadline", defaultValue: nil, store: store)
     }
 
     var phaseTwoBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-two-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase_two_blog_post", defaultValue: nil, store: store)
     }
 
     var phaseThreeBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-three-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase_three_blog_post", defaultValue: nil, store: store)
     }
 
     var phaseFourBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-four-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase_four_blog_post", defaultValue: nil, store: store)
     }
 
     var phaseNewUsersBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-new-users-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase_new_users_blog_post", defaultValue: nil, store: store)
     }
 
     var phaseSelfHostedBlogPostUrl: RemoteConfigParameter<String> {
-        RemoteConfigParameter<String>(key: "phase-self-hosted-blog-post", defaultValue: nil, store: store)
+        RemoteConfigParameter<String>(key: "phase_self_hosted_blog_post", defaultValue: nil, store: store)
     }
 }

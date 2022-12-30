@@ -606,11 +606,11 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        return StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodStore.getSummary(), insightsStore: insightsStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
+        return StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodStore.getSummary(), insightsStore: insightsStore, statsSummaryType: .comments)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {

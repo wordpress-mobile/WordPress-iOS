@@ -7,7 +7,7 @@
 #import "SharingDetailViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"

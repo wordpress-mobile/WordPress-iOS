@@ -3,7 +3,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "CommentsViewController.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
@@ -29,6 +29,7 @@ static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderV
 static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickStartCell";
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
 static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetailsMigrationSuccessCell";
+static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDetailsJetpackBrandingCardCellIdentifier";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -355,6 +356,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[QuickStartCell class] forCellReuseIdentifier:BlogDetailsQuickStartCellIdentifier];
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
     [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+    [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -451,6 +453,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self showDashboard];
             break;
         case BlogDetailsSubsectionQuickStart:
+        case BlogDetailsSubsectionJetpackBrandingCard:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
@@ -558,6 +561,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionReminders:
         case BlogDetailsSubsectionHome:
         case BlogDetailsSubsectionMigrationSuccess:
+        case BlogDetailsSubsectionJetpackBrandingCard:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionDomainCredit:
             return [NSIndexPath indexPathForRow:0 inSection:section];
@@ -611,6 +615,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
                 _restorableSelectedIndexPath = nil;
             }
@@ -696,6 +701,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickAction:
             case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryJetpackBrandingCard:
             case BlogDetailsSectionCategoryDomainCredit: {
                 BlogDetailsSubsection subsection = [self shouldShowDashboard] ? BlogDetailsSubsectionHome : BlogDetailsSubsectionStats;
                 BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:subsection blog: self.blog];
@@ -737,6 +743,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
+    }
+    if (self.shouldShowJetpackBrandingMenuCard == YES) {
+        [marr addObject:[self jetpackCardSectionViewModel]];
     }
 
     if ([DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
@@ -1162,6 +1171,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (section.category == BlogDetailsSectionCategoryMigrationSuccess && MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         MigrationSuccessCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
+        [cell configureWithViewController:self];
+        return cell;
+    }
+    
+    if (section.category == BlogDetailsSectionCategoryJetpackBrandingCard) {
+        JetpackBrandingMenuCardCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
         [cell configureWithViewController:self];
         return cell;
     }

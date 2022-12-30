@@ -2,7 +2,7 @@
 #import <WordPressUI/UIImage+Util.h>
 
 #import "AccountService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "BlogService.h"
 #import "Blog.h"
 

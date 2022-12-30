@@ -12,7 +12,7 @@ struct RemoteConfigParameter<T> {
     private let store: RemoteConfigStore
 
     private var serverValue: T? {
-        return store.cache[key] as? T
+        return store.value(for: key) as? T
     }
 
     // MARK: Initializer

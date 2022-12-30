@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,16 +18,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WGt-7n-PjC" userLabel="Subtitles Stack View">
-                        <rect key="frame" x="16" y="7.5" width="323" height="16"/>
+                        <rect key="frame" x="16" y="7.666666666666667" width="323" height="15.666666666666664"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5E0-WK-AUD">
-                                <rect key="frame" x="0.0" y="0.0" width="161.5" height="16"/>
+                                <rect key="frame" x="0.0" y="0.0" width="161.66666666666666" height="15.666666666666666"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2jM-Bl-1PY">
-                                <rect key="frame" x="161.5" y="0.0" width="161.5" height="16"/>
+                                <rect key="frame" x="161.66666666666663" y="0.0" width="161.33333333333337" height="15.666666666666666"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,17 +38,17 @@
                         </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UCQ-gq-RrN" userLabel="Rows Stack View">
-                        <rect key="frame" x="0.0" y="0.5" width="355" height="416.5"/>
+                        <rect key="frame" x="0.0" y="0.66666666666665719" width="355" height="416.33333333333337"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OxT-ul-sgW" userLabel="Top Seperator Line">
-                        <rect key="frame" x="0.0" y="0.0" width="355" height="0.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="355" height="0.66666666666666663"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="tep-qB-gA1"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4PI-2u-gGF" userLabel="Bottom Seperator Line">
-                        <rect key="frame" x="0.0" y="416.5" width="355" height="0.5"/>
+                        <rect key="frame" x="0.0" y="416.66666666666669" width="355" height="0.33333333333331439"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="RQD-WP-JN5"/>
@@ -80,6 +80,7 @@
                 <outlet property="rowsStackViewTopConstraint" destination="Usf-7v-7m6" id="Res-MH-gOh"/>
                 <outlet property="subtitleStackView" destination="WGt-7n-PjC" id="5JN-Yn-YM9"/>
                 <outlet property="subtitlesStackViewTopConstraint" destination="u2O-MU-b7v" id="ya9-A4-B6Y"/>
+                <outlet property="topConstraint" destination="Ilj-Ck-ryH" id="pmE-rQ-UDq"/>
                 <outlet property="topSeparatorLine" destination="OxT-ul-sgW" id="qjZ-f6-e57"/>
                 <outlet property="topSeparatorLineHeightConstraint" destination="tep-qB-gA1" id="7JT-Pm-BKH"/>
             </connections>

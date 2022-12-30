@@ -7,9 +7,8 @@ extension ContextManager {
     /// Create an in memory database.
     ///
     /// - SeeAlso `ContextManager`
-    @objc
     static func forTesting() -> ContextManager {
-        ContextManager(modelName: ContextManagerModelNameCurrent, store: ContextManager.inMemoryStoreURL, contextFactory: nil)
+        ContextManager(modelName: ContextManagerModelNameCurrent, store: ContextManager.inMemoryStoreURL)
     }
 
     /// Override `ContextManager.shared` with the mock instance, and un-override it when
@@ -24,7 +23,7 @@ extension ContextManager {
         _ = AutomaticTeardownTestObserver.instance
 
         let original = ContextManager.overrideInstance
-        ContextManager.overrideSharedInstance(self)
+        ContextManager.overrideInstance = self
 
         // This closure is going to be called by the test observer below when
         // the test case finishes. The reason a combination of storing a closure in
@@ -44,7 +43,7 @@ extension ContextManager {
             }
             self.mainContext.reset()
             if ContextManager.overrideInstance === self {
-                ContextManager.overrideSharedInstance(original)
+                ContextManager.overrideInstance = original
             }
         }
     }

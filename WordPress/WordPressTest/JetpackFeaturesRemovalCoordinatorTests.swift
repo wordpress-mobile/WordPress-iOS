@@ -250,7 +250,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
     func testFetchingRemovalDeadline() {
         // Given
         let remoteConfigStore = RemoteConfigStore(persistenceStore: mockUserDefaults)
-        mockUserDefaults.set(["jp-deadline": "2022-10-10"], forKey: RemoteConfigStore.Constants.CachedResponseKey)
+        mockUserDefaults.set(["jp_deadline": "2022-10-10"], forKey: RemoteConfigStore.Constants.CachedResponseKey)
 
         // When
         let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore)
