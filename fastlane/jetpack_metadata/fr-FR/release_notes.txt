@@ -1,3 +1,0 @@
-Nous avons résolu un problème visuel mineur avec les commandes « Accueil » et « Menu » du tableau de bord « Mon site ».
-
-Nous avons également corrigé un bug dans « Mon site ». Désormais, lorsque vous appuyez sur le bouton « Déconnecter de WordPress.com », vous êtes déconnecté, et l’application est actualisée.
