@@ -1,3 +1,0 @@
-Vi har rättat ett litet visuellt problem med reglaget för startsida och meny i adminpanelen “Min webbplats“.
-
-Dessutom har vi fixat ett fel under “Min webbplats”. Om du trycker på ”Koppla bort från WordPress.com” bryts nu anslutningen, varefter appen laddas om.
