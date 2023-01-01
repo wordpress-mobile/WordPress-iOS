@@ -304,6 +304,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             // This helps reset the header changes after a rotation.
             scrollViewDidScroll(scrollableView)
             scrollViewDidEndDecelerating(scrollableView)
+        } else {
+            layoutHeader()
+            snapToHeight(scrollableView)
         }
     }
 
