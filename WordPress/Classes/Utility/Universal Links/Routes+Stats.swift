@@ -71,9 +71,7 @@ extension StatsRoute: Route {
 
 extension StatsRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        guard let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator else {
-            return
-        }
+        let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator
 
         switch self {
         case .root:

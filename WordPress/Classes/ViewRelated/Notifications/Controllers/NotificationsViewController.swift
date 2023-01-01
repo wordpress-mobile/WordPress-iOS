@@ -297,10 +297,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
-        guard let tabBarController = RootViewCoordinator.sharedPresenter.rootViewController as? WPTabBarController else {
-            return nil
-        }
-        return tabBarController.notificationsViewController
+        return RootViewCoordinator.sharedPresenter.notificationsViewController
     }
 
     override func encodeRestorableState(with coder: NSCoder) {

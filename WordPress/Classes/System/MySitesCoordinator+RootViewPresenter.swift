@@ -14,7 +14,7 @@ extension MySitesCoordinator: RootViewPresenter {
         meScenePresenter
     }
 
-    func currentlySelectedScreen() -> String! {
+    func currentlySelectedScreen() -> String {
         return "Blog List"
     }
 
@@ -25,6 +25,17 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Reader
 
     var readerTabViewController: ReaderTabViewController? {
+        unsupportedFeatureFallback()
+        return nil
+    }
+
+    var readerCoordinator: ReaderCoordinator? {
+        unsupportedFeatureFallback()
+        return nil
+    }
+
+    var readerNavigationController: UINavigationController? {
+        unsupportedFeatureFallback()
         return nil
     }
 
@@ -76,13 +87,13 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func showReaderTab(forPost: NSNumber!, onBlog: NSNumber!) {
+    func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
         unsupportedFeatureFallback()
     }
 
     // MARK: My Site
 
-    var mySitesCoordinator: MySitesCoordinator! {
+    var mySitesCoordinator: MySitesCoordinator {
         return self
     }
 
@@ -93,6 +104,11 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: Notifications
 
+    var notificationsViewController: NotificationsViewController? {
+        unsupportedFeatureFallback()
+        return nil
+    }
+
     func showNotificationsTab() {
         unsupportedFeatureFallback()
     }
@@ -101,7 +117,7 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
-    func showNotificationsTabForNote(withID notificationID: String!) {
+    func showNotificationsTabForNote(withID notificationID: String) {
         unsupportedFeatureFallback()
     }
 

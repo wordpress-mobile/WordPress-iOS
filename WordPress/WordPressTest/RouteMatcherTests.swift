@@ -7,6 +7,7 @@ private struct TestRoute: Route {
     let source: DeepLinkSource = .link
     let action: NavigationAction = TestAction()
     let shouldTrack = false
+    let jetpackPowered = false
 }
 
 private struct TestAction: NavigationAction {

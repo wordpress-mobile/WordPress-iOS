@@ -148,7 +148,7 @@ private class RemoteConfigStoreMock: RemoteConfigStore {
     var phaseThreeBlogPostUrl: String?
 
     override func value(for key: String) -> Any? {
-        if key == "phase-three-blog-post" {
+        if key == "phase_three_blog_post" {
             return phaseThreeBlogPostUrl
         }
         return super.value(for: key)

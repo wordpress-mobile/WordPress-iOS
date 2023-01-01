@@ -46,7 +46,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func defaultSubsection() -> BlogDetailsSubsection {
-        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
+        if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             return .posts
         }
         if shouldShowDashboard() {

@@ -92,7 +92,7 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
     }
 
     func shouldPresentNotifications() -> Bool {
-        let notificationsDisabled = JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures()
+        let notificationsDisabled = !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
         let appMigrated = jetpackMigrationPreventDuplicateNotifications
             && isWordPress
             && userDefaults.bool(forKey: wordPressNotificationsToggledDefaultsKey)
