@@ -1191,6 +1191,30 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
         let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+
+        // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
+        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
+            return [
+                .mentions: false,
+                .xposts: false,
+                .contactInfoBlock: false,
+                .layoutGridBlock: false,
+                .tiledGalleryBlock: false,
+                .unsupportedBlockEditor: false,
+                .canEnableUnsupportedBlockEditor: false,
+                .isAudioBlockMediaUploadEnabled: false,
+                .mediaFilesCollectionBlock: false,
+                .reusableBlock: false,
+                .shouldUseFastImage: !post.blog.isPrivate(),
+                .facebookEmbed: false,
+                .instagramEmbed: false,
+                .loomEmbed: false,
+                .smartframeEmbed: false,
+                .supportSection: false,
+                .onlyCoreBlocks: true
+            ]
+        }
+
         return [
             .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
             .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
@@ -1209,7 +1233,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .facebookEmbed: post.blog.supports(.facebookEmbed),
             .instagramEmbed: post.blog.supports(.instagramEmbed),
             .loomEmbed: post.blog.supports(.loomEmbed),
-            .smartframeEmbed: post.blog.supports(.smartframeEmbed)
+            .smartframeEmbed: post.blog.supports(.smartframeEmbed),
+            .supportSection: true
         ]
     }
 
