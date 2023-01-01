@@ -25,7 +25,7 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 
 @property (nonatomic, strong, readonly, nullable) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly, nullable) UINavigationController *readerNavigationController;
-@property (nonatomic, strong, readonly, nullable) MySitesCoordinator *mySitesCoordinator;
+@property (nonatomic, strong, readonly, nonnull) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly, nullable) ReaderCoordinator *readerCoordinator;
 @property (nonatomic, strong) id<ScenePresenter> meScenePresenter;
 @property (nonatomic, strong, readonly) ReaderTabViewModel *readerTabViewModel;

@@ -93,7 +93,7 @@ extension MySitesCoordinator: RootViewPresenter {
 
     // MARK: My Site
 
-    var mySitesCoordinator: MySitesCoordinator? {
+    var mySitesCoordinator: MySitesCoordinator {
         return self
     }
 

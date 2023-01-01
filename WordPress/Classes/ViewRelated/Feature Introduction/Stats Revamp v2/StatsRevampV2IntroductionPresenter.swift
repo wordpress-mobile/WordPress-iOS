@@ -44,7 +44,7 @@ class StatsRevampV2IntroductionPresenter: NSObject {
             return
         }
 
-        RootViewCoordinator.sharedPresenter.mySitesCoordinator?.showStats(for: blog, timePeriod: .insights)
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
     }
 
     // "Remind Me" prompt

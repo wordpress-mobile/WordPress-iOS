@@ -10,11 +10,10 @@ struct StartRoute: Route, NavigationAction {
     }
 
     func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
-        guard AccountHelper.isDotcomAvailable(),
-              let coordinator = RootViewCoordinator.sharedPresenter.mySitesCoordinator else {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
-        coordinator.showSiteCreation()
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showSiteCreation()
     }
 }
