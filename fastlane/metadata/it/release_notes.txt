@@ -1,3 +1,0 @@
-Abbiamo risolto un piccolo problema visuale con il controllo della Home e del Menu nella bacheca Il mio sito.
-
-Abbiamo anche risolto un bug in Il mio sito. Il pulsante "Disconnetti da WordPress.com" ora disconnette quando viene toccato e aggiorna l'app.

@@ -1,16 +1,220 @@
-/* Translation-Revision-Date: 2022-05-25 09:41:19+0000 */
+/* Translation-Revision-Date: 2022-12-27 06:07:41+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pl */
 
+/* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
+"\"More\" Button" = "Przycisk „Więcej”";
+
+/* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
+"%1$@ on %2$@" = "%1$@ w %2$@";
+
+/* Singular format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answer" = "%1$d odpowiedź";
+
+/* Plural format string for displaying the number of users that answered the blogging prompt. */
+"%1$d answers" = "%1$d odpowiedzi";
+
+/* Accessibility label for value in billions. Ex: 66.6 billion. */
+"%@ billion" = "%@ miliard";
+
+/* Accessibility label for comments button (plural)
+   Number of Comments per Page */
+"%@ comments" = "%@ komentarzy";
+
+/* Number of days after which comments should autoclose */
+"%@ days" = "%@ dni";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"%@ followers" = "%@ śledzących";
+
+/* Comments Threading Levels
+   Number of Threading Levels */
+"%@ levels" = "%@ poziomów";
+
+/* Number of Links */
+"%@ links" = "%@ odnośników";
+
+/* Accessibility label for value in millions. Ex: 66.6 million. */
+"%@ million" = "%@ million";
+
 /* Plan yearly price */
 "%@ per year" = "%@ rocznie";
+
+/* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
+"%@ quadrillion" = "%@ biliard";
+
+/* Accessibility label for value in quintillions. Ex: 66.6 quintillion. */
+"%@ quintillion" = "%@ trylion";
+
+/* Accessibility label for value in thousands. Ex: 66.6 thousand. */
+"%@ thousand" = "%@ tysiąc";
+
+/* Accessibility label for value in trillions. Ex: 66.6 trillion. */
+"%@ trillion" = "%@ bilion";
+
+/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
+"%@ was reconnected." = "Połączony ponownie: %@.";
+
+/* Accessibility label for a post in the post list. The parameters are the title, and date respectively. For example, \"Let it Go, 1 hour ago.\" */
+"%@, %@." = "%1$@, %2$@.";
+
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"%d accounts" = "%d konta";
+
+/* Age between dates over one day.
+   Number of days */
+"%d days" = "%d dni";
+
+/* Age between dates over one hour. */
+"%d hours" = "%d godzin";
+
+/* Age between dates over one month. */
+"%d months" = "%d miesięcy";
+
+/* Sepoken image size in pixels (e.g. 300 pixels) */
+"%d pixels" = "%d pikseli";
+
+/* Age between dates over one year. */
+"%d years" = "%d lat";
+
+/* translators: %s: block title e.g: \"Paragraph\". */
+"%s block options" = "%s opcje bloku";
+
+/* Empty Post Title */
+"(No Title)" = "(Brak tytułu)";
 
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(brak tytułu)";
 
+/* Indicates a video will be resized to Full HD 1920x1080 when uploaded. */
+"1080p" = "1080p";
+
+/* Indicates a video will be resized to 640x480 when uploaded. */
+"480p" = "480p";
+
+/* Indicates a video will be resized to HD 1280x720 when uploaded. */
+"720p" = "720p";
+
+/* Age between dates less than one hour. */
+"< 1 hour" = "mniej niż godzina";
+
+/* A short description of what the 'More' button is and how it works. */
+"A \"more\" button contains a dropdown which displays sharing buttons" = "Przycisk „Więcej” zawiera rozwijaną listę, która wyświetla przyciski udostępniania";
+
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Konto WordPress.com jest połączone z poświadczeniami twojego sklepu. Aby kontynuować, wyślemy odnośnik weryfikacyjny na powyższy adres e-mail.";
+
+/* Label for image that is set as a feature image for post/page */
+"A featured image is set. Tap to change it." = "Ustawiono obrazek wyróżniający. Stuknij, aby go zmienić.";
+
+/* Subtitle of the Site Name screen. */
+"A good name is short and memorable.\nYou can change it later." = "Dobra nazwa jest krótka i łatwa do zapamiętania. \nMożna zmienić ją później.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Customize Your Site' button. */
+"A series of steps showing you how to add a theme, site icon and more." = "Kilka kroków, które pokażą, jak dodać szablon, ikonę witryny, itd.";
+
+/* A VoiceOver hint to explain what the user gets when they select the 'Grow Your Audience' button. */
+"A series of steps to assist with growing your site's audience." = "Kilka kroków, które pomogą w powiększeniu liczby odbiorców witryny.";
+
+/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
+"A tag named '%@' already exists." = "Tag '%@' już istnieje.";
+
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Poprawny adres e-mail jest wymagany by przesłać odnośnik potwierdzający. Proszę wrócić do poprzedniego ekranu i wprowadzić poprawny adres e-mail.";
+
+/* Label for active Theme browser cell */
+"ACTIVE" = "WŁĄCZONE";
+
+/* My Profile 'About me' label */
+"About Me" = "O mnie";
+
+/* Link to About screen for WordPress for iOS */
+"About WordPress" = "O WordPressie";
+
+/* Title for the account section in site settings screen */
+"Account" = "Konto";
+
+/* Header for account details, shown after signing up. */
+"Account Details" = "Szczegóły konta";
+
+/* Accessibility description for account information after logging in. */
+"Account Information. %@. %@." = "Informacje na temat konta. %1$@. %2$@.";
+
+/* Theme Activate action title */
+"Activate" = "Włącz";
+
+/* Title of alert when theme activation fails */
+"Activation Error" = "Błąd aktywacji";
+
+/* Add New Stats Card category title
+   Noun. Links to a blog's Activity screen.
+   Title for the activity list */
+"Activity" = "Aktywność";
+
+/* Option in Support view to see activity logs. */
+"Activity Logs" = "Dziennik aktywności";
+
+/* Accessibility label for add button to add items to the user's media library
+   Remove asset from media picker list */
+"Add" = "Dodaj";
+
+/* No comment provided by engineer. */
+"Add To Beginning" = "Dodaj na początku";
+
+/* No comment provided by engineer. */
+"Add To End" = "Dodaj na końcu";
+
+/* The title on the add category screen */
+"Add a Category" = "Dodaj kategorię";
+
+/* Add a profile photo to Me > My Profile */
+"Add a Profile Photo" = "Dodaj zdjęcie profilowe";
+
+/* Add self-hosted site button */
+"Add self-hosted site" = "Dodaj stronę z własnym hostingiem";
+
+/* Placeholder text for tags module in share extension. */
+"Add tags" = "Dodaj tagi";
+
+/* Label for url blog setting
+   Register Domain - Address information field placeholder for Address line */
+"Address" = "Adres";
+
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
+
+/* Description of albums in the photo libraries */
+"Albums" = "Albumy";
+
+/* Autoapprove every comment
+   Browse all themes selection title
+   Displays all of the historical threats
+   Displays all of the Notifications, unfiltered
+   Title of all Blogging Prompts filter.
+   Title of all Comments filter. */
+"All" = "Wszystko";
+
+/* An option in a list. Automatically approve all comments */
+"All comments" = "Wszystkie komentarze";
+
+/* Section title for All Languages */
+"All languages" = "Wszystkie języki";
+
+/* Insights 'All-Time' header */
+"All-Time" = "Cały czas";
+
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "Zezwalaj na powiadomienia";
+
+/* A short description of the comment like sharing setting. */
+"Allow all comments to be Liked by you and your readers" = "Pozwól, aby wszystkie komentarze były możliwie do polubienia przez ciebie i odwiedzających";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "Alternatywnie możesz wprowadzić hasło do tego konta.";
+
+/* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
+"Always Send Crash Logs" = "Zawsze wysyłaj dziennik zdarzeń awarii";
 
 /* An error description explaining that a Menu could not be created. */
 "An error occurred creating the Menu." = "Wystąpił błąd podczas tworzenia menu.";
@@ -21,13 +225,28 @@
 /* An error description explaining that Menus could not be fetched. */
 "An error occurred fetching the Menus." = "Wystąpił błąd podczas pobierania zawartości menu.";
 
+/* An error description explaining that a Menu could not be updated. */
+"An error occurred updating the Menu." = "Wystąpił błąd podczas uaktualniania menu.";
+
+/* Text displayed when a stat section failed to load. */
+"An error occurred." = "Wystąpił błąd.";
+
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonim";
+
+/* Verb. Opens the editor to answer the blogging prompt. */
+"Answer" = "Odpowiedz";
 
 /* App Settings Title
    Link to App Settings section
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "App Settings" = "Ustawienia aplikacji";
+
+/* The title of the app appearance settings screen */
+"Appearance" = "Wygląd";
+
+/* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
+"Apply" = "Zastosuj";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -38,14 +257,144 @@
 /* Approves a Comment */
 "Approve Comment" = "Zatwierdź komentarz";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to approve a comment */
+"Approves the Comment." = "Zatwierdza komentarz";
+
+/* Menus confirmation text for confirming if a user wants to delete a menu. */
+"Are you sure you want to delete the menu?" = "Czy na pewno chcesz usunąć menu?";
+
+/* Message asking for confirmation on tag deletion */
+"Are you sure you want to delete this tag?" = "Czy na pewno chcesz usunąć tag?";
+
+/* Message prompting the user to confirm that they want to permanently delete a group of media items. */
+"Are you sure you want to permanently delete these items?" = "Czy na pewno usunąć wybrane elementy?";
+
+/* Message of the trash confirmation alert. */
+"Are you sure you want to trash this post?" = "Czy na pewno chcesz przenieść ten wpis do kosza?";
+
+/* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
+"Are you trying to log in to %1$@ near %2$@?" = "Czy próbujesz zalogować się do %1$@ w pobliżu %2$@?";
+
+/* No comment provided by engineer. */
+"Authenticating" = "Uwierzytelnianie";
+
+/* Title for the error view when the authentication failed for any reason */
+"Authentication Failed" = "Nieudane uwierzytelnianie";
+
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
+"Authentication code" = "Kod autentykacji";
+
+/* Author label.
+   Label for list of stats by content author.
+   The author of the post or page.
+   Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
+"Author" = "Autor";
+
+/* Label for comments by author
+   Period Stats 'Authors' header */
+"Authors" = "Autorzy";
+
+/* Discussion Settings Title
+   Settings: Comments Approval settings */
+"Automatically Approve" = "Automatyczne zatwierdzenie";
+
+/* Discussion Settings */
+"Automatically Close" = "Zamknij automatycznie";
+
+/* Explains the effect of the 'All comments' auto approval setting */
+"Automatically approve everyone's comments." = "Automatycznie zatwierdzaj wszystkie komentarze.";
+
+/* No comment provided by engineer. */
+"Available to all users" = "Dostępne dla wszystkich użytkowników";
+
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
    Previous web page */
 "Back" = "Powrót";
 
+/* Beauty site intent topic */
+"Beauty" = "Uroda";
+
+/* 'Best Day' label for Most Popular stat. */
+"Best Day" = "Najlepszy dzień";
+
+/* 'Best Hour' label for Most Popular stat. */
+"Best Hour" = "Najlepsza godzina";
+
+/* Text for related post cell preview */
+"Big iPhone\/iPad Update Now Available" = "Duże uaktualnienie dla iPhone'a\/iPada jest już dostępne";
+
+/* Accessibility label for block quote button on formatting toolbar.
+   Discoverability title for block quote keyboard shortcut. */
+"Block Quote" = "Cytat blokowy";
+
+/* translators: displayed right after the block is copied. */
+"Block copied" = "Blok został skopiowany";
+
+/* translators: displayed right after the block is cut. */
+"Block cut" = "Blok został wycięty";
+
+/* translators: displayed right after the block is duplicated. */
+"Block duplicated" = "Blok został powielony";
+
+/* translators: displayed right after the block is pasted. */
+"Block pasted" = "Blok został wklejony";
+
+/* translators: displayed right after the block is removed. */
+"Block removed" = "Blok został usunięty";
+
+/* No comment provided by engineer. */
+"Block settings" = "Ustawienia bloku";
+
+/* The title of a button that triggers blocking a site from the user's reader. */
+"Block this site" = "Zablokuj witrynę";
+
+/* Blocklist Title
+   Settings: Comments Blocklist */
+"Blocklist" = "Czarna lista";
+
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
+
+/* Accessibility label for bold button on formatting toolbar.
+   Discoverability title for bold formatting keyboard shortcut. */
+"Bold" = "Pogrubienie";
+
+/* Books site intent topic */
+"Books" = "Książki";
+
+/* Discoverability title for bullet list keyboard shortcut. */
+"Bullet List" = "Lista nieuporządkowana";
+
+/* Business site intent topic */
+"Business" = "Biznes";
+
+/* Title of a prompt letting the user know that they must wait until the current aciton completes. */
+"Busy" = "Zajęty";
+
+/* Title for a list of different button styles. */
+"Button Style" = "Styl przycisku";
+
+/* No comment provided by engineer. */
+"CUSTOMIZE" = "DOSTOSUJ";
+
+/* Label for size of media while it's being calculated. */
+"Calculating..." = "Obliczanie…";
+
+/* Accessibility label for taking an image or video with the camera on formatting toolbar.
+   Accessibility label for the camera tile in the collection view */
+"Camera" = "Aparat";
+
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Nie możesz zażądać odnośnika";
+
+/* Alert message that is shown when trying to publish empty page */
+"Can't publish an empty page" = "Nie można opublikować pustej strony";
+
+/* Alert message that is shown when trying to publish empty post */
+"Can't publish an empty post" = "Nie można opublikować pustego wpisu";
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
@@ -103,6 +452,23 @@
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anuluj";
 
+/* Share extension dialog dismiss button label - displayed when user is missing a login token. */
+"Cancel sharing" = "Anuluj udostępnianie";
+
+/* The action was canceled */
+"Canceled" = "Anulowane";
+
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "Nie można uzyskać dostępu do witryny pod tym adresem. Sprawdź dokładnie i spróbuj ponownie.";
+
+/* Image caption field label (for editing)
+   Noun. Label for the caption for a media asset (image / video) */
+"Caption" = "Podpis";
+
+/* Alert title.
+   Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
+"Careful!" = "Ostrożnie!";
+
 /* Label for Categories
    Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorie";
@@ -114,6 +480,81 @@
 /* Error popup title to indicate that there was no category title filled in. */
 "Category title missing." = "Brakuje nazwy kategorii.";
 
+/* Center alignment for an image. Should be the same as in core WP. */
+"Center" = "Do środka";
+
+/* Popup title for wrong SSL certificate. */
+"Certificate error" = "Błąd certyfikatu";
+
+/* Account Settings Change password label
+   Main title */
+"Change Password" = "Zmiana hasła";
+
+/* Message to show when Publicize globally shared setting failed */
+"Change failed" = "Zmiana nie powiodła się";
+
+/* Title of alert when getting purchases fails */
+"Check Purchases Error" = "Błąd sprawdzania zakupów";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "Sprawdź pocztę e-mail na tym urządzeniu!";
+
+/* Title of a Quick Start Tour */
+"Check your site title" = "Ustaw tytuł witryny";
+
+/* Overlay message displayed while checking if site has premium purchases */
+"Checking purchases…" = "Sprawdzanie zakupów…";
+
+/* Title for settings section which allows user to select their home page and posts page */
+"Choose Pages" = "Wybierz strony";
+
+/* Title for selecting a new posts page */
+"Choose Posts Page" = "Wybierz stronę z wpisami";
+
+/* Title for the screen to pick a template for a page */
+"Choose a Layout" = "Wybierz układ";
+
+/* Label for Publish date picker */
+"Choose a date" = "Wybierz datę";
+
+/* Title for the screen to pick a theme and homepage for a site.
+   Title of a Quick Start Tour */
+"Choose a theme" = "Wybierz motyw";
+
+/* Select the site's intent. Subtitle */
+"Choose a topic from the list below or type your own." = "Wybierz temat z listy poniżej lub dodaj swój własny.";
+
+/* Explanatory text for Homepage Settings homepage type selection. */
+"Choose from a homepage that displays your latest posts (classic blog) or a fixed \/ static page." = "Wybierz stronę główną, która wyświetla ostatnie wpisy (blog klasyczny) lub statyczną.";
+
+/* No comment provided by engineer. */
+"Choose image" = "Wybierz obrazek";
+
+/* No comment provided by engineer. */
+"Choose image or video" = "Wybierz obrazek lub film";
+
+/* No comment provided by engineer. */
+"Choose video" = "Wybierz film";
+
+/* And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to. */
+"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?" = "Wybranie innej witryny spowoduje utratę edytowanych treści takich jak media i kategorie. Czy na pewno to zrobić?";
+
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Klasyczny blog";
+
+/* No comment provided by engineer. */
+"Clear Old Activity Logs" = "Wyczyść stare wpisy z dziennika aktywności";
+
+/* Title of an alert prompt. */
+"Clear Search History" = "Wyczyść historię wyszukiwania";
+
+/* Message of the trash confirmation alert. */
+"Clear all old activity logs?" = "Czy wyczyścić stare wpisy dziennika aktywności?";
+
+/* Label for number of clicks.
+   Period Stats 'Clicks' header */
+"Clicks" = "Kliknięcia";
+
 /* Accessibility label for the date picker's close button.
    Action button to close edior and cancel changes or insertion of post
    Dismiss the current view
@@ -121,6 +562,21 @@
    Dismisses the current screen
    Voiceover accessibility label informing the user that this button dismiss the current view */
 "Close" = "Zamknij";
+
+/* Close Comments Title */
+"Close commenting" = "Zamknij komentowanie";
+
+/* Accessibility label for selecting code style button on the formatting toolbar. */
+"Code" = "Kod";
+
+/* translators: %d: column index. */
+"Column %d" = "Kolumna %d";
+
+/* No comment provided by engineer. */
+"Columns Settings" = "Ustawienia kolumn";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "Komiksy";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -140,12 +596,219 @@
    Today's Stats 'Comments' label */
 "Comments" = "Komentarze";
 
+/* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
+"Comments on" = "Komentarze do";
+
+/* A label title. */
+"Comments per page" = "Komentarzy na stronę";
+
+/* Setting: WordPress.com Community */
+"Community" = "Społeczność";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Check your site title" = "Ukończono: sprawdzanie tytułu witryny";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: Continue with site setup" = "Ukończono: kontynuuj ustawianie witryny";
+
+/* The Quick Start Tour title after the user finished the step. */
+"Completed: View your site" = "Ukończono: obejrzyj swoją stronę";
+
 /* Section title for the configure table section in the blog details screen */
 "Configure" = "Konfiguruj";
+
+/* Verb. Title for Jetpack Restore confirm button. */
+"Confirm" = "Potwierdź";
+
+/* Title of Delete Site confirmation alert */
+"Confirm Delete Site" = "Potwierdź usunięcie witryny";
+
+/* Verb. Tapping connects an account to Publicize.
+   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
+"Connect" = "Podłączenie";
+
+/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
+"Connect Another Account" = "Połącz inne konto";
+
+/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
+"Connect to automatically share your blog posts to %@" = "Połącz automatycznie by udostępniać swoje wpisy na blogu %@";
+
+/* No comment provided by engineer. */
+"Connect your favorite social media services to automatically share new posts with friends." = "Połącz swoje ulubione serwisy społecznościowe, by automatycznie udostępniać wpisy znajomym.";
+
+/* Adjective. The title of a list of third-part sharing service account names. */
+"Connected" = "Połączono";
+
+/* Noun. Title. Title for the list of accounts for third party sharing services. */
+"Connected Accounts" = "Połączone konta";
+
+/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
+   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
+"Connecting %@" = "Łączenie z %@";
+
+/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
+"Connecting %@ will replace the existing connection to %@." = "Łączenie %1$@ zostanie zastąpione przez %2$@.";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Łączenie z WordPress.com";
+
+/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
+"Connecting..." = "Łączenie…";
+
+/* Message to show when Publicize authorization is canceled
+   Message to show when Publicize connection is canceled by the user. */
+"Connection canceled" = "Połączenie zostało przerwane";
+
+/* Message to show when Publicize authorization failed
+   Message to show when Publicize connect failed */
+"Connection failed" = "Połączenie nieudane";
+
+/* Title of a prompt saying the app needs an internet connection before it can load post formats */
+"Connection not available" = "Połączenie nie jest dostępne";
+
+/* Button label for contacting support
+   Button title that opens the support page
+   Button to contact support on Start Over settings page
+   Contact Support button title
+   If a user taps this label, the app will navigate to the Support view.
+   Option in Support view to contact the support team.
+   Title for a button displayed when unable to close user account due to having atomic site. */
+"Contact Support" = "Kontakt z pomocą techniczną";
+
+/* Button label for contacting support
+   Title of a button. A call to action to contact support for assistance. */
+"Contact support" = "Kontakt z pomocą techniczną";
+
+/* Displays the number of blocks, words and characters in text */
+"Content Structure\nBlocks: %li, Words: %li, Characters: %li" = "Struktura treści\nBloki: %1$li, słowa: %2$li, znaki: %3$li";
+
+/* Part of a prompt suggesting that there is more content for the user to read. */
+"Continue reading" = "Czytaj dalej";
+
+/* Title of button that displays the WordPress.org contributor page */
+"Contribute" = "Dodaj coś od siebie";
+
+/* An example tag used in the login prologue screens. */
+"Cooking" = "Gotowanie";
+
+/* No comment provided by engineer. */
+"Copied block" = "Blok został skopiowany";
 
 /* Copy the post url and paste anywhere in phone
    Label for page copy link. Tapping copy the url of page */
 "Copy Link" = "Skopiuj odnośnik";
+
+/* translators: Copy URL from the clipboard, https://sample.url */
+"Copy URL from the clipboard, %s" = "Skopiuj adres URL ze schowka, %s";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"Could Be Better" = "Mogłaby być lepsza";
+
+/* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
+"Could Not Follow Topic" = "Nie można śledzić tematu";
+
+/* Title of an prompt letting the user know there was a problem saving. */
+"Could Not Save Changes" = "Nie można zapisać zmian";
+
+/* Message shown when site purchases API failed */
+"Could not check site purchases." = "Nie można było sprawdzić zakupów.";
+
+/* Title of a prompt. */
+"Could not follow site" = "Nie można było utworzyć witryny";
+
+/* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
+"Could not toggle Follow: missing blogURL attribute" = "Nie udało się włączyć obserwowania: brak atrybutu blogURL";
+
+/* Title for the error view when the user scanned an invalid log in code */
+"Could not validate the log in code" = "Nie można było zweryfikować kodu logowania";
+
+/* This is the text we display to the user when we ask them for a review and they've indicated they don't like the app */
+"Could you tell us how we could improve?" = "Czy możesz nam powiedzieć, co możemy poprawić?";
+
+/* No comment provided by engineer. */
+"Couldn't Connect" = "Nie można się połączyć";
+
+/* Period Stats 'Countries' header */
+"Countries" = "Państwa";
+
+/* Label for list of countries.
+   Register Domain - Domain contact information field Country */
+"Country" = "Państwo";
+
+/* Title of a section on the debug screen that shows a list of actions related to crash logging */
+"Crash Logging" = "Logowanie awarii";
+
+/* Label for switch to turn on/off sending crashes info */
+"Crash reports" = "Raporty o awariach";
+
+/* Accessibility label for create floating action button */
+"Create" = "Utwórz";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Stwórz konto";
+
+/* Title for button to make a blank page */
+"Create Blank Page" = "Utwórz pustą stronę";
+
+/* Create New header text */
+"Create New" = "Utwórz";
+
+/* Title for the site creation flow. */
+"Create New Site" = "Utwórz witrynę";
+
+/* Button for selecting the current page template.
+   Button title, encourages users to create their first page on their blog.
+   Title for button to make a page with the contents of the selected layout */
+"Create Page" = "Utwrz stronę";
+
+/* Button title, encourages users to create post on their blog.
+   Label for action to create a new post. */
+"Create Post" = "Utwórz wpis";
+
+/* Create WordPress.com site button */
+"Create WordPress.com site" = "Utwórz witrynę WordPress.com";
+
+/* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
+"Create a Post" = "Utwórz wpis";
+
+/* Title of the button in the placeholder for an empty list of blog tags. */
+"Create a Tag" = "Utwórz tag";
+
+/* Accessibility hint for create floating action button */
+"Create a post or page" = "Stwórz wpis lub stronę";
+
+/* No comment provided by engineer. */
+"Create embed" = "Utwórz osadzoną treść";
+
+/* No comment provided by engineer. */
+"Create link" = "Stwórz odnośnik";
+
+/* No comment provided by engineer. */
+"Current" = "Obecnie";
+
+/* Label title. Refers to the current WordPress.com plan for a user's site. */
+"Current Plan" = "Aktualny plan";
+
+/* Current Theme text that appears in Theme Browser Header */
+"Current Theme" = "Bieżący motyw";
+
+/* No comment provided by engineer. */
+"Customize Gradient" = "Dostosuj gradient";
+
+/* No comment provided by engineer. */
+"Cut block" = "Wytnij blok";
+
+/* Title for the app appearance setting for dark mode */
+"Dark" = "Ciemny";
+
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
+"Dashboard" = "Kokplt";
+
+/* Date and Time */
+"Date and Time" = "Data i godzina";
+
+/* Title of Days stats filter. */
+"Days" = "Dni";
 
 /* Menu name for the defaut menu that is automatically generated. */
 "Default Menu" = "Domyślne menu";
@@ -159,16 +822,64 @@
    User action to delete media. */
 "Delete" = "Usuń";
 
+/* Menus confirmation button for deleting a menu. */
+"Delete Menu" = "Usuń menu";
+
+/* Button label for deleting the current site
+   Label for selecting the Delete Site Settings item
+   Title of settings page for deleting a site */
+"Delete Site" = "Usuń witrynę";
+
+/* Title of alert when site deletion fails */
+"Delete Site Error" = "Błąd usuwania strony";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"Deleted!" = "Usunięto!";
+
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Usuwanie witryny";
 
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Usuwanie…";
 
+/* Label for the description for a media asset (image / video)
+   Section header for tag name in Tag Details View.
+   Title of section that contains plugins' description */
+"Description" = "Opis";
+
+/* Title for the desktop web preview */
+"Desktop" = "Desktop";
+
+/* Details button that appears in the Theme Browser Header
+   Theme Details action title */
+"Details" = "Szczegóły";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"Dimensions" = "Wymiary";
+
+/* Adjective. Comment threading is disabled. */
+"Disabled" = "Wyłączono";
+
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Odrzuć";
+
+/* Menus alert button title to discard changes. */
+"Discard Changes" = "Odrzuć zmiany";
+
+/* Message to show when Publicize disconnect failed */
+"Disconnect failed" = "Rozłączenie nie powiodło się";
+
+/* The menu item to select during a guided tour. */
+"Discover" = "Odkryj";
+
+/* Reader select interests title label text */
+"Discover and follow blogs you love" = "Odkryj i śledź blogi, które kochasz";
+
+/* Label for selecting the Blog Discussion Settings section
+   Title for the Discussion Settings Screen */
+"Discussion" = "Dyskusja";
 
 /* Accessibility label for button to dismiss a bottom sheet
    Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
@@ -176,6 +887,17 @@
    Action to show on alert when view asset fails.
    Dismiss a view. Verb */
 "Dismiss" = "Odrzuć";
+
+/* Display Name label text.
+   My Profile display name label
+   User's Display Name */
+"Display Name" = "Wyświetlana nazwa";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"Document: %@" = "Dokument: %@";
+
+/* Noun. Title. Links to the Domains screen. */
+"Domains" = "Domeny";
 
 /* Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
@@ -194,8 +916,42 @@
    Title of the Done button on the me page */
 "Done" = "Gotowe";
 
+/* translators: accessibility text (hint for moving to color settings) */
+"Double tap to go to color settings" = "Stuknij dwukrotnie, by przejść do ustawień kolorów";
+
+/* No comment provided by engineer. */
+"Double tap to move the block to the left" = "Stuknij dwukrotnie, aby przesunąć blok w lewo";
+
+/* No comment provided by engineer. */
+"Double tap to move the block to the right" = "Stuknij dwukrotnie, aby przesunąć blok w prawo";
+
+/* No comment provided by engineer. */
+"Double tap to open Action Sheet with available options" = "Stuknij dwukrotnie aby otworzyć zakładkę działań z dostępnymi opcjami";
+
+/* No comment provided by engineer. */
+"Double tap to open Bottom Sheet with available options" = "Stuknij dwukrotnie aby otworzyć dolną zakładkę z dostępnymi opcjami";
+
+/* No comment provided by engineer. */
+"Double tap to select an image" = "Stuknij dwukrotnie aby wybrać obrazek";
+
+/* translators: accessibility text (hint for selecting option) */
+"Double tap to select the option" = "Stuknij dwukrotnie aby wybrać opcję";
+
+/* translators: accessibility text (hint for switches) */
+"Double tap to toggle setting" = "Stuknij dwukrotnie aby przełączyć ustawienie";
+
+/* No comment provided by engineer. */
+"Double tap to undo last change" = "Stuknij dwukrotnie aby cofnąć zmiany";
+
 /* Name for the status of a draft post. */
 "Draft" = "Szkic";
+
+/* Title of the drafts filter.  This filter shows a list of draft posts.
+   Title of the drafts header in search list. */
+"Drafts" = "Szkice";
+
+/* No comment provided by engineer. */
+"Duplicate block" = "Powiel blok";
 
 /* Accessibility label for edit button to enable multi selection mode in the user's media library
    Edit the post.
@@ -208,27 +964,135 @@
    Verb, edit a comment */
 "Edit" = "Edytuj";
 
+/* Title for the edit more button section */
+"Edit \"More\" button" = "Edytuj przycisk \"Więcej\"";
+
+/* Button that displays the media editor to the user */
+"Edit %@" = "Edytuj %@";
+
+/* Blocklist Keyword Edition Title */
+"Edit Blocklist Word" = "Edytuj czarną listę słów";
+
 /* View title when editing a comment. */
 "Edit Comment" = "Edytuj komentarz";
+
+/* Moderation Keyword Edition Title */
+"Edit Moderation Word" = "Edytuj moderowane słowo";
 
 /* Button label for editing a post
    Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Edytuj wpis";
 
+/* Accessibility label for button to edit a comment from a notification */
+"Edit comment" = "Edytuj komentarz";
+
+/* No comment provided by engineer. */
+"Edit cover media" = "Edytuj okładkę";
+
+/* No comment provided by engineer. */
+"Edit file" = "Edytuj plik";
+
+/* No comment provided by engineer. */
+"Edit media" = "Edytuj media";
+
+/* Title for the edit sharing buttons section */
+"Edit sharing buttons" = "Edytuj przyciski udostępniania";
+
+/* Editing GIF alert message. */
+"Editing this GIF will remove its animation." = "Edycja pliku GIF pozbawi go animacji.";
+
+/* Title for the editor settings section */
+"Editor" = "Edytor";
+
+/* Education site intent topic */
+"Education" = "Edukacja";
+
+/* Accessibility label for the Email text field.
+   Account Settings Email label
+   Email address text field placeholder
+   Email Notifications Channel
+   Label for email followers
+   Register Domain - Domain contact information field Email
+   Title of Stats section that shows email followers. */
+"Email" = "Adres e-mail";
+
+/* Header for a comment author's email address, shown when editing a comment. */
+"Email Address" = "Adres e-mail";
+
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
+"Email address" = "Adres e-mail";
+
+/* Notification Settings Channel */
+"Email from WordPress.com" = "Wiadomość e-mail od WordPress.com";
+
 /* Overlay message displayed when export content started */
 "Email sent!" = "Wiadomość e-mail została wysłana!";
+
+/* Title for the Emoji section */
+"Emoji" = "Emoji";
+
+/* Accessibility value presented in the signup epilogue for an empty value.
+   Label for size of media when the cache is empty. */
+"Empty" = "Pusty";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Pusty adres URL";
 
+/* Title of button that enables push notifications when tapped */
+"Enable Notifications" = "Włącz powiadomienia";
+
+/* Title of a row displayed on the debug screen used in debug builds of the app */
+"Enable Quick Start for New Site" = "Włącz Szybki start dla witryny";
+
+/* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
+"Encrypted Logs" = "Zaszyfrowane logi";
+
 /* No comment provided by engineer. */
 "Enter a password" = "Wprowadź hasło";
+
+/* Message explaining why the user might enter a password. */
+"Enter a password to protect this post" = "Wprowadź hasło do ochrony wpisu";
+
+/* (placeholder) Help enter WordPress password
+   Placeholder of a field to type a password to protect the post. */
+"Enter password" = "Wpisz hasło";
+
+/* (placeholder) Help enter WordPress username */
+"Enter username" = "Wpisz nazwę użytkownika";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Wprowadź dane swojego konta dla %@.";
 
 /* Generic error alert title
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Błąd";
+
+/* Text displayed when load post fails. */
+"Error Loading Post" = "Błąd ładowania wpisów";
+
+/* Error message informing the user that their site's title could not be changed */
+"Error updating site title" = "Błąd uaktualnienia tytułu strony";
+
+/* Label for the post author filter. This filter shows posts for all users on the blog. */
+"Everyone" = "Wszyscy";
+
+/* Label for the excerpt field. Should be the same as WP core. */
+"Excerpt" = "Zajawka";
+
+/* No comment provided by engineer. */
+"Excerpt length (words)" = "Długość zajawki (liczba słów)";
+
+/* Title for the error view when the user scanned an expired log in code */
+"Expired log in code" = "Wygasł kod logowania";
+
+/* Export Content confirmation action title
+   Label for selecting the Export Content Settings item */
+"Export Content" = "Eksport treści";
 
 /* Title of alert when export content fails */
 "Export Content Error" = "Błąd eksportowania zawartości";
@@ -239,12 +1103,266 @@
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Eksportowanie zawartości…";
 
+/* Option in Support view to enable/disable adding extra information to support ticket. */
+"Extra Debug" = "Dodatkowy debug";
+
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Niepowodzenie";
 
+/* Fashion site intent topic */
+"Fashion" = "Moda";
+
+/* Option to select the Fastmail app when logging in with magic links */
+"Fastmail" = "Fastmail";
+
+/* No comment provided by engineer. */
+"Featured Image did not load" = "Obrazek wyróżniający nie został załadowany";
+
+/* Text displayed while fetching themes */
+"Fetching Themes..." = "Pobieranie motywów…";
+
+/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
+"Fetching comments..." = "Pobieranie komentarzy…";
+
+/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
+"Fetching posts..." = "Pobieranie wpisów…";
+
+/* A brief prompt when the user is searching for sites in the Reader.
+   A short message to inform the user data for their followed sites is being fetched..
+   A short message to inform the user data for their sites are being fetched. */
+"Fetching sites..." = "Pobieranie witryn…";
+
+/* Label for list of file downloads. */
+"File" = "Plik";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"File type" = "Typ pliku";
+
+/* Film & Television site intent topic */
+"Film & Television" = "Film i telewizja";
+
+/* Title of the filter button in the Reader */
+"Filter" = "Filtruj";
+
+/* Finance site intent topic */
+"Finance" = "Finanse";
+
+/* Title for the find out more button in the What's New page. */
+"Find out more" = "Dowiedz się wiecej";
+
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Znajdź adres swojej witryny";
+
+/* Label displayed to the user while loading their selected interests */
+"Finding blogs and stories you’ll love..." = "Znajdowanie blogów i stron, które pokochasz...";
+
+/* My Profile first name label
+   Register Domain - Domain contact information field First name
+   User's First Name */
+"First Name" = "Imię";
+
+/* Fitness & Exercise site intent topic */
+"Fitness & Exercise" = "Fitness i ćwiczenia";
+
+/* Button title. Follow the comments on a post.
+   Prompt to follow a blog.
+   Verb. Button title. Follow a new blog. */
+"Follow" = "Obserwuj";
+
+/* Verb. An option to follow a site. */
+"Follow site" = "Obserwuj witrynę";
+
+/* Blog Followers
+   Insights 'Followers' header
+   Label for number of followers. */
+"Followers" = "Obserwujący";
+
+/* Accessibility label for following buttons.
+   Title of the Following Reader tab
+   User is following the blog.
+   Verb. Button title. The user is following a blog. */
+"Following" = "Obserwujesz";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"Follows the tag." = "Śledź tag.";
+
+/* No comment provided by engineer. */
+"Font Size" = "Wielkość liter";
+
+/* Food site intent topic */
+"Food" = "Jedzenie";
+
+/* An example tag used in the login prologue screens. */
+"Football" = "Piłka nożna";
+
+/* Next web page */
+"Forward" = "Cofnij";
+
+/* Browse free themes selection title */
+"Free" = "Darmowe";
+
+/* One of the options when selecting More in the Post Editor's format bar */
+"Free GIF Library" = "Darmowa biblioteka GIF";
+
+/* Title of section that contains plugins' FAQ */
+"Frequently Asked Questions" = "Najczęściej zadawane pytania";
+
+/* No comment provided by engineer. */
+"From clipboard" = "Ze schowka";
+
+/* Full size image. (default). Should be the same as in core WP. */
+"Full Size" = "Pełny rozmiar";
+
+/* Badge title displayed on GIF images in the editor. */
+"GIF" = "GIF";
+
+/* Gaming site intent topic */
+"Gaming" = "Gry";
+
+/* Prompt for the screen to pick a template for a page */
+"Get started by choosing from a wide variety of pre-made page layouts. Or just start with a blank page." = "Rozpocznij od wybrania układu z katalogu gotowych. Albo zacznij z czystą stroną.";
+
+/* No comment provided by engineer. */
+"Get support" = "Uzyskaj pomoc";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
+"Get to know the Jetpack app" = "Poznaj aplikację Jetpack";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"Get your notifications faster" = "Szybciej otrzymuj powiadomienia";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Pobieranie informacji o koncie";
+
+/* Cancel */
+"Give Up" = "Poddaj się";
+
+/* Description of a Quick Start Tour */
+"Give your site a name that reflects its personality and topic. First impressions count!" = "Nadaj witrynie nazwę, która odzwierciedla jej osobowość i tematykę. Pierwsze wrażenie się liczy!";
+
+/* Default title of the Site Name screen.
+   Title for Site Name screen in iPhone landscape. */
+"Give your website a name" = "Nazwij swoją witrynę";
+
+/* Option to select the Gmail app when logging in with magic links */
+"Gmail" = "Gmail";
+
+/* Button label for going to settings to approve push notifications
+   Opens WPiOS Settings.app Section */
+"Go to iOS Settings" = "Idź do ustawień iOS";
+
+/* Okay button title shown in alert announcing new Create Button feature. */
+"Got it!" = "Rozumiem!";
+
+/* No comment provided by engineer. */
+"Gradient Type" = "Typ gradientu";
+
+/* This value is used to set the accessibility hint text for setting the site title. */
+"Guides you through the process of setting a title for your site." = "Przeprowadza przez proces ustawienia tytułu dla twojej witryny.";
+
+/* Accessibility label for HTML button on formatting toolbar.
+   HTML Attachment Label */
+"HTML" = "HTML";
+
+/* Post HTML content */
+"HTML Content" = "Zawartość HTML";
+
+/* Accessibility label for selecting h1 paragraph style button on the formatting toolbar. */
+"Header 1" = "Nagłówek 1";
+
+/* Accessibility label for selecting h2 paragraph style button on the formatting toolbar. */
+"Header 2" = "Nagłówek 2";
+
+/* Accessibility label for selecting h3 paragraph style button on the formatting toolbar. */
+"Header 3" = "Nagłówek 3";
+
+/* Accessibility label for selecting h4 paragraph style button on the formatting toolbar. */
+"Header 4" = "Nagłówek 4";
+
+/* Accessibility label for selecting h5 paragraph style button on the formatting toolbar. */
+"Header 5" = "Nagłówek 5";
+
+/* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
+"Header 6" = "Nagłówek 6";
+
+/* H1 Aztec Style */
+"Heading 1" = "Nagłówek 1";
+
+/* H2 Aztec Style */
+"Heading 2" = "Nagłówek 2";
+
+/* H5 Aztec Style */
+"Heading 5" = "Nagłówek 5";
+
+/* H6 Aztec Style */
+"Heading 6" = "Nagłówek 6";
+
+/* Health site intent topic */
+"Health" = "Zdrowie";
+
 /* Help button */
 "Help" = "Pomoc";
+
+/* Link to Help section
+   Open editor help options
+   Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
+"Help & Support" = "Pomoc i wsparcie";
+
+/* No comment provided by engineer. */
+"Help icon" = "Ikonka pomocy";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
+   Text for privacy settings: Hidden */
+"Hidden" = "Ukryty";
+
+/* Hides a site from the site picker list
+   Title of a button used to collapse a group */
+"Hide" = "Ukryj";
+
+/* Hide All */
+"Hide All" = "Ukryj wszystko";
+
+/* No comment provided by engineer. */
+"Hide keyboard" = "Schowaj klawiature";
+
+/* Displays the History screen from the editor's alert sheet
+   Title of a navigation button that opens the scan history view
+   Title of the post history screen */
+"History" = "Historia";
+
+/* Title for setting which shows the current page assigned as a site's homepage
+   Title for the homepage section in site settings screen
+   Title of the Homepage Badge */
+"Homepage" = "Strona główna";
+
+/* Label for Homepage Settings site settings section
+   Title for the Homepage Settings screen */
+"Homepage Settings" = "Ustawienia strony głównej";
+
+/* Message informing the user that their static homepage page was set successfully */
+"Homepage successfully updated" = "Strona domowa zaktualizowana pomyślnie.";
+
+/* User-facing string, presented to reflect that site assembly is underway. */
+"Hooray!\nAlmost done" = "Hurra!\nPrawie gotowe";
+
+/* This is one of the buttons we display inside of the prompt to review the app */
+"I Like It" = "Podoba mi się";
+
+/* Describes the IP address section in the comment detail screen. */
+"IP address" = "Adres IP";
+
+/* Title of a button style */
+"Icon Only" = "Tylko ikonka";
+
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "Jeśli nie można znaleźć wiadomości e-mail, proszę sprawdzić foldery: śmieci i spam";
+
+/* Hint for image description on image settings. */
+"Image Description" = "Opis obrazka";
+
+/* Hint for image title on image settings. */
+"Image title" = "Tytuł obrazka";
 
 /* Undated post time label */
 "Immediately" = "Natychmiast";
@@ -256,11 +1374,193 @@
    Label action for inserting a link on the editor */
 "Insert" = "Wstaw";
 
+/* Button title used in media editor. Placeholder will be the number of items that will be inserted.
+   Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted. */
+"Insert %@" = "Wstaw %@";
+
+/* Accessibility label for insert link button on formatting toolbar.
+   Discoverability title for insert link keyboard shortcut.
+   Label action for inserting a link on the editor */
+"Insert Link" = "Wstaw odnośnik";
+
+/* Accessibility label for insert media button on formatting toolbar. */
+"Insert media" = "Wstaw media";
+
+/* No comment provided by engineer. */
+"Insert mention" = "Wstaw wzmiankę";
+
+/* Button label to install a plugin
+   Confirmation button displayd in alert displayed when user installs their first plugin. */
+"Install" = "Zainstaluj";
+
+/* The default Jetpack view title
+   Title of a button for Jetpack Installation. */
+"Install Jetpack" = "Zainstaluj Jetpack";
+
+/* Install Plugin dialog title. */
+"Install Plugin" = "Zainstaluj wtyczkę";
+
+/* Title of section that contains plugins' installation instruction */
+"Installation" = "Instalacja";
+
+/* Header of section in Plugin Directory showing installed plugins
+   Indicates the state of the plugin */
+"Installed" = "Zainstalowano";
+
+/* The Jetpack view title used while the is installing */
+"Installing Jetpack" = "Zainstaluj Jetpack";
+
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "Nieprawidłowy adres e-mail";
+
+/* No comment provided by engineer. */
+"Invalid URL." = "Nieprawidłowy adres URL";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "Nieprawidłowy adres URL. Sprawdź dokładnie i spróbuj ponownie.";
+
+/* No comment provided by engineer. */
+"Invalid username" = "Nieprawidłowa nazwa użytkownika";
+
+/* Send Person Invite */
+"Invite" = "Zaproś";
+
+/* Accessibility label for italic button on formatting toolbar.
+   Discoverability title for italic formatting keyboard shortcut. */
+"Italic" = "Kursywa";
+
+/* Section title for the publish table section in the blog details screen
+   Title for the Jetpack Installation
+   Title for the Jetpack section in site settings screen */
+"Jetpack" = "Jetpack";
+
+/* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
+"Jetpack %@ or later is required. Do you want to update Jetpack?" = "Wymagany jest Jetpack w wersji %@ lub nowszej. Czy zaktualizować Jetpacka?";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"Jetpack Settings" = "Ustawienia Jetpack";
+
+/* Label for the Sharing section in post Settings. Should be the same as WP core. */
+"Jetpack Social" = "Jetpack Social";
+
+/* Insights 'Jetpack Social Connections' header
+   Section title for Publicize services in Sharing screen */
+"Jetpack Social Connections" = "Połączenia społecznościowe Jetpacka";
+
+/* Message to show when Publicize connection synchronization failed */
+"Jetpack Social connection synchronization failed" = "Nie udało się zsynchronizować połączenia społecznościowego w Jetpacku";
+
+/* Message to show when Publicize service synchronization failed */
+"Jetpack Social service synchronization failed" = "Nie udało się zsynchronizować społecznościówek w Jetpacku";
+
+/* The Jetpack view title for the success state */
+"Jetpack installed" = "Jetpack został zainstalowany";
+
+/* Button shown if there are unsaved changes and the author cancelled editing a Comment.
+   Button shown if there are unsaved changes and the author is trying to move away from the post.
+   Button shown when the author is asked for publishing confirmation.
+   Goes back to editing the post. */
+"Keep Editing" = "Kontynuuj edycję";
+
+/* Autoapprove only from known users */
+"Known Users" = "Znani użytkownicy";
+
+/* An option in a list. Automatically approve comments from known users. */
+"Known user's comments" = "Komentarze znanego użytkownika";
+
+/* Noun. Title for the setting to edit the sharing label text. */
+"Label" = "Etykieta";
+
+/* Label for the privacy setting
+   Language of the current blog
+   Title for the Language Picker Screen */
+"Language" = "Język";
+
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Duży";
 
+/* My Profile last name label
+   Register Domain - Domain contact information field Last name
+   User's Last Name */
+"Last Name" = "Nazwisko";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and comments. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is comments. */
+"Last week you had %1$@ views and %2$@ comments." = "W zeszłym tygodniu było %1$@ wyświetleń i %2$@ komentarzy.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % markers are placeholders and will be replaced by the appropriate number of views and likes. The numbers indicate the order, so they can be rearranged if necessary – 1 is views, 2 is likes. */
+"Last week you had %1$@ views and %2$@ likes." = "W zeszłym tygodniu było %1$@ wyświetleń i %2$@ polubień.";
+
+/* Content of a weekly roundup push notification containing stats about the user's site. The % marker is a placeholder and will be replaced by the appropriate number of views */
+"Last week you had %@ views." = "W zeszłym tygodniu było %@ wyświetleń.";
+
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Dowiedz się więcej";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"Learn about new comments, likes, and follows in seconds." = "Bezzwłocznie dowiaduj się o nowych komentarzach, polubieniach, czy śledzeniach.";
+
+/* A button title.
+   Link to cookie policy
+   Menu title to show the prompts feature introduction modal.
+   Read more button title shown in alert announcing new Create Button feature. */
+"Learn more" = "Dowiedz się więcej";
+
+/* Left alignment for an image. Should be the same as in core WP. */
+"Left" = "Do lewej";
+
+/* Heading for instructions on Start Over settings page */
+"Let Us Help" = "Pozwól nam pomóc";
+
+/* Title for the app appearance setting for light mode */
+"Light" = "Jasny";
+
+/* Button title to Like a comment.
+   Like (verb)
+   Like a post.
+   Likes a Comment
+   Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
+"Like" = "Lubię to";
+
+/* A comment is marked as liked */
+"Liked" = "Polubione";
+
+/* Filters Likes Notifications
+   Label for Period Overview likes
+   Label for post likes count.
+   Text for the 'like' button. Tapping removes the 'liked' status from a post.
+   Title of the Likes Reader tab
+   Today's Stats 'Likes' label */
+"Likes" = "Polubienia";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Przekroczono limit. Możesz spróbować ponownie za minutę. Próba przed upływem czasu tylko zwiększy czas oczekiwania. Jeżeli uważasz że jest błąd, skontaktuj się ze wsparciem technicznym.";
+
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
+"Link" = "Odnośnik";
+
+/* Link copied to clipboard notice title */
+"Link Copied to Clipboard" = "Skopiowano odnośnik do schowka";
+
+/* Link name field placeholder */
+"Link Name" = "Nazwa odnośnika";
+
+/* A label title
+   Comments Paging
+   Settings: Comments Approval settings */
+"Links in comments" = "Odnośniki w komentarzach";
+
+/* Menus label text displayed while menus are loading */
+"Loading Menus..." = "Wczytywanie menu…";
+
+/* Displayed while a comment is being loaded. */
+"Loading comment..." = "Wyczytywanie komentarza…";
+
+/* Menus label text displayed when a menu is loading. */
+"Loading menu..." = "Wczytywanie menu…";
+
+/* A short message to inform the user the requested stream is being loaded. */
+"Loading stream..." = "Ładowanie strumienia…";
 
 /* Loading tags
    Loading tags.
@@ -274,8 +1574,75 @@
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokalny";
 
+/* Title for alert when a generic error happened when trying to find the location of the device */
+"Location" = "Lokalizacja";
+
+/* Explaining to the user that location services need to be enable in order to geotag a post. */
+"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app." = "Możliwość lokalizacji musi zostać włączona zanim będzie można dodać swoją lokalizację w aplikacji WordPress. Proszę włączyć usługi lokalizacyjne w ustawieniach.";
+
 /* Used when geo-tagging posts, if the geo-tagging failed. */
 "Location unknown" = "Nieznana lokalizacja";
+
+/* No comment provided by engineer. */
+"Log Files By Created Date" = "Loguj pliki po dacie utworzenia";
+
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
+   Log In 3D Touch Shortcut
+   Log In button label.
+   View title during the log in process. */
+"Log In" = "Zaloguj się";
+
+/* Button for confirming logging out from WordPress.com account
+   Label for logging out from WordPress.com account */
+"Log Out" = "Wyloguj się";
+
+/* Title of a button for signing in. */
+"Log in" = "Zaloguj się";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Nie udało się zalogować. Proszę spróbować ponownie.";
+
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "Zaloguj się hasłem do konta";
+
+/* No comment provided by engineer. */
+"Logs" = "Dziennik zdarzeń";
+
+/* Message asking the user to sign into Jetpack with WordPress.com credentials */
+"Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Wygląda na to że masz zainstalowany Jetpack na swojej stronie. Gratulujemy! Zaloguj się używając swojej nazwy użytkownika i hasła z WordPress.com żeby włączyć Statystyki i Powiadomienia.";
+
+/* Title of a button. */
+"Lost your password?" = "Nie pamiętasz hasła?";
+
+/* Button leading to a screen where users can manage their installed plugins
+   Page title for the screen to manage your list of followed sites.
+   Screen title, where users can see all their installed plugins.
+   Title for the Reader Manage screen.
+   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
+   Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
+"Manage" = "Zarządzaj";
+
+/* Button title. Tapping lets the user manage the sites they follow. */
+"Manage Sites" = "Zarządzaj witrynami";
+
+/* Return to blog screen action when theme activation succeeds */
+"Manage site" = "Zarządzanie witryny";
+
+/* Action title for marking referrer as spam */
+"Mark as spam" = "Oznacz jako spam";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam. */
+"Mark as spam." = "Oznacz jako spam.";
+
+/* Title for the image size settings option. */
+"Max Image Upload Size" = "Maksymalny rozmiar przesyłanego obrazka";
+
+/* Accessibility label for the Me button in My Site.
+   Label for the post author filter. This filter shows posts only authored by the current user.
+   Me page title
+   Title of the 'Me' tab - used for spotlight indexing on iOS. */
+"Me" = "Ja";
 
 /* Noun. Title for media button.
    Noun. Title. Links to the blog's Media library.
@@ -286,11 +1653,95 @@
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
+/* Label for size of media cache in the app. */
+"Media Cache Size" = "Rozmiar pamięci podręcznej mediów";
+
+/* Title for alert when a generic error happened when loading media
+   Title for alert when access to the media library is not granted by the user */
+"Media Library" = "Biblioteka mediów";
+
+/* Message to indicate progress of uploading media to server */
+"Media Uploading" = "Wgrywanie multimediów";
+
 /* Medium image size. Should be the same as in core WP. */
 "Medium" = "Średnio";
 
+/* The default text used for filling the name of a menu when creating it.
+   The segmented control item to select during a guided tour.
+   Title for the site menu view on the My Site screen */
+"Menu" = "Menu";
+
+/* Menus placeholder text for the name field of a menu with no name. */
+"Menu Name" = "Nazwa menu";
+
+/* Title of section containing image / video metadata such as size and file type */
+"Metadata" = "Metadane";
+
+/* Option to select the Microsft Outlook app when logging in with magic links */
+"Microsoft Outlook" = "Microsoft Outlook";
+
+/* Title of Months stats filter. */
+"Months" = "Miesiące";
+
+/* Action button to display more available options
+   Label for the More Options area in post settings. Should use the same translation as core WP. */
+"More Options" = "Więcej opcji";
+
+/* No comment provided by engineer. */
+"Move block left" = "Przesuń blok w lewo";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block left from position %1$s to position %2$s" = "Przesuń blok w lewo z pozycji %1$s na pozycję %2$s";
+
+/* No comment provided by engineer. */
+"Move block right" = "Przesuń blok w prawo";
+
+/* translators: accessibility text. %1: current block position (number). %2: next block position (number) */
+"Move block right from position %1$s to position %2$s" = "Przesuń blok w prawo z pozycji %1$s na pozycję %2$s";
+
+/* Label for a button that moves a page to the trash folder
+   Label for a option that moves a post to the trash folder
+   Title for button on the comment details page that moves the comment to trash when tapped.
+   Trash option in the trash confirmation alert.
+   Trash option in the trash page confirmation alert.
+   Trashes the comment */
+"Move to Trash" = "Przenieś do kosza";
+
+/* Link to My Profile section
+   My Profile view title */
+"My Profile" = "Mój profil";
+
+/* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
+   The accessibility value of the my site tab.
+   Title of My Site tab */
+"My Site" = "Moja witryna";
+
+/* Siri Suggestion to open My Sites */
+"My Sites in WordPress" = "Moje witryny na WordPress";
+
+/* No comment provided by engineer. */
+"Navigates to custom color picker" = "Przechodzi do wyboru koloru";
+
+/* No comment provided by engineer. */
+"Navigates to customize the gradient" = "Przechodzi do dostosowania gradientu";
+
+/* No comment provided by engineer. */
+"Navigates to the previous content sheet" = "Przechodzi do poprzedniego arkusza z treściami";
+
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Potrzebujesz pomocy?";
+
+/* Header of section in Plugin Directory showing newest plugins */
+"New" = "Nowość";
+
+/* IP Address or Range Insertion Title */
+"New IP or IP Range" = "Nowy adres IP lub zakres IP";
+
+/* Moderation Keyword Insertion Title */
+"New Moderation Word" = "Nowe moderowane słowo";
+
+/* New Photo Post 3D Touch Shortcut */
+"New Photo Post" = "Nowy fotograficzny wpis";
 
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nowy wpis";
@@ -298,11 +1749,107 @@
 /* Menu item title text used as default when creating a new menu item. */
 "New item" = "Nowa pozycja";
 
+/* Noun. The title of an item in a list. */
+"New posts" = "Nowe wpisy";
+
+/* Screen title, where users can see the newest plugins */
+"Newest" = "Najnowsze";
+
+/* Sort Order */
+"Newest first" = "Najnowsze na początku";
+
+/* Next action on comment moderation snackbar.
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
+"Next" = "Następne";
+
+/* Table view title for the quick start section.
+   Title for the Quick Start dashboard card. */
+"Next Steps" = "Następne kroki";
+
 /* Label for a cancel button */
 "No" = "Nie";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Brak kategorii";
+
+/* Title of error prompt when no internet connection is available. */
+"No Connection" = "Brak połączenia";
+
+/* List Editor Empty State Message */
+"No Items" = "Brak elementów";
+
+/* Menus selection title for setting a location to not use a menu. */
+"No Menu" = "Brak menu";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"No Thanks" = "Nie, dziękuję";
+
+/* Label used for posts without a title in spotlight search. */
+"No Title" = "Bez tytułu";
+
+/* A short message that informs the user no sites could be loaded in the share extension. */
+"No available sites" = "Brak dostępnych witryn";
+
+/* An option in a list. Automatically approve no comments. */
+"No comments" = "Brak komentarzy";
+
+/* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
+   Displayed on the post details page when there are no post comments.
+   Displayed when there are no comments in the Comments views. */
+"No comments yet" = "Brak komentarzy";
+
+/* An error message title shown when there is no internet connection.
+   Displayed during Site Creation, when searching for Verticals and the network is unavailable.
+   Title for the error view when there's no connection */
+"No connection" = "Brak połączenia";
+
+/* This primary error message is displayed if a user encounters an issue with network reachability. */
+"No internet connection" = "Brak połączenia z internetem";
+
+/* Menus text shown when no menus were available for loading the Menus editor. */
+"No menus available" = "Brak dostępnych menu";
+
+/* Displayed in the Notifications Tab as a title, when there are no notifications */
+"No notifications yet" = "Brak powiadomień";
+
+/* Text displayed when search for plugins returns no results */
+"No plugins found" = "Nie znaleziono wtyczek";
+
+/* A message title */
+"No posts found" = "Nie znaleziono wpisów";
+
+/* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
+"No posts." = "Brak wpisów.";
+
+/* Nicer dialog answer for \"No\".
+   Title of a button that cancels enabling notifications when tapped */
+"Not Now" = "Nie teraz";
+
+/* Title for a button that when tapped cancels the site creation process */
+"Not right now" = "Nie teraz";
+
+/* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
+"Nothing found." = "Niczego nie znaleziono.";
+
+/* Link to Notification Settings section
+   Title displayed in the Notification settings
+   Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
+"Notification Settings" = "Ustawienia powiadomień";
+
+/* Notifications 3D Touch Shortcut
+   Notifications tab bar item accessibility label
+   Notifications View Controller title
+   The item to select during a guided tour.
+   Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
+"Notifications" = "Powiadomienia";
+
+/* Body text of alert announcing new Create Button feature. */
+"Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Mamy teraz mniej kart, za to uporządkowanych, skrótów służących do publikowania wpisów i wiele innych, aby  szybko znaleźć, to czego potrzeba.";
+
+/* No comment provided by engineer. */
+"Number of columns" = "Liczba kolumn";
 
 /* A button title for closing the dialog.
    A button title.
@@ -330,6 +1877,27 @@
 /* Disabled */
 "Off" = "Wyłączono";
 
+/* Title of a button style */
+"Official Buttons" = "Oficjalne przyciski";
+
+/* Comments +2 Days Section Header
+   Notifications +2 Days Section Header */
+"Older than 2 days" = "Starsze niż 2 dni";
+
+/* Comments Months Section Header
+   Notifications Months Section Header */
+"Older than a Month" = "Starsze niż miesiąc";
+
+/* Comments Weeks Section Header
+   Notifications Weeks Section Header */
+"Older than a Week" = "Starsze niż tydzień";
+
+/* Sort Order */
+"Oldest first" = "Najstarsze na początku";
+
+/* No comment provided by engineer. */
+"Only show excerpt" = "Pokaż tylko zajawkę";
+
 /* An informal exclaimation that means `something went wrong`.
    Title for the view when there's an error loading a comment.
    Title for the view when there's an error loading Activity Log
@@ -341,19 +1909,47 @@
 "Oops" = "Ups";
 
 /* No comment provided by engineer. */
+"Open Block Actions Menu" = "Otwórz menu działań na blokach";
+
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
+"Open Settings" = "Otwórz ustawienia";
+
+/* No comment provided by engineer. */
 "Open in Safari" = "Otwórz w Safari";
+
+/* No comment provided by engineer. */
+"Open link in a browser" = "Otwórz odnośnik w przeglądarce";
 
 /* Placeholder to indicate that filling out the field is optional. */
 "Optional" = "Opcjonalnie";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "Lub zaloguj się za pomocą magicznego odnośnika";
+
+/* Accessibility label for Ordered list button on formatting toolbar. */
+"Ordered List" = "Lista uporządkowana";
+
+/* Register Domain - Domain contact information field Organization */
+"Organization" = "Organizacja";
 
 /* Indicates a video will use its original size when uploaded.
    Indicates an image will use its original size when uploaded. */
 "Original" = "Oryginał";
 
+/* Caption for the recommended sections in site designs. */
+"PICKED FOR YOU" = "WYBRANE DLA CIEBIE";
+
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Strona";
+
+/* translators: accessibility text. %s: text content of the page title. */
+"Page title. %s" = "Tytuł strony. %s";
+
+/* translators: accessibility text. empty page title. */
+"Page title. Empty" = "Tytuł strony. Pusty";
 
 /* Noun. Title for pages button.
    Noun. Title. Links to the blog's Pages screen.
@@ -375,8 +1971,17 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "Hasło";
 
+/* Password field placeholder text */
+"Password (optional)" = "Hasło (opcjonalne)";
+
 /* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
 "Password protected" = "Zabezpieczono hasłem";
+
+/* No comment provided by engineer. */
+"Paste block after" = "Wklej blok po";
+
+/* Paste without Formatting Menu Item */
+"Paste without Formatting" = "Wklej bez formatowania";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -387,8 +1992,76 @@
    Title of the Pending Review Badge */
 "Pending review" = "Oczekuje na przegląd";
 
+/* Noun. Title of the people management feature.
+   Noun. Title. Links to the people management feature.
+   People site intent topic */
+"People" = "Ludzie";
+
+/* Label for date periods. */
+"Period" = "Okres";
+
+/* Section title for the personalize table section in the blog details screen. */
+"Personalize" = "Personalizuj";
+
+/* Photography site intent topic */
+"Photography" = "Fotografia";
+
+/* Action title. Noun. Links to a blog's Plans screen.
+   Title for the plan selector */
+"Plans" = "Plany";
+
+/* Suggestion to add content before trying to publish post or page */
+"Please add some content before trying to publish." = "Przed opublikowaniem proszę dodać jakąś treść.";
+
+/* No comment provided by engineer. */
+"Please enter a site address." = "Proszę wprowadzić adres witryny.";
+
+/* No comment provided by engineer. */
+"Please enter a username." = "Wprowadź nazwę użytkownika.";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Email" = "Proszę wprowadzić poprawny adres e-mail";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid First Name" = "Proszę wprowadzić poprawne imię";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid Last Name" = "Proszę wprowadzić poprawne nazwisko";
+
+/* Error message displayed when the user attempts use an invalid email address. */
+"Please enter a valid email address." = "Proszę wprowadzić prawidłowy adres e-mail.";
+
+/* Register Domain - Domain contact information validation error message for an input field */
+"Please enter a valid phone number" = "Proszę wprowadzić poprawny numer telefonu";
+
+/* Instruction text on the two-factor screen. */
+"Please enter the verification code from your authenticator app, or tap the link below to receive a code via SMS." = "Proszę wprowadzić kod weryfikacyjny ze swojej aplikacji autentykacyjnej lub nacisnąć poniższy odnośnik, aby otrzymać kod w SMSie.";
+
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Wprowadź swoje dane";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Proszę uzupełnić wszystkie pola";
+
+/* Used on an error alert to prompt the user to try again */
+"Please try again later" = "Proszę spróbować ponownie później";
+
+/* Prompt for the user to retry a failed action again later */
+"Please try again later." = "Proszę spróbować ponownie później.";
+
+/* No comment provided by engineer. */
+"Please try entering your login details again." = "Proszę spróbować ponownie wpisać dane logowania.";
+
+/* Version of an installed plugin */
+"Plugin version" = "Wersja wtyczki";
+
+/* Noun. Title. Links to the plugin management feature.
+   Title for the plugin directory */
+"Plugins" = "Wtyczki";
+
+/* Header of section in Plugin Directory showing popular plugins
+   Screen title, where users can see the most popular plugins */
+"Popular" = "Popularne";
 
 /* Section title for Popular Languages */
 "Popular languages" = "Popularne języki";
@@ -396,6 +2069,9 @@
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format treści";
+
+/* Register Domain - Address information field Postal Code */
+"Postal Code" = "Kod pocztowy";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -405,12 +2081,53 @@
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Wpisy";
 
+/* Title for setting which shows the current page assigned as a site's posts page */
+"Posts Page" = "Strona z wpisami";
+
+/* Add New Stats Card category title
+   Label for comments by posts and pages
+   Period Stats 'Posts and Pages' header */
+"Posts and Pages" = "Wpisy i strony";
+
+/* Posts per Page Title */
+"Posts per Page" = "Wpisów na stronie";
+
+/* Label for selecting the number of posts per page */
+"Posts per page" = "Wpisów na stronie";
+
+/* Subtitle for placeholder in Tenor picker. `The company name 'Tenor' should always be written as it is. */
+"Powered by Tenor" = "Napędzane przez Tenor";
+
+/* Browse premium themes selection title */
+"Premium" = "Premium";
+
+/* Label to show while converting and/or resizing media to send to server */
+"Preparing..." = "Przygotowuję…";
+
 /* Displays the Post Preview Interface
    Section title for related posts section preview
    Title for button to preview a selected layout
    Title for screen to preview a selected homepage design.
    Title for screen to preview a static content. */
 "Preview" = "Podgląd";
+
+/* No comment provided by engineer. */
+"Preview post" = "Podgląd wpisu";
+
+/* Label for the privacy setting
+   Privacy settings section header
+   Title for screen to select the privacy options for a blog */
+"Privacy" = "Prywatność";
+
+/* Title of button that displays the App's privacy policy */
+"Privacy Policy" = "Polityka prywatności";
+
+/* Link to privacy settings page
+   Privacy Settings Title */
+"Privacy Settings" = "Ustawienia prywatności";
+
+/* Link to the CCPA privacy notice for residents of California. */
+"Privacy notice for California users" = "Nota o ochronie prywatności dla użytkowników z Kalifornii";
 
 /* Name for the status of a post that is marked private.
    Privacy setting for posts set to 'Private'. Should be the same as in core WP.
@@ -433,9 +2150,18 @@
    Title for the publish settings view */
 "Publish" = "Opublikuj";
 
+/* Label for Publish date
+   Label for the publish date button. */
+"Publish Date" = "Data publikacji";
+
 /* A short phrase indicating a post is due to be immedately published.
    Label for a button that moves a page to the published folder, publishing with the current date/time. */
 "Publish Immediately" = "Opublikuj natychmiast";
+
+/* Label for a button that publishes the post
+   Label for an option that moves a publishes a post immediately
+   Title of button allowing the user to immediately publish the post they are editing. */
+"Publish Now" = "Opublikuj teraz";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -446,8 +2172,23 @@
 /* Published on [date] */
 "Published on" = "Opublikowano dnia ";
 
+/* Label that describes in which blog the user is publishing to */
+"Publishing To" = "Publikowanie w ";
+
+/* A short message that informs the user a post is being published to the server from the share extension. */
+"Publishing post..." = "Publikowanie wpisu…";
+
+/* Text displayed in HUD while a post is being published. */
+"Publishing..." = "Publikowanie…";
+
 /* Title of screen showing site purchases */
 "Purchases" = "Zamówienia";
+
+/* Mobile Push Notifications */
+"Push Notifications" = "Powiadomienia push";
+
+/* Title for button allowing users to rate the app in the App Store */
+"Rate Us" = "Oceń nas";
 
 /* The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
@@ -456,6 +2197,42 @@
    Title of the 'Reader' tab - used for spotlight indexing on iOS.
    Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Czytnik";
+
+/* Text for the 'Reblog' button. */
+"Reblog" = "Rebloguj";
+
+/* Title for a list of ssettings for editing a blog's Reblog and Like settings. */
+"Reblog & Like" = "Rebloguj i dodaj polubienie";
+
+/* Invite Person: Email or Username Edition Title */
+"Recipient" = "Odbiorca";
+
+/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
+"Reconnect" = "Połącz ponownie";
+
+/* Message shwon to confirm a publicize connection has been successfully reconnected. */
+"Reconnected" = "Połączono ponownie";
+
+/* Label for link title in Referrers stat. */
+"Referrer" = "Odsyłający";
+
+/* Period Stats 'Referrers' header */
+"Referrers" = "Odsyłający";
+
+/* Button label to refres a web page
+   The loading view button title displayed when an error occurred */
+"Refresh" = "Odśwież";
+
+/* Action to redeem domain credit. */
+"Register Domain" = "Zarejestruj domenę";
+
+/* Describes a domain that was registered with WordPress.com */
+"Registered Domain" = "Zarejestrowana domena";
+
+/* Label for Related Post header preview
+   Label for selecting the related posts options
+   Title for screen that allows configuration of your blog/site related posts settings. */
+"Related Posts" = "Powiązane posty";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -467,8 +2244,32 @@
    Title for button that will confirm removing the next steps/quick start menus. */
 "Remove" = "Usuń";
 
+/* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
+"Remove Featured Image" = "Usuń obrazek wyróżniający";
+
+/* Label action for removing a link from the editor */
+"Remove Link" = "Usuń odnośnik";
+
 /* Option to enable the removal of location information/gps from photos and videos */
 "Remove Location From Media" = "Usuń informację o lokalizacji z mediów";
+
+/* Title for the alert to confirm a plugin removal */
+"Remove Plugin?" = "Usunąć wtyczkę?";
+
+/* No comment provided by engineer. */
+"Remove block" = "Usuń blok";
+
+/* Prompt when removing a featured image from a post */
+"Remove this Featured Image?" = "Czy usunąć obrazek wyróżniający?";
+
+/* User action to remove video. */
+"Remove video" = "Usuń film";
+
+/* No comment provided by engineer. */
+"Replace image or video" = "Zamień obrazek lub film";
+
+/* No comment provided by engineer. */
+"Replace video" = "Zamień film";
 
 /* Accessibility label for the reply button
    Reply to a comment (verb)
@@ -476,11 +2277,72 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpowiedz";
 
+/* The app successfully sent a comment */
+"Reply Sent!" = "Komentarz został wysłany!";
+
+/* Placeholder text for replying to a post */
+"Reply to post" = "Dodaj komentarz do wpisu";
+
+/* Settings: Comments Approval settings */
+"Require name and email" = "Wymagane nazwa i adres e-mail";
+
+/* Settings: Comments Approval settings */
+"Require users to log in" = "Wymagaj od użytkowników zalogowania się";
+
+/* Title of the reset button */
+"Reset" = "Resetuj";
+
+/* Accessibility label for the reset filter button in the reader. */
+"Reset filter" = "Resetuj filtr";
+
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
+"Reset your password" = "Resetuj hasło";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Zmień wielkość lub przytnij";
 
+/* Title displayed for restore action.
+   Title for button allowing user to restore their Jetpack site
+   Title for Jetpack Restore Complete screen
+   Title for Jetpack Restore Status Failed screen
+   Title for Jetpack Restore Status screen
+   Title for the Jetpack Restore Site Screen
+   Title of section showing restore status */
+"Restore" = "Przywróć";
+
+/* A prompt to attempt the failed network request again
+   A prompt to attempt the failed network request again.
+   Button title, displayed when media has failed to upload. Allows the user to try the upload again.
+   Button title. Retries uploading a post.
+   If a user taps the button with this label, the action that evinced this error view will be retried.
+   Label for a button that attempts to re-upload a page that previously failed to upload.
+   Label for the retry post upload button. Tapping attempts to upload the post again.
+   Opens the media library .
+   Retries the upload of a user's post.
+   Retry updating User's Role
+   Retry uploading the post.
+   Retry. Action
+   Retry. Verb – retry a failed media upload.
+   The Jetpack view button title used when an error occurred
+   Title for accessory view in the empty state table view cell in the Verticals step of Enhanced Site Creation
+   title for action that tries to connect to the reader after a loading error.
+   User action to retry media upload. */
+"Retry" = "Ponów";
+
 /* No comment provided by engineer. */
 "Retry?" = "Ponowić?";
+
+/* Right alignment for an image. Should be the same as in core WP. */
+"Right" = "Do prawej";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS został wysłany";
+
+/* Section title for the moderation section of the comment details screen. */
+"STATUS" = "STATUS";
+
+/* Button label to open web page in Safari */
+"Safari" = "Safari";
 
 /* Menus save button title
    Save Action
@@ -495,10 +2357,19 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from the post. */
 "Save Draft" = "Zapisz szkic";
 
+/* Title of alert informing users about the Reader Save for Later feature. */
+"Save Posts for Later" = "Zapisz wpis na później";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
+"Saved!" = "Zapisano!";
+
 /* Menus save button title while it is saving a Menu.
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
 "Saving..." = "Zapisywanie...";
+
+/* Button title that triggers a scan */
+"Scan Now" = "Skanuj teraz";
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Harmonogram";
@@ -510,6 +2381,68 @@
 /* Scheduled for [date] */
 "Scheduled for" = "Zaplanowano na ";
 
+/* Text displayed in HUD while a post is being scheduled to be published. */
+"Scheduling..." = "Planowanie…";
+
+/* Placeholder text for the search bar
+   Title of Stats section that shows search engine referrer traffic.
+   Title of the Reader's search feature */
+"Search" = "Szukaj";
+
+/* Search domain - Title for the Suggested domains screen */
+"Search domains" = "Szukaj domen";
+
+/* Menus search bar placeholder text. */
+"Search..." = "Wyszukiwanie…";
+
+/* Label for selecting the Blog Jetpack Security Settings section */
+"Security" = "Zabezpieczenia";
+
+/* Button in Plugin Directory letting users see more plugins */
+"See All" = "Zobacz wszystko";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to continue" = "Zaznacz %@ by kontynuować";
+
+/* A step in a guided tour for quick start. %@ will be the name of the segmented control item to select on the Site Menu screen. */
+"Select %@ to continue." = "Zaznacz %@ by kontynuować.";
+
+/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
+"Select %@ to set a new title." = "Wybierz %@, aby ustawić nowy tytuł.";
+
+/* No comment provided by engineer. */
+"Select a color" = "Wybierz kolor";
+
+/* Reader select interests next button disabled title text */
+"Select a few to continue" = "Wybierz kilka, aby kontynuować";
+
+/* Register domain - Title for the Choose domain button of Suggested domains screen */
+"Select domain" = "Wybierz domenę";
+
+/* No comment provided by engineer. */
+"Selected: Default" = "Wybrano: domyślne";
+
+/* This is one of the buttons we display when prompting the user for a review */
+"Send Feedback" = "Wyślij opinię";
+
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Wyślij odnośnik w wiadomości e-mail";
+
+/* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
+"Send Log Message" = "Wyślij treść dziennika zdarzeń";
+
+/* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
+"Send Test Crash" = "Wyślij testowy raport awarii";
+
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "Wyślij wiadomość e-mail z odnośnikiem weryfikacyjnym";
+
+/* No comment provided by engineer. */
+"Set Featured Image" = "Ustaw obrazek wyróżniający";
+
+/* Label for a button that sets the selected page as the site's Homepage */
+"Set as Homepage" = "Ustaw jako stronę domową";
+
 /* Link to plugin's Settings
    Section title
    The menu item to select during a guided tour.
@@ -517,16 +2450,197 @@
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Ustawienia";
 
+/* Accessibility label for share buttons in nav bars
+   Button label to share a post
+   Button label to share a web page
+   Share the post.
+   Shares the comment URL
+   Spoken accessibility label
+   Title for a button that allows the user to share their answer to the prompt.
+   Verb. Title of a button. Pressing lets the user share a post to others. */
+"Share" = "Podziel się";
+
+/* Title for a button that recommends the app to others */
+"Share Jetpack with a friend" = "Udostępnij Jetpack znajomemu";
+
+/* Accessibility label for button to share a comment from a notification */
+"Share comment" = "Udostępnij komentarz";
+
+/* Title. `The `%@` is a placeholder for the service name. */
+"Share post to %@" = "Udostępnij post do %@";
+
+/* Aztec's Text Placeholder
+   Share Extension Content Body Text Placeholder */
+"Share your story here..." = "Podziel się swoją historią…";
+
+/* Noun. Title. Links to a blog's sharing options.
+   The menu item to select during a guided tour.
+   Title for blog detail sharing screen. */
+"Sharing" = "Udostępnianie ";
+
+/* Section title for the sharing buttons section in the Sharing screen
+   Title of a list of buttons used for sharing content to other services. */
+"Sharing Buttons" = "Przyciski udostępniania";
+
+/* Label for configuration switch to show/hide the header for the related posts section */
+"Show Header" = "Pokaż nagłówek";
+
+/* Label for configuration switch to show/hide images thumbnail for the related posts */
+"Show Images" = "Pokaż obrazki";
+
+/* Title for the `show like button` setting */
+"Show Like button" = "Pokaż przycisk polubienia";
+
 /* Show site purchases action title */
 "Show Purchases" = "Pokaż zakupy";
 
+/* Title for the `show reblog button` setting */
+"Show Reblog button" = "Pokaż przycisk reblogowania";
+
+/* Label for configuration switch to enable/disable related posts */
+"Show Related Posts" = "Pokaż powiązane posty";
+
+/* No comment provided by engineer. */
+"Show post content" = "Pokaż treść wpisu";
+
+/* Alert title picking theme type to browse */
+"Show themes:" = "Pokaż motywy:";
+
+/* Accessibility label for the More button on Reader Cell. */
+"Shows more actions" = "Pokaż więcej działań";
+
+/* View title during the sign up process. */
+"Sign Up" = "Zarejestruj się";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "Zaloguj się przy użyciu poświadczeń witryny";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Załóż konto";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Zarejestruj się na WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Zarejestruj się używając e-maila";
+
+/* The accessibility label for the followed sites search field
+   The item to select during a guided tour. */
+"Site URL" = "Adres URL witryny";
+
+/* Accessibility label of the site address field shown when adding a self-hosted site. */
+"Site address" = "Adres witryny";
+
+/* No comment provided by engineer. */
+"Site address must be at least 4 characters." = "Adres witryny musi zawierać co najmniej 4 znaki.";
+
+/* Overlay message displayed when site successfully deleted */
+"Site deleted" = "Witryna została usunięta";
+
+/* Create new Site Page button title */
+"Site page" = "Strona witryny";
+
+/* Confirmation that the user successfully changed the site's title */
+"Site title changed successfully" = "Tytuł witryny został zmieniony";
+
+/* Sites Filter Tab Title with Count */
+"Sites (%lu)" = "Witryny (%lu)";
+
+/* Button that allows the user to skip the prompt and be brought to the app
+   Continue without making a selection
+   Continue without making a selection.
+   Title for the Skip button in the Site Name Screen. */
+"Skip" = "Pomiń";
+
+/* Follower Totals label for social media followers
+   Label for social followers
+   Title of Stats section that shows social followers. */
+"Social" = "Społeczności";
+
+/* Title for a label that appears when the scan failed
+   Title for the error view when the scan start has failed */
+"Something went wrong" = "Coś poszło nie tak";
+
+/* Invite Validation Alert
+   Update User Failed Title */
+"Sorry!" = "Przepraszamy!";
+
+/* This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API */
+"Sorry, but your username contains an invalid phrase%@." = "Wybrana nazwa użytkownika zawiera niedozwoloną frazę%@.";
+
 /* Error title when updating the account password fails */
 "Sorry, can't log in" = "Przepraszamy, nie można się zalogować";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses can only contain lowercase letters (a-z) and numbers." = "Adresy witryn mogą zawierać wyłącznie małe litery (a-z) i liczby.";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses may not contain the character &#8220;_&#8221;!" = "Adres witryny nie może zawierać znaku &#8222;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, site addresses must have letters too!" = "Nazwa witryny musi składać się także z liter!";
+
+/* Error message displayed when the entered email is not available. */
+"Sorry, that email address is already being used!" = "Podany adres e-mail jest już używany!";
+
+/* No comment provided by engineer. */
+"Sorry, that email address is not allowed!" = "Podany adres e-mail jest niedozwolony!";
+
+/* No comment provided by engineer. */
+"Sorry, that site already exists!" = "Istnieje już witryna używająca wybranej nazwy!";
+
+/* No comment provided by engineer. */
+"Sorry, that site is reserved!" = "Wybrana witryna została już zarezerwowana!";
+
+/* No comment provided by engineer. */
+"Sorry, that username already exists!" = "Istnieje już konto używające wybranej nazwy!";
+
+/* No comment provided by engineer. */
+"Sorry, that username is unavailable." = "Wybrano niedozwoloną nazwę użytkownika.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames can only contain lowercase letters (a-z) and numbers." = "Nazwy użytkowników mogą zawierać wyłącznie małe litery (a-z) i liczby.";
+
+/* No comment provided by engineer. */
+"Sorry, usernames may not contain the character &#8220;_&#8221;!" = "Nazwa użytkownika nie może zawierać &#8222;_&#8221;!";
+
+/* No comment provided by engineer. */
+"Sorry, usernames must have letters (a-z) too!" = "Nazwa użytkownika musi składać się także z liter!";
+
+/* No comment provided by engineer. */
+"Sorry, you cannot access this feature. Please check your User Role on this site." = "Brak uprawnień do wybranej funkcji. Sprawdź uprawnienia użytkownika w witrynie.";
+
+/* No comment provided by engineer. */
+"Sorry, you may not use that site address." = "Użycie wybranego adresu witryny nie jest możliwe.";
+
+/* Discussion Settings Title
+   Settings: Comments Sort Order */
+"Sort By" = "Sortuj według";
 
 /* Button title for Spam comment state.
    Marks comment as spam.
    Title of spam Comments filter. */
 "Spam" = "Spam";
+
+/* Option to select the Spark email app when logging in with magic links */
+"Spark" = "Spark";
+
+/* Label for selecting the Speed up your site Settings section
+   Title for the Speed up your site Settings Screen */
+"Speed up your site" = "Przyspiesz swoją witrynę";
+
+/* Standard post format label */
+"Standard" = "Standardowy";
+
+/* Label for selecting the Start Over Settings item
+   Title of Start Over settings page */
+"Start Over" = "Zacznij od nowa";
+
+/* No comment provided by engineer. */
+"Start writing…" = "Rozpocznij pisanie...";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Statyczna strona główna";
 
 /* Label for post stats option. Tapping displays statistics for a post.
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
@@ -539,18 +2653,182 @@
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
+/* Label text that defines a post marked as sticky */
+"Sticky" = "Przypięty";
+
+/* User action to stop upload. */
+"Stop upload" = "Przerwij wgrywanie";
+
+/* Title of alert announcing new Create Button feature. */
+"Streamlined navigation" = "Usprawniona nawigacja";
+
+/* Accessibility label for strikethrough button on formatting toolbar. */
+"Strike Through" = "Przekreślenie";
+
+/* Discoverability title for strikethrough formatting keyboard shortcut. */
+"Strikethrough" = "Przekreślenie";
+
+/* Notice displayed after installing a plug-in. */
+"Successfully installed %@." = "Zainstalowano %@.";
+
+/* Setting: WordPress.com Suggestions
+   Suggested domains */
+"Suggestions" = "Propozycje";
+
+/* User role badge */
+"Super Admin" = "Super admin";
+
+/* Support button that appears in the Theme Browser Header
+   Theme Support action title
+   View title for Support page. */
+"Support" = "Wsparcie";
+
 /* Menu item label for linking a specific tag.
    Section header for tag name in Tag Details View. */
 "Tag" = "Tag";
 
+/* Title of the alert indicating that a tag with that name already exists. */
+"Tag already exists" = "Tag już istnieje";
+
+/* Label for selecting the blogs tags
+   Label for Tags
+   Label for the tags field. Should be the same as WP core.
+   Label for the Tags Section in the Blog Settings
+   Tags menu item in share extension.
+   Title for the tag selector view */
+"Tags" = "Tagi";
+
+/* Label explaining why users might want to add tags. */
+"Tags help tell readers what a post is about. Separate different tags with commas." = "Znaczniki informują czytelników, o czym jest wpis. Oddziel przecinkami różne od siebie znaczniki.";
+
+/* Accessibility hint for a button that opens a view that allows to add new stats cards. */
+"Tap to add new stats cards." = "Kliknij, aby dodać nowe karty statystyk.";
+
+/* This is a status indicator on the editor */
+"Tap to cancel uploading." = "Stuknij aby przerwać wgrywanie.";
+
+/* Label for a button to retry loading posts */
+"Tap to retry" = "Dotknij, aby spróbować ponownie";
+
+/* This is the blog picker in the editor */
+"Tap to select which blog to post to" = "Dotknij aby wybrać blog na którym chcesz pisać";
+
+/* Accessibility hint for a button that opens a new view with more details. */
+"Tap to view more details." = "Kliknij, aby wyświetlić więcej szczegółów.";
+
+/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
+"Taxonomy" = "Taksonomia";
+
+/* Technology site intent topic */
+"Technology" = "Technologia";
+
+/* Title of button that displays the App's terms of service */
+"Terms of Service" = "Warunki korzystania z usługi";
+
+/* Title of a button style */
+"Text Only" = "Tylko tekst";
+
+/* No comment provided by engineer. */
+"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days." = "Podany adres e-mail został już użyty. Proszę sprawdzić czy dostarczona została wiadomość z możliwością potwierdzenia. Ponowne użycie tego adresu będzie możliwe za kilka dni.";
+
+/* No comment provided by engineer. */
+"That site address is not allowed." = "Wprowadzono niedozwolony adres witryny.";
+
+/* No comment provided by engineer. */
+"That site is currently reserved but may be available in a couple days." = "Wybrana witryna jest obecnie zarezerwowany ale może będzie dostępna za kilka dni,";
+
+/* No comment provided by engineer. */
+"That username is currently reserved but may be available in a couple of days." = "Wybrana nazwa użytkownika jest aktualnie zarezerwowana, ale może być wolna za kilka dni.";
+
+/* No comment provided by engineer. */
+"That username is not allowed." = "Wybrana nazwa użytkownika jest niedozwolona.";
+
+/* Error message shown when a media upload fails because the user isn't connected to the Internet.
+   Message of error prompt shown when a user tries to perform an action without an internet connection. */
+"The Internet connection appears to be offline." = "Prawdopodobnie utracono połączenie z internetem.";
+
+/* Message informing the user that the site title can only be changed by an administrator user. */
+"The Site Title can only be changed by a user with the administrator role." = "Tytuł witryny może być zmieniony wyłącznie przez użytkownika z rolą administratora.";
+
+/* Description of the purpose of a site's title. */
+"The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Tytuł witryny jest wyświetlony na pasku tytułu przeglądarki a także w nagłówku większości motywów.";
+
+/* Error message describing a problem with a URL. */
+"The URL is missing a valid host." = "W adresie URL brakuje poprawnego hosta.";
+
+/* No comment provided by engineer. */
+"The app can't recognize the server response. Please, check the configuration of your site." = "Aplikacja nie może uzyskać odpowiedzi serwera. Sprawdź konfigurację swojej witryny.";
+
+/* No comment provided by engineer. */
+"The basics" = "Podstawy";
+
+/* No comment provided by engineer. */
+"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certyfikat tego serwera jest nieprawidłowy. Być może łączysz się z serwerem, który podszywa się pod “%@”, co może być zagrożeniem dla twoich prywatnych informacji.";
+
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Prawdopodobnie utracono połączenie z internetem.";
+
+/* No comment provided by engineer. */
+"The site address must be shorter than 64 characters." = "Adres witryny internetowej musi mieć mniej niż 64 znaki.";
+
+/* No comment provided by engineer. */
+"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Witryna %1$@ używa WordPressa %2$@. Rekomendujemy aktualizację do najnowszej wersji, lub co najmniej %3$@";
+
+/* Message shown when site deletion API failed */
+"The site could not be deleted." = "Witryna nie może zostać usunięta.";
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Strona nie może zostać wyeksportowana.";
 
+/* Error message informing a user about an invalid password. */
+"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Nazwa użytkownika lub hasło używane przez aplikację mogą być nieaktualne. Proszę zaktualizować hasło w ustawieniach i spróbować ponownie.";
+
+/* Title of alert when theme activation succeeds */
+"Theme Activated" = "Motyw został włączony";
+
+/* The menu item to select during a guided tour.
+   Themes option in the blog details
+   Title of Themes browser page */
+"Themes" = "Motywy";
+
+/* Reply Failure Message */
+"There has been an unexpected error while sending your reply" = "Wystąpił nieoczekiwany błąd podczas wysyłania odpowiedzi";
+
+/* Displayed whenever a Comment Update Fails */
+"There has been an unexpected error while updating your comment" = "Wystąpił nieoczekiwany błąd podczas aktualizowania komentarza";
+
+/* Generic error alert message */
+"There has been an unexpected error." = "Wystąpił niespodziewany błąd.";
+
+/* Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one. */
+"There was a problem connecting to WordPress.com. Please log in again." = "Wystąpił problem podczas połączenie z WordPress.com. Proszę zalogować się ponownie.";
+
+/* Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader. */
+"There was a problem removing the block for specified site." = "Wystąpił problem podczas usuwania blokady witryny.";
+
+/* Explaining to the user there was an error trying to obtain the current location of the user. */
+"There was a problem when trying to access your location. Please try again later." = "Wystąpił problem podczas próby uzyskania lokalizacji. Proszę spróbować ponownie później.";
+
+/* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
+"This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Aplikacja potrzebuje pozwolenia na dostęp do aparatu w celu skanowania kodów logowania. Dotknij przycisku Otwórz ustawienia, aby go włączyć.";
+
 /* Message shown when the reader finds no posts for the chosen site */
 "This site has not posted anything yet. Try back later." = "Ta witryna jeszcze niczego nie opublikowała. Spróbuj ponownie później.";
+
+/* A description of the twitter sharing setting.
+   Information about the twitter sharing feature. */
+"This will be included in tweets when people share using the Twitter button." = "Powyższy element zostanie dodany gdy ktoś udostępni przy pomocy przycisku udostępniania w serwisie Twitter";
+
+/* Thumbnail image size. Should be the same as in core WP. */
+"Thumbnail" = "Miniatura";
+
+/* Blog Writing Settings: Time Format
+   Writing Time Format Settings Title */
+"Time Format" = "Format godziny";
+
+/* Label for the timezone setting
+   Title for the time zone selector */
+"Time Zone" = "Strefa czasowa";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Wskazówki jak używać WordPress.com.";
@@ -567,13 +2845,81 @@
 /* Error popup message to indicate that there was no category title filled in. */
 "Title for a category is mandatory." = "Wymagane jest nadanie kategorii nazwy.";
 
+/* Informational text for Report Crashes setting */
+"To help us improve the app’s performance and fix the occasional bug, enable automatic crash reports." = "By pomóc nam w usprawnieniu aplikacji i usunięciu okazjonalnych błędów, aktywuj automatyczne raportowanie o błędach.";
+
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Aby kontynuować z identyfikatorem Apple, zaloguj się najpierw, podając swoje hasło do WordPressa. Prosimy o to jednorazowo.";
+
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
 
+/* Title of the Tools section of the debug screen used in debug builds of the app */
+"Tools" = "Narzędzia";
+
+/* Topics Filter Tab Title */
+"Topics" = "Tematy";
+
+/* Insights 'Total Followers' header */
+"Total Followers" = "Całkowita liczba obserwujących";
+
+/* Title for the traffic section in site settings screen */
+"Traffic" = "Ruch";
+
+/* Accessibility label for trash button to delete items from the user's media library
+   Accessibility label for trash buttons in nav bars
+   Button title for Trash comment state.
+   Trashes a comment
+   Trashes the comment */
+"Trash" = "Kosz";
+
+/* Travel site intent topic */
+"Travel" = "Podróże";
+
+/* Connect when the SSL certificate is invalid */
+"Trust" = "Zaufaj";
+
+/* Theme Try & Customize action title */
+"Try & Customize" = "Spróbuj i dostosuj";
+
+/* Retries an Action
+   Retry
+   Try Again. Action
+   Try to load the list of interests again. */
+"Try Again" = "Spróbuj ponownie";
+
+/* Button label for trying to retrieve the activities type again
+   Button label for trying to retrieve the history again
+   Button label for trying to retrieve the scan status again
+   Button that lets users try to reload the plugin directory after loading failure
+   Re-load the history again. It appears if the loading call fails. */
+"Try again" = "Spróbuj jeszcze raz";
+
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "Wyłączenie przełącznika spowoduje wyłączenie wszystkich powiadomień z aplikacji, niezależnie od ich rodzaju.";
+
+/* Title of button that displays the app's Twitter profile */
+"Twitter" = "Twitter";
+
+/* Title for the setting to edit the twitter username used when sharing to twitter. */
+"Twitter Username" = "Nazwa użytkownika na Twitterze";
+
+/* No comment provided by engineer. */
+"Two" = "Dwa";
+
+/* A placeholder for the sharing label. */
+"Type a label" = "Wpisz etykietę";
+
 /* URL text field placeholder */
 "URL" = "Adres URL";
+
+/* No comment provided by engineer. */
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nie znaleziono witryny WordPressa pod adresem URL. Kliknij 'Potrzebujesz pomocy?', żeby zobaczyć najczęściej zadawane pytania.";
+
+/* Error informing the user that their homepage settings could not be updated */
+"Unable to update homepage settings" = "Nie udało się aktualizować ustawień strony głównej";
 
 /* Unapproves a Comment
    Unapproves a comment */
@@ -582,8 +2928,46 @@
 /* Unapproves a Comment */
 "Unapprove Comment" = "Cofnij akceptację komentarza";
 
+/* Message to show in the post-format cell when the post format is not available */
+"Unavailable" = "Niedostępne";
+
+/* When the App can't figure out what language a blog is configured to use. */
+"Undefined" = "Nie zdefiniowano";
+
+/* Accessibility label for underline button on formatting toolbar.
+   Discoverability title for underline formatting keyboard shortcut. */
+"Underline" = "Podkreślenie";
+
+/* Label of the table view cell's delete button, when unfollowing a site. */
+"Unfollow" = "Przestań obserwować";
+
+/* Accessibility label for unfollowing a site
+   Accessibility label for unfollowing a tag */
+"Unfollow %@" = "Przestań obserwować %@";
+
+/* Title for a button that unsubscribes the user from the post. */
+"Unfollow Conversation" = "Przestań obserwować konwersację";
+
+/* Unhides a site from the site picker list */
+"Unhide" = "Pokaż";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Nieznany błąd";
+
+/* Search Terms label for 'unknown search terms'. */
+"Unknown search terms" = "Nieznane frazy wyszukiwania";
+
+/* Accessibility label for unordered list button on formatting toolbar. */
+"Unordered List" = "Lista nieuporządkowana";
+
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";
+
+/* No comment provided by engineer. */
+"Unsupported" = "Niewspierane";
+
+/* Label for an untitled post in the revision browser */
+"Untitled" = "Bez tytułu";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
@@ -594,6 +2978,19 @@
 /* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
 "Update Draft" = "Zaktualizuj szkic";
 
+/* Update profile photo in Me > My Profile */
+"Update Profile Photo" = "Zaktualizuj zdjęcie profilowe";
+
+/* No comment provided by engineer. */
+"Updates the title." = "Uaktualnia tytuł.";
+
+/* Describes a status of a plugin */
+"Updating" = "Aktualizacja";
+
+/* Message displayed on a post's card when the post has failed to upload
+   System notification displayed to the user when media files have failed to upload. */
+"Upload failed" = "Nie powiodło się przesyłanie";
+
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Wysłano";
@@ -602,11 +2999,26 @@
    Status for Media object that is being uploaded. */
 "Uploading" = "Przesyłanie";
 
+/* Title for alert when trying to save/exit a post before media upload process is complete. */
+"Uploading media" = "Przesyłanie multimediów";
+
+/* Message displayed on a post's card while the post is uploading media */
+"Uploading media..." = "Przesyłanie plików mediów…";
+
+/* Title for alert when trying to preview a post before the uploading process is complete. */
+"Uploading post" = "Ładowanie wpisu";
+
 /* Label to show while uploading media to server */
 "Uploading..." = "Przesyłanie…";
 
 /* Use the current image */
 "Use" = "Użyj";
+
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "Użyj hasła, aby się zalogować";
+
+/* No comment provided by engineer. */
+"Use this site" = "Użyj witryny";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -619,6 +3031,31 @@
    Username placeholder */
 "Username" = "Nazwa użytkownika";
 
+/* No comment provided by engineer. */
+"Username must be at least 4 characters." = "Nazwa użytkownika musi zawierać minimum 4 znaki.";
+
+/* Blog Users */
+"Users" = "Użytkownicy";
+
+/* two factor code placeholder */
+"Verification code" = "Kod weryfikacyjny";
+
+/* Label in Support view displaying the app version. */
+"Version" = "Wersja";
+
+/* Description for the version label in the What's new page. */
+"Version " = "Wersja ";
+
+/* Version of a plugin to install
+   Version of an installed plugin */
+"Version %@" = "Wersja %@";
+
+/* translators: accessibility text. Empty video caption. */
+"Video caption. Empty" = "Napisy do filmu. Puste";
+
+/* Period Stats 'Videos' header */
+"Videos" = "Filmy";
+
 /* Button title. Displays a summary / sharing screen for a specific post.
    Label for a button that opens the page when tapped.
    Label for the view post button. Tapping displays the post as it appears on the web.
@@ -627,8 +3064,36 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
 
+/* Button label for viewing a post */
+"View Post" = "Zobacz wpis";
+
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobacz witrynę";
+
+/* Title for button on the post details page to show all comments when tapped. */
+"View all comments" = "Zobacz wszystkie komentarze";
+
+/* Displays More Rows */
+"View all…" = "Zobacz wszystko…";
+
+/* Displays Less Rows */
+"View less…" = "Zobacz mniej…";
+
+/* User role badge */
+"Viewer" = "Odwiedzający";
+
+/* Blog Viewers */
+"Viewers" = "Odwiedzający";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
+   All Time Stats 'Views' label
+   Label for number of views.
+   Label for Period Overview views
+   Label for post views count.
+   Title for chart showing site views from various referrer sources.
+   Title for Views count in the legend of the Stats Insights views and visitors line chart
+   Today's Stats 'Views' label */
+"Views" = "Wyświetlenia";
 
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
@@ -641,11 +3106,101 @@
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Odwiedź %@ po więcej";
 
+/* Text of a button that links to the VaultPress dashboard. */
+"Visit Dashboard" = "Przejdź do kokpitu";
+
+/* Title for the button that will open a link to this site. */
+"Visit site" = "Odwiedź witrynę";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
+   All Time Stats 'Visitors' label
+   Label for Period Overview visitors
+   This appears in the legend of the period chart; Visitors are superimposed over Views in that case.
+   Title for Visitors count in the legend of the Stats Insights views and visitors line chart
+   Today's Stats 'Visitors' label */
+"Visitors" = "Odwiedzający";
+
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
 
+/* View title during the Google auth process. */
+"Waiting..." = "Oczekuję…";
+
+/* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
+"We are having trouble loading data" = "Mamy problem z ładowaniem danych";
+
+/* Text displayed if a media couldnt be uploaded. */
+"We couldn't upload this media." = "Nie można było przesłać tego pliku mediów.";
+
+/* Error message displayed when a refresh failed */
+"We had trouble loading data" = "Mieliśmy problem z ładowaniem danych";
+
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "Właśnie wysłaliśmy magiczny odnośnik do";
+
+/* Instruction text on the Sign Up screen. */
+"We'll email you a signup link to create your new WordPress.com account." = "Dostaniesz od nas maila z magicznym odnośnikiem do założenia konta w witrynie WordPress.com.";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Użyjemy podanego adresu e-mail do stworzenia konta na WordPress.com.";
+
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Wysłaliśmy odnośnik, za pomocą którego utworzysz nowe konto na WordPress.com. Sprawdź pocztę na tym urządzeniu, i stuknij odnośnik w wiadomości e-mail, którą otrzymasz od WordPress.com";
+
+/* Account Settings Web Address label
+   Header for a comment author's web address, shown when editing a comment. */
+"Web Address" = "Adres internetowy";
+
+/* Blog Writing Settings: Weeks starts on */
+"Week starts on" = "Tydzień zaczyna się od";
+
+/* Title of Weeks stats filter. */
+"Weeks" = "Tygodnie";
+
+/* Post Signup Interstitial Title Text for WordPress iOS */
+"Welcome to WordPress" = "Witamy w WordPress";
+
+/* A message title */
+"Welcome to the Reader" = "Witamy w czytniku";
+
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "Co to jest WordPress.com?";
+
+/* Title of section that contains plugins' change log */
+"What's New" = "Co nowego?";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in Jetpack" = "Co nowego w Jetpacku";
+
+/* Opens the What's New / Feature Announcement modal */
+"What's New in WordPress" = "Co nowego w WordPressie";
+
+/* Subtitle for the no followed sites result screen */
+"When you follow sites, you’ll see their content here." = "Jeśli zaczniesz śledzić witryny, zobaczysz ich treść tutaj.";
+
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nie zostanie publicznie wyświetlony.";
+
+/* Title of Stats section that shows WordPress.com followers. */
+"WordPress" = "WordPress";
+
+/* Settings for a Wordpress Blog */
+"WordPress Blog" = "Blog WordPress";
+
+/* Option in Support view to view the Forums. */
+"WordPress Forums" = "Forum WordPressa";
+
+/* Option in Support view to launch the Help Center. */
+"WordPress Help Center" = "Centrum pomocy WordPressa";
+
+/* Siri Suggestion to open Me tab */
+"WordPress Profile" = "Profil WordPress";
+
+/* Explaining to the user why the app needs access to the device location. */
+"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "WordPress wymaga uprawnień do pobrania informacji o aktualnej lokalizacji urządzenia, by dodać ją do wpisu. Proszę zaktulizować ustawienia prywatności.";
+
+/* No comment provided by engineer. */
+"WordPress version too old" = "Wersja WordPressa jest za stara";
 
 /* No comment provided by engineer. */
 "WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Używana przez Ciebie wersja Wordpressa jest zbyt przestarzała. Strona %1$@ używa wersji %2$@. Rekomendujemy uaktualnienie do najnowszej wersji lub chociażby do %3$@";
@@ -653,8 +3208,30 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
+/* WordPress.com sign-in/sign-out section header title
+   WordPress.com sign-out section header title */
+"WordPress.com Account" = "Konto WordPress.com";
+
+/* Title for the Plans list header */
+"WordPress.com Plans" = "WordPress.com Plany";
+
+/* Title for the WordPress.com themes section, should be the same as in Calypso */
+"WordPress.com Themes" = "Motywy WordPress.com";
+
+/* WordPress.com Notification Settings Title */
+"WordPress.com Updates" = "Wiadomości z WordPress.com";
+
+/* Placeholder text for inline compose view */
+"Write a reply…" = "Napisz odpowiedź…";
+
 /* Title for the writing section in site settings screen */
 "Writing" = "Pisanie";
+
+/* 'This Year' label for the the year. */
+"Year" = "Rok";
+
+/* Title of Years stats filter. */
+"Years" = "Lata";
 
 /* Accept Action
    Button title. Confirms that the user wants to proceed with a pending action.
@@ -662,13 +3239,50 @@
    Yes */
 "Yes" = "Tak";
 
+/* Button label that confirms the user wants to log in and will authenticate them via the browser */
+"Yes, log me in" = "Tak, zaloguj mnie";
+
+/* Phrase displayed to begin a quick start tour that's been suggested. */
+"Yes, show me" = "Tak, pokaż mi";
+
+/* Comments Yesterday Section Header
+   Notifications Yesterday Section Header */
+"Yesterday" = "Wczoraj";
+
+/* No Sites View Label */
+"You can follow posts on a specific site by following it." = "Można obserwować wpisy na konkretnej witrynie, dodając znacznik.";
+
+/* No Topics View Label */
+"You can follow posts on a specific subject by adding a topic." = "Można obserwować wpisy lub określony temat, dodając znacznik.";
+
+/* No comment provided by engineer. */
+"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nie można użyć tego adresu e-mail do rejestracji. Mamy problemy z blokowaniem naszych wiadomości przez wybranego dostawcę. Proszę, użyć adresu e-mail innego dostawcy.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
 "You have unsaved changes." = "Masz niezapisane zmiany.";
 
+/* Error message informing the user that being logged into a WordPress.com account is required. */
+"You must be signed in to a WordPress.com account to perform this action." = "Przed podjęciem wybranego działania należy zalogować się na WordPress.com";
+
+/* Message displayed on a post's card when the post has unsaved changes */
+"You've made unsaved changes to this post" = "Nie zapisano wszystkich zmian wpisu";
+
+/* Displayed in the Notification Settings View */
+"Your Sites" = "Twoje witryny";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Twój ostatni wpis <a href=\"\">%@<\/a> otrzymał <strong>jedno<\/strong> polubienie.";
+
+/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
+"Your post is currently being uploaded. Please wait until this completes." = "Wpis jest właśnie aktualizowany. Proszę poczekać na zakończenie.";
+
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Twoje posty, podstrony i ustawienia zostaną wysłane do Ciebie na adres %@.";
+
+/* User-facing string, presented to reflect that site assembly completed successfully. */
+"Your site has been created!" = "Twoja witryna została utworzona!";
 
 /* Hint for users when private privacy setting is set */
 "Your site is only visible to you and users you approve." = "Twoja strona jest tylko widoczna dla Ciebie i dla osób którym dałeś takie uprawnienia.";
@@ -679,14 +3293,472 @@
 /* Hint for users when hidden privacy setting is set */
 "Your site is visible to everyone, but asks search engines not to index your site." = "Wszyscy mogą odwiedzić Twoją stronę, ale nie jest ona dostępna dla wyszukiwarek internetowych.";
 
+/* Comment Attachment Label */
+"[COMMENT]" = "[KOMENTARZ]";
+
+/* Age between dates equaling one day. */
+"a day" = "dzień";
+
+/* Age between dates equaling one month. */
+"a month" = "miesiąc";
+
+/* Age between dates equaling one year. */
+"a year" = "rok";
+
+/* Error message displayed when unable to close user account due to having active atomic site. */
+"accountSettings.closeAccount.error.atomicSite" = "Konto użytkownika nie może zostać natychmiast zamknięte, ponieważ ma aktywne zakupy. Skontaktuj się z naszym zespołem pomocy technicznej, aby dokończyć jego usuwanie.";
+
+/* Dismiss button title */
+"activityList.dismiss.title" = "Odrzuć";
+
+/* Age between dates equaling one hour. */
+"an hour" = "godzina";
+
+/* The title of a button to close the classic editor deprecation notice alert dialog. */
+"aztecPost.deprecationNotice.dismiss" = "Odrzuć";
+
+/* User action to dismiss media options. */
+"aztecPost.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
+
+/* Action shown in a bottom notice to dismiss it. */
+"blogDashboard.dismiss" = "Odrzuć";
+
+/* Verb. Dismisses the blogging prompt notification. */
+"bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Odrzuć";
+
+/* The menu item to select during a guided tour. */
+"connections" = "połączenia";
+
+/* Customize Insights description */
+"customizeInsightsCell.content" = "Stwórz swój własny pulpit nawigacyjny i wybierz raporty. Skoncentruj się na danych, na których najbardziej ci zależy.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Kliknij i odrzuć kartę";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "Odrzuć";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "Dostosuj podpowiedzi";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "Kliknij, aby dostosować statystyki";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "Wypróbuj teraz";
+
+/* Register Domain - Address information field Number placeholder */
+"eg. 1122334455" = "np. 1122334455";
+
+/* Register Domain - Address information field Country Code placeholder */
+"eg. 44" = "np. 44";
+
+/* Placeholder for the site url textfield.
+   Provides a sample of what a domain name looks like.
+   Site Address placeholder */
+"example.com" = "example.com";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Ustaw przypomnienia o blogowaniu";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "Edytuj przypomnienia";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Kontynuuj blogowanie i sprawdzaj jak odwiedzana jest twoja witryna.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "Ustaw przypomnienia o blogowaniu";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "Regularne publikowanie może pomóc w budowaniu grona odbiorców. Przypomnienia pomagają być na bieżąco.";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "Odrzuć";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Odkryj blogi do obserwowania";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "Zrób to ponownie";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "Kontynuuj! Polubianie i komentowanie to dobry sposób na budowanie sieci. Przejdź do Czytnika, aby znaleźć więcej wpisów.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "Połączono z innymi blogami";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Połącz się z innymi blogerami, obserwując, polubiając i komentując ich wpisy.";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "Włącz udostępnianie wpisów";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "Podłącz więcej sieci";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "Kiedy opublikujesz swój kolejny wpis, zostanie on automatycznie udostępniony w podłączonych sieciach.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "Skonfigurowano udostępnianie!";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "Automatycznie udostępniaj nowe wpisy w mediach społecznościowych, aby przyciągać odbiorców do twojej witryny.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "Wskazówka jak powiększyć grono odbiorców";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "Oglądalność witryny";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "Oglądalność witryny";
+
+/* User action to dismiss media options. */
+"gutenberg.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
+
+/* Text for related post cell preview */
+"in \"Apps\"" = "w \"Aplikacjach\"";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Zapisz w Jetpack";
+
+/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Zapisz w Jetpacku";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
+"ios-sharesheet.CFBundleDisplayName" = "Zapisz jako szkic";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-sharesheet.CFBundleName" = "Zapisz jako szkic";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "Witryna";
+
+/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
+"ios-widget.cyajMn" = "Witryna";
+
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
 
+/* Button title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.button.title" = "Wypróbuj nową aplikację Jetpack";
+
+/* Description of the Jetpack powered overlay. */
+"jetpack.branding.overlay.description" = "Nowa aplikacja Jetpacka zawiera Statystyki, Czytnik, Powiadomienia i wiele więcej, dzięki czemu WordPress może być jeszcze lepszy.";
+
+/* Title of the Jetpack powered overlay. */
+"jetpack.branding.overlay.title" = "WordPress jest lepszy z JetPackiem";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "Przejdź do nowej aplikacji Jetpack";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.fullscreen.overlay.learnMore" = "Dowiedz się więcej na jetpack.com";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Przejdź do powiadomień";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Przełącz się na aplikację Jetpack, aby otrzymywać powiadomienia w czasie rzeczywistym na swoje urządzenie.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Otrzymuj powiadomienia dzięki aplikacji Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Przełącz się na aplikację Jetpack, aby używać Czytnika do znajdowania, obserwowania i polubienia wszystkich swoich ulubionych stron internetowych i postów.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Śledź dowolną witrynę za pomocą aplikacji Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack zapewnia statystyki, powiadomienia i więcej, aby pomóc zbudować i rozwijać wymarzoną witrynę opartą o WordPressa.";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Przełącz się na aplikację Jetpack, aby obserwować wzrost ruchu w swojej witrynie dzięki statystykom i szczegółom.";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Uzyskaj statystyki za pomocą nowej aplikacji Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack zapewnia statystyki, powiadomienia i więcej, aby pomóc zbudować i rozwijać wymarzoną witrynę z wykorzystaniem WordPressa.\n\nAplikacja WordPress nie obsługuje już tworzenia nowej witryny.";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "Przejdź do Czytnika";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Kontynuuj bez Jetpacka";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "Wypróbuj nową aplikację Jetpack";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "Utwórz nową witrynę WordPress za pomocą aplikacji Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "Przejdź do statystyk";
+
+/* Add an author prompt for the jetpack prologue */
+"jetpack.prologue.prompt.addAuthor" = "Dodaj autora";
+
+/* Build a site prompt for the jetpack prologue */
+"jetpack.prologue.prompt.buildSite" = "Zbuduj witrynę";
+
+/* Check notifications prompt for the jetpack prologue */
+"jetpack.prologue.prompt.checkNotifications" = "Sprawdź powiadomienia";
+
+/* Share on Facebook prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fbShare" = "Udostępnij na Facebooku";
+
+/* Fix a security issue prompt for the jetpack prologue */
+"jetpack.prologue.prompt.fixSecurity" = "Napraw problem z bezpieczeństwem";
+
+/* Post a photo prompt for the jetpack prologue */
+"jetpack.prologue.prompt.postPhoto" = "Opublikuj zdjęcie";
+
+/* Respond to comments prompt for the jetpack prologue */
+"jetpack.prologue.prompt.respondComments" = "Odpowiadanie na komentarze";
+
+/* Restore a backup prompt for the jetpack prologue */
+"jetpack.prologue.prompt.restoreBackup" = "Przywróć kopię zapasową";
+
+/* Search for plugins prompt for the jetpack prologue */
+"jetpack.prologue.prompt.searchPlugins" = "Szukaj wtyczek";
+
+/* Update a plugin prompt for the jetpack prologue */
+"jetpack.prologue.prompt.updatePlugin" = "Zaktualizuj wtyczkę";
+
+/* Watch your stats prompt for the jetpack prologue */
+"jetpack.prologue.prompt.watchStats" = "Obserwuj swoje statystyki";
+
+/* Write a blog prompt for the jetpack prologue */
+"jetpack.prologue.prompt.writeBlog" = "Pisz bloga";
+
+/* Indicating that referrer was marked as spam */
+"marked as spam" = "oznaczono jako spam";
+
+/* Verb. User action to dismiss error alert when failing to load media item. */
+"mediaItemTable.errorAlert.dismissButton" = "Odrzuć";
+
+/* Verb. Button title. Tapping dismisses a prompt. */
+"mediaLibrary.retryOptionsAlert.dismissButton" = "Odrzuć";
+
+/* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.dismissButton" = "Odrzuć";
+
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Wygląda na to, że nadal masz zainstalowaną aplikację WordPress. Zalecamy usunięcie aplikacji WordPress, aby uniknąć konfliktów danych.";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "Rozumiem.";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "Potrzebujesz pomocy?";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Nie potrzebujesz już aplikacji WordPress";
+
+/* Primary button title in the migration done screen. */
+"migration.done.actions.primary.title" = "Koniec";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Usuń aplikację WordPress, aby uniknąć konfliktów danych.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "usuń aplikację WordPress";
+
+/* Primary description in the migration done screen. */
+"migration.done.primaryDescription" = "Przenieśliśmy wszystkie twoje dane i ustawienia. Wszystko jest dokładnie tam, gdzie było.";
+
+/* Title of the migration done screen. */
+"migration.done.title" = "Dziękujemy za przejście na Jetpacka!";
+
+/* Secondary button title in the migration notifications screen. */
+"migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Po pojawieniu się komunikatu proszę wybrać Zezwól, aby otrzymywać wszystkie powiadomienia z WordPressa.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "Zezwól";
+
+/* Primary description in the migration notifications screen. */
+"migration.notifications.primaryDescription" = "Otrzymasz te same powiadomienia, ale teraz będą one pochodzić z aplikacji Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Wyłączymy powiadomienia dla aplikacji WordPress.";
+
+/* Title of the migration notifications screen. */
+"migration.notifications.title" = "Zezwalaj na powiadomienia, aby nadążać za twoją witryną";
+
+/* The primary description in the migration welcome screen */
+"migration.welcome.primaryDescription" = "Wygląda na to, że przełączasz się z aplikacji WordPress.";
+
+/* The plural form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.plural" = "Znaleźliśmy twoją witrynę. Kontynuuj przesyłanie wszystkich danych i zaloguj się automatycznie do Jetpacka.";
+
+/* The singular form of the secondary description in the migration welcome screen */
+"migration.welcome.secondaryDescription.singular" = "Znaleźliśmy twoją witrynę. Kontynuuj przesyłanie wszystkich danych i zaloguj się automatycznie do Jetpacka.";
+
+/* The title in the migration welcome screen */
+"migration.welcome.title" = "Witamy w Jetpacku!";
+
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "Odrzuć";
+
+/* Dismiss the alert with instructions on how to enable push notifications. */
+"notificationSettingStreams.pushNotificationAlert.dismissButton" = "Odrzuć";
+
+/* Word separating the current index from the total amount. I.e.: 7 of 9 */
+"of" = "z";
+
+/* No comment provided by engineer. */
+"password" = "hasło";
+
+/* Register Domain - Domain contact information field Phone */
+"phone number" = "numer telefonu";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "Odrzuć";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "Usuń";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "Ponów";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "Opcje obrazka wyróżniającego";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Odrzuć";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Naciśnij w \"%@\" i wróć do przeglądarki internetowej, aby kontynuować.";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "Zalgowano się!";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "Wróć";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "Odrzuć";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "Rozumiem";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Otrzymuj powiadomienia, gdy do wpisu zostaną dodane komentarze.";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Śledź rozmowę";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "Więcej na WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "Więcej od %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "Więcej";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "Otwórz w Safari";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "Udostępnij";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Utwórz";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "Odrzuć";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "Usuń";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "Opcje mediów";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "Spróbuj ponownie";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "Odrzuć";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "Coś poszło nie tak podczas udostępniania. Proszę spróbować ponownie, może to były chwilowe problemy techniczne.";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "Błąd udostępniania";
+
+/* Title for Comments count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.comments" = "Komentarze";
+
+/* Title for Likes count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.likes" = "Polubienia";
+
+/* Publish date of a post displayed in Stats. Placeholder will be replaced with a localized relative time, e.g. 2 days ago */
+"stats.insights.latestPostSummary.publishDate" = "Opublikowane %@";
+
+/* Title for Views count in Latest Post Summary stats card. */
+"stats.insights.latestPostSummary.views" = "Wyświetlenia";
+
+/* Title of button to cancel an alert and take no action. */
+"stats.insights.management.savePrompt.cancelButton" = "Anuluj";
+
+/* Title of button in Stats Insights management, prompting the user to discard changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.discardButton" = "Odrzuć zmiany";
+
+/* Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
+"stats.insights.management.savePrompt.saveButton" = "Zapisz zmiany";
+
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewPercentage" = "%d%% wyświetleń";
+
+/* Dismiss the AlertView */
+"stockPhotos.strings.dismiss" = "Odrzuć";
+
+/* Section title for prominent suggestions */
+"suggestions.section.prominent" = "w tej rozmowie";
+
+/* Section title for regular suggestions */
+"suggestions.section.regular" = "Członkowie witryny";
+
+/* Today */
+"today" = "dziś";
+
+/* Used when the response doesn't have a valid url to display */
+"unknown url" = "nieznany adres URL";
+
+/* Label displayed on video media items. */
+"video" = "film";
+
+/* Verb. Dismiss the web view screen. */
+"webKit.button.dismiss" = "Odrzuć";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Wpisy";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Zaloguj się do Jetpacka, aby zobaczyć wszystkie statystyki.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Zaloguj się do Jetpacka, aby zobaczyć statystyki z tego tygodnia.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Zaloguj się do Jetpacka, aby zobaczyć dzisiejsze statystyki.";
 
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Komentarze";
@@ -702,4 +3774,16 @@
 
 /* Title of visitors label in today widget */
 "widget.today.visitors.label" = "Odwiedzający";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "Usuń aplikację WordPress";
+
+/* Item 4 of delete screen section listing things that will be deleted. */
+"• Domains" = "• Domeny";
+
+/* Item 3 of delete screen section listing things that will be deleted. */
+"• Pages" = "• Strony";
+
+/* Item 1 of delete screen section listing things that will be deleted. */
+"• Posts" = "• Wpisy";
 
