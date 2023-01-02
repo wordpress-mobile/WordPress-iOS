@@ -1039,7 +1039,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
         if isViewOnScreen() {
-            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .appOpen, in: self)
+            let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded()
+            if !didReloadUI {
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen)
+            }
         }
     }
 }

@@ -46,15 +46,16 @@ class RootViewCoordinator {
         updatePromptsIfNeeded()
     }
 
-    func reloadUIIfNeeded() {
+    func reloadUIIfNeeded() -> Bool {
         let newUIType: AppUIType = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? .normal : .simplified
         let oldUIType = currentAppUIType
         guard newUIType != oldUIType, let windowManager = WordPressAppDelegate.shared?.windowManager else {
-            return
+            return false
         }
         currentAppUIType = newUIType
         displayOverlay(using: windowManager)
         reloadUI(using: windowManager)
+        return true
     }
 
     private func displayOverlay(using windowManager: WindowManager) {
