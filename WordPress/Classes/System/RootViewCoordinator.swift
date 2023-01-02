@@ -53,7 +53,24 @@ class RootViewCoordinator {
             return
         }
         currentAppUIType = newUIType
+        displayOverlay(using: windowManager)
         reloadUI(using: windowManager)
+    }
+
+    private func displayOverlay(using windowManager: WindowManager) {
+        guard currentAppUIType == .simplified else {
+            return
+        }
+
+        let viewController = BlurredEmptyViewController()
+
+        windowManager.displayOverlayingWindow(with: viewController)
+
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController, source: .appOpen, forced: true, fullScreen: true) {
+            viewController.removeBlurView()
+        } onDidDismiss: {
+            windowManager.clearOverlayingWindow()
+        }
     }
 
     private func reloadUI(using windowManager: WindowManager) {
