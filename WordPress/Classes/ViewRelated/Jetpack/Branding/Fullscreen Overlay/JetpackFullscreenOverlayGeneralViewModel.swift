@@ -220,7 +220,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         return source.rawValue
     }
 
-    var onDismiss: JetpackOverlayDismissCallback?
+    var onWillDismiss: JetpackOverlayDismissCallback?
+
+    var onDidDismiss: JetpackOverlayDismissCallback?
 }
 
 // MARK: Helpers

@@ -124,16 +124,20 @@ class JetpackFeaturesRemovalCoordinator {
     static func presentOverlayIfNeeded(in viewController: UIViewController,
                                        source: OverlaySource,
                                        forced: Bool = false,
-                                       onDismiss: JetpackOverlayDismissCallback? = nil) {
+                                       onWillDismiss: JetpackOverlayDismissCallback? = nil,
+                                       onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
         var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
-        viewModel.onDismiss = onDismiss
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
         guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
+            onWillDismiss?()
+            onDidDismiss?()
             return
         }
         createAndPresentOverlay(with: viewModel, in: viewController)
@@ -145,12 +149,15 @@ class JetpackFeaturesRemovalCoordinator {
     ///   - viewController: View controller where the overlay should be presented in.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
-                                                   onDismiss: JetpackOverlayDismissCallback? = nil) {
+                                                   onWillDismiss: JetpackOverlayDismissCallback? = nil,
+                                                   onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase()
         var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase, source: source)
-        viewModel.onDismiss = onDismiss
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         guard viewModel.shouldShowOverlay else {
-            onDismiss?()
+            onWillDismiss?()
+            onDidDismiss?()
             return
         }
         createAndPresentOverlay(with: viewModel, in: viewController)
