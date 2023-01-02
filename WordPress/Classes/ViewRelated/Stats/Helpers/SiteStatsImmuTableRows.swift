@@ -8,6 +8,7 @@ class SiteStatsImmuTableRows {
     /// Helper method to create the rows for the Views and Visitors section
     ///
     static func viewVisitorsImmuTableRows(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?,
+                                          selectedSegment: StatsSegmentedControlData.Segment,
                                           periodDate: Date,
                                           periodEndDate: Date? = nil,
                                           statsLineChartViewDelegate: StatsLineChartViewDelegate?,
@@ -62,12 +63,13 @@ class SiteStatsImmuTableRows {
             }
 
             let row = ViewsVisitorsRow(
-                    segmentsData: [viewsSegmentData, visitorsSegmentData],
-                    chartData: lineChartData,
-                    chartStyling: lineChartStyling,
-                    period: StatsPeriodUnit.day,
-                    statsLineChartViewDelegate: statsLineChartViewDelegate,
-                    siteStatsInsightsDelegate: siteStatsInsightsDelegate, xAxisDates: xAxisDates
+                segmentsData: [viewsSegmentData, visitorsSegmentData],
+                selectedSegment: selectedSegment,
+                chartData: lineChartData,
+                chartStyling: lineChartStyling,
+                period: StatsPeriodUnit.day,
+                statsLineChartViewDelegate: statsLineChartViewDelegate,
+                siteStatsInsightsDelegate: siteStatsInsightsDelegate, xAxisDates: xAxisDates
             )
             tableRows.append(row)
         }
