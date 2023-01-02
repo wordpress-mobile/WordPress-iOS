@@ -26,9 +26,9 @@ class WindowManager: NSObject {
     /// Shows the initial UI for the App to be shown right after launch.  This method will present the sign-in flow if the user is not
     /// authenticated, or the actuall App UI if the user is already authenticated.
     ///
-    public func showUI(for blog: Blog? = nil) {
+    public func showUI(for blog: Blog? = nil, animated: Bool = true) {
         if AccountHelper.isLoggedIn {
-            showAppUI(for: blog)
+            showAppUI(for: blog, animated: animated)
         } else {
             showSignInUI()
         }
@@ -55,9 +55,9 @@ class WindowManager: NSObject {
 
     /// Shows the UI for authenticated users.
     ///
-    @objc func showAppUI(for blog: Blog? = nil, completion: Completion? = nil) {
+    @objc func showAppUI(for blog: Blog? = nil, animated: Bool = true, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
-        show(RootViewCoordinator.sharedPresenter.rootViewController, completion: completion)
+        show(RootViewCoordinator.sharedPresenter.rootViewController, animated: animated, completion: completion)
 
         guard let blog = blog else {
             return
@@ -82,10 +82,10 @@ class WindowManager: NSObject {
     /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
     ///
-    func show(_ viewController: UIViewController, completion: Completion? = nil) {
+    func show(_ viewController: UIViewController, animated: Bool = true, completion: Completion? = nil) {
         // When the App is launched, the root VC will be `nil`.
         // When this is the case we'll simply show the VC without any type of animation.
-        guard window.rootViewController != nil else {
+        guard window.rootViewController != nil, animated else {
             window.rootViewController = viewController
             return
         }

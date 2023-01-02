@@ -45,4 +45,25 @@ class RootViewCoordinator {
         }
         updatePromptsIfNeeded()
     }
+
+    func reloadUIIfNeeded() {
+        let newUIType: AppUIType = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? .normal : .simplified
+        let oldUIType = currentAppUIType
+        guard newUIType != oldUIType, let windowManager = WordPressAppDelegate.shared?.windowManager else {
+            return
+        }
+        currentAppUIType = newUIType
+        reloadUI(using: windowManager)
+    }
+
+    private func reloadUI(using windowManager: WindowManager) {
+        switch currentAppUIType {
+        case .normal:
+            self.rootViewPresenter = WPTabBarController()
+        case .simplified:
+            let meScenePresenter = MeScenePresenter()
+            self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
+        }
+        windowManager.showUI(animated: false)
+    }
 }
