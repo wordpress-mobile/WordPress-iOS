@@ -121,7 +121,9 @@ class JetpackFeaturesRemovalCoordinator {
     /// - Parameters:
     ///   - source: The source that triggers the display of the overlay.
     ///   - viewController: View controller where the overlay should be presented in.
-    static func presentOverlayIfNeeded(from source: OverlaySource, in viewController: UIViewController) {
+    static func presentOverlayIfNeeded(in viewController: UIViewController,
+                                       source: OverlaySource,
+                                       forced: Bool = false) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
@@ -129,7 +131,7 @@ class JetpackFeaturesRemovalCoordinator {
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
-        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow() else {
+        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
             return
         }
         createAndPresentOverlay(with: viewModel, in: viewController)
