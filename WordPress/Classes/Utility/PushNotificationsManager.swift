@@ -57,11 +57,17 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     @objc func registerForRemoteNotifications() {
-        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+        guard JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+                || !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return
         }
 
         sharedApplication.registerForRemoteNotifications()
+
+        if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+            JetpackNotificationMigrationService.shared.wordPressNotificationsEnabled = false
+            sharedApplication.applicationIconBadgeNumber = 0
+        }
     }
 
 
