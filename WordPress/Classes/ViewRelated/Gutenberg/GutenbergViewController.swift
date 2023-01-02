@@ -1182,7 +1182,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         return [
             post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-            .tenor,
+            post.blog.supports(.tenor) ? .tenor : nil,
             .otherApps,
             .allFiles,
         ].compactMap { $0 }
