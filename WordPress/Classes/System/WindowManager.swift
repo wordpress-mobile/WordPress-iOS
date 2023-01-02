@@ -13,6 +13,10 @@ class WindowManager: NSObject {
     ///
     private let window: UIWindow
 
+    /// Temporary window that's displayed on top of the app's UI when needed.
+    ///
+    private var overlayingWindow: UIWindow?
+
     /// A boolean to track whether we're showing the sign in flow in fullscreen mode..
     ///
     private(set) var isShowingFullscreenSignIn = false
@@ -100,5 +104,33 @@ class WindowManager: NSObject {
             completion: { _ in
                 completion?()
             })
+    }
+
+    // MARK: Temporary Overlaying Window
+
+    /// Creates a window with the passed root view and displays it on top of the app's UI.
+    /// - Parameter rootViewController: View controller to be used as the root view controller for the newly created window.
+    ///
+    func displayOverlayingWindow(with rootViewController: UIViewController) {
+        clearOverlayingWindow()
+        let windowFrame = window.frame
+        let window = UIWindow(frame: windowFrame)
+        window.rootViewController = rootViewController
+        window.windowLevel = .alert
+        window.isHidden = false
+        window.makeKeyAndVisible()
+        overlayingWindow = window
+    }
+
+
+    /// Removes the temporary overlaying window if it exists. And makes the main window the key window again.
+    /// 
+    func clearOverlayingWindow() {
+        guard let overlayingWindow = overlayingWindow else {
+            return
+        }
+        overlayingWindow.isHidden = true
+        self.overlayingWindow = nil
+        window.makeKey()
     }
 }
