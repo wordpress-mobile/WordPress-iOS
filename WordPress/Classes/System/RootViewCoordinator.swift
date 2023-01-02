@@ -1,5 +1,9 @@
 import Foundation
 
+extension NSNotification.Name {
+    static let WPAppUITypeChanged = NSNotification.Name(rawValue: "WPAppUITypeChanged")
+}
+
 class RootViewCoordinator {
 
     // MARK: Class Enum
@@ -55,6 +59,7 @@ class RootViewCoordinator {
         currentAppUIType = newUIType
         displayOverlay(using: windowManager)
         reloadUI(using: windowManager)
+        postUIReloadedNotification()
         return true
     }
 
@@ -83,5 +88,9 @@ class RootViewCoordinator {
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         }
         windowManager.showUI(animated: false)
+    }
+
+    private func postUIReloadedNotification() {
+        NotificationCenter.default.post(name: .WPAppUITypeChanged, object: nil)
     }
 }
