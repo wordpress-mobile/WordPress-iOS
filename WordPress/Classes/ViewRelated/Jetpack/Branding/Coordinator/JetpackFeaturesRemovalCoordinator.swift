@@ -123,11 +123,13 @@ class JetpackFeaturesRemovalCoordinator {
     ///   - viewController: View controller where the overlay should be presented in.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
                                        source: OverlaySource,
-                                       forced: Bool = false) {
+                                       forced: Bool = false,
+                                       onDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        viewModel.onDismiss = onDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
