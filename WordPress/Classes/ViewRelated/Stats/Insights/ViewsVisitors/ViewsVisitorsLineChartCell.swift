@@ -12,6 +12,11 @@ struct StatsSegmentedControlData {
     var period: StatsPeriodUnit?
     var analyticsStat: WPAnalyticsStat?
 
+    enum Segment: Int {
+        case views
+        case visitors
+    }
+
     private(set) var accessibilityHint: String?
 
     init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, date: Date? = nil, period: StatsPeriodUnit? = nil, analyticsStat: WPAnalyticsStat? = nil, accessibilityHint: String? = nil, differencePercent: Int) {
@@ -162,6 +167,7 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     }
 
     func configure(segmentsData: [StatsSegmentedControlData],
+                   selectedSegment: StatsSegmentedControlData.Segment,
                    lineChartData: [LineChartDataConvertible] = [],
                    lineChartStyling: [LineChartStyling] = [],
                    period: StatsPeriodUnit? = nil,
@@ -180,7 +186,7 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         self.period = period
         self.xAxisDates = xAxisDates
 
-        setupSegmentedControl()
+        setupSegmentedControl(selectedSegment: selectedSegment)
         configureChartView()
         updateLabels()
     }
@@ -191,8 +197,9 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
         configureChartView()
         updateLabels()
-    }
 
+        siteStatsInsightsDelegate?.viewsAndVisitorsSegmendChanged?(to: selectedSegmentIndex)
+    }
 }
 
 
@@ -205,12 +212,13 @@ private extension ViewsVisitorsLineChartCell {
         styleLabels()
     }
 
-    func setupSegmentedControl() {
+    func setupSegmentedControl(selectedSegment: StatsSegmentedControlData.Segment) {
         segmentedControl.selectedSegmentTintColor = UIColor.white
         segmentedControl.setTitleTextAttributes([.font: UIFont.preferredFont(forTextStyle: .subheadline).bold()], for: .normal)
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
         segmentedControl.setTitle(segmentsData[0].segmentTitle, forSegmentAt: 0)
         segmentedControl.setTitle(segmentsData[1].segmentTitle, forSegmentAt: 1)
+        segmentedControl.selectedSegmentIndex = selectedSegment.rawValue
     }
 
     func styleLabels() {
