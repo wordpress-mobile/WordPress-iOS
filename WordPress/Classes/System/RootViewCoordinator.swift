@@ -2,6 +2,13 @@ import Foundation
 
 class RootViewCoordinator {
 
+    // MARK: Class Enum
+
+    enum AppUIType {
+        case normal
+        case simplified
+    }
+
     // MARK: Static shared variables
 
     static let shared = RootViewCoordinator()
@@ -22,14 +29,17 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
+    private var currentAppUIType: AppUIType
 
     // MARK: Initializer
 
     init() {
         if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+            self.currentAppUIType = .normal
             self.rootViewPresenter = WPTabBarController()
         }
         else {
+            self.currentAppUIType = .simplified
             let meScenePresenter = MeScenePresenter()
             self.rootViewPresenter = MySitesCoordinator(meScenePresenter: meScenePresenter, onBecomeActiveTab: {})
         }
