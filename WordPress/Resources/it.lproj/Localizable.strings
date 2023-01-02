@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 18:36:06+0000 */
+/* Translation-Revision-Date: 2022-12-12 23:02:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: it */
@@ -2754,7 +2754,7 @@ translators: Block name. %s: The localized block name */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
-"Email Address" = "Indirizzo Email";
+"Email Address" = "Indirizzo email";
 
 /* Blog Email Followers */
 "Email Followers" = "Follower tramite email";

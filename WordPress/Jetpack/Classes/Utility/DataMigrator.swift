@@ -20,7 +20,7 @@ enum DataMigrationError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .databaseCopyError: return "The database couldn't be copied from shared directory"
+        case .databaseCopyError: return "The database couldn't be copied to/from shared directory"
         case .sharedUserDefaultsNil: return "Shared user defaults not found"
         case .dataNotReadyToImport: return "The data wasn't ready to import"
         }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 14:54:27+0000 */
+/* Translation-Revision-Date: 2022-12-26 22:56:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: de */
@@ -2346,7 +2346,7 @@ translators: Block name. %s: The localized block name */
 "Deleting site…" = "Lösche Website …";
 
 /* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Lösche ...";
+"Deleting..." = "Wird gelöscht …";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Ablehnen";
@@ -3409,7 +3409,7 @@ translators: Block name. %s: The localized block name */
 "Get the ball rolling and increase your post views by sharing your post." = "Erhalte mehr Aufrufe deines Beitrags, indem du ihn teilst.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
-"Get to know the Jetpack app" = "Lerne die JetPack-App kennen";
+"Get to know the Jetpack app" = "Lerne die Jetpack-App kennen";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
 "Get to know the WordPress app" = "Informationen zur WordPress-App";
@@ -4304,7 +4304,7 @@ translators: Block name. %s: The localized block name */
    Text displayed in HUD while a media item is being loaded.
    Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
-"Loading..." = "Wird geladen...";
+"Loading..." = "Wird geladen …";
 
 /* Status for Media object that is only exists locally. */
 "Local" = "Lokal";
@@ -6106,7 +6106,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Remove %@" = "%@ entfernen";
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
-"Remove Featured Image" = "Entferne Artikelbild";
+"Remove Featured Image" = "Beitragsbild entfernen";
 
 /* Label action for removing a link from the editor */
 "Remove Link" = "Link entfernen";
@@ -8497,7 +8497,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Updating" = "Aktualisiere";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Aktualisieren ...";
+"Updating..." = "Wird aktualisiert …";
 
 /* Text for related post cell preview */
 "Upgrade Focus: VideoPress For Weddings" = "Schwerpunkt des Upgrades: VideoPress für Hochzeiten";
