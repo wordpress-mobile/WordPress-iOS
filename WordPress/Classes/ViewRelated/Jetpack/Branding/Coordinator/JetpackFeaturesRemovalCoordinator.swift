@@ -1,7 +1,7 @@
 import Foundation
 
 /// A class containing convenience methods for the the Jetpack features removal experience
-class JetpackFeaturesRemovalCoordinator {
+class JetpackFeaturesRemovalCoordinator: NSObject {
 
     /// Enum descibing the current phase of the Jetpack features removal
     enum GeneralPhase: String {
@@ -108,6 +108,7 @@ class JetpackFeaturesRemovalCoordinator {
     }
 
     /// Used to determine if the Jetpack features should be removed based on the removal phase.
+    @objc
     static func shouldRemoveJetpackFeatures() -> Bool {
         switch generalPhase() {
         case .four, .newUsers:
