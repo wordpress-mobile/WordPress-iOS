@@ -1559,6 +1559,14 @@
 		8031F34B292FF46E00E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34C29302A2500E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C229230A0B007D2D26 /* ExtensionConfiguration.swift */; };
 		8031F34D29302C8100E8F95E /* ExtensionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800035C0292307E8007D2D26 /* ExtensionConfiguration.swift */; };
+		803BB9792959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */; };
+		803BB97A2959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */; };
+		803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */; };
+		803BB97D2959559500B3F6D6 /* RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */; };
+		803BB980295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */; };
+		803BB981295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */; };
+		803BB983295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */; };
+		803BB984295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -6878,6 +6886,10 @@
 		801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayFrequencyTracker.swift; sourceTree = "<group>"; };
 		801D951C291ADB7E0051993E /* JetpackOverlayFrequencyTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayFrequencyTrackerTests.swift; sourceTree = "<group>"; };
 		80293CF6284450AD0083F946 /* WordPress-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Swift.h"; sourceTree = "<group>"; };
+		803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerCoordinator.swift; sourceTree = "<group>"; };
+		803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewPresenter.swift; sourceTree = "<group>"; };
+		803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+RootViewPresenter.swift"; sourceTree = "<group>"; };
+		803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySitesCoordinator+RootViewPresenter.swift"; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRedirector.swift; sourceTree = "<group>"; };
@@ -12506,6 +12518,17 @@
 			name = "Lottie Animations";
 			sourceTree = "<group>";
 		};
+		803BB97E295957A200B3F6D6 /* Root View */ = {
+			isa = PBXGroup;
+			children = (
+				803BB9782959543D00B3F6D6 /* RootViewControllerCoordinator.swift */,
+				803BB97B2959559500B3F6D6 /* RootViewPresenter.swift */,
+				803BB97F295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift */,
+				803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */,
+			);
+			name = "Root View";
+			sourceTree = "<group>";
+		};
 		803DE81D29063689007D4E9C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
@@ -12901,6 +12924,7 @@
 			isa = PBXGroup;
 			children = (
 				0107E0F128FD6A3100DE87DB /* Constants */,
+				803BB97E295957A200B3F6D6 /* Root View */,
 				BE87E19E1BD4052F0075D45B /* 3DTouch */,
 				B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */,
 				1749965E2271BF08007021BD /* WordPressAppDelegate.swift */,
@@ -20416,6 +20440,7 @@
 				98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */,
 				3234BB172530DFCA0068DA40 /* ReaderTableCardCell.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
+				803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
 				178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */,
 				3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
@@ -21039,6 +21064,7 @@
 				73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */,
 				17870A702816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */,
 				82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */,
+				803BB983295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
 				8BBC778B27B5531700DBA087 /* BlogDashboardPersistence.swift in Sources */,
 				F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
@@ -21157,6 +21183,7 @@
 				F10465142554260600655194 /* BindableTapGestureRecognizer.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
+				803BB9792959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */,
 				98F537A722496CF300B334F9 /* SiteStatsTableHeaderView.swift in Sources */,
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
 				C7BB60162863609C00748FD9 /* QRLoginInternetConnectionChecker.swift in Sources */,
@@ -21238,6 +21265,7 @@
 				9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */,
 				08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */,
 				43B0BA962229927F00328C69 /* WordPressAppDelegate+openURL.swift in Sources */,
+				803BB980295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */,
 				176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */,
 				400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */,
 				9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */,
@@ -22727,6 +22755,7 @@
 				24351255264DCA08009BB2B6 /* Secrets.swift in Sources */,
 				98A047732821CEBF001B4E2D /* BloggingPromptsViewController.swift in Sources */,
 				FABB21102602FC2C00C8785C /* MySiteViewController+FAB.swift in Sources */,
+				803BB981295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */,
 				FABB21112602FC2C00C8785C /* BaseRestoreOptionsViewController.swift in Sources */,
 				8B4DDF25278F44CC0022494D /* BlogDashboardViewController.swift in Sources */,
 				FABB21122602FC2C00C8785C /* AddSiteAlertFactory.swift in Sources */,
@@ -22739,6 +22768,7 @@
 				FABB21172602FC2C00C8785C /* JetpackBackupOptionsViewController.swift in Sources */,
 				F4D829682931059000038726 /* MigrationSuccessActionHandler.swift in Sources */,
 				FABB21182602FC2C00C8785C /* TopViewedVideoStatsRecordValue+CoreDataProperties.swift in Sources */,
+				803BB97D2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				FABB21192602FC2C00C8785C /* NotificationContentRangeFactory.swift in Sources */,
 				FABB211A2602FC2C00C8785C /* SiteInfo.swift in Sources */,
 				FABB211B2602FC2C00C8785C /* CredentialsService.swift in Sources */,
@@ -22758,6 +22788,7 @@
 				FABB21272602FC2C00C8785C /* Media+Blog.swift in Sources */,
 				FABB21282602FC2C00C8785C /* MenuItemEditingHeaderView.m in Sources */,
 				3F8B45AB292C42CC00730FA4 /* MigrationSuccessCell.swift in Sources */,
+				803BB984295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
 				FABB21292602FC2C00C8785C /* Routes+Banners.swift in Sources */,
 				8B5E1DD927EA5929002EBEE3 /* PostCoordinator+Dashboard.swift in Sources */,
 				93F72150271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
@@ -22862,6 +22893,7 @@
 				FABB21762602FC2C00C8785C /* CameraHandler.swift in Sources */,
 				FA73D7EA27987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				FABB21772602FC2C00C8785C /* JetpackConnectionViewController.swift in Sources */,
+				803BB97A2959543D00B3F6D6 /* RootViewControllerCoordinator.swift in Sources */,
 				FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */,
 				FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */,
 				FABB217A2602FC2C00C8785C /* FilterSheetView.swift in Sources */,

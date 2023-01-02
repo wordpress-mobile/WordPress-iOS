@@ -39,4 +39,63 @@ extension BlogDetailsViewController {
     @objc func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
         return subsection.sectionCategory(for: blog)
     }
+
+    @objc func defaultSubsection() -> BlogDetailsSubsection {
+        if JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() {
+            return .posts
+        }
+        if shouldShowDashboard() {
+            return .home
+        }
+        return .stats
+    }
+
+    @objc func shouldShowStats() -> Bool {
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+    }
+
+    @objc func shouldAddJetpackSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.shouldShowJetpackSection
+    }
+
+    @objc func shouldAddGeneralSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.shouldShowJetpackSection == false
+    }
+
+    @objc func shouldAddPersonalizeSection() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.supports(.themeBrowsing) || blog.supports(.menus)
+    }
+
+    @objc func shouldAddSharingRow() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.supports(.sharing)
+    }
+
+    @objc func shouldAddPeopleRow() -> Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return false
+        }
+        return blog.supports(.people)
+    }
+
+    @objc func shouldAddPluginsRow() -> Bool {
+        return blog.supports(.pluginManagement)
+    }
+
+    @objc func shouldAddDomainRegistrationRow() -> Bool {
+        return FeatureFlag.domains.enabled
+        && AppConfiguration.allowsDomainRegistration
+        && blog.supports(.domains)
+    }
 }

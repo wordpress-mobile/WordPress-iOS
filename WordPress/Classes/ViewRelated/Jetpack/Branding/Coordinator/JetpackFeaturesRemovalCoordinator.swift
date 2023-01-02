@@ -117,6 +117,12 @@ class JetpackFeaturesRemovalCoordinator {
         }
     }
 
+    /// Inverse of `shouldRemoveJetpackFeatures`.
+    /// Added to enhance verbosity in some areas of the code.
+    static func jetpackFeaturesEnabled() -> Bool {
+        !shouldRemoveJetpackFeatures()
+    }
+
     /// Used to display feature-specific or feature-collection overlays.
     /// - Parameters:
     ///   - source: The source that triggers the display of the overlay.

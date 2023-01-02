@@ -252,7 +252,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _readerNavigationController = nil;
     _notificationsNavigationController = nil;
     _notificationsSplitViewController = nil;
-    _mySitesCoordinator = nil;
     
     [self setViewControllers:[self tabViewControllers]];
     
