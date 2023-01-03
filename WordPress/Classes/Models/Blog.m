@@ -537,9 +537,9 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureStats:
             return [self supportsRestApi];
         case BlogFeatureStockPhotos:
-            return [self supportsRestApi] && ![JetpackFeaturesRemovalCoordinator shouldRemoveJetpackFeatures];
+            return [self supportsRestApi] && [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
         case BlogFeatureTenor:
-            return ![JetpackFeaturesRemovalCoordinator shouldRemoveJetpackFeatures];
+            return [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
         case BlogFeatureSharing:
             return [self supportsSharing];
         case BlogFeatureOAuth2Login:
