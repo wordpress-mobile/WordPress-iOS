@@ -692,7 +692,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 {
     BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"9.1"];
     // Stories are disabled in iPad until this Kanvas issue is solved: https://github.com/tumblr/kanvas-ios/issues/104
-    return (hasRequiredJetpack || self.isHostedAtWPcom) && ![UIDevice isPad] && ![JetpackFeaturesRemovalCoordinator shouldRemoveJetpackFeatures];
+    return (hasRequiredJetpack || self.isHostedAtWPcom) && ![UIDevice isPad] && [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
 }
 
 - (BOOL)supportsContactInfo
