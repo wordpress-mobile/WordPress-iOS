@@ -10,7 +10,7 @@ class JetpackBrandingMenuCardPresenter {
 
         let description: String
         let learnMoreButtonURL: String?
-        let type: CardType = .compact // TODO: Make this dynamic
+        let type: CardType
     }
 
     // MARK: Private Variables
@@ -40,7 +40,11 @@ class JetpackBrandingMenuCardPresenter {
         case .three:
             let description = Strings.phaseThreeDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url)
+            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+        case .four:
+            let description = Strings.phaseFourTitle
+            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url, type: .compact)
         default:
             return nil
         }
@@ -139,5 +143,8 @@ private extension JetpackBrandingMenuCardPresenter {
         static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
                                                            value: "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.",
                                                            comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
+        static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
+                                                           value: "Switch to Jetpack",
+                                                           comment: "Title of a button prompting users to switch to the Jetpack app.")
     }
 }
