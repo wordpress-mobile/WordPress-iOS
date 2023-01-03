@@ -50,6 +50,8 @@ class RootViewCoordinator {
         updatePromptsIfNeeded()
     }
 
+    /// Reload the UI if needed after the app has already been launched.
+    /// - Returns: Boolean value describing whether the UI was reloaded or not.
     func reloadUIIfNeeded() -> Bool {
         let newUIType: AppUIType = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? .normal : .simplified
         let oldUIType = currentAppUIType
@@ -72,11 +74,15 @@ class RootViewCoordinator {
 
         windowManager.displayOverlayingWindow(with: viewController)
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController, source: .appOpen, forced: true, fullScreen: true) {
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
+                                                                 source: .appOpen,
+                                                                 forced: true,
+                                                                 fullScreen: true,
+                                                                 onWillDismiss: {
             viewController.removeBlurView()
-        } onDidDismiss: {
+        }, onDidDismiss: {
             windowManager.clearOverlayingWindow()
-        }
+        })
     }
 
     private func reloadUI(using windowManager: WindowManager) {

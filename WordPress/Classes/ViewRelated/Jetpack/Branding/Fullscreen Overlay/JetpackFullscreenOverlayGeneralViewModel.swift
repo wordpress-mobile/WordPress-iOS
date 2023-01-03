@@ -99,7 +99,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         // Phase Three
         case (.three, _):
             return phaseTwoAndThreeSubtitle()
-        // Phase Three
+
+        // Phase Four
         case (.four, _):
             return .init(string: Strings.PhaseFour.subtitle)
         default:

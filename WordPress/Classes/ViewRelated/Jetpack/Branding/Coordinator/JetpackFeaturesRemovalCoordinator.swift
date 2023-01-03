@@ -119,8 +119,13 @@ class JetpackFeaturesRemovalCoordinator {
 
     /// Used to display feature-specific or feature-collection overlays.
     /// - Parameters:
+    ///   - viewController: The view controller where the overlay should be presented in.
     ///   - source: The source that triggers the display of the overlay.
-    ///   - viewController: View controller where the overlay should be presented in.
+    ///   - forced: Pass `true` to override the overlay frequency logic. Default is `false`.
+    ///   - fullScreen: If `true` and not on iPad, the fullscreen modal presentation type is used.
+    ///   Else the form sheet type is used. Default is `false`.
+    ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
+    ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
                                        source: OverlaySource,
                                        forced: Bool = false,
@@ -147,7 +152,10 @@ class JetpackFeaturesRemovalCoordinator {
 
     /// Used to display Site Creation overlays.
     /// - Parameters:
-    ///   - viewController: View controller where the overlay should be presented in.
+    ///   - viewController: The view controller where the overlay should be presented in.
+    ///   - source: The source that triggers the display of the overlay.
+    ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
+    ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
                                                    onWillDismiss: JetpackOverlayDismissCallback? = nil,
