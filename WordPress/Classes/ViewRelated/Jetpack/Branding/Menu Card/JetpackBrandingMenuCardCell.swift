@@ -145,8 +145,10 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.showsMenuAsPrimaryAction = true
+        button.menu = contextMenu
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
-//            self?.onEllipsisButtonTap?()
+            self?.presenter.trackContexualMenuAccessed()
         }
         return button
     }()
