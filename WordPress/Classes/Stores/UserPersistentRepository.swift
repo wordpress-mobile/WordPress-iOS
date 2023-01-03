@@ -21,19 +21,3 @@ protocol UserPersistentRepositoryWriter: KeyValueDatabase {
 }
 
 typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter & UserPersistentRepositoryUtility
-
-extension UserDefaults: UserPersistentRepository {}
-
-extension UserPersistentStore {
-    private static var isOneOffMigrationCompleteKey: String {
-        "defaults_one_off_migration"
-    }
-
-    var isOneOffMigrationComplete: Bool {
-        get {
-            bool(forKey: Self.isOneOffMigrationCompleteKey)
-        } set {
-            set(newValue, forKey: Self.isOneOffMigrationCompleteKey)
-        }
-    }
-}

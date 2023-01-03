@@ -193,6 +193,5 @@ extension AppConfiguration: ContentMigrationEligibilityProvider {
 // MARK: - Constants
 
 private extension String {
-    static let oneOffMigrationKey = "wordpress_one_off_export"
     static let exportErrorSharedKey = "wordpress_shared_export_error"
 }
