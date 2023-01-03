@@ -38,6 +38,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }()
 
     let segmentsData: [StatsSegmentedControlData]
+    let selectedSegment: StatsSegmentedControlData.Segment
     let action: ImmuTableAction? = nil
     let chartData: [LineChartDataConvertible]
     let chartStyling: [LineChartStyling]
@@ -52,7 +53,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
+        cell.configure(segmentsData: segmentsData, selectedSegment: selectedSegment, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
     }
 }
 

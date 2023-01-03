@@ -47,6 +47,10 @@ open class QuickStartTourGuide: NSObject {
     private override init() {}
 
     func setup(for blog: Blog, type: QuickStartType, withCompletedSteps steps: [QuickStartTour] = []) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return
+        }
+
         if type == .newSite {
             let createTour = QuickStartCreateTour()
             completed(tour: createTour, for: blog)
@@ -80,7 +84,15 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func quickStartEnabled(for blog: Blog) -> Bool {
-        QuickStartFactory.collections(for: blog).isEmpty == false
+        let enabled = QuickStartFactory.collections(for: blog).isEmpty == false
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            if enabled { // If quick start exists, remove it to clean up.
+                QuickStartTourGuide.shared.remove(from: blog)
+            }
+            return false
+        }
+
+        return enabled
     }
 
     /// Provides a tour to suggest to the user

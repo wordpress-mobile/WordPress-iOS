@@ -1,3 +1,0 @@
-Vi har åtgärdat ett litet visuellt problem med Hem- och Meny-navigeringen i Min webbplats-adminpanelen. 
-
-Vi har också fixat en bugg i Min webbplats. Knappen "Koppla bort från WordPress.com" frånkopplar nu när den trycks på och uppdaterar appen.

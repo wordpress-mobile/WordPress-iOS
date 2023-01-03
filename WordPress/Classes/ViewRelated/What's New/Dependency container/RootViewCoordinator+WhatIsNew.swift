@@ -1,6 +1,6 @@
 
 /// dependency container for the What's New / Feature Announcements scene
-extension WPTabBarController {
+extension RootViewCoordinator {
 
     @objc func presentWhatIsNew(on viewController: UIViewController) {
 

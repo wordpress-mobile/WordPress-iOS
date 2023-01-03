@@ -1,3 +1,8 @@
+21.5
+-----
+* [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]
+
+
 21.4
 -----
 * [*] Fixed an issue where publishing Posts and Pages could fail under certain conditions. [#19717]

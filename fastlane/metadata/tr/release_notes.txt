@@ -1,3 +1,0 @@
-Sitem panosundaki Ana Sayfa ve Menü kontrolüyle ilgili küçük bir görsel sorunu düzelttik.
-
-Sitem'deki bir hatayı da ortadan kaldırdık. "WordPress.com Bağlantısını Kes" düğmesi artık dokunulduğunda bağlantıyı keser ve uygulamayı yeniler.

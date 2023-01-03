@@ -248,7 +248,7 @@ extension PushNotificationsManager {
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
         if applicationState == .background {
-            WPTabBarController.sharedInstance().showMeScene()
+            RootViewCoordinator.sharedPresenter.showMeScene()
         }
 
         completionHandler?(.newData)
@@ -335,7 +335,7 @@ extension PushNotificationsManager {
             return false
         }
 
-        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: notificationId)
+        RootViewCoordinator.sharedPresenter.showNotificationsTabForNote(withID: notificationId)
         completionHandler?(.newData)
 
         return true
@@ -427,10 +427,12 @@ extension PushNotificationsManager {
                 return false
         }
 
-        if WPTabBarController.sharedInstance()?.presentedViewController != nil {
-            WPTabBarController.sharedInstance()?.dismiss(animated: false)
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
+
+        if rootViewController.presentedViewController != nil {
+            rootViewController.dismiss(animated: false)
         }
-        WPTabBarController.sharedInstance()?.showMySitesTab()
+        RootViewCoordinator.sharedPresenter.showMySitesTab()
 
         if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey),
             let quickStartType = userInfo.string(forKey: QuickStartTracking.quickStartTypeKey) {

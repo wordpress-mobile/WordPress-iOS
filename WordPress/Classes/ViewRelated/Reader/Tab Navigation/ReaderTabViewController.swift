@@ -57,7 +57,7 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
 
         if AppConfiguration.showsWhatIsNew {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+            RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
 
@@ -162,7 +162,7 @@ extension ReaderTabViewController: UIViewControllerRestoration {
 
         let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
 
-        let controller = WPTabBarController.sharedInstance().readerTabViewController
+        let controller = RootViewCoordinator.sharedPresenter.readerTabViewController
         controller?.setStartIndex(index)
 
         return controller

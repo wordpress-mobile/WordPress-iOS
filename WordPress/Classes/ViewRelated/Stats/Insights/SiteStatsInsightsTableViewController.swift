@@ -359,7 +359,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        WPTabBarController.sharedInstance().showPostTab { [weak self] in
+        RootViewCoordinator.sharedPresenter.showPostTab { [weak self] in
             self?.refreshInsights()
         }
     }
@@ -518,9 +518,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             }
 
             self.navigationController?.popToRootViewController(animated: false)
-            WPTabBarController.sharedInstance().showReaderTab()
-            if let nc = WPTabBarController.sharedInstance().selectedViewController as? UINavigationController,
-               let vc = nc.topViewController as? ReaderTabViewController {
+            RootViewCoordinator.sharedPresenter.showReaderTab()
+            if let vc = RootViewCoordinator.sharedPresenter.readerTabViewController {
                 vc.presentDiscoverTab()
             }
         }
@@ -606,6 +605,13 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
+    }
+
+    func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) {
+        if let selectedSegment = StatsSegmentedControlData.Segment(rawValue: selectedSegmentIndex) {
+            viewModel?.updateViewsAndVisitorsSegment(selectedSegment)
+            refreshTableView()
+        }
     }
 }
 
