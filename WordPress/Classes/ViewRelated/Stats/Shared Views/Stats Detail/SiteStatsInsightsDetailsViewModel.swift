@@ -17,6 +17,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private weak var insightsDetailsDelegate: SiteStatsInsightsDelegate?
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
+    private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsReceipt: Receipt?
@@ -41,10 +42,12 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
     init(insightsDetailsDelegate: SiteStatsInsightsDelegate,
          detailsDelegate: SiteStatsDetailsDelegate,
-         referrerDelegate: SiteStatsReferrerDelegate) {
+         referrerDelegate: SiteStatsReferrerDelegate,
+         viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate) {
         self.insightsDetailsDelegate = insightsDetailsDelegate
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
+        self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
     }
 
     // MARK: - Data Fetching
@@ -262,7 +265,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                                                              periodDate: selectedDate!,
                                                                                              periodEndDate: weekEnd,
                                                                                              statsLineChartViewDelegate: nil,
-                                                                                             siteStatsInsightsDelegate: insightsDetailsDelegate))
+                                                                                             siteStatsInsightsDelegate: nil,
+                                                                                             viewsAndVisitorsDelegate: viewsAndVisitorsDelegate))
 
                     // Referrers
                     if let referrers = viewsAndVisitorsData.topReferrers {
