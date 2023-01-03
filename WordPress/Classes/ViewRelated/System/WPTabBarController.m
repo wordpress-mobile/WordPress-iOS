@@ -56,8 +56,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 @property (nonatomic, strong) ReaderTabViewModel *readerTabViewModel;
 
-@property (nonatomic, strong) MySitesCoordinator *mySitesCoordinator;
-@property (nonatomic, strong) BloggingPromptCoordinator *bloggingPromptCoordinator;
+@property (nonatomic, strong, nullable) MySitesCoordinator *mySitesCoordinator;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
@@ -72,16 +71,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @implementation WPTabBarController
 
 #pragma mark - Class methods
-
-+ (instancetype)sharedInstance
-{
-    static WPTabBarController *shared = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        shared = [[self alloc] init];
-    });
-    return shared;
-}
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
@@ -314,66 +303,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self setSelectedIndex:WPTabReader];
 }
 
-- (void)showPostTab
-{
-    [self showPostTabWithCompletion:nil];
-}
-
-- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    // Ignore taps on the post tab and instead show the modal.
-    if ([Blog countInContext:context] == 0) {
-        [self.mySitesCoordinator showAddNewSite];
-    } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
-    }
-}
-
-- (void)showPostTabForBlog:(Blog *)blog
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    if ([Blog countInContext:context] == 0) {
-        [self.mySitesCoordinator showAddNewSite];
-    } else {
-        [self showPostTabAnimated:YES toMedia:NO blog:blog];
-    }
-}
-
 - (void)showNotificationsTab
 {
     [self setSelectedIndex:WPTabNotifications];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
-{
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
-{
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog afterDismiss:nil];
-}
-
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
-{
-    if (self.presentedViewController) {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    if (!blog) {
-        blog = [self currentOrLastBlog];
-    }
-
-    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
-    editor.modalPresentationStyle = UIModalPresentationFullScreen;
-    editor.showImmediately = !animated;
-    editor.openWithMediaPicker = openToMedia;
-    editor.afterDismiss = afterDismiss;
-    
-    NSString *tapSource = @"create_button";
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ WPAppAnalyticsKeyTapSource: tapSource, WPAppAnalyticsKeyPostType: @"post"} withBlog:blog];
-    [self presentViewController:editor animated:NO completion:nil];
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
@@ -426,27 +358,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             break;
     }
     return currentlySelectedScreen;
-}
-
-- (Blog *)currentlyVisibleBlog
-{
-    if (self.selectedIndex != WPTabMySites) {
-        return nil;
-    }
-
-    return [self.mySitesCoordinator currentBlog];
-}
-
-- (Blog *)currentOrLastBlog
-{
-    Blog *blog = [self currentlyVisibleBlog];
-
-    if (blog == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        blog = [Blog lastUsedOrFirstInContext: context];
-    }
-    
-    return blog;
 }
 
 #pragma mark - UITabBarControllerDelegate methods
@@ -615,8 +526,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startObserversForTabAccessTracking];
-
-    [self updatePromptsIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -644,27 +553,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return nil;
-}
-
-#pragma mark - What's New Presentation
-- (id<ScenePresenter>)whatIsNewScenePresenter
-{
-    if (_whatIsNewScenePresenter) {
-        return _whatIsNewScenePresenter;
-    }
-    self.whatIsNewScenePresenter = [self makeWhatIsNewPresenter];
-    return _whatIsNewScenePresenter;
-}
-
-#pragma mark - Blogging Prompt
-- (BloggingPromptCoordinator *)bloggingPromptCoordinator
-{
-    if (_bloggingPromptCoordinator) {
-        return _bloggingPromptCoordinator;
-    }
-
-    self.bloggingPromptCoordinator = [self makeBloggingPromptCoordinator];
-    return _bloggingPromptCoordinator;
 }
 
 @end

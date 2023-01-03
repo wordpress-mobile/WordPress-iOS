@@ -259,7 +259,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // If there's already a blog details view controller for this blog in the primary
     // navigation stack, we'll return that instead of creating a new one.
-    UISplitViewController *splitViewController = [WPTabBarController sharedInstance].mySitesCoordinator.splitViewController;
+    UISplitViewController *splitViewController = [self mySitesCoordinator].splitViewController;
     UINavigationController *navigationController = splitViewController.viewControllers.firstObject;
     if (navigationController && [navigationController isKindOfClass:[UINavigationController class]]) {
         BlogDetailsViewController *topViewController = (BlogDetailsViewController *)navigationController.topViewController;

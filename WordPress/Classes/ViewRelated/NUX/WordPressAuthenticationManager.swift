@@ -585,9 +585,9 @@ private extension WordPressAuthenticationManager {
     /// We'll pre-switch to the users selected tab before the login flow dismisses
     private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
         if option == .reader {
-            WPTabBarController.sharedInstance().showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReaderTab()
         } else if option == .notifications {
-            WPTabBarController.sharedInstance().showNotificationsTab()
+            RootViewCoordinator.sharedPresenter.showNotificationsTab()
         }
     }
 
