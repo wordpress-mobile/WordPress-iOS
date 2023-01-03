@@ -44,7 +44,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = stackViewSpacing
-        stackView.layoutMargins = stackViewLayoutMargins
+        stackView.directionalLayoutMargins = stackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.addArrangedSubviews(stackViewSubviews)
         return stackView
@@ -88,7 +88,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         label.textColor = labelTextColor
         label.numberOfLines = labelNumberOfLines
         label.adjustsFontForContentSizeCategory = true
-
         return label
     }()
 
@@ -136,6 +135,20 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         imageView.heightAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
         return imageView
+    }()
+
+    private lazy var ellipsisButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
+        button.contentEdgeInsets = Metrics.Compact.ellipsisButtonPadding
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
+        button.accessibilityTraits = .button
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
+//            self?.onEllipsisButtonTap?()
+        }
+        return button
     }()
 
     // MARK: Initializers
@@ -241,7 +254,7 @@ private extension JetpackBrandingMenuCardCell {
         }
     }
 
-    var stackViewLayoutMargins: UIEdgeInsets {
+    var stackViewLayoutMargins: NSDirectionalEdgeInsets {
         switch cardType {
         case .compact:
             return Metrics.Compact.containerMargins
@@ -253,7 +266,7 @@ private extension JetpackBrandingMenuCardCell {
     var stackViewSubviews: [UIView] {
         switch cardType {
         case .compact:
-            return [jetpackIconImageView, label]
+            return [jetpackIconImageView, label, ellipsisButton]
         case .expanded:
             return [logosSuperview, label, learnMoreSuperview]
         }
@@ -294,7 +307,7 @@ private extension JetpackBrandingMenuCardCell {
         // General
         enum Expanded {
             static let spacing: CGFloat = 10
-            static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 12, right: 20)
+            static let containerMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 12, trailing: 20)
             static let animationsViewHeight: CGFloat = 32
             static var labelFont: UIFont {
                 let maximumFontPointSize: CGFloat = 16
@@ -307,8 +320,9 @@ private extension JetpackBrandingMenuCardCell {
 
         enum Compact {
             static let spacing: CGFloat = 15
-            static let containerMargins = UIEdgeInsets(top: 17, left: 20, bottom: 9, right: 20)
+            static let containerMargins = NSDirectionalEdgeInsets(top: 17, leading: 20, bottom: 9, trailing: 12)
             static let logoImageViewSize: CGFloat = 24
+            static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
             static var labelFont: UIFont {
                 let maximumFontPointSize: CGFloat = 17
                 let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
@@ -345,6 +359,9 @@ private extension JetpackBrandingMenuCardCell {
         static let hideCardMenuItemTitle = NSLocalizedString("jetpack.menuCard.hide",
                                                                   value: "Hide this",
                                                                   comment: "Menu item title to hide the card.")
+        static let ellipsisButtonAccessibilityLabel = NSLocalizedString("ellipsisButton.AccessibilityLabel",
+                                                                        value: "More",
+                                                                        comment: "Accessibility label for more button in dashboard quick start card.")
     }
 
     enum MenuItem {
