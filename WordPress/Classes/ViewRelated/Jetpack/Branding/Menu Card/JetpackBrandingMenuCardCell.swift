@@ -349,7 +349,7 @@ private extension JetpackBrandingMenuCardCell {
         static let analyticsSource = "jetpack_menu_card"
         static let remindMeLaterSystemImageName = "alarm"
         static let hideThisLaterSystemImageName = "eye.slash"
-        static let jetpackIcon = "icon-wp-filled"
+        static let jetpackIcon = "icon-jetpack"
     }
 
     enum Strings {
