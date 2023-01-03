@@ -19,6 +19,9 @@ class JetpackBrandingMenuCardPresenter {
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
     private let featureFlagStore: RemoteFeatureFlagStore
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
+        return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    }
 
     // MARK: Initializers
 
@@ -35,7 +38,6 @@ class JetpackBrandingMenuCardPresenter {
     // MARK: Public Functions
 
     func cardConfig() -> Config? {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
@@ -109,23 +111,36 @@ extension JetpackBrandingMenuCardPresenter {
 }
 
 private extension JetpackBrandingMenuCardPresenter {
+
+    // MARK: Dynamic Keys
+
+    var shouldHideCardKey: String {
+        return "\(Constants.shouldHideCardKey)-\(phase.rawValue)"
+    }
+
+    var showCardOnDateKey: String {
+        return "\(Constants.showCardOnDateKey)-\(phase.rawValue)"
+    }
+
+    // MARK: Persistence Variables
+
     var shouldHideCard: Bool {
         get {
-            persistenceStore.bool(forKey: Constants.shouldHideCardKey)
+            persistenceStore.bool(forKey: shouldHideCardKey)
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.shouldHideCardKey)
+            persistenceStore.set(newValue, forKey: shouldHideCardKey)
         }
     }
 
     var showCardOnDate: Date? {
         get {
-            persistenceStore.object(forKey: Constants.showCardOnDateKey) as? Date
+            persistenceStore.object(forKey: showCardOnDateKey) as? Date
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.showCardOnDateKey)
+            persistenceStore.set(newValue, forKey: showCardOnDateKey)
         }
     }
 }
