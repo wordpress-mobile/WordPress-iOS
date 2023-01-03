@@ -36,6 +36,7 @@ struct JetpackBrandingAnalyticsHelper {
         case home
         case me
         case notificationsSettings = "notifications_settings"
+        case person
         case readerDetail = "reader_detail"
         case sharing
     }

@@ -604,3 +604,43 @@ private extension PersonViewController {
         }
     }
 }
+
+// MARK: - Jetpack powered badge
+extension PersonViewController {
+
+    private static let jetpackBadgeHeight: CGFloat = 96
+    private static func shouldShowJetpackBadge() -> Bool {
+        JetpackBrandingVisibility.all.enabled &&
+        JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures()
+    }
+    private var lastSection: Int {
+        viewModel.count - 1
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard
+            section == lastSection,
+            Self.shouldShowJetpackBadge()
+        else {
+            return nil
+        }
+
+        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard
+            section == lastSection,
+            Self.shouldShowJetpackBadge()
+        else {
+            return UITableView.automaticDimension
+        }
+
+        return Self.jetpackBadgeHeight
+    }
+
+    @objc private func jetpackButtonTapped() {
+        JetpackBrandingCoordinator.presentOverlay(from: self)
+        JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .person)
+    }
+}
