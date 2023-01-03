@@ -316,7 +316,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.
         // We'll ask for user notification permission after signin.
-        PushNotificationsManager.shared.setupRemoteNotifications()
+        DispatchQueue.main.async {
+            PushNotificationsManager.shared.setupRemoteNotifications()
+        }
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
