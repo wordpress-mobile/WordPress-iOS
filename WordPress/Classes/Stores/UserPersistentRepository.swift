@@ -21,3 +21,5 @@ protocol UserPersistentRepositoryWriter: KeyValueDatabase {
 }
 
 typealias UserPersistentRepository = UserPersistentRepositoryReader & UserPersistentRepositoryWriter & UserPersistentRepositoryUtility
+
+extension UserDefaults: UserPersistentRepository {}
