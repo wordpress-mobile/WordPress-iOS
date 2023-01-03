@@ -139,7 +139,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private lazy var ellipsisButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
+        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(Metrics.Compact.ellipsisButtonColor), for: .normal)
         button.contentEdgeInsets = Metrics.Compact.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
@@ -323,6 +323,7 @@ private extension JetpackBrandingMenuCardCell {
             static let containerMargins = NSDirectionalEdgeInsets(top: 17, leading: 20, bottom: 9, trailing: 12)
             static let logoImageViewSize: CGFloat = 24
             static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+            static let ellipsisButtonColor = UIColor.muriel(color: .gray, .shade20)
             static var labelFont: UIFont {
                 let maximumFontPointSize: CGFloat = 17
                 let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
