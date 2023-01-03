@@ -19,13 +19,13 @@ class ShareNoticeNavigationCoordinator {
 
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(editor, animated: false)
+        RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: false)
     }
 
     static func navigateToPostList(with userInfo: NSDictionary) {
         fetchPost(from: userInfo, onSuccess: { post in
             if let post = post {
-                WPTabBarController.sharedInstance().mySitesCoordinator.showPosts(for: post.blog)
+                RootViewCoordinator.sharedPresenter.showPosts(for: post.blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch post from share notification.")
@@ -35,7 +35,7 @@ class ShareNoticeNavigationCoordinator {
     static func navigateToBlogDetails(with userInfo: NSDictionary) {
         fetchBlog(from: userInfo, onSuccess: { blog in
             if let blog = blog {
-                WPTabBarController.sharedInstance()?.mySitesCoordinator.showBlogDetails(for: blog)
+                RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
             }
         }, onFailure: {
             DDLogError("Could not fetch blog from share notification.")

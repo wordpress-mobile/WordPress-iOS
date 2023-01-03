@@ -190,7 +190,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         workaroundLargeTitleCollapseBug()
 
         if AppConfiguration.showsWhatIsNew {
-            WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+            RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
 
         FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
@@ -283,7 +283,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     private func updateSegmentedControl(for blog: Blog, switchTabsIfNeeded: Bool = false) {
         // The segmented control should be hidden if the blog is not a WP.com/Atomic/Jetpack site, or if the device doesn't have a horizontally compact view
         let hideSegmentedControl =
-            !FeatureFlag.mySiteDashboard.enabled ||
+            !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ||
             !blog.isAccessibleThroughWPCom() ||
             !splitViewControllerIsHorizontallyCompact
 
@@ -357,7 +357,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = FeatureFlag.mySiteDashboard.enabled ? .never : .always
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = Strings.mySite
         navigationItem.backButtonTitle = Strings.mySite
 
@@ -382,11 +382,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     private func setupNavBarAppearance() {
-        navigationController?.navigationBar.scrollEdgeAppearance?.configureWithTransparentBackground()
-        if FeatureFlag.mySiteDashboard.enabled {
-            let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
-            navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
-        }
+        let scrollEdgeAppearance = navigationController?.navigationBar.scrollEdgeAppearance
+        let transparentTitleAttributes = [NSAttributedString.Key.foregroundColor: UIColor.clear]
+        scrollEdgeAppearance?.titleTextAttributes = transparentTitleAttributes
+        scrollEdgeAppearance?.configureWithTransparentBackground()
     }
 
     private func resetNavBarAppearance() {
@@ -653,7 +652,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
 
-        if let blog = blog, tabBarController is WPTabBarController,
+        if let blog = blog,
            noResultsViewController.view.superview == nil {
             createButtonCoordinator?.showCreateButton(for: blog)
         }

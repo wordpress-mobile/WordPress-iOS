@@ -1,32 +1,32 @@
-
 import UIKit
 
 /// Methods to access the Me Scene and sub levels
-extension WPTabBarController {
+extension RootViewPresenter {
     /// removes all but the primary viewControllers from the stack
-    @objc func popMeTabToRoot() {
+    func popMeTabToRoot() {
         getNavigationController()?.popToRootViewController(animated: false)
     }
     /// presents the Me scene. If the feature flag is disabled, replaces the previously defined `showMeTab`
-    @objc func showMeScene(animated: Bool = true, completion: (() -> Void)? = nil) {
-        meScenePresenter.present(on: self, animated: animated, completion: completion)
+    func showMeScene(animated: Bool = true, completion: (() -> Void)? = nil) {
+        let meScenePresenter = getMeScenePresenter()
+        meScenePresenter.present(on: rootViewController, animated: animated, completion: completion)
     }
     /// access to sub levels
-    @objc func navigateToAccountSettings() {
+    func navigateToAccountSettings() {
         showMeScene(animated: false) {
             self.popMeTabToRoot()
             self.getMeViewController()?.navigateToAccountSettings()
         }
     }
 
-    @objc func navigateToAppSettings() {
+    func navigateToAppSettings() {
         showMeScene() {
             self.popMeTabToRoot()
             self.getMeViewController()?.navigateToAppSettings()
         }
     }
 
-    @objc func navigateToSupport() {
+    func navigateToSupport() {
         showMeScene() {
             self.popMeTabToRoot()
             self.getMeViewController()?.navigateToHelpAndSupport()
@@ -35,6 +35,7 @@ extension WPTabBarController {
 
     /// obtains a reference to the navigation controller of the presented MeViewController
     private func getNavigationController() -> UINavigationController? {
+        let meScenePresenter = getMeScenePresenter()
         guard let splitController = meScenePresenter.presentedViewController as? WPSplitViewController,
             let navigationController = splitController.viewControllers.first as? UINavigationController else {
                 return nil

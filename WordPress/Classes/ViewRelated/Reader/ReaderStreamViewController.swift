@@ -798,7 +798,7 @@ import Combine
     }
 
     private func showFollowing() {
-        WPTabBarController.sharedInstance().switchToFollowedSites()
+        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
     }
 
     // MARK: - Blocking
@@ -1587,7 +1587,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     private func resetReaderDiscoverNudgeFlow() {
         shouldShowCommentSpotlight = false
-        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
+        RootViewCoordinator.sharedPresenter.resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

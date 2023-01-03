@@ -10,11 +10,10 @@ struct StartRoute: Route, NavigationAction {
     }
 
     func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
-        guard AccountHelper.isDotcomAvailable(),
-              let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
-        coordinator.showSiteCreation()
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showSiteCreation()
     }
 }

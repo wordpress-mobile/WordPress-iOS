@@ -68,7 +68,7 @@ extension GutenbergViewController {
             ActionDispatcher.dispatch(NoticeAction.unlock)
         }
 
-        let helpTitle = JetpackFeaturesRemovalCoordinator.shouldRemoveJetpackFeatures() ? MoreSheetAlert.editorHelpTitle : MoreSheetAlert.editorHelpAndSupportTitle
+        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? MoreSheetAlert.editorHelpAndSupportTitle : MoreSheetAlert.editorHelpTitle
         alert.addDefaultActionWithTitle(helpTitle) { [weak self] _ in
             self?.showEditorHelp()
             ActionDispatcher.dispatch(NoticeAction.unlock)

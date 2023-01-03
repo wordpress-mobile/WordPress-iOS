@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-28 22:08:54+0000 */
+/* Translation-Revision-Date: 2022-12-09 18:58:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
@@ -690,6 +690,9 @@ translators: Block name. %s: The localized block name */
 
 /* Settings: Comments Enabled */
 "Allow Comments" = "Lejo Komente";
+
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "Lejo Njoftime";
 
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "Lejoni WordPress-in t’ju dërgojë njoftime <em>push<\/em>";
@@ -5883,6 +5886,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menu item label for linking a project page. */
 "Projects" = "Projekte";
 
+/* Title of the notification presented when a prompt is skipped */
+"Prompt skipped" = "U anashkalua cytje";
+
 /* Title label for blogging prompts in the create new bottom action sheet.
    Title label for the Prompts card in My Sites tab.
    View title for Blogging Prompts list. */
@@ -8146,6 +8152,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "U aktivizuan njoftime sajti";
 
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "Mbyllja e këtij çelësi do të çaktivizojë krejt njoftimet prej këtij aplikacioni, pavarësisht llojit.";
+
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -9697,6 +9706,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
 
+/* Customize Insights description */
+"customizeInsightsCell.content" = "Krijoni pultin tuaj të përshtatur dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Prekeni që të hidhet tej kjo kartë";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "Hidhe tej";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "Përshtatni prirjet tuaja";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "Prekeni që të përshtatni prirjet";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "Provojeni tani";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "që të ndryshoni njësinë, prekeni dy herë";
 
@@ -9713,6 +9740,63 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "ndjekje";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Ujdisni kujtues blogimi";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "Përpunoni kujtues";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Vazhdoni blogimin dhe rikontrolloni për të parë vizitorët që vijnë në sajtin tuaj.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "Ujdisët kujtues blogimi";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "Postimi rregullisht mund të ndihmojë të krijoni një publik. Kujtuesit ju ndihmojnë të ndiqni këtë qëllim.";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "Hidhe tej";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Zbuloni blogje për ndjekje";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "Ribëje";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "Vazhdoni! Pëlqimi dhe komentimi është një rrugë e mirë për të ngritur një rrjet. Kaloni te Lexuesi, për të gjetur më tepër postime.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "Jeni lidhur me blogje të tjerë";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Lidhuni me blogues të tjerë, përmes ndjekjes, pëlqimit dhe komentimit në postimet e tyre.";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "Aktivizo ndarje postimesh me të tjerët";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "Lidhni më shumë rrjete";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "Kur të botoni postimin tuaj pasues, do të ndahet automatikisht në rrjetet që keni lidhur.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "Ndarja me të tjerë është ujdisur!";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "Ndani automatikisht me të tjerë postime të reja në media shoqërore, që të filloni ta sillni atë publik te sajti juaj.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "Një ndihmëz si të shtoni publikun tuaj";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "Parje për sajtin tuaj deri këtu";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "Parje për sajtin tuaj deri këtu";
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Hidhe tej";
@@ -9798,8 +9882,53 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "WordPress-i është më i mirë me Jetpack-un";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "Kalo në aplikacionin e ri Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Mësoni më tepër te jetpack.com";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Vazhdo te Njoftimet";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Që të vazhdoni të merrni në pajisjen tuaj njoftime të atypëratyshme, kaloni te aplikacioni Jetpack.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Merrini njoftimet tuaja me aplikacionin Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Që të gjeni, ndiqni dhe pëlqeni krejt sajtet dhe postimet tuaj të parapëlqyer me Lexuesin, kaloni te aplikacioni Jetpack.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Ndiqni çfarëdo sajti, me aplikacionin Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Që të shihni shtim trafiku në sajtin tuaj, përmes statistikash dhe prirjesh, kaloni te aplikacioni Jetpack.";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Merrni statistikat tuaja duke përdorur aplikacionin e ri Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.\n\nAplikacioni WordPress nuk mbulon më krijimin e një sajti të ri.";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "Vazhdo te Lexuesi";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Vazhdo pa Jetpack-un";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "Provoni aplikacionin e ri Jetpack";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "Krijoni një sajt të ri WordPress me aplikacionin Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "Vazhdo te Statistika";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Shtoni një autor";
@@ -9855,8 +9984,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Hidhe tej";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Duket sikur keni ende të instaluar aplikacionin WordPress. Rekomandojmë ta fshini aplikacionin WordPress, për të shmangur përplasje të dhënash.";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "E kuptova";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "Ju duhet ndihmë?";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "S’ju duhet më aplikacioni WordPress";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Përfundoje";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Ju lutemi, fshijeni aplikacionin WordPress, që të shmangen përplasje të dhënash.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "fshije aplikacionin WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Kemi shpërngulur krejt të dhënat dhe rregullimet tuaja. Gjithçka është mu atje ku e latë.";
@@ -9867,8 +10014,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vendosni më vonë";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Kur shfaqen sinjalizime, prekni “Lejoje” që të vazhdoni të merrni krejt njoftimet tuaja WordPress.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "Lejoje";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Do të merrni të njëjtat njoftime, por tani do të vijnë nga aplikacioni Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Do të çaktivizojmë njoftimet për aplikacionin WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Lejoni njoftime, që të jeni në dijeni se ç’ndodh në sajtin tuaj";
@@ -9885,6 +10041,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Mirë se vini te Jetpack-u!";
 
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "Hidhe tej";
+
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Hidhe tej";
 
@@ -9899,6 +10058,81 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numër telefoni";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "Hidhe tej";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "Hiqe";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "Riprovo";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Që të vazhdoni, prekni mbi “%@” dhe kthehuni te shfletuesi juaj.";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "Jeni i futur!";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "Mbrapsht";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "Hidhe tej";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "E kuptova";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Njoftuhuni, kur te ky postim shtohen komente të reja.";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Ndiqni bisedën";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "Më tepër mbi WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "Më tepër nga %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "Më tepër";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "Hape në Safari";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "Ndajeni";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "I ri";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "Hidhe tej";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "Hiqe";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "Mundësi Media";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "Riprovoni";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "Hidhe tej";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "Oh, diç shkoi ters teksa bëhej ndarja me të tjerët. Mund të riprovoni, ndoshta qe diçka e çastit.";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "Gabim Gjatë Ndarjes Me të Tjerë";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komente";
@@ -10073,6 +10307,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sajte, sajt, blogje, blog";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "Ju lutemi, fshini aplikacionin WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "sajti juaj";
