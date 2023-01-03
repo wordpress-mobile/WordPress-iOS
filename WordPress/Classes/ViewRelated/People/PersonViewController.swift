@@ -190,9 +190,12 @@ final class PersonViewController: UITableViewController {
             lastNameIndexPath,
             displayNameIndexPath
         ])
-        model.append([
-            removeIndexPath
-        ])
+
+        if isRemoveEnabled {
+            model.append([
+                removeIndexPath
+            ])
+        }
         return model
     }()
 }
