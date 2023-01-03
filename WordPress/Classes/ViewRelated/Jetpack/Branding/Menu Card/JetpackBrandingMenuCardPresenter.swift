@@ -3,8 +3,14 @@ import Foundation
 class JetpackBrandingMenuCardPresenter {
 
     struct Config {
+
+        enum CardType {
+            case compact, expanded
+        }
+
         let description: String
         let learnMoreButtonURL: String?
+        let type: CardType = .compact // TODO: Make this dynamic
     }
 
     // MARK: Private Variables

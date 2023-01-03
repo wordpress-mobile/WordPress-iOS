@@ -7,12 +7,17 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private weak var viewController: BlogDetailsViewController?
     private var presenter: JetpackBrandingMenuCardPresenter
+    private var config: JetpackBrandingMenuCardPresenter.Config?
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
         traitCollection.layoutDirection == .leftToRight ?
         Animation.named(Constants.animationLtr) :
         Animation.named(Constants.animationRtl)
+    }
+
+    private var cardType: JetpackBrandingMenuCardPresenter.Config.CardType {
+        config?.type ?? .expanded
     }
 
     // MARK: Lazy Loading Views
@@ -121,12 +126,14 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         presenter = JetpackBrandingMenuCardPresenter()
+        config = presenter.cardConfig()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
         presenter = JetpackBrandingMenuCardPresenter()
+        config = presenter.cardConfig()
         super.init(coder: coder)
         commonInit()
     }
@@ -148,7 +155,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private func setupContent() {
         logosAnimationView.currentProgress = 1.0
-        let config = presenter.cardConfig()
         descriptionLabel.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
@@ -156,7 +162,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Actions
 
     @objc private func learnMoreButtonTapped() {
-        guard let config = presenter.cardConfig(),
+        guard let config = config,
               let urlString = config.learnMoreButtonURL,
               let url = URL(string: urlString) else {
             return
