@@ -178,7 +178,7 @@ private extension Date {
         let components = DateComponents(day: 7 * offset, hour: -12)
 
         guard let weekAdjusted = calendar.date(byAdding: components, to: normalizedDate()),
-        let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end else {
+              let endOfAdjustedWeek = StatsPeriodHelper().weekIncludingDate(weekAdjusted)?.weekEnd else {
             DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
             return nil
         }
