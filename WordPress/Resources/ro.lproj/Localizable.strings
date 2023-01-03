@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-02 21:16:36+0000 */
+/* Translation-Revision-Date: 2023-01-02 16:59:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloc %s. Acest bloc are conținut invalid";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s a fost convertit într-un bloc normal";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s a fost convertit în blocuri normale";
@@ -732,6 +735,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternativ, poți detașa și edita aceste blocuri separat, atingând „Convertește în blocuri normale”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ca alternativă, poți să introduci parola pentru acest cont.";
@@ -9897,6 +9903,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Comută la noua aplicație Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Comută la aplicația Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Află mai multe la jetpack.com";
 
@@ -9924,8 +9933,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Folosind noua aplicație Jetpack, îți vezi statisticile";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Comutarea este gratuită și durează numai un minut.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack oferă statistici, notificări și multe altele pentru a te ajuta să construiești și să dezvolți site-ul WordPress la care visezi.\nAplicația WordPress nu mai permite crearea unui site nou.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "În curând, statisticile, cititorul, notificările și alte funcționalități propulsate de Jetpack vor fi înlăturate din aplicația WordPress.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Notificările au fost mutate în Jetpack";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Cititorul a fost mutat în aplicația Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statisticile au fost mutate în aplicația Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statisticile, cititorul, notificările și alte funcționalități propulsate de Jetpack vor fi înlăturate din aplicația WordPress pe %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continuă cu Cititor";
@@ -10022,6 +10049,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Îți mulțumim că ai comutat la Jetpack!";
+
+/* The description in the Load WordPress screen
+   The secondary description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Se pare că ai instalată aplicația WordPress.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Deschide WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Nu, mulțumesc";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Bine ai venit la Jetpack!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Poți să decizi mai târziu";
