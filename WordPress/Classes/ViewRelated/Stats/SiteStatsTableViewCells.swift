@@ -45,6 +45,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     let period: StatsPeriodUnit?
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
     let xAxisDates: [Date]
 
     func configureCell(_ cell: UITableViewCell) {
@@ -53,7 +54,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(segmentsData: segmentsData, selectedSegment: selectedSegment, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
+        cell.configure(row: self)
     }
 }
 

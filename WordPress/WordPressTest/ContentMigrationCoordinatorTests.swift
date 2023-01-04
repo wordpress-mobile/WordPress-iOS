@@ -180,41 +180,6 @@ final class ContentMigrationCoordinatorTests: CoreDataTestCase {
         wait(for: [expect], timeout: timeout)
     }
 
-    // MARK: `startOnce` tests
-
-    func test_startOnce_whenUserDefaultsDoesNotExist_shouldMigrate() {
-        let expect = expectation(description: "Content migration should succeed")
-        coordinator.startOnceIfNeeded { [unowned self] in
-            XCTAssertTrue(mockDataMigrator.exportCalled)
-            XCTAssertTrue(mockPersistentRepository.bool(forKey: userDefaultsKey))
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: timeout)
-    }
-
-    func test_startOnce_givenErrorResult_shouldNotSaveUserDefaults() {
-        mockDataMigrator.exportErrorToReturn = .databaseCopyError
-
-        let expect = expectation(description: "Content migration should succeed")
-        coordinator.startOnceIfNeeded { [unowned self] in
-            XCTAssertTrue(mockDataMigrator.exportCalled)
-            XCTAssertFalse(mockPersistentRepository.bool(forKey: userDefaultsKey))
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: timeout)
-    }
-
-    func test_startOnce_whenUserDefaultsExists_shouldNotMigrate() {
-        mockPersistentRepository.set(true, forKey: userDefaultsKey)
-
-        let expect = expectation(description: "Content migration should not be called")
-        coordinator.startOnceIfNeeded { [unowned self] in
-            XCTAssertFalse(mockDataMigrator.exportCalled)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: timeout)
-    }
-
     // MARK: Export data cleanup tests
 
     func test_cleanupExportedData_givenUserIsIneligible_shouldDeleteData() {

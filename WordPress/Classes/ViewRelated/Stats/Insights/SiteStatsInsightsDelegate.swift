@@ -19,5 +19,4 @@ import Foundation
     @objc optional func addInsightSelected(_ insight: StatSection)
     @objc optional func addInsightDismissed()
     @objc optional func manageInsightSelected(_ insight: StatSection, fromButton: UIButton)
-    @objc optional func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int)
 }

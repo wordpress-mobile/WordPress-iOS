@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-26 16:50:07+0000 */
+/* Translation-Revision-Date: 2023-01-02 15:52:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -9927,6 +9927,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.\n\nAplikace WordPress již nepodporuje vytváření nového webu.";
 
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Oznámení se přesouvají do Jetpacku";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader se přesouvá do aplikace Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistiky se přesouvají do aplikace Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack budou z aplikace WordPress odstraněny na %@.";
+
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Pokračovat do čtečky";
 
@@ -10022,6 +10034,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Děkujeme, že jste přešli na Jetpack!";
+
+/* The description in the Load WordPress screen
+   The secondary description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Vypadá to, že máte nainstalovanou aplikaci WordPress.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Otevřít WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Ne, děkuji";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Vítejte v Jetpacku!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vybrat později";

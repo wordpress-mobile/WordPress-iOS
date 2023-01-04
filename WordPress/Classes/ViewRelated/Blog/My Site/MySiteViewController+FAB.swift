@@ -28,7 +28,7 @@ extension MySiteViewController {
 
         var actions: [ActionSheetItem] = []
 
-        if shouldShowNewStory {
+        if blog?.supports(.stories) ?? false {
             actions.append(StoryAction(handler: newStory, source: source))
         }
 
@@ -37,9 +37,5 @@ extension MySiteViewController {
 
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source, blog: blog)
         return coordinator
-    }
-
-    private var shouldShowNewStory: Bool {
-        return (blog?.supports(.stories) ?? false) && !UIDevice.isPad()
     }
 }

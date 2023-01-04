@@ -15,6 +15,7 @@ class SiteStatsInsightsViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
     private let insightsStore: StatsInsightsStore
     private let periodStore: StatsPeriodStore
@@ -48,10 +49,12 @@ class SiteStatsInsightsViewModel: Observable {
 
     init(insightsToShow: [InsightType],
          insightsDelegate: SiteStatsInsightsDelegate,
+         viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?,
          insightsStore: StatsInsightsStore,
          pinnedItemStore: SiteStatsPinnedItemStore?,
          periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
         self.siteStatsInsightsDelegate = insightsDelegate
+        self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
         self.pinnedItemStore = pinnedItemStore
@@ -520,7 +523,8 @@ private extension SiteStatsInsightsViewModel {
                                                                 selectedSegment: selectedViewsVisitorsSegment,
                                                                 periodDate: periodDate,
                                                                 statsLineChartViewDelegate: statsLineChartViewDelegate,
-                                                                siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                                                                siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                                                viewsAndVisitorsDelegate: viewsAndVisitorsDelegate)
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
