@@ -43,6 +43,36 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         XCTAssertFalse(presenter.shouldShowTopCard())
     }
 
+    func testShouldShowBottomCardBasedOnPhase() {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+
+        // Normal phase
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase One
+        remoteFeatureFlagsStore.removalPhaseOne = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Two
+        remoteFeatureFlagsStore.removalPhaseTwo = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Three
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Four
+        remoteFeatureFlagsStore.removalPhaseFour = true
+        XCTAssertTrue(presenter.shouldShowBottomCard())
+
+        // Phase New Users
+        remoteFeatureFlagsStore.removalPhaseNewUsers = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+    }
+
     func testPhaseThreeCardConfig() throws {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
