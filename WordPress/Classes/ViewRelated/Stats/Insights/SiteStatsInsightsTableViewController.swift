@@ -119,6 +119,7 @@ private extension SiteStatsInsightsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
                                                insightsDelegate: self,
+                                               viewsAndVisitorsDelegate: self,
                                                insightsStore: insightsStore,
                                                pinnedItemStore: pinnedItemStore)
         addViewModelListeners()
@@ -606,13 +607,6 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         alert.popoverPresentationController?.sourceView = fromButton
         present(alert, animated: true)
     }
-
-    func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) {
-        if let selectedSegment = StatsSegmentedControlData.Segment(rawValue: selectedSegmentIndex) {
-            viewModel?.updateViewsAndVisitorsSegment(selectedSegment)
-            refreshTableView()
-        }
-    }
 }
 
 // MARK: - StatsInsightsManagementDelegate
@@ -628,6 +622,17 @@ extension SiteStatsInsightsTableViewController: StatsInsightsManagementDelegate 
         insightsToShow = insightTypes
         refreshInsights(forceRefresh: true)
         updateView()
+    }
+}
+
+// MARK: - ViewsVisitorsDelegate
+
+extension SiteStatsInsightsTableViewController: StatsInsightsViewsAndVisitorsDelegate {
+    func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) {
+        if let selectedSegment = StatsSegmentedControlData.Segment(rawValue: selectedSegmentIndex) {
+            viewModel?.updateViewsAndVisitorsSegment(selectedSegment)
+            refreshTableView()
+        }
     }
 }
 

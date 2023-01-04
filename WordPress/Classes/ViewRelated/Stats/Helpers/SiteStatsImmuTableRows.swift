@@ -12,7 +12,8 @@ class SiteStatsImmuTableRows {
                                           periodDate: Date,
                                           periodEndDate: Date? = nil,
                                           statsLineChartViewDelegate: StatsLineChartViewDelegate?,
-                                          siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) -> [ImmuTableRow] {
+                                          siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
+                                          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
         let viewsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .views, periodEndDate: periodEndDate)
@@ -69,7 +70,9 @@ class SiteStatsImmuTableRows {
                 chartStyling: lineChartStyling,
                 period: StatsPeriodUnit.day,
                 statsLineChartViewDelegate: statsLineChartViewDelegate,
-                siteStatsInsightsDelegate: siteStatsInsightsDelegate, xAxisDates: xAxisDates
+                siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                viewsAndVisitorsDelegate: viewsAndVisitorsDelegate,
+                xAxisDates: xAxisDates
             )
             tableRows.append(row)
         }
