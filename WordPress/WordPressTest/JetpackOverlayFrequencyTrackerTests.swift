@@ -87,6 +87,26 @@ final class JetpackOverlayFrequencyTrackerTests: XCTestCase {
         XCTAssertFalse(tracker.shouldShow(forced: false))
     }
 
+    func testOverridingFrequencyLogic() {
+        // Given
+        let key = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-app_open-phaseString"
+        let genericKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix
+        let tracker = JetpackOverlayFrequencyTracker(phaseString: "phaseString",
+                                                     source: .appOpen,
+                                                     persistenceStore: mockUserDefaults)
+
+        // When & Then
+        XCTAssertTrue(tracker.shouldShow(forced: false))
+
+        // Given
+        let distantDate = Date.distantPast
+        mockUserDefaults.set(distantDate, forKey: key)
+        mockUserDefaults.set(distantDate, forKey: genericKey)
+
+        // When & Then
+        XCTAssertTrue(tracker.shouldShow(forced: true))
+    }
+
     func testFeatureSpecificFrequency() {
         // Given
         let statsKey = JetpackOverlayFrequencyTracker.Constants.lastDateKeyPrefix + "-stats"
