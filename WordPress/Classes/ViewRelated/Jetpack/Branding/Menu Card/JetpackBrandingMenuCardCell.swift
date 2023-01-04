@@ -322,7 +322,7 @@ private extension JetpackBrandingMenuCardCell {
 
         enum Compact {
             static let spacing: CGFloat = 15
-            static let containerMargins = NSDirectionalEdgeInsets(top: 17, leading: 20, bottom: 9, trailing: 12)
+            static let containerMargins = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 7, trailing: 12)
             static let logoImageViewSize: CGFloat = 24
             static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
             static let ellipsisButtonColor = UIColor.muriel(color: .gray, .shade20)
