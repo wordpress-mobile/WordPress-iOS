@@ -67,6 +67,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         if FeatureFlag.statsNewInsights.enabled {
             periodChangeReceipt = self.periodStore.onChange { [weak self] in
+                self?.updateMostRecentChartData(self?.periodStore.getSummary())
                 self?.emitChange()
             }
         }
@@ -511,9 +512,6 @@ private extension SiteStatsInsightsViewModel {
     // MARK: - Create Table Rows
 
     func overviewTableRows() -> [ImmuTableRow] {
-        let periodSummary = periodStore.getSummary()
-        updateMostRecentChartData(periodSummary)
-
         let periodDate = self.lastRequestedDate
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
