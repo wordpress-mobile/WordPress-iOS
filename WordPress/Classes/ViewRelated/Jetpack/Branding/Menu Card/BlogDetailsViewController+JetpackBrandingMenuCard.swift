@@ -11,7 +11,7 @@ extension BlogDetailsViewController {
         let row = BlogDetailsRow()
         row.callback = {
             let presenter = JetpackBrandingMenuCardPresenter()
-            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .card, in: self)
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .card)
             presenter.trackCardTapped()
         }
 

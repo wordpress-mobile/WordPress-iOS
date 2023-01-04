@@ -1570,6 +1570,8 @@
 		803BB987295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */; };
 		803BB989295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */; };
 		803BB98A295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */; };
+		803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
+		803BB98D29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -6893,6 +6895,7 @@
 		803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySitesCoordinator+RootViewPresenter.swift"; sourceTree = "<group>"; };
 		803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+MeNavigation.swift"; sourceTree = "<group>"; };
 		803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+EditorNavigation.swift"; sourceTree = "<group>"; };
+		803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredEmptyViewController.swift; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRedirector.swift; sourceTree = "<group>"; };
@@ -12919,6 +12922,7 @@
 				D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */,
 				43DDFE8B21715ADD008BE72F /* WPTabBarController+QuickStart.swift */,
 				57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */,
+				803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -21152,6 +21156,7 @@
 				B57273611B66CCEF000D1C4F /* AlertView.swift in Sources */,
 				3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
+				803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
 				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
@@ -24074,6 +24079,7 @@
 				FABB250E2602FC2C00C8785C /* Role.swift in Sources */,
 				FABB250F2602FC2C00C8785C /* SuggestionsTableView.swift in Sources */,
 				FABB25102602FC2C00C8785C /* MenuItemSourceResultsViewController.m in Sources */,
+				803BB98D29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				FABB25112602FC2C00C8785C /* UIColor+MurielColors.swift in Sources */,
 				FABB25122602FC2C00C8785C /* LayoutPreviewViewController.swift in Sources */,
 				FABB25132602FC2C00C8785C /* UIStackView+Subviews.swift in Sources */,

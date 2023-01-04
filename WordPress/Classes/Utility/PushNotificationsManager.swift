@@ -11,6 +11,13 @@ import UserNotifications
 ///
 final public class PushNotificationsManager: NSObject {
 
+    // MARK: Initializer
+
+    override init() {
+        super.init()
+        registerForNotifications()
+    }
+
     /// Returns the shared PushNotificationsManager instance.
     ///
     @objc static let shared = PushNotificationsManager()
@@ -229,6 +236,13 @@ final public class PushNotificationsManager: NSObject {
 
         let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
         WPAnalytics.track(event, withProperties: properties)
+    }
+
+    // MARK: Observing Notifications
+
+    private func registerForNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(setupRemoteNotifications), name: .WPAppUITypeChanged, object: nil)
     }
 }
 
