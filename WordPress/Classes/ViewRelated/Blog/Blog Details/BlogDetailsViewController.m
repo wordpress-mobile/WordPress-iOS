@@ -1623,7 +1623,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
-    MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
+    UIViewController *viewController = [MenusViewController withJPBannerForBlog:self.blog];
     viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:viewController];
 
