@@ -73,7 +73,12 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        viewModel.loadCards()
+        viewModel.loadCards { cards in
+            guard cards.hasPrompts else {
+                return
+            }
+            WPAnalytics.track(.promptsDashboardCardViewed)
+        }
         QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
@@ -122,7 +127,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func pulledToRefresh(completion: (() -> Void)? = nil) {
-        viewModel.loadCards {
+        viewModel.loadCards { _ in
             completion?()
         }
     }
