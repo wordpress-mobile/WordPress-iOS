@@ -1,11 +1,14 @@
 import Foundation
+import Combine
 import UIKit
 import WordPressShared
 
-class JetpackBannerWrapperViewController: UIViewController {
+final class JetpackBannerWrapperViewController: UIViewController {
     /// The wrapped child view controller.
     private(set) var childVC: UIViewController?
     private var analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen?
+    /// JPScrollViewDelegate conformance.
+    internal var scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     convenience init(
         childVC: UIViewController,
@@ -55,9 +58,10 @@ class JetpackBannerWrapperViewController: UIViewController {
             }
         }
         stackView.addArrangedSubview(jetpackBannerView)
-
-        if let childVC = childVC as? JPScrollViewDelegate {
-            childVC.addTranslationObserver(jetpackBannerView)
-        }
+        addTranslationObserver(jetpackBannerView)
     }
 }
+
+// MARK: JPScrollViewDelegate
+
+extension JetpackBannerWrapperViewController: JPScrollViewDelegate {}
