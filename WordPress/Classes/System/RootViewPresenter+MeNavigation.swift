@@ -36,11 +36,15 @@ extension RootViewPresenter {
     /// obtains a reference to the navigation controller of the presented MeViewController
     private func getNavigationController() -> UINavigationController? {
         let meScenePresenter = getMeScenePresenter()
-        guard let splitController = meScenePresenter.presentedViewController as? WPSplitViewController,
-            let navigationController = splitController.viewControllers.first as? UINavigationController else {
-                return nil
+        if let navigationController = meScenePresenter.presentedViewController as? UINavigationController {
+            return navigationController
         }
-        return navigationController
+
+        if let splitController = meScenePresenter.presentedViewController as? WPSplitViewController,
+           let navigationController = splitController.viewControllers.first as? UINavigationController {
+                return navigationController
+        }
+        return nil
     }
 
     /// obtains a reference to the presented MeViewController

@@ -101,6 +101,12 @@ import AutomatticTracks
             return false
         }
 
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            let properties = ["calling_function": "deep_link", "url": url.absoluteString]
+            WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
+            return false
+        }
+
         let statsViewController = StatsViewController()
         statsViewController.blog = blog
 

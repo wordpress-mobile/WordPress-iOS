@@ -14,6 +14,7 @@ struct AppBannerRoute: Route {
     let section: DeepLinkSection? = nil
     let source: DeepLinkSource = .banner
     let shouldTrack: Bool = false
+    let jetpackPowered: Bool = false
 
     var action: NavigationAction {
         return self

@@ -53,18 +53,31 @@ final public class PushNotificationsManager: NSObject {
         return sharedApplication.applicationState
     }
 
+    private var didRegisterForRemoteNotifications = false
 
+
+    /// Enables or disables remote notifications based on current settings.
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    @objc func registerForRemoteNotifications() {
+    @objc func setupRemoteNotifications() {
         guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
+            disableRemoteNotifications()
             return
         }
 
         sharedApplication.registerForRemoteNotifications()
+        didRegisterForRemoteNotifications = true
+        return
     }
 
-
+    private func disableRemoteNotifications() {
+        if !didRegisterForRemoteNotifications {
+            sharedApplication.registerForRemoteNotifications()
+        }
+        sharedApplication.unregisterForRemoteNotifications()
+        sharedApplication.applicationIconBadgeNumber = 0
+        didRegisterForRemoteNotifications = false
+    }
 
     /// Checks asynchronously if Notifications are enabled in the Device's Settings, or not.
     ///
