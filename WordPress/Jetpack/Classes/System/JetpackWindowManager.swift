@@ -14,7 +14,7 @@ class JetpackWindowManager: WindowManager {
         && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
 
-    override func showUI(for blog: Blog?) {
+    override func showUI(for blog: Blog?, animated: Bool = true) {
         if AccountHelper.isLoggedIn {
             showAppUI(for: blog)
             return
