@@ -97,28 +97,6 @@
         }
     }
 
-    /// Starts the content migration process from WordPress to Jetpack.
-    /// This method ensures that the migration will only be executed once per installation,
-    /// and only performed when all the conditions are fulfilled.
-    ///
-    /// Note: If the conditions are not fulfilled, this method will attempt to migrate
-    /// again on the next call.
-    ///
-    func startOnceIfNeeded(completion: (() -> Void)? = nil) {
-        if userPersistentRepository.bool(forKey: .oneOffMigrationKey) {
-            completion?()
-            return
-        }
-
-        startAndDo { [weak self] result in
-            if case .success = result {
-                self?.userPersistentRepository.set(true, forKey: .oneOffMigrationKey)
-            }
-
-            completion?()
-        }
-    }
-
     /// Attempts to clean up the exported data by re-exporting user content if they're still eligible, or deleting them otherwise.
     /// Re-exporting user content ensures that the exported data will match the latest state of Account and Blogs.
     ///
@@ -215,6 +193,5 @@ extension AppConfiguration: ContentMigrationEligibilityProvider {
 // MARK: - Constants
 
 private extension String {
-    static let oneOffMigrationKey = "wordpress_one_off_export"
     static let exportErrorSharedKey = "wordpress_shared_export_error"
 }

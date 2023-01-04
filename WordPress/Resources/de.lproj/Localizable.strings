@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-26 22:56:58+0000 */
+/* Translation-Revision-Date: 2023-01-01 17:51:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: de */
@@ -2440,7 +2440,7 @@ translators: Block name. %s: The localized block name */
    Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
    Action to show on alert when view asset fails.
    Dismiss a view. Verb */
-"Dismiss" = "Überspringen";
+"Dismiss" = "Verwerfen";
 
 /* Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step. */
 "Dismiss %@ Quick Start step" = "%@ Schritt des Schnellstarts schließen";
