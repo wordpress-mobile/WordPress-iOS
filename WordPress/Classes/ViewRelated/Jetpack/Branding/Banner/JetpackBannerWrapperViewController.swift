@@ -23,6 +23,7 @@ class JetpackBannerWrapperViewController: UIViewController {
         configureStackView(stackView)
         configureChildVC(stackView)
         configureJetpackBanner(stackView)
+        configureNavigationItem()
     }
 
     // MARK: Configuration
@@ -55,9 +56,12 @@ class JetpackBannerWrapperViewController: UIViewController {
             }
         }
         stackView.addArrangedSubview(jetpackBannerView)
-
         if let childVC = childVC as? JPScrollViewDelegate {
             childVC.addTranslationObserver(jetpackBannerView)
         }
+    }
+
+    private func configureNavigationItem() {
+        navigationItem.title = childVC?.navigationItem.title
     }
 }
