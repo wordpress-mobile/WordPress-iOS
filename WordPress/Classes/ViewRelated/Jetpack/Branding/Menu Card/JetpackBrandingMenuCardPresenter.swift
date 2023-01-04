@@ -52,11 +52,34 @@ class JetpackBrandingMenuCardPresenter {
         }
     }
 
-    func shouldShowCard() -> Bool {
+    func shouldShowTopCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .three:
+            return true
+        default:
+            return false
+        }
+    }
+
+    func shouldShowBottomCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .four:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func isCardEnabled() -> Bool {
         let showCardOnDate = showCardOnDate ?? .distantPast // If not set, then return distant past so that the condition below always succeeds
         guard shouldHideCard == false, // Card not hidden
-              showCardOnDate < currentDateProvider.date(), // Interval has passed if temporarily hidden
-              let _ = cardConfig() else { // Card is enabled in the current phase
+              showCardOnDate < currentDateProvider.date() else { // Interval has passed if temporarily hidden
             return false
         }
         return true
