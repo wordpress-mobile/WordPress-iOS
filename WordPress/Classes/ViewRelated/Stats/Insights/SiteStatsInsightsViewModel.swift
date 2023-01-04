@@ -182,9 +182,12 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLikesTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .likesTotals,
-                                           type: .period,
-                                           status: periodStore.summaryLikesStatus,
-                                           block: {
+                                        type: .period,
+                                        status: periodStore.summaryStatus,
+                                        checkingCache: { [weak self] in
+                                            return self?.mostRecentChartData != nil
+                                        },
+                                        block: {
                     return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
@@ -195,9 +198,12 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .commentsTotals,
-                                           type: .period,
-                                           status: periodStore.summaryLikesStatus,
-                                           block: {
+                                        type: .period,
+                                        status: periodStore.summaryStatus,
+                                        checkingCache: { [weak self] in
+                                            return self?.mostRecentChartData != nil
+                                        },
+                                        block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
