@@ -107,11 +107,6 @@ class SiteStatsInsightsViewModel: Observable {
             return ImmuTable.Empty
         }
 
-        let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
-        }
-
         insightsToShow.forEach { insightType in
             let errorBlock = { statSection in
                 return StatsErrorRow(rowStatus: .error, statType: .insights, statSection: statSection)
@@ -126,11 +121,12 @@ class SiteStatsInsightsViewModel: Observable {
                             return self?.mostRecentChartData != nil
                         },
                         block: { [weak self] in
-                            return self?.overviewTableRows() ?? summaryErrorBlock()
+                            return self?.overviewTableRows() ?? [errorBlock(.insightsViewsVisitors)]
                         }, loading: {
-                    return [PeriodEmptyCellHeaderRow(),
-                            StatsGhostChartImmutableRow()]
-                }, error: summaryErrorBlock))
+                            return [StatsGhostChartImmutableRow()]
+                        }, error: {
+                            return [errorBlock(.insightsViewsVisitors)]
+                        }))
             case .growAudience:
                 tableRows.append(blocks(for: .growAudience,
                                         type: .insights,
