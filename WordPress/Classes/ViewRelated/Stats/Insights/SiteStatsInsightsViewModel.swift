@@ -128,6 +128,11 @@ class SiteStatsInsightsViewModel: Observable {
                             return [errorBlock(.insightsViewsVisitors)]
                         }))
             case .growAudience:
+                /// Grow Audience is an additional informational card that is not added by the user, no need to show it if fails to load
+                guard insightsStore.allTimeStatus != . error else {
+                    return
+                }
+
                 tableRows.append(blocks(for: .growAudience,
                                         type: .insights,
                                         status: insightsStore.allTimeStatus,
