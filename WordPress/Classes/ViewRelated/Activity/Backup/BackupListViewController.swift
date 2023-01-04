@@ -1,6 +1,10 @@
 import Foundation
+import Combine
 
 class BackupListViewController: BaseActivityListViewController {
+    /// Needed for JPScrollViewDelegate conformance.
+    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
+
     override init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         store.onlyRestorableItems = true
 
