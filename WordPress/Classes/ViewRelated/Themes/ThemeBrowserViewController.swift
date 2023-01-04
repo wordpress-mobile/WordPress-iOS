@@ -290,6 +290,7 @@ public protocol ThemePresenter: AnyObject {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.delegate = self
 
         title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
 
