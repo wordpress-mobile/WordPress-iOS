@@ -4,7 +4,7 @@ class PageCoordinator {
     typealias TemplateSelectionCompletion = (_ layout: PageTemplateLayout?) -> Void
 
     static func showLayoutPickerIfNeeded(from controller: UIViewController, forBlog blog: Blog, completion: @escaping TemplateSelectionCompletion) {
-        if blog.isGutenbergEnabled {
+        if blog.isGutenbergEnabled && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             showLayoutPicker(from: controller, forBlog: blog, completion)
         } else {
             completion(nil)
