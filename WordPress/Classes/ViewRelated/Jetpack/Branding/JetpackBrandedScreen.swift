@@ -10,19 +10,21 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
     case activityLog = "activity_log"
     case backup
     case notifications
+    case people
     case reader
     case readerSearch = "reader_search"
     case stats
 
     var featureName: String? {
         switch self {
-
         case .activityLog:
             return NSLocalizedString("Activity", comment: "Noun. Name of the Activity Log feature")
         case .backup:
             return NSLocalizedString("Backup", comment: "Noun. Name of the Backup feature")
         case .notifications:
             return NSLocalizedString("Notifications", comment: "Noun. Name of the Notifications feature")
+        case .people:
+            return NSLocalizedString("People Management", comment: "Noun. Name of the People feature")
         case .reader:
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
         case .readerSearch:
@@ -39,6 +41,8 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
         case .backup:
             fallthrough
         case .reader:
+            fallthrough
+        case .people:
             fallthrough
         case .readerSearch:
             return false
@@ -60,6 +64,7 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
     case home
     case me
     case notificationsSettings = "notifications_settings"
+    case person
     case readerDetail = "reader_detail"
     case sharing
 
@@ -75,6 +80,8 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
             return NSLocalizedString("Activity", comment: "Noun. Name of the Activity Log feature")
         case .notificationsSettings:
             return NSLocalizedString("Notifications", comment: "Noun. Name of the Notifications feature")
+        case .person:
+            return NSLocalizedString("People Management", comment: "Noun. Name of the People feature")
         case .readerDetail:
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
         case .sharing:
@@ -94,6 +101,8 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
         case .activityDetail:
             fallthrough
         case .readerDetail:
+            fallthrough
+        case .person:
             fallthrough
         case .sharing:
             return false
