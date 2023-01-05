@@ -9,6 +9,12 @@ class JetpackButton: CircularImageButton {
         case banner
     }
 
+    var title: String? {
+        didSet {
+            setTitle(title, for: .normal)
+        }
+    }
+
     private let style: ButtonStyle
 
     init(style: ButtonStyle, title: String) {
