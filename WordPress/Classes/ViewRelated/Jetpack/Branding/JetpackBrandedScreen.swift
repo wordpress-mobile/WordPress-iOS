@@ -24,7 +24,7 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
         case .notifications:
             return NSLocalizedString("Notifications", comment: "Noun. Name of the Notifications feature")
         case .people:
-            return NSLocalizedString("People Management", comment: "Noun. Name of the People feature")
+            return nil
         case .reader:
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
         case .readerSearch:
@@ -74,14 +74,14 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
             fallthrough
         case .home:
             fallthrough
+        case .person:
+            fallthrough
         case .me:
             return nil
         case .activityDetail:
             return NSLocalizedString("Activity", comment: "Noun. Name of the Activity Log feature")
         case .notificationsSettings:
             return NSLocalizedString("Notifications", comment: "Noun. Name of the Notifications feature")
-        case .person:
-            return NSLocalizedString("People Management", comment: "Noun. Name of the People feature")
         case .readerDetail:
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
         case .sharing:
