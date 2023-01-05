@@ -54,7 +54,9 @@ import Gridicons
     fileprivate var didBumpStats = false
 
     private lazy var bannerView: JetpackBannerView = {
-        let bannerView = JetpackBannerView() { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.readerSearch)
+        let bannerView = JetpackBannerView()
+        bannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .readerSearch)
         }

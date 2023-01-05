@@ -635,7 +635,8 @@ extension NotificationsViewController {
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        jetpackBannerView.buttonAction = { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
+        jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
         }

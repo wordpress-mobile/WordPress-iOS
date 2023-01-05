@@ -506,7 +506,9 @@ import Combine
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let bannerView = JetpackBannerView() { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
+        let bannerView = JetpackBannerView()
+        bannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
         }
