@@ -58,6 +58,10 @@ extension ReaderRoute: Route {
     var action: NavigationAction {
         return self
     }
+
+    var jetpackPowered: Bool {
+        return true
+    }
 }
 
 extension ReaderRoute: NavigationAction {

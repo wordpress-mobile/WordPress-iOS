@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 12:54:11+0000 */
+/* Translation-Revision-Date: 2023-01-04 13:36:05+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: tr */
@@ -4380,7 +4380,7 @@ translators: Block name. %s: The localized block name */
 "Looking for stats?" = "İstatistiklere mi ihtiyacınız var?";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
-"Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Görünen o ki sitenize JetPack kurmuşsunuz. Tebrikler!\nİstatistikleri ve bildirimleri etkinleştirmek için WordPress.com hesabınızla giriş yapın.";
+"Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Görünen o ki sitenize Jetpack kurmuşsunuz. Tebrikler! İstatistikleri ve bildirimleri etkinleştirmek için WordPress.com hesabınızla giriş yapın.";
 
 /* Title of a button. */
 "Lost your password?" = "Parolanızı mı unuttunuz?";

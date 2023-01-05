@@ -44,7 +44,10 @@ class JetpackOverlayFrequencyTracker {
         self.persistenceStore = persistenceStore
     }
 
-    func shouldShow() -> Bool {
+    func shouldShow(forced: Bool) -> Bool {
+        if forced {
+            return true
+        }
         switch source {
         case .stats:
             fallthrough

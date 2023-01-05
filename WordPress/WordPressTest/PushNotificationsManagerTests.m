@@ -43,7 +43,7 @@
     id mockManager = OCMPartialMock(manager);
     [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
     
-    [mockManager registerForRemoteNotifications];
+    [mockManager setupRemoteNotifications];
     OCMVerify(mockApplication);
 }
 

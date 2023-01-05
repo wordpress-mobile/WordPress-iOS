@@ -40,6 +40,27 @@ extension MySitesRoute: Route {
             return "/plugins/manage/:domain"
         }
     }
+
+    var jetpackPowered: Bool {
+        switch self {
+        case .pages:
+            return false
+        case .posts:
+            return false
+        case .media:
+            return false
+        case .comments:
+            return false
+        case .sharing:
+            return true
+        case .people:
+            return true
+        case .plugins:
+            return false
+        case .managePlugins:
+            return false
+        }
+    }
 }
 
 extension MySitesRoute: NavigationAction {

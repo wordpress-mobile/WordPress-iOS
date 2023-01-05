@@ -210,9 +210,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     // MARK: Actions
 
     @objc private func closeButtonPressed(sender: UIButton) {
-        dismiss(animated: true, completion: nil)
         viewModel.trackCloseButtonTapped()
-        viewModel.onDismiss?()
+        viewModel.onWillDismiss?()
+        dismiss(animated: true) { [weak self] in
+            self?.viewModel.onDidDismiss?()
+        }
     }
 
 
@@ -225,9 +227,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
         viewModel.trackContinueButtonTapped()
-        viewModel.onDismiss?()
+        viewModel.onWillDismiss?()
+        dismiss(animated: true) { [weak self] in
+            self?.viewModel.onDidDismiss?()
+        }
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {

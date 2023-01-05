@@ -706,7 +706,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     }
 
     func launchSiteCreation(source: String) {
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source) {
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onWillDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                 return
             }
@@ -718,7 +718,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             }
             self.present(wizard, animated: true)
             WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
-        }
+        })
     }
 
     @objc
@@ -1039,7 +1039,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
         if isViewOnScreen() {
-            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .appOpen, in: self)
+            let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded()
+            if !didReloadUI {
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen)
+            }
         }
     }
 }

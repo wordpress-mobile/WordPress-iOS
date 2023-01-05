@@ -38,8 +38,10 @@ final class MediaLibraryMediaPickingCoordinator {
         if blog.supports(.stockPhotos) {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
         }
+        if blog.supports(.tenor) {
+            menuAlert.addAction(tenorAction(origin: origin, blog: blog))
+        }
 
-        menuAlert.addAction(tenorAction(origin: origin, blog: blog))
         menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         menuAlert.addAction(cancelAction())
 

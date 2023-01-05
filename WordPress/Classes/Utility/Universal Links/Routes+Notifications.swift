@@ -4,6 +4,7 @@ struct NotificationsRoute: Route {
     let path = "/notifications"
     let section: DeepLinkSection? = .notifications
     let action: NavigationAction = NotificationsNavigationAction()
+    let jetpackPowered: Bool = true
 }
 
 struct NotificationsNavigationAction: NavigationAction {
