@@ -4,9 +4,13 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Private Variables
 
+    private let featureFlagStore: RemoteFeatureFlagStore
+
     // MARK: Initializer
 
-    init() {}
+    init(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
+        self.featureFlagStore = featureFlagStore
+    }
 
     // MARK: Public Functions
 

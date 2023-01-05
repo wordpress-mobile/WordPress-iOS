@@ -3,9 +3,21 @@ import XCTest
 
 final class JetpackBrandingTextProviderTests: XCTestCase {
 
+    // MARK: Private Variables
+
+    private var remoteFeatureFlagsStore: RemoteFeatureFlagStoreMock!
+
+    // MARK: Setup
+
+    override func setUp() {
+        remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
+    }
+
+    // MARK: Tests
+
     func testDefaultText() {
         // Given
-        let provider = JetpackBrandingTextProvider()
+        let provider = JetpackBrandingTextProvider(featureFlagStore: remoteFeatureFlagsStore)
 
         // When
         let text = provider.brandingText()
