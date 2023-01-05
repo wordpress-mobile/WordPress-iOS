@@ -4,6 +4,7 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Private Variables
 
+    private let screen: JetpackBrandedScreen
     private let featureFlagStore: RemoteFeatureFlagStore
     private let remoteConfigStore: RemoteConfigStore
     private let currentDateProvider: CurrentDateProvider
@@ -14,9 +15,11 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Initializer
 
-    init(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+    init(screen: JetpackBrandedScreen,
+         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
+        self.screen = screen
         self.featureFlagStore = featureFlagStore
         self.remoteConfigStore = remoteConfigStore
         self.currentDateProvider = currentDateProvider
