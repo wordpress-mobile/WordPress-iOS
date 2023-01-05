@@ -9,6 +9,8 @@ struct StartRoute: Route, NavigationAction {
         return self
     }
 
+    let jetpackPowered: Bool = true
+
     func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
         guard AccountHelper.isDotcomAvailable() else {
             return

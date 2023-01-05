@@ -1570,6 +1570,8 @@
 		803BB987295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */; };
 		803BB989295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */; };
 		803BB98A295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */; };
+		803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
+		803BB98D29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -2593,6 +2595,7 @@
 		BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314543A262770BE005B216B /* BlogServiceAuthorTests.swift */; };
 		C31466CC2939950900D62FC7 /* MigrationLoadWordPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31466CB2939950900D62FC7 /* MigrationLoadWordPressViewController.swift */; };
+		C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */; };
 		C31B6D5B28BFB6F300E64FEB /* SplashPrologueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B6D5A28BFB6F300E64FEB /* SplashPrologueView.swift */; };
 		C31B6D7828BFE8B100E64FEB /* EBGaramond-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C31B6D7728BFE8B100E64FEB /* EBGaramond-Regular.ttf */; };
 		C3234F4C27EB96A3004ADB29 /* IntentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3302CC427EB67D0004229D3 /* IntentCell.xib */; };
@@ -6898,6 +6901,7 @@
 		803BB982295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySitesCoordinator+RootViewPresenter.swift"; sourceTree = "<group>"; };
 		803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+MeNavigation.swift"; sourceTree = "<group>"; };
 		803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+EditorNavigation.swift"; sourceTree = "<group>"; };
+		803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredEmptyViewController.swift; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRedirector.swift; sourceTree = "<group>"; };
@@ -12929,6 +12933,7 @@
 				D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */,
 				43DDFE8B21715ADD008BE72F /* WPTabBarController+QuickStart.swift */,
 				57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */,
+				803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -21165,6 +21170,7 @@
 				B57273611B66CCEF000D1C4F /* AlertView.swift in Sources */,
 				3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
+				803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
 				F5E1BBE0253B74240091E9A6 /* URLQueryItem+Parameters.swift in Sources */,
@@ -24062,6 +24068,7 @@
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				FABB24FF2602FC2C00C8785C /* ChangeUsernameViewModel.swift in Sources */,
+				C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */,
 				FABB25002602FC2C00C8785C /* PlansLoadingIndicatorView.swift in Sources */,
 				FABB25012602FC2C00C8785C /* JetpackScanThreatDetailsViewController.swift in Sources */,
 				C72A4F7B26408943009CA633 /* JetpackNotWPErrorViewModel.swift in Sources */,
@@ -24090,6 +24097,7 @@
 				FABB250E2602FC2C00C8785C /* Role.swift in Sources */,
 				FABB250F2602FC2C00C8785C /* SuggestionsTableView.swift in Sources */,
 				FABB25102602FC2C00C8785C /* MenuItemSourceResultsViewController.m in Sources */,
+				803BB98D29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */,
 				FABB25112602FC2C00C8785C /* UIColor+MurielColors.swift in Sources */,
 				FABB25122602FC2C00C8785C /* LayoutPreviewViewController.swift in Sources */,
 				FABB25132602FC2C00C8785C /* UIStackView+Subviews.swift in Sources */,

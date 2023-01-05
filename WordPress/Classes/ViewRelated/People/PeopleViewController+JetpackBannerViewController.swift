@@ -11,10 +11,10 @@ extension PeopleViewController {
         }
         return JetpackBannerWrapperViewController(childVC: peopleViewVC, analyticsId: .people)
     }
-}
 
-extension PeopleViewController: JPScrollViewDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        processJetpackBannerVisibility(scrollView)
+        if let jetpackBannerWrapper = parent as? JetpackBannerWrapperViewController {
+            jetpackBannerWrapper.processJetpackBannerVisibility(scrollView)
+        }
     }
 }

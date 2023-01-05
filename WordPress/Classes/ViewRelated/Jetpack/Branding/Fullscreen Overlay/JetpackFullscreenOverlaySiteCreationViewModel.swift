@@ -71,7 +71,9 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return Constants.analyticsSource
     }
 
-    var onDismiss: JetpackOverlayDismissCallback?
+    var onWillDismiss: JetpackOverlayDismissCallback?
+
+    var onDidDismiss: JetpackOverlayDismissCallback?
 }
 
 private extension JetpackFullscreenOverlaySiteCreationViewModel {

@@ -117,12 +117,13 @@ open class WP3DTouchShortcutCreator: NSObject {
             }
             let entireShortcutArray = strongSelf.loggedInShortcutArray()
             var visibleShortcutArray = [UIApplicationShortcutItem]()
+            let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
 
-            if strongSelf.hasWordPressComAccount() {
+            if jetpackFeaturesEnabled && strongSelf.hasWordPressComAccount() {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.notifications.rawValue])
             }
 
-            if strongSelf.doesCurrentBlogSupportStats() {
+            if jetpackFeaturesEnabled && strongSelf.doesCurrentBlogSupportStats() {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
             }
 
