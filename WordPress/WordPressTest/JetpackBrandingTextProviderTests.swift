@@ -188,6 +188,74 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         // Then
         XCTAssertEqual(text, "Feature is moving soon")
     }
+
+    func testPhaseThreeWithDeadlineOneWeekAwayAndFeatureIsPlural() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 1)
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Feature are moving in 1 week")
+    }
+
+    func testPhaseThreeWithDeadlineOneWeekAwayAndFeatureIsSingular() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 1)
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Feature is moving in 1 week")
+    }
+
+    func testPhaseThreeWithDeadlineMultipleWeeksAwayAndFeatureIsPlural() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 2)
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Feature are moving in 2 weeks")
+    }
+
+    func testPhaseThreeWithDeadlineMultipleWeeksAwayAndFeatureIsSingular() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = dateBefore(removalDeadline, weeks: 2)
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Feature is moving in 2 weeks")
+    }
 }
 
 // MARK: Helpers
