@@ -4,7 +4,7 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Private Variables
 
-    private let screen: JetpackBrandedScreen
+    private let screen: JetpackBrandedScreen?
     private let featureFlagStore: RemoteFeatureFlagStore
     private let remoteConfigStore: RemoteConfigStore
     private let currentDateProvider: CurrentDateProvider
@@ -15,7 +15,7 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Initializer
 
-    init(screen: JetpackBrandedScreen,
+    init(screen: JetpackBrandedScreen?,
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
@@ -41,7 +41,7 @@ struct JetpackBrandingTextProvider {
     // MARK: Helpers
 
     private func phaseThreeText() -> String {
-        guard let featureName = screen.featureName else {
+        guard let screen = screen, let featureName = screen.featureName else {
             return Strings.defaultText
         }
 
@@ -110,11 +110,15 @@ private extension JetpackBrandingTextProvider {
                                                                       comment: "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks")
     }
 
+    private var isPlural: Bool {
+        screen?.isPlural ?? false
+    }
+
     var movingSoonString: String {
-        return screen.isPlural ? Strings.phaseThreePluralMovingSoonText : Strings.phaseThreeSingularMovingSoonText
+        return isPlural ? Strings.phaseThreePluralMovingSoonText : Strings.phaseThreeSingularMovingSoonText
     }
 
     var movingInString: String {
-        return screen.isPlural ? Strings.phaseThreePluralMovingInText : Strings.phaseThreeSingularMovingInText
+        return isPlural ? Strings.phaseThreePluralMovingInText : Strings.phaseThreeSingularMovingInText
     }
 }
