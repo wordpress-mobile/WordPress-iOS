@@ -1603,7 +1603,8 @@
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
 		805CC0B7296680CF002941DC /* RemoteFeatureFlagStoreMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */; };
 		805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */; };
-		805CC0BB29668918002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
+		805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
+		805CC0BD29668987002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -21479,6 +21480,7 @@
 				98E58A2F2360D23400E5534B /* TodayWidgetStats.swift in Sources */,
 				F5E1577F25DE04E200EEEDFB /* GutenbergMediaFilesUploadProcessor.swift in Sources */,
 				80EF672227F160720063B138 /* DashboardCustomAnnouncementCell.swift in Sources */,
+				805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
 				436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */,
 				73F76E1E222851E300FDDAD2 /* Charts+AxisFormatters.swift in Sources */,
@@ -22382,7 +22384,6 @@
 				732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */,
 				8BDA5A6D247C2F8400AB124C /* ReaderDetailViewControllerTests.swift in Sources */,
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,
-				805CC0BB29668918002941DC /* JetpackBrandedScreen.swift in Sources */,
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				8B69F0E4255C2C3F006B1CEF /* ActivityListViewModelTests.swift in Sources */,
 				8BC12F7723201B86004DDA72 /* PostService+MarkAsFailedAndDraftIfNeededTests.swift in Sources */,
@@ -22937,6 +22938,7 @@
 				FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */,
 				3F2ABE1B277118C4005D8916 /* Blog+VideoLimits.swift in Sources */,
 				FABB217D2602FC2C00C8785C /* WPMediaPicker+MediaPicker.swift in Sources */,
+				805CC0BD29668987002941DC /* JetpackBrandedScreen.swift in Sources */,
 				FABB217E2602FC2C00C8785C /* JetpackInstallError+Blocking.swift in Sources */,
 				FABB217F2602FC2C00C8785C /* QuickStartTourState.swift in Sources */,
 				FABB21802602FC2C00C8785C /* ReaderPostCardCell.swift in Sources */,
