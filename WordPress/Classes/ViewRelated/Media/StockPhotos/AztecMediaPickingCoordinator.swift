@@ -25,8 +25,10 @@ final class AztecMediaPickingCoordinator {
         if blog.supports(.stockPhotos) {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
+        if blog.supports(.tenor) {
+            alertController.addAction(tenorAction(origin: origin, blog: blog))
+        }
 
-        alertController.addAction(tenorAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 
