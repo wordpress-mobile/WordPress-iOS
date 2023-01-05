@@ -86,7 +86,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         // Then
         XCTAssertEqual(text, "Jetpack powered")
     }
-    
+
     func testPhaseThreeWithDeadlinePassed() {
         // Given
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
