@@ -103,9 +103,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         return frc
     }()
 
-    /// Needed for JPScrollViewDelegate conformance.
-    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
-
     /// Filtering Tab Bar
     ///
     @IBOutlet weak var filterBar: FilterTabBar!
