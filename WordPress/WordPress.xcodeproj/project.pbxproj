@@ -1605,6 +1605,7 @@
 		805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */; };
 		805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
 		805CC0BD29668987002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
+		805CC0BF29668A97002941DC /* MockCurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6926,6 +6927,7 @@
 		805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagStoreMock.swift; sourceTree = "<group>"; };
 		805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStoreMock.swift; sourceTree = "<group>"; };
 		805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandedScreen.swift; sourceTree = "<group>"; };
+		805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCurrentDateProvider.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -15734,6 +15736,7 @@
 				8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */,
 				805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */,
 				805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */,
+				805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -22555,6 +22558,7 @@
 				174C116F2624603400346EC6 /* MBarRouteTests.swift in Sources */,
 				46B30B782582C7DD00A25E66 /* SiteAddressServiceTests.swift in Sources */,
 				C81CCD6C243AEFBF00A83E27 /* TenorReponseData.swift in Sources */,
+				805CC0BF29668A97002941DC /* MockCurrentDateProvider.swift in Sources */,
 				570BFD902282418A007859A8 /* PostBuilder.swift in Sources */,
 				C738CB0F28626466001BE107 /* QRLoginScanningCoordinatorTests.swift in Sources */,
 				010459ED2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift in Sources */,
