@@ -70,6 +70,39 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         // Then
         XCTAssertEqual(text, "Jetpack powered")
     }
+
+    func testPhaseThreeWithNoFeatureNameShouldReturnDefaultText() {
+        // Given
+        let screen = MockBrandedScreen(featureName: nil, isPlural: false, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Jetpack powered")
+    }
+
+    func testPhaseThreeWithNoDeadlineShouldReturnDefaultText() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        remoteConfigStore.removalDeadline = nil
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Jetpack powered")
+    }
 }
 
 // MARK: Helpers
