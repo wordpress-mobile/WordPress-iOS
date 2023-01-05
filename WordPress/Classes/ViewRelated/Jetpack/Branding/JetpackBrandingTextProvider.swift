@@ -5,6 +5,8 @@ struct JetpackBrandingTextProvider {
     // MARK: Private Variables
 
     private let featureFlagStore: RemoteFeatureFlagStore
+    private let remoteConfigStore: RemoteConfigStore
+    private let currentDateProvider: CurrentDateProvider
 
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
         return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
@@ -12,8 +14,12 @@ struct JetpackBrandingTextProvider {
 
     // MARK: Initializer
 
-    init(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
+    init(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.featureFlagStore = featureFlagStore
+        self.remoteConfigStore = remoteConfigStore
+        self.currentDateProvider = currentDateProvider
     }
 
     // MARK: Public Functions
