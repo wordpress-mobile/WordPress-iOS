@@ -9,7 +9,6 @@ protocol JetpackBrandedScreen {
     /// Whether the feature is in plural form.
     /// Used to decide on using "is" or "are" when constructing the branding text.
     var isPlural: Bool { get }
-    var analyticsId: String { get }
 }
 
 enum JetpackBannerScreen: String, JetpackBrandedScreen {
@@ -57,10 +56,6 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
         case .stats:
             return true
         }
-    }
-
-    var analyticsId: String {
-        rawValue
     }
 }
 
@@ -115,9 +110,5 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
         case .notificationsSettings:
             return true
         }
-    }
-
-    var analyticsId: String {
-        rawValue
     }
 }
