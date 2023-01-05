@@ -6,6 +6,10 @@ struct JetpackBrandingTextProvider {
 
     private let featureFlagStore: RemoteFeatureFlagStore
 
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
+        return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    }
+
     // MARK: Initializer
 
     init(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
@@ -15,7 +19,12 @@ struct JetpackBrandingTextProvider {
     // MARK: Public Functions
 
     func brandingText() -> String {
-        return Strings.defaultText
+        switch phase {
+        case .two:
+            return Strings.phaseTwoText
+        default:
+            return Strings.defaultText
+        }
     }
 }
 
@@ -24,5 +33,8 @@ private extension JetpackBrandingTextProvider {
         static let defaultText = NSLocalizedString("jetpack.branding.badge_banner.title",
                                                    value: "Jetpack powered",
                                                    comment: "Title of the Jetpack powered badge.")
+        static let phaseTwoText = NSLocalizedString("jetpack.branding.badge_banner.title.phase2",
+                                                    value: "Get the Jetpack app",
+                                                    comment: "Title of the Jetpack powered badge.")
     }
 }
