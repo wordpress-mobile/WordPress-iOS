@@ -10,6 +10,11 @@ final class JetpackBannerWrapperViewController: UIViewController {
     /// JPScrollViewDelegate conformance.
     internal var scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
+    override var navigationItem: UINavigationItem {
+        guard let childVC else { return UINavigationItem() }
+        return childVC.navigationItem
+    }
+
     convenience init(
         childVC: UIViewController,
         analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen? = nil
@@ -26,7 +31,6 @@ final class JetpackBannerWrapperViewController: UIViewController {
         configureStackView(stackView)
         configureChildVC(stackView)
         configureJetpackBanner(stackView)
-        configureNavigationItem()
     }
 
     // MARK: Configuration
@@ -60,10 +64,6 @@ final class JetpackBannerWrapperViewController: UIViewController {
         }
         stackView.addArrangedSubview(jetpackBannerView)
         addTranslationObserver(jetpackBannerView)
-    }
-
-    private func configureNavigationItem() {
-        navigationItem.title = childVC?.navigationItem.title
     }
 }
 
