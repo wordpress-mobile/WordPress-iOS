@@ -1,7 +1,13 @@
 import Foundation
 
 protocol JetpackBrandedScreen {
+
+    /// Name to use when constructing phase three branding text.
+    /// Set to `nil` to fallback to the default branding text.
     var featureName: String? { get }
+
+    /// Whether the feature is in plural form.
+    /// Used to decide on using "is" or "are" when constructing the branding text.
     var isPlural: Bool { get }
     var analyticsId: String { get }
 }
