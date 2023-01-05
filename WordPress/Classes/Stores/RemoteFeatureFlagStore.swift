@@ -15,7 +15,6 @@ class RemoteFeatureFlagStore {
                  persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.queue = queue
         self.persistenceStore = persistenceStore
-        DDLogInfo("🚩 Remote Feature Flag Device ID: \(deviceID)")
     }
 
     /// Fetches remote feature flags from the server.
@@ -24,6 +23,7 @@ class RemoteFeatureFlagStore {
     /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(using remote: FeatureFlagRemote = FeatureFlagRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
                                then callback: FetchCallback? = nil) {
+        DDLogInfo("🚩 Updating Remote Feature Flags with Device ID: \(deviceID)")
         remote.getRemoteFeatureFlags(forDeviceId: deviceID) { [weak self] result in
             switch result {
                 case .success(let flags):
