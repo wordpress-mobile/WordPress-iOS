@@ -43,7 +43,7 @@ import Gridicons
     fileprivate var streamController: ReaderStreamViewController?
     fileprivate lazy var jpSiteSearchController = JetpackBannerWrapperViewController(
         childVC: ReaderSiteSearchViewController(),
-        analyticsId: .readerSearch
+        screen: .readerSearch
     )
     fileprivate var siteSearchController: ReaderSiteSearchViewController? {
         return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
