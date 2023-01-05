@@ -86,6 +86,24 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         // Then
         XCTAssertEqual(text, "Jetpack powered")
     }
+    
+    func testPhaseThreeWithDeadlinePassed() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        currentDateProvider.dateToReturn = dateBefore(removalDeadline, months: -1)
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Jetpack powered")
+    }
+
 
     func testPhaseThreeWithNoDeadlineAndFeatureIsPlural() {
         // Given
