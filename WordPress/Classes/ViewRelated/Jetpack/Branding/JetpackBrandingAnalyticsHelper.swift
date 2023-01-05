@@ -25,6 +25,7 @@ struct JetpackBrandingAnalyticsHelper {
         case activityLog = "activity_log"
         case backup
         case notifications
+        case people
         case reader
         case readerSearch = "reader_search"
         case stats
@@ -36,6 +37,7 @@ struct JetpackBrandingAnalyticsHelper {
         case home
         case me
         case notificationsSettings = "notifications_settings"
+        case person
         case readerDetail = "reader_detail"
         case sharing
     }
