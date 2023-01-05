@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-02 15:52:08+0000 */
+/* Translation-Revision-Date: 2023-01-04 09:12:59+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Tento blok má neplatný obsah";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s převedeno na běžný blok";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s převeden na běžné bloky";
@@ -732,6 +735,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativně můžete tyto bloky oddělit a upravit samostatně klepnutím na „Převést na běžné bloky“.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Případně můžete tento blok odpojit a upravit samostatně klepnutím na „Převést na běžný blok“.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Případně můžete zadat heslo pro tento účet.";
@@ -9897,6 +9903,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Přepněte na novou aplikaci Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Přepněte do aplikace Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Více se dozvíte na jetpack.com";
 
@@ -9924,8 +9933,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Získejte své statistiky pomocí nové aplikace Jetpack";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Přepínání je zdarma a trvá jen minutu.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.\n\nAplikace WordPress již nepodporuje vytváření nového webu.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack budou z aplikace WordPress brzy odstraněny.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Oznámení se přesouvají do Jetpacku";
