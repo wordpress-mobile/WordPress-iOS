@@ -42,20 +42,20 @@ struct JetpackBrandingTextProvider {
 
     private func phaseThreeText() -> String {
         guard let screen = screen, let featureName = screen.featureName else {
-            return Strings.defaultText
+            return Strings.defaultText // Screen not provided, or was opted out by defining a nil featureName
         }
 
         guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline(remoteConfigStore: remoteConfigStore) else {
-            return String(format: movingSoonString, featureName)
+            return String(format: movingSoonString, featureName) // Couldn't retrieve the deadline
         }
 
         let now = currentDateProvider.date()
         guard now < deadline else {
-            return Strings.defaultText
+            return Strings.defaultText // Deadline has passed. Avoid displaying negative values.
         }
 
         guard let dateString = dateString(now: now, deadline: deadline) else {
-            return String(format: movingSoonString, featureName)
+            return String(format: movingSoonString, featureName) // Deadline is more than a month away
         }
 
         return String(format: movingInString, featureName, dateString)
@@ -66,7 +66,7 @@ struct JetpackBrandingTextProvider {
         var components = calendar.dateComponents([.month], from: now, to: deadline)
         let months = components.month ?? 0
         if months > 0 {
-            return nil
+            return nil // Fallback to moving soon text
         }
 
         let formatter = DateComponentsFormatter()
@@ -77,14 +77,14 @@ struct JetpackBrandingTextProvider {
         let weeks = components.weekOfMonth ?? 0
         if weeks > 0 {
             formatter.allowedUnits = [.weekOfMonth]
-            return formatter.string(from: components)
+            return formatter.string(from: components) // Deadline is x weeks away
         }
 
         components = calendar.dateComponents([.day], from: now, to: deadline)
-        let days = max(components.day ?? 0, 1)
+        let days = max(components.day ?? 0, 1) // Avoid displaying "0 days"
         components.day = days
         formatter.allowedUnits = [.day]
-        return formatter.string(from: components)
+        return formatter.string(from: components) // Deadline is x days away
     }
 }
 
