@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 import CocoaLumberjack
 import WordPressShared
@@ -101,6 +102,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         frc.delegate = self
         return frc
     }()
+
+    /// Needed for JPScrollViewDelegate conformance.
+    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     /// Filtering Tab Bar
     ///
