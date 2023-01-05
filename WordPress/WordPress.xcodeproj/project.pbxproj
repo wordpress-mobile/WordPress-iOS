@@ -1572,6 +1572,9 @@
 		803BB98A295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */; };
 		803BB98C29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
 		803BB98D29637AFC00B3F6D6 /* BlurredEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */; };
+		803BB98F29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98E29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift */; };
+		803BB99029667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB98E29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift */; };
+		803BB99429667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803BB99329667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift */; };
 		803C493B283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */; };
 		803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */; };
@@ -6898,6 +6901,8 @@
 		803BB985295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+MeNavigation.swift"; sourceTree = "<group>"; };
 		803BB988295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+EditorNavigation.swift"; sourceTree = "<group>"; };
 		803BB98B29637AFC00B3F6D6 /* BlurredEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredEmptyViewController.swift; sourceTree = "<group>"; };
+		803BB98E29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingTextProvider.swift; sourceTree = "<group>"; };
+		803BB99329667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingTextProviderTests.swift; sourceTree = "<group>"; };
 		803C493A283A7C0C00003E9B /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		803C493D283A7C2200003E9B /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRedirector.swift; sourceTree = "<group>"; };
@@ -11030,6 +11035,7 @@
 			children = (
 				3F720C2028899DD900519938 /* JetpackBrandingVisibility.swift */,
 				C3FBF4E728AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift */,
+				803BB98E29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift */,
 				3FFA5ED0287612AD00830E28 /* Banner */,
 				3F5B9B44288B0521001D17E9 /* Badge */,
 				800035BF291DDF57007D2D26 /* Fullscreen Overlay */,
@@ -12547,6 +12553,7 @@
 				803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */,
 				801D951C291ADB7E0051993E /* JetpackOverlayFrequencyTrackerTests.swift */,
 				80535DC4294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift */,
+				803BB99329667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift */,
 			);
 			name = Jetpack;
 			sourceTree = "<group>";
@@ -20117,6 +20124,7 @@
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				FEFC0F892731182C001F7F1D /* CommentService+Replies.swift in Sources */,
+				803BB98F29667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				C81CCD63243AECA100A83E27 /* TenorClient.swift in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
@@ -22330,6 +22338,7 @@
 				80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */,
 				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
 				F11023A323186BCA00C4E84A /* MediaBuilder.swift in Sources */,
+				803BB99429667CF700B3F6D6 /* JetpackBrandingTextProviderTests.swift in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
 				73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */,
 				8BD34F0927D144FF005E931C /* BlogDashboardStateTests.swift in Sources */,
@@ -23786,6 +23795,7 @@
 				F1C197A72670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				FABB242E2602FC2C00C8785C /* OffsetTableViewHandler.swift in Sources */,
 				FABB242F2602FC2C00C8785C /* UINavigationController+SplitViewFullscreen.swift in Sources */,
+				803BB99029667BAF00B3F6D6 /* JetpackBrandingTextProvider.swift in Sources */,
 				FABB24302602FC2C00C8785C /* ReaderReblogPresenter.swift in Sources */,
 				FABB24312602FC2C00C8785C /* BodyContentGroup.swift in Sources */,
 				FABB24322602FC2C00C8785C /* WPStyleGuide+Search.swift in Sources */,
