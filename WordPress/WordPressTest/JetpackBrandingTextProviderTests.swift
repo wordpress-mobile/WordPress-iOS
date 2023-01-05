@@ -87,7 +87,24 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         XCTAssertEqual(text, "Jetpack powered")
     }
 
-    func testPhaseThreeWithNoDeadlineShouldReturnDefaultText() {
+    func testPhaseThreeWithNoDeadlineAndFeatureIsPlural() {
+        // Given
+        let screen = MockBrandedScreen(featureName: "Feature", isPlural: true, analyticsId: "")
+        let provider = JetpackBrandingTextProvider(screen: screen,
+                                                   featureFlagStore: remoteFeatureFlagsStore,
+                                                   remoteConfigStore: remoteConfigStore,
+                                                   currentDateProvider: currentDateProvider)
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        remoteConfigStore.removalDeadline = nil
+
+        // When
+        let text = provider.brandingText()
+
+        // Then
+        XCTAssertEqual(text, "Feature are moving soon")
+    }
+    
+    func testPhaseThreeWithNoDeadlineAndFeatureIsSingular() {
         // Given
         let screen = MockBrandedScreen(featureName: "Feature", isPlural: false, analyticsId: "")
         let provider = JetpackBrandingTextProvider(screen: screen,
@@ -101,7 +118,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
         let text = provider.brandingText()
 
         // Then
-        XCTAssertEqual(text, "Jetpack powered")
+        XCTAssertEqual(text, "Feature is moving soon")
     }
 }
 
