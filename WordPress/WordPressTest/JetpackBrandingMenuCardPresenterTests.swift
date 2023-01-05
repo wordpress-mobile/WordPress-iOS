@@ -114,18 +114,6 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
 
 }
 
-private class RemoteConfigStoreMock: RemoteConfigStore {
-
-    var phaseThreeBlogPostUrl: String?
-
-    override func value(for key: String) -> Any? {
-        if key == "phase_three_blog_post" {
-            return phaseThreeBlogPostUrl
-        }
-        return super.value(for: key)
-    }
-}
-
 private class MockCurrentDateProvider: CurrentDateProvider {
     var dateToReturn: Date?
 
