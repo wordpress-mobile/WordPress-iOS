@@ -1601,6 +1601,8 @@
 		80535DC3294BDE2B00873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */; };
 		80535DC5294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80535DC4294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift */; };
 		8058730B28F7B70B00340C11 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8058730D28F7B70B00340C11 /* InfoPlist.strings */; };
+		805CC0B7296680CF002941DC /* RemoteFeatureFlagStoreMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */; };
+		805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6919,6 +6921,8 @@
 		80535DBF294B7D3200873161 /* BlogDetailsViewController+JetpackBrandingMenuCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogDetailsViewController+JetpackBrandingMenuCard.swift"; sourceTree = "<group>"; };
 		80535DC4294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandingMenuCardPresenterTests.swift; sourceTree = "<group>"; };
 		8058730C28F7B70B00340C11 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeatureFlagStoreMock.swift; sourceTree = "<group>"; };
+		805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStoreMock.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -15724,6 +15728,8 @@
 				F4426FD2287E08C300218003 /* SuggestionServiceMock.swift */,
 				F4426FD8287F02FD00218003 /* SiteSuggestionsServiceMock.swift */,
 				8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */,
+				805CC0B6296680CF002941DC /* RemoteFeatureFlagStoreMock.swift */,
+				805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -22568,6 +22574,7 @@
 				931215E1267DE1C0008C3B69 /* StatsTotalRowDataTests.swift in Sources */,
 				F41E4E8C28F18B7B001880C6 /* AppIconListViewModelTests.swift in Sources */,
 				08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */,
+				805CC0B7296680CF002941DC /* RemoteFeatureFlagStoreMock.swift in Sources */,
 				73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */,
 				D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */,
 				F5D0A65223CCD3B600B20D27 /* PreviewWebKitViewControllerTests.swift in Sources */,
@@ -22593,6 +22600,7 @@
 				8B5FEC0225A750CB000CBFF7 /* UIApplication+mainWindow.swift in Sources */,
 				E6843840221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift in Sources */,
 				325D3B3D23A8376400766DF6 /* FullScreenCommentReplyViewControllerTests.swift in Sources */,
+				805CC0B9296680F7002941DC /* RemoteConfigStoreMock.swift in Sources */,
 				0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */,
 				57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */,
 				B030FE0A27EBF0BC000F6F5E /* SiteCreationIntentTracksEventTests.swift in Sources */,
