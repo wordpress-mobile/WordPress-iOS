@@ -2,7 +2,7 @@ import Foundation
 
 @objc
 extension MenusViewController {
-    static func withJPBannerForBlog(_ blog: Blog) -> UIViewController? {
+    static func withJPBannerForBlog(_ blog: Blog) -> UIViewController {
         let menusVC = MenusViewController(blog: blog)
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return menusVC
