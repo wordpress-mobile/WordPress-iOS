@@ -25,70 +25,70 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Reader
 
     var readerTabViewController: ReaderTabViewController? {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
         return nil
     }
 
     var readerCoordinator: ReaderCoordinator? {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
         return nil
     }
 
     var readerNavigationController: UINavigationController? {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
         return nil
     }
 
     func showReaderTab() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchToDiscover() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchToSavedPosts() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func resetReaderDiscoverNudgeFlow() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func resetReaderTab() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func navigateToReaderSearch() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchToMyLikes() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchToFollowedSites() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func navigateToReaderSite(_ topic: ReaderSiteTopic) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func navigateToReaderTag(_ topic: ReaderTagTopic) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func navigateToReader(_ pushControlller: UIViewController?) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func showReaderTab(forPost: NSNumber, onBlog: NSNumber) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     // MARK: My Site
@@ -105,30 +105,30 @@ extension MySitesCoordinator: RootViewPresenter {
     // MARK: Notifications
 
     var notificationsViewController: NotificationsViewController? {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
         return nil
     }
 
     func showNotificationsTab() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func switchNotificationsTabToNotificationSettings() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func showNotificationsTabForNote(withID notificationID: String) {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     func popNotificationsTabToRoot() {
-        fallbackBehavior()
+        unsupportedFeatureFallback()
     }
 
     // MARK: Helpers
 
     /// Default implementation for functions that are not supported by the simplified UI.
-    private func fallbackBehavior(callingFunction: String = #function) {
+    func unsupportedFeatureFallback(callingFunction: String = #function) {
         let properties = ["calling_function": callingFunction]
         WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
     }

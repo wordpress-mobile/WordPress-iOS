@@ -2,7 +2,7 @@ extension BlogListViewController {
     @objc
     func launchSiteCreation() {
         let source = "my_sites"
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source) {
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onWillDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                 return
             }
@@ -14,6 +14,6 @@ extension BlogListViewController {
             }
             self.present(wizard, animated: true)
             WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
-        }
+        })
     }
 }
