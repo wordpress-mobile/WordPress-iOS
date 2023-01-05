@@ -17,7 +17,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
 
     func testNormalPhaseText() {
         // Given
-        let provider = JetpackBrandingTextProvider(featureFlagStore: remoteFeatureFlagsStore)
+        let provider = JetpackBrandingTextProvider(screen: MockBrandedScreen.defaultScreen, featureFlagStore: remoteFeatureFlagsStore)
 
         // When
         let text = provider.brandingText()
@@ -28,7 +28,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
 
     func testPhaseOneText() {
         // Given
-        let provider = JetpackBrandingTextProvider(featureFlagStore: remoteFeatureFlagsStore)
+        let provider = JetpackBrandingTextProvider(screen: MockBrandedScreen.defaultScreen, featureFlagStore: remoteFeatureFlagsStore)
         remoteFeatureFlagsStore.removalPhaseOne = true
 
         // When
@@ -40,7 +40,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
 
     func testPhaseTwoText() {
         // Given
-        let provider = JetpackBrandingTextProvider(featureFlagStore: remoteFeatureFlagsStore)
+        let provider = JetpackBrandingTextProvider(screen: MockBrandedScreen.defaultScreen, featureFlagStore: remoteFeatureFlagsStore)
         remoteFeatureFlagsStore.removalPhaseTwo = true
 
         // When
@@ -52,7 +52,7 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
 
     func testDefaultText() {
         // Given
-        let provider = JetpackBrandingTextProvider(featureFlagStore: remoteFeatureFlagsStore)
+        let provider = JetpackBrandingTextProvider(screen: MockBrandedScreen.defaultScreen, featureFlagStore: remoteFeatureFlagsStore)
         remoteFeatureFlagsStore.removalPhaseFour = true
 
         // When
@@ -60,6 +60,18 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
 
         // Then
         XCTAssertEqual(text, "Jetpack powered")
+    }
+
+    // MARK: Helpers
+
+    private struct MockBrandedScreen: JetpackBrandedScreen {
+        let featureName: String?
+        let isPlural: Bool
+        let analyticsId: String
+
+        static var defaultScreen: MockBrandedScreen = .init(featureName: "Feature",
+                                                            isPlural: false,
+                                                            analyticsId: "analyticsId")
     }
 
 }
