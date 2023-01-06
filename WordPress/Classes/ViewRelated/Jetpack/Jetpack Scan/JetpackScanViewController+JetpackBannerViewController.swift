@@ -4,6 +4,7 @@ extension JetpackScanViewController {
     @objc
     static func withJPBannerForBlog(_ blog: Blog) -> UIViewController {
         let jetpackScanVC = JetpackScanViewController(blog: blog)
+        jetpackScanVC.navigationItem.largeTitleDisplayMode = .never
         return JetpackBannerWrapperViewController(childVC: jetpackScanVC, analyticsId: .scan)
     }
 }
