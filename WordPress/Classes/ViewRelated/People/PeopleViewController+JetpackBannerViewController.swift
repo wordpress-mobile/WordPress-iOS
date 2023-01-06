@@ -6,6 +6,7 @@ extension PeopleViewController {
         guard let peopleViewVC = PeopleViewController.controllerWithBlog(blog) else {
             return nil
         }
+        peopleViewVC.navigationItem.largeTitleDisplayMode = .never
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return peopleViewVC
         }

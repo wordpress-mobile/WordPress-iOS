@@ -6,6 +6,7 @@ extension BackupListViewController {
         guard let backupListVC = BackupListViewController(blog: blog) else {
             return nil
         }
+        backupListVC.navigationItem.largeTitleDisplayMode = .never
         return JetpackBannerWrapperViewController(childVC: backupListVC, analyticsId: .backup)
     }
 
