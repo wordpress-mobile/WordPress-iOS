@@ -3,6 +3,7 @@ import Foundation
 extension ThemeBrowserViewController {
     @objc
     func withJPBanner() -> UIViewController {
+        navigationItem.largeTitleDisplayMode = .never
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return self
         }

@@ -4,6 +4,7 @@ import Foundation
 extension MenusViewController {
     static func withJPBannerForBlog(_ blog: Blog) -> UIViewController {
         let menusVC = MenusViewController(blog: blog)
+        menusVC.navigationItem.largeTitleDisplayMode = .never
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return menusVC
         }
