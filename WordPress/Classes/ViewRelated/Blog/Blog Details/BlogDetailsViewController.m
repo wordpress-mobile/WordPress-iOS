@@ -1592,8 +1592,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showScan
 {
-    JetpackScanViewController *controller = [[JetpackScanViewController alloc] initWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *controller = [JetpackScanViewController withJPBannerForBlog:self.blog];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];

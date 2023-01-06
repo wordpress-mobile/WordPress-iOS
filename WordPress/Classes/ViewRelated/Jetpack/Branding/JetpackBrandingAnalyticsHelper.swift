@@ -29,6 +29,7 @@ struct JetpackBrandingAnalyticsHelper {
         case people
         case reader
         case readerSearch = "reader_search"
+        case scan
         case stats
         case themes
     }
