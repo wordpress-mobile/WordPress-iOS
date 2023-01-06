@@ -1481,7 +1481,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPeople
 {
     UIViewController *controller = [PeopleViewController withJPBannerForBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
