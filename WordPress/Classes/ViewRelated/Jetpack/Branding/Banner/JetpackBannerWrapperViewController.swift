@@ -11,7 +11,7 @@ final class JetpackBannerWrapperViewController: UIViewController {
     internal var scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
     override var navigationItem: UINavigationItem {
-        guard let childVC else { return UINavigationItem() }
+        guard let childVC else { return super.navigationItem }
         return childVC.navigationItem
     }
 
