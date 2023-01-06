@@ -1613,7 +1613,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self startAlertTimer];
     };
     UIViewController *jpWrappedViewController = [viewController withJPBanner];
-    jpWrappedViewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:jpWrappedViewController];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
