@@ -6,15 +6,16 @@ extension PeopleViewController {
         guard let peopleViewVC = PeopleViewController.controllerWithBlog(blog) else {
             return nil
         }
+        peopleViewVC.navigationItem.largeTitleDisplayMode = .never
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return peopleViewVC
         }
         return JetpackBannerWrapperViewController(childVC: peopleViewVC, analyticsId: .people)
     }
-}
 
-extension PeopleViewController: JPScrollViewDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        processJetpackBannerVisibility(scrollView)
+        if let jetpackBannerWrapper = parent as? JetpackBannerWrapperViewController {
+            jetpackBannerWrapper.processJetpackBannerVisibility(scrollView)
+        }
     }
 }

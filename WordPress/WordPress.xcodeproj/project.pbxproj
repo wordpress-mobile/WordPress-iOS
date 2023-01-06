@@ -2595,6 +2595,7 @@
 		BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		C314543B262770BE005B216B /* BlogServiceAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314543A262770BE005B216B /* BlogServiceAuthorTests.swift */; };
 		C31466CC2939950900D62FC7 /* MigrationLoadWordPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31466CB2939950900D62FC7 /* MigrationLoadWordPressViewController.swift */; };
+		C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */; };
 		C31B6D5B28BFB6F300E64FEB /* SplashPrologueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31B6D5A28BFB6F300E64FEB /* SplashPrologueView.swift */; };
 		C31B6D7828BFE8B100E64FEB /* EBGaramond-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C31B6D7728BFE8B100E64FEB /* EBGaramond-Regular.ttf */; };
 		C3234F4C27EB96A3004ADB29 /* IntentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3302CC427EB67D0004229D3 /* IntentCell.xib */; };
@@ -2634,6 +2635,7 @@
 		C39ABBAE294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39ABBAD294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift */; };
 		C39ABBAF294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39ABBAD294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift */; };
 		C3AB4879292F114A001F7AF8 /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
+		C3B554512965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */; };
 		C3BC86F629528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
 		C3BC86F729528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
 		C3C21EB928385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */; };
@@ -7770,6 +7772,7 @@
 		C39ABBAD294BE84000F6F278 /* BackupListViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BackupListViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+AppAvailability.swift"; sourceTree = "<group>"; };
 		C3ABE791263099F7009BD402 /* WordPress 121.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 121.xcdatamodel"; sourceTree = "<group>"; };
+		C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenusViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeopleViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSiteDesigns.swift; sourceTree = "<group>"; };
 		C3C2F84528AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerScrollVisibilityTests.swift; sourceTree = "<group>"; };
@@ -9341,6 +9344,7 @@
 			children = (
 				086E1FDE1BBB35D2002D86CA /* MenusViewController.h */,
 				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
+				C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */,
 				08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */,
 				08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */,
 				08D345541CD7FBA900358E8C /* MenuHeaderViewController.h */,
@@ -20260,6 +20264,7 @@
 				086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */,
 				FAFC064B27D22E4C002F0483 /* QuickStartTourStateView.swift in Sources */,
 				9F3EFCA3208E308A00268758 /* UIViewController+Notice.swift in Sources */,
+				C3B554512965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift in Sources */,
 				1E0462162566938300EB98EF /* GutenbergFileUploadProcessor.swift in Sources */,
 				F913BB1024B3C5CE00C19032 /* EventLoggingDataProvider.swift in Sources */,
 				8B93856E22DC08060010BF02 /* PageListSectionHeaderView.swift in Sources */,
@@ -24057,6 +24062,7 @@
 				010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */,
 				FABB24FE2602FC2C00C8785C /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				FABB24FF2602FC2C00C8785C /* ChangeUsernameViewModel.swift in Sources */,
+				C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */,
 				FABB25002602FC2C00C8785C /* PlansLoadingIndicatorView.swift in Sources */,
 				FABB25012602FC2C00C8785C /* JetpackScanThreatDetailsViewController.swift in Sources */,
 				C72A4F7B26408943009CA633 /* JetpackNotWPErrorViewModel.swift in Sources */,
