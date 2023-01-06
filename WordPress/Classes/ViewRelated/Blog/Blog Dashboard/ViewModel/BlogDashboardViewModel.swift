@@ -225,9 +225,3 @@ private extension Collection where Element == DashboardCardModel {
         return contains(where: { $0.cardType == .scheduledPosts })
     }
 }
-
-extension Collection where Element == DashboardCardModel {
-    var hasPrompts: Bool {
-        contains(where: { $0.cardType == .prompts })
-    }
-}

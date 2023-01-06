@@ -332,3 +332,11 @@ extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
         return .none
     }
 }
+
+// MARK: - Helper functions
+
+private extension Collection where Element == DashboardCardModel {
+    var hasPrompts: Bool {
+        contains(where: { $0.cardType == .prompts })
+    }
+}
