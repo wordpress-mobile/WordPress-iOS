@@ -105,7 +105,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
-        let scanViewController = JetpackScanViewController(blog: blog)
+        let scanViewController = JetpackScanViewController.withJPBannerForBlog(blog)
         controller?.navigationController?.pushViewController(scanViewController, animated: true)
     }
 

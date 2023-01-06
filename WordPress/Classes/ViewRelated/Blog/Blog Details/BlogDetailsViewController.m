@@ -1481,7 +1481,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPeople
 {
     UIViewController *controller = [PeopleViewController withJPBannerForBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1593,8 +1592,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showScan
 {
-    JetpackScanViewController *controller = [[JetpackScanViewController alloc] initWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *controller = [JetpackScanViewController withJPBannerForBlog:self.blog];
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
@@ -1603,7 +1601,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showBackup
 {
     UIViewController *controller = [BackupListViewController withJPBannerForBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }
 
@@ -1614,8 +1611,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     viewController.onWebkitViewControllerClose = ^(void) {
         [self startAlertTimer];
     };
-    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:viewController];
+    UIViewController *jpWrappedViewController = [viewController withJPBanner];
+    [self.presentationDelegate presentBlogDetailsViewController:jpWrappedViewController];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementThemes];
 }
@@ -1623,8 +1620,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showMenus
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
-    MenusViewController *viewController = [MenusViewController controllerWithBlog:self.blog];
-    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
+    UIViewController *viewController = [MenusViewController withJPBannerForBlog:self.blog];
     [self.presentationDelegate presentBlogDetailsViewController:viewController];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];

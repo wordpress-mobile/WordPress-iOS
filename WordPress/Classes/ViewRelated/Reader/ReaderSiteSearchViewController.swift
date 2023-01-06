@@ -52,10 +52,6 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
         return ReaderSiteSearchViewController()
     }
 
-    // MARK: - JPScrollViewDelegate
-
-    let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
-
     // MARK: - View lifecycle
 
     init() {
@@ -407,10 +403,12 @@ class ReaderSiteSearchFooterView: UIView {
     }
 }
 
-// MARK: - JPScrollViewDelegate
+// MARK: - JetpackBannerWrapperViewController
 
-extension ReaderSiteSearchViewController: JPScrollViewDelegate {
+extension ReaderSiteSearchViewController {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        processJetpackBannerVisibility(scrollView)
+        if let jetpackBannerWrapper = parent as? JetpackBannerWrapperViewController {
+            jetpackBannerWrapper.processJetpackBannerVisibility(scrollView)
+        }
     }
 }

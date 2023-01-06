@@ -14,11 +14,14 @@ protocol JetpackBrandedScreen {
 enum JetpackBannerScreen: String, JetpackBrandedScreen {
     case activityLog = "activity_log"
     case backup
+    case menus
     case notifications
     case people
     case reader
     case readerSearch = "reader_search"
+    case scan
     case stats
+    case themes
 
     var featureName: String? {
         switch self {
@@ -26,6 +29,8 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
             return NSLocalizedString("Activity", comment: "Noun. Name of the Activity Log feature")
         case .backup:
             return NSLocalizedString("Backup", comment: "Noun. Name of the Backup feature")
+        case .menus:
+            return NSLocalizedString("Menus", comment: "Noun. Name of the Menus feature")
         case .notifications:
             return NSLocalizedString("Notifications", comment: "Noun. Name of the Notifications feature")
         case .people:
@@ -34,8 +39,12 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
         case .readerSearch:
             return NSLocalizedString("Reader", comment: "Noun. Name of the Reader feature")
+        case .scan:
+            return NSLocalizedString("Scan", comment: "Noun. Name of the Scan feature")
         case .stats:
             return NSLocalizedString("Stats", comment: "Noun. Abbreviation of Statistics. Name of the Stats feature")
+        case .themes:
+            return NSLocalizedString("Themes", comment: "Noun. Name of the Themes feature")
         }
     }
 
@@ -49,9 +58,15 @@ enum JetpackBannerScreen: String, JetpackBrandedScreen {
             fallthrough
         case .people:
             fallthrough
+        case .scan:
+            fallthrough
         case .readerSearch:
             return false
         case .notifications:
+            fallthrough
+        case .menus:
+            fallthrough
+        case .themes:
             fallthrough
         case .stats:
             return true
