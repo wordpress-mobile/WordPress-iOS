@@ -30,6 +30,7 @@ struct JetpackBrandingAnalyticsHelper {
         case reader
         case readerSearch = "reader_search"
         case stats
+        case themes
     }
 
     enum JetpackBadgeScreen: String {

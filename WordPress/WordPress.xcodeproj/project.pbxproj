@@ -2638,6 +2638,8 @@
 		C3B554512965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */; };
 		C3BC86F629528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
 		C3BC86F729528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */; };
+		C3B5545329661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B5545229661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift */; };
+		C3B5545429661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B5545229661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift */; };
 		C3C21EB928385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */; };
 		C3C21EBA28385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */; };
 		C3C2F84628AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C2F84528AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift */; };
@@ -7774,6 +7776,7 @@
 		C3ABE791263099F7009BD402 /* WordPress 121.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 121.xcdatamodel"; sourceTree = "<group>"; };
 		C3B554502965C32A00A04753 /* MenusViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MenusViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3BC86F529528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeopleViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
+		C3B5545229661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemeBrowserViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		C3C21EB828385EC8002296E2 /* RemoteSiteDesigns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSiteDesigns.swift; sourceTree = "<group>"; };
 		C3C2F84528AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerScrollVisibilityTests.swift; sourceTree = "<group>"; };
 		C3C2F84728AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBannerScrollVisibility.swift; sourceTree = "<group>"; };
@@ -11768,6 +11771,7 @@
 				820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */,
 				FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */,
 				596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */,
+				C3B5545229661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift */,
 				598DD1701B97985700146967 /* ThemeBrowserCell.swift */,
 				FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */,
 				FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */,
@@ -20812,6 +20816,7 @@
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				178DDD1B266D7523006C68C4 /* BloggingRemindersFlowSettingsViewController.swift in Sources */,
 				FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
+				C3B5545329661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */,
 				3FCCAA1523F4A1A3004064C0 /* UIBarButtonItem+MeBarButton.swift in Sources */,
 				FFEECFFC2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */,
@@ -22843,6 +22848,7 @@
 				FABB213F2602FC2C00C8785C /* LatestPostSummaryCell.swift in Sources */,
 				FABB21402602FC2C00C8785C /* LoginEpilogueViewController.swift in Sources */,
 				8B45C12827B2B0D500EA3257 /* BlogDashboardService.swift in Sources */,
+				C3B5545429661F2C00A04753 /* ThemeBrowserViewController+JetpackBannerViewController.swift in Sources */,
 				FABB21412602FC2C00C8785C /* QuickStartTours.swift in Sources */,
 				FABB21422602FC2C00C8785C /* RevisionsTableViewFooter.swift in Sources */,
 				FABB21432602FC2C00C8785C /* KanvasCameraAnalyticsHandler.swift in Sources */,
