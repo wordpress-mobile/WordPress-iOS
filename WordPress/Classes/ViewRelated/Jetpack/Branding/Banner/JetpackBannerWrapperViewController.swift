@@ -27,6 +27,8 @@ final class JetpackBannerWrapperViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        extendedLayoutIncludesOpaqueBars = true
+
         let stackView = UIStackView()
         configureStackView(stackView)
         configureChildVC(stackView)
@@ -40,7 +42,12 @@ final class JetpackBannerWrapperViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 
     private func configureChildVC(_ stackView: UIStackView) {
