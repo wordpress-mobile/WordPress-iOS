@@ -1623,7 +1623,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatMenusAccessed withBlog:self.blog];
     UIViewController *viewController = [MenusViewController withJPBannerForBlog:self.blog];
-    viewController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:viewController];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
