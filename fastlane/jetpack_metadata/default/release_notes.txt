@@ -1,8 +1,5 @@
-* [*] Fixed an issue where publishing Posts and Pages could fail under certain conditions. [#19717]
-* [*] Share extension navigation bar is no longer transparent [#19700]
-* [***] [Jetpack-only] Adds a smooth, opt-in transition to the Jetpack app for users migrating from the WordPress app. [#19759]
-* [***] You can now migrate your site content to the Jetpack app without a hitch. [#19759]
-* [**] [internal] Upgrade React Native from 0.66.2 to 0.69.4 [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5193]
-* [*] [internal] When a user migrates to the Jetpack app and allows notifications, WordPress app notifications are disabled. [#19616, #19611, #19590]
-* [*] Reader now scrolls to the top if the tab bar button is tapped. [#19769]
+Good news, everyone—you can now migrate your WordPress site content to Jetpack without a hitch. If you’re new to the app, you’ll also see a smooth opt-in process to help with the transition.
 
+Done reading content and want to scroll back to the beginning? Just tap the Reader tab button at the bottom of your screen and we’ll take you right back up to the top.
+
+We fixed an issue with app author IDs that was keeping some users from publishing Posts and Pages. While we were under the hood, we also made a small visibility tweak to the share extension’s navigation bar.
