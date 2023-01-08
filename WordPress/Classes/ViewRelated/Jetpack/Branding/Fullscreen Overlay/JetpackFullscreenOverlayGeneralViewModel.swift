@@ -31,6 +31,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return true
 
         // Phase Four: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
+        case (.four, .card):
+            fallthrough
         case (.four, .appOpen):
             return true
 

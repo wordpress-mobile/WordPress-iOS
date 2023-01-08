@@ -13,34 +13,64 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         currentDateProvider = MockCurrentDateProvider()
     }
 
-    func testShouldShowCardBasedOnPhase() {
+    func testShouldShowTopCardBasedOnPhase() {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
 
         // Normal phase
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
 
         // Phase One
         remoteFeatureFlagsStore.removalPhaseOne = true
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
 
         // Phase Two
         remoteFeatureFlagsStore.removalPhaseTwo = true
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
 
         // Phase Three
         remoteFeatureFlagsStore.removalPhaseThree = true
-        XCTAssertTrue(presenter.shouldShowCard())
+        XCTAssertTrue(presenter.shouldShowTopCard())
 
         // Phase Four
         remoteFeatureFlagsStore.removalPhaseFour = true
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
 
         // Phase New Users
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
+    }
+
+    func testShouldShowBottomCardBasedOnPhase() {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+
+        // Normal phase
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase One
+        remoteFeatureFlagsStore.removalPhaseOne = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Two
+        remoteFeatureFlagsStore.removalPhaseTwo = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Three
+        remoteFeatureFlagsStore.removalPhaseThree = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
+
+        // Phase Four
+        remoteFeatureFlagsStore.removalPhaseFour = true
+        XCTAssertTrue(presenter.shouldShowBottomCard())
+
+        // Phase New Users
+        remoteFeatureFlagsStore.removalPhaseNewUsers = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
     }
 
     func testPhaseThreeCardConfig() throws {
@@ -71,7 +101,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         presenter.hideThisTapped()
 
         // Then
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
     }
 
     func testRemindMeLaterTappedRecently() {
@@ -90,7 +120,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInDay)
 
         // Then
-        XCTAssertFalse(presenter.shouldShowCard())
+        XCTAssertFalse(presenter.shouldShowTopCard())
     }
 
     func testRemindMeLaterTappedAndIntervalPassed() {
@@ -109,7 +139,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         currentDateProvider.dateToReturn = currentDate.addingTimeInterval(secondsInSevenDays + 1)
 
         // Then
-        XCTAssertTrue(presenter.shouldShowCard())
+        XCTAssertTrue(presenter.shouldShowTopCard())
     }
 
 }
