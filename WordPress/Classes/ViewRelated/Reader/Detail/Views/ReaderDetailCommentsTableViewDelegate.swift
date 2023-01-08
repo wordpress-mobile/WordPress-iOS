@@ -119,7 +119,9 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         guard section == 0, JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView(bottomPadding: Constants.jetpackBadgeBottomPadding,
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.readerDetail)
+        return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
+                                           bottomPadding: Constants.jetpackBadgeBottomPadding,
                                            target: self,
                                            selector: #selector(jetpackButtonTapped))
     }

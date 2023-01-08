@@ -6,7 +6,7 @@ import WordPressShared
 final class JetpackBannerWrapperViewController: UIViewController {
     /// The wrapped child view controller.
     private(set) var childVC: UIViewController?
-    private var analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen?
+    private var screen: JetpackBannerScreen?
     /// JPScrollViewDelegate conformance.
     internal var scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -17,11 +17,11 @@ final class JetpackBannerWrapperViewController: UIViewController {
 
     convenience init(
         childVC: UIViewController,
-        analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen? = nil
+        screen: JetpackBannerScreen? = nil
     ) {
         self.init()
         self.childVC = childVC
-        self.analyticsId = analyticsId
+        self.screen = screen
     }
 
     override func viewDidLoad() {
@@ -62,10 +62,11 @@ final class JetpackBannerWrapperViewController: UIViewController {
         guard JetpackBrandingVisibility.all.enabled, !isModal() else {
             return
         }
-
-        let jetpackBannerView = JetpackBannerView() { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: screen)
+        let jetpackBannerView = JetpackBannerView()
+        jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
-            if let screen = analyticsId {
+            if let screen = screen {
                 JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: screen)
             }
         }

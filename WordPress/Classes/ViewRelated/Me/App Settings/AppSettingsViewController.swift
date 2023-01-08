@@ -538,7 +538,10 @@ extension AppSettingsViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        let jetpackButton = JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.appSettings)
+        let jetpackButton = JetpackButton.makeBadgeView(title: textProvider.brandingText(),
+                                                        target: self,
+                                                        selector: #selector(jetpackButtonTapped))
 
         return jetpackButton
     }

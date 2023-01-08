@@ -10,7 +10,7 @@ extension PeopleViewController {
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return peopleViewVC
         }
-        return JetpackBannerWrapperViewController(childVC: peopleViewVC, analyticsId: .people)
+        return JetpackBannerWrapperViewController(childVC: peopleViewVC, screen: .people)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {

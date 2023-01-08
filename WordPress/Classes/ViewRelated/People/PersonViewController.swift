@@ -627,8 +627,10 @@ extension PersonViewController {
         else {
             return nil
         }
-
-        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.person)
+        return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
+                                           target: self,
+                                           selector: #selector(jetpackButtonTapped))
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
