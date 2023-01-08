@@ -24,16 +24,6 @@ class MigrationSuccessCell: UITableViewCell {
     }
 }
 
-class MigrationSuccessRow: ImmuTableRow {
-    var action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-
-    }
-
-    static let cell = ImmuTableCell.class(MigrationSuccessCell.self)
-}
-
 extension BlogDetailsViewController {
 
     @objc func migrationSuccessSectionViewModel() -> BlogDetailsSection {

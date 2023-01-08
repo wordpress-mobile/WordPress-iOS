@@ -15,6 +15,7 @@ class SiteStatsInsightsViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
     private let insightsStore: StatsInsightsStore
     private let periodStore: StatsPeriodStore
@@ -42,14 +43,18 @@ class SiteStatsInsightsViewModel: Observable {
 
     private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
+    private var selectedViewsVisitorsSegment: StatsSegmentedControlData.Segment = .views
+
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
          insightsDelegate: SiteStatsInsightsDelegate,
+         viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?,
          insightsStore: StatsInsightsStore,
          pinnedItemStore: SiteStatsPinnedItemStore?,
          periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
         self.siteStatsInsightsDelegate = insightsDelegate
+        self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
         self.insightsToShow = insightsToShow
         self.insightsStore = insightsStore
         self.pinnedItemStore = pinnedItemStore
@@ -399,6 +404,10 @@ class SiteStatsInsightsViewModel: Observable {
         pinnedItemStore?.markPinnedItemAsHidden(item)
     }
 
+    func updateViewsAndVisitorsSegment(_ selectedSegment: StatsSegmentedControlData.Segment) {
+        selectedViewsVisitorsSegment = selectedSegment
+    }
+
     static func intervalData(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?, summaryType: StatsSummaryType, periodEndDate: Date? = nil) -> (count: Int, prevCount: Int, difference: Int, percentage: Int) {
         guard let statsSummaryTimeIntervalData = statsSummaryTimeIntervalData else {
             return (0, 0, 0, 0)
@@ -510,8 +519,12 @@ private extension SiteStatsInsightsViewModel {
 
         let periodDate = self.lastRequestedDate
 
-        return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData, periodDate: periodDate,
-                statsLineChartViewDelegate: statsLineChartViewDelegate, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
+                                                                selectedSegment: selectedViewsVisitorsSegment,
+                                                                periodDate: periodDate,
+                                                                statsLineChartViewDelegate: statsLineChartViewDelegate,
+                                                                siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                                                viewsAndVisitorsDelegate: viewsAndVisitorsDelegate)
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
@@ -606,11 +619,11 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .likes)
+        return StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodStore.getSummary(), insightsStore: insightsStore, statsSummaryType: .likes)
     }
 
     func createCommentsTotalInsightsRow() -> StatsTotalInsightsData {
-        return StatsTotalInsightsData.createTotalInsightsData(periodStore: periodStore, insightsStore: insightsStore, statsSummaryType: .comments)
+        return StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodStore.getSummary(), insightsStore: insightsStore, statsSummaryType: .comments)
     }
 
     func createFollowerTotalInsightsRow() -> StatsTotalInsightsData {

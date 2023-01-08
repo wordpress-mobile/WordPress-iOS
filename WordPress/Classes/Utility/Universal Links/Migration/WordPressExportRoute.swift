@@ -8,6 +8,7 @@ struct WordPressExportRoute: Route {
     var action: NavigationAction {
         return self
     }
+    let jetpackPowered: Bool = false
 }
 
 extension WordPressExportRoute: NavigationAction {

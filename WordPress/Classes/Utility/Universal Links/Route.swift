@@ -13,6 +13,7 @@ protocol Route {
     var source: DeepLinkSource { get }
     var action: NavigationAction { get }
     var shouldTrack: Bool { get }
+    var jetpackPowered: Bool { get }
 }
 
 extension Route {

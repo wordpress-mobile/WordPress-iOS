@@ -1,5 +1,5 @@
 #import "BlogSyncFacade.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"

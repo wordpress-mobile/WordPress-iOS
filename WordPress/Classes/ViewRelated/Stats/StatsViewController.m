@@ -4,7 +4,7 @@
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "WordPress-Swift.h"

@@ -1,5 +1,5 @@
 #import "WPAnalyticsTrackerAutomatticTracks.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPAccount.h"

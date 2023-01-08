@@ -17,13 +17,13 @@ extension MySiteViewController {
         case .stats:
             // Show the stats view for the current blog
             if let blog = blog {
-                WPTabBarController.sharedInstance().mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
+                RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
             }
         case .writing:
             // Open the editor
-            let controller = tabBarController as? WPTabBarController
-            controller?.showPostTab(completion: {
-                self.startAlertTimer()
+            let presenter = RootViewCoordinator.sharedPresenter
+            presenter.showPostTab(completion: { [weak self] in
+                self?.startAlertTimer()
             })
 
         case .showMeAround:

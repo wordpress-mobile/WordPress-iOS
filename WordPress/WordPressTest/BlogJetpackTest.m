@@ -3,7 +3,7 @@
 
 #import "Blog.h"
 #import "WPAccount.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WordPressTest-Swift.h"
@@ -17,14 +17,14 @@
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) ContextManager *testContextManager;
+@property (nonatomic, strong) id<CoreDataStack> testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
-    self.testContextManager = [ContextManager forTesting];
+    self.testContextManager = [self coreDataStackForTesting];
 
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                                   inManagedObjectContext:self.testContextManager.mainContext];

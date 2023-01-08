@@ -38,12 +38,14 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }()
 
     let segmentsData: [StatsSegmentedControlData]
+    let selectedSegment: StatsSegmentedControlData.Segment
     let action: ImmuTableAction? = nil
     let chartData: [LineChartDataConvertible]
     let chartStyling: [LineChartStyling]
     let period: StatsPeriodUnit?
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
     let xAxisDates: [Date]
 
     func configureCell(_ cell: UITableViewCell) {
@@ -52,7 +54,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(segmentsData: segmentsData, lineChartData: chartData, lineChartStyling: chartStyling, period: period, statsLineChartViewDelegate: statsLineChartViewDelegate, xAxisDates: xAxisDates, delegate: siteStatsInsightsDelegate)
+        cell.configure(row: self)
     }
 }
 
@@ -488,6 +490,7 @@ struct CountriesStatsRow: ImmuTableRow {
 
     let itemSubtitle: String
     let dataSubtitle: String
+    var statSection: StatSection?
     let dataRows: [StatsTotalRowData]
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
@@ -504,12 +507,14 @@ struct CountriesStatsRow: ImmuTableRow {
                        dataRows: dataRows,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate,
                        siteStatsInsightsDetailsDelegate: siteStatsInsightsDetailsDelegate)
+        cell.statSection = statSection
     }
 }
 
 struct CountriesMapRow: ImmuTableRow {
     let action: ImmuTableAction? = nil
     let countriesMap: CountriesMap
+    var statSection: StatSection?
 
     typealias CellType = CountriesMapCell
 
@@ -522,6 +527,7 @@ struct CountriesMapRow: ImmuTableRow {
             return
         }
         cell.configure(with: countriesMap)
+        cell.statSection = statSection
     }
 }
 

@@ -9,7 +9,7 @@
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "Menu+ViewDesign.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
@@ -89,6 +89,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;
+    self.scrollView.delegate = self;
 
     // add a bit of padding to the scrollable content
     self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, 10, 0);

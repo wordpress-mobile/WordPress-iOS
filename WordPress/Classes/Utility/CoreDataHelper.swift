@@ -175,25 +175,6 @@ extension NSPersistentStoreCoordinator {
 
 // MARK: - ContextManager Helpers
 extension ContextManager {
-    static var overrideInstance: CoreDataStack?
-
-    @objc class func sharedInstance() -> CoreDataStack {
-        if let overrideInstance = overrideInstance {
-            return overrideInstance
-        }
-
-        return ContextManager.internalSharedInstance()
-    }
-
-    static var shared: CoreDataStack {
-        return sharedInstance()
-    }
-
-    /// Tests purpose only
-    @objc public class func overrideSharedInstance(_ instance: CoreDataStack?) {
-        ContextManager.overrideInstance = instance
-    }
-
     enum ContextManagerError: Error {
         case missingCoordinatorOrStore
         case missingDatabase

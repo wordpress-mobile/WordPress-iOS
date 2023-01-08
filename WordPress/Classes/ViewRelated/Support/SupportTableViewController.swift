@@ -73,11 +73,11 @@ class SupportTableViewController: UITableViewController {
             navigationController.modalPresentationStyle = .formSheet
         }
 
-        let tabBarController = WPTabBarController.sharedInstance()
-        if let presentedVC = tabBarController?.presentedViewController {
+        let rootViewController = RootViewCoordinator.sharedPresenter.rootViewController
+        if let presentedVC = rootViewController.presentedViewController {
             presentedVC.present(navigationController, animated: true)
         } else {
-            tabBarController?.present(navigationController, animated: true)
+            rootViewController.present(navigationController, animated: true)
         }
     }
 

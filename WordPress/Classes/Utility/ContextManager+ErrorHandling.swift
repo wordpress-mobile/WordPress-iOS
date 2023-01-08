@@ -55,16 +55,7 @@ private extension NSExceptionName {
     static let coreDataSaveDerivedException = NSExceptionName("Unresolved Core Data save error (Derived Context)")
 }
 
-extension LegacyContextFactory {
-
-    /// A wrapper of `internalSave(_:)` to expose it as an Objective-C API for `LegacyContextFactory` to call.
-    @objc func internalSaveContext(_ context: NSManagedObjectContext) {
-        internalSave(context)
-    }
-
-}
-
-extension ManagedObjectContextFactory {
+extension ContextManager {
 
     func internalSave(_ context: NSManagedObjectContext) {
         guard context.hasChanges else {
@@ -87,7 +78,7 @@ extension ManagedObjectContextFactory {
 
 }
 
-private extension ManagedObjectContextFactory {
+private extension ContextManager {
 
     func handleSaveError(_ error: NSError, in context: NSManagedObjectContext) {
         let isMainContext = context == mainContext

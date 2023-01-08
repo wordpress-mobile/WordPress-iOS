@@ -25,6 +25,13 @@ class RemoteConfigStore {
 
     // MARK: Public Functions
 
+    /// Looks up the value for a remote config parameter.
+    /// - Parameters:
+    ///     - key: The key associated with a remote config parameter
+    public func value(for key: String) -> Any? {
+        return cache[key]
+    }
+
     /// Fetches remote config values from the server.
     /// - Parameter callback: An optional callback that can be used to update UI following the fetch. It is not called on the UI thread.
     public func update(then callback: FetchCallback? = nil) {
@@ -49,7 +56,7 @@ extension RemoteConfigStore {
     typealias FetchCallback = () -> Void
 
     /// The local cache stores remote config values between runs so that the most recently fetched set are ready to go as soon as this object is instantiated.
-    private(set) var cache: [String: Any] {
+    private var cache: [String: Any] {
         get {
             // Read from the cache in a thread-safe way
             queue.sync {

@@ -384,6 +384,12 @@ private extension StatsPeriodStore {
             return
         }
 
+        let group = DispatchGroup()
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching likes summary.")
+        }
         let likesOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
@@ -392,9 +398,17 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats Period: Finished fetching likes summary.")
             DispatchQueue.main.async {
                 self?.receivedLikesSummary(likes, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching likes summary.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching posts.")
+        }
         let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -404,9 +418,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching posts.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching referrers.")
+        }
         let topReferrers = PeriodOperation(service: service, for: period, date: date) { [weak self] (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching referrers: \(String(describing: error?.localizedDescription))")
@@ -416,9 +438,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching referrers.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching published.")
+        }
         let topPublished = PublishedPostOperation(service: service, for: period, date: date) { [weak self] (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching published: \(String(describing: error?.localizedDescription))")
@@ -428,9 +458,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching published.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching clicks.")
+        }
         let topClicks = PeriodOperation(service: service, for: period, date: date) { [weak self] (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching clicks: \(String(describing: error?.localizedDescription))")
@@ -440,9 +478,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedClicks(clicks, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching clicks.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching authors.")
+        }
         let topAuthors = PeriodOperation(service: service, for: period, date: date) { [weak self] (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching authors: \(String(describing: error?.localizedDescription))")
@@ -452,9 +498,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching authors.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching search terms.")
+        }
         let topSearchTerms = PeriodOperation(service: service, for: period, date: date) { [weak self] (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching search terms: \(String(describing: error?.localizedDescription))")
@@ -464,9 +518,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedSearchTerms(searchTerms, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching search terms.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching countries.")
+        }
         let topCountries = PeriodOperation(service: service, for: period, date: date, limit: 0) { [weak self] (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching countries: \(String(describing: error?.localizedDescription))")
@@ -476,9 +538,17 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching countries.")
+                    group.leave()
+                }
             }
         }
 
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching videos.")
+        }
         let topVideos = PeriodOperation(service: service, for: period, date: date) { [weak self] (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error fetching videos: \(String(describing: error?.localizedDescription))")
@@ -488,11 +558,19 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching videos.")
+                    group.leave()
+                }
             }
         }
 
         // 'limit' in this context is used for the 'num' parameter for the 'file-downloads' endpoint.
         // 'num' relates to the "number of periods to include in the query".
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.enter()
+            DDLogInfo("Stats Period: Enter group fetching file downloads.")
+        }
         let topFileDownloads = PeriodOperation(service: service, for: period, date: date, limit: 1) { [weak self] (downloads: StatsFileDownloadsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Period: Error file downloads: \(String(describing: error?.localizedDescription))")
@@ -502,6 +580,10 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
+                if FeatureFlag.statsNewAppearance.enabled {
+                    DDLogInfo("Stats Period: Leave group fetching file downloads.")
+                    group.leave()
+                }
             }
         }
 
@@ -516,6 +598,13 @@ private extension StatsPeriodStore {
                                       topVideos,
                                       topFileDownloads],
                                      waitUntilFinished: false)
+
+        if FeatureFlag.statsNewAppearance.enabled {
+            group.notify(queue: .main) { [weak self] in
+                DDLogInfo("Stats Period: Finished fetchAsyncData.")
+                self?.persistToCoreData()
+            }
+        }
     }
 
     func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
@@ -1094,21 +1183,7 @@ private extension StatsPeriodStore {
     }
 
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
-        if FeatureFlag.statsPerformanceImprovements.enabled {
-            transaction { state in
-                state.summaryStatus = status
-                state.summaryLikesStatus = status
-                state.topPostsAndPagesStatus = status
-                state.topReferrersStatus = status
-                state.topPublishedStatus = status
-                state.topClicksStatus = status
-                state.topAuthorsStatus = status
-                state.topSearchTermsStatus = status
-                state.topCountriesStatus = status
-                state.topVideosStatus = status
-                state.topFileDownloadsStatus = status
-            }
-        } else {
+        transaction { state in
             state.summaryStatus = status
             state.summaryLikesStatus = status
             state.topPostsAndPagesStatus = status

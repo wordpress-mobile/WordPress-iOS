@@ -312,7 +312,7 @@ class AppSettingsViewController: UITableViewController {
                 return
             }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            WPTabBarController.sharedInstance().presentWhatIsNew(on: self)
+            RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
     }
 
@@ -501,7 +501,7 @@ private extension AppSettingsViewController {
             rows.insert(iconRow, at: 0)
         }
 
-        if FeatureFlag.mySiteDashboard.enabled {
+        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             let initialScreen = NavigationItemRow(title: NSLocalizedString("Initial Screen", comment: "Title of the option to change the default initial screen"), detail: MySiteSettings().defaultSection.title, action: pushInitialScreenSettings())
 
             rows.append(initialScreen)
@@ -511,7 +511,7 @@ private extension AppSettingsViewController {
             rows.append(debugRow)
         }
 
-        if let presenter = WPTabBarController.sharedInstance()?.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
+        if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             AppConfiguration.showsWhatIsNew {
             let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,

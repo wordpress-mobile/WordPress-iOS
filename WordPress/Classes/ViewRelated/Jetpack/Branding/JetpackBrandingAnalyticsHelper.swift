@@ -23,10 +23,15 @@ struct JetpackBrandingAnalyticsHelper {
 
     enum JetpackBannerScreen: String {
         case activityLog = "activity_log"
+        case backup
+        case menus
         case notifications
+        case people
         case reader
         case readerSearch = "reader_search"
+        case scan
         case stats
+        case themes
     }
 
     enum JetpackBadgeScreen: String {
@@ -35,6 +40,7 @@ struct JetpackBrandingAnalyticsHelper {
         case home
         case me
         case notificationsSettings = "notifications_settings"
+        case person
         case readerDetail = "reader_detail"
         case sharing
     }

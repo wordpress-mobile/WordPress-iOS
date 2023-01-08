@@ -28,6 +28,7 @@ enum MigrationEvent: String {
     case notificationsScreenDecideLaterButtonTapped = "migration_notifications_screen_decide_later_button_tapped"
     case notificationsScreenPermissionGranted = "migration_notifications_screen_permission_granted"
     case notificationsScreenPermissionDenied = "migration_notifications_screen_permission_denied"
+    case notificationsScreenPermissionNotDetermined = "migration_notifications_screen_permission_notDetermined"
 
     // Thanks Screen
     case thanksScreenShown = "migration_thanks_screen_shown"

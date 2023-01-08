@@ -172,6 +172,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
 
     // MARK: - Private: 
     private func configureTableView() {
+        tableView.delegate = self
         tableView.register(JetpackScanStatusCell.defaultNib, forCellReuseIdentifier: Constants.statusCellIdentifier)
         tableView.register(JetpackScanThreatCell.defaultNib, forCellReuseIdentifier: Constants.threatCellIdentifier)
         tableView.register(ActivityListSectionHeaderView.defaultNib,

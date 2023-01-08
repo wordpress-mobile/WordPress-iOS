@@ -1,11 +1,19 @@
 import Foundation
+import Combine
 import UIKit
 import WordPressShared
 
-class JetpackBannerWrapperViewController: UIViewController {
+final class JetpackBannerWrapperViewController: UIViewController {
     /// The wrapped child view controller.
     private(set) var childVC: UIViewController?
     private var analyticsId: JetpackBrandingAnalyticsHelper.JetpackBannerScreen?
+    /// JPScrollViewDelegate conformance.
+    internal var scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
+
+    override var navigationItem: UINavigationItem {
+        guard let childVC else { return super.navigationItem }
+        return childVC.navigationItem
+    }
 
     convenience init(
         childVC: UIViewController,
@@ -18,6 +26,8 @@ class JetpackBannerWrapperViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        extendedLayoutIncludesOpaqueBars = true
 
         let stackView = UIStackView()
         configureStackView(stackView)
@@ -32,7 +42,12 @@ class JetpackBannerWrapperViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(stackView)
-        view.pinSubviewToAllEdges(stackView)
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 
     private func configureChildVC(_ stackView: UIStackView) {
@@ -55,9 +70,10 @@ class JetpackBannerWrapperViewController: UIViewController {
             }
         }
         stackView.addArrangedSubview(jetpackBannerView)
-
-        if let childVC = childVC as? JPScrollViewDelegate {
-            childVC.addTranslationObserver(jetpackBannerView)
-        }
+        addTranslationObserver(jetpackBannerView)
     }
 }
+
+// MARK: JPScrollViewDelegate
+
+extension JetpackBannerWrapperViewController: JPScrollViewDelegate {}

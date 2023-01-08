@@ -1,6 +1,6 @@
 #import "EditCommentViewController.h"
 #import "CommentService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 
 #import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"

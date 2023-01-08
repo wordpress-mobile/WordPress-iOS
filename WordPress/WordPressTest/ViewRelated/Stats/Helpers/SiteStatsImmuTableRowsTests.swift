@@ -15,7 +15,7 @@ class SiteStatsImmuTableRowsTests: XCTestCase {
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
         // When creating rows from statsSummaryTimeIntervalData
-        let rows = SiteStatsImmuTableRows.viewVisitorsImmuTableRows(statsSummaryTimeIntervalData, periodDate: date, statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil)
+        let rows = SiteStatsImmuTableRows.viewVisitorsImmuTableRows(statsSummaryTimeIntervalData, selectedSegment: .views, periodDate: date, statsLineChartViewDelegate: nil, siteStatsInsightsDelegate: nil, viewsAndVisitorsDelegate: nil)
 
         // Then
         XCTAssertTrue(rows.count == 1)
