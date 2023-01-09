@@ -1,3 +1,7 @@
+21.6
+-----
+
+
 21.5
 -----
 * [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]
