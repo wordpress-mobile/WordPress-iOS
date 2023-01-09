@@ -20,9 +20,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 1.18.0'
+  pod 'WordPressShared', '~> 2.0.0-beta.1'
   # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :tag => ''
-  # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => ''
+  # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'delete-cocoalumberjack'
   # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit  => ''
   # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 end
@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 4.58', '>= 4.58.2'
+  pod 'WordPressKit', '~> 5.0'
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
   # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
@@ -63,7 +63,7 @@ end
 
 def shared_with_all_pods
   wordpress_shared
-  pod 'CocoaLumberjack', '~> 3.0'
+  pod 'CocoaLumberjack/Swift', '~> 3.0'
   pod 'NSObject-SafeExpectations', '~> 0.0.4'
 end
 
@@ -233,8 +233,8 @@ abstract_target 'Apps' do
 
   pod 'Gridicons', '~> 1.1.0'
 
-  pod 'WordPressAuthenticator', '~> 3.2', '>= 3.2.2'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'fix/prologue-nav-bar'
+  pod 'WordPressAuthenticator', '~> 5.0'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'trunk'
   # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
   # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
 

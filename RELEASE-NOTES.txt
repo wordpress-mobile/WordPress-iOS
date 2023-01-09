@@ -14,6 +14,7 @@
 * [**] [internal] Upgrade React Native from 0.66.2 to 0.69.4 [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5193]
 * [*] [internal] When a user migrates to the Jetpack app and allows notifications, WordPress app notifications are disabled. [#19616, #19611, #19590]
 * [*] Reader now scrolls to the top if the tab bar button is tapped. [#19769]
+* [*] [Internal] Update WordPressShared, WordPressKit, and WordPressAuthenticator to their latest versions. [#19643]
 
 21.3
 -----
