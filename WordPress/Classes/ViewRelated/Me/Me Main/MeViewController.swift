@@ -383,8 +383,8 @@ class MeViewController: UITableViewController {
 
         Task {
             do {
-                async let refreshDetails: Void = self.refreshAccountDetails(with: accountService, account: account)
-                async let refreshSettings: Void = self.refreshAccountSettings(with: accountSettingsService)
+                async let refreshDetails: Void = Self.refreshAccountDetails(with: accountService, account: account)
+                async let refreshSettings: Void = Self.refreshAccountSettings(with: accountSettingsService)
                 let _ = try await [refreshDetails, refreshSettings]
                 self.reloadViewModel()
             } catch let error {
@@ -393,7 +393,7 @@ class MeViewController: UITableViewController {
         }
     }
 
-    fileprivate func refreshAccountDetails(with service: AccountService, account: WPAccount) async throws {
+    fileprivate static func refreshAccountDetails(with service: AccountService, account: WPAccount) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             service.updateUserDetails(for: account, success: {
                 continuation.resume()
@@ -403,7 +403,7 @@ class MeViewController: UITableViewController {
         }
     }
 
-    fileprivate func refreshAccountSettings(with service: AccountSettingsService) async throws {
+    fileprivate static func refreshAccountSettings(with service: AccountSettingsService) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             service.refreshSettings { result in
                 switch result {
