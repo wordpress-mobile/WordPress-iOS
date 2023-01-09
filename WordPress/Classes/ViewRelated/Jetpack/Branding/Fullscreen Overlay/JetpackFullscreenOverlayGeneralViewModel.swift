@@ -79,6 +79,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.four, _):
             return Strings.PhaseFour.generalTitle
 
+        // New Users
+        case (.newUsers, _):
+            return Strings.NewUsers.generalTitle
+
         default:
             return ""
         }
@@ -105,6 +109,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         // Phase Four
         case (.four, _):
             return .init(string: Strings.PhaseFour.subtitle)
+
+        // New Users
+        case (.newUsers, _):
+            return .init(string: Strings.NewUsers.subtitle)
         default:
             return .init(string: "")
         }
@@ -362,6 +370,16 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.general.continue.title",
                                                                             value: "Do this later",
                                                                             comment: "Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app.")
+        }
+
+        enum NewUsers {
+            static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.title",
+                                                                  value: "Give WordPress a boost with Jetpack",
+                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+
+            static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.subtitle",
+                                                                  value: "Jetpack lets you do more with your WordPress site. Switching is free and only takes a minute.",
+                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
         }
     }
 }
