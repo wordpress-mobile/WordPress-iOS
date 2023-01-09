@@ -1,6 +1,6 @@
 21.6
 -----
-
+* [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
 
 21.5
 -----

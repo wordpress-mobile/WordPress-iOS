@@ -412,10 +412,6 @@ private extension NoResultsViewController {
         imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
     }
 
-    func viewIsVisible() -> Bool {
-        return isViewLoaded && view.window != nil
-    }
-
     // MARK: - Configure for Title View Only
 
     func configureForTitleViewOnly() {
@@ -459,8 +455,7 @@ private extension NoResultsViewController {
 
     func configureTitleViewConstraints() {
 
-        guard self.viewIsVisible(),
-            displayTitleViewOnly == true else {
+        guard displayTitleViewOnly else {
             return
         }
 
