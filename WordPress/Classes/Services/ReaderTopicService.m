@@ -1,7 +1,7 @@
 #import "ReaderTopicService.h"
 
 #import "AccountService.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "WPAccount.h"

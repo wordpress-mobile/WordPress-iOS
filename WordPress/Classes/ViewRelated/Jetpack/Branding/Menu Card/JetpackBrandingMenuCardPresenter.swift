@@ -3,16 +3,25 @@ import Foundation
 class JetpackBrandingMenuCardPresenter {
 
     struct Config {
+
+        enum CardType {
+            case compact, expanded
+        }
+
         let description: String
         let learnMoreButtonURL: String?
+        let type: CardType
     }
 
     // MARK: Private Variables
 
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
-    private let featureFlagStore: RemoteFeatureFlagStore
     private let currentDateProvider: CurrentDateProvider
+    private let featureFlagStore: RemoteFeatureFlagStore
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
+        return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    }
 
     // MARK: Initializers
 
@@ -21,30 +30,56 @@ class JetpackBrandingMenuCardPresenter {
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
         self.remoteConfigStore = remoteConfigStore
-        self.featureFlagStore = featureFlagStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
+        self.featureFlagStore = featureFlagStore
     }
 
     // MARK: Public Functions
 
     func cardConfig() -> Config? {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url)
+            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+        case .four:
+            let description = Strings.phaseFourTitle
+            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url, type: .compact)
         default:
             return nil
         }
     }
 
-    func shouldShowCard() -> Bool {
+    func shouldShowTopCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .three:
+            return true
+        default:
+            return false
+        }
+    }
+
+    func shouldShowBottomCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .four:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func isCardEnabled() -> Bool {
         let showCardOnDate = showCardOnDate ?? .distantPast // If not set, then return distant past so that the condition below always succeeds
         guard shouldHideCard == false, // Card not hidden
-              showCardOnDate < currentDateProvider.date(), // Interval has passed if temporarily hidden
-              let _ = cardConfig() else { // Card is enabled in the current phase
+              showCardOnDate < currentDateProvider.date() else { // Interval has passed if temporarily hidden
             return false
         }
         return true
@@ -55,31 +90,80 @@ class JetpackBrandingMenuCardPresenter {
         let duration = Constants.remindLaterDurationInDays * Constants.secondsInDay
         let newDate = now.addingTimeInterval(TimeInterval(duration))
         showCardOnDate = newDate
+        trackRemindMeLaterTapped()
     }
 
     func hideThisTapped() {
         shouldHideCard = true
+        trackHideThisTapped()
+    }
+}
+
+// MARK: Analytics
+
+extension JetpackBrandingMenuCardPresenter {
+
+    func trackCardShown() {
+        WPAnalytics.track(.jetpackBrandingMenuCardDisplayed, properties: analyticsProperties)
+    }
+
+    func trackLinkTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardLinkTapped, properties: analyticsProperties)
+    }
+
+    func trackCardTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
+    }
+
+    func trackContexualMenuAccessed() {
+        WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
+    }
+
+    func trackHideThisTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardHidden, properties: analyticsProperties)
+    }
+
+    func trackRemindMeLaterTapped() {
+        WPAnalytics.track(.jetpackBrandingMenuCardRemindLater, properties: analyticsProperties)
+    }
+
+    private var analyticsProperties: [String: String] {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+        return [Constants.phaseAnalyticsKey: phase.rawValue]
     }
 }
 
 private extension JetpackBrandingMenuCardPresenter {
+
+    // MARK: Dynamic Keys
+
+    var shouldHideCardKey: String {
+        return "\(Constants.shouldHideCardKey)-\(phase.rawValue)"
+    }
+
+    var showCardOnDateKey: String {
+        return "\(Constants.showCardOnDateKey)-\(phase.rawValue)"
+    }
+
+    // MARK: Persistence Variables
+
     var shouldHideCard: Bool {
         get {
-            persistenceStore.bool(forKey: Constants.shouldHideCardKey)
+            persistenceStore.bool(forKey: shouldHideCardKey)
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.shouldHideCardKey)
+            persistenceStore.set(newValue, forKey: shouldHideCardKey)
         }
     }
 
     var showCardOnDate: Date? {
         get {
-            persistenceStore.object(forKey: Constants.showCardOnDateKey) as? Date
+            persistenceStore.object(forKey: showCardOnDateKey) as? Date
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.showCardOnDateKey)
+            persistenceStore.set(newValue, forKey: showCardOnDateKey)
         }
     }
 }
@@ -90,11 +174,15 @@ private extension JetpackBrandingMenuCardPresenter {
         static let remindLaterDurationInDays = 4
         static let shouldHideCardKey = "JetpackBrandingShouldHideCardKey"
         static let showCardOnDateKey = "JetpackBrandingShowCardOnDateKey"
+        static let phaseAnalyticsKey = "phase"
     }
 
     enum Strings {
         static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
                                                            value: "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.",
                                                            comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
+        static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
+                                                           value: "Switch to Jetpack",
+                                                           comment: "Title of a button prompting users to switch to the Jetpack app.")
     }
 }

@@ -318,7 +318,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.
         // We'll ask for user notification permission after signin.
-        PushNotificationsManager.shared.registerForRemoteNotifications()
+        DispatchQueue.main.async {
+            PushNotificationsManager.shared.setupRemoteNotifications()
+        }
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -330,17 +332,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupWordPressExtensions()
-
-        if FeatureFlag.contentMigration.enabled {
-            // To prevent race condition, initialize the shared instance synchronously so it can listen to account change notifications.
-            let _ = ContentMigrationCoordinator.shared
-
-            // Start proactively exporting WP data in the background if the conditions are fulfilled.
-            // This needs to be called after `setupWordPressExtensions` because it updates the stored data.
-            DispatchQueue.global().async {
-                ContentMigrationCoordinator.shared.startOnceIfNeeded()
-            }
-        }
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
@@ -657,7 +648,7 @@ extension WordPressAppDelegate {
             return "Jetpack Migration View"
 #endif
         default:
-            return WPTabBarController.sharedInstance().currentlySelectedScreen()
+            return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }
     }
 

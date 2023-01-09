@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 18:36:06+0000 */
+/* Translation-Revision-Date: 2023-01-02 16:58:50+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: it */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Blocco %s. Questo blocco ha contenuti non validi";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s convertito in blocco regolare";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s convertito in blocchi regolari";
@@ -732,6 +735,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "In alternativa, puoi staccare e modificare questi blocchi separatamente toccando “Converti in blocchi regolari”.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "In alternativa, puoi staccare e modificare questo blocco separatamente toccando “Converti in blocco regolare”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "In alternativa, puoi inserire la password per questo account.";
@@ -2023,7 +2029,7 @@ translators: Block name. %s: The localized block name */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Impossibile connettersi al sito WordPress. Non c'è alcun sito WordPress valido a questo indirizzo. Controlla l'indirizzo del sito (URL) inserito.";
 
 /* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server." = "Impossibile connettersi. Metodi XML-RPC obbligatori mancanti sul server.";
+"Couldn't connect. Required XML-RPC methods are missing on the server." = "Impossibile connettersi. I metodi XML-RPC necessari non sono presenti su questo server.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
 "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem." = "Impossibile connettersi. Abbiamo ricevuto un messaggio di errore 403 durante il tentativo di accedere all'endpoint XMLRPC del tuo sito. Per l'app ne ha bisogno per comunicare con il tuo sito. Contatta il tuo fornitore del servizio di hosting per risolvere questo problema.";
@@ -2754,7 +2760,7 @@ translators: Block name. %s: The localized block name */
 "Email" = "Email";
 
 /* Header for a comment author's email address, shown when editing a comment. */
-"Email Address" = "Indirizzo Email";
+"Email Address" = "Indirizzo email";
 
 /* Blog Email Followers */
 "Email Followers" = "Follower tramite email";
@@ -5627,7 +5633,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Plugin feature requires a custom domain." = "La funzionalità di plugin richiede un dominio personalizzato.";
 
 /* Error displayed when trying to install a plugin on a site for the first time. */
-"Plugin feature requires a verified email address." = "La funzionalità di plugin richiede un indirizzo email verificato.";
+"Plugin feature requires a verified email address." = "La funzionalità del plugin richiede un indirizzo email verificato.";
 
 /* Error displayed when trying to install a plugin on a site for the first time. */
 "Plugin feature requires admin privileges." = "La funzionalità di plugin richiede privilegi di amministratore.";
@@ -7958,7 +7964,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Title for a category is mandatory." = "Il titolo della categoria è obbligatorio.";
 
 /* Instructions for alert asking for email and name. */
-"To continue please enter your email address and name." = "Per continuare, inserisci indirizzo email e nome.";
+"To continue please enter your email address and name." = "Inserisci indirizzo email e nome per continuare.";
 
 /* Text instructing the user to enter their email address. */
 "To create your new WordPress.com account, please enter your email address." = "Per creare il tuo nuovo account WordPress.com, inserisci il tuo indirizzo email.";
@@ -9897,6 +9903,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Passa alla nuova app Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Passa alla app Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Maggiori informazioni su jetpack.com";
 
@@ -9924,8 +9933,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Ottieni le statistiche usando la nuova app di Jetpack";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Il passaggio è gratuito e richiede solo un minuto.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack fornisce statistiche, notifiche e altro per aiutarti a costruire e far crescere il sito WordPress dei tuoi sogni.\n\nL'app WordPress non supporta più la creazione di un nuovo sito.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistiche, Reader, Notifiche e altre funzionalità collegate a Jetpack saranno presto rimosse dall'app WordPress.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Le notifiche passano all'app Jetpack";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader passa all'app Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Le Statistiche passano all'app Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistiche, Reader, Notifiche e altre funzionalità collegate a Jetpack saranno presto rimosse dall'app WordPress su %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Continua in Reader";
@@ -10022,6 +10049,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Grazie per aver scelto di passare a Jetpack!";
+
+/* The description in the Load WordPress screen
+   The secondary description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Sembra che tu abbia installato la app WordPress.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Apri WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "No grazie";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Jetpack ti dà il benvenuto!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidi più tardi";

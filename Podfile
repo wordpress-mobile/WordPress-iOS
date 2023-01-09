@@ -91,7 +91,7 @@ def shared_style_pods
 end
 
 def gutenberg_pods
-  gutenberg tag: 'v1.86.0'
+  gutenberg tag: 'v1.87.0'
 end
 
 def gutenberg(options)

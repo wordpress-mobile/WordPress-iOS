@@ -6,12 +6,21 @@
         .init()
     }()
 
+    var previousMigrationError: MigrationError? {
+        guard let storedErrorValue = sharedPersistentRepository?.string(forKey: .exportErrorSharedKey) else {
+            return nil
+        }
+
+        return .init(rawValue: storedErrorValue)
+    }
+
     // MARK: Dependencies
 
     private let coreDataStack: CoreDataStack
     private let dataMigrator: ContentDataMigrating
     private let notificationCenter: NotificationCenter
     private let userPersistentRepository: UserPersistentRepository
+    private let sharedPersistentRepository: UserPersistentRepository?
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
 
@@ -19,12 +28,14 @@
          dataMigrator: ContentDataMigrating = DataMigrator(),
          notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
+         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: WPAppGroupName),
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack
         self.dataMigrator = dataMigrator
         self.notificationCenter = notificationCenter
         self.userPersistentRepository = userPersistentRepository
+        self.sharedPersistentRepository = sharedPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
 
@@ -34,7 +45,7 @@
         ensureBackupDataDeletedOnLogout()
     }
 
-    enum ContentMigrationCoordinatorError: LocalizedError {
+    enum MigrationError: String, LocalizedError {
         case ineligible
         case exportFailure
         case localDraftsNotSynced
@@ -58,17 +69,17 @@
     /// just let the user continue with the original intent in case of failure.
     ///
     /// - Parameter completion: Closure called after the export process completes.
-    func startAndDo(completion: ((Result<Void, ContentMigrationCoordinatorError>) -> Void)? = nil) {
+    func startAndDo(completion: ((Result<Void, MigrationError>) -> Void)? = nil) {
         guard eligibilityProvider.isEligibleForMigration else {
             tracker.trackContentExportEligibility(eligible: false)
-            completion?(.failure(.ineligible))
+            processResult(.failure(.ineligible), completion: completion)
             return
         }
 
         guard isLocalPostsSynced() else {
-            let error = ContentMigrationCoordinatorError.localDraftsNotSynced
+            let error = MigrationError.localDraftsNotSynced
             tracker.trackContentExportFailed(reason: error.localizedDescription)
-            completion?(.failure(error))
+            processResult(.failure(error), completion: completion)
             return
         }
 
@@ -76,35 +87,13 @@
             switch result {
             case .success:
                 self?.tracker.trackContentExportSucceeded()
-                completion?(.success(()))
+                self?.processResult(.success(()), completion: completion)
 
             case .failure(let error):
                 DDLogError("[Jetpack Migration] Error exporting data: \(error)")
                 self?.tracker.trackContentExportFailed(reason: error.localizedDescription)
-                completion?(.failure(.exportFailure))
+                self?.processResult(.failure(.exportFailure), completion: completion)
             }
-        }
-    }
-
-    /// Starts the content migration process from WordPress to Jetpack.
-    /// This method ensures that the migration will only be executed once per installation,
-    /// and only performed when all the conditions are fulfilled.
-    ///
-    /// Note: If the conditions are not fulfilled, this method will attempt to migrate
-    /// again on the next call.
-    ///
-    func startOnceIfNeeded(completion: (() -> Void)? = nil) {
-        if userPersistentRepository.bool(forKey: .oneOffMigrationKey) {
-            completion?()
-            return
-        }
-
-        startAndDo { [weak self] result in
-            if case .success = result {
-                self?.userPersistentRepository.set(true, forKey: .oneOffMigrationKey)
-            }
-
-            completion?()
         }
     }
 
@@ -147,6 +136,11 @@ private extension ContentMigrationCoordinator {
     /// This prevents the user from entering the migration flow and immediately gets shown with a login pop-up (since we couldn't migrate the authToken anymore).
     ///
     func ensureBackupDataDeletedOnLogout() {
+        // we only need to listen to changes from the WordPress side.
+        guard AppConfiguration.isWordPress else {
+            return
+        }
+
         notificationCenter.addObserver(forName: .WPAccountDefaultWordPressComAccountChanged, object: nil, queue: nil) { [weak self] notification in
             // nil notification object means it's a logout event.
             guard let self,
@@ -156,6 +150,30 @@ private extension ContentMigrationCoordinator {
 
             self.cleanupExportedDataIfNeeded()
         }
+    }
+
+    /// A "middleware" logic that attempts to record (or clear) any migration error to the App Group space
+    /// before calling the completion block.
+    ///
+    /// - Parameters:
+    ///   - result: The `Result` object from the export process.
+    ///   - completion: Closure that'll be executed after the process completes.
+    func processResult(_ result: Result<Void, MigrationError>, completion: ((Result<Void, MigrationError>) -> Void)?) {
+        // make sure that we're only intercepting from the WordPress side.
+        guard AppConfiguration.isWordPress else {
+            completion?(result)
+            return
+        }
+
+        switch result {
+        case .success:
+            sharedPersistentRepository?.removeObject(forKey: .exportErrorSharedKey)
+
+        case .failure(let error):
+            sharedPersistentRepository?.set(error.rawValue, forKey: .exportErrorSharedKey)
+        }
+
+        completion?(result)
     }
 }
 
@@ -175,5 +193,5 @@ extension AppConfiguration: ContentMigrationEligibilityProvider {
 // MARK: - Constants
 
 private extension String {
-    static let oneOffMigrationKey = "wordpress_one_off_export"
+    static let exportErrorSharedKey = "wordpress_shared_export_error"
 }

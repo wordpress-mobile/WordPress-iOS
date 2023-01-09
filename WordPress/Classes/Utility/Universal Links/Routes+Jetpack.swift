@@ -4,6 +4,7 @@ struct JetpackRoute: Route {
     var action: NavigationAction {
         return self
     }
+    let jetpackPowered: Bool = false
 }
 
 extension JetpackRoute: NavigationAction {

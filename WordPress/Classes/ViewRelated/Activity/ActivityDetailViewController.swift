@@ -163,7 +163,8 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
             return
         }
         jetpackBadgeView.isHidden = false
-        let jetpackBadgeButton = JetpackButton(style: .badge)
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.activityDetail)
+        let jetpackBadgeButton = JetpackButton(style: .badge, title: textProvider.brandingText())
         jetpackBadgeButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackBadgeButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         jetpackBadgeView.addSubview(jetpackBadgeButton)

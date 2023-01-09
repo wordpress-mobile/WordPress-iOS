@@ -9,12 +9,18 @@ class JetpackButton: CircularImageButton {
         case banner
     }
 
+    var title: String? {
+        didSet {
+            setTitle(title, for: .normal)
+        }
+    }
+
     private let style: ButtonStyle
 
-    init(style: ButtonStyle) {
+    init(style: ButtonStyle, title: String) {
         self.style = style
         super.init(frame: .zero)
-        configureButton()
+        configureButton(with: title)
     }
 
     required init?(coder: NSCoder) {
@@ -60,9 +66,9 @@ class JetpackButton: CircularImageButton {
         }
     }
 
-    private func configureButton() {
+    private func configureButton(with title: String) {
         isUserInteractionEnabled = FeatureFlag.jetpackPoweredBottomSheet.enabled
-        setTitle(Appearance.title, for: .normal)
+        setTitle(title, for: .normal)
         tintColor = buttonTintColor
         backgroundColor = buttonBackgroundColor
         setTitleColor(buttonTitleColor, for: .normal)
@@ -81,8 +87,6 @@ class JetpackButton: CircularImageButton {
     }
 
     private enum Appearance {
-        static let title = NSLocalizedString("jetpack.branding.badge_banner.title", value: "Jetpack powered",
-                                             comment: "Title of the Jetpack powered badge.")
         static let minimumScaleFactor: CGFloat = 0.6
         static let iconInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         static let contentInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 10)
@@ -108,18 +112,20 @@ class JetpackButton: CircularImageButton {
 extension JetpackButton {
 
     /// Instantiates a view containing a Jetpack powered badge
+    /// - Parameter title: Title of the button
     /// - Parameter topPadding: top padding, defaults to 30 pt
     /// - Parameter bottomPadding: bottom padding, defaults to 30 pt
     /// - Parameter target: optional target for the button action
     /// - Parameter selector: optional selector for the button action
     /// - Returns: the view containing the badge
     @objc
-    static func makeBadgeView(topPadding: CGFloat = 30,
+    static func makeBadgeView(title: String,
+                              topPadding: CGFloat = 30,
                               bottomPadding: CGFloat = 30,
                               target: Any? = nil,
                               selector: Selector? = nil) -> UIView {
         let view = UIView()
-        let badge = JetpackButton(style: .badge)
+        let badge = JetpackButton(style: .badge, title: title)
         badge.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(badge)
         NSLayoutConstraint.activate([

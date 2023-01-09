@@ -1,4 +1,4 @@
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 
 #import <XCTest/XCTest.h>
 
@@ -34,7 +34,7 @@
 }
 
 - (void)testDeletePostsWithoutATopic {
-    id<CoreDataStack> coreDataStack = [ContextManager forTesting];
+    id<CoreDataStack> coreDataStack = [self coreDataStackForTesting];
     NSManagedObjectContext *context = [coreDataStack mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 

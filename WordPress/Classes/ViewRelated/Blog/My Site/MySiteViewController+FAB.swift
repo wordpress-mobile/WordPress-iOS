@@ -5,30 +5,30 @@ extension MySiteViewController {
     /// - Returns: CreateButtonCoordinator with new post, page, and story actions.
     @objc func makeCreateButtonCoordinator() -> CreateButtonCoordinator {
 
-        let newPage = { [weak self] in
-            let controller = self?.tabBarController as? WPTabBarController
-            let blog = controller?.currentOrLastBlog()
-            controller?.showPageEditor(forBlog: blog)
+        let newPage = {
+            let presenter = RootViewCoordinator.sharedPresenter
+            let blog = presenter.currentOrLastBlog()
+            presenter.showPageEditor(forBlog: blog)
         }
 
         let newPost = { [weak self] in
-            let controller = self?.tabBarController as? WPTabBarController
-            controller?.showPostTab(completion: {
+            let presenter = RootViewCoordinator.sharedPresenter
+            presenter.showPostTab(completion: {
                 self?.startAlertTimer()
             })
         }
 
-        let newStory = { [weak self] in
-            let controller = self?.tabBarController as? WPTabBarController
-            let blog = controller?.currentOrLastBlog()
-            controller?.showStoryEditor(forBlog: blog)
+        let newStory = {
+            let presenter = RootViewCoordinator.sharedPresenter
+            let blog = presenter.currentOrLastBlog()
+            presenter.showStoryEditor(forBlog: blog)
         }
 
         let source = "my_site"
 
         var actions: [ActionSheetItem] = []
 
-        if shouldShowNewStory {
+        if blog?.supports(.stories) ?? false {
             actions.append(StoryAction(handler: newStory, source: source))
         }
 
@@ -37,9 +37,5 @@ extension MySiteViewController {
 
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source, blog: blog)
         return coordinator
-    }
-
-    private var shouldShowNewStory: Bool {
-        return (blog?.supports(.stories) ?? false) && !UIDevice.isPad()
     }
 }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-25 14:15:27+0000 */
+/* Translation-Revision-Date: 2023-01-02 17:26:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pt_BR */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloco %s. Este bloco tem conteúdo inválido.";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s convertido em bloco normal";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s convertido para blocos normais";
@@ -691,6 +694,9 @@ translators: Block name. %s: The localized block name */
 /* Settings: Comments Enabled */
 "Allow Comments" = "Permitir comentários";
 
+/* Title for a cell with switch control that allows to enable or disable notifications */
+"Allow Notifications" = "Permitir notificações";
+
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "Permitir que o WordPress envie notificações push";
 
@@ -728,7 +734,10 @@ translators: Block name. %s: The localized block name */
 "Alt Text" = "Texto alternativo";
 
 /* No comment provided by engineer. */
-"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Como alternativa, você pode desanexar e editar os blocos separadamente tocando em \"Converter em blocos comuns\".";
+"Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Como alternativa, você pode desanexar e editar estes blocos separadamente tocando em “Converter em blocos normais”.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Como alternativa, você pode desanexar e editar este bloco separadamente tocando em “Converter em bloco normal”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Se preferir, insira a senha para esta conta.";
@@ -8161,6 +8170,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice title when turning site notifications on succeeds. */
 "Turned on site notifications" = "Notificações do site ativadas";
 
+/* Notification Settings switch for the app. */
+"Turning the switch off will disable all notifications from this app, regardless of type." = "Desativar o botão desativará todas as notificações deste aplicativo, independentemente do tipo.";
+
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -9000,7 +9012,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Vamos corrigir essas ameaças enquanto você faz outras coisas. Enquanto isso, sinta-se à vontade para continuar usando o site normalmente. Você pode conferir o progresso a qualquer momento.";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
-"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Não conseguimos conectar ao site do JetPack com esse URL. Entre em contato para ajudarmos.";
+"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Não conseguimos conectar ao site do Jetpack com esse URL. Entre em contato para ajudarmos.";
 
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Estamos restaurando o seu site para %1$@.";
@@ -9712,6 +9724,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The menu item to select during a guided tour. */
 "connections" = "conexões";
 
+/* Customize Insights description */
+"customizeInsightsCell.content" = "Crie seu painel personalizado e escolha quais relatórios visualizar. Tenha foco nos dados mais importantes para você.";
+
+/* Accessibility hint */
+"customizeInsightsCell.dismissButton.accessibilityHint" = "Toque para dispensar este cartão";
+
+/* Customize Insights button title */
+"customizeInsightsCell.dismissButton.title" = "Dispensar";
+
+/* Customize Insights title */
+"customizeInsightsCell.title" = "Personalize as informações";
+
+/* Accessibility hint */
+"customizeInsightsCell.tryItButton.accessibilityHint" = "Toque para personalizar as informações";
+
+/* Customize Insights button title */
+"customizeInsightsCell.tryItButton.title" = "Experimente já";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "toque duas vezes para alterar a unidade";
 
@@ -9728,6 +9758,63 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "seguir";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.actionButton" = "Configurar lembretes para publicação";
+
+/* Title for button that will open up the blogging reminders screen. */
+"growAudienceCell.bloggingReminders.completed.actionButton" = "Editar lembretes";
+
+/* A detailed message to users indicating that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.details" = "Continue trabalhando no seu blog e saiba quando visitantes acessarem seu site.";
+
+/* A hint to users that they've set up blogging reminders. */
+"growAudienceCell.bloggingReminders.completed.tip" = "Você configurou lembretes para publicação";
+
+/* A detailed message to users about growing the audience for their site through blogging reminders. */
+"growAudienceCell.bloggingReminders.details" = "Publicar com frequência ajuda a estabelecer um público. Os lembretes ajudam você a manter o ritmo.";
+
+/* Title for button that will dismiss the Grow Your Audience card. */
+"growAudienceCell.dismiss" = "Dispensar";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Descubra blogs para seguir";
+
+/* Title for button that will open up the follow topics screen. */
+"growAudienceCell.readerDiscover.completed.action" = "Fazer isso novamente";
+
+/* A detailed message to users indicating that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.details" = "Continue assim! Curtir e comentar são boas formas de criar uma rede. Acesse o Leitor para descobrir mais posts.";
+
+/* A hint to users that they've set up reader discover. */
+"growAudienceCell.readerDiscover.completed.tip" = "Você se conectou a outros blogs";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Conecte-se com outros blogueiros seguindo, curtindo e comentando nos seus posts.";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.actionButton" = "Ativar o compartilhamento de publicações";
+
+/* Title for button that will open up the social media Sharing screen. */
+"growAudienceCell.social.completed.button" = "Conectar mais redes";
+
+/* A detailed message to users indicating that they've set up post sharing. */
+"growAudienceCell.social.completed.details" = "Quando você publicar o próximo post, ele será automaticamente compartilhado nas suas redes conectadas.";
+
+/* A hint to users that they've set up post sharing. */
+"growAudienceCell.social.completed.title" = "O compartilhamento está configurado!";
+
+/* A detailed message to users about growing the audience for their site through enabling post sharing. */
+"growAudienceCell.social.title" = "Compartilhe automaticamente novos posts em sua rede social para começar a atrair público para seu site.";
+
+/* A hint to users about growing the audience for their site, when their site doesn't have many views yet. */
+"growAudienceCell.tip" = "Uma dica para expandir seu público";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.plural" = "Visualizações em seu site até o momento";
+
+/* Description for view count. Singular. */
+"growAudienceCell.viewsCount.singular" = "Visualização em seu site até o momento";
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Dispensar";
@@ -9813,8 +9900,74 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.title" = "O WordPress é ainda melhor com o Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.early.switch.title" = "Mude para o novo aplicativo Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Mudar para o aplicativo Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Saiba mais em br.jetpack.com";
+
+/* Title of a button that dismisses an overlay and displays the Notifications screen. */
+"jetpack.fullscreen.overlay.notifications.continue.title" = "Continue para Notificações";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Mude para o aplicativo Jetpack para continuar recebendo notificações em tempo real no seu dispositivo.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Receba notificações com o aplicativo Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Mude para o aplicativo Jetpack para encontrar, seguir e curtir todas as suas publicações e sites favoritos com o Leitor.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Siga qualquer site com o aplicativo Jetpack";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "O Jetpack fornece estatísticas, notificações e muito mais para ajudar você a criar e desenvolver o site WordPress dos seus sonhos.";
+
+/* Subtitle of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.subtitle" = "Mude para o aplicativo Jetpack para ver o tráfego do seu site crescer com estatísticas e informações.";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.stats.title" = "Obtenha suas estatísticas usando o novo aplicativo Jetpack";
+
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "A troca é gratuita e leva apenas um minuto.";
+
+/* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "O Jetpack fornece estatísticas, notificações e muito mais para te ajudar a criar e expandir o site WordPress dos seus sonhos.\n\nO aplicativo WordPress não oferece mais suporte para a criação de um novo site.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Estatísticas, Leitor, Notificações e outros recursos do Jetpack serão removidos do aplicativo WordPress em breve.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "As notificações estão migrando para o aplicativo Jetpack";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "O Leitor está migrando para o aplicativo Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "As estatísticas estão migrando para o aplicativo Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Estatísticas, Leitor, Notificações e outros recursos do Jetpack serão removidos do aplicativo WordPress em %@.";
+
+/* Title of a button that dismisses an overlay and displays the Reader screen. */
+"jetpack.fullscreen.overlay.reader.continue.title" = "Continue para Leitor";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continuar sem o Jetpack";
+
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.siteCreation.switch.title" = "Experimente o novo aplicativo Jetpack";
+
+/* Title of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.siteCreation.title" = "Criar um novo site do WordPress com o aplicativo Jetpack";
+
+/* Title of a button that dismisses an overlay and displays the Stats screen. */
+"jetpack.fullscreen.overlay.stats.continue.title" = "Continue para Estatísticas";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Adicionar um autor";
@@ -9870,8 +10023,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dispensar";
 
+/* The description in the Delete WordPress screen */
+"migration.deleteWordpress.description" = "Parece que você ainda tem o aplicativo WordPress instalado. Recomendamos que você exclua o aplicativo WordPress para evitar conflitos de dados.";
+
+/* The primary button title in the Delete WordPress screen */
+"migration.deleteWordpress.primaryButton" = "Entendi";
+
+/* The secondary button title in the Delete WordPress screen */
+"migration.deleteWordpress.secondaryButton" = "Precisa de ajuda?";
+
+/* The title in the Delete WordPress screen */
+"migration.deleteWordpress.title" = "Você não precisa mais do aplicativo WordPress";
+
 /* Primary button title in the migration done screen. */
 "migration.done.actions.primary.title" = "Concluir";
+
+/* Footer for the migration done screen. */
+"migration.done.footer" = "Exclua o aplicativo WordPress para evitar conflitos de dados.";
+
+/* Highlighted text in the footer of the migration done screen. */
+"migration.done.footer.highlighted" = "exclua o aplicativo WordPress";
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "Transferimos todos os seus dados e configurações. Tudo está exatamente onde você deixou.";
@@ -9879,11 +10050,33 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "Obrigado por mudar para o Jetpack!";
 
+/* The description in the Load WordPress screen
+   The secondary description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Parece que você tem o aplicativo WordPress instalado.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Abrir WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Não, obrigado";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Boas-vindas ao Jetpack!";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidir depois";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Quando o alerta aparecer, toque em Permitir para continuar recebendo todas as notificações do WordPress.";
+
+/* Highlighted text in the footer of the migration notifications screen. */
+"migration.notifications.footer.highlighted" = "Permitir";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Você receberá as mesmas notificações, mas agora elas virão do aplicativo Jetpack.";
+
+/* Secondary description in the migration notifications screen */
+"migration.notifications.secondaryDescription" = "Desativaremos as notificações do aplicativo WordPress.";
 
 /* Title of the migration notifications screen. */
 "migration.notifications.title" = "Permitir notificações para acompanhar seu site";
@@ -9900,6 +10093,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Desejamos boas-vindas ao Jetpack!";
 
+/* Dismiss button title. */
+"noResultsViewController.dismissButton" = "Dispensar";
+
 /* Dismiss the alert with instructions on how to enable push notifications. */
 "notificationSettingStreams.pushNotificationAlert.dismissButton" = "Dispensar";
 
@@ -9914,6 +10110,81 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "número de telefone";
+
+/* User action to dismiss featured media options. */
+"postSettings.featuredImageUploadActionSheet.dismiss" = "Dispensar";
+
+/* User action to remove featured media. */
+"postSettings.featuredImageUploadActionSheet.remove" = "Remover";
+
+/* User action to retry featured media upload. */
+"postSettings.featuredImageUploadActionSheet.retryUpload" = "Tentar novamente";
+
+/* Title for action sheet with featured media options. */
+"postSettings.featuredImageUploadActionSheet.title" = "Opções da imagem destacada";
+
+/* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Dispensar";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Toque em '%@' e volte ao seu navegador para continuar.";
+
+/* Title for the success view when the user has successfully logged in */
+"qrLoginVerifyAuthorization.completedInstructions.title" = "Você efetuou login.";
+
+/* Spoken accessibility label */
+"readerDetail.backButton.accessibilityLabel" = "Voltar";
+
+/* Spoken accessibility label */
+"readerDetail.dismissButton.accessibilityLabel" = "Dispensar";
+
+/* Button title for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipButton.accessibilityLabel" = "Entendi";
+
+/* Message for the follow conversations tooltip. */
+"readerDetail.followConversationTooltipMessage.accessibilityLabel" = "Receba notificações quando novos comentários forem adicionados ao post.";
+
+/* Title of follow conversations tooltip. */
+"readerDetail.followConversationTooltipTitle.accessibilityLabel" = "Seguir a conversa";
+
+/* Section title for global related posts. */
+"readerDetail.globalPostsSection.accessibilityLabel" = "Mais em WordPress.com";
+
+/* Section title for local related posts. %1$@ is a placeholder for the blog display name. */
+"readerDetail.localPostsSection.accessibilityLabel" = "Mais de %1$@";
+
+/* Spoken accessibility label */
+"readerDetail.moreButton.accessibilityLabel" = "Mais";
+
+/* Spoken accessibility label */
+"readerDetail.safariButton.accessibilityLabel" = "Abrir no Safari";
+
+/* Spoken accessibility label */
+"readerDetail.shareButton.accessibilityLabel" = "Compartilhar";
+
+/* Title for the tooltip anchor. */
+"readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Novo";
+
+/* User action to dismiss media options. */
+"shareExtension.editor.attachmentActions.dismiss" = "Dispensar";
+
+/* User action to remove media. */
+"shareExtension.editor.attachmentActions.remove" = "Remover";
+
+/* Title for action sheet with media options. */
+"shareExtension.editor.attachmentActions.title" = "Opções de mídia";
+
+/* Share extension error dialog retry button label. */
+"shareModularViewController.retryAlert.accept" = "Tentar novamente";
+
+/* Share extension error dialog cancel button label. */
+"shareModularViewController.retryAlert.dismiss" = "Dispensar";
+
+/* Share extension error dialog text. */
+"shareModularViewController.retryAlert.message" = "Opa! Alguma coisa deu errado! Tente novamente, pode ter sido uma falha.";
+
+/* Share extension error dialog title. */
+"shareModularViewController.retryAlert.title" = "Erro ao compartilhar";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Comentários";
@@ -10088,6 +10359,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Description of the jetpack migration success card, used in My site. */
+"wp.migration.successcard.description" = "Exclua o aplicativo WordPress";
 
 /* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
 "your site" = "seu site";

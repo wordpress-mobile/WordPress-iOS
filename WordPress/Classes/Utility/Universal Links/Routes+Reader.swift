@@ -58,11 +58,15 @@ extension ReaderRoute: Route {
     var action: NavigationAction {
         return self
     }
+
+    var jetpackPowered: Bool {
+        return true
+    }
 }
 
 extension ReaderRoute: NavigationAction {
     func perform(_ values: [String: String], source: UIViewController? = nil, router: LinkRouter) {
-        guard let coordinator = WPTabBarController.sharedInstance().readerCoordinator else {
+        guard let coordinator = RootViewCoordinator.sharedPresenter.readerCoordinator else {
             return
         }
 

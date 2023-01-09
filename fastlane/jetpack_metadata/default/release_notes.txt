@@ -1,3 +1,5 @@
-We fixed a small visual issue with the Home and Menu control in the My Site dashboard.
+Good news, everyone—you can now migrate your WordPress site content to Jetpack without a hitch. If you’re new to the app, you’ll also see a smooth opt-in process to help with the transition.
 
-We also squashed a bug in My Site. The "Disconnect from WordPress.com” button now disconnects when tapped and will refresh the app.
+Done reading content and want to scroll back to the beginning? Just tap the Reader tab button at the bottom of your screen and we’ll take you right back up to the top.
+
+We fixed an issue with app author IDs that was keeping some users from publishing Posts and Pages. While we were under the hood, we also made a small visibility tweak to the share extension’s navigation bar.

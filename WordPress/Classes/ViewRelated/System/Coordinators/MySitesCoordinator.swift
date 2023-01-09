@@ -1,11 +1,12 @@
 import UIKit
+import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {
     static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
     static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
 
-    private let meScenePresenter: ScenePresenter
+    let meScenePresenter: ScenePresenter
 
     let becomeActiveTab: () -> Void
 
@@ -18,8 +19,9 @@ class MySitesCoordinator: NSObject {
     init(meScenePresenter: ScenePresenter, onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.meScenePresenter = meScenePresenter
         self.becomeActiveTab = becomeActiveTab
-
         super.init()
+
+        addSignInObserver()
     }
 
     // MARK: - Root View Controller
@@ -73,8 +75,12 @@ class MySitesCoordinator: NSObject {
     }()
 
     private lazy var mySiteViewController: MySiteViewController = {
-        MySiteViewController(meScenePresenter: self.meScenePresenter)
+        makeMySiteViewController()
     }()
+
+    private func makeMySiteViewController() -> MySiteViewController {
+        MySiteViewController(meScenePresenter: self.meScenePresenter)
+    }
 
     // MARK: - Navigation
 
@@ -119,10 +125,20 @@ class MySitesCoordinator: NSObject {
     // MARK: - Stats
 
     func showStats(for blog: Blog) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            unsupportedFeatureFallback()
+            return
+        }
+
         showBlogDetails(for: blog, then: .stats)
     }
 
     func showStats(for blog: Blog, timePeriod: StatsPeriodType, date: Date? = nil) {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            unsupportedFeatureFallback()
+            return
+        }
+
         showBlogDetails(for: blog)
 
         if let date = date {
@@ -218,5 +234,20 @@ class MySitesCoordinator: NSObject {
         let listViewController = PluginListViewController(site: site, query: query)
 
         navigationController.pushViewController(listViewController, animated: false)
+    }
+
+    // MARK: Notifications Handling
+
+    private func addSignInObserver() {
+        let notificationName = NSNotification.Name(WordPressAuthenticator.WPSigninDidFinishNotification)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(signinDidFinish),
+                                               name: notificationName,
+                                               object: nil)
+    }
+
+    @objc func signinDidFinish() {
+        mySiteViewController = makeMySiteViewController()
+        navigationController.viewControllers = [rootContentViewController]
     }
 }

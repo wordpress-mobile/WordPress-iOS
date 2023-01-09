@@ -14,7 +14,7 @@ class JetpackWindowManager: WindowManager {
         && !UserPersistentStoreFactory.instance().isJPContentImportComplete
     }
 
-    override func showUI(for blog: Blog?) {
+    override func showUI(for blog: Blog?, animated: Bool = true) {
         if AccountHelper.isLoggedIn {
             showAppUI(for: blog)
             return
@@ -62,6 +62,11 @@ private extension JetpackWindowManager {
 
     var isCompatibleWordPressAppPresent: Bool {
         MigrationAppDetection.getWordPressInstallationState() == .wordPressInstalledAndMigratable
+    }
+
+    /// Checks whether the WordPress app has previously failed to export user content.
+    var hasFailedExportAttempts: Bool {
+        ContentMigrationCoordinator.shared.previousMigrationError != nil
     }
 
     func sendMigrationEmail() {
@@ -117,10 +122,21 @@ private extension JetpackWindowManager {
         self.show(loadWordPressViewController)
     }
 
+    /// Determine how to handle the error when the migration fails.
+    ///
+    /// Show the loadWordPress path when:
+    ///   - A compatible WordPress app version exists,
+    ///   - There's no data to import, and
+    ///   - There's no data because the export was never triggered, not because WP tried to export and failed.
+    ///
+    /// Otherwise, show the sign in flow.
+    ///
+    /// - Parameter error: Error object from the data migration process.
     func handleMigrationFailure(_ error: DataMigrationError) {
         guard
-            case .dataNotReadyToImport = error,
             isCompatibleWordPressAppPresent,
+            case .dataNotReadyToImport = error,
+            !hasFailedExportAttempts,
             let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
         else {
             showSignInUI()

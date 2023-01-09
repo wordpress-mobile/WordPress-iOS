@@ -2,15 +2,22 @@ import Foundation
 
 extension BlogDetailsViewController {
 
-    @objc var shouldShowJetpackBrandingMenuCard: Bool {
+    @objc var shouldShowTopJetpackBrandingMenuCard: Bool {
         let presenter = JetpackBrandingMenuCardPresenter()
-        return presenter.shouldShowCard()
+        return presenter.shouldShowTopCard()
+    }
+
+    @objc var shouldShowBottomJetpackBrandingMenuCard: Bool {
+        let presenter = JetpackBrandingMenuCardPresenter()
+        return presenter.shouldShowBottomCard()
     }
 
     @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {
-            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .card, in: self)
+            let presenter = JetpackBrandingMenuCardPresenter()
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .card)
+            presenter.trackCardTapped()
         }
 
         let section = BlogDetailsSection(title: nil,
