@@ -119,35 +119,39 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     }
 
     var animationLtr: String {
-        switch source {
-        case .stats:
+        switch (source, phase) {
+        case (.stats, _):
             return Constants.statsLogoAnimationLtr
-        case .notifications:
+        case (.notifications, _):
             return Constants.notificationsLogoAnimationLtr
-        case .reader:
+        case (.reader, _):
             return Constants.readerLogoAnimationLtr
-        case .card:
+        case (_, .newUsers):
+            return Constants.wpJetpackLogoAnimationLtr
+        case (.card, _):
             fallthrough
-        case .login:
+        case (.login, _):
             fallthrough
-        case .appOpen:
+        case (.appOpen, _):
             return Constants.allFeaturesLogosAnimationLtr
         }
     }
 
     var animationRtl: String {
-        switch source {
-        case .stats:
+        switch (source, phase) {
+        case (.stats, _):
             return Constants.statsLogoAnimationRtl
-        case .notifications:
+        case (.notifications, _):
             return Constants.notificationsLogoAnimationRtl
-        case .reader:
+        case (.reader, _):
             return Constants.readerLogoAnimationRtl
-        case .card:
+        case (_, .newUsers):
+            return Constants.wpJetpackLogoAnimationRtl
+        case (.card, _):
             fallthrough
-        case .login:
+        case (.login, _):
             fallthrough
-        case .appOpen:
+        case (.appOpen, _):
             return Constants.allFeaturesLogosAnimationRtl
         }
     }
@@ -275,6 +279,8 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
         static let allFeaturesLogosAnimationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
         static let allFeaturesLogosAnimationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
+        static let wpJetpackLogoAnimationLtr = "JetpackWordPressLogoAnimation_ltr"
+        static let wpJetpackLogoAnimationRtl = "JetpackWordPressLogoAnimation_rtl"
     }
 
     enum Strings {
