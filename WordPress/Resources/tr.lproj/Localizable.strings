@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-04 13:36:05+0000 */
+/* Translation-Revision-Date: 2023-01-05 11:01:24+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: tr */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s bloku. Bu blok geçersiz içerik barındırıyor";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s normal bloğa dönüştürüldü";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s normal bloklara dönüştürüldü";
@@ -9897,6 +9900,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Yeni Jetpack uygulamasına geçiş yapın";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Jetpack uygulamasına geçiş yapın";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Jetpack.com'da daha fazla bilgi edinin";
 
@@ -10022,6 +10028,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack'e geçtiğiniz için teşekkürler!";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "WordPress'i aç";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Hayır, teşekkürler";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Jetpack'e hoş geldiniz.";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Daha sonra karar ver";
