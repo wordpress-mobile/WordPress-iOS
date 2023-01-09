@@ -197,6 +197,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .three:
             fallthrough
         case .four:
+            fallthrough
+        case .newUsers:
             return Strings.General.latePhasesSwitchButtonTitle
         default:
             return ""
@@ -211,12 +213,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return Strings.General.notificationsContinueButtonTitle
         case (.reader, _):
             return Strings.General.readerContinueButtonTitle
-        case (_, .three):
-            return Strings.PhaseThree.generalContinueButtonTitle
         case (_, .four):
             return Strings.PhaseFour.generalContinueButtonTitle
         default:
-            return nil
+            return Strings.General.continueButtonTitle
         }
     }
 
@@ -301,6 +301,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let notificationsContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.notifications.continue.title",
                                                                             value: "Continue to Notifications",
                                                                             comment: "Title of a button that dismisses an overlay and displays the Notifications screen.")
+            static let continueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.continue.title",
+                                                               value: "Continue without Jetpack",
+                                                               comment: "Title of a button that dismisses an overlay that showcases the Jetpack app.")
         }
 
         enum PhaseOne {
@@ -358,10 +361,6 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.title",
                                                                   value: "Jetpack features are moving soon.",
                                                                   comment: "Title of a screen that showcases the Jetpack app.")
-
-            static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.continue.title",
-                                                                            value: "Continue without Jetpack",
-                                                                            comment: "Title of a button that dismisses an overlay that showcases the Jetpack app.")
         }
 
         enum PhaseFour {
