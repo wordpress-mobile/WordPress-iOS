@@ -19,12 +19,12 @@ struct StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodStore: StatsPeriodStore,
+    public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?,
                                                insightsStore: StatsInsightsStore,
                                                statsSummaryType: StatsSummaryType,
-                                               guideText: NSAttributedString? = nil,
                                                periodEndDate: Date? = nil) -> StatsTotalInsightsData {
-        guard let periodSummary = periodStore.getSummary() else {
+
+        guard let periodSummary = periodSummary else {
             return StatsTotalInsightsData(count: 0)
         }
 
@@ -106,7 +106,7 @@ struct StatsTotalInsightsData {
     private enum TextContent {
         static let likesTotalGuideTextSingular = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>one</strong> like.", comment: "A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact.")
         static let likesTotalGuideTextPlural = NSLocalizedString("Your latest post <a href=\"\">%@</a> has received <strong>%d</strong> likes.", comment: "A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact.")
-        static let commentsTotalGuideText = NSLocalizedString("Tap \"Week\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
+        static let commentsTotalGuideText = NSLocalizedString("Tap \"View more\" to see your top commenters.", comment: "A hint shown to the user in stats telling them how to navigate to the Comments detail view.")
     }
 }
 
@@ -114,7 +114,8 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var lastPostInsight: StatsLastPostInsight?
     private var statsSummaryType: StatsSummaryType?
-    private var guideURL: URL? = nil
+    private var guideURL: URL?
+    private var guideText: NSAttributedString?
 
     private let outerStackView = UIStackView()
     private let topInnerStackView = UIStackView()
@@ -150,7 +151,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        updateGuideView()
+        rebuildGuideViewIfNeeded()
     }
 
     private func configureView() {
@@ -238,6 +239,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         self.statSection = statSection
         self.lastPostInsight = dataRow.lastPostInsight
         self.statsSummaryType = dataRow.statsSummaryType
+        self.guideText = dataRow.guideText
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
 
@@ -246,14 +248,13 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         countLabel.text = dataRow.count.abbreviatedString()
 
-        updateGuideView()
+        updateGuideView(withGuideText: dataRow.guideText)
         updateComparisonLabel(withCount: dataRow.count, difference: dataRow.difference, percentage: dataRow.percentage)
     }
 
-    private func updateGuideView() {
-        if let statsSummaryType = statsSummaryType,
-           let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType),
-           guideText.string.isEmpty == false {
+    private func updateGuideView(withGuideText guideText: NSAttributedString?) {
+        if let guideText = guideText,
+            guideText.string.isEmpty == false {
             outerStackView.addArrangedSubview(guideView)
 
             guideViewLabel.attributedText = addTipEmojiToGuide(guideText)
@@ -263,6 +264,16 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         } else if guideView.superview != nil {
             guideView.removeFromSuperview()
+        }
+    }
+
+    // Rebuilds guide view for accessibility only if guide view already exists
+    private func rebuildGuideViewIfNeeded() {
+        if guideText != nil,
+           let statsSummaryType = statsSummaryType,
+           let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType) {
+            self.guideText = guideText
+            updateGuideView(withGuideText: guideText)
         }
     }
 

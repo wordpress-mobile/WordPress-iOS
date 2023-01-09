@@ -335,7 +335,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
 
         // If adding a self-hosted site, skip the Epilogue
         if let wporg = credentials.wporg,
@@ -370,7 +370,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             ABTest.start()
 
             self.recentSiteService.touch(blog: blog)
-            self.presentOnboardingQuestionsPrompt(in: navigationController, onDismiss: onDismiss)
+            self.presentOnboardingQuestionsPrompt(in: navigationController, blog: blog, onDismiss: onDismiss)
         }
 
         // If the user has only 1 blog, skip the site selector and go right to the next step
@@ -386,7 +386,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.onCreateNewSite = {
             let source = "login_epilogue"
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source) {
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onWillDismiss: {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                     return
                 }
@@ -399,7 +399,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
                 navigationController.present(wizard, animated: true)
                 WPAnalytics.track(.enhancedSiteCreationAccessed, withProperties: ["source": source])
-            }
+            })
         }
 
         navigationController.delegate = epilogueViewController
@@ -543,8 +543,17 @@ private extension WordPressAuthenticationManager {
 
 // MARK: - Onboarding Questions Prompt
 private extension WordPressAuthenticationManager {
-    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, onDismiss: (() -> Void)? = nil) {
+    private func presentOnboardingQuestionsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
         let windowManager = self.windowManager
+
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            if self.windowManager.isShowingFullscreenSignIn {
+                self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
+            } else {
+                self.windowManager.showAppUI(for: blog)
+            }
+            return
+        }
 
         let coordinator = OnboardingQuestionsCoordinator()
         coordinator.navigationController = navigationController
@@ -576,9 +585,9 @@ private extension WordPressAuthenticationManager {
     /// We'll pre-switch to the users selected tab before the login flow dismisses
     private func handleOnboardingQuestionsWillDismiss(option: OnboardingOption) {
         if option == .reader {
-            WPTabBarController.sharedInstance().showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReaderTab()
         } else if option == .notifications {
-            WPTabBarController.sharedInstance().showNotificationsTab()
+            RootViewCoordinator.sharedPresenter.showNotificationsTab()
         }
     }
 

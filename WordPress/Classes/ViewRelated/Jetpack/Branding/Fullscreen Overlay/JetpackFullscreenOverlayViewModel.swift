@@ -14,7 +14,8 @@ protocol JetpackFullscreenOverlayViewModel {
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
-    var onDismiss: JetpackOverlayDismissCallback? { get }
+    var onWillDismiss: JetpackOverlayDismissCallback? { get }
+    var onDidDismiss: JetpackOverlayDismissCallback? { get }
 
     func trackOverlayDisplayed()
     func trackLearnMoreTapped()

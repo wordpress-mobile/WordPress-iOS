@@ -1,7 +1,7 @@
 import Foundation
 
 /// A class containing convenience methods for the the Jetpack features removal experience
-class JetpackFeaturesRemovalCoordinator {
+class JetpackFeaturesRemovalCoordinator: NSObject {
 
     /// Enum descibing the current phase of the Jetpack features removal
     enum GeneralPhase: String {
@@ -107,45 +107,80 @@ class JetpackFeaturesRemovalCoordinator {
         return formatter.date(from: dateString)
     }
 
+    /// Used to determine if the Jetpack features are enabled based on the removal phase.
+    @objc
+    static func jetpackFeaturesEnabled() -> Bool {
+        switch generalPhase() {
+        case .four, .newUsers:
+            return false
+        default:
+            return true
+        }
+    }
+
     /// Used to display feature-specific or feature-collection overlays.
     /// - Parameters:
+    ///   - viewController: The view controller where the overlay should be presented in.
     ///   - source: The source that triggers the display of the overlay.
-    ///   - viewController: View controller where the overlay should be presented in.
-    static func presentOverlayIfNeeded(from source: OverlaySource, in viewController: UIViewController) {
+    ///   - forced: Pass `true` to override the overlay frequency logic. Default is `false`.
+    ///   - fullScreen: If `true` and not on iPad, the fullscreen modal presentation type is used.
+    ///   Else the form sheet type is used. Default is `false`.
+    ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
+    ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
+    static func presentOverlayIfNeeded(in viewController: UIViewController,
+                                       source: OverlaySource,
+                                       forced: Bool = false,
+                                       fullScreen: Bool = false,
+                                       onWillDismiss: JetpackOverlayDismissCallback? = nil,
+                                       onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
-        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow() else {
+        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
+            onWillDismiss?()
+            onDidDismiss?()
             return
         }
-        createAndPresentOverlay(with: viewModel, in: viewController)
+        createAndPresentOverlay(with: viewModel, in: viewController, fullScreen: fullScreen)
         frequencyTracker.track()
     }
 
     /// Used to display Site Creation overlays.
     /// - Parameters:
-    ///   - viewController: View controller where the overlay should be presented in.
+    ///   - viewController: The view controller where the overlay should be presented in.
+    ///   - source: The source that triggers the display of the overlay.
+    ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
+    ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentSiteCreationOverlayIfNeeded(in viewController: UIViewController,
                                                    source: String,
-                                                   onDismiss: JetpackOverlayDismissCallback? = nil) {
+                                                   onWillDismiss: JetpackOverlayDismissCallback? = nil,
+                                                   onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase()
         var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase, source: source)
-        viewModel.onDismiss = onDismiss
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         guard viewModel.shouldShowOverlay else {
-            onDismiss?()
+            onWillDismiss?()
+            onDidDismiss?()
             return
         }
         createAndPresentOverlay(with: viewModel, in: viewController)
     }
 
-    private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel, in viewController: UIViewController) {
+    private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel,
+                                                in viewController: UIViewController,
+                                                fullScreen: Bool = false) {
         let overlay = JetpackFullscreenOverlayViewController(with: viewModel)
         let navigationViewController = UINavigationController(rootViewController: overlay)
-        navigationViewController.modalPresentationStyle = .formSheet
+        let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
+        navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
+
         viewController.present(navigationViewController, animated: true)
     }
 }

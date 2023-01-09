@@ -40,7 +40,7 @@ final class MigrationLoadWordPressViewModel {
             comment: "The description in the Load WordPress screen"
         )
         static let secondaryDescription = NSLocalizedString(
-            "migration.loadWordpress.description",
+            "migration.loadWordpress.secondaryDescription",
             value: "Would you like to transfer your data from the WordPress app and sign in automatically?",
             comment: "The secondary description in the Load WordPress screen"
         )

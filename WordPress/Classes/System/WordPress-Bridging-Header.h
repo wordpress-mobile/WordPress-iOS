@@ -35,6 +35,7 @@
 #import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
+#import "MenusViewController.h"
 
 #import "NavBarTitleDropdownButton.h"
 #import "NSObject+Helpers.h"
@@ -128,3 +129,5 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPAnalytics.h>
 #import <WordPressUI/UIImage+Util.h>
+
+FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

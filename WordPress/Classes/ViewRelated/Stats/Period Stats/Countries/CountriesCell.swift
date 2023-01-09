@@ -1,6 +1,6 @@
 import UIKit
 
-class CountriesCell: UITableViewCell, NibLoadable {
+class CountriesCell: StatsBaseCell, NibLoadable {
 
     // MARK: - Properties
 

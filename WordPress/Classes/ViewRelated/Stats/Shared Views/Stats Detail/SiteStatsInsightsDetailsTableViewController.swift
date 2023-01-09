@@ -140,7 +140,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: self,
                                                       detailsDelegate: self,
-                                                      referrerDelegate: self)
+                                                      referrerDelegate: self,
+                                                      viewsAndVisitorsDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -239,6 +240,8 @@ private extension SiteStatsInsightsDetailsTableViewController {
             viewModel?.refreshFileDownloads()
         case .postStatsMonthsYears, .postStatsAverageViews:
             viewModel?.refreshPostStats()
+        case .insightsViewsVisitors:
+            viewModel?.refreshViewsAndVisitorsData(date: selectedDate)
         default:
             refreshControl.endRefreshing()
         }
@@ -392,5 +395,16 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsTableHeaderDeleg
         selectedDate = newDate
         viewModel?.updateSelectedDate(newDate)
         refreshTableView()
+    }
+}
+
+// MARK: - ViewsVisitorsDelegate
+
+extension SiteStatsInsightsDetailsTableViewController: StatsInsightsViewsAndVisitorsDelegate {
+    func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) {
+        if let selectedSegment = StatsSegmentedControlData.Segment(rawValue: selectedSegmentIndex) {
+            viewModel?.updateViewsAndVisitorsSegment(selectedSegment)
+            refreshTableView()
+        }
     }
 }

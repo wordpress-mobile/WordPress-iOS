@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class UserSuggestion;
 @class SiteSuggestion;
 @class PageTemplateCategory;
+@class JetpackFeaturesRemovalCoordinator;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -76,6 +77,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureMediaDeletion,
     /// Does the blog support Stock Photos feature (free photos library)
     BlogFeatureStockPhotos,
+    /// Does the blog support Tenor feature (free GIF library)
+    BlogFeatureTenor,
     /// Does the blog support setting the homepage type and pages?
     BlogFeatureHomepageSettings,
     /// Does the blog support stories?

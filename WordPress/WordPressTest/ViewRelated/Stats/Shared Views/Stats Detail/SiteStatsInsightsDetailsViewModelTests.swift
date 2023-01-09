@@ -9,7 +9,8 @@ class SiteStatsInsightsDetailsViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: MockInsightsDelegate(),
                                                       detailsDelegate: MockDetailsDelegate(),
-                                                      referrerDelegate: MockReferrerDeletage())
+                                                      referrerDelegate: MockReferrerDeletage(),
+                                                      viewsAndVisitorsDelegate: MockViewsAndVisitorsDelegate())
 
         viewModel.fetchDataFor(statSection: StatSection.insightsAddInsight)
     }
@@ -66,6 +67,10 @@ private extension SiteStatsInsightsDetailsViewModelTests {
     class MockInsightsDelegate: SiteStatsInsightsDelegate { }
 
     class MockDetailsDelegate: SiteStatsDetailsDelegate { }
+
+    class MockViewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate {
+        func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int) {}
+    }
 
     class MockReferrerDeletage: SiteStatsReferrerDelegate {
         func showReferrerDetails(_ data: StatsTotalRowData) { }

@@ -3,8 +3,14 @@ import Foundation
 class JetpackBrandingMenuCardPresenter {
 
     struct Config {
+
+        enum CardType {
+            case compact, expanded
+        }
+
         let description: String
         let learnMoreButtonURL: String?
+        let type: CardType
     }
 
     // MARK: Private Variables
@@ -13,6 +19,9 @@ class JetpackBrandingMenuCardPresenter {
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
     private let featureFlagStore: RemoteFeatureFlagStore
+    private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
+        return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
+    }
 
     // MARK: Initializers
 
@@ -29,22 +38,48 @@ class JetpackBrandingMenuCardPresenter {
     // MARK: Public Functions
 
     func cardConfig() -> Config? {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url)
+            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+        case .four:
+            let description = Strings.phaseFourTitle
+            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url, type: .compact)
         default:
             return nil
         }
     }
 
-    func shouldShowCard() -> Bool {
+    func shouldShowTopCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .three:
+            return true
+        default:
+            return false
+        }
+    }
+
+    func shouldShowBottomCard() -> Bool {
+        guard isCardEnabled() else {
+            return false
+        }
+        switch phase {
+        case .four:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func isCardEnabled() -> Bool {
         let showCardOnDate = showCardOnDate ?? .distantPast // If not set, then return distant past so that the condition below always succeeds
         guard shouldHideCard == false, // Card not hidden
-              showCardOnDate < currentDateProvider.date(), // Interval has passed if temporarily hidden
-              let _ = cardConfig() else { // Card is enabled in the current phase
+              showCardOnDate < currentDateProvider.date() else { // Interval has passed if temporarily hidden
             return false
         }
         return true
@@ -99,23 +134,36 @@ extension JetpackBrandingMenuCardPresenter {
 }
 
 private extension JetpackBrandingMenuCardPresenter {
+
+    // MARK: Dynamic Keys
+
+    var shouldHideCardKey: String {
+        return "\(Constants.shouldHideCardKey)-\(phase.rawValue)"
+    }
+
+    var showCardOnDateKey: String {
+        return "\(Constants.showCardOnDateKey)-\(phase.rawValue)"
+    }
+
+    // MARK: Persistence Variables
+
     var shouldHideCard: Bool {
         get {
-            persistenceStore.bool(forKey: Constants.shouldHideCardKey)
+            persistenceStore.bool(forKey: shouldHideCardKey)
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.shouldHideCardKey)
+            persistenceStore.set(newValue, forKey: shouldHideCardKey)
         }
     }
 
     var showCardOnDate: Date? {
         get {
-            persistenceStore.object(forKey: Constants.showCardOnDateKey) as? Date
+            persistenceStore.object(forKey: showCardOnDateKey) as? Date
         }
 
         set {
-            persistenceStore.set(newValue, forKey: Constants.showCardOnDateKey)
+            persistenceStore.set(newValue, forKey: showCardOnDateKey)
         }
     }
 }
@@ -133,5 +181,8 @@ private extension JetpackBrandingMenuCardPresenter {
         static let phaseThreeDescription = NSLocalizedString("jetpack.menuCard.description",
                                                            value: "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.",
                                                            comment: "Description inside a menu card communicating that features are moving to the Jetpack app.")
+        static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
+                                                           value: "Switch to Jetpack",
+                                                           comment: "Title of a button prompting users to switch to the Jetpack app.")
     }
 }

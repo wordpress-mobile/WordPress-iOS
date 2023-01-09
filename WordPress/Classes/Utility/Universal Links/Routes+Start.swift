@@ -9,12 +9,13 @@ struct StartRoute: Route, NavigationAction {
         return self
     }
 
+    let jetpackPowered: Bool = true
+
     func perform(_ values: [String: String], source: UIViewController?, router: LinkRouter) {
-        guard AccountHelper.isDotcomAvailable(),
-              let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
+        guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
-        coordinator.showSiteCreation()
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showSiteCreation()
     }
 }

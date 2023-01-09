@@ -1,5 +1,6 @@
 import UIKit
 
+// TODO: Consider completely removing all Quick Action logic
 extension BlogDetailsViewController {
 
     @objc func quickActionsSectionViewModel() -> BlogDetailsSection {

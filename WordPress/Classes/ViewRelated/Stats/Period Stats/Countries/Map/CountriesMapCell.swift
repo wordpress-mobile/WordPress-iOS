@@ -1,6 +1,6 @@
 import UIKit
 
-class CountriesMapCell: UITableViewCell, NibLoadable, Accessible {
+class CountriesMapCell: StatsBaseCell, NibLoadable, Accessible {
     private let countriesMapView = CountriesMapView.loadFromNib()
     private typealias Style = WPStyleGuide.Stats
 

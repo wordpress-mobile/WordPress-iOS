@@ -89,7 +89,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID = siteID,
               let blog = Blog.lookup(withID: siteID, in: mainContext),
-              let backupListViewController = BackupListViewController(blog: blog)
+              let backupListViewController = BackupListViewController.withJPBannerForBlog(blog)
         else {
             throw DisplayError.missingParameter
         }
@@ -105,7 +105,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
-        let scanViewController = JetpackScanViewController(blog: blog)
+        let scanViewController = JetpackScanViewController.withJPBannerForBlog(blog)
         controller?.navigationController?.pushViewController(scanViewController, animated: true)
     }
 

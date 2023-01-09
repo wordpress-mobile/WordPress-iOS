@@ -347,7 +347,7 @@ import Combine
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .reader, in: self)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .reader)
 
         syncIfAppropriate()
     }
@@ -506,7 +506,9 @@ import Combine
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let bannerView = JetpackBannerView() { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
+        let bannerView = JetpackBannerView()
+        bannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
         }
@@ -798,7 +800,7 @@ import Combine
     }
 
     private func showFollowing() {
-        WPTabBarController.sharedInstance().switchToFollowedSites()
+        RootViewCoordinator.sharedPresenter.switchToFollowedSites()
     }
 
     // MARK: - Blocking
@@ -1587,7 +1589,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     private func resetReaderDiscoverNudgeFlow() {
         shouldShowCommentSpotlight = false
-        WPTabBarController.sharedInstance().resetReaderDiscoverNudgeFlow()
+        RootViewCoordinator.sharedPresenter.resetReaderDiscoverNudgeFlow()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
