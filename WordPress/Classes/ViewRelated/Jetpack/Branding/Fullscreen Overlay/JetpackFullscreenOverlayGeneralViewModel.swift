@@ -240,7 +240,12 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var onDidDismiss: JetpackOverlayDismissCallback?
 
     var secondaryView: UIView? {
-        return nil
+        switch phase {
+        case .newUsers:
+            return JetpackNewUsersOverlaySecondaryView()
+        default:
+            return nil
+        }
     }
 
     var isCompact: Bool {
