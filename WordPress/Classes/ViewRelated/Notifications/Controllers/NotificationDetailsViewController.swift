@@ -112,12 +112,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
-    /// Service to access the currently authenticated user
-    ///
-    lazy var accountService: AccountService = {
-        return AccountService(managedObjectContext: mainContext)
-    }()
-
     lazy var router: NotificationContentRouter = {
         return makeRouter()
     }()
