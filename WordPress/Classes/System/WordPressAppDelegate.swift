@@ -417,11 +417,8 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func configureAnalytics() {
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        analytics = WPAppAnalytics(accountService: accountService,
-                                   lastVisibleScreenBlock: { [weak self] in
-                                    return self?.currentlySelectedScreen
+        analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
+            return self?.currentlySelectedScreen
         })
     }
 
