@@ -10,7 +10,7 @@ class AccountServiceTests: CoreDataTestCase {
         super.setUp()
 
         contextManager.useAsSharedInstance(untilTestFinished: self)
-        accountService = AccountService(managedObjectContext: contextManager.mainContext)
+        accountService = AccountService(coreDataStack: contextManager)
     }
 
     override func tearDown() {
@@ -29,12 +29,12 @@ class AccountServiceTests: CoreDataTestCase {
     }
 
     func testCreateWordPressComAccountUUID() {
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertNotNil(account.uuid, "UUID should be set")
     }
 
     func testSetDefaultWordPressComAccountCheckUUID() {
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
@@ -48,7 +48,7 @@ class AccountServiceTests: CoreDataTestCase {
     }
 
     func testGetDefaultWordPressComAccount() throws {
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
@@ -62,16 +62,16 @@ class AccountServiceTests: CoreDataTestCase {
     }
 
     func testNumberOfAccountsOneAccount() throws {
-        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        _ = createAccount(withUsername: "username", authToken: "authtoken")
 
         XCTAssertEqual(try WPAccount.lookupNumberOfAccounts(in: contextManager.mainContext), 1, "There should be one account")
     }
 
     func testNumberOfAccountsTwoAccounts() {
-        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
-        _ = accountService.createOrUpdateAccount(withUsername: "username2", authToken: "authtoken2")
+        _ = createAccount(withUsername: "username", authToken: "authtoken")
+        _ = createAccount(withUsername: "username2", authToken: "authtoken2")
 
-        XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
+        XCTAssertEqual(accountService.numberOfAccounts(), 2, "There should be two accounts")
     }
 
     func testRemoveDefaultWordPressComAccountNoAccount() {
@@ -83,7 +83,7 @@ class AccountServiceTests: CoreDataTestCase {
     func testRemoveDefaultWordPressComAccountAccountSet() throws {
         accountService.removeDefaultWordPressComAccount()
 
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
@@ -91,30 +91,30 @@ class AccountServiceTests: CoreDataTestCase {
         accountService.removeDefaultWordPressComAccount()
 
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext), "No default account should be set")
-        XCTAssertTrue(account.isFault, "Account should be deleted")
+        try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 0)
     }
 
     func testCreateAccountSetsDefaultAccount() throws {
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext))
 
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
     }
 
     func testCreateAccountDoesntReplaceDefaultAccount() throws {
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext))
 
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
 
-        _ = accountService.createOrUpdateAccount(withUsername: "another", authToken: "authtoken")
+        _ = createAccount(withUsername: "another", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
     }
 
     func testRestoreDefaultAccount() throws {
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext))
 
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
 
         UserSettings.defaultDotComUUID = nil
@@ -126,11 +126,11 @@ class AccountServiceTests: CoreDataTestCase {
     func testAccountUsedForJetpackIsNotRestored() throws {
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext))
 
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        let account = createAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertTrue(account.isDefaultWordPressComAccount)
 
         let context = contextManager.mainContext
-        let jetpackAccount = accountService.createOrUpdateAccount(withUsername: "jetpack", authToken: "jetpack")
+        let jetpackAccount = createAccount(withUsername: "jetpack", authToken: "jetpack")
         let blog = Blog(context: context)
         blog.xmlrpc = "http://test.blog/xmlrpc.php"
         blog.username = "admin"
@@ -147,7 +147,7 @@ class AccountServiceTests: CoreDataTestCase {
         XCTAssertNil(try WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext))
     }
 
-    func testMergeMultipleDuplicateAccounts() {
+    func testMergeMultipleDuplicateAccounts() throws {
         let context = contextManager.mainContext
         let account1 = WPAccount(context: context)
         account1.userID = 1
@@ -171,23 +171,23 @@ class AccountServiceTests: CoreDataTestCase {
         account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
         account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
         account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
-        contextManager.save(context)
+        contextManager.saveContextAndWait(context)
+
+        try XCTAssertEqual(context.count(for: WPAccount.fetchRequest()), 3)
 
         accountService.setDefaultWordPressComAccount(account1)
 
         accountService.mergeDuplicatesIfNecessary()
-        contextManager.save(context)
 
-        XCTAssertFalse(account1.isDeleted)
-        XCTAssertTrue(account2.isDeleted)
-        XCTAssertTrue(account3.isDeleted)
+        try XCTAssertEqual(context.count(for: WPAccount.fetchRequest()), 1)
+        try XCTAssertEqual((context.fetch(WPAccount.fetchRequest()).first as? WPAccount)?.uuid, account1.uuid)
 
         let blogs = (try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []
-        XCTAssertTrue(blogs.count == 6)
+        XCTAssertEqual(blogs.count, 6)
         XCTAssertTrue(account1.blogs.count == 6)
     }
 
-    func testMergeDuplicateAccountsKeepingNonDups() {
+    func testMergeDuplicateAccountsKeepingNonDups() throws {
         let context = contextManager.mainContext
         let account1 = WPAccount(context: context)
         account1.userID = 1
@@ -210,15 +210,21 @@ class AccountServiceTests: CoreDataTestCase {
         account1.addBlogs(createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
         account2.addBlogs(createMockBlogs(withIDs: [1, 2, 3], in: context))
         account3.addBlogs(createMockBlogs(withIDs: [4, 5, 6], in: context))
-        contextManager.save(context)
+        contextManager.saveContextAndWait(context)
         accountService.setDefaultWordPressComAccount(account1)
+        try XCTAssertEqual(context.count(for: WPAccount.fetchRequest()), 3)
 
         accountService.mergeDuplicatesIfNecessary()
-        contextManager.save(context)
+        contextManager.saveContextAndWait(context)
+        try XCTAssertEqual(context.count(for: WPAccount.fetchRequest()), 2)
 
-        XCTAssertFalse(account1.isDeleted)
-        XCTAssertTrue(account2.isDeleted)
-        XCTAssertFalse(account3.isDeleted)
+        let accountIds = try context.fetch(WPAccount.fetchRequest()).compactMap { ($0 as? WPAccount)?.uuid }
+        XCTAssertEqual(Set(accountIds), Set([account1.uuid, account3.uuid]))
+    }
+
+    func createAccount(withUsername username: String, authToken: String) -> WPAccount {
+        let id = accountService.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        return try! mainContext.existingObject(with: id) as! WPAccount
     }
 
     func createMockBlogs(withIDs IDs: [Int], in context: NSManagedObjectContext) -> Set<Blog> {
@@ -277,7 +283,7 @@ class AccountServiceTests: CoreDataTestCase {
         }
 
         let completed = expectation(description: "User details update request completed")
-        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token", in: mainContext)
+        let account = createAccount(withUsername: "username", authToken: "token")
         accountService.updateUserDetails(for: account, success: { completed.fulfill() }, failure: { _ in completed.fulfill() })
         wait(for: [completed], timeout: 1.0)
 

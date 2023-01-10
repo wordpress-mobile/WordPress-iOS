@@ -77,11 +77,9 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  
  @param username the WordPress.com account's username
  @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
- @return a WordPress.com `WPAccount` object for the given `username`
+ @return The ID of the WordPress.com `WPAccount` object for the given `username`
  */
-- (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
-                                       authToken:(NSString *)authToken
-                                       inContext:(NSManagedObjectContext *)context;
+- (NSManagedObjectID *)createOrUpdateAccountWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
 - (NSUInteger)numberOfAccounts;
 

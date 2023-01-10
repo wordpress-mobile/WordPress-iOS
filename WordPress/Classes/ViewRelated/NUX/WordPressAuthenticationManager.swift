@@ -460,10 +460,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// the new DefaultWordPressComAccount.
     ///
     func createdWordPressComAccount(username: String, authToken: String) {
+        let service = AccountService(coreDataStack: ContextManager.sharedInstance())
         let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-
-        let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        let accountID = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        guard let account = try? context.existingObject(with: accountID) as? WPAccount else {
+            DDLogError("Failed to find the account")
+            return
+        }
         service.setDefaultWordPressComAccount(account)
     }
 

@@ -15,8 +15,7 @@ class WordPressComSyncService {
     ///     - onFailure: Closure to be executed upon failure.
     ///
     func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         accountService.createOrUpdateAccount(withAuthToken: authToken, success: { account in
             self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
         }, failure: { error in

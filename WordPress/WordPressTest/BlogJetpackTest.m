@@ -75,17 +75,15 @@
 }
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
-    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
+    AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:self.testContextManager];
+    NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+    WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
-    [self waitForExpectations:@[saveExpectation] timeout:2.0];
     WPAccount * defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
-    saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
     [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
-    [self waitForExpectations:@[saveExpectation] timeout:2.0];
+
     defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.testContextManager.mainContext];;
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
@@ -99,11 +97,10 @@
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
-    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
-
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:self.testContextManager];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+    NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+    WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"https://dotcom1.wordpress.com/xmlrpc.php";
@@ -125,9 +122,6 @@
                                           @"readonly": @YES,
                                           },
                                   };
-
-    // Wait on the merge to be completed
-    [self waitForExpectations:@[saveExpectation] timeout:2.0];
 
     // test.blog + wp.com + jetpack
     XCTAssertEqual(1, [accountService numberOfAccounts]);
@@ -171,11 +165,10 @@
                                                 statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
-    XCTestExpectation *saveExpectation = [self expectationForNotification:NSManagedObjectContextDidSaveNotification object:self.testContextManager.mainContext handler:nil];
-
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:self.testContextManager];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+    NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+    WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
@@ -186,9 +179,6 @@
     jetpackBlog.username = @"jetpack";
     jetpackBlog.xmlrpc = @"https://jetpack.example.com/xmlrpc.php";
     jetpackBlog.url = @"https://jetpack.example.com/";
-
-    // Wait on the merge to be completed
-    [self waitForExpectations:@[saveExpectation] timeout:2.0];
 
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)

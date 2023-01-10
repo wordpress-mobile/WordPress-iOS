@@ -151,20 +151,28 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 /// @name Account creation
 ///-----------------------
 
-- (WPAccount *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
+- (NSManagedObjectID *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken
 {
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    if (account) {
-        // Even if we find an account via its userID we should still update
-        // its authtoken, otherwise the Authenticator's authtoken fixer won't
-        // work.
-        account.authToken = authToken;
+    NSManagedObjectID * __block accountObjectID = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        accountObjectID = [[WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext] objectID];
+    }];
+
+    if (accountObjectID) {
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            WPAccount *account = [context existingObjectWithID:accountObjectID error:nil];
+            // Even if we find an account via its userID we should still update
+            // its authtoken, otherwise the Authenticator's authtoken fixer won't
+            // work.
+            account.authToken = authToken;
+        }];
     } else {
-        NSString *username = remoteUser.username;
-        account = [self createOrUpdateAccountWithUsername:username authToken:authToken];
+        accountObjectID = [self createOrUpdateAccountWithUsername:remoteUser.username authToken:authToken];
     }
-    [self updateAccount:account withUserDetails:remoteUser];
-    return account;
+
+    [self updateAccount:accountObjectID withUserDetails:remoteUser];
+
+    return accountObjectID;
 }
 
 /**
@@ -176,31 +184,36 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
  @param username the WordPress.com account's username
  @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
- @return a WordPress.com `WPAccount` object for the given `username`
+ @return The ID of the WordPress.com `WPAccount` object for the given `username`
  @see createOrUpdateWordPressComAccountWithUsername:password:authToken:
  */
-- (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
-                                       authToken:(NSString *)authToken
+- (NSManagedObjectID *)createOrUpdateAccountWithUsername:(NSString *)username authToken:(NSString *)authToken
 {
-    WPAccount *account = [WPAccount lookupWithUsername:username context:self.managedObjectContext];
+    NSManagedObjectID * __block objectID = nil;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *account = [WPAccount lookupWithUsername:username context:context];
+        if (!account) {
+            account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+            account.uuid = [[NSUUID new] UUIDString];
+            account.username = username;
+        }
+        account.authToken = authToken;
+        [context obtainPermanentIDsForObjects:@[account] error:nil];
+        objectID = account.objectID;
+    }];
 
-    if (!account) {
-        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
-        account.uuid = [[NSUUID new] UUIDString];
-        account.username = username;
-    }
-    account.authToken = authToken;
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+        if (!defaultAccount) {
+            WPAccount *account = [self.coreDataStack.mainContext existingObjectWithID:objectID error:nil];
+            [self setDefaultWordPressComAccount:account];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WPAnalytics refreshMetadata];
+            });
+        }
+    }];
 
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    if (!defaultAccount) {
-        [self setDefaultWordPressComAccount:account];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [WPAnalytics refreshMetadata];
-        });
-    }
-
-    return account;
+    return objectID;
 }
 
 - (NSUInteger)numberOfAccounts
@@ -307,7 +320,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:authToken userAgent:[WPUserAgent defaultUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api];
     [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
-        WPAccount *account = [self createOrUpdateAccountWithUserDetails:remoteUser authToken:authToken];
+        NSManagedObjectID *objectID = [self createOrUpdateAccountWithUserDetails:remoteUser authToken:authToken];
+        WPAccount * __block account = nil;
+        [self.coreDataStack.mainContext performBlockAndWait:^{
+            account = [self.coreDataStack.mainContext existingObjectWithID:objectID error:nil];
+        }];
         success(account);
     } failure:^(NSError *error) {
         failure(error);
