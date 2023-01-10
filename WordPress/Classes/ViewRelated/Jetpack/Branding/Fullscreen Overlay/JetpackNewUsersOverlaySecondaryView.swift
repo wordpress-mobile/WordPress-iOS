@@ -21,19 +21,22 @@ class JetpackNewUsersOverlaySecondaryView: UIView {
     }()
 
     private lazy var statsDetails: FeatureDetailsView = {
-        let view = FeatureDetailsView()
+        let icon = UIImage(named: Constants.statsIcon)
+        let view = FeatureDetailsView(image: icon, title: Strings.statsTitle, subtitle: Strings.statsSubtitle)
         view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
 
     private lazy var readerDetails: FeatureDetailsView = {
-        let view = FeatureDetailsView()
+        let icon = UIImage(named: Constants.readerIcon)
+        let view = FeatureDetailsView(image: icon, title: Strings.readerTitle, subtitle: Strings.readerSubtitle)
         view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
 
     private lazy var notificationsDetails: FeatureDetailsView = {
-        let view = FeatureDetailsView()
+        let icon = UIImage(named: Constants.notificationsIcon)
+        let view = FeatureDetailsView(image: icon, title: Strings.notificationsTitle, subtitle: Strings.notificationsSubtitle)
         view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
@@ -64,6 +67,12 @@ private extension JetpackNewUsersOverlaySecondaryView {
         static let rowHeight: CGFloat = 60
         static let iconImageViewSize: CGFloat = 30
         static let labelsAndIconSpacing: CGFloat = 14
+    }
+
+    enum Constants {
+        static let statsIcon = "jp-stats-icon"
+        static let readerIcon = "jp-reader-icon"
+        static let notificationsIcon = "jp-notif-icon"
     }
 
     enum Strings {
@@ -124,7 +133,7 @@ private extension JetpackNewUsersOverlaySecondaryView {
 
         // MARK: Initializers
 
-        init(image: UIImage, title: String, subtitle: String) {
+        init(image: UIImage?, title: String, subtitle: String) {
             super.init(frame: .zero)
             configureView(image: image, title: title, subtitle: subtitle)
         }
@@ -135,12 +144,12 @@ private extension JetpackNewUsersOverlaySecondaryView {
 
         // MARK: Helpers
 
-        private func configureView(image: UIImage, title: String, subtitle: String) {
+        private func configureView(image: UIImage?, title: String, subtitle: String) {
             setupContent(image: image, title: title, subtitle: subtitle)
             setupConstraints()
         }
 
-        private func setupContent(image: UIImage, title: String, subtitle: String) {
+        private func setupContent(image: UIImage?, title: String, subtitle: String) {
             iconImageView.image = image
             titleLabel.text = title
             subtitleLabel.text = subtitle
