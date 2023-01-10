@@ -263,22 +263,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return YES;
 }
 
-- (WPAccount *)accountWithUUID:(NSString *)uuid
-{
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-    fetchRequest.predicate = predicate;
-
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (fetchedObjects.count > 0) {
-        WPAccount *defaultAccount = fetchedObjects.firstObject;
-        defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
-        return defaultAccount;
-    }
-    return nil;
-}
-
 - (void)restoreDisassociatedAccountIfNecessary
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
