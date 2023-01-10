@@ -124,9 +124,9 @@ private extension JetpackNewUsersOverlaySecondaryView {
 
         // MARK: Initializers
 
-        init() {
+        init(image: UIImage, title: String, subtitle: String) {
             super.init(frame: .zero)
-            configureView()
+            configureView(image: image, title: title, subtitle: subtitle)
         }
 
         required init?(coder: NSCoder) {
@@ -135,15 +135,15 @@ private extension JetpackNewUsersOverlaySecondaryView {
 
         // MARK: Helpers
 
-        private func configureView() {
-            setupContent()
+        private func configureView(image: UIImage, title: String, subtitle: String) {
+            setupContent(image: image, title: title, subtitle: subtitle)
             setupConstraints()
         }
 
-        private func setupContent() {
-            iconImageView.image = UIImage(named: "icon-jetpack")
-            titleLabel.text = "Lorum Ipsum"
-            subtitleLabel.text = "Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum"
+        private func setupContent(image: UIImage, title: String, subtitle: String) {
+            iconImageView.image = image
+            titleLabel.text = title
+            subtitleLabel.text = subtitle
         }
 
         private func setupConstraints() {
