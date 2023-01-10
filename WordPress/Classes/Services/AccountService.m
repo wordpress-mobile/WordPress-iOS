@@ -131,7 +131,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)requestVerificationEmail:(void (^)(void))success failure:(void (^)(NSError * _Nonnull))failure
 {
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
+
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote requestVerificationEmailWithSucccess:^{
         if (success) {
