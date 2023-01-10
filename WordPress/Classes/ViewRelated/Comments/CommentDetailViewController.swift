@@ -15,8 +15,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
-    private let accountService: AccountService
-
     private let containerStackView = UIStackView()
     private let tableView = UITableView(frame: .zero, style: .plain)
 
@@ -241,7 +239,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -254,7 +251,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
         super.init(nibName: nil, bundle: nil)
     }
 
