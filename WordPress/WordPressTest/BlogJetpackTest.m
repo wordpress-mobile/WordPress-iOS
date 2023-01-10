@@ -124,7 +124,7 @@
                                   };
 
     // test.blog + wp.com + jetpack
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com
@@ -141,7 +141,7 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)
@@ -180,7 +180,7 @@
     jetpackBlog.xmlrpc = @"https://jetpack.example.com/xmlrpc.php";
     jetpackBlog.url = @"https://jetpack.example.com/";
 
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [Blog countInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com
@@ -195,7 +195,7 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     // test.blog + wp.com + jetpack (wpcc)

@@ -111,6 +111,19 @@ public extension WPAccount {
         return try context.count(for: fetchRequest)
     }
 
+    /// Lookup all the `WPAccount` objects in the given `context`.
+    ///
+    /// If none exist, this method returns empty array.
+    ///
+    /// - Parameters:
+    ///   - context: An NSManagedObjectContext that may or may not contain `WPAccount` objects.
+    /// - Returns: All `WPAccount` objects in the given `context`.
+    ///
+    static func lookupAllAccounts(in context: NSManagedObjectContext) throws -> [WPAccount] {
+        let fetchRequest = NSFetchRequest<Self>(entityName: WPAccount.entityName())
+        return try context.fetch(fetchRequest)
+    }
+
     // MARK: - Objective-C Compatibility Wrappers
 
     /// An Objective-C wrapper around the `lookupDefaultWordPressComAccount` method.
@@ -129,6 +142,15 @@ public extension WPAccount {
     @objc(lookupNumberOfAccountsInContext:)
     static func objc_lookupNumberOfAccounts(in context: NSManagedObjectContext) -> Int {
         return (try? lookupNumberOfAccounts(in: context)) ?? 0
+    }
+
+    /// An Objective-C wrapper around the `lookupAllAccounts(in:)` method.
+    ///
+    /// Prefer using `lookupAllAccounts(in:)` directly
+    @available(swift, obsoleted: 1.0)
+    @objc(lookupAllAccountsInContext:)
+    static func objc_lookupAllAccounts(in context: NSManagedObjectContext) -> [WPAccount] {
+        return (try? lookupAllAccounts(in: context)) ?? []
     }
 
     /// An Objective-C wrapper around the `lookup(withUsername:context:)` method.

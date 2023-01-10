@@ -8,7 +8,7 @@ extension AccountService {
                 return
             }
 
-            let accounts = self.allAccounts(in: context)
+            let accounts = (try? WPAccount.lookupAllAccounts(in: context)) ?? []
             let accountGroups = Dictionary(grouping: accounts) { $0.userID }
             for group in accountGroups.values where group.count > 1 {
                 self.mergeDuplicateAccounts(accounts: group, in: context)

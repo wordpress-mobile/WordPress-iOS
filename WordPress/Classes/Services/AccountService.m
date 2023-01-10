@@ -216,31 +216,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return objectID;
 }
 
-- (NSUInteger)numberOfAccounts
-{
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.managedObjectContext]];
-    [request setIncludesSubentities:NO];
-
-    NSError *error;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
-    if (count == NSNotFound) {
-        count = 0;
-    }
-    return count;
-}
-
-- (NSArray<WPAccount *> *)allAccounts
-{
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        return @[];
-    }
-    return fetchedObjects;
-}
-
 /**
  Checks an account to see if it is just used to connect to Jetpack.
 
@@ -272,7 +247,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 
     // Attempt to restore a default account that has somehow been disassociated.
-    WPAccount *account = [self findDefaultAccountCandidate];
+    WPAccount *account = [self findDefaultAccountCandidateFromAccounts:[WPAccount lookupAllAccountsInContext:self.coreDataStack.mainContext]];
     if (account) {
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
@@ -281,10 +256,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 }
 
-- (WPAccount *)findDefaultAccountCandidate
+- (WPAccount *)findDefaultAccountCandidateFromAccounts:(NSArray *)allAccounts
 {
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO];
-    NSArray *accounts = [[self allAccounts] sortedArrayUsingDescriptors:@[sort]];
+    NSArray *accounts = [allAccounts sortedArrayUsingDescriptors:@[sort]];
 
     for (WPAccount *account in accounts) {
         // Skip accounts that were likely added to Jetpack-connected self-hosted

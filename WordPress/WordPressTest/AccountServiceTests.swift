@@ -17,16 +17,7 @@ class AccountServiceTests: CoreDataTestCase {
     override func tearDown() {
         super.tearDown()
 
-        deleteTestAccounts()
         accountService = nil
-    }
-
-    func deleteTestAccounts() {
-        let context = contextManager.mainContext
-        for account in accountService.allAccounts() {
-            context.delete(account)
-        }
-        contextManager.save(context)
     }
 
     func testCreateWordPressComAccountUUID() {
@@ -68,11 +59,11 @@ class AccountServiceTests: CoreDataTestCase {
         XCTAssertEqual(try WPAccount.lookupNumberOfAccounts(in: contextManager.mainContext), 1, "There should be one account")
     }
 
-    func testNumberOfAccountsTwoAccounts() {
+    func testNumberOfAccountsTwoAccounts() throws {
         _ = createAccount(withUsername: "username", authToken: "authtoken")
         _ = createAccount(withUsername: "username2", authToken: "authtoken2")
 
-        XCTAssertEqual(accountService.numberOfAccounts(), 2, "There should be two accounts")
+        try XCTAssertEqual(WPAccount.lookupNumberOfAccounts(in: mainContext), 2, "There should be two accounts")
     }
 
     func testRemoveDefaultWordPressComAccountNoAccount() {

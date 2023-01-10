@@ -81,22 +81,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (NSManagedObjectID *)createOrUpdateAccountWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
-- (NSUInteger)numberOfAccounts;
-
-/**
- Returns all accounts currently existing in the main context.
-
- @return An array of WPAccounts.
- */
-- (NSArray<WPAccount *> *)allAccounts;
-
-/**
- Returns all accounts currently existing in core data.
-
- @return An array of WPAccounts.
- */
-- (NSArray<WPAccount *> *)allAccountsInContext:(NSManagedObjectContext *)context;
-
 /**
  Updates user details including username, email, userID, avatarURL, and default blog.
 
