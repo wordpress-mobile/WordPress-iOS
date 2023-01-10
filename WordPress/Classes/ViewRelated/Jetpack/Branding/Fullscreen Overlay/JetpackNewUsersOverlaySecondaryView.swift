@@ -8,6 +8,7 @@ class JetpackNewUsersOverlaySecondaryView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Metrics.stackViewSpacing
         stackView.directionalLayoutMargins = Metrics.stackViewLayoutMargins
@@ -23,21 +24,18 @@ class JetpackNewUsersOverlaySecondaryView: UIView {
     private lazy var statsDetails: FeatureDetailsView = {
         let icon = UIImage(named: Constants.statsIcon)
         let view = FeatureDetailsView(image: icon, title: Strings.statsTitle, subtitle: Strings.statsSubtitle)
-        view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
 
     private lazy var readerDetails: FeatureDetailsView = {
         let icon = UIImage(named: Constants.readerIcon)
         let view = FeatureDetailsView(image: icon, title: Strings.readerTitle, subtitle: Strings.readerSubtitle)
-        view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
 
     private lazy var notificationsDetails: FeatureDetailsView = {
         let icon = UIImage(named: Constants.notificationsIcon)
         let view = FeatureDetailsView(image: icon, title: Strings.notificationsTitle, subtitle: Strings.notificationsSubtitle)
-        view.heightAnchor.constraint(equalToConstant: Metrics.rowHeight).isActive = true
         return view
     }()
 
@@ -133,6 +131,7 @@ private extension JetpackNewUsersOverlaySecondaryView {
 
             // Subtitle Label
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+            subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
             subtitleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor,
                                                 constant: Metrics.labelsAndIconSpacing).isActive = true
             subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -144,7 +143,6 @@ private extension JetpackNewUsersOverlaySecondaryView {
     enum Metrics {
         static let stackViewSpacing: CGFloat = 30
         static let stackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 30, leading: 0, bottom: 0, trailing: 0)
-        static let rowHeight: CGFloat = 60
         static let iconImageViewSize: CGFloat = 30
         static let labelsAndIconSpacing: CGFloat = 14
     }
