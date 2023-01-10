@@ -70,13 +70,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     [[PushNotificationsManager shared] unregisterDeviceToken];
 
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
     if (account == nil) {
         return;
     }
-    [self.managedObjectContext deleteObject:account];
 
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *accountInContext = [context existingObjectWithID:account.objectID error:nil];
+        [context deleteObject:accountInContext];
+    }];
     
     // Clear WordPress.com cookies
     NSArray<id<CookieJar>> *cookieJars = @[

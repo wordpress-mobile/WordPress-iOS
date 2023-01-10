@@ -66,8 +66,7 @@ import Foundation
 
     static func logOutDefaultWordPressComAccount() {
         // Unschedule any scheduled blogging reminders
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
+        let service = AccountService(coreDataStack: ContextManager.sharedInstance())
 
         // Unschedule any scheduled blogging reminders for the account's blogs.
         // We don't just clear all reminders, in case the user has self-hosted
