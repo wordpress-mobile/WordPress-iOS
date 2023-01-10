@@ -342,12 +342,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        mainContext.perform { [weak self] in
-            guard let self = self else {
-                return
-            }
-            AccountService(managedObjectContext: self.mainContext).mergeDuplicatesIfNecessary()
-        }
+        AccountService(coreDataStack: ContextManager.sharedInstance()).mergeDuplicatesIfNecessary()
     }
 
     private func setupPingHub() {
