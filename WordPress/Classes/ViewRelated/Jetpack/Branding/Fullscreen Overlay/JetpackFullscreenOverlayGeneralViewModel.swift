@@ -36,11 +36,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.four, .appOpen):
             return true
 
-        // New Users Phase: Show feature-collection overlays. Do not show on app-open. Features are removed by this point so they are irrelevant.
-        case (.newUsers, .appOpen):
-            return false
+        // New Users Phase: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
         case (.newUsers, _):
-            return false // TODO: Change this to true when other new users phase tasks are ready
+            return true
 
         default:
             return false
