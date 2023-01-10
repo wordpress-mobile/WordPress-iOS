@@ -238,6 +238,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var onWillDismiss: JetpackOverlayDismissCallback?
 
     var onDidDismiss: JetpackOverlayDismissCallback?
+
+    var secondaryView: UIView? {
+        return nil
+    }
 }
 
 // MARK: Helpers

@@ -74,6 +74,10 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
     var onWillDismiss: JetpackOverlayDismissCallback?
 
     var onDidDismiss: JetpackOverlayDismissCallback?
+
+    var secondaryView: UIView? {
+        return nil
+    }
 }
 
 private extension JetpackFullscreenOverlaySiteCreationViewModel {
