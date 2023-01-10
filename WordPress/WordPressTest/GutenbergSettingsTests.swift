@@ -334,6 +334,6 @@ class GutenbergSettingsTests: CoreDataTestCase {
         account.uuid = UUID().uuidString
         account.userID = NSNumber(value: userId)
         contextManager.saveContextAndWait(mainContext)
-        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 }

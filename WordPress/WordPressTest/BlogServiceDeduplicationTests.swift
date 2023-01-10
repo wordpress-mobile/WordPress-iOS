@@ -143,8 +143,9 @@ private extension BlogServiceDeduplicationTests {
 
     @discardableResult
     func createAccount() -> WPAccount {
-        let accountService = AccountService(managedObjectContext: mainContext)
-        return accountService.createOrUpdateAccount(withUsername: "twoface", authToken: "twotoken")
+        let accountService = AccountService(coreDataStack: contextManager)
+        let accountID = accountService.createOrUpdateAccount(withUsername: "twoface", authToken: "twotoken")
+        return try! contextManager.mainContext.existingObject(with: accountID) as! WPAccount
     }
 
     @discardableResult

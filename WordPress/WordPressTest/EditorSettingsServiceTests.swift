@@ -38,7 +38,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         account = ModelTestHelper.insertAccount(context: context)
         account.authToken = "auth"
         account.uuid = "uuid"
-        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 
     func testLocalSettingsMigrationPostAztec() {

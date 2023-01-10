@@ -1,6 +1,7 @@
 import UIKit
 import XCTest
 import OHHTTPStubs
+import Nimble
 @testable import WordPress
 
 class AccountServiceTests: CoreDataTestCase {
@@ -282,14 +283,13 @@ class AccountServiceTests: CoreDataTestCase {
             )
         }
 
-        let completed = expectation(description: "User details update request completed")
         let account = createAccount(withUsername: "username", authToken: "token")
-        accountService.updateUserDetails(for: account, success: { completed.fulfill() }, failure: { _ in completed.fulfill() })
-        wait(for: [completed], timeout: 1.0)
+        waitUntil { done in
+            self.accountService.updateUserDetails(for: account, success: { done() }, failure: { _ in done() })
+        }
 
-        let updated = try mainContext.existingObject(with: account.objectID) as? WPAccount
-        XCTAssertEqual(updated?.username, "jimthetester")
-        XCTAssertEqual(updated?.email, "jim@wptestaccounts.com")
+        expect(account.username).toEventually(equal("jimthetester"))
+        expect(account.email).toEventually(equal("jim@wptestaccounts.com"))
     }
 
 }

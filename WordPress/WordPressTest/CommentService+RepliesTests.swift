@@ -115,8 +115,9 @@ private extension CommentService_RepliesTests {
     }
 
     func makeAccountService() -> AccountService {
-        let service = AccountService(managedObjectContext: mainContext)
-        let account = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
+        let service = AccountService(coreDataStack: contextManager)
+        let accountID = service.createOrUpdateAccount(withUsername: "testuser", authToken: "authtoken")
+        let account = try! contextManager.mainContext.existingObject(with: accountID) as! WPAccount
         account.userID = NSNumber(value: authorID)
         service.setDefaultWordPressComAccount(account)
 

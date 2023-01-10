@@ -37,9 +37,10 @@ class DomainsServiceTests: CoreDataTestCase {
     }
 
     fileprivate func makeTestBlog() -> Blog {
-        let accountService = AccountService(managedObjectContext: mainContext)
+        let accountService = AccountService(coreDataStack: contextManager)
         let blogService = BlogService(managedObjectContext: mainContext)
-        let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
+        let accountID = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
+        let account = try! contextManager.mainContext.existingObject(with: accountID) as! WPAccount
         let blog = blogService.createBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
         blog.url = "http://dotcom1.wordpress.com/"
