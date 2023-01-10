@@ -50,6 +50,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var footnoteLabel: UILabel!
     @IBOutlet weak var learnMoreButton: UIButton!
+    @IBOutlet weak var learnMoreSuperView: UIView!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
@@ -71,6 +72,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         super.viewDidLoad()
 
         self.isModalInPresentation = true
+        addSecondaryViewIfAvailable()
         configureNavigationBar()
         applyStyles()
         setupConstraints()
@@ -83,6 +85,14 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     // MARK: Helpers
+
+    private func addSecondaryViewIfAvailable() {
+        guard let secondaryView = viewModel.secondaryView,
+              let index = contentStackView.arrangedSubviews.firstIndex(of: learnMoreSuperView) else {
+            return
+        }
+        contentStackView.insertArrangedSubview(secondaryView, at: index)
+    }
 
     private func configureNavigationBar() {
         addCloseButtonIfNeeded()
