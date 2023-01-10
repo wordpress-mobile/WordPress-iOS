@@ -560,7 +560,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     // Ensure that the account has a default blog defined (if there is one).
-    AccountService *service = [[AccountService alloc]initWithManagedObjectContext:self.managedObjectContext];
+    AccountService *service = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service updateDefaultBlogIfNeeded:account];
 
     if (completion != nil) {
