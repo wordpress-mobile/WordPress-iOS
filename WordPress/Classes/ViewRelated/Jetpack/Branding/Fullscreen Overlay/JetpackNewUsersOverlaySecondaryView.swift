@@ -112,7 +112,7 @@ private extension JetpackNewUsersOverlaySecondaryView {
         private lazy var titleLabel: UILabel = {
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+            label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
             label.textColor = .label
             label.numberOfLines = 1
             label.adjustsFontForContentSizeCategory = true
