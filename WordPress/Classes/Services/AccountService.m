@@ -398,8 +398,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)setupAppExtensionsWithDefaultAccount
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    Blog *defaultBlog   = [defaultAccount defaultBlog];
+    WPAccount * __block defaultAccount = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+    }];
+
+    Blog *defaultBlog = [defaultAccount defaultBlog];
     NSNumber *siteId    = defaultBlog.dotComID;
     NSString *blogName  = defaultBlog.settings.name;
     NSString *blogUrl   = defaultBlog.displayURL;
@@ -425,7 +429,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSString *todayExtensionBlogName = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteNameKey];
         NSString *todayExtensionBlogUrl = [sharedDefaults objectForKey:AppConfigurationWidgetStatsToday.userDefaultsSiteUrlKey];
 
-        Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.managedObjectContext];
+        Blog *todayExtensionBlog = [Blog lookupWithID:todayExtensionSiteID in:self.coreDataStack.mainContext];
         NSTimeZone *timeZone = [todayExtensionBlog timeZone];
 
         if (todayExtensionSiteID == NULL || todayExtensionBlog == nil) {

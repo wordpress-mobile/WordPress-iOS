@@ -814,7 +814,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let accountService = AccountService(managedObjectContext: mainContext)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
