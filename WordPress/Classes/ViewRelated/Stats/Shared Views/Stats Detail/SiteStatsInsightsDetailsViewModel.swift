@@ -157,7 +157,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
                 }
-                return insightsStore.fetchingFailed(for: storeQuery)
+                return periodStore.getSummary() == nil && insightsStore.fetchingFailed(for: storeQuery)
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return true
@@ -367,7 +367,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts, .insightsCommentsTotals:
-            return insightsImmuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
+            /// Comments depend both on PeriodStore and InsightsStore states
+            let status: StoreFetchingStatus = {
+                if insightsStore.allCommentsInsightStatus == .loading {
+                    return .loading
+                } else if periodStore.getSummary() != nil {
+                    return .success
+                } else {
+                    return insightsStore.allCommentsInsightStatus
+                }
+            }()
+            return insightsImmuTable(for: (.allComments, status)) {
                 var rows = [ImmuTableRow]()
                 rows.append(TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: nil))
 
