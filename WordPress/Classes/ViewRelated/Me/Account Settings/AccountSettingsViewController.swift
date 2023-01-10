@@ -52,7 +52,7 @@ private class AccountSettingsController: SettingsController {
     private let alertHelper = DestructiveAlertHelper()
 
     init(accountSettingsService: AccountSettingsService,
-         accountService: AccountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)) {
+         accountService: AccountService = AccountService(coreDataStack: ContextManager.sharedInstance())) {
         self.accountSettingsService = accountSettingsService
         self.accountService = accountService
         let notificationCenter = NotificationCenter.default

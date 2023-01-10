@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import OHHTTPStubs
 @testable import WordPress
 
 class AccountServiceTests: CoreDataTestCase {
@@ -257,6 +258,32 @@ class AccountServiceTests: CoreDataTestCase {
             self.accountService.purgeAccountIfUnused(account2)
             try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 0)
         }
+    }
+
+    func testUpdateUserDetails() throws {
+        stub(condition: isPath("/rest/v1.1/me")) { _ in
+            HTTPStubsResponse(
+                jsonObject: [
+                    "ID": 55511,
+                    "display_name": "Jim Tester",
+                    "username": "jimthetester",
+                    "email": "jim@wptestaccounts.com",
+                    "primary_blog": 55555551,
+                    "primary_blog_url": "https://test1.wordpress.com",
+                ],
+                statusCode: 200,
+                headers: nil
+            )
+        }
+
+        let completed = expectation(description: "User details update request completed")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "token", in: mainContext)
+        accountService.updateUserDetails(for: account, success: { completed.fulfill() }, failure: { _ in completed.fulfill() })
+        wait(for: [completed], timeout: 1.0)
+
+        let updated = try mainContext.existingObject(with: account.objectID) as? WPAccount
+        XCTAssertEqual(updated?.username, "jimthetester")
+        XCTAssertEqual(updated?.email, "jim@wptestaccounts.com")
     }
 
 }

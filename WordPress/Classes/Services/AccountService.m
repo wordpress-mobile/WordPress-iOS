@@ -321,12 +321,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSAssert(account, @"Account can not be nil");
     NSAssert(account.username, @"account.username can not be nil");
 
-    NSString *username = account.username;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
-        WPAccount *fetchedAccount = [WPAccount lookupWithUsername:username context:self.managedObjectContext];
-        [self updateAccount:fetchedAccount withUserDetails:remoteUser];
+        [self updateAccount:account.objectID withUserDetails:remoteUser];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
             if (success) {
@@ -358,20 +356,27 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
-- (void)updateAccount:(WPAccount *)account withUserDetails:(RemoteUser *)userDetails
+- (void)updateAccount:(NSManagedObjectID *)objectID withUserDetails:(RemoteUser *)userDetails
 {
-    account.userID = userDetails.userID;
-    account.username = userDetails.username;
-    account.email = userDetails.email;
-    account.avatarURL = userDetails.avatarURL;
-    account.displayName = userDetails.displayName;
-    account.dateCreated = userDetails.dateCreated;
-    account.emailVerified = @(userDetails.emailVerified);
-    account.primaryBlogID = userDetails.primaryBlogID;
+    NSParameterAssert(![objectID isTemporaryID]);
 
-    [self updateDefaultBlogIfNeeded: account];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *account = [context existingObjectWithID:objectID error:nil];
+        account.userID = userDetails.userID;
+        account.username = userDetails.username;
+        account.email = userDetails.email;
+        account.avatarURL = userDetails.avatarURL;
+        account.displayName = userDetails.displayName;
+        account.dateCreated = userDetails.dateCreated;
+        account.emailVerified = @(userDetails.emailVerified);
+        account.primaryBlogID = userDetails.primaryBlogID;
+    }];
 
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    // Make sure the account is saved before updating its default blog.
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *account = [context existingObjectWithID:objectID error:nil];
+        [self updateDefaultBlogIfNeeded:account];
+    }];
 }
 
 - (void)updateDefaultBlogIfNeeded:(WPAccount *)account

@@ -30,7 +30,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
     // MARK: LocalCoreDataService
 
     override init(managedObjectContext context: NSManagedObjectContext) {
-        self.accountService = AccountService(managedObjectContext: context)
+        self.accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         self.blogService = BlogService(managedObjectContext: context)
 
         let api: WordPressComRestApi

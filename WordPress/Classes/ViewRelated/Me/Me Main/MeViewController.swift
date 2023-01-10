@@ -373,8 +373,7 @@ class MeViewController: UITableViewController {
             return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
+        let service = AccountService(coreDataStack: ContextManager.sharedInstance())
         service.updateUserDetails(for: account, success: { [weak self] in
             self?.reloadViewModel()
             }, failure: { error in

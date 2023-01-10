@@ -366,7 +366,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
-        AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
+        AccountService *acctService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
     
