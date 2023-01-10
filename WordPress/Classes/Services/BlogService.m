@@ -475,8 +475,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     [self.managedObjectContext deleteObject:blog];
     [self.managedObjectContext processPendingChanges];
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (account) {
+        AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [accountService purgeAccountIfUnused:account];
     }
 

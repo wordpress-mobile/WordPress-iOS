@@ -461,17 +461,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSParameterAssert(account);
 
-    BOOL purge = NO;
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    if ([account.blogs count] == 0
-        && ![defaultAccount isEqual:account]) {
-        purge = YES;
-    }
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        BOOL purge = NO;
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+        if ([account.blogs count] == 0
+            && ![defaultAccount isEqual:account]) {
+            purge = YES;
+        }
 
-    if (purge) {
-        DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", account);
-        [self.managedObjectContext deleteObject:account];
-    }
+        if (purge) {
+            DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", account);
+            WPAccount *accountInContext = [context existingObjectWithID:account.objectID error:nil];
+            [context deleteObject:accountInContext];
+        }
+    }];
 }
 
 ///--------------------

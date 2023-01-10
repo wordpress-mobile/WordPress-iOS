@@ -234,4 +234,29 @@ class AccountServiceTests: CoreDataTestCase {
         return blogs
     }
 
+    func testPurgeAccount() throws {
+        let account1 = WPAccount(context: mainContext)
+        account1.userID = 1
+        account1.username = "username"
+        account1.authToken = "authToken"
+        account1.uuid = UUID().uuidString
+
+        let account2 = WPAccount(context: mainContext)
+        account2.userID = 1
+        account2.username = "username"
+        account2.authToken = "authToken"
+        account2.uuid = UUID().uuidString
+
+        contextManager.saveContextAndWait(mainContext)
+        try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 2)
+
+        accountService.purgeAccountIfUnused(account1)
+        try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 1)
+
+        try DispatchQueue.global().sync {
+            self.accountService.purgeAccountIfUnused(account2)
+            try XCTAssertEqual(mainContext.count(for: WPAccount.fetchRequest()), 0)
+        }
+    }
+
 }
