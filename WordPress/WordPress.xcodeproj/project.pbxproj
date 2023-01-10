@@ -1606,6 +1606,8 @@
 		805CC0BC29668986002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
 		805CC0BD29668987002941DC /* JetpackBrandedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */; };
 		805CC0BF29668A97002941DC /* MockCurrentDateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */; };
+		805CC0C1296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */; };
+		805CC0C2296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */; };
 		8067340A27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		8067340B27E3A50900ABC95E /* UIViewController+RemoveQuickStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */; };
 		806E53E127E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */; };
@@ -6934,6 +6936,7 @@
 		805CC0B8296680F7002941DC /* RemoteConfigStoreMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigStoreMock.swift; sourceTree = "<group>"; };
 		805CC0BA29668918002941DC /* JetpackBrandedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBrandedScreen.swift; sourceTree = "<group>"; };
 		805CC0BE29668A97002941DC /* MockCurrentDateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCurrentDateProvider.swift; sourceTree = "<group>"; };
+		805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNewUsersOverlaySecondaryView.swift; sourceTree = "<group>"; };
 		8067340827E3A50900ABC95E /* UIViewController+RemoveQuickStart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RemoveQuickStart.h"; sourceTree = "<group>"; };
 		8067340927E3A50900ABC95E /* UIViewController+RemoveQuickStart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RemoveQuickStart.m"; sourceTree = "<group>"; };
 		806E53E027E01C7F0064315E /* DashboardStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModel.swift; sourceTree = "<group>"; };
@@ -12533,6 +12536,7 @@
 				800035BC291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift */,
 				8000361C292468D4007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel.swift */,
 				8000361F29246956007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel+Analytics.swift */,
+				805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */,
 			);
 			path = "Fullscreen Overlay";
 			sourceTree = "<group>";
@@ -21428,6 +21432,7 @@
 				400A2C8B2217A985000A8A59 /* ClicksStatsRecordValue+CoreDataClass.swift in Sources */,
 				FAD9458E25B5678700F011B5 /* JetpackRestoreWarningCoordinator.swift in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
+				805CC0C1296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift in Sources */,
 				B5E94D151FE04815000E7C20 /* UIImageView+SiteIcon.swift in Sources */,
 				17CE77ED20C6C2F3001DEA5A /* ReaderSiteSearchService.swift in Sources */,
 				98FF6A3E23A30A250025FD72 /* QuickStartNavigationSettings.swift in Sources */,
@@ -23926,6 +23931,7 @@
 				FABB24882602FC2C00C8785C /* Route+Page.swift in Sources */,
 				FABB24892602FC2C00C8785C /* PlayIconView.swift in Sources */,
 				FABB248A2602FC2C00C8785C /* WPTabBarController+Swift.swift in Sources */,
+				805CC0C2296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift in Sources */,
 				FABB248B2602FC2C00C8785C /* LanguageSelectorViewController.swift in Sources */,
 				FABB248C2602FC2C00C8785C /* PluginListViewController.swift in Sources */,
 				FABB248D2602FC2C00C8785C /* PostCoordinator.swift in Sources */,
