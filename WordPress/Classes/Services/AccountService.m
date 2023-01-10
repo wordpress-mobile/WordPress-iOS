@@ -266,7 +266,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)restoreDisassociatedAccountIfNecessary
 {
-    if([WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext] != nil) {
+    NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
+
+    if([WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext] != nil) {
         return;
     }
 

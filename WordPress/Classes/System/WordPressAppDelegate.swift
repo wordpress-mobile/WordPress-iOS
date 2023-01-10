@@ -108,7 +108,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
+        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
         configureAnalytics()
