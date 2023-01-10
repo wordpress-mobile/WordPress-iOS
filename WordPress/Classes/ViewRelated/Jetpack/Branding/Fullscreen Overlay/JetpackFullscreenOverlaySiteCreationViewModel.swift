@@ -78,6 +78,10 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
     var secondaryView: UIView? {
         return nil
     }
+
+    var isCompact: Bool {
+        return false
+    }
 }
 
 private extension JetpackFullscreenOverlaySiteCreationViewModel {

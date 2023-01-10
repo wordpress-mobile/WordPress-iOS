@@ -242,6 +242,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var secondaryView: UIView? {
         return nil
     }
+
+    var isCompact: Bool {
+        return phase == .newUsers
+    }
 }
 
 // MARK: Helpers
