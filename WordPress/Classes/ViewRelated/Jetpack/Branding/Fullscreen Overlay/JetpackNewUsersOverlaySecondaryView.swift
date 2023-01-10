@@ -2,7 +2,7 @@ import UIKit
 
 class JetpackNewUsersOverlaySecondaryView: UIView {
 
-    // MARK: Lazy Loading View
+    // MARK: Lazy Loading Views
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
@@ -61,44 +61,9 @@ class JetpackNewUsersOverlaySecondaryView: UIView {
 }
 
 private extension JetpackNewUsersOverlaySecondaryView {
-    enum Metrics {
-        static let stackViewSpacing: CGFloat = 30
-        static let stackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 30, leading: 0, bottom: 0, trailing: 0)
-        static let rowHeight: CGFloat = 60
-        static let iconImageViewSize: CGFloat = 30
-        static let labelsAndIconSpacing: CGFloat = 14
-    }
-
-    enum Constants {
-        static let statsIcon = "jp-stats-icon"
-        static let readerIcon = "jp-reader-icon"
-        static let notificationsIcon = "jp-notif-icon"
-    }
-
-    enum Strings {
-        static let statsTitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.title",
-                                                  value: "Stats & Insights",
-                                                  comment: "Name of the Statistics feature.")
-        static let readerTitle = NSLocalizedString("Reader",
-                                                   comment: "Name of the Reader feature.")
-        static let notificationsTitle = NSLocalizedString("Notifications",
-                                                          comment: "Name of the Notifications feature.")
-        static let statsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
-                                                  value: "Watch your traffic grow with helpful insights and comprehensive stats.",
-                                                  comment: "Description of the Statistics feature.")
-        static let readerSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
-                                                      value: "Find and follow your favorite sites and communities, and share you content.",
-                                                      comment: "Description of the Reader feature.")
-        static let notificationsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
-                                                             value: "Get notifications for new comments, likes, views, and more.",
-                                                             comment: "Description of the Notifications feature.")
-    }
-}
-
-private extension JetpackNewUsersOverlaySecondaryView {
     class FeatureDetailsView: UIView {
 
-        // MARK: Lazy Loading View
+        // MARK: Lazy Loading Views
 
         private lazy var iconImageView: UIImageView = {
             let imageView = UIImageView()
@@ -172,5 +137,40 @@ private extension JetpackNewUsersOverlaySecondaryView {
                                                 constant: Metrics.labelsAndIconSpacing).isActive = true
             subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         }
+    }
+}
+
+private extension JetpackNewUsersOverlaySecondaryView {
+    enum Metrics {
+        static let stackViewSpacing: CGFloat = 30
+        static let stackViewLayoutMargins: NSDirectionalEdgeInsets = .init(top: 30, leading: 0, bottom: 0, trailing: 0)
+        static let rowHeight: CGFloat = 60
+        static let iconImageViewSize: CGFloat = 30
+        static let labelsAndIconSpacing: CGFloat = 14
+    }
+
+    enum Constants {
+        static let statsIcon = "jp-stats-icon"
+        static let readerIcon = "jp-reader-icon"
+        static let notificationsIcon = "jp-notif-icon"
+    }
+
+    enum Strings {
+        static let statsTitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.title",
+                                                  value: "Stats & Insights",
+                                                  comment: "Name of the Statistics feature.")
+        static let readerTitle = NSLocalizedString("Reader",
+                                                   comment: "Name of the Reader feature.")
+        static let notificationsTitle = NSLocalizedString("Notifications",
+                                                          comment: "Name of the Notifications feature.")
+        static let statsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
+                                                  value: "Watch your traffic grow with helpful insights and comprehensive stats.",
+                                                  comment: "Description of the Statistics feature.")
+        static let readerSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
+                                                      value: "Find and follow your favorite sites and communities, and share you content.",
+                                                      comment: "Description of the Reader feature.")
+        static let notificationsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
+                                                             value: "Get notifications for new comments, likes, views, and more.",
+                                                             comment: "Description of the Notifications feature.")
     }
 }
