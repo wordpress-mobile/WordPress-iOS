@@ -10,23 +10,26 @@ class JetpackWindowManager: WindowManager {
 
     var shouldImportMigrationData: Bool {
         return FeatureFlag.contentMigration.enabled
-        && !AccountHelper.isLoggedIn
-        && !UserPersistentStoreFactory.instance().isJPContentImportComplete
+        && !UserPersistentStoreFactory.instance().isJPMigrationFlowComplete
     }
 
     override func showUI(for blog: Blog?, animated: Bool = true) {
+        // Show migration flow if eligible
+        let shouldShowMigrationFlow = self.shouldImportMigrationData
+        let isLoggedIn = AccountHelper.isLoggedIn
+        if shouldShowMigrationFlow {
+            AccountHelper.isLoggedIn ? self.showMigrationUIIfNeeded(blog) : self.importAndShowMigrationContent(blog)
+            return
+        }
+
+        // Show App UI if user is logged in
         if AccountHelper.isLoggedIn {
-            showAppUI(for: blog)
+            self.showAppUI(for: blog)
             return
         }
 
-        guard FeatureFlag.contentMigration.enabled else {
-            showSignInUI()
-            return
-        }
-
-        self.migrationTracker.trackContentImportEligibility(eligible: shouldImportMigrationData)
-        shouldImportMigrationData ? importAndShowMigrationContent(blog) : showSignInUI()
+        // Show Sign In UI if previous conditions are false
+        self.showSignInUI()
     }
 
     func importAndShowMigrationContent(_ blog: Blog? = nil) {
@@ -40,10 +43,8 @@ class JetpackWindowManager: WindowManager {
             switch result {
             case .success:
                 self.migrationTracker.trackContentImportSucceeded()
-                UserPersistentStoreFactory.instance().isJPContentImportComplete = true
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUIIfNeeded(blog)
-                self.sendMigrationEmail()
             case .failure(let error):
                 self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
                 self.handleMigrationFailure(error)
@@ -67,13 +68,6 @@ private extension JetpackWindowManager {
     /// Checks whether the WordPress app has previously failed to export user content.
     var hasFailedExportAttempts: Bool {
         ContentMigrationCoordinator.shared.previousMigrationError != nil
-    }
-
-    func sendMigrationEmail() {
-        Task {
-            let service = try? MigrationEmailService()
-            try? await service?.sendMigrationEmail()
-        }
     }
 
     func showMigrationUIIfNeeded(_ blog: Blog?) {
