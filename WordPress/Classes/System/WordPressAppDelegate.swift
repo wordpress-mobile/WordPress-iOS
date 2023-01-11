@@ -198,9 +198,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
 #if JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
-        if let windowManager = windowManager as? JetpackWindowManager,
-           windowManager.shouldImportMigrationData {
-            windowManager.importAndShowMigrationContent()
+        if let windowManager = windowManager as? JetpackWindowManager {
+            windowManager.startMigrationFlowIfNeeded()
         }
 #endif
     }

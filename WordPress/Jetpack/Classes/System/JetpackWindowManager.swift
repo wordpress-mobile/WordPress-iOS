@@ -2,23 +2,23 @@ import Combine
 import Foundation
 
 class JetpackWindowManager: WindowManager {
-    /// receives migration flow updates in order to dismiss it when needed.
+
+    /// Receives migration flow updates in order to dismiss it when needed.
     private var cancellable: AnyCancellable?
+
+    /// Reference to the presented migration view controller.
+    ///
+    /// Used to prevent a new migration view controller instance to be presented if
+    /// an existing one is already presented.
+    private weak var migrationViewController: UIViewController?
 
     /// Migration events tracking
     private let migrationTracker = MigrationAnalyticsTracker()
 
-    var shouldImportMigrationData: Bool {
-        return FeatureFlag.contentMigration.enabled
-        && !UserPersistentStoreFactory.instance().isJPMigrationFlowComplete
-    }
-
     override func showUI(for blog: Blog?, animated: Bool = true) {
         // Show migration flow if eligible
-        let shouldShowMigrationFlow = self.shouldImportMigrationData
-        let isLoggedIn = AccountHelper.isLoggedIn
-        if shouldShowMigrationFlow {
-            AccountHelper.isLoggedIn ? self.showMigrationUIIfNeeded(blog) : self.importAndShowMigrationContent(blog)
+        let migrationStarted = startMigrationFlowIfNeeded(blog)
+        if migrationStarted {
             return
         }
 
@@ -31,36 +31,45 @@ class JetpackWindowManager: WindowManager {
         // Show Sign In UI if previous conditions are false
         self.showSignInUI()
     }
+}
 
-    func importAndShowMigrationContent(_ blog: Blog? = nil) {
-        self.migrationTracker.trackWordPressMigrationEligibility()
+// MARK: - Migration Related Properties and Methods
 
-        DataMigrator().importData() { [weak self] result in
-            guard let self else {
-                return
-            }
+extension JetpackWindowManager {
 
-            switch result {
-            case .success:
-                self.migrationTracker.trackContentImportSucceeded()
-                NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
-                self.showMigrationUIIfNeeded(blog)
-            case .failure(let error):
-                self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
-                self.handleMigrationFailure(error)
-            }
+    @discardableResult
+    func startMigrationFlowIfNeeded(_ blog: Blog? = nil) -> Bool {
+        guard shouldStartMigrationFlow else {
+            return false
         }
+        self.importAndShowMigrationContent(blog)
+        return true
     }
 }
 
-// MARK: - Private Helpers
+// MARK: Private Helpers
 
 private extension JetpackWindowManager {
 
-    var shouldShowMigrationUI: Bool {
-        return FeatureFlag.contentMigration.enabled && AccountHelper.isLoggedIn
+    /// Checks whether the migration flow should start or not.
+    ///
+    /// This flag is `False` if a compatible WordPress app is not installed or the `contentMigration` feature flag is disabled.
+    ///
+    /// Otherwise, it is `True` when the following conditions are fulfilled:
+    ///
+    ///  1. User is not logged in and the migration is not complete.
+    ///  2. User is logged in and the migration has started but still in progress. This scenario could happen if the migration flow starts but interrupted mid flow.
+    ///
+    var shouldStartMigrationFlow: Bool {
+        guard isCompatibleWordPressAppPresent && FeatureFlag.contentMigration.enabled else {
+            return false
+        }
+        let migrationState = UserPersistentStoreFactory.instance().jetpackContentMigrationState
+        let loggedIn = AccountHelper.isLoggedIn
+        return loggedIn ? migrationState == .inProgress : migrationState != .completed
     }
 
+    /// Flag indicating whether a compatible WordPress app is installed
     var isCompatibleWordPressAppPresent: Bool {
         MigrationAppDetection.getWordPressInstallationState() == .wordPressInstalledAndMigratable
     }
@@ -70,21 +79,59 @@ private extension JetpackWindowManager {
         ContentMigrationCoordinator.shared.previousMigrationError != nil
     }
 
-    func showMigrationUIIfNeeded(_ blog: Blog?) {
-        guard shouldShowMigrationUI else {
+    func importAndShowMigrationContent(_ blog: Blog? = nil) {
+        self.migrationTracker.trackWordPressMigrationEligibility()
+
+        // If the user is already logged in, this could mean they
+        // attempted the migration before but it was interrupted mid-flow.
+        //
+        // This could happen if the user starts the migration flow
+        // then closes the app in the Notification step for example.
+        //
+        // In this case, no need to import the data because it already exists.
+        if AccountHelper.isLoggedIn {
+            self.showMigrationUI(blog)
             return
         }
 
+        // If the user is not logged in, then we should import the WordPress content.
+        //
+        // Once the import is done, `AccountHelper.isLoggedIn` is true and we can safely show
+        // the Welcome screen.
+        DataMigrator().importData() { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success:
+                UserPersistentStoreFactory.instance().jetpackContentMigrationState = .inProgress
+                self.migrationTracker.trackContentImportSucceeded()
+                NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
+                self.showMigrationUI(blog)
+            case .failure(let error):
+                self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
+                self.handleMigrationFailure(error)
+            }
+        }
+    }
+
+    func showMigrationUI(_ blog: Blog?) {
+        // Check if an existing instance of the migration screen is not already presented
+        guard migrationViewController == nil || migrationViewController?.view?.window == nil else {
+            return
+        }
         let container = MigrationDependencyContainer()
         cancellable = container.migrationCoordinator.$currentStep
             .receive(on: DispatchQueue.main)
             .sink { [weak self] step in
-                guard step == .dismiss else {
+                guard let self = self, step == .dismiss else {
                     return
                 }
-                self?.switchToAppUI(for: blog)
+                self.switchToAppUI(for: blog)
             }
-        self.show(container.makeInitialViewController())
+        let destination = container.makeInitialViewController()
+        self.migrationViewController = destination
+        self.show(destination)
     }
 
     func switchToAppUI(for blog: Blog?) {
