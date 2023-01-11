@@ -79,6 +79,7 @@ private extension JetpackNewUsersOverlaySecondaryView {
             label.textColor = .label
             label.numberOfLines = 1
             label.adjustsFontForContentSizeCategory = true
+            label.setContentHuggingPriority(.defaultHigh, for: .vertical)
             addSubview(label)
             return label
         }()
@@ -88,7 +89,7 @@ private extension JetpackNewUsersOverlaySecondaryView {
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
             label.textColor = .secondaryLabel
-            label.numberOfLines = 2
+            label.numberOfLines = 0
             label.adjustsFontForContentSizeCategory = true
             addSubview(label)
             return label
