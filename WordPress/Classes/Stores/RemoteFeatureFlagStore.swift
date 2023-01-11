@@ -32,6 +32,7 @@ class RemoteFeatureFlagStore {
                     callback?()
                 case .failure(let error):
                     DDLogError("🚩 Unable to update Feature Flag Store: \(error.localizedDescription)")
+                callback?()
             }
         }
     }
