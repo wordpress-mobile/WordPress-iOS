@@ -45,7 +45,7 @@ final class MigrationFlowCoordinator: ObservableObject {
 
     private func didTransitionToStep(_ step: MigrationStep) {
         switch step {
-        case .dismiss:
+        case .done:
             self.userPersistentRepository.jetpackContentMigrationState = .completed
             self.sendMigrationEmail()
         default:
