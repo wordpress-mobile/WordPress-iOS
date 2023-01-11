@@ -46,7 +46,7 @@ final class MigrationFlowCoordinator: ObservableObject {
         }
     }
 
-    
+
     // MARK: - Helpers
 
     private func sendMigrationEmail() {
