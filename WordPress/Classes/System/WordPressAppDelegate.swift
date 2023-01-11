@@ -672,16 +672,17 @@ extension WordPressAppDelegate {
         }
     }
 
-    /// Updates the remote feature flags using an authenticated remote if an account exists, or using an anonymous remote if no account exists.
-    func updateFeatureFlags() {
-        do {
-            let defaultAccount = try WPAccount.lookupDefaultWordPressComAccount(in: mainContext)
-            let api = defaultAccount?.wordPressComRestV2Api ?? WordPressComRestApi.defaultApi()
-            let remote = FeatureFlagRemote(wordPressComRestApi: api)
-            remoteFeatureFlagStore.update(using: remote)
-        } catch {
-            DDLogError("Error fetching default user account: \(error)")
+    /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
+    /// Otherwise an anonymous remote will be used
+    func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
+        var api: WordPressComRestApi
+        if let authToken {
+            api = WordPressComRestApi.defaultV2Api(authToken: authToken)
+        } else {
+            api = WordPressComRestApi.defaultV2Api(in: mainContext)
         }
+        let remote = FeatureFlagRemote(wordPressComRestApi: api)
+        remoteFeatureFlagStore.update(using: remote, then: completion)
     }
 
     func updateRemoteConfig() {
