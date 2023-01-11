@@ -719,7 +719,6 @@ private extension WordPressAuthenticationManager {
         syncGroup.notify(queue: .main) {
             onCompletion()
         }
-
     }
 
     /// Synchronizes a WordPress.org account with the specified credentials.

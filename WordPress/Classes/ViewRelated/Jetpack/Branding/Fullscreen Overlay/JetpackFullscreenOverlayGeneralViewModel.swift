@@ -30,13 +30,19 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.three, _):
             return true
 
-        // Phase Four: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
-        case (.four, .card):
+        // Do not show feature overlays in phases where they are removed.
+        case (_, .stats):
             fallthrough
-        case (.four, .appOpen):
+        case (_, .reader):
+            fallthrough
+        case (_, .notifications):
+            return false
+
+        // Phase Four: Show feature-collection overlays.
+        case (.four, _):
             return true
 
-        // New Users Phase: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
+        // New Users Phase: Show feature-collection overlays.
         case (.newUsers, _):
             return true
 
