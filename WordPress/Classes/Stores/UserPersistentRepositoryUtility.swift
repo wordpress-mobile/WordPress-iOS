@@ -166,7 +166,7 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var isJPContentImportComplete: Bool {
+    var isJPMigrationFlowComplete: Bool {
         get {
             return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
         }
