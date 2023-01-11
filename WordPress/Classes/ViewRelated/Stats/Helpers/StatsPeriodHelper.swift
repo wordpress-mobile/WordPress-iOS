@@ -103,7 +103,12 @@ class StatsPeriodHelper {
             return adjustedDate.normalizedDate()
 
         case .week:
-            return currentDate.lastDayOfTheWeek(in: calendar, with: count)?.normalizedDate()
+            guard let endDate = currentDate.lastDayOfTheWeek(in: calendar, with: count) else {
+                DDLogError("[Stats] Couldn't determine the last day of the week for a given date in Stats. Returning original value.")
+                return currentDate
+            }
+
+            return endDate.normalizedDate()
         case .month:
             guard let endDate = adjustedDate.lastDayOfTheMonth(in: calendar) else {
                 DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
