@@ -499,19 +499,29 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
-    for (Blog *blog in blogs) {
-        NSAssert(blog.dotComID.unsignedIntegerValue > 0, @"blog should have a wp.com ID");
-        NSAssert([blog.account isEqual:defaultAccount], @"blog should belong to the default account");
-        // This shouldn't happen, but just in case, let's not crash if
-        // something tries to change visibility for a self hosted
-        if (blog.dotComID) {
-            blogVisibility[blog.dotComID] = @(visible);
+    NSArray<NSManagedObjectID *> *blogIds = [blogs wp_map:^id(Blog *obj) {
+        return obj.objectID;
+    }];
+    NSMutableDictionary *blogVisibility = [NSMutableDictionary dictionaryWithCapacity:blogIds.count];
+    AccountServiceRemoteREST * __block remote = nil;
+
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+        remote = [self remoteForAccount:defaultAccount];
+
+        for (NSManagedObjectID *blogId in blogIds) {
+            Blog *blog = [context existingObjectWithID:blogId error:nil];
+            NSAssert(blog.dotComID.unsignedIntegerValue > 0, @"blog should have a wp.com ID");
+            NSAssert([blog.account isEqual:defaultAccount], @"blog should belong to the default account");
+            // This shouldn't happen, but just in case, let's not crash if
+            // something tries to change visibility for a self hosted
+            if (blog.dotComID) {
+                blogVisibility[blog.dotComID] = @(visible);
+            }
+            blog.visible = visible;
         }
-        blog.visible = visible;
-    }
-    AccountServiceRemoteREST *remote = [self remoteForAccount:defaultAccount];
+    }];
+
     [remote updateBlogsVisibility:blogVisibility success:nil failure:^(NSError *error) {
         DDLogError(@"Error setting blog visibility: %@", error);
     }];

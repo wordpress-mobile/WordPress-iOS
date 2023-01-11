@@ -292,4 +292,23 @@ class AccountServiceTests: CoreDataTestCase {
         expect(account.email).toEventually(equal("jim@wptestaccounts.com"))
     }
 
+    func testChangingBlogVisiblity() throws {
+        stub(condition: isPath("/rest/v1.1/me/sites") && isMethodPOST()) { _ in
+            HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
+        }
+
+        let account = createAccount(withUsername: "username", authToken: "token")
+        accountService.setDefaultWordPressComAccount(account)
+
+        contextManager.performAndSave { context in
+            WPAccount.lookup(withObjectID: account.objectID, in: context)?
+                .addBlogs(self.createMockBlogs(withIDs: [1, 2, 3, 4, 5, 6], in: context))
+        }
+
+        let blog = try XCTUnwrap(Blog.lookup(withID: 1, in: mainContext))
+        XCTAssertTrue(blog.visible)
+        self.accountService.setVisibility(false, forBlogs: [blog])
+        expect(blog.visible).toEventually(beFalse())
+    }
+
 }
