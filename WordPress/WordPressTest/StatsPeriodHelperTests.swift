@@ -6,10 +6,12 @@ final class StatsPeriodHelperTests: XCTestCase {
 
     override func setUpWithError() throws {
         sut = StatsPeriodHelper()
+        try? FeatureFlagOverrideStore().override(FeatureFlag.statsNewInsights, withValue: true)
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        try? FeatureFlagOverrideStore().override(FeatureFlag.statsNewInsights, withValue: false)
     }
 
     func testEndOfWeekWhenMondayIsSetAsFirstWeekday() {
@@ -24,8 +26,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: 0,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2023-02-05 Sunday should be end of the week
@@ -44,8 +45,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: 0,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2023-02-05 Sunday should still be end of the week
@@ -64,8 +64,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: 0,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2021-11-21 Sunday should be end of the week
@@ -84,8 +83,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: 0,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2021-11-21 Sunday should be end of the week
@@ -105,8 +103,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: 1,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2023-02-12
@@ -127,8 +124,7 @@ final class StatsPeriodHelperTests: XCTestCase {
             from: calendar.date(from: dateComponents)!,
             offsetBy: -1,
             unit: .week,
-            calendar: calendar,
-            statsRevampEnabled: true
+            calendar: calendar
         )
 
         // 2023-01-29

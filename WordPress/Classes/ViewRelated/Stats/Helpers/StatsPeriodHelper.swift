@@ -95,8 +95,7 @@ class StatsPeriodHelper {
     func calculateEndDate(from currentDate: Date,
                           offsetBy count: Int = 1,
                           unit: StatsPeriodUnit,
-                          calendar: Calendar = Calendar.autoupdatingCurrent,
-                          statsRevampEnabled: Bool = AppConfiguration.showsStatsRevampV2) -> Date? {
+                          calendar: Calendar = Calendar.autoupdatingCurrent) -> Date? {
         guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: currentDate) else {
             DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
             return currentDate
@@ -107,7 +106,7 @@ class StatsPeriodHelper {
             return adjustedDate.normalizedDate()
 
         case .week:
-            if statsRevampEnabled {
+            if FeatureFlag.statsNewInsights.enabled {
                 guard let endDate = currentDate.lastDayOfTheWeek(in: calendar, with: count) else {
                     DDLogError("[Stats] Couldn't determine the last day of the week for a given date in Stats. Returning original value.")
                     return currentDate
