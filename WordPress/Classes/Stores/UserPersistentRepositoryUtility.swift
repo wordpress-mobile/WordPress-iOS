@@ -167,7 +167,8 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var isJPMigrationFlowComplete: Bool {
+    /// This flag is deprecated. Use `jetpackContentMigrationState` instead.
+    var isJPContentImportComplete: Bool {
         get {
             return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
         }
