@@ -104,7 +104,6 @@ private extension JetpackWindowManager {
             }
             switch result {
             case .success:
-                UserPersistentStoreFactory.instance().jetpackContentMigrationState = .inProgress
                 self.migrationTracker.trackContentImportSucceeded()
                 NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUI(blog)

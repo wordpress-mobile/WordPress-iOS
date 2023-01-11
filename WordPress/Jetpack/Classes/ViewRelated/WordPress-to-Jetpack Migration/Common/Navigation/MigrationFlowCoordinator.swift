@@ -22,6 +22,13 @@ final class MigrationFlowCoordinator: ObservableObject {
          userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.migrationEmailService = migrationEmailService
         self.userPersistentRepository = userPersistentRepository
+        self.userPersistentRepository.jetpackContentMigrationState = .inProgress
+    }
+
+    deinit {
+        if userPersistentRepository.jetpackContentMigrationState != .completed {
+            self.userPersistentRepository.jetpackContentMigrationState = .notStarted
+        }
     }
 
     // MARK: - Transitioning Steps
@@ -45,7 +52,6 @@ final class MigrationFlowCoordinator: ObservableObject {
             break
         }
     }
-
 
     // MARK: - Helpers
 
