@@ -167,20 +167,20 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    /// This flag is deprecated. Use `jetpackContentMigrationState` instead.
-    var isJPContentImportComplete: Bool {
-        get {
-            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.isJPContentImportCompleteKey)
-        }
-    }
-
     var jetpackContentMigrationState: MigrationState {
         get {
-            let stringValue = UserPersistentStoreFactory.instance().string(forKey: UPRUConstants.jetpackContentMigrationStateKey) ?? ""
-            return MigrationState(rawValue: stringValue) ?? .notStarted
+            let repository = UserPersistentStoreFactory.instance()
+            if let value = repository.string(forKey: UPRUConstants.jetpackContentMigrationStateKey) {
+                return MigrationState(rawValue: value) ?? .notStarted
+            } else if repository.bool(forKey: UPRUConstants.isJPContentImportCompleteKey) {
+                // Migrate the value of the old `isJPContentImportCompleteKey` to `jetpackContentMigrationStateKey`
+                let state = MigrationState.completed
+                repository.set(state.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
+                repository.set(nil, forKey: UPRUConstants.isJPContentImportCompleteKey)
+                return state
+            } else {
+                return .notStarted
+            }
         } set {
             UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
         }
