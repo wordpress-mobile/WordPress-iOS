@@ -58,7 +58,7 @@ private extension JetpackWindowManager {
     /// Otherwise, it is `True` when the following conditions are fulfilled:
     ///
     ///  1. User is not logged in and the migration is not complete.
-    ///  2. User is logged in and the migration has started but still in progress. This scenario could happen if the migration flow starts but interrupted mid flow.
+    ///  2. Or, User is logged in and the migration has started but still in progress. This scenario could happen if the migration flow starts but interrupted mid flow.
     ///
     var shouldStartMigrationFlow: Bool {
         guard isCompatibleWordPressAppPresent && FeatureFlag.contentMigration.enabled else {
