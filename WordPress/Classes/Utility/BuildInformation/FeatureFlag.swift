@@ -3,6 +3,7 @@
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingPrompts
+    case bloggingPromptsEnhancements
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -50,6 +51,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         switch self {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
+        case .bloggingPromptsEnhancements:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -172,6 +175,8 @@ extension FeatureFlag {
         switch self {
         case .bloggingPrompts:
             return "Blogging Prompts"
+        case .bloggingPromptsEnhancements:
+            return "Blogging Prompts Enhancements"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
