@@ -54,6 +54,10 @@ class JetpackBrandingMenuCardPresenter {
             let description = Strings.newUsersPhaseDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseNewUsersBlogPostUrl.value
             return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+        case .selfHosted:
+            let description = Strings.selfHostedPhaseDescription
+            let url = RemoteConfig(store: remoteConfigStore).phaseSelfHostedBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
         default:
             return nil
         }
@@ -66,6 +70,8 @@ class JetpackBrandingMenuCardPresenter {
         switch phase {
         case .three:
             return true
+        case .selfHosted:
+            return blog?.jetpackIsConnected ?? false
         default:
             return false
         }
@@ -196,5 +202,6 @@ private extension JetpackBrandingMenuCardPresenter {
         static let newUsersPhaseDescription = NSLocalizedString("jetpack.menuCard.newUsers.title",
                                                                 value: "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.",
                                                                 comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
+        static let selfHostedPhaseDescription = newUsersPhaseDescription
     }
 }
