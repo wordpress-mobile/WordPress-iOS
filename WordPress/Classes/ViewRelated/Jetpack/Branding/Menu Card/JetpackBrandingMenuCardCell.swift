@@ -6,7 +6,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Private Variables
 
     private weak var viewController: BlogDetailsViewController?
-    private var presenter: JetpackBrandingMenuCardPresenter
+    private var presenter: JetpackBrandingMenuCardPresenter?
     private var config: JetpackBrandingMenuCardPresenter.Config?
 
     /// Sets the animation based on the language orientation
@@ -30,7 +30,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         if cardType == .expanded {
             frameView.configureButtonContainerStackView()
             frameView.onEllipsisButtonTap = { [weak self] in
-                self?.presenter.trackContexualMenuAccessed()
+                self?.presenter?.trackContexualMenuAccessed()
             }
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
             frameView.ellipsisButton.menu = contextMenu
@@ -148,35 +148,19 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.showsMenuAsPrimaryAction = true
         button.menu = contextMenu
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
-            self?.presenter.trackContexualMenuAccessed()
+            self?.presenter?.trackContexualMenuAccessed()
         }
         return button
     }()
 
-    // MARK: Initializers
+    // MARK: Helpers
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        presenter = JetpackBrandingMenuCardPresenter()
-        config = presenter.cardConfig()
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        commonInit()
-    }
-
-    required init?(coder: NSCoder) {
-        presenter = JetpackBrandingMenuCardPresenter()
-        config = presenter.cardConfig()
-        super.init(coder: coder)
-        commonInit()
-    }
-
-    private func commonInit() {
+    private func configure() {
         setupViews()
         setupContent()
 
-        presenter.trackCardShown()
+        presenter?.trackCardShown()
     }
-
-    // MARK: Helpers
 
     private func setupViews() {
         contentView.addSubview(cardFrameView)
@@ -202,7 +186,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.analyticsSource)
         let navController = UINavigationController(rootViewController: webViewController)
         viewController?.present(navController, animated: true)
-        presenter.trackLinkTapped()
+        presenter?.trackLinkTapped()
     }
 }
 
@@ -227,12 +211,12 @@ private extension JetpackBrandingMenuCardCell {
     // MARK: Actions
 
     private func remindMeLaterTapped() {
-        presenter.remindLaterTapped()
+        presenter?.remindLaterTapped()
         viewController?.reloadTableView()
     }
 
     private func hideThisTapped() {
-        presenter.hideThisTapped()
+        presenter?.hideThisTapped()
         viewController?.reloadTableView()
     }
 }
@@ -406,5 +390,8 @@ extension JetpackBrandingMenuCardCell {
     @objc(configureWithViewController:)
     func configure(with viewController: BlogDetailsViewController) {
         self.viewController = viewController
+        presenter = JetpackBrandingMenuCardPresenter(blog: viewController.blog)
+        config = presenter?.cardConfig()
+        configure()
     }
 }

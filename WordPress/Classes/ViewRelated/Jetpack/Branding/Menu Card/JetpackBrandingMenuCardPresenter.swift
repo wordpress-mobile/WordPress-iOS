@@ -15,6 +15,7 @@ class JetpackBrandingMenuCardPresenter {
 
     // MARK: Private Variables
 
+    private let blog: Blog?
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
@@ -25,10 +26,12 @@ class JetpackBrandingMenuCardPresenter {
 
     // MARK: Initializers
 
-    init(remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+    init(blog: Blog?,
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
+        self.blog = blog
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
