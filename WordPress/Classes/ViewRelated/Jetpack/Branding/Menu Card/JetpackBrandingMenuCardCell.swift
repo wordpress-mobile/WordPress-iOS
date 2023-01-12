@@ -40,13 +40,9 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = stackViewAxis
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = stackViewSpacing
-        stackView.directionalLayoutMargins = stackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews(stackViewSubviews)
         return stackView
     }()
 
@@ -84,9 +80,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = labelFont
-        label.textColor = labelTextColor
-        label.numberOfLines = labelNumberOfLines
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -153,25 +146,57 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         return button
     }()
 
+    // MARK: Initializers
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        addSubviews()
+    }
+
+    // MARK: Cell Lifecycle
+
+    override func prepareForReuse() {
+        containerStackView.removeAllSubviews()
+    }
+
     // MARK: Helpers
 
     private func configure() {
-        setupViews()
         setupContent()
+        applyStyles()
 
         presenter?.trackCardShown()
     }
 
-    private func setupViews() {
+    private func addSubviews() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.cardFrameConstraintPriority)
         cardFrameView.add(subview: containerStackView)
     }
 
     private func setupContent() {
+        containerStackView.addArrangedSubviews(stackViewSubviews)
         logosAnimationView.currentProgress = 1.0
         label.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
+    }
+
+    private func applyStyles() {
+        containerStackView.axis = stackViewAxis
+        containerStackView.spacing = stackViewSpacing
+        containerStackView.directionalLayoutMargins = stackViewLayoutMargins
+        label.font = labelFont
+        label.textColor = labelTextColor
+        label.numberOfLines = labelNumberOfLines
     }
 
     // MARK: Actions
