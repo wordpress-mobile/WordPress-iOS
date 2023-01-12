@@ -61,7 +61,9 @@ class SiteStatsInsightsViewModel: Observable {
         self.periodStore = periodStore
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
-        self.lastRequestedDate = StatsDataHelper.currentDateForSite()
+
+        // Exclude today's data for weekly insights
+        self.lastRequestedDate = StatsDataHelper.yesterdayDateForSite()
         self.lastRequestedPeriod = StatsPeriodUnit.day
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
