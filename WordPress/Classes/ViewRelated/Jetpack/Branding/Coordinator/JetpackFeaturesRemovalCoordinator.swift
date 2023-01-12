@@ -11,6 +11,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case three
         case four
         case newUsers
+        case selfHosted
 
         var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
             switch self {
@@ -61,6 +62,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
+        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted),
+           AccountHelper.noWordPressDotComAccount {
+            return .selfHosted
+        }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
             return .newUsers
         }
