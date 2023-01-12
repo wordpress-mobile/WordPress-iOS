@@ -62,9 +62,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
-        if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted),
-           AccountHelper.noWordPressDotComAccount {
-            return .selfHosted
+
+        if AccountHelper.noWordPressDotComAccount {
+            let selfHostedRemoval = featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted)
+            return selfHostedRemoval ? .selfHosted : .normal
         }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
             return .newUsers
