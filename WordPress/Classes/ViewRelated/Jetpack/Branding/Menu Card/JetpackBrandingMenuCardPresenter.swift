@@ -51,7 +51,7 @@ class JetpackBrandingMenuCardPresenter {
             let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
             return .init(description: description, learnMoreButtonURL: url, type: .compact)
         case .newUsers:
-            let description = Strings.newUsersPhaseTitle
+            let description = Strings.newUsersPhaseDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseNewUsersBlogPostUrl.value
             return .init(description: description, learnMoreButtonURL: url, type: .expanded)
         default:
@@ -193,8 +193,8 @@ private extension JetpackBrandingMenuCardPresenter {
         static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
                                                            value: "Switch to Jetpack",
                                                            comment: "Title of a button prompting users to switch to the Jetpack app.")
-        static let newUsersPhaseTitle = NSLocalizedString("jetpack.menuCard.newUsers.title",
-                                                           value: "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.",
-                                                           comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
+        static let newUsersPhaseDescription = NSLocalizedString("jetpack.menuCard.newUsers.title",
+                                                                value: "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.",
+                                                                comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
     }
 }
