@@ -31,4 +31,24 @@ extension Blog {
         state.automatedTransfer = getOption(name: "is_automated_transfer") ?? false
         return state
     }
+
+    /// Returns true if the blog has the proper version of Jetpack installed,
+    /// otherwise false
+    ///
+    var hasJetpack: Bool {
+        guard let jetpack else {
+            return false
+        }
+        return (jetpack.isConnected && jetpack.isUpdatedToRequiredVersion)
+    }
+
+    /// Returns true if the blog has a version of the Jetpack plugin installed,
+    /// otherwise false
+    ///
+    var jetpackIsConnected: Bool {
+        guard let jetpack else {
+            return false
+        }
+        return jetpack.isConnected
+    }
 }
