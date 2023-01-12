@@ -32,6 +32,21 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(phase, .normal)
     }
 
+    func testReturnNormalPhaseForLoggedOutUsers() {
+        // Given
+        UserSettings.defaultDotComUUID = nil
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false)
+        let remote = MockFeatureFlagRemote(flags: flags)
+        store.update(using: remote)
+
+        // When
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
+
+        // Then
+        XCTAssertEqual(phase, .normal)
+    }
+
     func testNewUsersGeneralPhase() {
         // Given
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
