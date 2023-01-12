@@ -1,6 +1,7 @@
 21.6
 -----
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
+* [*] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
 
 21.5
 -----
