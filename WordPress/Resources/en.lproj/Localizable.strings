@@ -4916,8 +4916,7 @@
 /* Title of the migration done screen. */
 "migration.done.title" = "Thanks for switching to Jetpack!";
 
-/* The description in the Load WordPress screen
-   The secondary description in the Load WordPress screen */
+/* The description in the Load WordPress screen */
 "migration.loadWordpress.description" = "It looks like you have the WordPress app installed.";
 
 /* The primary button title in the Load WordPress screen */
@@ -4926,6 +4925,9 @@
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "No thanks";
 
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "Would you like to transfer your data from the WordPress app and sign in automatically?";
+
 /* The title in the Load WordPress screen */
 "migration.loadWordpress.title" = "Welcome to Jetpack!";
 
@@ -4933,7 +4935,7 @@
 "migration.notifications.actions.secondary.title" = "Decide later";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "When the alert apears tap Allow to continue receiving all your WordPress notifications.";
+"migration.notifications.footer" = "When the alert appears tap Allow to continue receiving all your WordPress notifications.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Allow";
