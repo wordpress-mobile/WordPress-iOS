@@ -19,7 +19,6 @@ enum PeriodAction: Action {
 
     // Period overview
     case receivedSummary(_ summary: StatsSummaryTimeIntervalData?, _ error: Error?)
-    case receivedLikesSummary(_ likes: StatsLikesSummaryTimeIntervalData?, _ error: Error?)
     case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?)
     case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?)
     case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?)
@@ -137,7 +136,6 @@ struct PeriodStoreState {
     }
 
     var summaryStatus: StoreFetchingStatus = .idle
-    var summaryLikesStatus: StoreFetchingStatus = .idle
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var topPostsAndPagesStatus: StoreFetchingStatus = .idle
@@ -201,8 +199,6 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedSummary(let summary, let error):
             receivedSummary(summary, error)
-        case .receivedLikesSummary(let likes, let error):
-            receivedLikesSummary(likes, error)
         case .receivedPostsAndPages(let postsAndPages, let error):
             receivedPostsAndPages(postsAndPages, error)
         case .refreshPostsAndPages(let date, let period):
@@ -388,25 +384,6 @@ private extension StatsPeriodStore {
 
         if FeatureFlag.statsNewAppearance.enabled {
             group.enter()
-            DDLogInfo("Stats Period: Enter group fetching likes summary.")
-        }
-        let likesOperation = PeriodOperation(service: service, for: period, date: date, limit: 14) { [weak self] (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogError("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats Period: Finished fetching likes summary.")
-            DispatchQueue.main.async {
-                self?.receivedLikesSummary(likes, error)
-                if FeatureFlag.statsNewAppearance.enabled {
-                    DDLogInfo("Stats Period: Leave group fetching likes summary.")
-                    group.leave()
-                }
-            }
-        }
-
-        if FeatureFlag.statsNewAppearance.enabled {
-            group.enter()
             DDLogInfo("Stats Period: Enter group fetching posts.")
         }
         let topPostsOperation = PeriodOperation(service: service, for: period, date: date) { [weak self] (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -587,8 +564,7 @@ private extension StatsPeriodStore {
             }
         }
 
-        operationQueue.addOperations([likesOperation,
-                                      topPostsOperation,
+        operationQueue.addOperations([topPostsOperation,
                                       topReferrers,
                                       topPublished,
                                       topClicks,
@@ -603,23 +579,6 @@ private extension StatsPeriodStore {
             group.notify(queue: .main) { [weak self] in
                 DDLogInfo("Stats Period: Finished fetchAsyncData.")
                 self?.persistToCoreData()
-            }
-        }
-    }
-
-    func fetchSummaryLikesData(date: Date, period: StatsPeriodUnit) {
-        guard let statsRemote = statsRemote() else {
-            return
-        }
-
-        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogInfo("Stats Period: Error fetching likes summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats Period: Finished fetching likes summary.")
-            DispatchQueue.main.async {
-                self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
             }
         }
     }
@@ -1004,39 +963,6 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedLikesSummary(_ likesSummary: StatsLikesSummaryTimeIntervalData?, _ error: Error?) {
-        // This is a workaround for how our API works — the requests for summary for long periods of times
-        // can take extreme amounts of time to finish (and semi-frequenty fail). In order to not block the UI
-        // here, we split out the views/visitors/comments and likes requests.
-        // This method splices the results of the two back together so we can persist it to Core Data.
-        guard let summary = likesSummary,
-            let currentSummary = state.summary,
-            summary.summaryData.count == currentSummary.summaryData.count else {
-                transaction { state in
-                    state.summaryLikesStatus = error != nil ? .error : .success
-                }
-                return
-        }
-
-        let newSummaryData = currentSummary.summaryData.enumerated().map { index, obj in
-            return StatsSummaryData(period: obj.period,
-                                    periodStartDate: obj.periodStartDate,
-                                    viewsCount: obj.viewsCount,
-                                    visitorsCount: obj.visitorsCount,
-                                    likesCount: summary.summaryData[index].likesCount,
-                                    commentsCount: obj.commentsCount)
-        }
-
-        let newSummary = StatsSummaryTimeIntervalData(period: currentSummary.period,
-                                                      periodEndDate: currentSummary.periodEndDate,
-                                                      summaryData: newSummaryData)
-
-        transaction { state in
-            state.summary = newSummary
-            state.summaryLikesStatus = error != nil ? .error : .success
-        }
-    }
-
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.topPostsAndPagesStatus = error != nil ? .error : .success
@@ -1185,7 +1111,6 @@ private extension StatsPeriodStore {
     func setAllFetchingStatus(_ status: StoreFetchingStatus) {
         transaction { state in
             state.summaryStatus = status
-            state.summaryLikesStatus = status
             state.topPostsAndPagesStatus = status
             state.topReferrersStatus = status
             state.topPublishedStatus = status
@@ -1303,10 +1228,6 @@ extension StatsPeriodStore {
         return state.summaryStatus
     }
 
-    var summaryLikesStatus: StoreFetchingStatus {
-        return state.summaryLikesStatus
-    }
-
     var isFetchingSummary: Bool {
         return summaryStatus == .loading
     }
@@ -1345,10 +1266,6 @@ extension StatsPeriodStore {
 
     var topFileDownloadsStatus: StoreFetchingStatus {
         return state.topFileDownloadsStatus
-    }
-
-    var isFetchingSummaryLikes: Bool {
-        return state.summaryLikesStatus == .loading
     }
 
     var isFetchingPostsAndPages: Bool {
