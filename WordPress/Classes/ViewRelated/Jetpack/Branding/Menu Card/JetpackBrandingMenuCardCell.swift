@@ -30,7 +30,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         if cardType == .expanded {
             frameView.configureButtonContainerStackView()
             frameView.onEllipsisButtonTap = { [weak self] in
-                self?.presenter?.trackContexualMenuAccessed()
+                self?.presenter?.trackContextualMenuAccessed()
             }
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
             frameView.ellipsisButton.menu = contextMenu
@@ -141,7 +141,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.showsMenuAsPrimaryAction = true
         button.menu = contextMenu
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
-            self?.presenter?.trackContexualMenuAccessed()
+            self?.presenter?.trackContextualMenuAccessed()
         }
         return button
     }()
@@ -215,7 +215,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     }
 }
 
-// MARK: Contexual Menu
+// MARK: Contextual Menu
 
 private extension JetpackBrandingMenuCardCell {
 

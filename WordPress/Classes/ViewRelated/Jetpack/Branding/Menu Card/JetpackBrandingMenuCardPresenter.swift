@@ -124,7 +124,7 @@ extension JetpackBrandingMenuCardPresenter {
         WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
     }
 
-    func trackContexualMenuAccessed() {
+    func trackContextualMenuAccessed() {
         WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
     }
 
