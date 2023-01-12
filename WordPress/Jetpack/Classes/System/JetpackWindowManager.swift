@@ -39,9 +39,22 @@ extension JetpackWindowManager {
 
     @discardableResult
     func startMigrationFlowIfNeeded(_ blog: Blog? = nil) -> Bool {
+        let shouldStartMigrationFlow = self.shouldStartMigrationFlow
+
+        let params = MigrationAnalyticsTracker.ContentImportEventParams(
+            eligible: shouldStartMigrationFlow,
+            featureFlagEnabled: FeatureFlag.contentMigration.enabled,
+            compatibleWordPressInstalled: isCompatibleWordPressAppPresent,
+            migrationState: UserPersistentStoreFactory.instance().jetpackContentMigrationState,
+            loggedIn: AccountHelper.isLoggedIn
+        )
+
+        self.migrationTracker.trackContentImportEligibility(params: params)
+
         guard shouldStartMigrationFlow else {
             return false
         }
+
         self.importAndShowMigrationContent(blog)
         return true
     }
