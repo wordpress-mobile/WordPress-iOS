@@ -48,8 +48,7 @@ class JetpackBrandingMenuCardPresenter {
             return .init(description: description, learnMoreButtonURL: url, type: .expanded)
         case .four:
             let description = Strings.phaseFourTitle
-            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .compact)
+            return .init(description: description, learnMoreButtonURL: nil, type: .compact)
         case .newUsers:
             let description = Strings.newUsersPhaseDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseNewUsersBlogPostUrl.value

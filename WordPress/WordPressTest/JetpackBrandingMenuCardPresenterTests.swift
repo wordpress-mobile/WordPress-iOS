@@ -98,6 +98,44 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.")
         XCTAssertEqual(config.learnMoreButtonURL, "example.com")
+        XCTAssertEqual(config.type, .expanded)
+    }
+
+    func testPhaseFourCardConfig() throws {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
+            remoteConfigStore: remoteConfigStore,
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+        remoteFeatureFlagsStore.removalPhaseFour = true
+
+        // When
+        let config = try XCTUnwrap(presenter.cardConfig())
+
+        // Then
+        XCTAssertEqual(config.description, "Switch to Jetpack")
+        XCTAssertNil(config.learnMoreButtonURL)
+        XCTAssertEqual(config.type, .compact)
+    }
+
+    func testPhaseNewUsersCardConfig() throws {
+        // Given
+        let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
+            remoteConfigStore: remoteConfigStore,
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+        remoteFeatureFlagsStore.removalPhaseNewUsers = true
+        remoteConfigStore.phaseNewUsersBlogPostUrl = "example.com"
+
+        // When
+        let config = try XCTUnwrap(presenter.cardConfig())
+
+        // Then
+        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.")
+        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
+        XCTAssertEqual(config.type, .expanded)
     }
 
     func testHidingTheMenuCard() {
