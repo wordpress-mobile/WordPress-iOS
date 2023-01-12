@@ -6,6 +6,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
 
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
     let source: JetpackFeaturesRemovalCoordinator.OverlaySource
+    let blog: Blog?
 
     var shouldShowOverlay: Bool {
         switch (phase, source) {
@@ -45,6 +46,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         // New Users Phase: Show feature-collection overlays.
         case (.newUsers, _):
             return true
+
+        case (.selfHosted, _):
+            return blog?.jetpackIsConnected ?? false
 
         default:
             return false
