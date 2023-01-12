@@ -502,8 +502,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         return StatsTotalInsightsData.followersCount(insightsStore: insightsStore)
     }
 
-        func createLikesTotalInsightsRow(periodSummary: StatsSummaryTimeIntervalData?) -> StatsTotalInsightsData {
-        let weekEnd = futureEndOfWeekDate(for: periodStore.getSummary())
+    func createLikesTotalInsightsRow(periodSummary: StatsSummaryTimeIntervalData?) -> StatsTotalInsightsData {
+        let weekEnd = futureEndOfWeekDate(for: periodSummary)
         var data = StatsTotalInsightsData.createTotalInsightsData(periodSummary: periodSummary,
                                                                   insightsStore: insightsStore,
                                                                   statsSummaryType: .likes,
