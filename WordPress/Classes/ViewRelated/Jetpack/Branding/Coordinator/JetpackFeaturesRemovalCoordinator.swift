@@ -116,7 +116,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
         switch generalPhase() {
-        case .four, .newUsers:
+        case .four, .newUsers, .selfHosted:
             return false
         default:
             return true
