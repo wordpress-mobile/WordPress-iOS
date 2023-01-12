@@ -75,6 +75,35 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(phase, .newUsers)
     }
 
+    func testSelfHostedGeneralPhase() {
+        // Given
+        UserSettings.defaultDotComUUID = nil
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let flags = generateFlags(phaseOne: false, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
+        let remote = MockFeatureFlagRemote(flags: flags)
+        store.update(using: remote)
+
+        // When
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
+
+        // Then
+        XCTAssertEqual(phase, .selfHosted)
+    }
+
+    func testGeneralPhaseIfSelfHostedIsEnabledWhileLoggedIn() {
+        // Given
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        let flags = generateFlags(phaseOne: true, phaseTwo: false, phaseThree: false, phaseFour: false, phaseNewUsers: false, phaseSelfHosted: true)
+        let remote = MockFeatureFlagRemote(flags: flags)
+        store.update(using: remote)
+
+        // When
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store)
+
+        // Then
+        XCTAssertEqual(phase, .one)
+    }
+
     func testGeneralPhaseOne() {
         // Given
         let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
