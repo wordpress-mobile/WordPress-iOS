@@ -1,12 +1,19 @@
 import XCTest
 @testable import WordPress
 
-final class JetpackFeaturesRemovalCoordinatorTests: XCTestCase {
+final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
 
     private var mockUserDefaults: InMemoryUserDefaults!
 
     override func setUp() {
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
+        let account = AccountBuilder(contextManager).build()
+        UserSettings.defaultDotComUUID = account.uuid
+    }
+
+    override func tearDown() {
+        UserSettings.defaultDotComUUID = nil
     }
 
     // MARK: General Phase Tests
