@@ -47,6 +47,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.newUsers, _):
             return true
 
+        // Self-Hosted Users Phase: Show feature-collection overlays.
         case (.selfHosted, _):
             return blog?.jetpackIsConnected ?? false
 
@@ -91,6 +92,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.newUsers, _):
             return Strings.NewUsers.generalTitle
 
+        // Self-Hosted
+        case (.selfHosted, _):
+            return Strings.SelfHosted.generalTitle
         default:
             return ""
         }
@@ -121,6 +125,11 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         // New Users
         case (.newUsers, _):
             return .init(string: Strings.NewUsers.subtitle)
+
+        // Self-Hosted
+        case (.selfHosted, _):
+            return .init(string: Strings.SelfHosted.subtitle)
+
         default:
             return .init(string: "")
         }
@@ -135,6 +144,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.reader, _):
             return Constants.readerLogoAnimationLtr
         case (_, .newUsers):
+            fallthrough
+        case (_, .selfHosted):
             return Constants.wpJetpackLogoAnimationLtr
         case (.card, _):
             fallthrough
@@ -154,6 +165,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.reader, _):
             return Constants.readerLogoAnimationRtl
         case (_, .newUsers):
+            fallthrough
+        case (_, .selfHosted):
             return Constants.wpJetpackLogoAnimationRtl
         case (.card, _):
             fallthrough
@@ -173,7 +186,11 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .three:
             fallthrough
         case .four:
-            return Strings.PhaseTwoAndThree.footnote
+            fallthrough
+        case .newUsers:
+            fallthrough
+        case .selfHosted:
+            return Strings.General.footnote
         default:
             return nil
         }
@@ -191,6 +208,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return RemoteConfig().phaseFourBlogPostUrl.value
         case .newUsers:
             return RemoteConfig().phaseNewUsersBlogPostUrl.value
+        case .selfHosted:
+            return RemoteConfig().phaseSelfHostedBlogPostUrl.value
         default:
             return nil
         }
@@ -207,6 +226,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .four:
             fallthrough
         case .newUsers:
+            fallthrough
+        case .selfHosted:
             return Strings.General.latePhasesSwitchButtonTitle
         default:
             return ""
@@ -325,6 +346,9 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let continueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.continue.title",
                                                                value: "Continue without Jetpack",
                                                                comment: "Title of a button that dismisses an overlay that showcases the Jetpack app.")
+            static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
+                                                    value: "Switching is free and only takes a minute.",
+                                                    comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
         }
 
         enum PhaseOne {
@@ -373,9 +397,6 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let fallbackSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle",
                                                     value: "Stats, Reader, Notifications and other Jetpack powered features will be removed from the WordPress app soon.",
                                                     comment: "Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app.")
-            static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
-                                                    value: "Switching is free and only takes a minute.",
-                                                    comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
         }
 
         enum PhaseThree {
@@ -406,6 +427,16 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.subtitle",
                                                                   value: "Jetpack lets you do more with your WordPress site. Switching is free and only takes a minute.",
                                                                   comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+        }
+
+        enum SelfHosted {
+            static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.selfHosted.title",
+                                                        value: "Your site has the Jetpack plugin",
+                                                        comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+
+            static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.selfHosted.subtitle",
+                                                    value: "The Jetpack mobile app is designed to work in companion with the Jetpack plugin. Switch now to get access to stats, notifications, reader, and more.",
+                                                    comment: "Title of a screen that prompts the user to switch the Jetpack app.")
         }
     }
 }
