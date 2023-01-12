@@ -70,7 +70,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
 
         // Phase New Users
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
-        XCTAssertFalse(presenter.shouldShowBottomCard())
+        XCTAssertTrue(presenter.shouldShowBottomCard())
     }
 
     func testPhaseThreeCardConfig() throws {
