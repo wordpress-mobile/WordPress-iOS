@@ -22,8 +22,9 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     func testShouldShowTopCardBasedOnPhase() {
         // Given
+        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
+            blog: blog,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
 
@@ -49,12 +50,18 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         // Phase New Users
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
         XCTAssertFalse(presenter.shouldShowTopCard())
+
+        // Phase Self Hosted
+        UserSettings.defaultDotComUUID = nil
+        remoteFeatureFlagsStore.removalPhaseSelfHosted = true
+        XCTAssertTrue(presenter.shouldShowTopCard())
     }
 
     func testShouldShowBottomCardBasedOnPhase() {
         // Given
+        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
         let presenter = JetpackBrandingMenuCardPresenter(
-            blog: nil,
+            blog: blog,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
 
@@ -80,6 +87,11 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         // Phase New Users
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
         XCTAssertTrue(presenter.shouldShowBottomCard())
+
+        // Phase Self Hosted
+        UserSettings.defaultDotComUUID = nil
+        remoteFeatureFlagsStore.removalPhaseSelfHosted = true
+        XCTAssertFalse(presenter.shouldShowBottomCard())
     }
 
     func testPhaseThreeCardConfig() throws {
@@ -128,6 +140,27 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
             persistenceStore: mockUserDefaults)
         remoteFeatureFlagsStore.removalPhaseNewUsers = true
         remoteConfigStore.phaseNewUsersBlogPostUrl = "example.com"
+
+        // When
+        let config = try XCTUnwrap(presenter.cardConfig())
+
+        // Then
+        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.")
+        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
+        XCTAssertEqual(config.type, .expanded)
+    }
+
+    func testPhaseSelfHostedCardConfig() throws {
+        // Given
+        UserSettings.defaultDotComUUID = nil
+        let blog = BlogBuilder(mainContext).withJetpack(version: "5.6", username: "test_user", email: "user@example.com").build()
+        let presenter = JetpackBrandingMenuCardPresenter(
+            blog: blog,
+            remoteConfigStore: remoteConfigStore,
+            featureFlagStore: remoteFeatureFlagsStore,
+            persistenceStore: mockUserDefaults)
+        remoteFeatureFlagsStore.removalPhaseSelfHosted = true
+        remoteConfigStore.phaseSelfHostedBlogPostUrl = "example.com"
 
         // When
         let config = try XCTUnwrap(presenter.cardConfig())
