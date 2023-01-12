@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
+final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
     private var mockUserDefaults: InMemoryUserDefaults!
     private var remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
@@ -9,13 +9,21 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
     private var currentDateProvider: MockCurrentDateProvider!
 
     override func setUp() {
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         mockUserDefaults = InMemoryUserDefaults()
         currentDateProvider = MockCurrentDateProvider()
+        let account = AccountBuilder(contextManager).build()
+        UserSettings.defaultDotComUUID = account.uuid
+    }
+
+    override func tearDown() {
+        UserSettings.defaultDotComUUID = nil
     }
 
     func testShouldShowTopCardBasedOnPhase() {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
 
@@ -46,6 +54,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
     func testShouldShowBottomCardBasedOnPhase() {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
 
@@ -76,6 +85,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
     func testPhaseThreeCardConfig() throws {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             remoteConfigStore: remoteConfigStore,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
@@ -93,6 +103,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
     func testHidingTheMenuCard() {
         // Given
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults)
         remoteFeatureFlagsStore.removalPhaseThree = true
@@ -109,6 +120,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         let secondsInDay = TimeInterval(86_400)
         let currentDate = Date()
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults,
             currentDateProvider: currentDateProvider)
@@ -128,6 +140,7 @@ final class JetpackBrandingMenuCardPresenterTests: XCTestCase {
         let secondsInSevenDays = TimeInterval(86_400 * 4)
         let currentDate = Date()
         let presenter = JetpackBrandingMenuCardPresenter(
+            blog: nil,
             featureFlagStore: remoteFeatureFlagsStore,
             persistenceStore: mockUserDefaults,
             currentDateProvider: currentDateProvider)
