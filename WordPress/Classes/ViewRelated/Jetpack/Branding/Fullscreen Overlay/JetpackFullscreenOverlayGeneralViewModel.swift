@@ -401,32 +401,32 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
 
         enum PhaseThree {
             static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.title",
-                                                                  value: "Jetpack features are moving soon.",
-                                                                  comment: "Title of a screen that showcases the Jetpack app.")
+                                                        value: "Jetpack features are moving soon.",
+                                                        comment: "Title of a screen that showcases the Jetpack app.")
         }
 
         enum PhaseFour {
             static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.title",
-                                                                  value: "Jetpack features have moved.",
-                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+                                                        value: "Jetpack features have moved.",
+                                                        comment: "Title of a screen that prompts the user to switch the Jetpack app.")
 
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.subtitle",
-                                                                  value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app.",
-                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+                                                    value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app.",
+                                                    comment: "Title of a screen that prompts the user to switch the Jetpack app.")
 
             static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.general.continue.title",
-                                                                            value: "Do this later",
-                                                                            comment: "Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app.")
+                                                                      value: "Do this later",
+                                                                      comment: "Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app.")
         }
 
         enum NewUsers {
             static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.title",
-                                                                  value: "Give WordPress a boost with Jetpack",
-                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+                                                        value: "Give WordPress a boost with Jetpack",
+                                                        comment: "Title of a screen that prompts the user to switch the Jetpack app.")
 
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.subtitle",
-                                                                  value: "Jetpack lets you do more with your WordPress site. Switching is free and only takes a minute.",
-                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+                                                    value: "Jetpack lets you do more with your WordPress site. Switching is free and only takes a minute.",
+                                                    comment: "Title of a screen that prompts the user to switch the Jetpack app.")
         }
 
         enum SelfHosted {
