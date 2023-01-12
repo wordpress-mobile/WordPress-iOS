@@ -1734,6 +1734,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
 
+    if (self.blog.account == nil || self.blog.account.isDeleted) {
+        // No need to reload this screen if the blog's account is deleted (i.e. during logout)
+        return;
+    }
+
     BOOL isQuickStartSectionShownBefore = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
