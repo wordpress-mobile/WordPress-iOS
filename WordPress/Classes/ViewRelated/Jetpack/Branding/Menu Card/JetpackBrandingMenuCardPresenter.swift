@@ -9,7 +9,6 @@ class JetpackBrandingMenuCardPresenter {
         }
 
         let description: String
-        let learnMoreButtonURL: String?
         let type: CardType
     }
 
@@ -44,19 +43,16 @@ class JetpackBrandingMenuCardPresenter {
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
-            let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+            return .init(description: description, type: .expanded)
         case .four:
             let description = Strings.phaseFourTitle
-            return .init(description: description, learnMoreButtonURL: nil, type: .compact)
+            return .init(description: description, type: .compact)
         case .newUsers:
             let description = Strings.newUsersPhaseDescription
-            let url = RemoteConfig(store: remoteConfigStore).phaseNewUsersBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+            return .init(description: description, type: .expanded)
         case .selfHosted:
             let description = Strings.selfHostedPhaseDescription
-            let url = RemoteConfig(store: remoteConfigStore).phaseSelfHostedBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+            return .init(description: description, type: .expanded)
         default:
             return nil
         }
