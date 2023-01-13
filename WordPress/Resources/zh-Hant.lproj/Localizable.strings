@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-03 05:25:36+0000 */
+/* Translation-Revision-Date: 2023-01-12 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -251,6 +251,9 @@ translators: Block name. %s: The localized block name */
 "%s block. This block has invalid content" = "%s 區塊含有無效內容";
 
 /* translators: %s: name of the reusable block */
+"%s converted to regular block" = "「%s」已轉換為一般區塊";
+
+/* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s 已轉換為一般區塊";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
@@ -480,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "活動";
 
@@ -732,6 +736,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "你可以改為點選「轉換為一般區塊」，然後分別移除並編輯這些區塊。";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "你可以改為點選「轉換為一般區塊」，然後分別移除並編輯這些區塊。";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "或者你也可以輸入此帳號的密碼。";
@@ -1057,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "正在備份網站";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2111,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "建立文章";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "建立網站";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "建立標籤";
@@ -3577,7 +3588,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "健康";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "幫助";
 
 /* Link to Help section
@@ -4557,6 +4569,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "選單名稱";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "選單";
 
@@ -5112,6 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "通知";
@@ -5572,7 +5586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "請輸入有效的電話號碼";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "請輸入 WordPress.com 帳戶的密碼，以便使用 Apple ID 登入。";
 
 /* Instruction text on the two-factor screen. */
@@ -5994,7 +6008,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "參閱原始文章";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6438,6 +6453,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "儲存中...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "掃瞄";
 
@@ -6835,7 +6851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "在此分享你的故事...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "分享";
@@ -7196,6 +7213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "靜態首頁";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7385,7 +7403,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "拍攝視訊";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "點選「週」以查看踴躍回應者。";
+"Tap \"View more\" to see your top commenters." = "點選「檢視更多」即可查看哪些人踴躍留言。";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "點選 [bookmark-outline] 即可將文章儲存至你的清單。";
@@ -7675,7 +7693,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "已啟用佈景主題";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "佈景主題";
@@ -9745,6 +9764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "例如：44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "更多";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -9882,8 +9904,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "選擇網站用途";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "「%1$@」將在 %2$@後搬遷";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "「%1$@」將在 %2$@後搬遷";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "「%@」即將搬遷了";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "「%@」即將搬遷了";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "採用 Jetpack 技術";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "取得 Jetpack 應用程式";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "體驗全新 Jetpack 應用程式";
@@ -9897,11 +9934,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "切換至全新 Jetpack 應用程式";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "切換至 Jetpack 應用程式";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "瞭解更多：jetpack.com";
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "繼續前往「通知」功能";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "稍後進行";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "WordPress 應用程式已移除「統計資料」、「閱讀器」、「通知」和其他 Jetpack 提供的功能。";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已經搬遷。";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切換至 Jetpack 應用程式，以便繼續在你的裝置上接收即時通知。";
@@ -9924,8 +9973,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "使用全新 Jetpack 應用程式取得統計資料";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "切換完全免費，只要 1 分鐘就能完成。";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "繼續但不使用 Jetpack";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack 功能即將搬遷了。";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack 提供統計資料、通知等其他功能，可協助你建置和發展夢想中的 WordPress 網站。\n\nWordPress 應用程式不再支援建立新網站。";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "WordPress 應用程式即將移除「統計資料」、「閱讀器」、「通知」和 Jetpack 提供的其他功能。";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "「通知」將轉移至 Jetpack 應用程式";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "「閱讀器」將轉移至 Jetpack 應用程式";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "「統計資料」將轉移至 Jetpack 應用程式";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "WordPress 應用程式將於 %@ 移除「統計資料」、「閱讀器」、「通知」和 Jetpack 提供的其他功能。";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "繼續前往「閱讀器」";
@@ -9941,6 +10014,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "繼續前往「統計資料」功能";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "「統計資料」、「閱讀器」、「通知」及其他功能即將搬遷至 Jetpack 行動應用程式。";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "隱藏此項目";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "深入瞭解";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "切換至 Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "稍後再提醒我";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "新增作者";
@@ -10022,6 +10110,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "感謝改用 Jetpack！";
+
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "你似乎安裝了 WordPress 應用程式。";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "開啟 WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "不用了，謝謝";
+
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "你想要從 WordPress 應用程式轉移資料並自動登入嗎？";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "歡迎使用 Jetpack！";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍後決定";
@@ -10211,9 +10314,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
-
-/* Today */
-"today" = "今天";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "重要秘訣";
