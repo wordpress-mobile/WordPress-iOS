@@ -111,6 +111,7 @@ struct MatchedRoute: Route {
     let action: NavigationAction
     let shouldTrack: Bool
     let values: [String: String]
+    let jetpackPowered: Bool
 
     init(from route: Route, with values: [String: String] = [:]) {
         // Allows optional overriding of source based on the input URL parameters.
@@ -124,6 +125,7 @@ struct MatchedRoute: Route {
         self.action = route.action
         self.shouldTrack = route.shouldTrack
         self.values = values
+        self.jetpackPowered = route.jetpackPowered
     }
 }
 

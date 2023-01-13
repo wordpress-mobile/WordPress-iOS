@@ -71,8 +71,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private let loggingStack = WPLoggingStack()
 
-    private lazy var tracksLogger = TracksLogger()
-
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
         shared?.loggingStack.crashLogging
@@ -295,7 +293,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAppCenterSDK()
         configureAppRatingUtility()
 
-        TracksLogging.delegate = tracksLogger
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPSharedSetLoggingDelegate(libraryLogger)
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPAuthenticatorSetLoggingDelegate(libraryLogger)
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -316,7 +318,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Push notifications
         // This is silent (the user isn't prompted) so we can do it on launch.
         // We'll ask for user notification permission after signin.
-        PushNotificationsManager.shared.registerForRemoteNotifications()
+        DispatchQueue.main.async {
+            PushNotificationsManager.shared.setupRemoteNotifications()
+        }
 
         // Deferred tasks to speed up app launch
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -644,7 +648,7 @@ extension WordPressAppDelegate {
             return "Jetpack Migration View"
 #endif
         default:
-            return WPTabBarController.sharedInstance().currentlySelectedScreen()
+            return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }
     }
 
@@ -760,8 +764,8 @@ extension WordPressAppDelegate {
     }
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
-        WPSharedSetLoggingLevel(level)
-        WPAuthenticatorSetLoggingLevel(level)
+        SetCocoaLumberjackObjCLogLevel(level.rawValue)
+        CocoaLumberjack.dynamicLogLevel = level
     }
 }
 

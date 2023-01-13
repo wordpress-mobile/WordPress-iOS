@@ -487,6 +487,7 @@
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Activity";
 
@@ -1109,6 +1110,7 @@
 "Backing up site" = "Backing up site";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2152,6 +2154,9 @@
 /* The tooltip title for the Floating Create Button */
 "Create a post, page, or story" = "Create a post, page, or story";
 
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Create a Site";
+
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
 
@@ -2835,6 +2840,9 @@
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "eg. 44";
+
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "More";
 
 /* Accessibility label for the Email text field.
    Account Settings Email label
@@ -3730,7 +3738,8 @@
 /* Health site intent topic */
 "Health" = "Health";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Help";
 
 /* Link to Help section
@@ -4212,8 +4221,23 @@
 /* Footer for the Serve images from our servers setting */
 "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site." = "Jetpack will optimize your images and serve them from the server location nearest to your visitors. Using our global content delivery network will boost the loading speed of your site.";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ are moving in %2$@";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "%@ is moving soon";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack powered";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Get the Jetpack app";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Try the new Jetpack app";
@@ -4235,6 +4259,15 @@
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Continue to Notifications";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Do this later";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack features have moved.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Switch to the Jetpack app to keep recieving real-time notifications on your device.";
@@ -4259,6 +4292,12 @@
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Switching is free and only takes a minute.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Continue without Jetpack";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack features are moving soon.";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.\n\nThe WordPress app no longer supports creating a new site.";
@@ -4292,6 +4331,21 @@
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Continue to Stats";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Hide this";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Learn more";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Switch to Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Remind me later";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Add an author";
@@ -4876,6 +4930,7 @@
 "Menu Name" = "Menu Name";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
@@ -5505,6 +5560,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
@@ -5980,7 +6036,7 @@
 /* Title of a prompt. */
 "Please enter a valid URL" = "Please enter a valid URL";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Please enter the password for your WordPress.com account to log in with your Apple ID.";
 
 /* Instruction text on the two-factor screen. */
@@ -6423,7 +6479,8 @@
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Read the source post";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6894,6 +6951,7 @@
 "Saving..." = "Saving...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Scan";
 
@@ -7311,7 +7369,8 @@
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Sharing Error";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
@@ -7674,6 +7733,7 @@
 "Static Homepage" = "Static Homepage";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7932,7 +7992,7 @@
 "Tap [bookmark-outline] to save a post to your list." = "Tap [bookmark-outline] to save a post to your list.";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "Tap \"Week\" to see your top commenters.";
+"Tap \"View more\" to see your top commenters." = "Tap \"View more\" to see your top commenters.";
 
 /* Accessibility hint */
 "Tap for more detail." = "Tap for more detail.";
@@ -8219,7 +8279,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Theme Activated";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
@@ -8542,9 +8603,6 @@
 
 /* Message explaining that Jetpack needs to be installed for a particular site. Reads like 'To use this app for example.com you'll need to have... */
 "To use this app for %@ you'll need to have the Jetpack plugin installed and activated." = "To use this app for %@ you'll need to have the Jetpack plugin installed and activated.";
-
-/* Today */
-"today" = "today";
 
 /* Comments Today Section Header
    Insights 'Today' header

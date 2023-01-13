@@ -8,10 +8,12 @@ class SiteStatsImmuTableRows {
     /// Helper method to create the rows for the Views and Visitors section
     ///
     static func viewVisitorsImmuTableRows(_ statsSummaryTimeIntervalData: StatsSummaryTimeIntervalData?,
+                                          selectedSegment: StatsSegmentedControlData.Segment,
                                           periodDate: Date,
                                           periodEndDate: Date? = nil,
                                           statsLineChartViewDelegate: StatsLineChartViewDelegate?,
-                                          siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) -> [ImmuTableRow] {
+                                          siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
+                                          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
         let viewsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .views, periodEndDate: periodEndDate)
@@ -62,12 +64,15 @@ class SiteStatsImmuTableRows {
             }
 
             let row = ViewsVisitorsRow(
-                    segmentsData: [viewsSegmentData, visitorsSegmentData],
-                    chartData: lineChartData,
-                    chartStyling: lineChartStyling,
-                    period: StatsPeriodUnit.day,
-                    statsLineChartViewDelegate: statsLineChartViewDelegate,
-                    siteStatsInsightsDelegate: siteStatsInsightsDelegate, xAxisDates: xAxisDates
+                segmentsData: [viewsSegmentData, visitorsSegmentData],
+                selectedSegment: selectedSegment,
+                chartData: lineChartData,
+                chartStyling: lineChartStyling,
+                period: StatsPeriodUnit.day,
+                statsLineChartViewDelegate: statsLineChartViewDelegate,
+                siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                viewsAndVisitorsDelegate: viewsAndVisitorsDelegate,
+                xAxisDates: xAxisDates
             )
             tableRows.append(row)
         }

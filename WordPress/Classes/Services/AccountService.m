@@ -1,6 +1,6 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "Blog.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
@@ -46,7 +46,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
-        [[PushNotificationsManager shared] registerForRemoteNotifications];
+        [[PushNotificationsManager shared] setupRemoteNotifications];
     };
     if ([NSThread isMainThread]) {
         // This is meant to help with testing account observers.

@@ -68,6 +68,7 @@ class InsightsManagementViewController: UITableViewController {
         reloadViewModel()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.estimatedSectionHeaderHeight = 38
         tableView.accessibilityIdentifier = TextContent.title
 
         if FeatureFlag.statsNewAppearance.enabled {
@@ -89,7 +90,7 @@ class InsightsManagementViewController: UITableViewController {
     // MARK: TableView Data Source / Delegate Overrides
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 38
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

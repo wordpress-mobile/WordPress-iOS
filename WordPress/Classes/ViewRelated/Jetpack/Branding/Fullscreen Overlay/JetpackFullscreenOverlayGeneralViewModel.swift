@@ -31,8 +31,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return true
 
         // Phase Four: Show feature-collection overlays. Features are removed by this point so they are irrelevant.
-        case (.four, _):
-            return false // TODO: Change this to true when other phase 4 tasks are ready
+        case (.four, .card):
+            fallthrough
+        case (.four, .appOpen):
+            return true
 
         // New Users Phase: Show feature-collection overlays. Do not show on app-open. Features are removed by this point so they are irrelevant.
         case (.newUsers, .appOpen):
@@ -70,6 +72,13 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return Strings.PhaseTwoAndThree.notificationsTitle
         case (.three, .reader):
             return Strings.PhaseTwoAndThree.readerTitle
+        case (.three, _):
+            return Strings.PhaseThree.generalTitle
+
+        // Phase Four
+        case (.four, _):
+            return Strings.PhaseFour.generalTitle
+
         default:
             return ""
         }
@@ -92,6 +101,10 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         // Phase Three
         case (.three, _):
             return phaseTwoAndThreeSubtitle()
+
+        // Phase Four
+        case (.four, _):
+            return .init(string: Strings.PhaseFour.subtitle)
         default:
             return .init(string: "")
         }
@@ -110,7 +123,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .login:
             fallthrough
         case .appOpen:
-            return "" // TODO: Add new animation when ready
+            return Constants.allFeaturesLogosAnimationLtr
         }
     }
 
@@ -127,7 +140,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .login:
             fallthrough
         case .appOpen:
-            return "" // TODO: Add new animation when ready
+            return Constants.allFeaturesLogosAnimationRtl
         }
     }
 
@@ -138,6 +151,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .two:
             return nil
         case .three:
+            fallthrough
+        case .four:
             return Strings.PhaseTwoAndThree.footnote
         default:
             return nil
@@ -164,10 +179,12 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     var switchButtonText: String {
         switch phase {
         case .one:
-            return Strings.General.earlyPhasesSwitchButtonTitle
+            fallthrough
         case .two:
             return Strings.General.earlyPhasesSwitchButtonTitle
         case .three:
+            fallthrough
+        case .four:
             return Strings.General.latePhasesSwitchButtonTitle
         default:
             return ""
@@ -175,13 +192,17 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     }
 
     var continueButtonText: String? {
-        switch source {
-        case .stats:
+        switch (source, phase) {
+        case (.stats, _):
             return Strings.General.statsContinueButtonTitle
-        case .notifications:
+        case (.notifications, _):
             return Strings.General.notificationsContinueButtonTitle
-        case .reader:
+        case (.reader, _):
             return Strings.General.readerContinueButtonTitle
+        case (_, .three):
+            return Strings.PhaseThree.generalContinueButtonTitle
+        case (_, .four):
+            return Strings.PhaseFour.generalContinueButtonTitle
         default:
             return nil
         }
@@ -202,7 +223,9 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         return source.rawValue
     }
 
-    var onDismiss: JetpackOverlayDismissCallback?
+    var onWillDismiss: JetpackOverlayDismissCallback?
+
+    var onDidDismiss: JetpackOverlayDismissCallback?
 }
 
 // MARK: Helpers
@@ -242,6 +265,8 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         static let readerLogoAnimationRtl = "JetpackReaderLogoAnimation_rtl"
         static let notificationsLogoAnimationLtr = "JetpackNotificationsLogoAnimation_ltr"
         static let notificationsLogoAnimationRtl = "JetpackNotificationsLogoAnimation_rtl"
+        static let allFeaturesLogosAnimationLtr = "JetpackAllFeaturesLogosAnimation_ltr"
+        static let allFeaturesLogosAnimationRtl = "JetpackAllFeaturesLogosAnimation_rtl"
     }
 
     enum Strings {
@@ -313,6 +338,30 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
             static let footnote = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.footnote",
                                                     value: "Switching is free and only takes a minute.",
                                                     comment: "A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app.")
+        }
+
+        enum PhaseThree {
+            static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.title",
+                                                                  value: "Jetpack features are moving soon.",
+                                                                  comment: "Title of a screen that showcases the Jetpack app.")
+
+            static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseThree.general.continue.title",
+                                                                            value: "Continue without Jetpack",
+                                                                            comment: "Title of a button that dismisses an overlay that showcases the Jetpack app.")
+        }
+
+        enum PhaseFour {
+            static let generalTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.title",
+                                                                  value: "Jetpack features have moved.",
+                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+
+            static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.subtitle",
+                                                                  value: "Stats, Reader, Notifications and other Jetpack powered features have been removed from the WordPress app.",
+                                                                  comment: "Title of a screen that prompts the user to switch the Jetpack app.")
+
+            static let generalContinueButtonTitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseFour.general.continue.title",
+                                                                            value: "Do this later",
+                                                                            comment: "Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app.")
         }
     }
 }

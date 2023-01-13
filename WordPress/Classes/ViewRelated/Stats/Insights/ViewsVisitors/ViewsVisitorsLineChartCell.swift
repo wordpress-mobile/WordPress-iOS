@@ -12,6 +12,11 @@ struct StatsSegmentedControlData {
     var period: StatsPeriodUnit?
     var analyticsStat: WPAnalyticsStat?
 
+    enum Segment: Int {
+        case views
+        case visitors
+    }
+
     private(set) var accessibilityHint: String?
 
     init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, date: Date? = nil, period: StatsPeriodUnit? = nil, analyticsStat: WPAnalyticsStat? = nil, accessibilityHint: String? = nil, differencePercent: Int) {
@@ -116,6 +121,11 @@ struct StatsSegmentedControlData {
     }
 }
 
+
+protocol StatsInsightsViewsAndVisitorsDelegate: AnyObject {
+    func viewsAndVisitorsSegmendChanged(to selectedSegmentIndex: Int)
+}
+
 class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
     @IBOutlet weak var labelsStackView: UIStackView!
@@ -133,6 +143,8 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var bottomStackView: UIStackView!
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
+
     private typealias Style = WPStyleGuide.Stats
     private var segmentsData = [StatsSegmentedControlData]()
 
@@ -161,26 +173,20 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(segmentsData: [StatsSegmentedControlData],
-                   lineChartData: [LineChartDataConvertible] = [],
-                   lineChartStyling: [LineChartStyling] = [],
-                   period: StatsPeriodUnit? = nil,
-                   statsLineChartViewDelegate: StatsLineChartViewDelegate? = nil,
-                   xAxisDates: [Date],
-                   delegate: SiteStatsInsightsDelegate? = nil
-    ) {
-        siteStatsInsightsDelegate = delegate
-        siteStatsInsightDetailsDelegate = siteStatsInsightsDelegate
+    func configure(row: ViewsVisitorsRow) {
+        siteStatsInsightsDelegate = row.siteStatsInsightsDelegate
+        siteStatsInsightDetailsDelegate = row.siteStatsInsightsDelegate
         statSection = .insightsViewsVisitors
 
-        self.segmentsData = segmentsData
-        self.chartData = lineChartData
-        self.chartStyling = lineChartStyling
-        self.statsLineChartViewDelegate = statsLineChartViewDelegate
-        self.period = period
-        self.xAxisDates = xAxisDates
+        self.segmentsData = row.segmentsData
+        self.chartData = row.chartData
+        self.chartStyling = row.chartStyling
+        self.statsLineChartViewDelegate = row.statsLineChartViewDelegate
+        self.viewsAndVisitorsDelegate = row.viewsAndVisitorsDelegate
+        self.period = row.period
+        self.xAxisDates = row.xAxisDates
 
-        setupSegmentedControl()
+        setupSegmentedControl(selectedSegment: row.selectedSegment)
         configureChartView()
         updateLabels()
     }
@@ -191,8 +197,9 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
         configureChartView()
         updateLabels()
-    }
 
+        viewsAndVisitorsDelegate?.viewsAndVisitorsSegmendChanged(to: selectedSegmentIndex)
+    }
 }
 
 
@@ -205,12 +212,13 @@ private extension ViewsVisitorsLineChartCell {
         styleLabels()
     }
 
-    func setupSegmentedControl() {
+    func setupSegmentedControl(selectedSegment: StatsSegmentedControlData.Segment) {
         segmentedControl.selectedSegmentTintColor = UIColor.white
         segmentedControl.setTitleTextAttributes([.font: UIFont.preferredFont(forTextStyle: .subheadline).bold()], for: .normal)
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
         segmentedControl.setTitle(segmentsData[0].segmentTitle, forSegmentAt: 0)
         segmentedControl.setTitle(segmentsData[1].segmentTitle, forSegmentAt: 1)
+        segmentedControl.selectedSegmentIndex = selectedSegment.rawValue
     }
 
     func styleLabels() {

@@ -21,13 +21,12 @@
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
 #import "Constants.h"
-#import "ContextManager.h"
+#import "CoreDataStack.h"
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 
 #import "EditCommentViewController.h"
 
-#import "LegacyContextFactory.h"
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
@@ -36,6 +35,7 @@
 #import "MeHeaderView.h"
 #import "MenuItem.h"
 #import "MenuItemsViewController.h"
+#import "MenusViewController.h"
 
 #import "NavBarTitleDropdownButton.h"
 #import "NSObject+Helpers.h"
@@ -129,3 +129,5 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPAnalytics.h>
 #import <WordPressUI/UIImage+Util.h>
+
+FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

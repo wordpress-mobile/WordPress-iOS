@@ -3,11 +3,15 @@ import UIKit
 
 class JetpackBannerView: UIView {
 
-    var buttonAction: (() -> Void)?
+    // MARK: Private Variables
 
-    init(buttonAction: (() -> Void)? = nil) {
+    private var button: JetpackButton?
+    private var buttonAction: (() -> Void)?
+
+    // MARK: Initializers
+
+    init() {
         super.init(frame: .zero)
-        self.buttonAction = buttonAction
         setup()
     }
 
@@ -21,6 +25,15 @@ class JetpackBannerView: UIView {
         setup()
     }
 
+    // MARK: Public Functions
+
+    func configure(title: String, buttonAction: (() -> Void)?) {
+        self.button?.title = title
+        self.buttonAction = buttonAction
+    }
+
+    // MARK: Private Helpers
+
     @objc private func jetpackButtonTapped() {
         buttonAction?()
     }
@@ -29,14 +42,17 @@ class JetpackBannerView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: JetpackBannerView.minimumHeight).isActive = true
         backgroundColor = Self.jetpackBannerBackgroundColor
-
-        let jetpackButton = JetpackButton(style: .banner)
+        let textProvider = JetpackBrandingTextProvider(screen: nil) // Use default text in case `configure()` is never called.
+        let jetpackButton = JetpackButton(style: .banner, title: textProvider.brandingText())
         jetpackButton.translatesAutoresizingMaskIntoConstraints = false
         jetpackButton.addTarget(self, action: #selector(jetpackButtonTapped), for: .touchUpInside)
         addSubview(jetpackButton)
+        self.button = jetpackButton
 
         pinSubviewToSafeArea(jetpackButton)
     }
+
+    // MARK: Constants
 
     /// Preferred minimum height to be used for constraints
     static let minimumHeight: CGFloat = 44

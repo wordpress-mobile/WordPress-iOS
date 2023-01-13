@@ -1,5 +1,3 @@
-import FormatterKit
-
 struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String

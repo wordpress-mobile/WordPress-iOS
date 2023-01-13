@@ -41,7 +41,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest version
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
 
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
@@ -79,7 +79,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Migrate to the latest
-        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL, contextFactory: nil)
+        let contextManager = ContextManager(modelName: ContextManagerModelNameCurrent, store: storeURL)
         let object = try contextManager.mainContext.existingObject(with: XCTUnwrap(objectID))
         XCTAssertNotNil(object, "Object should exist in new PSC")
         XCTAssertNoThrow(object.value(forKey: "author"), "Theme.author should exist in current model version, but we were unable to fetch it")
@@ -106,7 +106,7 @@ class ContextManagerTests: XCTestCase {
         }
 
         // Initialize 24 > 25 Migration
-        let contextManager = ContextManager(modelName: model25Name, store: storeURL, contextFactory: nil)
+        let contextManager = ContextManager(modelName: model25Name, store: storeURL)
         let secondContext = contextManager.mainContext
 
         // Test the existence of Post object after migration
@@ -185,14 +185,14 @@ class ContextManagerTests: XCTestCase {
         expect(try findFirstUser()?.username) == "First User"
     }
 
-    func testSaveUsingBlock() async {
+    func testSaveUsingBlock() async throws {
         let contextManager = ContextManager.forTesting()
         let numberOfAccounts: () -> Int = {
             contextManager.mainContext.countObjects(ofType: WPAccount.self)
         }
         XCTAssertEqual(numberOfAccounts(), 0)
 
-        await contextManager.performAndSave { context in
+        try await contextManager.performAndSave { context in
             let account = WPAccount(context: context)
             account.userID = 1
             account.username = "First User"

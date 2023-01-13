@@ -96,7 +96,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .stats, in: self)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
     func configureInsightsTableView() {
@@ -117,7 +117,8 @@ class SiteStatsDashboardViewController: UIViewController {
             jetpackBannerView.removeFromSuperview()
             return
         }
-        jetpackBannerView.buttonAction = { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.stats)
+        jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .stats)
         }

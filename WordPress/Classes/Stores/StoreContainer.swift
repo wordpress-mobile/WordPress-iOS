@@ -21,4 +21,5 @@ class StoreContainer {
     let statsPeriod = StatsPeriodStore()
     let jetpackInstall = JetpackInstallStore()
     let statsWidgets = StatsWidgetsStore()
+    let statsRevamp = StatsRevampStore()
 }

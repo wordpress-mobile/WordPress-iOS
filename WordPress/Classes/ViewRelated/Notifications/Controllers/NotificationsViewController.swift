@@ -180,7 +180,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(from: .notifications, in: self)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .notifications)
 
         syncNotificationsWithModeratedComments()
         setupInlinePrompt()
@@ -227,7 +227,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         defer {
             if AppConfiguration.showsWhatIsNew {
-                WPTabBarController.sharedInstance()?.presentWhatIsNew(on: self)
+                RootViewCoordinator.shared.presentWhatIsNew(on: self)
             }
         }
 
@@ -297,7 +297,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
-        return WPTabBarController.sharedInstance().notificationsViewController
+        return RootViewCoordinator.sharedPresenter.notificationsViewController
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -635,7 +635,8 @@ extension NotificationsViewController {
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        jetpackBannerView.buttonAction = { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.notifications)
+        jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .notifications)
         }
@@ -1639,10 +1640,10 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
              .follow,
              .like:
             WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            WPTabBarController.sharedInstance().showReaderTab()
+            RootViewCoordinator.sharedPresenter.showReaderTab()
         case .unread:
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            WPTabBarController.sharedInstance().showPostTab()
+            RootViewCoordinator.sharedPresenter.showPostTab()
         }
     }
 }

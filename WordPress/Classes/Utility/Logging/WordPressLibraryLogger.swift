@@ -1,7 +1,8 @@
 import CocoaLumberjack
 import AutomatticTracks
+import WordPressShared
 
-class TracksLogger: NSObject, TracksLoggingDelegate {
+class WordPressLibraryLogger: NSObject, TracksLoggingDelegate, WordPressLoggingDelegate {
 
     func logError(_ str: String) {
         DDLogError(str)

@@ -14,7 +14,6 @@ typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
-static CGFloat const jetpackBadgePadding = 30;
 
 @interface SharingViewController ()
 
@@ -253,10 +252,7 @@ static CGFloat const jetpackBadgePadding = 30;
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == SharingButtons && [SharingViewController jetpackBrandingVisibile]) {
-        return [JetpackButton makeBadgeViewWithTopPadding:jetpackBadgePadding
-                                            bottomPadding:jetpackBadgePadding
-                                                   target:self
-                                                 selector:@selector(jetpackButtonTapped)];
+        return [self makeJetpackBadge];
     }
 
     return nil;
@@ -370,13 +366,6 @@ static CGFloat const jetpackBadgePadding = 30;
     [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
         DDLogError([error description]);
     }];
-}
-
-#pragma mark - Jetpack badge button
-
-- (void) jetpackButtonTapped
-{
-    [self presentJetpackOverlay];
 }
 
 @end

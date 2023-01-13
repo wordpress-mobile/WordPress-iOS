@@ -258,12 +258,7 @@ private extension StatsInsightsStore {
 
     // MARK: - Insights Overview
 
-    func fetchInsights(_ newInsightsFeatureFlag: Bool) {
-        guard newInsightsFeatureFlag else {
-            setAllFetchingStatus(.loading)
-            fetchLastPostSummary()
-            return
-        }
+    func fetchInsights() {
         updateFetchingStatusForVisibleCards(.loading)
         fetchInsightsCards()
     }
@@ -369,91 +364,6 @@ private extension StatsInsightsStore {
         }
     }
 
-    // TODO: Stats Revamp - Remove this once we remove the StatsPerformanceImprovements feature flag
-    func fetchOverview() {
-        guard let api = statsRemote() else {
-            setAllFetchingStatus(.idle)
-            return
-        }
-        if FeatureFlag.statsPerformanceImprovements.enabled {
-            DDLogInfo("Don't forget to delete this method once the feature flag is removed 😶")
-        }
-        api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching all time insights: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
-            DDLogInfo("Stats: Insights - successfully fetched all time")
-        }
-
-        api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching WP.com followers: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
-            DDLogInfo("Stats: Insights - successfully fetched wp.com followers")
-        }
-
-        api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching email followers: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
-            DDLogInfo("Stats: Insights - successfully fetched email followers")
-        }
-
-        api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching publicize insights: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
-            DDLogInfo("Stats: Insights - successfully fetched publicize")
-        }
-
-        api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching annual/most popular time: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
-            DDLogInfo("Stats: Insights - successfully fetched annual and most popular")
-        }
-
-        api.getInsight { (todayInsight: StatsTodayInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching today's insight: \(String(describing: error?.localizedDescription))")
-            }
-
-            self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
-            DDLogInfo("Stats: Insights - successfully fetched today")
-        }
-
-        api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching comment insights: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
-            DDLogInfo("Stats: Insights - successfully fetched comments")
-        }
-
-        api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
-            }
-
-            self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
-            DDLogInfo("Stats: Insights - successfully fetched tags and categories")
-        }
-
-        api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching posting activity insight: \(String(describing: error?.localizedDescription))")
-            }
-
-            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
-            DDLogInfo("Stats: Insights - successfully fetched posting activity")
-        }
-    }
-
     func loadFromCache() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID,
@@ -508,11 +418,9 @@ private extension StatsInsightsStore {
             return
         }
 
-        if FeatureFlag.statsPerformanceImprovements.enabled {
-            guard forceRefresh || hasCacheExpired else {
-                DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
-                return
-            }
+        guard forceRefresh || hasCacheExpired else {
+            DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
+            return
         }
 
         if forceRefresh {
@@ -520,7 +428,7 @@ private extension StatsInsightsStore {
         }
 
         persistToCoreData()
-        fetchInsights(FeatureFlag.statsPerformanceImprovements.enabled)
+        fetchInsights()
     }
 
     func fetchLastPostSummary() {
@@ -554,9 +462,6 @@ private extension StatsInsightsStore {
 
             DispatchQueue.main.async {
                 self.receivedPostStats(postStats, error)
-                if !FeatureFlag.statsPerformanceImprovements.enabled {
-                    self.fetchOverview()
-                }
             }
         }
     }
@@ -578,9 +483,6 @@ private extension StatsInsightsStore {
         }
         transaction { state in
             state.lastPostSummaryStatus = error != nil ? .error : .success
-        }
-        if !FeatureFlag.statsPerformanceImprovements.enabled {
-            fetchOverview()
         }
     }
 
@@ -898,10 +800,6 @@ private extension StatsInsightsStore {
     }
 
     func setLastRefreshDate(_ date: Date, for siteID: NSNumber) {
-        guard FeatureFlag.statsPerformanceImprovements.enabled else {
-            return
-        }
-
         UserPersistentStoreFactory.instance().set(date, forKey: "\(CacheUserDefaultsKeys.lastRefreshDatePrefix)\(siteID)")
     }
 

@@ -78,11 +78,11 @@ extension WPTabBarController {
 
     func navigateToReader(_ pushControlller: UIViewController? = nil) {
         showReaderTab()
-        readerNavigationController.popToRootViewController(animated: false)
+        readerNavigationController?.popToRootViewController(animated: false)
         guard let controller = pushControlller else {
             return
         }
-        readerNavigationController.pushViewController(controller, animated: true)
+        readerNavigationController?.pushViewController(controller, animated: true)
     }
 
     func resetReaderDiscoverNudgeFlow() {
