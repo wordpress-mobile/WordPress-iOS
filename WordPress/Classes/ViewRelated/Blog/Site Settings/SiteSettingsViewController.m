@@ -43,7 +43,6 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDateAndTimeFormat,
     SiteSettingsPostPerPage,
     SiteSettingsSpeedUpYourSite,
-    SiteSettingsWritingCount,
 };
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
@@ -96,6 +95,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) NSString *password;
 
 @property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
+@property (nonatomic, strong) NSArray<NSNumber *> *writingSectionRows;
 @end
 
 @implementation SiteSettingsViewController
@@ -199,6 +199,34 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return sections;
 }
 
+- (NSArray *)writingSectionRows
+{
+    if (_writingSectionRows) {
+        return _writingSectionRows;
+    }
+
+    NSMutableArray *rows = [NSMutableArray arrayWithObjects:
+                            @(SiteSettingsWritingDefaultCategory),
+                            @(SiteSettingsWritingTags),
+                            @(SiteSettingsWritingDefaultPostFormat), nil];
+    
+    BOOL jetpackFeaturesEnabled = [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
+    
+    if (jetpackFeaturesEnabled) {
+        [rows addObject:@(SiteSettingsWritingRelatedPosts)];
+    }
+    
+    [rows addObject:@(SiteSettingsWritingDateAndTimeFormat)];
+    [rows addObject:@(SiteSettingsPostPerPage)];
+    
+    if (jetpackFeaturesEnabled && [self.blog supports:BlogFeatureJetpackImageSettings]) {
+        [rows addObject:@(SiteSettingsSpeedUpYourSite)];
+    }
+
+    _writingSectionRows = rows;
+    return rows;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -228,12 +256,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         case SiteSettingsSectionWriting:
         {
-            if ([self.blog supports:BlogFeatureJetpackImageSettings]) {
-                return SiteSettingsWritingCount;
-            } else {
-                // The last setting, Speed Up Your Site is only available for Jetpack sites
-                return SiteSettingsWritingCount - 1;
-            }
+            return self.writingSectionRows.count;
         }
         case SiteSettingsSectionMedia:
         {
@@ -502,7 +525,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
-    switch (row) {
+    NSInteger writingRow = [self.writingSectionRows[row] integerValue];
+    switch (writingRow) {
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
@@ -867,7 +891,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
 {
-    switch (row) {
+    NSInteger writingRow = [self.writingSectionRows[row] integerValue];
+    switch (writingRow) {
         case SiteSettingsWritingDefaultCategory:
             [self showDefaultCategorySelector];
             break;
