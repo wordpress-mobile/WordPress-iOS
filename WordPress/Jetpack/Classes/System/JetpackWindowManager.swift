@@ -37,8 +37,13 @@ class JetpackWindowManager: WindowManager {
 
 extension JetpackWindowManager {
 
-    @discardableResult
-    func startMigrationFlowIfNeeded(_ blog: Blog? = nil) -> Bool {
+    /// Starts the migration flow if `shouldStartMigrationFlow` is true.
+    ///
+    /// Keep in mind that starting the Migration Flow doesn't mean it is guaranteed the Migration UI will show up.
+    /// The Migration could fail during the content import phase, and the UI won't show up.
+    ///
+    /// - Returns: Returns a boolean indicating whether the Migration Flow has started or not.
+    @discardableResult func startMigrationFlowIfNeeded(_ blog: Blog? = nil) -> Bool {
         let shouldStartMigrationFlow = self.shouldStartMigrationFlow
 
         let params = MigrationAnalyticsTracker.ContentImportEventParams(
