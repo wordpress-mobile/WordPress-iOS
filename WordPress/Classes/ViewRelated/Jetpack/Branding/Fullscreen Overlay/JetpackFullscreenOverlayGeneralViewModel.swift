@@ -206,10 +206,6 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
             return RemoteConfig().phaseThreeBlogPostUrl.value
         case .four:
             return RemoteConfig().phaseFourBlogPostUrl.value
-        case .newUsers:
-            return RemoteConfig().phaseNewUsersBlogPostUrl.value
-        case .selfHosted:
-            return RemoteConfig().phaseSelfHostedBlogPostUrl.value
         default:
             return nil
         }
