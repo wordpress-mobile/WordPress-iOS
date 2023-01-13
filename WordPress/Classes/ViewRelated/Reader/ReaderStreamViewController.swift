@@ -48,6 +48,8 @@ import Combine
     private var noResultsStatusViewController = NoResultsViewController.controller()
     private var noFollowedSitesViewController: NoResultsViewController?
 
+    private lazy var readerPostStreamService = ReaderPostStreamService(coreDataStack: coreDataStack)
+
     var resultsStatusView: NoResultsViewController {
         get {
             guard let noFollowedSitesVC = noFollowedSitesViewController else {
@@ -506,7 +508,9 @@ import Combine
         guard JetpackBrandingVisibility.all.enabled else {
             return
         }
-        let bannerView = JetpackBannerView() { [unowned self] in
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
+        let bannerView = JetpackBannerView()
+        bannerView.configure(title: textProvider.brandingText()) { [unowned self] in
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
         }
@@ -1046,12 +1050,13 @@ import Combine
                 return
             }
 
-            let service = ReaderPostService(managedObjectContext: context)
             if ReaderHelpers.isTopicSearchTopic(topic) {
+                let service = ReaderPostService(managedObjectContext: context)
                 service.fetchPosts(for: topic, atOffset: 0, deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
-                service.fetchPostsV2(for: topic, success: success, failure: failure)
+                self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
+                let service = ReaderPostService(managedObjectContext: context)
                 service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
             }
         }
@@ -1166,13 +1171,14 @@ import Combine
                 return
             }
 
-            let service = ReaderPostService(managedObjectContext: context)
             if ReaderHelpers.isTopicSearchTopic(topic) {
+                let service = ReaderPostService(managedObjectContext: context)
                 let offset = UInt(self.content.contentCount)
                 service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
-                service.fetchPostsV2(for: topic, isFirstPage: false, success: success, failure: failure)
+                self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
+                let service = ReaderPostService(managedObjectContext: context)
                 let earlierThan = sortDate
                 service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)
             }

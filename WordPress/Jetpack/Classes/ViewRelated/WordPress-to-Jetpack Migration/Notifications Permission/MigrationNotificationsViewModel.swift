@@ -11,12 +11,19 @@ class MigrationNotificationsViewModel {
         let primaryHandler = { [weak coordinator] in
             tracker.track(.notificationsScreenContinueTapped)
             InteractiveNotificationsManager.shared.requestAuthorization { [weak coordinator] authorized in
-                coordinator?.transitionToNextStep()
-                let event: MigrationEvent = authorized ? .notificationsScreenPermissionGranted : .notificationsScreenPermissionDenied
-                tracker.track(event)
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    guard settings.authorizationStatus != .notDetermined else {
+                        tracker.track(.notificationsScreenPermissionNotDetermined)
+                        return
+                    }
 
-                if authorized {
-                    JetpackNotificationMigrationService.shared.rescheduleLocalNotifications()
+                    coordinator?.transitionToNextStep()
+                    let event: MigrationEvent = authorized ? .notificationsScreenPermissionGranted : .notificationsScreenPermissionDenied
+                    tracker.track(event)
+
+                    if authorized {
+                        JetpackNotificationMigrationService.shared.rescheduleLocalNotifications()
+                    }
                 }
             }
         }

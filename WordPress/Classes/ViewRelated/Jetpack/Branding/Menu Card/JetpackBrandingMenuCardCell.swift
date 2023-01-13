@@ -7,6 +7,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private weak var viewController: BlogDetailsViewController?
     private var presenter: JetpackBrandingMenuCardPresenter
+    private var config: JetpackBrandingMenuCardPresenter.Config?
 
     /// Sets the animation based on the language orientation
     private var animation: Animation? {
@@ -15,34 +16,41 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         Animation.named(Constants.animationRtl)
     }
 
-    // MARK: Lazy Loading Views
+    private var cardType: JetpackBrandingMenuCardPresenter.Config.CardType {
+        config?.type ?? .expanded
+    }
+
+    // MARK: Lazy Loading General Views
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.configureButtonContainerStackView()
         frameView.hideHeader()
 
-        frameView.onEllipsisButtonTap = { [weak self] in
-            self?.presenter.trackContexualMenuAccessed()
+        if cardType == .expanded {
+            frameView.configureButtonContainerStackView()
+            frameView.onEllipsisButtonTap = { [weak self] in
+                self?.presenter.trackContexualMenuAccessed()
+            }
+            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            frameView.ellipsisButton.menu = contextMenu
         }
-        frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-        frameView.ellipsisButton.menu = contextMenu
-
         return frameView
     }()
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .vertical
+        stackView.axis = stackViewAxis
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Metrics.spacing
-        stackView.layoutMargins = Metrics.containerMargins
+        stackView.spacing = stackViewSpacing
+        stackView.directionalLayoutMargins = stackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews([logosSuperview, descriptionLabel, learnMoreSuperview])
+        stackView.addArrangedSubviews(stackViewSubviews)
         return stackView
     }()
+
+    // MARK: Lazy Loading Expanded Card Views
 
     private lazy var logosSuperview: UIView = {
         let view = UIView()
@@ -63,7 +71,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         view.animation = animation
 
         // Height Constraint
-        view.heightAnchor.constraint(equalToConstant: Metrics.animationsViewHeight).isActive = true
+        view.heightAnchor.constraint(equalToConstant: Metrics.Expanded.animationsViewHeight).isActive = true
 
         // Width constraint to achieve aspect ratio
         let animationSize = animation?.size ?? .init(width: 1, height: 1)
@@ -73,13 +81,13 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         return view
     }()
 
-    private lazy var descriptionLabel: UILabel = {
+    private lazy var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Metrics.descriptionFont
-        label.numberOfLines = 0
+        label.font = labelFont
+        label.textColor = labelTextColor
+        label.numberOfLines = labelNumberOfLines
         label.adjustsFontForContentSizeCategory = true
-
         return label
     }()
 
@@ -117,16 +125,46 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         return button
     }()
 
+    // MARK: Lazy Loading Compact Card Views
+
+    private lazy var jetpackIconImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(named: Constants.jetpackIcon)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = image
+        imageView.heightAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: Metrics.Compact.logoImageViewSize).isActive = true
+        return imageView
+    }()
+
+    private lazy var ellipsisButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(Metrics.Compact.ellipsisButtonColor), for: .normal)
+        button.contentEdgeInsets = Metrics.Compact.ellipsisButtonPadding
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
+        button.accessibilityTraits = .button
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.showsMenuAsPrimaryAction = true
+        button.menu = contextMenu
+        button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
+            self?.presenter.trackContexualMenuAccessed()
+        }
+        return button
+    }()
+
     // MARK: Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         presenter = JetpackBrandingMenuCardPresenter()
+        config = presenter.cardConfig()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
         presenter = JetpackBrandingMenuCardPresenter()
+        config = presenter.cardConfig()
         super.init(coder: coder)
         commonInit()
     }
@@ -148,15 +186,14 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private func setupContent() {
         logosAnimationView.currentProgress = 1.0
-        let config = presenter.cardConfig()
-        descriptionLabel.text = config?.description
+        label.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
 
     // MARK: Actions
 
     @objc private func learnMoreButtonTapped() {
-        guard let config = presenter.cardConfig(),
+        guard let config = config,
               let urlString = config.learnMoreButtonURL,
               let url = URL(string: urlString) else {
             return
@@ -201,23 +238,104 @@ private extension JetpackBrandingMenuCardCell {
 }
 
 private extension JetpackBrandingMenuCardCell {
+    var stackViewAxis: NSLayoutConstraint.Axis {
+        switch cardType {
+        case .compact:
+            return .horizontal
+        case .expanded:
+            return .vertical
+        }
+    }
+
+    var stackViewSpacing: CGFloat {
+        switch cardType {
+        case .compact:
+            return Metrics.Compact.spacing
+        case .expanded:
+            return Metrics.Expanded.spacing
+        }
+    }
+
+    var stackViewLayoutMargins: NSDirectionalEdgeInsets {
+        switch cardType {
+        case .compact:
+            return Metrics.Compact.containerMargins
+        case .expanded:
+            return Metrics.Expanded.containerMargins
+        }
+    }
+
+    var stackViewSubviews: [UIView] {
+        switch cardType {
+        case .compact:
+            return [jetpackIconImageView, label, ellipsisButton]
+        case .expanded:
+            return [logosSuperview, label, learnMoreSuperview]
+        }
+    }
+
+    var labelFont: UIFont {
+        switch cardType {
+        case .compact:
+            return Metrics.Compact.labelFont
+        case .expanded:
+            return Metrics.Expanded.labelFont
+        }
+    }
+
+    var labelTextColor: UIColor {
+        switch cardType {
+        case .compact:
+            return Metrics.Compact.labelTextColor
+        case .expanded:
+            return Metrics.Expanded.labelTextColor
+        }
+    }
+
+    var labelNumberOfLines: Int {
+        switch cardType {
+        case .compact:
+            return 1
+        case .expanded:
+            return 0
+        }
+    }
+
+}
+
+private extension JetpackBrandingMenuCardCell {
 
     enum Metrics {
         // General
-        static let spacing: CGFloat = 10
-        static let containerMargins = UIEdgeInsets(top: 20, left: 20, bottom: 12, right: 20)
-        static let cardFrameConstraintPriority = UILayoutPriority(999)
-
-        // Animation view
-        static let animationsViewHeight: CGFloat = 32
-
-        // Description Label
-        static var descriptionFont: UIFont {
-            let maximumFontPointSize: CGFloat = 16
-            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-            let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
-            return UIFontMetrics.default.scaledFont(for: font)
+        enum Expanded {
+            static let spacing: CGFloat = 10
+            static let containerMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 12, trailing: 20)
+            static let animationsViewHeight: CGFloat = 32
+            static var labelFont: UIFont {
+                let maximumFontPointSize: CGFloat = 16
+                let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+                let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+                return UIFontMetrics.default.scaledFont(for: font)
+            }
+            static let labelTextColor: UIColor = .label
         }
+
+        enum Compact {
+            static let spacing: CGFloat = 15
+            static let containerMargins = NSDirectionalEdgeInsets(top: 15, leading: 20, bottom: 7, trailing: 12)
+            static let logoImageViewSize: CGFloat = 24
+            static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+            static let ellipsisButtonColor = UIColor.muriel(color: .gray, .shade20)
+            static var labelFont: UIFont {
+                let maximumFontPointSize: CGFloat = 17
+                let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+                let font = UIFont(descriptor: fontDescriptor, size: min(fontDescriptor.pointSize, maximumFontPointSize))
+                return UIFontMetrics.default.scaledFont(for: font)
+            }
+            static let labelTextColor: UIColor = UIColor.muriel(color: .jetpackGreen, .shade40)
+        }
+
+        static let cardFrameConstraintPriority = UILayoutPriority(999)
 
         // Learn more button
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
@@ -231,6 +349,7 @@ private extension JetpackBrandingMenuCardCell {
         static let analyticsSource = "jetpack_menu_card"
         static let remindMeLaterSystemImageName = "alarm"
         static let hideThisLaterSystemImageName = "eye.slash"
+        static let jetpackIcon = "icon-jetpack"
     }
 
     enum Strings {
@@ -243,6 +362,9 @@ private extension JetpackBrandingMenuCardCell {
         static let hideCardMenuItemTitle = NSLocalizedString("jetpack.menuCard.hide",
                                                                   value: "Hide this",
                                                                   comment: "Menu item title to hide the card.")
+        static let ellipsisButtonAccessibilityLabel = NSLocalizedString("ellipsisButton.AccessibilityLabel",
+                                                                        value: "More",
+                                                                        comment: "Accessibility label for more button in dashboard quick start card.")
     }
 
     enum MenuItem {

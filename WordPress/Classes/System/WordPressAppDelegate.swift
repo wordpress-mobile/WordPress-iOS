@@ -71,8 +71,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     private let loggingStack = WPLoggingStack()
 
-    private lazy var tracksLogger = TracksLogger()
-
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
         shared?.loggingStack.crashLogging
@@ -295,7 +293,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAppCenterSDK()
         configureAppRatingUtility()
 
-        TracksLogging.delegate = tracksLogger
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPSharedSetLoggingDelegate(libraryLogger)
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPAuthenticatorSetLoggingDelegate(libraryLogger)
 
         printDebugLaunchInfoWithLaunchOptions(launchOptions)
         toggleExtraDebuggingIfNeeded()
@@ -762,8 +764,8 @@ extension WordPressAppDelegate {
     }
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
-        WPSharedSetLoggingLevel(level)
-        WPAuthenticatorSetLoggingLevel(level)
+        SetCocoaLumberjackObjCLogLevel(level.rawValue)
+        CocoaLumberjack.dynamicLogLevel = level
     }
 }
 

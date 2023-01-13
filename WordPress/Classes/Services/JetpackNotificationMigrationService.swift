@@ -183,7 +183,10 @@ final class JetpackNotificationMigrationService: JetpackNotificationMigrationSer
                    let schedule = self?.bloggingRemindersScheduler?.schedule(for: blog),
                    let time = self?.bloggingRemindersScheduler?.scheduledTime(for: blog) {
                     if schedule != .none {
-                        self?.bloggingRemindersScheduler?.schedule(schedule, for: blog, time: time) { _ in
+                        self?.bloggingRemindersScheduler?.schedule(schedule, for: blog, time: time) { result in
+                            if case .success = result {
+                                BloggingRemindersFlow.setHasShownWeeklyRemindersFlow(for: blog)
+                            }
                         }
                     }
                 }

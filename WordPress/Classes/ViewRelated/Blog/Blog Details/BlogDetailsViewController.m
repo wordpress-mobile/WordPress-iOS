@@ -741,7 +741,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
-    if (self.shouldShowJetpackBrandingMenuCard == YES) {
+    if (self.shouldShowTopJetpackBrandingMenuCard == YES) {
         [marr addObject:[self jetpackCardSectionViewModel]];
     }
 
@@ -776,6 +776,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [marr addObject:[self externalSectionViewModel]];
     if ([self.blog supports:BlogFeatureRemovable]) {
         [marr addObject:[self removeSiteSectionViewModel]];
+    }
+    
+    if (self.shouldShowBottomJetpackBrandingMenuCard == YES) {
+        [marr addObject:[self jetpackCardSectionViewModel]];
     }
 
     // Assign non mutable copy.

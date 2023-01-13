@@ -22,7 +22,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     private var insightsInactive: [StatSection] {
-        InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+        StatSection.allInsights.filter({ !self.insightsShown.contains($0) })
     }
 
     private var hasChanges: Bool {
@@ -387,22 +387,6 @@ private extension InsightsManagementViewController {
                                  enabled: false,
                                  action: nil)
     }
-
-    private static let allInsights: [StatSection] = [
-        .insightsViewsVisitors,
-        .insightsLikesTotals,
-        .insightsCommentsTotals,
-        .insightsFollowerTotals,
-        .insightsMostPopularTime,
-        .insightsLatestPostSummary,
-        .insightsAllTime,
-        .insightsAnnualSiteStats,
-        .insightsTodaysStats,
-        .insightsPostingActivity,
-        .insightsTagsAndCategories,
-        .insightsFollowersEmail,
-        .insightsPublicize
-    ]
 
     // MARK: - Insights Categories
 

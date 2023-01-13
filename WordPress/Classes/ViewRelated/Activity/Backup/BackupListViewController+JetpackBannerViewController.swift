@@ -7,7 +7,7 @@ extension BackupListViewController {
             return nil
         }
         backupListVC.navigationItem.largeTitleDisplayMode = .never
-        return JetpackBannerWrapperViewController(childVC: backupListVC, analyticsId: .backup)
+        return JetpackBannerWrapperViewController(childVC: backupListVC, screen: .backup)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {

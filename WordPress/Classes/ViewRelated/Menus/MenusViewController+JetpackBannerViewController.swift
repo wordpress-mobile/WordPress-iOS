@@ -8,7 +8,7 @@ extension MenusViewController {
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return menusVC
         }
-        return JetpackBannerWrapperViewController(childVC: menusVC, analyticsId: .menus)
+        return JetpackBannerWrapperViewController(childVC: menusVC, screen: .menus)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

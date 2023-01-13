@@ -552,7 +552,10 @@ extension MeViewController {
               JetpackBrandingVisibility.all.enabled else {
             return nil
         }
-        return JetpackButton.makeBadgeView(target: self, selector: #selector(jetpackButtonTapped))
+        let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.me)
+        return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
+                                           target: self,
+                                           selector: #selector(jetpackButtonTapped))
     }
 
     @objc private func jetpackButtonTapped() {

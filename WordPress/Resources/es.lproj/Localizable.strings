@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 16:54:11+0000 */
+/* Translation-Revision-Date: 2023-01-07 22:30:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: es */
@@ -249,6 +249,9 @@ translators: Block name. %s: The localized block name */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "Bloque %s. Este bloque tiene contenido no válido";
+
+/* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s convertido a bloque normal";
 
 /* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s convertido a bloques normales";
@@ -732,6 +735,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternativamente, puedes separar y editar estos bloques por separado tocando en «Convertir en bloques normales».";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "También puedes separar y editar este bloque individualmente tocando en «Convertir a bloque normal».";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "También puedes introducir la contraseña de esta cuenta.";
@@ -9897,6 +9903,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Cambiar a la nueva aplicación de Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Cambiar a la aplicación de Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Encontrarás más información en jetpack.com";
 
@@ -9924,8 +9933,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Obtén tus estadísticas con la nueva aplicación de Jetpack";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "El cambio es gratuito y solo lleva un minuto.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack proporciona estadísticas, notificaciones y mucho más para ayudarte a crear y ampliar el sitio de WordPress de tus sueños.\n\nLa aplicación de WordPress ya no admite la creación de sitios nuevos.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Pronto se van a retirar de la aplicación de WordPress las estadísticas, lectura, avisos y otras funcionalidades de Jetpack.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Los avisos se están trasladando a la aplicación de Jetpack";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "El lector se está trasladando a la aplicación de Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "La estadísticas se están trasladado a la aplicación de Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Se van a retirar de la aplicación de WordPress las estadísticas, lectura, avisos y otras funcionalidades de Jetpack el %@.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Ir al Lector";
@@ -10022,6 +10049,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the migration done screen. */
 "migration.done.title" = "¡Gracias por cambiar a Jetpack!";
+
+/* The description in the Load WordPress screen
+   The secondary description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Parece que tienes la aplicación de WordPress instalada.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Abrir WordPress";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "No, gracias";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "¡Te damos la bienvenida a Jetpack!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decidir más tarde";

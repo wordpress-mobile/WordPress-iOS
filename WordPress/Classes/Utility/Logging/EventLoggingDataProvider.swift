@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import CocoaLumberjack
 
 struct EventLoggingDataProvider: EventLoggingDataSource {
 

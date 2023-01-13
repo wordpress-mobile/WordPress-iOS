@@ -7,7 +7,7 @@ extension ThemeBrowserViewController {
         guard JetpackBrandingCoordinator.shouldShowBannerForJetpackDependentFeatures() else {
             return self
         }
-        return JetpackBannerWrapperViewController(childVC: self, analyticsId: .themes)
+        return JetpackBannerWrapperViewController(childVC: self, screen: .themes)
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {

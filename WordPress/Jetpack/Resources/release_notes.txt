@@ -1,8 +1,5 @@
-* [*] Fixed an issue where publishing Posts and Pages could fail under certain conditions. [#19717]
-* [*] Share extension navigation bar is no longer transparent [#19700]
-* [***] [Jetpack-only] Adds a smooth, opt-in transition to the Jetpack app for users migrating from the WordPress app. [#19759]
-* [***] You can now migrate your site content to the Jetpack app without a hitch. [#19759]
-* [**] [internal] Upgrade React Native from 0.66.2 to 0.69.4 [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5193]
-* [*] [internal] When a user migrates to the Jetpack app and allows notifications, WordPress app notifications are disabled. [#19616, #19611, #19590]
-* [*] Reader now scrolls to the top if the tab bar button is tapped. [#19769]
+* [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]
+* [**] [internal] Disable Story posts when Jetpack features are removed [#19823]
+* [*] [internal] Editor: Only register core blocks when `onlyCoreBlocks` capability is enabled [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5293]
+* [**] [internal] Disable StockPhoto and Tenor media sources when Jetpack features are removed [#19826]
 

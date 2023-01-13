@@ -3,7 +3,7 @@ import Foundation
 /// A class containing convenience methods for the the Jetpack features removal experience
 class JetpackFeaturesRemovalCoordinator: NSObject {
 
-    /// Enum descibing the current phase of the Jetpack features removal
+    /// Enum describing the current phase of the Jetpack features removal
     enum GeneralPhase: String {
         case normal
         case one
@@ -26,7 +26,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         }
     }
 
-    /// Enum descibing the current phase of the site creation flow removal
+    /// Enum describing the current phase of the site creation flow removal
     enum SiteCreationPhase: String {
         case normal
         case one
