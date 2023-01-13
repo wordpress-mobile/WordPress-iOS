@@ -164,17 +164,21 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return trainContainerView
     }
 
-    private var answerInfoLabel: UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = answerInfoText
-        label.font = WPStyleGuide.BloggingPrompts.answerInfoLabelFont
-        label.textColor = WPStyleGuide.BloggingPrompts.answerInfoLabelColor
-        label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
+    private var answerInfoButton: UIButton {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(answerInfoText, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
+        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.addTarget(self, action: #selector(didTapAnswerInfoButton), for: .touchUpInside)
+        return button
+    }
 
-        return label
+    @objc
+    private func didTapAnswerInfoButton() {
+
     }
 
     private var answerInfoView: UIView {
@@ -182,7 +186,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.answerInfoViewSpacing
-        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoLabel])
+        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoButton])
 
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
