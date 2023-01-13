@@ -201,6 +201,19 @@ extension CoreDataStack {
         }
     }
 
+    /// Perform a query using the `mainContext` and return the result.
+    ///
+    /// This is a re-implemenation of https://developer.apple.com/documentation/coredata/nsmanagedobjectcontext/3802019-performandwait,
+    /// which is available from iOS 15.0 (hence the deprecation attribute below).
+    @available(iOS, deprecated: 15.0, message: "Use `mainContext.performAndWait` instead.")
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
+        var value: T! = nil
+        self.mainContext.performAndWait {
+            value = block(self.mainContext)
+        }
+        return value
+    }
+
     // MARK: - Database Migration
 
     /// Creates a copy of the current open store and saves it to the specified destination
