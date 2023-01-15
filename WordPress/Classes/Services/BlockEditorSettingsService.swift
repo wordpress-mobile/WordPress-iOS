@@ -15,13 +15,13 @@ class BlockEditorSettingsService {
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
-    let context: NSManagedObjectContext
+    let coreDataStack: CoreDataStack
 
     var cachedSettings: BlockEditorSettings? {
         return blog.blockEditorSettings
     }
 
-    convenience init?(blog: Blog, context: NSManagedObjectContext) {
+    convenience init?(blog: Blog, coreDataStack: CoreDataStack) {
         let remoteAPI: WordPressRestApi
         if blog.isAccessibleThroughWPCom(),
            blog.dotComID?.intValue != nil,
@@ -34,12 +34,13 @@ class BlockEditorSettingsService {
             return nil
         }
 
-        self.init(blog: blog, remoteAPI: remoteAPI, context: context)
+        self.init(blog: blog, remoteAPI: remoteAPI, coreDataStack: coreDataStack)
     }
 
-    init(blog: Blog, remoteAPI: WordPressRestApi, context: NSManagedObjectContext) {
+    init(blog: Blog, remoteAPI: WordPressRestApi, coreDataStack: CoreDataStack) {
+        assert(blog.objectID.persistentStore != nil, "The blog instance should be saved first")
         self.blog = blog
-        self.context = context
+        self.coreDataStack = coreDataStack
         self.remote = BlockEditorSettingsServiceRemote(remoteAPI: remoteAPI)
     }
 
@@ -59,7 +60,7 @@ private extension BlockEditorSettingsService {
             guard let `self` = self else { return }
             switch response {
             case .success(let editorTheme):
-                self.context.perform {
+                self.blog.managedObjectContext?.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
                     self.track(isBlockEditorSettings: false, isFSE: false)
                     self.updateEditorThemeCache(originalChecksum: originalChecksum, editorTheme: editorTheme, completion: completion)
@@ -87,47 +88,30 @@ private extension BlockEditorSettingsService {
         }
 
         /// The fetched Editor Theme is different than the cached one so persist the new one and delete the old one.
-        context.perform {
-            self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { callback in
-                switch callback {
-                case .success:
-                    self.context.perform {
-                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
-                        completion(.success(result))
-                    }
-                case .failure(let err):
-                    completion(.failure(err))
-                }
+        self.persistEditorThemeToCoreData(blogID: self.blog.objectID, editorTheme: editorTheme) { callback in
+            switch callback {
+            case .success:
+                let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                completion(.success(result))
+            case .failure(let err):
+                completion(.failure(err))
             }
         }
     }
 
     func persistEditorThemeToCoreData(blogID: NSManagedObjectID, editorTheme: RemoteEditorTheme, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
-        let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        parsingContext.parent = context
-        parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
-
-        parsingContext.perform {
-            guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                let err = BlockEditorSettingsServiceError.blogNotFound
-                completion(.failure(err))
-                return
+        coreDataStack.performAndSave({ context in
+            guard let blog = context.object(with: blogID) as? Blog else {
+                throw BlockEditorSettingsServiceError.blogNotFound
             }
 
             if let blockEditorSettings = blog.blockEditorSettings {
                 // Block Editor Settings nullify on delete
-                parsingContext.delete(blockEditorSettings)
+                context.delete(blockEditorSettings)
             }
 
-            blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: parsingContext)
-            do {
-                try parsingContext.save()
-            } catch let err {
-                completion(.failure(err))
-            }
-
-            completion(.success(()))
-        }
+            blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: context)
+        }, completion: completion)
     }
 }
 
@@ -138,7 +122,7 @@ private extension BlockEditorSettingsService {
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):
-                self.context.perform {
+                self.blog.managedObjectContext?.perform {
                     let originalChecksum = self.blog.blockEditorSettings?.checksum ?? ""
                     self.track(isBlockEditorSettings: true, isFSE: remoteSettings?.isFSETheme ?? false)
                     self.updateBlockEditorSettingsCache(originalChecksum: originalChecksum, remoteSettings: remoteSettings, completion: completion)
@@ -168,58 +152,45 @@ private extension BlockEditorSettingsService {
         }
 
         /// The fetched Block Editor Settings is different than the cached one so persist the new one and delete the old one.
-        context.perform {
-            self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { callback in
-                switch callback {
-                case .success:
-                    self.context.perform {
-                        let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
-                        completion(.success(result))
-                    }
-                case .failure(let err):
-                    completion(.failure(err))
-                }
+        self.persistBlockEditorSettingsToCoreData(blogID: self.blog.objectID, remoteSettings: remoteSettings) { callback in
+            switch callback {
+            case .success:
+                let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: self.blog.blockEditorSettings)
+                completion(.success(result))
+            case .failure(let err):
+                completion(.failure(err))
             }
         }
     }
 
     func persistBlockEditorSettingsToCoreData(blogID: NSManagedObjectID, remoteSettings: RemoteBlockEditorSettings, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
-        let parsingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        parsingContext.parent = context
-        parsingContext.mergePolicy =  NSMergePolicy.mergeByPropertyObjectTrump
-
-        parsingContext.perform {
-            guard let blog = parsingContext.object(with: blogID) as? Blog else {
-                let err = BlockEditorSettingsServiceError.blogNotFound
-                completion(.failure(err))
-                return
+        coreDataStack.performAndSave({ context in
+            guard let blog = context.object(with: blogID) as? Blog else {
+                throw BlockEditorSettingsServiceError.blogNotFound
             }
 
             if let blockEditorSettings = blog.blockEditorSettings {
                 // Block Editor Settings nullify on delete
-                parsingContext.delete(blockEditorSettings)
+                context.delete(blockEditorSettings)
             }
 
-            blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: parsingContext)
-            do {
-                try parsingContext.save()
-            } catch let err {
-                completion(.failure(err))
-            }
-
-            completion(.success(()))
-        }
+            blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: context)
+        }, completion: completion)
     }
 }
 
 // MARK: Shared Events
 private extension BlockEditorSettingsService {
     func clearCoreData(completion: @escaping BlockEditorSettingsServiceCompletion) {
-        self.context.perform {
-            if let blockEditorSettings = self.blog.blockEditorSettings {
-                // Block Editor Settings nullify on delete
-                self.context.delete(blockEditorSettings)
+        coreDataStack.performAndSave { context in
+            guard let blogInContext = try? context.existingObject(with: self.blog.objectID) as? Blog else {
+                return
             }
+            if let blockEditorSettings = blogInContext.blockEditorSettings {
+                // Block Editor Settings nullify on delete
+                context.delete(blockEditorSettings)
+            }
+        } completion: {
             let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: nil)
             completion(.success(result))
         }
