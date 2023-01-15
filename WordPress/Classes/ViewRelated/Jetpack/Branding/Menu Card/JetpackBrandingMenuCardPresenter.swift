@@ -199,7 +199,7 @@ private extension JetpackBrandingMenuCardPresenter {
                                                            value: "Switch to Jetpack",
                                                            comment: "Title of a button prompting users to switch to the Jetpack app.")
         static let newUsersPhaseDescription = NSLocalizedString("jetpack.menuCard.newUsers.title",
-                                                                value: "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.",
+                                                                value: "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.",
                                                                 comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
         static let selfHostedPhaseDescription = newUsersPhaseDescription
     }
