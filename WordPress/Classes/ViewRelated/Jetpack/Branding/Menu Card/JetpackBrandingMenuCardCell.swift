@@ -187,7 +187,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         containerStackView.addArrangedSubviews(stackViewSubviews)
         logosAnimationView.currentProgress = 1.0
         label.text = config?.description
-        learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
     }
 
     private func applyStyles() {
@@ -202,15 +201,13 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Actions
 
     @objc private func learnMoreButtonTapped() {
-        guard let config = config,
-              let urlString = config.learnMoreButtonURL,
-              let url = URL(string: urlString) else {
+        guard let viewController else {
             return
         }
 
-        let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.analyticsSource)
-        let navController = UINavigationController(rootViewController: webViewController)
-        viewController?.present(navController, animated: true)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
+                                                                 source: .card,
+                                                                 blog: viewController.blog)
         presenter?.trackLinkTapped()
     }
 }

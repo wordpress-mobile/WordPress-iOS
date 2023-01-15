@@ -109,7 +109,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(config.description, "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.")
-        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
         XCTAssertEqual(config.type, .expanded)
     }
 
@@ -127,7 +126,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(config.description, "Switch to Jetpack")
-        XCTAssertNil(config.learnMoreButtonURL)
         XCTAssertEqual(config.type, .compact)
     }
 
@@ -146,7 +144,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
-        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
         XCTAssertEqual(config.type, .expanded)
     }
 
@@ -167,7 +164,6 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
 
         // Then
         XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
-        XCTAssertEqual(config.learnMoreButtonURL, "example.com")
         XCTAssertEqual(config.type, .expanded)
     }
 
