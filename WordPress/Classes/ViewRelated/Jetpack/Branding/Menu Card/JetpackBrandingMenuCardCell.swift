@@ -6,7 +6,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Private Variables
 
     private weak var viewController: BlogDetailsViewController?
-    private var presenter: JetpackBrandingMenuCardPresenter
+    private var presenter: JetpackBrandingMenuCardPresenter?
     private var config: JetpackBrandingMenuCardPresenter.Config?
 
     /// Sets the animation based on the language orientation
@@ -30,7 +30,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         if cardType == .expanded {
             frameView.configureButtonContainerStackView()
             frameView.onEllipsisButtonTap = { [weak self] in
-                self?.presenter.trackContexualMenuAccessed()
+                self?.presenter?.trackContextualMenuAccessed()
             }
             frameView.ellipsisButton.showsMenuAsPrimaryAction = true
             frameView.ellipsisButton.menu = contextMenu
@@ -40,13 +40,9 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = stackViewAxis
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = stackViewSpacing
-        stackView.directionalLayoutMargins = stackViewLayoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.addArrangedSubviews(stackViewSubviews)
         return stackView
     }()
 
@@ -84,9 +80,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private lazy var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = labelFont
-        label.textColor = labelTextColor
-        label.numberOfLines = labelNumberOfLines
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
@@ -148,7 +141,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         button.showsMenuAsPrimaryAction = true
         button.menu = contextMenu
         button.on([.touchUpInside, .menuActionTriggered]) { [weak self] _ in
-            self?.presenter.trackContexualMenuAccessed()
+            self?.presenter?.trackContextualMenuAccessed()
         }
         return button
     }()
@@ -156,38 +149,54 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     // MARK: Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        presenter = JetpackBrandingMenuCardPresenter()
-        config = presenter.cardConfig()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
-        presenter = JetpackBrandingMenuCardPresenter()
-        config = presenter.cardConfig()
         super.init(coder: coder)
         commonInit()
     }
 
     private func commonInit() {
-        setupViews()
-        setupContent()
+        addSubviews()
+    }
 
-        presenter.trackCardShown()
+    // MARK: Cell Lifecycle
+
+    override func prepareForReuse() {
+        containerStackView.removeAllSubviews()
     }
 
     // MARK: Helpers
 
-    private func setupViews() {
+    private func configure() {
+        setupContent()
+        applyStyles()
+
+        presenter?.trackCardShown()
+    }
+
+    private func addSubviews() {
         contentView.addSubview(cardFrameView)
         contentView.pinSubviewToAllEdges(cardFrameView, priority: Metrics.cardFrameConstraintPriority)
         cardFrameView.add(subview: containerStackView)
     }
 
     private func setupContent() {
+        containerStackView.addArrangedSubviews(stackViewSubviews)
         logosAnimationView.currentProgress = 1.0
         label.text = config?.description
         learnMoreSuperview.isHidden = config?.learnMoreButtonURL == nil
+    }
+
+    private func applyStyles() {
+        containerStackView.axis = stackViewAxis
+        containerStackView.spacing = stackViewSpacing
+        containerStackView.directionalLayoutMargins = stackViewLayoutMargins
+        label.font = labelFont
+        label.textColor = labelTextColor
+        label.numberOfLines = labelNumberOfLines
     }
 
     // MARK: Actions
@@ -202,11 +211,11 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         let webViewController = WebViewControllerFactory.controller(url: url, source: Constants.analyticsSource)
         let navController = UINavigationController(rootViewController: webViewController)
         viewController?.present(navController, animated: true)
-        presenter.trackLinkTapped()
+        presenter?.trackLinkTapped()
     }
 }
 
-// MARK: Contexual Menu
+// MARK: Contextual Menu
 
 private extension JetpackBrandingMenuCardCell {
 
@@ -227,12 +236,12 @@ private extension JetpackBrandingMenuCardCell {
     // MARK: Actions
 
     private func remindMeLaterTapped() {
-        presenter.remindLaterTapped()
+        presenter?.remindLaterTapped()
         viewController?.reloadTableView()
     }
 
     private func hideThisTapped() {
-        presenter.hideThisTapped()
+        presenter?.hideThisTapped()
         viewController?.reloadTableView()
     }
 }
@@ -406,5 +415,8 @@ extension JetpackBrandingMenuCardCell {
     @objc(configureWithViewController:)
     func configure(with viewController: BlogDetailsViewController) {
         self.viewController = viewController
+        presenter = JetpackBrandingMenuCardPresenter(blog: viewController.blog)
+        config = presenter?.cardConfig()
+        configure()
     }
 }

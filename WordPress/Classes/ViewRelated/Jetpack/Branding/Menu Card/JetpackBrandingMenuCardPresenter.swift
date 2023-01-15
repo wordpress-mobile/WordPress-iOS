@@ -15,6 +15,7 @@ class JetpackBrandingMenuCardPresenter {
 
     // MARK: Private Variables
 
+    private let blog: Blog?
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
@@ -25,10 +26,12 @@ class JetpackBrandingMenuCardPresenter {
 
     // MARK: Initializers
 
-    init(remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+    init(blog: Blog?,
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
          currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
+        self.blog = blog
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
@@ -45,11 +48,14 @@ class JetpackBrandingMenuCardPresenter {
             return .init(description: description, learnMoreButtonURL: url, type: .expanded)
         case .four:
             let description = Strings.phaseFourTitle
-            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .compact)
+            return .init(description: description, learnMoreButtonURL: nil, type: .compact)
         case .newUsers:
-            let description = Strings.newUsersPhaseTitle
+            let description = Strings.newUsersPhaseDescription
             let url = RemoteConfig(store: remoteConfigStore).phaseNewUsersBlogPostUrl.value
+            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+        case .selfHosted:
+            let description = Strings.selfHostedPhaseDescription
+            let url = RemoteConfig(store: remoteConfigStore).phaseSelfHostedBlogPostUrl.value
             return .init(description: description, learnMoreButtonURL: url, type: .expanded)
         default:
             return nil
@@ -63,6 +69,8 @@ class JetpackBrandingMenuCardPresenter {
         switch phase {
         case .three:
             return true
+        case .selfHosted:
+            return blog?.jetpackIsConnected ?? false
         default:
             return false
         }
@@ -121,7 +129,7 @@ extension JetpackBrandingMenuCardPresenter {
         WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
     }
 
-    func trackContexualMenuAccessed() {
+    func trackContextualMenuAccessed() {
         WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
     }
 
@@ -190,8 +198,9 @@ private extension JetpackBrandingMenuCardPresenter {
         static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
                                                            value: "Switch to Jetpack",
                                                            comment: "Title of a button prompting users to switch to the Jetpack app.")
-        static let newUsersPhaseTitle = NSLocalizedString("jetpack.menuCard.newUsers.title",
-                                                           value: "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.",
-                                                           comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
+        static let newUsersPhaseDescription = NSLocalizedString("jetpack.menuCard.newUsers.title",
+                                                                value: "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.",
+                                                                comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
+        static let selfHostedPhaseDescription = newUsersPhaseDescription
     }
 }

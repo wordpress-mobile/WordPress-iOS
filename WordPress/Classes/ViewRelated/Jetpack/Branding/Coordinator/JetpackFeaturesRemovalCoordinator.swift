@@ -11,6 +11,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case three
         case four
         case newUsers
+        case selfHosted
 
         var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
             switch self {
@@ -61,6 +62,11 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
+
+        if AccountHelper.noWordPressDotComAccount {
+            let selfHostedRemoval = featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted)
+            return selfHostedRemoval ? .selfHosted : .normal
+        }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
             return .newUsers
         }
@@ -111,7 +117,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
         switch generalPhase() {
-        case .four, .newUsers:
+        case .four, .newUsers, .selfHosted:
             return false
         default:
             return true
@@ -125,18 +131,20 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - forced: Pass `true` to override the overlay frequency logic. Default is `false`.
     ///   - fullScreen: If `true` and not on iPad, the fullscreen modal presentation type is used.
     ///   Else the form sheet type is used. Default is `false`.
+    ///   - blog: `Blog` object used to determine if Jetpack is installed in case of the self-hosted phase.
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
                                        source: OverlaySource,
                                        forced: Bool = false,
                                        fullScreen: Bool = false,
+                                       blog: Blog? = nil,
                                        onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                        onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog)
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,

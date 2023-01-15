@@ -52,20 +52,20 @@ class RootViewCoordinator {
 
     /// Reload the UI if needed after the app has already been launched.
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
-    func reloadUIIfNeeded() -> Bool {
+    func reloadUIIfNeeded(blog: Blog?) -> Bool {
         let newUIType: AppUIType = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? .normal : .simplified
         let oldUIType = currentAppUIType
         guard newUIType != oldUIType, let windowManager = WordPressAppDelegate.shared?.windowManager else {
             return false
         }
         currentAppUIType = newUIType
-        displayOverlay(using: windowManager)
+        displayOverlay(using: windowManager, blog: blog)
         reloadUI(using: windowManager)
         postUIReloadedNotification()
         return true
     }
 
-    private func displayOverlay(using windowManager: WindowManager) {
+    private func displayOverlay(using windowManager: WindowManager, blog: Blog?) {
         guard currentAppUIType == .simplified else {
             return
         }
@@ -78,6 +78,7 @@ class RootViewCoordinator {
                                                                  source: .appOpen,
                                                                  forced: true,
                                                                  fullScreen: true,
+                                                                 blog: blog,
                                                                  onWillDismiss: {
             viewController.removeBlurView()
         }, onDidDismiss: {
