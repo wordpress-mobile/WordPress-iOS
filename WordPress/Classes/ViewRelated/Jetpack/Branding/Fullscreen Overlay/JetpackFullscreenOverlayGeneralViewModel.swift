@@ -435,7 +435,7 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
                                                         comment: "Title of a screen that prompts the user to switch the Jetpack app.")
 
             static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.selfHosted.subtitle",
-                                                    value: "The Jetpack mobile app is designed to work in companion with the Jetpack plugin. Switch now to get access to stats, notifications, reader, and more.",
+                                                    value: "The Jetpack mobile app is designed to work in companion with the Jetpack plugin. Switch now to get access to Stats, Reader, Notifications and more.",
                                                     comment: "Title of a screen that prompts the user to switch the Jetpack app.")
         }
     }
