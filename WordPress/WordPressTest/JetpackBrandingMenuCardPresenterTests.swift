@@ -145,7 +145,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.")
+        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
         XCTAssertEqual(config.learnMoreButtonURL, "example.com")
         XCTAssertEqual(config.type, .expanded)
     }
@@ -166,7 +166,7 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         let config = try XCTUnwrap(presenter.cardConfig())
 
         // Then
-        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get stats, notifications and more with Jetpack.")
+        XCTAssertEqual(config.description, "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.")
         XCTAssertEqual(config.learnMoreButtonURL, "example.com")
         XCTAssertEqual(config.type, .expanded)
     }
