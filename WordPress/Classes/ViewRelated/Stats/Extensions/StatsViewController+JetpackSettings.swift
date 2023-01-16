@@ -4,12 +4,11 @@ import UIKit
 extension StatsViewController {
 
     @objc func activateStatsModule(success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let blog = blog,
-              let context = blog.settings?.managedObjectContext else {
+        guard let blog = blog else {
             return
         }
 
-        let service = BlogJetpackSettingsService(managedObjectContext: context)
+        let service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
 
         service.updateJetpackModuleActiveSettingForBlog(blog,
                                                         module: Constants.statsModule,

@@ -4,10 +4,10 @@ import WordPressKit
 
 struct BlogJetpackSettingsService {
 
-    fileprivate let context: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
-    init(managedObjectContext context: NSManagedObjectContext) {
-        self.context = context
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
     }
 
     /// Sync ALL the Jetpack settings for a blog
@@ -18,10 +18,9 @@ struct BlogJetpackSettingsService {
             return
         }
         guard let remoteAPI = blog.wordPressComRestApi(),
-            let blogDotComId = blog.dotComID as? Int,
-            let blogSettings = blog.settings else {
-                success()
-                return
+            let blogDotComId = blog.dotComID as? Int else {
+            success()
+            return
         }
 
         var fetchError: Error? = nil
@@ -60,14 +59,15 @@ struct BlogJetpackSettingsService {
                     failure(fetchError)
                     return
             }
-            self.updateJetpackSettings(blogSettings, remoteSettings: remoteJetpackSettings)
-            self.updateJetpackMonitorSettings(blogSettings, remoteSettings: remoteJetpackMonitorSettings)
-            do {
-                try self.context.save()
-                success()
-            } catch let error as NSError {
-                failure(error)
-            }
+
+            self.coreDataStack.performAndSave({ context in
+                guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                    return
+                }
+
+                self.updateJetpackSettings(blogSettings, remoteSettings: remoteJetpackSettings)
+                self.updateJetpackMonitorSettings(blogSettings, remoteSettings: remoteJetpackMonitorSettings)
+            }, completion: success)
         })
     }
 
@@ -79,51 +79,51 @@ struct BlogJetpackSettingsService {
             return
         }
         guard let remoteAPI = blog.wordPressComRestApi(),
-            let blogDotComId = blog.dotComID as? Int,
-            let blogSettings = blog.settings else {
-                failure(nil)
-                return
+            let blogDotComId = blog.dotComID as? Int else {
+            failure(nil)
+            return
         }
 
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
-        remote.getJetpackModulesSettingsForSite(blogDotComId,
-                                                success: { (remoteModulesSettings) in
-                                                    self.updateJetpackModulesSettings(blogSettings, remoteSettings: remoteModulesSettings)
-                                                    do {
-                                                        try self.context.save()
-                                                        success()
-                                                    } catch let error as NSError {
-                                                        failure(error)
-                                                    }
-                                                },
-                                                failure: { (error) in
-                                                    failure(error)
-                                                })
+        remote.getJetpackModulesSettingsForSite(
+            blogDotComId,
+            success: { (remoteModulesSettings) in
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                        return
+                    }
+                    self.updateJetpackModulesSettings(blogSettings, remoteSettings: remoteModulesSettings)
+                }, completion: success)
+            },
+            failure: failure
+        )
     }
 
     func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {
-                failure(nil)
-                return
+            failure(nil)
+            return
         }
 
+        let changes = blogSettings.changedValues()
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
-        remote.updateJetpackSettingsForSite(blogDotComId,
-                                            settings: jetpackSettingsRemote(blogSettings),
-                                            success: {
-                                                do {
-                                                    try self.context.save()
-                                                    success()
-                                                } catch let error as NSError {
-                                                    failure(error)
-                                                }
-                                            },
-                                            failure: { (error) in
-                                                failure(error)
-                                            })
-
+        remote.updateJetpackSettingsForSite(
+            blogDotComId,
+            settings: jetpackSettingsRemote(blogSettings),
+            success: {
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                        return
+                    }
+                    for (key, value) in changes {
+                        blogSettings.setValue(value, forKey: key)
+                    }
+                }, completion: success)
+            },
+            failure: failure
+        )
     }
 
     func updateJetpackMonitorSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -134,20 +134,23 @@ struct BlogJetpackSettingsService {
                 return
         }
 
+        let changes = blogSettings.changedValues()
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
-        remote.updateJetpackMonitorSettingsForSite(blogDotComId,
-                                                   settings: jetpackMonitorsSettingsRemote(blogSettings),
-                                                   success: {
-                                                       do {
-                                                           try self.context.save()
-                                                           success()
-                                                       } catch let error as NSError {
-                                                           failure(error)
-                                                       }
-                                                   },
-                                                   failure: { (error) in
-                                                       failure(error)
-                                                   })
+        remote.updateJetpackMonitorSettingsForSite(
+            blogDotComId,
+            settings: jetpackMonitorsSettingsRemote(blogSettings),
+            success: {
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                        return
+                    }
+                    for (key, value) in changes {
+                        blogSettings.setValue(value, forKey: key)
+                    }
+                }, completion: success)
+            },
+            failure: failure
+        )
     }
 
     func updateJetpackLazyImagesModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -156,15 +159,21 @@ struct BlogJetpackSettingsService {
             return
         }
 
-        updateJetpackModuleActiveSettingForBlog(blog,
-                                                module: BlogJetpackSettingsServiceRemote.Keys.lazyLoadImages,
-                                                active: blogSettings.jetpackLazyLoadImages,
-                                                success: {
-                                                    success()
-                                                },
-                                                failure: { (error) in
-                                                    failure(error)
-                                                })
+        let isActive = blogSettings.jetpackLazyLoadImages
+        updateJetpackModuleActiveSettingForBlog(
+            blog,
+            module: BlogJetpackSettingsServiceRemote.Keys.lazyLoadImages,
+            active: isActive,
+            success: {
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogSettingsInContext = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                        return
+                    }
+                    blogSettingsInContext.jetpackLazyLoadImages = isActive
+                }, completion: success)
+            },
+            failure: failure
+        )
     }
 
     func updateJetpackServeImagesFromOurServersModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -173,15 +182,21 @@ struct BlogJetpackSettingsService {
             return
         }
 
-        updateJetpackModuleActiveSettingForBlog(blog,
-                                                module: BlogJetpackSettingsServiceRemote.Keys.serveImagesFromOurServers,
-                                                active: blogSettings.jetpackServeImagesFromOurServers,
-                                                success: {
-                                                    success()
-                                                },
-                                                failure: { (error) in
-                                                    failure(error)
-                                                })
+        let isActive = blogSettings.jetpackServeImagesFromOurServers
+        updateJetpackModuleActiveSettingForBlog(
+            blog,
+            module: BlogJetpackSettingsServiceRemote.Keys.serveImagesFromOurServers,
+            active: isActive,
+            success: {
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogSettingsInContext = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                        return
+                    }
+                    blogSettingsInContext.jetpackServeImagesFromOurServers = isActive
+                }, completion: success)
+            },
+            failure: failure
+        )
     }
 
     func updateJetpackModuleActiveSettingForBlog(_ blog: Blog, module: String, active: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -192,20 +207,13 @@ struct BlogJetpackSettingsService {
         }
 
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
-        remote.updateJetpackModuleActiveSettingForSite(blogDotComId,
-                                                       module: module,
-                                                       active: active,
-                                                       success: {
-                                                           do {
-                                                               try self.context.save()
-                                                               success()
-                                                           } catch let error as NSError {
-                                                               failure(error)
-                                                           }
-                                                       },
-                                                       failure: { (error) in
-                                                           failure(error)
-                                                       })
+        remote.updateJetpackModuleActiveSettingForSite(
+            blogDotComId,
+            module: module,
+            active: active,
+            success: success,
+            failure: failure
+        )
     }
 
     func disconnectJetpackFromBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -216,13 +224,7 @@ struct BlogJetpackSettingsService {
         }
 
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
-        remote.disconnectJetpackFromSite(blogDotComId,
-                                         success: {
-                                            success()
-                                         },
-                                         failure: { (error) in
-                                            failure(error)
-                                         })
+        remote.disconnectJetpackFromSite(blogDotComId, success: success, failure: failure)
     }
 
 }
