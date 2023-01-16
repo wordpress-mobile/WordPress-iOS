@@ -140,6 +140,7 @@
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Actividade";
 
@@ -1219,7 +1220,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Título 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ajuda";
 
 /* Link to Help section
@@ -1628,6 +1630,7 @@
 "Menu Name" = "Nome do menu";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
@@ -1803,6 +1806,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notificações";
@@ -2215,7 +2219,8 @@
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Notificações push foram desligadas nas definições do iOS. Toque em \"Permitir notificações\" para voltar a ligar.";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -2504,7 +2509,8 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Partilhe aqui a sua história...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Partilha";
@@ -2668,6 +2674,7 @@
 "Start Over" = "Começar de novo";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -2830,7 +2837,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Tema activado";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temas";
@@ -3489,9 +3497,6 @@
 
 /* Label displayed on media items that are not video, image, or audio. */
 "other" = "outros";
-
-/* Today */
-"today" = "hoje";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecido";
