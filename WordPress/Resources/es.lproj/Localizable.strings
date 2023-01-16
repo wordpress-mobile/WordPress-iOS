@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-07 22:30:37+0000 */
+/* Translation-Revision-Date: 2023-01-12 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: es */
@@ -483,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Actividad";
 
@@ -1063,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "Haciendo copia de seguridad del sitio";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2117,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Crea una entrada";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Crear un sitio";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Crea una etiqueta";
@@ -3583,7 +3588,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "Salud";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Ayuda";
 
 /* Link to Help section
@@ -4563,6 +4569,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "Nombre del menú";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menús";
 
@@ -5118,6 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notificaciones";
@@ -5578,7 +5586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Por favor, introduce un número de teléfono válido";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Por favor, introduce la contraseña de tu cuenta en WordPress.com para acceder con tu ID de Apple.";
 
 /* Instruction text on the two-factor screen. */
@@ -6000,7 +6008,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Leer la entrada original";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6444,6 +6453,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "Guardando...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Explorar";
 
@@ -6841,7 +6851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Comparte tu historia aquí...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Compartir";
@@ -7202,6 +7213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "Página de inicio estática";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7391,7 +7403,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "Haz un vídeo";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "Toca \"Semana\" para ver los principales comentaristas.";
+"Tap \"View more\" to see your top commenters." = "Toca «Ver más» para ver los principales comentaristas.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Toca [bookmark-outline] para guardar una entrada en tu lista.";
@@ -7681,7 +7693,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Tema activado";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temas";
@@ -9751,10 +9764,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "p.ej. 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Más";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
-"example.com" = "ejemplo.com";
+"example.com" = "example.com";
 
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "seguir";
@@ -9888,8 +9904,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Seleccionar intención del sitio";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ se trasladarán en %2$@";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se trasladará en %2$@";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "%@ se trasladarán pronto";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "%@ se trasladará pronto";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Funciona gracias a Jetpack";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Obtén la aplicación de Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Prueba la nueva aplicación Jetpack";
@@ -9911,6 +9942,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Ir a Notificaciones";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Hacerlo más tarde";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Hemos trasladado algunas funciones de la aplicación de WordPress a la de Jetpack, como Estadísticas, Lector o Notificaciones, entre otras.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Hemos trasladado las funciones a la aplicación de Jetpack.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Cambia a la aplicación de Jetpack para seguir recibiendo notificaciones en tiempo real en tu dispositivo.";
@@ -9935,6 +9975,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "El cambio es gratuito y solo lleva un minuto.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Continuar sin Jetpack";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Las funciones de Jetpack se trasladarán pronto.";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack proporciona estadísticas, notificaciones y mucho más para ayudarte a crear y ampliar el sitio de WordPress de tus sueños.\n\nLa aplicación de WordPress ya no admite la creación de sitios nuevos.";
@@ -9968,6 +10014,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Ir a Estadísticas";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "Algunas funciones, como Estadísticas, Lector o Notificaciones, se trasladarán a la aplicación móvil de Jetpack pronto.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Ocultar esto";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Más información";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Cambiar a Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Recuérdamelo más tarde";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Añade un autor";
@@ -10050,8 +10111,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "¡Gracias por cambiar a Jetpack!";
 
-/* The description in the Load WordPress screen
-   The secondary description in the Load WordPress screen */
+/* The description in the Load WordPress screen */
 "migration.loadWordpress.description" = "Parece que tienes la aplicación de WordPress instalada.";
 
 /* The primary button title in the Load WordPress screen */
@@ -10059,6 +10119,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "No, gracias";
+
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "¿Te gustaría transferir tus datos desde la aplicación de WordPress y acceder automáticamente?";
 
 /* The title in the Load WordPress screen */
 "migration.loadWordpress.title" = "¡Te damos la bienvenida a Jetpack!";
@@ -10251,9 +10314,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Se eliminarán estos elementos:";
-
-/* Today */
-"today" = "hoy";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "consejos destacados";

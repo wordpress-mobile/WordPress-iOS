@@ -480,6 +480,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Activity";
 
@@ -1054,6 +1055,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "Backing up site";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -3574,7 +3576,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "Health";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Help";
 
 /* Link to Help section
@@ -4554,6 +4557,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "Menu name";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
@@ -5109,6 +5113,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifications";
@@ -5569,7 +5574,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Please enter a valid phone number";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Please enter the password for your WordPress.com account to log in with your Apple ID.";
 
 /* Instruction text on the two-factor screen. */
@@ -5991,7 +5996,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Read the source post";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6435,6 +6441,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "Saving…";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Scan";
 
@@ -6832,7 +6839,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Share your story here…";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
@@ -7193,6 +7201,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "Static Homepage";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7380,9 +7389,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Take a Video" = "Take a Video";
-
-/* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "Tap \"Week\" to see your top commenters.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Tap [bookmark-outline] to save a post to your list.";
@@ -7672,7 +7678,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Theme Activated";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
@@ -9944,9 +9951,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";
-
-/* Today */
-"today" = "today";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "top tips";
