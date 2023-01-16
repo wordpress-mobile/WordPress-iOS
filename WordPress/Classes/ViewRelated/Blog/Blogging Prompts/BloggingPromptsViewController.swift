@@ -66,6 +66,7 @@ private extension BloggingPromptsViewController {
                            forCellReuseIdentifier: BloggingPromptTableViewCell.defaultReuseID)
 
         tableView.accessibilityIdentifier = "Blogging Prompts List"
+        tableView.allowsSelection = FeatureFlag.bloggingPromptsEnhancements.enabled
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
@@ -155,6 +156,25 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
 
         cell.configure(prompt)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+              let blog,
+              let cell = tableView.cellForRow(at: indexPath) as? BloggingPromptTableViewCell,
+              let prompt = cell.prompt else {
+            return
+        }
+
+        if prompt.answered {
+            // TODO: We are still figuring out what should be done when the prompt is already answered
+        } else {
+            let editor = EditPostViewController(blog: blog, prompt: prompt)
+            editor.modalPresentationStyle = .fullScreen
+            editor.entryPoint = .bloggingPromptsListView
+            present(editor, animated: true)
+        }
     }
 
 }
