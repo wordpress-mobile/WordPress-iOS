@@ -20,9 +20,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  # pod 'WordPressShared', '~> 2.0.0'
+   pod 'WordPressShared', '~> 2.0.1-beta.1'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
-  pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'fix/font-resource-bundle-not-found'
+  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end

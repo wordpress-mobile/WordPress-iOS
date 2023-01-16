@@ -611,7 +611,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 5.0)
   - WordPressKit (~> 5.0)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `fix/font-resource-bundle-not-found`)
+  - WordPressShared (~> 2.0.1-beta.1)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.7)
   - Yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.87.0/third-party-podspecs/Yoga.podspec.json`)
@@ -658,6 +658,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressKit
+    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -774,9 +775,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.87.0
-  WordPressShared:
-    :branch: fix/font-resource-bundle-not-found
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.87.0/third-party-podspecs/Yoga.podspec.json
 
@@ -792,9 +790,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.87.0
-  WordPressShared:
-    :commit: 6ff58bb2d8a4366e01db8de285f3762faf2abfae
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -897,6 +892,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 6e6f6c85a6d8dec5347e469a20e913f2c051e6e4
+PODFILE CHECKSUM: 36c6ae41ebe73b19ecb9c0bed0928f4ac27efac6
 
 COCOAPODS: 1.11.2
