@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-04 09:12:59+0000 */
+/* Translation-Revision-Date: 2023-01-10 09:20:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -483,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Aktivita";
 
@@ -1063,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "Zálohování webu";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -3583,7 +3585,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "Zdraví";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Nápověda";
 
 /* Link to Help section
@@ -4563,6 +4566,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "Název menu";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu";
 
@@ -5118,6 +5122,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikace";
@@ -5578,7 +5583,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Zadejte telefonní číslo";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Chcete-li se přihlásit pomocí svého Apple ID, zadejte heslo ke svému účtu WordPress.com.";
 
 /* Instruction text on the two-factor screen. */
@@ -6000,7 +6005,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Přečíst zdrojový příspěvek";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6444,6 +6450,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "Ukládání...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Skenovat";
 
@@ -6841,7 +6848,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podělte se o svůj příběh...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Sdílení";
@@ -7202,6 +7210,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "Statická domovská stránka";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7391,7 +7400,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "Pořiďte video";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "Klepnutím na „Týden“ zobrazíte své nejlepší komentátory.";
+"Tap \"View more\" to see your top commenters." = "Klepnutím na „Týden“ zobrazíte své nejlepší komentátory.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Klepnutím na [bookmark-outline] uložíte příspěvek do svého seznamu.";
@@ -7681,7 +7690,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Šablona byla aktivována";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Šablony";
@@ -10050,8 +10060,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "Děkujeme, že jste přešli na Jetpack!";
 
-/* The description in the Load WordPress screen
-   The secondary description in the Load WordPress screen */
+/* The description in the Load WordPress screen */
 "migration.loadWordpress.description" = "Vypadá to, že máte nainstalovanou aplikaci WordPress.";
 
 /* The primary button title in the Load WordPress screen */
@@ -10251,9 +10260,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "tyto položky budou smazány:";
-
-/* Today */
-"today" = "dnes";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "nejlepší tipy";

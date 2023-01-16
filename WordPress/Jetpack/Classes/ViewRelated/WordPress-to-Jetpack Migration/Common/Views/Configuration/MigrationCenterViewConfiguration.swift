@@ -15,7 +15,7 @@ private extension MigrationCenterViewConfiguration {
     enum Appearance {
 
         static let notificationsText = NSLocalizedString("migration.notifications.footer",
-                                                   value: "When the alert apears tap Allow to continue receiving all your WordPress notifications.",
+                                                   value: "When the alert appears tap Allow to continue receiving all your WordPress notifications.",
                                                    comment: "Footer for the migration notifications screen.")
         static let notificationsHighlightedText = NSLocalizedString("migration.notifications.footer.highlighted",
                                                        value: "Allow",

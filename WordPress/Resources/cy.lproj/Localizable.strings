@@ -967,7 +967,8 @@
 /* Post HTML content */
 "HTML Content" = "Cynnwys HTML";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Cymorth";
 
 /* Link to Help section
@@ -1280,6 +1281,7 @@
 "Menu Name" = "Enw Dewislen";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Dewislenni";
 
@@ -1434,6 +1436,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Hysbysiadau";
@@ -1775,7 +1778,8 @@
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "Mae Hysbysiadau Gwthio wedi eu diffodd yn Ap Gosodiadau iOS. Toglwch \"Allow Notifications\" i'w cychwyn eto.";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -2051,7 +2055,8 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Rhanwch eich stori yma...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Rhannu";
@@ -2202,6 +2207,7 @@
 "Start Over" = "Cychwyn Eto";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -2355,7 +2361,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema yn fyw";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themâu";
@@ -2895,9 +2902,6 @@
 
 /* Later today */
 "later today" = "yn hwyrach heddiw";
-
-/* Today */
-"today" = "heddiw";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Cofnodion";

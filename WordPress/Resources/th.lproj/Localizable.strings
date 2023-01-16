@@ -669,7 +669,8 @@
    HTML Attachment Label */
 "HTML" = "HTML";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "ช่วยเหลือ";
 
 /* Link to Help section
@@ -1024,6 +1025,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "คำเตือน";
@@ -1298,7 +1300,8 @@
 /* Suggests to enable Push Notification Settings in Settings.app */
 "Push Notifications have been turned off in iOS Settings App. Toggle \"Allow Notifications\" to turn them back on." = "การแจ้งเตือนแบบพุชถูกปิดในการตั้งค่าแอพ iOS ให้สลับ \"อนุญาตการเตือน\" เพื่อเปิดให้มันกลับมาทำงาน";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -1632,6 +1635,7 @@
 "Standard" = "มาตรฐาน";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -1751,7 +1755,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "เปิดใช้งานธีมแล้ว";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
@@ -2173,9 +2178,6 @@
 
 /* Later today */
 "later today" = "ภายหลังในวันนี้";
-
-/* Today */
-"today" = "วันนี้";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "เรื่อง";
