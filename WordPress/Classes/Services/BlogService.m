@@ -439,31 +439,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [foundBlogs firstObject];
 }
 
-- (Blog *)createBlogWithAccount:(WPAccount *)account
-{
-    Blog *blog = [self createBlog];
-    blog.account = account;
-    return blog;
-}
-
-- (Blog *)createBlog
-{
-    NSString *entityName = NSStringFromClass([Blog class]);
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                               inManagedObjectContext:self.managedObjectContext];
-    blog.settings = [self createSettingsWithBlog:blog];
-    return blog;
-}
-
-- (BlogSettings *)createSettingsWithBlog:(Blog *)blog
-{
-    NSString *entityName = [BlogSettings classNameWithoutNamespaces];
-    BlogSettings *settings = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                                           inManagedObjectContext:self.managedObjectContext];
-    settings.blog = blog;
-    return settings;
-}
-
 - (void)removeBlog:(Blog *)blog
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
@@ -578,7 +553,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     if (!blog) {
         DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
-        blog = [self createBlogWithAccount:account];
+        blog = [Blog createWithAccount:account orContext:self.managedObjectContext];
         blog.xmlrpc = remoteBlog.xmlrpc;
     }
 
@@ -587,9 +562,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (void)updateBlog:(Blog *)blog withRemoteBlog:(RemoteBlog *)remoteBlog
 {
-    if (!blog.settings) {
-        blog.settings = [self createSettingsWithBlog:blog];
-    }
+    [blog addSettingsIfNecessary];
 
     blog.url = remoteBlog.url;
     blog.dotComID = remoteBlog.blogID;

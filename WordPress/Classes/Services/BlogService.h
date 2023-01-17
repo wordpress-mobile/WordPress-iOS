@@ -157,21 +157,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
                           andUsername:(NSString *)username;
 
-/**
- Creates a blank `Blog` object for this account
-
- @param account the account the blog belongs to
- @return the newly created blog
- */
-- (Blog *)createBlogWithAccount:(WPAccount *)account;
-
-/**
- Creates a blank `Blog` object with no account
-
- @return the newly created blog
- */
-- (Blog *)createBlog;
-
 @end
 
 NS_ASSUME_NONNULL_END

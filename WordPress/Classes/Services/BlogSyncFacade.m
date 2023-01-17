@@ -41,7 +41,7 @@
     }
     Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc andUsername:username];
     if (!blog) {
-        blog = [blogService createBlogWithAccount:nil];
+        blog = [Blog createInContext:context];
         if (url) {
             blog.url = url;
         }
