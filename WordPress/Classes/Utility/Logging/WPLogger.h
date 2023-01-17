@@ -28,4 +28,14 @@
  */
 + (WPLogger * _Nonnull)shared;
 
+/**
+ * @brief Deletes all the logs from the device
+ */
+- (void)deleteAllLogs;
+
+/**
+ * @brief Deletes all the old archived logs from the device
+ */
+- (void)deleteArchivedLogs;
+
 @end
