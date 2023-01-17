@@ -167,14 +167,10 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
             return
         }
 
-        if prompt.answered {
-            // TODO: We are still figuring out what should be done when the prompt is already answered
-        } else {
-            let editor = EditPostViewController(blog: blog, prompt: prompt)
-            editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = .bloggingPromptsListView
-            present(editor, animated: true)
-        }
+        let editor = EditPostViewController(blog: blog, prompt: prompt)
+        editor.modalPresentationStyle = .fullScreen
+        editor.entryPoint = .bloggingPromptsListView
+        present(editor, animated: true)
     }
 
 }
