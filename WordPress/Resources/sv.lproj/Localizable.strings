@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 13:54:07+0000 */
+/* Translation-Revision-Date: 2023-01-16 14:25:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
@@ -10130,7 +10130,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.notifications.actions.secondary.title" = "Bestäm senare";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "När aviseringen visas kan du trycka på ”tillåt” för att fortsätta visa alla WordPress-aviseringar.";
+"migration.notifications.footer" = "När varningen visas trycker du på ”Tillåt” för att fortsätta ta emot alla dina WordPress-aviseringar.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Tillåt";

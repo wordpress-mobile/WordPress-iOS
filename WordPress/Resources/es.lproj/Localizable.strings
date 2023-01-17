@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 13:54:08+0000 */
+/* Translation-Revision-Date: 2023-01-16 18:44:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: es */
@@ -10130,7 +10130,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.notifications.actions.secondary.title" = "Decidir más tarde";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Cuando aparezca la alerta, toca Permitir para continuar recibiendo todas tus notificaciones de WordPress.";
+"migration.notifications.footer" = "Cuando aparezca la alerta, toca «Permitir» para continuar recibiendo todos tus avisos de WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Permitir";

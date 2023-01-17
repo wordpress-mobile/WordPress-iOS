@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-10 11:52:23+0000 */
+/* Translation-Revision-Date: 2023-01-16 15:42:03+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ru */
@@ -10130,7 +10130,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.notifications.actions.secondary.title" = "Решить позже";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Когда появится предупреждение, нажмите «Разрешить», чтобы продолжить получать все уведомления WordPress.com.";
+"migration.notifications.footer" = "Когда появится предупреждение, нажмите «Разрешить», чтобы продолжить получать все уведомления WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Разрешить";
