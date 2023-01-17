@@ -39,7 +39,7 @@ class DomainsServiceTests: CoreDataTestCase {
     fileprivate func makeTestBlog() -> Blog {
         let accountService = AccountService(managedObjectContext: mainContext)
         let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
-        let blog = Blog.create(with: account)
+        let blog = Blog.createBlankBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
         blog.url = "http://dotcom1.wordpress.com/"
         blog.dotComID = testSiteID as NSNumber?

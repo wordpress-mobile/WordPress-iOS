@@ -40,7 +40,7 @@
     }
     Blog *blog = [Blog lookupWithUsername:username xmlrpc:xmlrpc inContext:context];
     if (!blog) {
-        blog = [Blog createInContext:context];
+        blog = [Blog createBlankBlogInContext:context];
         if (url) {
             blog.url = url;
         }

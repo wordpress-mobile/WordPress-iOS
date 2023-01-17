@@ -3,7 +3,7 @@ import XCTest
 
 class SharingServiceTests: CoreDataTestCase {
     func testSyncingPublicizeConnectionsForNonDotComBlogCallsACompletionBlock() throws {
-        let blog = Blog.create(in: mainContext)
+        let blog = Blog.createBlankBlog(in: mainContext)
         blog.account = nil
 
         let expect = expectation(description: "Sharing service completion block called.")

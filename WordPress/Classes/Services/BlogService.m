@@ -547,9 +547,9 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     if (!blog) {
         DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
         if (account != nil) {
-            blog = [Blog createWithAccount:account];
+            blog = [Blog createBlankBlogWithAccount:account];
         } else {
-            blog = [Blog createInContext:self.managedObjectContext];
+            blog = [Blog createBlankBlogInContext:self.managedObjectContext];
         }
         blog.xmlrpc = remoteBlog.xmlrpc;
     }
