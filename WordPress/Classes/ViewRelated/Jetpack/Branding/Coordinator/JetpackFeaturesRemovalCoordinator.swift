@@ -10,8 +10,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case two
         case three
         case four
-        case newUsers
-        case selfHosted
+        case newUsers = "new_users"
+        case selfHosted = "self_hosted"
 
         var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
             switch self {
