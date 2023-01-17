@@ -683,34 +683,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return request;
 }
 
-- (NSPredicate *)predicateForVisibleBlogs
-{
-    return [NSPredicate predicateWithFormat:@"visible = YES"];
-}
-
-- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName
-                                        forBlog:(Blog *)blog
-{
-    __block NSUInteger count = 0;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
-                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync],
-                              blog];
-    [request setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt"
-                                                                   ascending:YES];
-    [request setSortDescriptors:@[sortDescriptor]];
-    request.includesSubentities = NO;
-    request.resultType = NSCountResultType;
-
-    [self.managedObjectContext performBlockAndWait:^{
-        NSError *error = nil;
-        count = [self.managedObjectContext countForFetchRequest:request
-                                                          error:&error];
-    }];
-    return count;
-}
-
 #pragma mark - Completion handlers
 
 - (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
