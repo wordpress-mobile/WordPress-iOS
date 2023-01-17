@@ -432,13 +432,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return nil;
 }
 
-- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                 andUsername:(NSString *)username
-{
-    NSArray *foundBlogs = [self blogsWithPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ AND username = %@", xmlrpc, username]];
-    return [foundBlogs firstObject];
-}
-
 - (void)removeBlog:(Blog *)blog
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
@@ -651,11 +644,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
-- (Blog *)blogWithPredicate:(NSPredicate *)predicate
-{
-    return [[self blogsWithPredicate:predicate] firstObject];
-}
-
 - (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
@@ -727,9 +715,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
 {
-    [self.managedObjectContext performBlock:^{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlock:^{
         NSError *error;
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+        Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:&error];
         if (error) {
             DDLogError(@"%@", error);
         }
@@ -763,7 +752,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 }
             }
         }
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 

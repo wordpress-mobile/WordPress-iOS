@@ -269,9 +269,7 @@ private extension LoginEpilogueTableViewController {
     ///
     func loadBlog(username: String, xmlrpc: String) -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
+        return Blog.lookup(username: username, xmlrpc: xmlrpc, in: context)
     }
 
     /// The self-hosted flow sets user info, if no user info is set, assume a wpcom flow and try the default wp account.

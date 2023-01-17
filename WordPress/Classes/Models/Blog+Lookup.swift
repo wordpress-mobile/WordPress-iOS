@@ -64,10 +64,9 @@ public extension Blog {
     ///   - xmlrpc: The xmlrpc URL address
     ///   - context:  An NSManagedObjectContext containing the `Blog` object with the given `blogID`.
     /// - Returns: The `Blog` object associated with the given `username` and `xmlrpc`, if it exists.
+    @objc(lookupWithUsername:xmlrpc:inContext:)
     static func lookup(username: String, xmlrpc: String, in context: NSManagedObjectContext) -> Blog? {
-        let service = BlogService(managedObjectContext: context)
-
-        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
+        try? BlogQuery().xmlrpc(matching: xmlrpc).username(username).blog(in: context)
     }
 
     @objc(countInContext:)

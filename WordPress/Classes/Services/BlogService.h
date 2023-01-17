@@ -147,16 +147,6 @@ extern NSString *const WPBlogUpdatedNotification;
 - (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
                             inAccount:(WPAccount *)account;
 
-/**
- Searches for a `Blog` object for this account with the given username
-
- @param xmlrpc the XML-RPC endpoint URL as a string
- @param username the blog's username
- @return the blog if one was found, otherwise it returns nil
- */
-- (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                          andUsername:(NSString *)username;
-
 @end
 
 NS_ASSUME_NONNULL_END
