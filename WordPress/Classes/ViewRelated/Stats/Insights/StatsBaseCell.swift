@@ -117,9 +117,9 @@ class StatsBaseCell: UITableViewCell {
             showDetailsButton.isHidden = false
 
             switch statSection {
-            case .insightsViewsVisitors, .insightsLikesTotals:
+            case .insightsViewsVisitors:
                 showDetailsButton.setTitle(LocalizedText.buttonTitleThisWeek, for: .normal)
-            case .insightsFollowerTotals, .insightsCommentsTotals:
+            case .insightsFollowerTotals, .insightsCommentsTotals, .insightsLikesTotals:
                 showDetailsButton.setTitle(LocalizedText.buttonTitleViewMore, for: .normal)
             default:
                 showDetailsButton.setTitle("", for: .normal)
