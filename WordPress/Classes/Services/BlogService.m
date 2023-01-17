@@ -180,7 +180,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         [self updateMultiAuthor:users forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
-        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
     }];
 
@@ -273,7 +273,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         [self updateMultiAuthor:users forBlog:blogObjectID];
         success();
     } failure:^(NSError *error) {
-        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        DDLogError(@"Failed checking multi-author status for blog %@: %@", blog.url, error);
         failure(error);
     }];
 }

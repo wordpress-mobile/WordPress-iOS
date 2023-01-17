@@ -31,16 +31,6 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet private var tacButton: UIButton!
     @IBOutlet private var faqButton: UIButton!
 
-    /// Returns true if the blog has the proper version of Jetpack installed,
-    /// otherwise false
-    ///
-    fileprivate var hasJetpack: Bool {
-        guard let jetpack = blog.jetpack else {
-            return false
-        }
-        return (jetpack.isConnected && jetpack.isUpdatedToRequiredVersion)
-    }
-
     // MARK: - Initializers
 
     /// Required initializer for JetpackLoginViewController
@@ -136,11 +126,11 @@ class JetpackLoginViewController: UIViewController {
         descriptionLabel.sizeToFit()
 
         installJetpackButton.setTitle(Constants.Buttons.jetpackInstallTitle, for: .normal)
-        installJetpackButton.isHidden = hasJetpack
+        installJetpackButton.isHidden = blog.hasJetpack
         installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
-        signinButton.isHidden = !hasJetpack
+        signinButton.isHidden = !blog.hasJetpack
 
         let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
                                                 lineBreakMode: .byWordWrapping,

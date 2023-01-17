@@ -350,7 +350,8 @@
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspiriran";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Pomoć";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
@@ -527,6 +528,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Obavijesti";
@@ -683,7 +685,8 @@
 /* Published on [date] */
 "Published on" = "Objavljeno";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -838,6 +841,7 @@
 "Spam" = "Spam";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -884,7 +888,8 @@
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Web stranica na %1$@ koristi WordPress %2$@. Preporučamo da ažurirate na najnoviju inačicu, ili barem %3$@";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Teme";
@@ -1113,9 +1118,6 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
-
-/* Today */
-"today" = "danas";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Postovi";

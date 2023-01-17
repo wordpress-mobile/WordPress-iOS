@@ -569,7 +569,7 @@ private extension DashboardPromptsCardCell {
             case .viewMore:
                 return NSLocalizedString("View more prompts", comment: "Menu title to show more prompts.")
             case .skip:
-                return NSLocalizedString("Skip this prompt", comment: "Menu title to skip today's prompt.")
+                return NSLocalizedString("Skip for today", comment: "Menu title to skip today's prompt.")
             case .remove:
                 return NSLocalizedString("Remove from dashboard", comment: "Destructive menu title to remove the prompt card from the dashboard.")
             case .learnMore:

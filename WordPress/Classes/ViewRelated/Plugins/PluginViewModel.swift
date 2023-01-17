@@ -296,7 +296,7 @@ class PluginViewModel: Observable {
 
     private func activeRow(plugin: Plugin?) -> ImmuTableRow? {
         guard let activationPlugin = plugin,
-            activationPlugin.state.deactivateAllowed else { return nil }
+              activationPlugin.deactivateAllowed else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
@@ -327,8 +327,9 @@ class PluginViewModel: Observable {
 
     private func removeRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
         guard let pluginToRemove = plugin,
-            let siteCapabilities = capabilities,
-            siteCapabilities.modify && pluginToRemove.state.deactivateAllowed else { return nil }
+              let siteCapabilities = capabilities,
+              siteCapabilities.modify,
+              pluginToRemove.deactivateAllowed else { return nil }
 
         return  DestructiveButtonRow(
             title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
@@ -339,10 +340,10 @@ class PluginViewModel: Observable {
             accessibilityIdentifier: "remove-plugin")
     }
 
-    private func settingsLinkRow(state: PluginState?) -> ImmuTableRow? {
-        guard let pluginState = state,
-            let settingsURL = pluginState.settingsURL,
-            pluginState.deactivateAllowed == true  else {
+    private func settingsLinkRow(plugin: Plugin?) -> ImmuTableRow? {
+        guard let plugin,
+              let settingsURL = plugin.state.settingsURL,
+              plugin.deactivateAllowed == true  else {
                 return nil
         }
 
@@ -445,7 +446,7 @@ class PluginViewModel: Observable {
         let active = activeRow(plugin: plugin)
         let autoupdates = autoUpdatesRow(plugin: plugin, capabilities: capabilities)
 
-        let settingsLink = settingsLinkRow(state: plugin?.state)
+        let settingsLink = settingsLinkRow(plugin: plugin)
         let wpOrgPluginLink = wpOrgLinkRow(directoryEntry: directoryEntry, state: plugin?.state)
         let homeLink = homeLinkRow(state: plugin?.state)
 
