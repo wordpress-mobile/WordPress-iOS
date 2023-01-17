@@ -8,6 +8,7 @@
 * [**] [internal] Disable Story posts when Jetpack features are removed [#19823]
 * [*] [internal] Editor: Only register core blocks when `onlyCoreBlocks` capability is enabled [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5293]
 * [**] [internal] Disable StockPhoto and Tenor media sources when Jetpack features are removed [#19826]
+* [*] [Jetpack-only] Fixed a bug where analytics calls weren't synced to the user account. [#19926]
 
 21.4
 -----
