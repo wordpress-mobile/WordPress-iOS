@@ -1,13 +1,5 @@
 extension Blog {
 
-    /// Creates a blank `Blog` object
-    @objc(createWithAccount:orContext:)
-    static func createBlog(with account: WPAccount?, or context: NSManagedObjectContext) -> Blog {
-        let blog = createBlog(in: account?.managedObjectContext ?? context)
-        blog.account = account
-        return blog
-    }
-
     /// Creates a blank `Blog` object for this account
     @objc(createWithAccount:)
     static func createBlog(with account: WPAccount) -> Blog {
