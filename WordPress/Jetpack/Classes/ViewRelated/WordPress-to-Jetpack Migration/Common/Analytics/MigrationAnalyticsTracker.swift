@@ -33,6 +33,8 @@ struct MigrationAnalyticsTracker {
     }
 
     func trackContentImportSucceeded() {
+        /// Refresh the account metadata so subsequent analytics calls are linked to the user.
+        WPAnalytics.refreshMetadata()
         self.track(.contentImportSucceeded)
     }
 
