@@ -66,7 +66,7 @@ public extension Blog {
     /// - Returns: The `Blog` object associated with the given `username` and `xmlrpc`, if it exists.
     @objc(lookupWithUsername:xmlrpc:inContext:)
     static func lookup(username: String, xmlrpc: String, in context: NSManagedObjectContext) -> Blog? {
-        try? BlogQuery().xmlrpc(matching: xmlrpc).username(username).blog(in: context)
+        try? BlogQuery().xmlrpc(matching: xmlrpc).selfHostedBlogUsername(username).blog(in: context)
     }
 
     @objc(countInContext:)
