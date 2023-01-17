@@ -10054,9 +10054,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
 
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Tik op Toestaan wanneer je de melding krijgt om meldingen van WordPress te blijven ontvangen.";
-
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack-app.";
 

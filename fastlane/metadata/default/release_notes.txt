@@ -1,5 +1,7 @@
-Good news, everyone—you can now migrate your site content to the Jetpack app without a hitch.
+We’ve been hard at work on extra-technical, behind-the-scenes fixes and updates to keep the WordPress app running smoothly.
 
-Done reading content and want to scroll back to the beginning? Just tap the Reader tab button at the bottom of your screen and we’ll take you right back up to the top.
-
-We fixed an issue with app author IDs that was keeping some users from publishing Posts and Pages. While we were under the hood, we also made a small visibility tweak to the share extension’s navigation bar.
+- Posticulating features
+- Rearchitecting interfaces
+- Reticulating splines
+- Codifying similitude
+- Rebuilding the gigaverse

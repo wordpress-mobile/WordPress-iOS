@@ -10120,9 +10120,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍后再决定";
 
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "出现警报时，点击“允许”可继续接收所有 WordPress 通知。";
-
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "允许";
 
