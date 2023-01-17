@@ -698,7 +698,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
             return;
         }
         
-        [self updateBlogAuthorsFor:blog with:users];
+        [self updateBlogAuthorsForBlog:blog withRemoteUsers:users];
         
         blog.isMultiAuthor = users.count > 1;
         /// Search for a matching user ID
