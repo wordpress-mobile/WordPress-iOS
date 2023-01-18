@@ -82,7 +82,7 @@ private extension JetpackWindowManager {
         guard isCompatibleWordPressAppPresent && FeatureFlag.contentMigration.enabled else {
             return false
         }
-        let migrationState = MigrationState.inProgress // UserPersistentStoreFactory.instance().jetpackContentMigrationState
+        let migrationState = UserPersistentStoreFactory.instance().jetpackContentMigrationState
         let loggedIn = AccountHelper.isLoggedIn
         return loggedIn ? migrationState == .inProgress : migrationState != .completed
     }
