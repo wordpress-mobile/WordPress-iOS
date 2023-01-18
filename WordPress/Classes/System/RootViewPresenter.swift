@@ -23,6 +23,7 @@ protocol RootViewPresenter: AnyObject {
     func resetReaderDiscoverNudgeFlow()
     func resetReaderTab()
     func navigateToReaderSearch()
+    func navigateToReaderSearch(withSearchText: String)
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToMyLikes()
     func switchToFollowedSites()

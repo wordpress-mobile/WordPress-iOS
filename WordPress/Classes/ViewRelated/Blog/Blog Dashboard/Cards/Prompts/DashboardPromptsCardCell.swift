@@ -178,7 +178,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
-
+        RootViewCoordinator.sharedPresenter.navigateToReaderSearch(withSearchText: Strings.dailyPromptsSearchText)
+        WPAnalytics.track(.promptsOtherAnswersTapped)
     }
 
     private var answerInfoView: UIView {
@@ -538,6 +539,10 @@ private extension DashboardPromptsCardCell {
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
+        static let dailyPromptsSearchText = NSLocalizedString(
+            "dailyprompts",
+            comment: "Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people"
+        )
     }
 
     struct Style {
