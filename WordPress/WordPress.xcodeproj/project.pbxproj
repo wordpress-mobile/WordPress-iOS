@@ -1114,6 +1114,7 @@
 		4A878551290F2C7D0083AB78 /* Media+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A87854F290F2C7D0083AB78 /* Media+Sync.swift */; };
 		4A9948E4297624EF006282A9 /* Blog+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E3297624EF006282A9 /* Blog+Creation.swift */; };
 		4A9948E5297624EF006282A9 /* Blog+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9948E3297624EF006282A9 /* Blog+Creation.swift */; };
+		4A9314DC297790C300360232 /* PeopleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314DB297790C300360232 /* PeopleServiceTests.swift */; };
 		4A9B81E32921AE03007A05D1 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9B81E22921AE02007A05D1 /* ContextManager.swift */; };
 		4A9B81E42921AE03007A05D1 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9B81E22921AE02007A05D1 /* ContextManager.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
@@ -6468,6 +6469,7 @@
 		4A82C43028D321A300486CFF /* Blog+Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Blog+Post.swift"; sourceTree = "<group>"; };
 		4A87854F290F2C7D0083AB78 /* Media+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+Sync.swift"; sourceTree = "<group>"; };
 		4A9948E3297624EF006282A9 /* Blog+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Creation.swift"; sourceTree = "<group>"; };
+		4A9314DB297790C300360232 /* PeopleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleServiceTests.swift; sourceTree = "<group>"; };
 		4A9B81E22921AE02007A05D1 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
@@ -14707,6 +14709,7 @@
 				17FC0031264D728E00FCBD37 /* SharingServiceTests.swift */,
 				FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */,
 				010459EC2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift */,
+				4A9314DB297790C300360232 /* PeopleServiceTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -22622,6 +22625,7 @@
 				0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */,
 				400199AB222590E100EB0906 /* AllTimeStatsRecordValueTests.swift in Sources */,
 				C8567498243F41CA001A995E /* MockTenorService.swift in Sources */,
+				4A9314DC297790C300360232 /* PeopleServiceTests.swift in Sources */,
 				4054F4642214F94D00D261AB /* StreakStatsRecordValueTests.swift in Sources */,
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				8BB185CE24B62CE100A4CCE8 /* ReaderCardServiceTests.swift in Sources */,
