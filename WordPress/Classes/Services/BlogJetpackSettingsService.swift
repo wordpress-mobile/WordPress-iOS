@@ -116,14 +116,7 @@ struct BlogJetpackSettingsService {
             blogDotComId,
             settings: jetpackSettingsRemote(blogSettings),
             success: {
-                self.coreDataStack.performAndSave({ context in
-                    guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
-                        return
-                    }
-                    for (key, value) in changes {
-                        blogSettings.setValue(value, forKey: key)
-                    }
-                }, completion: success)
+                self.updateSettings(of: blog, withKeyValueChanges: changes, success: success)
             },
             failure: failure
         )
@@ -144,14 +137,7 @@ struct BlogJetpackSettingsService {
             blogDotComId,
             settings: jetpackMonitorsSettingsRemote(blogSettings),
             success: {
-                self.coreDataStack.performAndSave({ context in
-                    guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
-                        return
-                    }
-                    for (key, value) in changes {
-                        blogSettings.setValue(value, forKey: key)
-                    }
-                }, completion: success)
+                self.updateSettings(of: blog, withKeyValueChanges: changes, success: success)
             },
             failure: failure
         )
@@ -268,4 +254,15 @@ private extension BlogJetpackSettingsService {
                                                 monitorPushNotifications: settings.jetpackMonitorPushNotifications)
     }
 
+    func updateSettings(of blog: Blog, withKeyValueChanges changes: [String: Any], success: @escaping () -> Void) {
+        coreDataStack.performAndSave({ context in
+            guard let blogSettingsInContext = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
+                return
+            }
+
+            for (key, value) in changes {
+                blogSettingsInContext.setValue(value, forKey: key)
+            }
+        }, completion: success)
+    }
 }
