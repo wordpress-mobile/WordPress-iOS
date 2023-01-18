@@ -60,7 +60,6 @@ class MigrationStepView: UIView {
     }
 
     private func activateConstraints() {
-//        centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
         contentView.pinSubviewToAllEdges(mainStackView)
 
         NSLayoutConstraint.activate([

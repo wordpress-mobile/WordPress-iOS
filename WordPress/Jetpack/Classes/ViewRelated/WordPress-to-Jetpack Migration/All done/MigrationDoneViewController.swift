@@ -17,13 +17,17 @@ class MigrationDoneViewController: UIViewController {
     }
 
     override func loadView() {
-        let centerContentView = MigrationDoneCenterView()
-        let centerView = MigrationCenterView(contentView: centerContentView,
-                                             configuration: viewModel.configuration.centerViewConfiguration)
-
-        view = MigrationStepView(headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
-                                 actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
-                                 centerView: centerView)
+        let centerContentView = UIImageView(image: Appearance.centerImage)
+        centerContentView.contentMode = .scaleAspectFit
+        let centerView = MigrationCenterView(
+            contentView: centerContentView,
+            configuration: viewModel.configuration.centerViewConfiguration
+        )
+        self.view = MigrationStepView(
+            headerView: MigrationHeaderView(configuration: viewModel.configuration.headerConfiguration),
+            actionsView: MigrationActionsView(configuration: viewModel.configuration.actionsConfiguration),
+            centerView: centerView
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -39,5 +43,9 @@ class MigrationDoneViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.tracker.track(.thanksScreenShown)
+    }
+
+    private enum Appearance {
+        static let centerImage = UIImage(named: "wp-migration-icon-with-badge")
     }
 }
