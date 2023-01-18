@@ -170,7 +170,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         accountObjectID = [self createOrUpdateAccountWithUsername:remoteUser.username authToken:authToken];
     }
 
-    [self updateAccount:accountObjectID withUserDetails:remoteUser];
+    [self updateAccountWithID:accountObjectID withUserDetails:remoteUser];
 
     return accountObjectID;
 }
@@ -300,7 +300,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
-        [self updateAccount:account.objectID withUserDetails:remoteUser];
+        [self updateAccountWithID:account.objectID withUserDetails:remoteUser];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
             if (success) {
@@ -332,7 +332,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
 }
 
-- (void)updateAccount:(NSManagedObjectID *)objectID withUserDetails:(RemoteUser *)userDetails
+- (void)updateAccountWithID:(NSManagedObjectID *)objectID withUserDetails:(RemoteUser *)userDetails
 {
     NSParameterAssert(![objectID isTemporaryID]);
 
