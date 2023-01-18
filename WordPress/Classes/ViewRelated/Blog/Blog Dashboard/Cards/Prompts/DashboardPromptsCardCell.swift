@@ -178,6 +178,9 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled else {
+            return
+        }
         RootViewCoordinator.sharedPresenter.navigateToReaderSearch(withSearchText: Strings.dailyPromptsSearchText)
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
