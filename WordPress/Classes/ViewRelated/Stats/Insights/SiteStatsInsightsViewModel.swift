@@ -61,7 +61,9 @@ class SiteStatsInsightsViewModel: Observable {
         self.periodStore = periodStore
         let viewsCount = insightsStore.getAllTimeStats()?.viewsCount ?? 0
         self.itemToDisplay = pinnedItemStore?.itemToDisplay(for: viewsCount)
-        self.lastRequestedDate = StatsDataHelper.currentDateForSite()
+
+        // Exclude today's data for weekly insights
+        self.lastRequestedDate = StatsDataHelper.yesterdayDateForSite()
         self.lastRequestedPeriod = StatsPeriodUnit.day
 
         insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
@@ -70,6 +72,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         if FeatureFlag.statsNewInsights.enabled {
             periodChangeReceipt = self.periodStore.onChange { [weak self] in
+                self?.updateMostRecentChartData(self?.periodStore.getSummary())
                 self?.emitChange()
             }
         }
@@ -109,11 +112,6 @@ class SiteStatsInsightsViewModel: Observable {
             return ImmuTable.Empty
         }
 
-        let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
-        }
-
         insightsToShow.forEach { insightType in
             let errorBlock = { statSection in
                 return StatsErrorRow(rowStatus: .error, statType: .insights, statSection: statSection)
@@ -128,12 +126,18 @@ class SiteStatsInsightsViewModel: Observable {
                             return self?.mostRecentChartData != nil
                         },
                         block: { [weak self] in
-                            return self?.overviewTableRows() ?? summaryErrorBlock()
+                            return self?.overviewTableRows() ?? [errorBlock(.insightsViewsVisitors)]
                         }, loading: {
-                    return [PeriodEmptyCellHeaderRow(),
-                            StatsGhostChartImmutableRow()]
-                }, error: summaryErrorBlock))
+                            return [StatsGhostChartImmutableRow()]
+                        }, error: {
+                            return [errorBlock(.insightsViewsVisitors)]
+                        }))
             case .growAudience:
+                /// Grow Audience is an additional informational card that is not added by the user, no need to show it if fails to load
+                guard insightsStore.allTimeStatus != . error else {
+                    return
+                }
+
                 tableRows.append(blocks(for: .growAudience,
                                         type: .insights,
                                         status: insightsStore.allTimeStatus,
@@ -183,9 +187,12 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsLikesTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .likesTotals,
-                                           type: .period,
-                                           status: periodStore.summaryLikesStatus,
-                                           block: {
+                                        type: .period,
+                                        status: periodStore.summaryStatus,
+                                        checkingCache: { [weak self] in
+                                            return self?.mostRecentChartData != nil
+                                        },
+                                        block: {
                     return TotalInsightStatsRow(dataRow: createLikesTotalInsightsRow(), statSection: .insightsLikesTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
@@ -196,9 +203,12 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(InsightCellHeaderRow(statSection: StatSection.insightsCommentsTotals,
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
                 tableRows.append(blocks(for: .commentsTotals,
-                                           type: .period,
-                                           status: periodStore.summaryLikesStatus,
-                                           block: {
+                                        type: .period,
+                                        status: periodStore.summaryStatus,
+                                        checkingCache: { [weak self] in
+                                            return self?.mostRecentChartData != nil
+                                        },
+                                        block: {
                     return TotalInsightStatsRow(dataRow: createCommentsTotalInsightsRow(), statSection: .insightsCommentsTotals, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow()
@@ -514,9 +524,6 @@ private extension SiteStatsInsightsViewModel {
     // MARK: - Create Table Rows
 
     func overviewTableRows() -> [ImmuTableRow] {
-        let periodSummary = periodStore.getSummary()
-        updateMostRecentChartData(periodSummary)
-
         let periodDate = self.lastRequestedDate
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,

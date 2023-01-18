@@ -330,6 +330,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Aktivitet";
 
@@ -752,6 +753,7 @@ translators: Block name. %s: The localized block name */
 "Background Color" = "Bakgrunnsfarge";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2436,7 +2438,8 @@ translators: Block name. %s: The localized block name */
 /* H6 Aztec Style */
 "Heading 6" = "Overskrift 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Hjelp";
 
 /* Link to Help section
@@ -3078,6 +3081,7 @@ translators: Block name. %s: The localized block name */
 "Menu Name" = "Menynavn";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menyer";
 
@@ -3493,6 +3497,7 @@ translators: Block name. %s: The localized block name */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Varslinger";
@@ -3851,7 +3856,7 @@ translators: Block name. %s: The localized block name */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Vennligst oppgi et gyldig telefonnummer";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Vennligst oppgi passordet til WordPress.com-konto for å logge inn med din Apple-ID.";
 
 /* Popup message to ask for user credentials (fields shown below). */
@@ -4205,7 +4210,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Les det originale innlegget";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -4795,7 +4801,8 @@ translators: Block name. %s: The localized block name */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Del din historie her...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Deling";
@@ -5107,6 +5114,7 @@ translators: Block name. %s: The localized block name */
 "Static Homepage" = "Statisk hjemmeside";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -5445,7 +5453,8 @@ translators: Block name. %s: The localized block name */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Tema aktivert";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temaer";
@@ -6877,9 +6886,6 @@ translators: Block name. %s: The localized block name */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "disse objektene vil bli slettet:";
-
-/* Today */
-"today" = "i dag";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "ukjent url";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-05 11:01:24+0000 */
+/* Translation-Revision-Date: 2023-01-12 11:09:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: tr */
@@ -483,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Etkinlik";
 
@@ -735,6 +736,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Alternatif olarak, \"Normal bloklara dönüştür\" seçeneğine dokunarak bu blokları ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Alternatif olarak, \"Normal bloka dönüştür\" seçeneğine dokunarak bu bloku ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatif olarak, bu hesabın şifresini girebilirsiniz.";
@@ -1060,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "Site yedekleniyor";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2114,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Bir yazı oluştur";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Bir site oluştur";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Bir etiket oluştur";
@@ -3580,7 +3588,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "Sağlık";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Yardım";
 
 /* Link to Help section
@@ -4560,6 +4569,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "Menü adı";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menüler";
 
@@ -5115,6 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Bildirimler";
@@ -5575,7 +5586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Lütfen geçerli bir telefon numarası girin";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Lütfen Apple ID’nizle oturum açmak için WordPress.com hesabınızın parolasını girin.";
 
 /* Instruction text on the two-factor screen. */
@@ -5997,7 +6008,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Kaynak yazıyı oku";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6441,6 +6453,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "Kaydediliyor...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Tarama";
 
@@ -6838,7 +6851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Hikayenizi burada paylaşın...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Paylaşım";
@@ -7199,6 +7213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "Sabit ana sayfa";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7388,7 +7403,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "Video Çek";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "En iyi yorumcularınızı görmek için \"Hafta\"ya dokunun.";
+"Tap \"View more\" to see your top commenters." = "En çok yorum yapanları görmek için \"Daha fazlasını görüntüle\"ye dokunun.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "[bookmark-outline] üzerine dokunarak yazıyı listenize kaydedin.";
@@ -7678,7 +7693,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Tema etkinleştirildi";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temalar";
@@ -9748,6 +9764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "ör. 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Daha fazla";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -9885,8 +9904,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Site Amacı Seçin";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ %2$@ içinde taşınıyor";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ %2$@ içinde taşınıyor";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "%@ yakında taşınıyor";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "%@ yakında taşınıyor";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Jetpack destekli";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Jetpack uygulamasını edinin";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Yeni Jetpack uygulamasını deneyin";
@@ -9909,6 +9943,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Bildirimlerle Devam Et";
 
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Bunu daha sonra yap";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "İstatistikler, Okuyucu, Bildirimler ve Jetpack destekli diğer özellikler, yakında WordPress uygulamasından kaldırıldı.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack özellikleri taşındı.";
+
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Cihazınızda eşzamanlı bildirimler almaya devam etmek için Jetpack uygulamasına geçiş yapın.";
 
@@ -9930,8 +9973,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Yeni Jetpack uygulamasını kullanarak istatistiklerinizi alın";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Jetpack olmadan devam et";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack özellikleri yakında taşınıyor.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack, hayallerinizdeki WordPress sitesini oluşturmanıza ve büyütmenize yardımcı olacak istatistikler, bildirimler ve daha fazlasını sağlar.\n\nWordPress uygulaması artık yeni bir site oluşturmayı desteklemiyor.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "İstatistikler, Okuyucu, Bildirimler ve Jetpack destekli diğer özellikler, yakında WordPress uygulamasından kaldırılacaktır.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Bildirimler Jetpack'e taşınıyor";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Okuyucu, Jetpack uygulamasına taşınıyor";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "İstatistikler Jetpack uygulamasına taşınıyor";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "İstatistikler, Okuyucu, Bildirimler ve Jetpack destekli diğer özellikler, %@ tarihinde WordPress uygulamasından kaldırılacaktır.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Okuyucuyla Devam Et";
@@ -9947,6 +10014,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "İstatistiklerle Devam Et";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "İstatistikler, Okuyucu, Bildirimler ve diğer özellikler, yakında Jetpack mobil uygulamasına taşınacaktır.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Bunu gizle";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Daha fazlasını öğrenin";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Jetpack'e geç";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Daha sonra hatırlat";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Bir yazar ekleyin";
@@ -10029,20 +10111,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack'e geçtiğiniz için teşekkürler!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Görünüşe göre WordPress uygulaması yüklü.";
+
 /* The primary button title in the Load WordPress screen */
 "migration.loadWordpress.primaryButton" = "WordPress'i aç";
 
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "Hayır, teşekkürler";
 
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "Verilerinizi WordPress uygulamasından aktarmak ve otomatik olarak oturum açmak ister misiniz?";
+
 /* The title in the Load WordPress screen */
 "migration.loadWordpress.title" = "Jetpack'e hoş geldiniz.";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Daha sonra karar ver";
-
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Uyarı göründüğünde, tüm WordPress bildirimlerinizi almaya devam etmek için İzin Ver'e dokunun.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "İzin ver";
@@ -10226,9 +10311,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
-
-/* Today */
-"today" = "bugün";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "en iyi ipuçları";

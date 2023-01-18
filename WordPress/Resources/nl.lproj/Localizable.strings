@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-11-30 18:54:11+0000 */
+/* Translation-Revision-Date: 2023-01-12 19:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -251,6 +251,9 @@ translators: Block name. %s: The localized block name */
 "%s block. This block has invalid content" = "%s blok. Dit blok heeft ongeldige inhoud";
 
 /* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s naar normaal blok omzetten";
+
+/* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s geconverteerd naar gewone blokken";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
@@ -480,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Activiteit";
 
@@ -732,6 +736,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Als alternatief, kun je deze blokken ook losmaken en afzonderlijk bewerken door op 'Converteren naar normale blokken' te tikken.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Als alternatief, kun je dit blok ook losmaken en afzonderlijk bewerken door op 'Converteren naar normaal blok' te tikken.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Je kunt ook het wachtwoord voor dit account invoeren.";
@@ -1057,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "Er wordt een back-up gemaakt van de site";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2111,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Maak een bericht";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Een site maken";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Maak een tag";
@@ -3577,7 +3588,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "Gezondheid";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Help";
 
 /* Link to Help section
@@ -4557,6 +4569,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "Menu naam";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu's";
 
@@ -5112,6 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Meldingen";
@@ -5572,7 +5586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Voer een geldig telefoonnummer in";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Vul het wachtwoord voor je WordPress.com account in om met je Apple ID in te loggen.";
 
 /* Instruction text on the two-factor screen. */
@@ -5994,7 +6008,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Lees het bronbericht";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6438,6 +6453,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "Opslaan...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Scan";
 
@@ -6835,7 +6851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Deel hier je verhaal...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Delen";
@@ -7196,6 +7213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "Statische homepage";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7385,7 +7403,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "Maak een video";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "Tik op 'Week' om je topreageerders te bekijken.";
+"Tap \"View more\" to see your top commenters." = "Tik op 'Meer informatie' om je topreageerders te bekijken.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Tik op [bookmark-outline] om een bericht op te slaan in je lijst.";
@@ -7675,7 +7693,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Thema geactiveerd";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Thema's";
@@ -9834,8 +9853,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Selecteer site doel";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ worden over %2$@ verplaatst";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ wordt over %2$@ verplaatst";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Aangedreven door Jetpack";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Krijg de Jetpack-app";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Probeer de Jetpack-app";
@@ -9849,8 +9877,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Schakel over naar de nieuwe Jetpack-app";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Schakel over naar de Jetpack-app";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Ga naar jetpack.com voor meer informatie";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistieken, Reader, meldingen en andere functies die door Jetpack aangedreven worden, zijn verwijderd uit de WordPress-app.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack-functies zijn verplaatst.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack-app om realtime meldingen te blijven ontvangen op je apparaat.";
@@ -9873,8 +9910,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Bekijk je statistieken met de nieuwe Jetpack-app";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Overstappen is gratis en duurt maar een minuut.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Doorgaan zonder Jetpack";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Jetpack-functies worden binnenkort verplaatst.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack biedt statistieken, meldingen en meer om je te helpen de WordPress-site van je dromen te bouwen.\n\nDe WordPress-app ondersteunt het maken van een nieuwe site niet meer.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistieken, Reader, Meldingen en andere functies die door Jetpack aangedreven worden, zullen binnenkort uit de WordPress-app worden verwijderd.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Meldingen zullen naar Jetpack worden verplaatst";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Reader zal naar de Jetpack-app worden verplaatst";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistieken zullen naar de Jetpack-app worden verplaatst";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistieken, Reader, meldingen en andere functies die door Jetpack aangedreven worden op%@ uit de WordPress-app worden verwijderd.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Doorgaan naar Lezer";
@@ -9887,6 +9948,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Doorgaan naar Statistieken";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "Statistieken, Lezer, Meldingen en andere functies worden binnenkort verplaatst naar de Jetpack mobiele app.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Dit verbergen";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Meer informatie";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Overstappen naar Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Herinner mij hier later aan";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
@@ -9966,11 +10042,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "Bedankt dat je bent overgestapt naar Jetpack!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Het lijkt erop dat je de WordPress-app geïnstalleerd hebt.";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Nee, dank je";
+
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "Wil je je gegevens verplaatsen van de WordPress-app en automatisch aanmelden?";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
-
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Tik op Toestaan wanneer je de melding krijgt om meldingen van WordPress te blijven ontvangen.";
 
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack-app.";
@@ -10112,9 +10194,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Deze items worden verwijderd:";
-
-/* Today */
-"today" = "vandaag";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "beste tips";

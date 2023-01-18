@@ -559,7 +559,8 @@
    HTML Attachment Label */
 "HTML" = "HTML";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Hjælp";
 
 /* Link to Help section
@@ -863,6 +864,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikationer";
@@ -1101,7 +1103,8 @@
 /* Displayed when Push Notifications are disabled (iOS 7) */
 "Push Notifications have been turned off in iOS Settings" = "Push notifikationer er blevet deaktiveret i iOS indstillinger";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -1363,6 +1366,7 @@
 "Standard" = "Standard";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -1438,7 +1442,8 @@
 /* Error message informing a user about an invalid password. */
 "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again." = "Brugernavnet eller kodeordet, der er gemt i app'en, er ikke korrekt. Prøv venligst at genindtaste dit kodeord under indstillinger og prøv igen.";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temaer";
@@ -1725,9 +1730,6 @@
 
 /* Later today */
 "later today" = "senere i dag";
-
-/* Today */
-"today" = "i dag";
 
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Indlæg";

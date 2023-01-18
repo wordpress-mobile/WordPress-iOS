@@ -556,7 +556,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureJetpackImageSettings:
             return [self supportsJetpackImageSettings];
         case BlogFeatureJetpackSettings:
-            return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
+            return [self supportsJetpackSettings];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
@@ -716,6 +716,14 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
 {
     return [self hasRequiredJetpackVersion:requiredJetpackVersion] || self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsJetpackSettings
+{
+    return [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled]
+    && [self supportsRestApi]
+    && ![self isHostedAtWPcom]
+    && [self isAdmin];
 }
 
 - (BOOL)accountIsDefaultAccount
