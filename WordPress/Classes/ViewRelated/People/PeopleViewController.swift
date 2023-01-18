@@ -388,7 +388,7 @@ private extension PeopleViewController {
     func resetManagedPeople() {
         isInitialLoad = true
 
-        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -410,7 +410,7 @@ private extension PeopleViewController {
     }
 
     func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
-        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -428,7 +428,7 @@ private extension PeopleViewController {
 
     func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blogInContext,
-            let peopleService = PeopleService(blog: blog, context: viewContext),
+            let peopleService = PeopleService(blog: blog, coreDataStack: ContextManager.shared),
             let roleService = RoleService(blog: blog, context: viewContext) else {
                 return
         }
