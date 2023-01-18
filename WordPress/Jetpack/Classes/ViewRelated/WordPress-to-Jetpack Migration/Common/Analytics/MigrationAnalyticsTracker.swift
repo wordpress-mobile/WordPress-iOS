@@ -27,18 +27,34 @@ struct MigrationAnalyticsTracker {
 
     // MARK: - Content Import
 
-    func trackContentImportEligibility(eligible: Bool) {
-        let properties = ["eligible": String(eligible)]
+    func trackContentImportEligibility(params: ContentImportEventParams) {
+        let properties = [
+            "eligible": String(params.eligible),
+            "featureFlagEnabled": String(params.featureFlagEnabled),
+            "compatibleWordPressInstalled": String(params.compatibleWordPressInstalled),
+            "migrationState": String(params.migrationState.rawValue),
+            "loggedIn": String(params.loggedIn)
+        ]
         self.track(.contentImportEligibility, properties: properties)
     }
 
     func trackContentImportSucceeded() {
+        /// Refresh the account metadata so subsequent analytics calls are linked to the user.
+        WPAnalytics.refreshMetadata()
         self.track(.contentImportSucceeded)
     }
 
     func trackContentImportFailed(reason: String) {
         let properties = ["error_type": reason]
         self.track(.contentImportFailed, properties: properties)
+    }
+
+    struct ContentImportEventParams {
+        let eligible: Bool
+        let featureFlagEnabled: Bool
+        let compatibleWordPressInstalled: Bool
+        let migrationState: MigrationState
+        let loggedIn: Bool
     }
 
     // MARK: - WordPress Migration Eligibility

@@ -112,13 +112,6 @@ struct StatsSegmentedControlData {
     var accessibilityValue: String? {
         return segmentDataStub != nil ? "" : "\(segmentData)"
     }
-
-    enum Constants {
-        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
-        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
-        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
-        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
-    }
 }
 
 
@@ -230,9 +223,9 @@ private extension ViewsVisitorsLineChartCell {
         previousData.adjustsFontSizeToFitWidth = true
         previousLabel.adjustsFontSizeToFitWidth = true
 
-        legendLatestLabel.text = NSLocalizedString("This week", comment: "This week legend label")
+        legendLatestLabel.text = NSLocalizedString("stats.insights.label.viewsVisitorsLastDays", value: "Last 7-days", comment: "Last 7-days legend label")
         legendLatestLabel.adjustsFontSizeToFitWidth = true
-        legendPreviousLabel.text = NSLocalizedString("Previous week", comment: "Previous week legend label")
+        legendPreviousLabel.text = NSLocalizedString("stats.insights.label.viewsVisitorsPreviousDays", value: "Previous 7-days", comment: "Previous 7-days legend label")
         legendPreviousLabel.adjustsFontSizeToFitWidth = true
     }
 

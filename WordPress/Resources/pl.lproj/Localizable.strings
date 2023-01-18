@@ -149,6 +149,7 @@
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Aktywność";
 
@@ -1301,7 +1302,8 @@
 /* Health site intent topic */
 "Health" = "Zdrowie";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Pomoc";
 
 /* Link to Help section
@@ -1841,6 +1843,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Powiadomienia";
@@ -2190,7 +2193,8 @@
 /* Title for button allowing users to rate the app in the App Store */
 "Rate Us" = "Oceń nas";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -2473,7 +2477,8 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podziel się swoją historią…";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Udostępnianie ";
@@ -2643,6 +2648,7 @@
 "Static Homepage" = "Statyczna strona główna";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -2786,7 +2792,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Motyw został włączony";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Motywy";
@@ -3586,9 +3593,6 @@
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
 
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Po pojawieniu się komunikatu proszę wybrać Zezwól, aby otrzymywać wszystkie powiadomienia z WordPressa.";
-
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Zezwól";
 
@@ -3735,9 +3739,6 @@
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Członkowie witryny";
-
-/* Today */
-"today" = "dziś";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "nieznany adres URL";
