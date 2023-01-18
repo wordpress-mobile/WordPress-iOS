@@ -34,16 +34,10 @@ final class MigrationDeleteWordPressViewController: UIViewController {
     // MARK: - View Lifecycle
 
     override func loadView() {
-        let centerContentView = UIImageView(image: Appearance.centerImage)
-        centerContentView.contentMode = .scaleAspectFit
-        let centerView = MigrationCenterView(
-            contentView: centerContentView,
-            configuration: viewModel.content
-        )
         let migrationView = MigrationStepView(
             headerView: MigrationHeaderView(configuration: viewModel.header),
             actionsView: MigrationActionsView(configuration: viewModel.actions),
-            centerView: centerView
+            centerView: MigrationCenterView.deleteWordPress(with: viewModel.content)
         )
         migrationView.additionalContentInset.top = 0
         self.view = migrationView
@@ -97,11 +91,5 @@ final class MigrationDeleteWordPressViewController: UIViewController {
         self.tracker.track(.pleaseDeleteWordPressScreenHelpTapped)
         let destination = SupportTableViewController()
         self.present(UINavigationController(rootViewController: destination), animated: true)
-    }
-
-    // MARK: - Constants
-
-    private enum Appearance {
-        static let centerImage = UIImage(named: "wp-migration-icon-with-badge")
     }
 }
