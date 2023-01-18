@@ -18,12 +18,13 @@ class MigrationStepView: UIView {
     private let actionsView: MigrationActionsView
 
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [headerView, centerView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, centerView, UIView()])
         stackView.axis = .vertical
-        stackView.spacing = Constants.stackViewSpacing
+        stackView.distribution = .equalSpacing
         stackView.directionalLayoutMargins = Constants.mainStackViewMargins
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.setCustomSpacing(Constants.stackViewSpacing, after: headerView)
         return stackView
     }()
 
@@ -39,6 +40,10 @@ class MigrationStepView: UIView {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
         return scrollView
+    }()
+
+    private lazy var minContentHeightConstraint: NSLayoutConstraint = {
+        return contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
     }()
 
     // MARK: - Init
@@ -61,6 +66,7 @@ class MigrationStepView: UIView {
 
     private func activateConstraints() {
         contentView.pinSubviewToAllEdges(mainStackView)
+        minContentHeightConstraint.isActive = true
 
         NSLayoutConstraint.activate([
             mainScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
@@ -83,17 +89,43 @@ class MigrationStepView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Layout Subviews
+
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.layoutMainScrollView()
+        self.layoutContentView()
+    }
+
+    private func layoutMainScrollView() {
         let bottomInset = actionsView.frame.size.height - safeAreaInsets.bottom
-        mainScrollView.contentInset = .init(
+        self.mainScrollView.contentInset = .init(
             top: additionalContentInset.top,
             left: additionalContentInset.left,
             bottom: bottomInset + additionalContentInset.bottom,
             right: additionalContentInset.right
         )
-        mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        self.mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+        self.mainScrollView.setNeedsLayout()
+        self.mainScrollView.layoutIfNeeded()
     }
+
+    private func layoutContentView() {
+        self.minContentHeightConstraint.constant = 0
+        let contentViewHeight = contentView.systemLayoutSizeFitting(
+            .init(width: bounds.width, height: UIView.noIntrinsicMetric),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        let scrollViewHeight = mainScrollView.frame.height
+        let scrollViewInsets = mainScrollView.adjustedContentInset
+        let visibleHeight = scrollViewHeight - (scrollViewInsets.top + scrollViewInsets.bottom)
+        if contentViewHeight < visibleHeight {
+            self.minContentHeightConstraint.constant = visibleHeight
+        }
+    }
+
+    // MARK: - Types
 
     private enum Constants {
         /// Adds space between the content bottom edge and actions sheet top edge.
