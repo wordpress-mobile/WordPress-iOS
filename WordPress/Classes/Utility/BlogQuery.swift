@@ -20,8 +20,12 @@ struct BlogQuery {
         and(NSPredicate(format: "blogID = %ld", id))
     }
 
-    func username(_ username: String) -> Self {
+    func dotComAccountUsername(_ username: String) -> Self {
         and(NSPredicate(format: "account.username = %@", username))
+    }
+
+    func selfHostedBlogUsername(_ username: String) -> Self {
+        and(NSPredicate(format: "username = %@", username))
     }
 
     func hostname(containing hostname: String) -> Self {
@@ -38,6 +42,10 @@ struct BlogQuery {
 
     func hostedByWPCom(_ flag: Bool) -> Self {
         and(NSPredicate(format: flag ? "account != NULL" : "account == NULL"))
+    }
+
+    func xmlrpc(matching xmlrpc: String) -> Self {
+        and(NSPredicate(format: "xmlrpc = %@", xmlrpc))
     }
 
     func count(in context: NSManagedObjectContext) -> Int {

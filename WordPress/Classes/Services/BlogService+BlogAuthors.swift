@@ -6,7 +6,8 @@ extension BlogService {
     /// - Parameters:
     ///   - blog: Blog object.
     ///   - remoteUsers: Array of `RemoteUser`s.
-    @objc func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
+    @objc(updateBlogAuthorsForBlog:withRemoteUsers:)
+    func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
         do {
             guard let blog = try managedObjectContext.existingObject(with: blog.objectID) as? Blog else {
                 return
