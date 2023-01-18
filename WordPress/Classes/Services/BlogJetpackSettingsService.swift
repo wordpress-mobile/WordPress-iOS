@@ -18,8 +18,9 @@ struct BlogJetpackSettingsService {
             return
         }
         guard let remoteAPI = blog.wordPressComRestApi(),
-            let blogDotComId = blog.dotComID as? Int else {
-            success()
+            let blogDotComId = blog.dotComID as? Int
+        else {
+            failure(nil)
             return
         }
 
@@ -79,7 +80,8 @@ struct BlogJetpackSettingsService {
             return
         }
         guard let remoteAPI = blog.wordPressComRestApi(),
-            let blogDotComId = blog.dotComID as? Int else {
+            let blogDotComId = blog.dotComID as? Int
+        else {
             failure(nil)
             return
         }
@@ -102,7 +104,8 @@ struct BlogJetpackSettingsService {
     func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
-            let blogSettings = blog.settings else {
+            let blogSettings = blog.settings
+        else {
             failure(nil)
             return
         }
@@ -129,9 +132,10 @@ struct BlogJetpackSettingsService {
     func updateJetpackMonitorSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
-            let blogSettings = blog.settings else {
-                failure(nil)
-                return
+            let blogSettings = blog.settings
+        else {
+            failure(nil)
+            return
         }
 
         let changes = blogSettings.changedValues()
