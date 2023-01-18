@@ -210,6 +210,10 @@ class BlogDashboardCardFrameView: UIView {
         ])
     }
 
+    func removeButtonContainerStackView() {
+        buttonContainerStackView.removeFromSuperview()
+    }
+
     private func updateColors() {
         ellipsisButton.setImage(UIImage.gridicon(.ellipsis).imageWithTintColor(.listIcon), for: .normal)
     }

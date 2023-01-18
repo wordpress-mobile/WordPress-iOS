@@ -26,15 +26,6 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         let frameView = BlogDashboardCardFrameView()
         frameView.translatesAutoresizingMaskIntoConstraints = false
         frameView.hideHeader()
-
-        if cardType == .expanded {
-            frameView.configureButtonContainerStackView()
-            frameView.onEllipsisButtonTap = { [weak self] in
-                self?.presenter?.trackContextualMenuAccessed()
-            }
-            frameView.ellipsisButton.showsMenuAsPrimaryAction = true
-            frameView.ellipsisButton.menu = contextMenu
-        }
         return frameView
     }()
 
@@ -173,6 +164,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private func configure() {
         setupContent()
         applyStyles()
+        configureCardFrame()
 
         presenter?.trackCardShown()
     }
@@ -196,6 +188,21 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         label.font = labelFont
         label.textColor = labelTextColor
         label.numberOfLines = labelNumberOfLines
+    }
+
+    private func configureCardFrame() {
+        if cardType == .expanded {
+            cardFrameView.configureButtonContainerStackView()
+            cardFrameView.onEllipsisButtonTap = { [weak self] in
+                self?.presenter?.trackContextualMenuAccessed()
+            }
+            cardFrameView.ellipsisButton.showsMenuAsPrimaryAction = true
+            cardFrameView.ellipsisButton.menu = contextMenu
+        }
+        else {
+            cardFrameView.removeButtonContainerStackView()
+            cardFrameView.onEllipsisButtonTap = nil
+        }
     }
 
     // MARK: Actions
