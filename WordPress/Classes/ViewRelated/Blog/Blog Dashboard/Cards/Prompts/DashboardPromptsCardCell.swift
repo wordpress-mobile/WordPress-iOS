@@ -169,7 +169,12 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(answerInfoText, for: .normal)
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
-        button.setTitleColor(WPStyleGuide.BloggingPrompts.buttonTitleColor, for: .normal)
+        button.setTitleColor(
+            FeatureFlag.bloggingPromptsEnhancements.enabled
+            ? WPStyleGuide.BloggingPrompts.buttonTitleColor
+            : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
+            for: .normal
+        )
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(didTapAnswerInfoButton), for: .touchUpInside)
