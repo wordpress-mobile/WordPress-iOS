@@ -17,17 +17,13 @@ class MigrationStepView: UIView {
     private let centerView: UIView
     private let actionsView: MigrationActionsView
 
-    private lazy var centerContentView: UIView = {
-        let view = UIView()
-        view.addSubview(centerView)
-        return view
-    }()
-
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [headerView, centerContentView])
+        let stackView = UIStackView(arrangedSubviews: [headerView, centerView])
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
+        stackView.directionalLayoutMargins = Constants.mainStackViewMargins
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
 
@@ -50,12 +46,11 @@ class MigrationStepView: UIView {
     init(headerView: MigrationHeaderView,
          actionsView: MigrationActionsView,
          centerView: UIView) {
-
         self.headerView = headerView
         self.centerView = centerView
         centerView.translatesAutoresizingMaskIntoConstraints = false
         self.actionsView = actionsView
-        headerView.directionalLayoutMargins = Constants.headerViewMargins
+        headerView.directionalLayoutMargins = .zero
         actionsView.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: .zero)
         backgroundColor = MigrationAppearance.backgroundColor
@@ -65,7 +60,7 @@ class MigrationStepView: UIView {
     }
 
     private func activateConstraints() {
-        centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
+//        centerContentView.pinSubviewToAllEdges(centerView, insets: Constants.centerContentMargins)
         contentView.pinSubviewToAllEdges(mainStackView)
 
         NSLayoutConstraint.activate([
@@ -111,8 +106,10 @@ class MigrationStepView: UIView {
         /// Adds top padding to the `scrollView`.
         static let topContentInset: CGFloat = UINavigationBar().intrinsicContentSize.height
 
-        static let centerContentMargins = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+        // Main stack view spacing.
         static let stackViewSpacing: CGFloat = 20
-        static let headerViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
+
+        // Adds margins to the main sack view.
+        static let mainStackViewMargins = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
     }
 }
