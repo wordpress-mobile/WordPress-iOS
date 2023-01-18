@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-13 09:23:51+0000 */
+/* Translation-Revision-Date: 2023-01-17 10:33:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -10128,6 +10128,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vybrat později";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Když se zobrazí upozornění, klepněte na Povolit, abyste i nadále dostávali všechna oznámení WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Povolit";

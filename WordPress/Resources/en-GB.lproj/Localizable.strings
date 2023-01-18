@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-10 13:59:45+0000 */
+/* Translation-Revision-Date: 2023-01-17 15:46:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: en_GB */
@@ -10128,6 +10128,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Decide later";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "When the alert appears, tap Allow to continue receiving all your WordPress notifications.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Allow";
