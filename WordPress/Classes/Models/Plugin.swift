@@ -12,6 +12,13 @@ struct Plugin: Equatable {
         return state.name
     }
 
+    var deactivateAllowed: Bool {
+        guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            return true
+        }
+        return state.deactivateAllowed
+    }
+
     static func ==(lhs: Plugin, rhs: Plugin) -> Bool {
         return lhs.state == rhs.state
             && lhs.directoryEntry == rhs.directoryEntry

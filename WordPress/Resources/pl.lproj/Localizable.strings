@@ -3593,9 +3593,6 @@
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
 
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Po pojawieniu się komunikatu proszę wybrać Zezwól, aby otrzymywać wszystkie powiadomienia z WordPressa.";
-
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Zezwól";
 
