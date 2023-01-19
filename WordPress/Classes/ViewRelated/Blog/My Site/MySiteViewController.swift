@@ -87,6 +87,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    var willDisplayPostSignupFlow: Bool = false
+
     private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let meScenePresenter: ScenePresenter
