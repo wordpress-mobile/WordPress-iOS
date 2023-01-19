@@ -17,9 +17,17 @@ class WindowManager: NSObject {
     ///
     private var overlayingWindow: UIWindow?
 
-    /// A boolean to track whether we're showing the sign in flow in fullscreen mode..
+    /// A boolean to track whether we're showing the sign in flow in fullscreen mode.
     ///
     private(set) var isShowingFullscreenSignIn = false
+
+    /// The root view controller for the window.
+    /// 
+    var rootViewController: UIViewController? {
+        return window.rootViewController
+    }
+
+    // MARK: - Init
 
     init(window: UIWindow) {
         self.window = window
