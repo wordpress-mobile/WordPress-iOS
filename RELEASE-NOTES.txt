@@ -5,6 +5,7 @@
 * [***] [Jetpack-only] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
 * [***] [internal] Delete all the activity logs after logging out. [#19930]
 * [*] [Jetpack-only] Fixed an issue where Stats Followers details did not update on Pull-to-refresh in the Stats Followers Details screen [#19935]
+* [**] Refactored loading WP.com plans. [#19949]
 
 21.5
 -----
