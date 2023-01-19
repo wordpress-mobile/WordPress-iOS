@@ -179,7 +179,7 @@ struct PeopleService {
     ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteUser(_ user: User, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+    func deleteUser(_ user: User, success: @escaping () -> Void, failure: ((Error) -> Void)? = nil) {
         delete(
             user,
             using: { completion in
@@ -248,7 +248,7 @@ struct PeopleService {
     ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteViewer(_ person: Viewer, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+    func deleteViewer(_ person: Viewer, success: @escaping () -> Void, failure: ((Error) -> Void)? = nil) {
         delete(
             person,
             using: { completion in
