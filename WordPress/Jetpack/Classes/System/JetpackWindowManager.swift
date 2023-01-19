@@ -123,8 +123,7 @@ private extension JetpackWindowManager {
         // 1. The first login screen is visible
         // 2. Or, The root view controller is not set
         if let loginNavigationController = self.rootViewController as? LoginNavigationController,
-           loginNavigationController.viewControllers.count == 1
-        {
+           loginNavigationController.viewControllers.count == 1 {
             loginNavigationController.present(UINavigationController(rootViewController: loadWordPressViewController), animated: true)
         } else if rootViewController == nil {
             self.show(loadWordPressViewController)
