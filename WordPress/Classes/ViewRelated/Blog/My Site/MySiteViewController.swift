@@ -705,6 +705,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @objc
     func launchSiteCreationFromNotification() {
         self.launchSiteCreation(source: "signup_epilogue")
+        willDisplayPostSignupFlow = false
     }
 
     func launchSiteCreation(source: String) {
@@ -726,6 +727,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @objc
     private func showAddSelfHostedSite() {
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        willDisplayPostSignupFlow = false
     }
 
     @objc
