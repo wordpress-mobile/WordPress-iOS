@@ -101,7 +101,7 @@ class MigrationStepView: UIView {
         mainScrollView.verticalScrollIndicatorInsets.bottom = bottomInset
     }
 
-    private enum Constants {
+    enum Constants {
         /// Adds space between the content bottom edge and actions sheet top edge.
         ///
         /// Bottom inset is added to the `scrollView` so the content is not covered by the Actions Sheet view.
