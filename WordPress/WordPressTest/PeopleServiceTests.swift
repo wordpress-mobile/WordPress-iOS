@@ -13,7 +13,7 @@ class PeopleServiceTests: CoreDataTestCase {
         super.setUp()
 
         stub(condition: isHost("public-api.wordpress.com")) { request in
-            NSLog("Received an unexpected request: \(request)")
+            XCTFail("Received an unexpected request sent to \(String(describing: request.url))")
             return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
         }
 
