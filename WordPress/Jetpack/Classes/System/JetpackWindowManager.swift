@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import WordPressAuthenticator
 
 class JetpackWindowManager: WindowManager {
     /// receives migration flow updates in order to dismiss it when needed.
@@ -115,11 +116,19 @@ private extension JetpackWindowManager {
         }
         actions.secondary = { [weak self, weak loadWordPressViewController] in
             self?.migrationTracker.track(.loadWordPressScreenNoThanksTapped)
-            loadWordPressViewController?.dismiss(animated: true) {
-                self?.showSignInUI()
-            }
+            let isPresented = loadWordPressViewController?.presentingViewController != nil
+            isPresented ? loadWordPressViewController?.dismiss(animated: true) : self?.showSignInUI()
         }
-        self.show(loadWordPressViewController)
+        // Display the "Load WordPress" if one of these conditions is fulfilled:
+        // 1. The first login screen is visible
+        // 2. Or, The root view controller is not set
+        if let loginNavigationController = self.rootViewController as? LoginNavigationController,
+           loginNavigationController.viewControllers.count == 1
+        {
+            loginNavigationController.present(UINavigationController(rootViewController: loadWordPressViewController), animated: true)
+        } else if rootViewController == nil {
+            self.show(loadWordPressViewController)
+        }
     }
 
     /// Determine how to handle the error when the migration fails.
@@ -139,7 +148,9 @@ private extension JetpackWindowManager {
             !hasFailedExportAttempts,
             let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
         else {
-            showSignInUI()
+            if rootViewController == nil {
+                showSignInUI()
+            }
             return
         }
 
