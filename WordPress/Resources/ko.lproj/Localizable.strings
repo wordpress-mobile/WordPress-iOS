@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-01 16:54:12+0000 */
+/* Translation-Revision-Date: 2023-01-12 23:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -251,6 +251,9 @@ translators: Block name. %s: The localized block name */
 "%s block. This block has invalid content" = "%s 블록. 이 블록에는 잘못된 내용이 있습니다.";
 
 /* translators: %s: name of the reusable block */
+"%s converted to regular block" = "일반 블록으로 %s 변환됨";
+
+/* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "일반 블록으로 %s 변환됨";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
@@ -480,6 +483,7 @@ translators: Block name. %s: The localized block name */
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "활동";
 
@@ -732,6 +736,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "또는 \"일반 블록으로 변환\"을 눌러 이러한 블록을 분리하고 따로 편집할 수 있습니다.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "또는 \"일반 블록으로 변환\"을 눌러 이 블록을 분리하고 따로 편집할 수 있습니다.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "또는 이 계정에 대한 비밀번호를 입력하셔도 됩니다.";
@@ -1057,6 +1064,7 @@ translators: Block name. %s: The localized block name */
 "Backing up site" = "사이트 백업 중";
 
 /* Noun. Links to a blog's Jetpack Backups screen.
+   Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen
@@ -2111,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "게시글 작성";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "사이트 생성";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "태그 만들기";
@@ -3577,7 +3588,8 @@ translators: Block name. %s: The localized block name */
 /* Health site intent topic */
 "Health" = "건강";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "도움말";
 
 /* Link to Help section
@@ -4557,6 +4569,7 @@ translators: Block name. %s: The localized block name */
 "Menu name" = "메뉴 이름";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "메뉴";
 
@@ -5112,6 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "알림";
@@ -5572,7 +5586,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "유효한 전화번호를 입력하세요";
 
-/* No comment provided by engineer. */
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
 "Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID로 로그인하려면 워드프레스닷컴 계정의 비밀번호를 입력하세요.";
 
 /* Instruction text on the two-factor screen. */
@@ -5994,7 +6008,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "원글 읽기";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -6438,6 +6453,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Saving..." = "저장중...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
+   Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "검색하기";
 
@@ -6835,7 +6851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "여기서 스토리 공유...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "공유";
@@ -7196,6 +7213,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Static Homepage" = "정적인 홈페이지";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -7385,7 +7403,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Take a Video" = "비디오 촬영";
 
 /* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
-"Tap \"Week\" to see your top commenters." = "상위 댓글 작성자를 참조하려면 \"주\"를 누르세요.";
+"Tap \"View more\" to see your top commenters." = "\"더 보기\"를 눌러 상위 댓글 작성자를 참조하세요.";
 
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "[bookmark-outline]을 탭하여 목록에 글을 저장합니다.";
@@ -7675,7 +7693,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "테마 활성화됨";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "테마";
@@ -9745,6 +9764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "예: 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "더 보기";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -9882,8 +9904,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "사이트 의도 선택";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%2$@에서 %1$@ 이동 중";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%2$@에서 %1$@ 이동 중";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "곧 %@ 이동 예정";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "곧 %@ 이동 예정";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "젯팩 제공";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "젯팩 앱 받기";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "새로운 젯팩 앱 체험하기";
@@ -9897,11 +9934,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "새 젯팩 앱으로 전환";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "젯팩 앱으로 전환";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "jetpack.com에서 더 알아보기";
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "알림으로 계속";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "나중에 하겠습니다.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "통계, 리더, 알림 및 기타 젯팩에서 제공되는 기능이 워드프레스 앱에서 제거되었습니다.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "젯팩 기능이 제거되었습니다.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "젯팩 앱으로 전환하여 계속 기기에서 실시간 알림을 받으세요.";
@@ -9924,8 +9973,32 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "새 젯팩 앱을 사용하여 통계 받기";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "전환은 무료이며 1분밖에 걸리지 않습니다.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "젯팩 없이 계속";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "젯팩 기능이 곧 이동합니다.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "젯팩에서는 꿈꾸는 워드프레스 사이트 제작 및 성장에 도움이 되는 통계, 알림 등이 제공됩니다.\n\n워드프레스 앱에서는 이제 새 사이트 생성이 지원되지 않습니다.";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "통계, 리더, 알림 및 기타 젯팩에서 제공되는 기능이 조만간 워드프레스 앱에서 제거됩니다.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "젯팩으로 알림 이동 중";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "젯팩 앱으로 리더 이동 중";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "젯팩 앱으로 통계 이동 중";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "통계, 리더, 알림 및 기타 젯팩에서 제공되는 기능이 %@에 워드프레스 앱에서 제거됩니다.";
 
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "리더로 계속";
@@ -9941,6 +10014,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "통계로 계속";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "통계, 리더, 알림 및 기타 기능이 곧 젯팩 모바일 앱으로 이동합니다.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "숨기기";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "더 알아보기";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "젯팩으로 전환";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "나중에 다시 알림";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "글쓴이 추가";
@@ -10023,11 +10111,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "젯팩으로 전환해 주셔서 감사합니다!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "워드프레스 앱이 설치되어 있는 것 같습니다.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "워드프레스 열기";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "괜찮습니다";
+
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "워드프레스 앱의 데이터를 이전하고 자동으로 로그인하시겠나요?";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "젯팩에 오신 것을 환영합니다!";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "나중에 결정";
-
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "모든 워드프레스 알림을 계속 받으려면 경고가 표시될 때 허용을 누르세요.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "허용";
@@ -10211,9 +10311,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";
-
-/* Today */
-"today" = "오늘";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "최고의 팁";

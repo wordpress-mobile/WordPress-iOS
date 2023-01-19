@@ -18,7 +18,7 @@ class BlogQueryTests: CoreDataTestCase {
     }
 
     func testQueryByUsername() throws {
-        let query = BlogQuery().username("BlogQuery")
+        let query = BlogQuery().dotComAccountUsername("BlogQuery")
         XCTAssertEqual(query.count(in: mainContext), 1)
         XCTAssertEqual(try query.blog(in: mainContext)?.account?.username, "BlogQuery")
     }

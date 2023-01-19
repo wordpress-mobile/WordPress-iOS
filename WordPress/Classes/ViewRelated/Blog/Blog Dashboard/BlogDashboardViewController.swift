@@ -73,7 +73,12 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        viewModel.loadCards()
+        viewModel.loadCards { cards in
+            guard cards.hasPrompts else {
+                return
+            }
+            WPAnalytics.track(.promptsDashboardCardViewed)
+        }
         QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
 
@@ -122,7 +127,7 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func pulledToRefresh(completion: (() -> Void)? = nil) {
-        viewModel.loadCards {
+        viewModel.loadCards { _ in
             completion?()
         }
     }
@@ -325,5 +330,13 @@ extension BlogDashboardViewController: UIPopoverPresentationControllerDelegate {
     // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
+    }
+}
+
+// MARK: - Helper functions
+
+private extension Collection where Element == DashboardCardModel {
+    var hasPrompts: Bool {
+        contains(where: { $0.cardType == .prompts })
     }
 }

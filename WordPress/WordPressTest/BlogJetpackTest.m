@@ -102,12 +102,12 @@
     NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
-    Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
+    Blog *dotcomBlog = [Blog createBlankBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"https://dotcom1.wordpress.com/xmlrpc.php";
     dotcomBlog.url = @"https://dotcom1.wordpress.com/";
     dotcomBlog.dotComID = @1;
 
-    Blog *jetpackLegacyBlog = [blogService createBlog];
+    Blog *jetpackLegacyBlog = [Blog createBlankBlogInContext:self.testContextManager.mainContext];
     jetpackLegacyBlog.username = @"jetpack";
     jetpackLegacyBlog.xmlrpc = @"http://jetpack.example.com/xmlrpc.php";
     jetpackLegacyBlog.url = @"http://jetpack.example.com/";
@@ -170,12 +170,12 @@
     NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
-    Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
+    Blog *dotcomBlog = [Blog createBlankBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
     dotcomBlog.url = @"http://dotcom1.wordpress.com/";
     dotcomBlog.dotComID = @1;
 
-    Blog *jetpackBlog = [blogService createBlog];
+    Blog *jetpackBlog = [Blog createBlankBlogInContext:self.testContextManager.mainContext];
     jetpackBlog.username = @"jetpack";
     jetpackBlog.xmlrpc = @"https://jetpack.example.com/xmlrpc.php";
     jetpackBlog.url = @"https://jetpack.example.com/";

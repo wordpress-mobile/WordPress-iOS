@@ -310,7 +310,8 @@
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Fiók információk beszerzése";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Segítség";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks).
@@ -483,6 +484,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Értesítések";
@@ -641,7 +643,8 @@
 /* Mobile Push Notifications */
 "Push Notifications" = "Értesítések";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -832,6 +835,7 @@
 "Spam" = "Spam";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
