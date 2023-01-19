@@ -42,7 +42,7 @@ class PeopleServiceTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/users")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
-                    "users":[
+                    "users": [
                         [
                             "ID": 1,
                             "nice_name": "Name",
@@ -93,7 +93,7 @@ class PeopleServiceTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/follows")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
-                    "users":[
+                    "users": [
                         [
                             "ID": 1,
                             "nice_name": "Nice Name",
@@ -121,7 +121,7 @@ class PeopleServiceTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/followers/\(follower.userID)/delete")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
-                    "users":[
+                    "users": [
                         [
                             "ID": 1,
                             "nice_name": "Name",
@@ -156,7 +156,7 @@ class PeopleServiceTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/\(siteID)/follows")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
-                    "users":[
+                    "users": [
                         [
                             "ID": 1,
                             "nice_name": "Nice Name",
