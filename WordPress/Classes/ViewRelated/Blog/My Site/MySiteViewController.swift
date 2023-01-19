@@ -87,6 +87,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    /// A boolean indicating whether a site creation or adding self-hosted site flow has been initiated but not yet displayed.
     var willDisplayPostSignupFlow: Bool = false
 
     private var createButtonCoordinator: CreateButtonCoordinator?
