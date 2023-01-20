@@ -3,9 +3,11 @@ import UIKit
 /// A view with an injected content and a description withl highlighted words
 class MigrationCenterView: UIView {
 
-    private let contentView: UIView
-
     private let configuration: MigrationCenterViewConfiguration?
+
+    // MARK: - Views
+
+    private let contentView: UIView
 
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
@@ -29,6 +31,8 @@ class MigrationCenterView: UIView {
         return stackView
     }()
 
+    // MARK: - Init
+
     init(contentView: UIView, configuration: MigrationCenterViewConfiguration?) {
         self.contentView = contentView
         self.configuration = configuration
@@ -41,10 +45,16 @@ class MigrationCenterView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    static func deleteWordPress(with configuration: MigrationCenterViewConfiguration?) -> MigrationCenterView {
+        let imageView = UIImageView(image: UIImage(named: "wp-migration-icon-with-badge"))
+        imageView.contentMode = .scaleAspectFit
+        return .init(contentView: imageView, configuration: configuration)
+    }
+
+    // MARK: - Types
+
     private enum Appearance {
-
         static let fakeAlertToDescriptionSpacing: CGFloat = 20
-
         static let descriptionTextColor = UIColor(light: .muriel(color: .gray, .shade50), dark: .muriel(color: .gray, .shade10))
     }
 }
