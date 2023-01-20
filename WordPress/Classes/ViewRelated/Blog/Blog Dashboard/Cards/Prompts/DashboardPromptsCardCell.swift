@@ -4,7 +4,6 @@ import WordPressUI
 import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
-
     // MARK: - Public Properties
 
     // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
@@ -183,10 +182,11 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
-        guard FeatureFlag.bloggingPromptsEnhancements.enabled else {
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        let promptID = prompt?.promptID else {
             return
         }
-        RootViewCoordinator.sharedPresenter.navigateToReaderSearch(withSearchText: Strings.dailyPromptsSearchText)
+        RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
         WPAnalytics.track(.promptsOtherAnswersTapped)
     }
 
@@ -571,6 +571,7 @@ private extension DashboardPromptsCardCell {
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
+        static let dailyPromptTag = "dailyprompt"
     }
 
     // MARK: Contextual Menu
