@@ -81,7 +81,7 @@ private extension DomainSuggestion {
     // Used to help with testing
     init(managedObjectContext context: NSManagedObjectContext, api: WordPressComRestApi) {
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
-        self.domainsService = DomainsService(managedObjectContext: context, remote: remoteService)
+        self.domainsService = DomainsService(coreDataStack: ContextManager.shared, remote: remoteService)
         super.init(managedObjectContext: context)
     }
 
