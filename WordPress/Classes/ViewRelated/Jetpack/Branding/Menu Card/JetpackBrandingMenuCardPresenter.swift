@@ -62,10 +62,11 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        switch phase {
-        case .three:
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        switch (phase, jetpackFeaturesEnabled) {
+        case (.three, true):
             return true
-        case .selfHosted:
+        case (.selfHosted, false):
             return blog?.jetpackIsConnected ?? false
         default:
             return false
@@ -76,10 +77,11 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        switch phase {
-        case .four:
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        switch (phase, jetpackFeaturesEnabled) {
+        case (.four, false):
             fallthrough
-        case .newUsers:
+        case (.newUsers, false):
             return true
         default:
             return false
