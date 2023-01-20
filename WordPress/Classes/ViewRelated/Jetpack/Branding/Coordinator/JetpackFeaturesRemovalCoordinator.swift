@@ -116,12 +116,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     /// Used to determine if the Jetpack features are enabled based on the removal phase.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
-        switch generalPhase() {
-        case .four, .newUsers, .selfHosted:
-            return false
-        default:
-            return true
-        }
+        return RootViewCoordinator.shared.jetpackFeaturesEnabled()
     }
 
     /// Used to display feature-specific or feature-collection overlays.

@@ -38,7 +38,7 @@ class RootViewCoordinator {
     // MARK: Initializer
 
     init() {
-        if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+        if Self.shouldEnableJetpackFeatures() {
             self.currentAppUIType = .normal
             self.rootViewPresenter = WPTabBarController()
         }
@@ -50,10 +50,31 @@ class RootViewCoordinator {
         updatePromptsIfNeeded()
     }
 
+    // MARK: JP Features State
+
+    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// Using this ensures features are not removed before reloading the UI.
+    /// - Returns: `true` if UI type if normal, and `false` if UI type is simplified.
+    func jetpackFeaturesEnabled() -> Bool {
+        return currentAppUIType == .normal
+    }
+
+    private static func shouldEnableJetpackFeatures() -> Bool {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
+        switch phase {
+        case .four, .newUsers, .selfHosted:
+            return false
+        default:
+            return true
+        }
+    }
+
+    // MARK: UI Reload
+
     /// Reload the UI if needed after the app has already been launched.
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? .normal : .simplified
+        let newUIType: AppUIType = Self.shouldEnableJetpackFeatures() ? .normal : .simplified
         let oldUIType = currentAppUIType
         guard newUIType != oldUIType, let windowManager = WordPressAppDelegate.shared?.windowManager else {
             return false
