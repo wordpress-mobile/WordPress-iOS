@@ -8,8 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSManagedObjectContext *const)newDerivedContext DEPRECATED_MSG_ATTRIBUTE("Use `performAndSave` instead");
 - (void)saveContextAndWait:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context;
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock onQueue:(dispatch_queue_t)queue;
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^ _Nullable)(void))completionBlock onQueue:(dispatch_queue_t)queue NS_SWIFT_NAME(save(_:completion:on:));
 - (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock;
 - (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion onQueue:(dispatch_queue_t)queue;
 @end

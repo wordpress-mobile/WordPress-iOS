@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
                                if (needsSync) {
                                    [self syncCategoriesForBlog:blog success:nil failure:nil];
                                }
-                           }];
+                           } onQueue:dispatch_get_main_queue()];
                        }];
                    } failure:failure];
 }
@@ -215,7 +215,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (completion) {
             completion(categories);
         }
-    }];
+    } onQueue:dispatch_get_main_queue()];
 }
 
 - (nullable Blog *)blogWithObjectID:(nullable NSManagedObjectID *)objectID

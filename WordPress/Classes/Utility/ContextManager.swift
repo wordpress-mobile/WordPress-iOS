@@ -85,14 +85,13 @@ public class ContextManager: NSObject, CoreDataStack {
         save(context, .asynchronously)
     }
 
-    @objc(saveContext:withCompletionBlock:)
-    public func save(_ context: NSManagedObjectContext, withCompletionBlock completion: @escaping () -> Void) {
-        save(context, withCompletionBlock: completion, on: .main)
-    }
-
     @objc(saveContext:withCompletionBlock:onQueue:)
-    public func save(_ context: NSManagedObjectContext, withCompletionBlock completion: @escaping () -> Void, on queue: DispatchQueue) {
-        save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
+    public func save(_ context: NSManagedObjectContext, completion: (() -> Void)?, on queue: DispatchQueue) {
+        if let completion {
+            save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
+        } else {
+            save(context, .asynchronously)
+        }
     }
 }
 

@@ -74,11 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
                             blog.menus = [NSOrderedSet orderedSetWithArray:menus];
                             
                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext
-                                                     withCompletionBlock:^{
-                                                         if (success) {
-                                                             success();
-                                                         }
-                                                     }];
+                                                     withCompletionBlock:success
+                                                                 onQueue:dispatch_get_main_queue()];
                         }];
                     }
                     failure:failure];
@@ -197,12 +194,11 @@ NS_ASSUME_NONNULL_BEGIN
                                      [items addObject:pageItem];
                                  }
                                  
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext
-                                                          withCompletionBlock:^{
-                                                              if (success) {
-                                                                  success(items);
-                                                              }
-                                                          }];
+                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                     if (success) {
+                                         success(items);
+                                     }
+                                 } onQueue:dispatch_get_main_queue()];
                              }];
                          }
                          failure:failure];
@@ -266,11 +262,8 @@ NS_ASSUME_NONNULL_BEGIN
                                 [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
                             }
                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext
-                                                     withCompletionBlock:^{
-                                                         if (success) {
-                                                             success();
-                                                         }
-                                                     }];
+                                                     withCompletionBlock:success
+                                                                 onQueue:dispatch_get_main_queue()];
                         }];
                     }
                     failure:failure];
