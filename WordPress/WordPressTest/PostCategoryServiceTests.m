@@ -47,7 +47,7 @@
     blog.dotComID = @1;
     self.blog = blog;
 
-    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithManagedObjectContext:self.manager.mainContext];
+    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithCoreDataStack:self.manager];
     
     TaxonomyServiceRemoteREST *remoteService = OCMStrictClassMock([TaxonomyServiceRemoteREST class]);
     service.remoteForStubbing = remoteService;

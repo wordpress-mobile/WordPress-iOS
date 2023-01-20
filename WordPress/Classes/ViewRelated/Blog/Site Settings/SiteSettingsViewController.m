@@ -498,8 +498,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)configureDefaultCategoryCell
 {
-    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
+    PostCategory *postCategory = [PostCategory lookupWithBlogObjectID:self.blog.objectID
+                                                           categoryID:self.blog.settings.defaultCategoryID
+                                                            inContext:[[ContextManager sharedInstance] mainContext]];
     [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
 }
 
@@ -823,9 +824,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)showDefaultCategorySelector
 {
-    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
-    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
+    PostCategory *postCategory = [PostCategory lookupWithBlogObjectID:self.blog.objectID
+                                                           categoryID:defaultCategoryID
+                                                            inContext:[[ContextManager sharedInstance] mainContext]];
     NSArray *currentSelection = @[];
     if (postCategory){
         currentSelection = @[postCategory];

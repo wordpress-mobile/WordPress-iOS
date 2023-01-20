@@ -106,10 +106,7 @@ import Foundation
     }
 
     private func syncCategories() {
-        guard let context = blog.managedObjectContext else {
-            return
-        }
-        let service  = PostCategoryService(managedObjectContext: context)
+        let service = PostCategoryService(coreDataStack: ContextManager.shared)
         service.syncCategories(for: blog, success: { [weak self] in
             self?.reloadCategories()
             self?.refreshControl?.endRefreshing()
