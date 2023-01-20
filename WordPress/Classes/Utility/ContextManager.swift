@@ -65,11 +65,6 @@ public class ContextManager: NSObject, CoreDataStack {
         }
     }
 
-    @objc(performAndSaveUsingBlock:completion:)
-    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void) {
-        performAndSave(block, completion: completion, on: .main)
-    }
-
     @objc(performAndSaveUsingBlock:completion:onQueue:)
     public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void, on queue: DispatchQueue) {
         let context = newDerivedContext()
