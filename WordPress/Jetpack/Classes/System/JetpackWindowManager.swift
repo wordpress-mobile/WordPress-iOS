@@ -139,11 +139,15 @@ private extension JetpackWindowManager {
             !hasFailedExportAttempts,
             let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
         else {
-            showSignInUI()
+            if rootViewController == nil {
+                showSignInUI()
+            }
             return
         }
 
         /// WordPress is a compatible version for migrations, but needs to be loaded to prepare the data
-        showLoadWordPressUI(schemeUrl: schemeUrl)
+        if rootViewController == nil {
+            showLoadWordPressUI(schemeUrl: schemeUrl)
+        }
     }
 }
