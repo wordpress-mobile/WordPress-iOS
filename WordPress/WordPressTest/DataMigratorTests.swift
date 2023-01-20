@@ -133,6 +133,7 @@ private final class CoreDataStackMock: CoreDataStack {
     func saveContextAndWait(_ context: NSManagedObjectContext) {}
     func save(_ context: NSManagedObjectContext) {}
     func save(_ context: NSManagedObjectContext, withCompletionBlock completionBlock: @escaping () -> Void) {}
+    func save(_ context: NSManagedObjectContext, withCompletionBlock completionBlock: @escaping () -> Void, on queue: DispatchQueue) {}
 }
 
 // MARK: - KeychainUtilsMock

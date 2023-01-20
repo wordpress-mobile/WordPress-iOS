@@ -61,33 +61,43 @@ public class ContextManager: NSObject, CoreDataStack {
         context.performAndWait {
             block(context)
 
-            self.save(context, andWait: true, withCompletionBlock: nil)
+            self.save(context, .synchronously)
         }
     }
 
     @objc(performAndSaveUsingBlock:completion:)
     public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void) {
+        performAndSave(block, completion: completion, on: .main)
+    }
+
+    @objc(performAndSaveUsingBlock:completion:onQueue:)
+    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void, on queue: DispatchQueue) {
         let context = newDerivedContext()
         context.perform {
             block(context)
 
-            self.save(context, andWait: false, withCompletionBlock: completion)
+            self.save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
         }
     }
 
     @objc
     public func saveContextAndWait(_ context: NSManagedObjectContext) {
-        save(context, andWait: true, withCompletionBlock: nil)
+        save(context, .synchronously)
     }
 
     @objc(saveContext:)
     public func save(_ context: NSManagedObjectContext) {
-        save(context, andWait: false, withCompletionBlock: nil)
+        save(context, .asynchronously)
     }
 
     @objc(saveContext:withCompletionBlock:)
     public func save(_ context: NSManagedObjectContext, withCompletionBlock completion: @escaping () -> Void) {
-        save(context, andWait: false, withCompletionBlock: completion)
+        save(context, withCompletionBlock: completion, on: .main)
+    }
+
+    @objc(saveContext:withCompletionBlock:onQueue:)
+    public func save(_ context: NSManagedObjectContext, withCompletionBlock completion: @escaping () -> Void, on queue: DispatchQueue) {
+        save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
     }
 }
 
@@ -102,11 +112,16 @@ private extension ContextManager {
         return url.appendingPathComponent("WordPress.sqlite")
     }
 
-    func save(_ context: NSManagedObjectContext, andWait wait: Bool, withCompletionBlock completionBlock: (() -> Void)?) {
+    func save(_ context: NSManagedObjectContext, _ option: SaveContextOption) {
         let block: () -> Void = {
             self.internalSave(context)
-            DispatchQueue.main.async {
-                completionBlock?()
+
+            switch option {
+            case let .asynchronouslyWithCallback(completion, queue):
+                queue.async(execute: completion)
+            case .synchronously, .asynchronously:
+                // Do nothing
+                break
             }
         }
 
@@ -116,9 +131,10 @@ private extension ContextManager {
             return
         }
 
-        if wait {
+        switch option {
+        case .synchronously:
             context.performAndWait(block)
-        } else {
+        case .asynchronously, .asynchronouslyWithCallback:
             context.perform(block)
         }
     }
@@ -234,4 +250,10 @@ extension ContextManager {
     static var shared: CoreDataStack {
         return sharedInstance()
     }
+}
+
+private enum SaveContextOption {
+    case synchronously
+    case asynchronously
+    case asynchronouslyWithCallback(completion: () -> Void, queue: DispatchQueue)
 }
