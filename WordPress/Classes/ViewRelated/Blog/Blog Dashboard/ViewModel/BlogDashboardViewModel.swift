@@ -86,19 +86,19 @@ class BlogDashboardViewModel {
     }
 
     /// Call the API to return cards for the current blog
-    func loadCards(completion: (() -> Void)? = nil) {
+    func loadCards(completion: (([DashboardCardModel]) -> Void)? = nil) {
         viewController?.showLoading()
 
         service.fetch(blog: blog, completion: { [weak self] cards in
             self?.viewController?.stopLoading()
             self?.updateCurrentCards(cards: cards)
-            completion?()
+            completion?(cards)
         }, failure: { [weak self] cards in
             self?.viewController?.stopLoading()
             self?.loadingFailure()
             self?.updateCurrentCards(cards: cards)
 
-            completion?()
+            completion?(cards)
         })
     }
 

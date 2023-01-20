@@ -11,7 +11,7 @@ class BloggingPromptTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var answersToStateSeparatorDot: UILabel!
     @IBOutlet private weak var answeredStateLabel: UILabel!
 
-    private var prompt: BloggingPrompt?
+    private(set) var prompt: BloggingPrompt?
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

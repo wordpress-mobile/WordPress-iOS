@@ -25,10 +25,10 @@ struct DomainsService {
     let remote: DomainsServiceRemote
     let productsRemote: ProductServiceRemote
 
-    fileprivate let context: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
-    init(managedObjectContext context: NSManagedObjectContext, remote: DomainsServiceRemote) {
-        self.context = context
+    init(coreDataStack: CoreDataStack, remote: DomainsServiceRemote) {
+        self.coreDataStack = coreDataStack
         self.remote = remote
         self.productsRemote = ProductServiceRemote(restAPI: remote.wordPressComRestApi)
     }
@@ -42,8 +42,11 @@ struct DomainsService {
     ///
     func refreshDomains(siteID: Int, completion: ((Result<Void, Error>) -> Void)? = nil) {
         remote.getDomainsForSite(siteID, success: { domains in
-            self.mergeDomains(domains, forSite: siteID)
-            completion?(.success(()))
+            self.coreDataStack.performAndSave({ context in
+                self.mergeDomains(domains, forSite: siteID, in: context)
+            }, completion: {
+                completion?(.success(()))
+            })
         }, failure: { error in
             completion?(.failure(error))
         })
@@ -117,7 +120,7 @@ struct DomainsService {
 
     // If any of the suggestions matches the base exactly,
     // then sort that suggestion up to the top of the list.
-    fileprivate func sortedSuggestions(_ suggestions: [RemoteDomainSuggestion], query: String) -> [RemoteDomainSuggestion] {
+    private func sortedSuggestions(_ suggestions: [RemoteDomainSuggestion], query: String) -> [RemoteDomainSuggestion] {
         let normalizedQuery = query.lowercased().replacingMatches(of: " ", with: "")
 
         var filteredSuggestions = suggestions
@@ -129,15 +132,15 @@ struct DomainsService {
         return filteredSuggestions
     }
 
-    fileprivate func mergeDomains(_ domains: [Domain], forSite siteID: Int) {
+    private func mergeDomains(_ domains: [Domain], forSite siteID: Int, in context: NSManagedObjectContext) {
         let remoteDomains = domains
-        let localDomains = domainsForSite(siteID)
+        let localDomains = domainsForSite(siteID, in: context)
 
         let remoteDomainNames = Set(remoteDomains.map({ $0.domainName }))
         let localDomainNames = Set(localDomains.map({ $0.domainName }))
 
         let removedDomainNames = localDomainNames.subtracting(remoteDomainNames)
-        removeDomains(removedDomainNames, fromSite: siteID)
+        removeDomains(removedDomainNames, fromSite: siteID, in: context)
 
         // Let's try to only update objects that have changed
         let remoteChanges = remoteDomains.filter {
@@ -145,19 +148,17 @@ struct DomainsService {
         }
 
         for remoteDomain in remoteChanges {
-            if let existingDomain = managedDomainWithName(remoteDomain.domainName, forSite: siteID),
-                let blog = blogForSiteID(siteID) {
+            if let existingDomain = managedDomainWithName(remoteDomain.domainName, forSite: siteID, in: context),
+               let blog = blogForSiteID(siteID, in: context) {
                 existingDomain.updateWith(remoteDomain, blog: blog)
                 DDLogDebug("Updated domain \(existingDomain)")
             } else {
-                create(remoteDomain, forSite: siteID)
+                create(remoteDomain, forSite: siteID, in: context)
             }
         }
-
-        ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
-    fileprivate func blogForSiteID(_ siteID: Int) -> Blog? {
+    private func blogForSiteID(_ siteID: Int, in context: NSManagedObjectContext) -> Blog? {
         guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
             let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
@@ -168,8 +169,8 @@ struct DomainsService {
         return blog
     }
 
-    fileprivate func managedDomainWithName(_ domainName: String, forSite siteID: Int) -> ManagedDomain? {
-        guard let blog = blogForSiteID(siteID) else { return nil }
+    private func managedDomainWithName(_ domainName: String, forSite siteID: Int, in context: NSManagedObjectContext) -> ManagedDomain? {
+        guard let blog = blogForSiteID(siteID, in: context) else { return nil }
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K = %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainName)
@@ -179,17 +180,21 @@ struct DomainsService {
     }
 
     func create(_ domain: Domain, forSite siteID: Int) {
-        guard let blog = blogForSiteID(siteID) else { return }
+        coreDataStack.performAndSave { context in
+            self.create(domain, forSite: siteID, in: context)
+        }
+    }
+
+    private func create(_ domain: Domain, forSite siteID: Int, in context: NSManagedObjectContext) {
+        guard let blog = blogForSiteID(siteID, in: context) else { return }
 
         let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
         DDLogDebug("Created domain \(managedDomain)")
-
-        ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
-    fileprivate func domainsForSite(_ siteID: Int) -> [Domain] {
-        guard let blog = blogForSiteID(siteID) else { return [] }
+    private func domainsForSite(_ siteID: Int, in context: NSManagedObjectContext) -> [Domain] {
+        guard let blog = blogForSiteID(siteID, in: context) else { return [] }
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
@@ -205,8 +210,8 @@ struct DomainsService {
         return domains.map { Domain(managedDomain: $0) }
     }
 
-    fileprivate func removeDomains(_ domainNames: Set<String>, fromSite siteID: Int) {
-        guard let blog = blogForSiteID(siteID) else { return }
+    private func removeDomains(_ domainNames: Set<String>, fromSite siteID: Int, in context: NSManagedObjectContext) {
+        guard let blog = blogForSiteID(siteID, in: context) else { return }
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
@@ -219,7 +224,7 @@ struct DomainsService {
 }
 
 extension DomainsService {
-    init(managedObjectContext context: NSManagedObjectContext, account: WPAccount) {
-        self.init(managedObjectContext: context, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
+    init(coreDataStack: CoreDataStack, account: WPAccount) {
+        self.init(coreDataStack: coreDataStack, remote: DomainsServiceRemote(wordPressComRestApi: account.wordPressComRestApi))
     }
 }

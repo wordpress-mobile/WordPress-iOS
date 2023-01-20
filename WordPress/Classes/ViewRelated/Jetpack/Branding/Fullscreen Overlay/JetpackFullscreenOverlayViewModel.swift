@@ -17,6 +17,14 @@ protocol JetpackFullscreenOverlayViewModel {
     var onWillDismiss: JetpackOverlayDismissCallback? { get }
     var onDidDismiss: JetpackOverlayDismissCallback? { get }
 
+    /// An optional view.
+    /// If provided, the view will be added to the overlay before the learn more button
+    var secondaryView: UIView? { get }
+
+    /// If `true`, the overlay uses tighter spacings between subviews.
+    /// Useful for packed overlays.
+    var isCompact: Bool { get }
+
     func trackOverlayDisplayed()
     func trackLearnMoreTapped()
     func trackSwitchButtonTapped()

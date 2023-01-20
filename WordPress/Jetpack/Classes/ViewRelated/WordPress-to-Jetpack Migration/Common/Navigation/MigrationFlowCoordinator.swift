@@ -3,16 +3,61 @@ import UserNotifications
 
 /// Coordinator for the migration to jetpack flow
 final class MigrationFlowCoordinator: ObservableObject {
-    // beware that changes won't be published on the main thread,
+
+    // MARK: - Dependencies
+
+    private let migrationEmailService: MigrationEmailService?
+    private let userPersistentRepository: UserPersistentRepository
+
+    // MARK: - Properties
+
+    // Beware that changes won't be published on the main thread,
     // so always make sure to return to the main thread for UI updates
     // related to this property.
     @Published private(set) var currentStep = MigrationStep.welcome
 
+    // MARK: - Init
+
+    init(migrationEmailService: MigrationEmailService? = try? .init(),
+         userPersistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+        self.migrationEmailService = migrationEmailService
+        self.userPersistentRepository = userPersistentRepository
+        self.userPersistentRepository.jetpackContentMigrationState = .inProgress
+    }
+
+    deinit {
+        if userPersistentRepository.jetpackContentMigrationState != .completed {
+            self.userPersistentRepository.jetpackContentMigrationState = .notStarted
+        }
+    }
+
+    // MARK: - Transitioning Steps
+
     func transitionToNextStep() {
         Task { [weak self] in
-            if let nextStep = await Self.nextStep(from: currentStep) {
-                self?.currentStep = nextStep
+            guard let self = self, let nextStep = await Self.nextStep(from: currentStep) else {
+                return
             }
+            self.currentStep = nextStep
+            self.didTransitionToStep(nextStep)
+        }
+    }
+
+    private func didTransitionToStep(_ step: MigrationStep) {
+        switch step {
+        case .done:
+            self.userPersistentRepository.jetpackContentMigrationState = .completed
+            self.sendMigrationEmail()
+        default:
+            break
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func sendMigrationEmail() {
+        Task { [weak self] in
+            try? await self?.migrationEmailService?.sendMigrationEmail()
         }
     }
 

@@ -135,6 +135,11 @@ import Foundation
         let siteTimeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
         return Date().convert(from: siteTimeZone)
     }
+
+    class func yesterdayDateForSite() -> Date {
+        let components = DateComponents(day: -1)
+        return StatsDataHelper.calendar.date(byAdding: components, to: currentDateForSite()) ?? currentDateForSite()
+    }
 }
 
 fileprivate extension Date {

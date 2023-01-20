@@ -22,7 +22,8 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     private var insightsInactive: [StatSection] {
-        InsightsManagementViewController.allInsights.filter({ !self.insightsShown.contains($0) })
+        StatSection.allInsights
+            .filter({ !self.insightsShown.contains($0) && !InsightsManagementViewController.insightsNotSupportedForManagement.contains($0) })
     }
 
     private var hasChanges: Bool {
@@ -55,8 +56,9 @@ class InsightsManagementViewController: UITableViewController {
         self.init(style: FeatureFlag.statsNewAppearance.enabled ? .insetGrouped : .grouped)
         self.insightsDelegate = insightsDelegate
         self.insightsManagementDelegate = insightsManagementDelegate
-        self.insightsShown = insightsShown
-        self.originalInsightsShown = insightsShown
+        let insightsShownSupportedForManagement = insightsShown.filter { !InsightsManagementViewController.insightsNotSupportedForManagement.contains($0) }
+        self.insightsShown = insightsShownSupportedForManagement
+        self.originalInsightsShown = insightsShownSupportedForManagement
     }
 
     // MARK: - View
@@ -388,20 +390,13 @@ private extension InsightsManagementViewController {
                                  action: nil)
     }
 
-    private static let allInsights: [StatSection] = [
-        .insightsViewsVisitors,
-        .insightsLikesTotals,
-        .insightsCommentsTotals,
-        .insightsFollowerTotals,
-        .insightsMostPopularTime,
-        .insightsLatestPostSummary,
-        .insightsAllTime,
-        .insightsAnnualSiteStats,
-        .insightsTodaysStats,
-        .insightsPostingActivity,
-        .insightsTagsAndCategories,
-        .insightsFollowersEmail,
-        .insightsPublicize
+    /// Insight StatSections who share the same insightType are represented by a single card
+    /// Only display a single one of them for Insight Management
+    /// insightsCommentsPosts and insightsCommentsAuthors have the same insightType
+    /// insightsFollowersEmail and insightsFollowersWordpress have the same insightType
+    private static let insightsNotSupportedForManagement: [StatSection] = [
+        .insightsFollowersWordPress,
+        .insightsCommentsAuthors
     ]
 
     // MARK: - Insights Categories

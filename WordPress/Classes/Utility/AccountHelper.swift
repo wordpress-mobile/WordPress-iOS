@@ -80,6 +80,10 @@ import Foundation
 
         service.removeDefaultWordPressComAccount()
 
+        deleteAccountData()
+    }
+
+    @objc static func deleteAccountData() {
         // Delete saved dashboard states
         BlogDashboardState.resetAllStates()
 
@@ -97,5 +101,8 @@ import Foundation
 
         // Refresh Remote Feature Flags
         WordPressAppDelegate.shared?.updateFeatureFlags()
+
+        // Delete all the logs after logging out
+        WPLogger.shared().deleteAllLogs()
     }
 }

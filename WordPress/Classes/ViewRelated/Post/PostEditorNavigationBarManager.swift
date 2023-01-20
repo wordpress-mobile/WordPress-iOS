@@ -30,6 +30,7 @@ class PostEditorNavigationBarManager {
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
         cancelButton.accessibilityIdentifier = "editor-close-button"
+        cancelButton.tintColor = .editorPrimary
         return cancelButton
     }()
 
@@ -71,6 +72,7 @@ class PostEditorNavigationBarManager {
         button.sizeToFit()
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
         button.setContentHuggingPriority(.required, for: .horizontal)
+        button.tintColor = .editorPrimary
         return button
     }()
 

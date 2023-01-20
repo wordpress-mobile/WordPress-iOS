@@ -13,6 +13,10 @@ extension Post {
         } else {
             tags = Strings.promptTag
         }
+
+        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+            tags?.append(", \(Strings.promptTag)-\(prompt.promptID)")
+        }
     }
 
     private struct Strings {
