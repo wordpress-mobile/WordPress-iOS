@@ -42,7 +42,7 @@ import Foundation
     static var defaultSiteId: NSNumber? {
         let context = ContextManager.sharedInstance().mainContext
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-        return account?.defaultBlog.dotComID
+        return account?.defaultBlog?.dotComID
     }
 
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
