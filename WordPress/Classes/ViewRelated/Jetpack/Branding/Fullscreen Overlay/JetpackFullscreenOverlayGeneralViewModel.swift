@@ -104,11 +104,11 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         switch (phase, source) {
         // Phase One
         case (.one, .stats):
-            return .init(string: Strings.PhaseOne.Stats.subtitle)
+            return attributedSubtitle(with: Strings.PhaseOne.Stats.subtitle)
         case (.one, .notifications):
-            return .init(string: Strings.PhaseOne.Notifications.subtitle)
+            return attributedSubtitle(with: Strings.PhaseOne.Notifications.subtitle)
         case (.one, .reader):
-            return .init(string: Strings.PhaseOne.Reader.subtitle)
+            return attributedSubtitle(with: Strings.PhaseOne.Reader.subtitle)
 
         // Phase Two
         case (.two, _):
@@ -120,18 +120,18 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
 
         // Phase Four
         case (.four, _):
-            return .init(string: Strings.PhaseFour.subtitle)
+            return attributedSubtitle(with: Strings.PhaseFour.subtitle)
 
         // New Users
         case (.newUsers, _):
-            return .init(string: Strings.NewUsers.subtitle)
+            return attributedSubtitle(with: Strings.NewUsers.subtitle)
 
         // Self-Hosted
         case (.selfHosted, _):
-            return .init(string: Strings.SelfHosted.subtitle)
+            return attributedSubtitle(with: Strings.SelfHosted.subtitle)
 
         default:
-            return .init(string: "")
+            return attributedSubtitle(with: "")
         }
     }
 
@@ -287,9 +287,14 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
         return formatter
     }()
 
+    func attributedSubtitle(with string: String) -> NSAttributedString {
+        let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        return NSAttributedString(string: string, attributes: [.font: font])
+    }
+
     func phaseTwoAndThreeSubtitle() -> NSAttributedString {
         guard let deadline = JetpackFeaturesRemovalCoordinator.removalDeadline() else {
-            return NSAttributedString(string: Strings.PhaseTwoAndThree.fallbackSubtitle)
+            return attributedSubtitle(with: Strings.PhaseTwoAndThree.fallbackSubtitle)
         }
 
         let formattedDate = Self.dateFormatter.string(from: deadline)
