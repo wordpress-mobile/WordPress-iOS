@@ -1116,7 +1116,7 @@ import Foundation
         case .promptsNotificationDismissed:
             return "blogging_reminders_notification_prompt_dismissed"
         case .promptsOtherAnswersTapped:
-            return "blogging_prompts_other_answers_tapped"
+            return "blogging_prompts_my_site_card_view_answers_tapped"
 
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:

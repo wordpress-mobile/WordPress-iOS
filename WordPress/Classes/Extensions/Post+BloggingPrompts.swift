@@ -5,7 +5,7 @@ extension Post {
             return
         }
 
-        content = prompt.content
+        content = promptContentWithEmptyParagraph(promptText: prompt.text)
         bloggingPromptID = String(prompt.promptID)
 
         if let currentTags = tags {
@@ -19,8 +19,24 @@ extension Post {
         }
     }
 
-    private struct Strings {
-        static let promptTag = "dailyprompt"
+    private func promptContentWithEmptyParagraph(promptText: String) -> String {
+        pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
     }
 
+    private func pullquoteBlock(promptText: String) -> String {
+        return """
+            <!-- wp:pullquote -->
+            <figure class="wp-block-pullquote"><blockquote><p>\(promptText)</p></blockquote></figure>
+            <!-- /wp:pullquote -->
+            """
+    }
+
+    private enum Strings {
+        static let promptTag = "dailyprompt"
+        static let emptyParagraphBlock = """
+        <!-- wp:paragraph -->
+        <p></p>
+        <!-- /wp:paragraph -->
+        """
+    }
 }
