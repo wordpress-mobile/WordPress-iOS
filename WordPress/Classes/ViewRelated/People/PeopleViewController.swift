@@ -77,18 +77,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    /// Core Data Context
-    ///
-    /// This particular section of the app is interesting because it's completely ephemeral – none of the data the user sees is persisted at any point. For this reason, we create a special context that
-    /// only lives as long as the `PeopleViewController` does. In the future, this could be adjusted to use its own entire Core Data Stack with NSInMemoryStoreType or some other
-    /// mechanism to deal with this (or could be adapted to persist its data but disable interactivity until on a User / Follower until we've validated that our local data is still correct).
-    /// Either way, for now this approach is preserved for this unique case while not requiring the Core Data Stack to be aware of it.
-    /// - @jkmassel, Feb 11 2021
-    private lazy var viewContext: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = ContextManager.sharedInstance().mainContext
-        return context
-    }()
+    private var viewContext: NSManagedObjectContext {
+        ContextManager.sharedInstance().mainContext
+    }
 
     /// Core Data FRC
     ///
@@ -388,7 +379,7 @@ private extension PeopleViewController {
     func resetManagedPeople() {
         isInitialLoad = true
 
-        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -410,7 +401,7 @@ private extension PeopleViewController {
     }
 
     func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
-        guard let blog = blog, let service = PeopleService(blog: blog, context: viewContext) else {
+        guard let blog = blog, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -428,7 +419,7 @@ private extension PeopleViewController {
 
     func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blogInContext,
-            let peopleService = PeopleService(blog: blog, context: viewContext),
+            let peopleService = PeopleService(blog: blog, coreDataStack: ContextManager.shared),
             let roleService = RoleService(blog: blog, context: viewContext) else {
                 return
         }
