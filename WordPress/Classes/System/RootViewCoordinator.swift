@@ -15,7 +15,8 @@ class RootViewCoordinator {
 
     // MARK: Static shared variables
 
-    static let shared = RootViewCoordinator()
+    static let shared = RootViewCoordinator(featureFlagStore: RemoteFeatureFlagStore(),
+                                            windowManager: WordPressAppDelegate.shared?.windowManager)
     static var sharedPresenter: RootViewPresenter {
         shared.rootViewPresenter
     }
@@ -33,12 +34,17 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
-    private var currentAppUIType: AppUIType
+    private(set) var currentAppUIType: AppUIType
+    private var featureFlagStore: RemoteFeatureFlagStore
+    private var windowManager: WindowManager?
 
     // MARK: Initializer
 
-    init() {
-        if Self.shouldEnableJetpackFeatures() {
+    init(featureFlagStore: RemoteFeatureFlagStore,
+         windowManager: WindowManager?) {
+        self.featureFlagStore = featureFlagStore
+        self.windowManager = windowManager
+        if Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) {
             self.currentAppUIType = .normal
             self.rootViewPresenter = WPTabBarController()
         }
@@ -59,8 +65,8 @@ class RootViewCoordinator {
         return currentAppUIType == .normal
     }
 
-    private static func shouldEnableJetpackFeatures() -> Bool {
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase()
+    private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
         case .four, .newUsers, .selfHosted:
             return false
@@ -73,10 +79,11 @@ class RootViewCoordinator {
 
     /// Reload the UI if needed after the app has already been launched.
     /// - Returns: Boolean value describing whether the UI was reloaded or not.
+    @discardableResult
     func reloadUIIfNeeded(blog: Blog?) -> Bool {
-        let newUIType: AppUIType = Self.shouldEnableJetpackFeatures() ? .normal : .simplified
+        let newUIType: AppUIType = Self.shouldEnableJetpackFeatures(featureFlagStore: featureFlagStore) ? .normal : .simplified
         let oldUIType = currentAppUIType
-        guard newUIType != oldUIType, let windowManager = WordPressAppDelegate.shared?.windowManager else {
+        guard newUIType != oldUIType, let windowManager else {
             return false
         }
         currentAppUIType = newUIType
