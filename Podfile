@@ -31,34 +31,34 @@ def aztec
   ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
   ## When using a commit number (during development) you should provide the same commit number for both pods.
   ##
-  # pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-  # pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => ''
-  # pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => ''
-  # pod 'WordPress-Editor-iOS', :path => '../AztecEditor-iOS'
+  # pod 'WordPress-Aztec-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
+  # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
+  # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', tag: ''
+  # pod 'WordPress-Editor-iOS', path: '../AztecEditor-iOS'
   pod 'WordPress-Editor-iOS', '~> 1.19.8'
 end
 
 def wordpress_ui
   pod 'WordPressUI', '~> 1.12.5'
-  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :tag => ''
-  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :branch => ''
-  # pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS', :commit => ''
-  # pod 'WordPressUI', :path => '../WordPressUI-iOS'
+  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
+  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
+  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
+  # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
 def wordpress_kit
   pod 'WordPressKit', '~> 5.0'
-  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :tag => ''
-  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
-  # pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => ''
-  # pod 'WordPressKit', :path => '../WordPressKit-iOS'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', path: '../WordPressKit-iOS'
 end
 
 def kanvas
   pod 'Kanvas', '~> 1.4.4'
-  # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :tag => ''
-  # pod 'Kanvas', :git => 'https://github.com/tumblr/Kanvas-iOS.git', :commit => ''
-  # pod 'Kanvas', :path => '../Kanvas-iOS'
+  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
+  # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', commit: ''
+  # pod 'Kanvas', path: '../Kanvas-iOS'
 end
 
 def shared_with_all_pods
@@ -219,28 +219,27 @@ abstract_target 'Apps' do
 
   pod 'Automattic-Tracks-iOS', '~> 0.13'
   # While in PR
-  # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => ''
+  # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
-  # pod 'Automattic-Tracks-iOS', :path => '~/Projects/Automattic-Tracks-iOS'
+  # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
 
   pod 'WPMediaPicker', '~> 1.8.7'
-  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :tag => '1.7.0'
   ## while PR is in review:
-  # pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => ''
-  # pod 'WPMediaPicker', :path => '../MediaPicker-iOS'
+  # pod 'WPMediaPicker', git: 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', branch: ''
+  # pod 'WPMediaPicker', path: '../MediaPicker-iOS'
 
   pod 'Gridicons', '~> 1.1.0'
 
   pod 'WordPressAuthenticator', '~> 5.1.0-beta.1'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: 'trunk'
-  # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
-  # 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
+  # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
   pod 'MediaEditor', '~> 1.2.1'
-  # pod 'MediaEditor', :git => 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', :commit => 'a4178ed9b0f3622faafb41dd12503e26c5523a32'
-  # pod 'MediaEditor', :path => '../MediaEditor-iOS'
+  # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
+  # pod 'MediaEditor', path: '../MediaEditor-iOS'
 
   aztec
   wordpress_ui
