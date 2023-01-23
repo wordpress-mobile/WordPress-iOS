@@ -113,15 +113,19 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         return formatter.date(from: dateString)
     }
 
-    /// Used to determine if the Jetpack features are enabled based on the removal phase.
+    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// Default root view coordinator is used.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
-        switch generalPhase() {
-        case .four, .newUsers, .selfHosted:
-            return false
-        default:
-            return true
-        }
+        return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
+    }
+
+    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// Using two separate methods (rather than one method with a default argument) because Obj-C.
+    /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
+    static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
+        return rootViewCoordinator.currentAppUIType == .normal
     }
 
     /// Used to display feature-specific or feature-collection overlays.
