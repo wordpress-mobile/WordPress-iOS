@@ -34,7 +34,7 @@ class RootViewCoordinator {
     // MARK: Private instance variables
 
     private(set) var rootViewPresenter: RootViewPresenter
-    private var currentAppUIType: AppUIType
+    private(set) var currentAppUIType: AppUIType
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
 
@@ -58,13 +58,7 @@ class RootViewCoordinator {
 
     // MARK: JP Features State
 
-    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
-    /// Using this ensures features are not removed before reloading the UI.
-    /// - Returns: `true` if UI type if normal, and `false` if UI type is simplified.
-    func jetpackFeaturesEnabled() -> Bool {
-        return currentAppUIType == .normal
-    }
-
+    /// Used to determine if the Jetpack features are enabled based on the removal phase.
     private static func shouldEnableJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore) -> Bool {
         let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
         switch phase {
