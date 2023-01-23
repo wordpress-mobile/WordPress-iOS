@@ -305,9 +305,3 @@ private extension JetpackFullscreenOverlayViewController {
                                                   dark: .muriel(color: .jetpackGreen, .shade90))
     }
 }
-
-fileprivate extension UIColor {
-    func lightVariant() -> UIColor {
-        return self.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
-    }
-}
