@@ -114,7 +114,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     /// Used to determine if the Jetpack features are enabled based on the removal phase.
-    /// Default coordinator and feature flag store is used.
+    /// Default root view coordinator is used.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
         return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
