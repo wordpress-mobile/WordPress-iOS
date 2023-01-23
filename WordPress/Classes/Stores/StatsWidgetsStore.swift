@@ -34,22 +34,22 @@ class StatsWidgetsStore {
     }
 
     /// Initialize the local cache for widgets, if it does not exist
-    func initializeStatsWidgetsIfNeeded() {
+    @objc func initializeStatsWidgetsIfNeeded() {
         UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
 
-        if HomeWidgetTodayData.read() == nil {
+        if HomeWidgetTodayData.read() == nil || HomeWidgetTodayData.read()?.isEmpty == true {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
         }
 
-        if HomeWidgetThisWeekData.read() == nil {
+        if HomeWidgetThisWeekData.read() == nil || HomeWidgetThisWeekData.read()?.isEmpty == true {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
         }
 
-        if HomeWidgetAllTimeData.read() == nil {
+        if HomeWidgetAllTimeData.read() == nil || HomeWidgetAllTimeData.read()?.isEmpty == true {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
@@ -275,14 +275,11 @@ private extension StatsWidgetsStore {
         }
     }
 
-    /// Observes WPSigninDidFinishNotification notification and initializes the widget.
+    /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
     /// The site data is loaded after this notification and widget data can be cached.
     func observeAccountSignInForWidgets() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
-                                               object: nil,
-                                               queue: nil) { [weak self] _ in
-            self?.initializeStatsWidgetsIfNeeded()
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(initializeStatsWidgetsIfNeeded), name: NSNotification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(initializeStatsWidgetsIfNeeded), name: .wordpressLoginFinishedJetpackLogin, object: nil)
     }
 
     /// Observes applicationLaunchCompleted notification and runs migration.
@@ -314,10 +311,6 @@ private extension StatsWidgetsStore {
     }
 
     func observeSiteUpdatesForWidgets() {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteCreated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshStatsWidgetsSiteList), name: .WPSiteDeleted, object: nil)
     }
