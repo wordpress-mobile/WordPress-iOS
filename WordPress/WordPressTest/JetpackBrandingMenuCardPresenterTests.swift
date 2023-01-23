@@ -235,12 +235,15 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
     }
 
     private func setPhase(phase: JetpackFeaturesRemovalCoordinator.GeneralPhase) {
+        // Reset to normal
         remoteFeatureFlagsStore.removalPhaseOne = false
         remoteFeatureFlagsStore.removalPhaseTwo = false
         remoteFeatureFlagsStore.removalPhaseThree = false
         remoteFeatureFlagsStore.removalPhaseFour = false
         remoteFeatureFlagsStore.removalPhaseNewUsers = false
         remoteFeatureFlagsStore.removalPhaseSelfHosted = false
+
+        // Set phase
         switch phase {
         case .normal:
             break
@@ -257,6 +260,8 @@ final class JetpackBrandingMenuCardPresenterTests: CoreDataTestCase {
         case .selfHosted:
             remoteFeatureFlagsStore.removalPhaseSelfHosted = true
         }
+
+        // Reload UI
         rootViewCoordinator.reloadUIIfNeeded(blog: nil)
     }
 }

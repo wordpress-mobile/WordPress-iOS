@@ -123,7 +123,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     /// Used to determine if the Jetpack features are enabled based on the current app UI type.
     /// This way we ensure features are not removed before reloading the UI.
     /// Using two separate methods (rather than one method with a default argument) because Obj-C.
-    /// - Returns: `true` if UI type if normal, and `false` if UI type is simplified.
+    /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
     static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
         return rootViewCoordinator.currentAppUIType == .normal
     }
