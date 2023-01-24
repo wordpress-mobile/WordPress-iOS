@@ -2,6 +2,10 @@
 -----
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
 
+21.5.1
+-----
+* [*] [Jetpack-only] Fixed a bug where the Login flow was restarting every time the app enters the foreground. [#19961]
+
 21.5
 -----
 * [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]

@@ -139,11 +139,41 @@ private extension JetpackWindowManager {
             !hasFailedExportAttempts,
             let schemeUrl = URL(string: "\(AppScheme.wordpressMigrationV1.rawValue)\(WordPressExportRoute().path.removingPrefix("/"))")
         else {
-            showSignInUI()
+            performSafeRootNavigation { [weak self] in
+                self?.showSignInUI()
+            }
             return
         }
 
         /// WordPress is a compatible version for migrations, but needs to be loaded to prepare the data
-        showLoadWordPressUI(schemeUrl: schemeUrl)
+        performSafeRootNavigation { [weak self] in
+            self?.showLoadWordPressUI(schemeUrl: schemeUrl)
+        }
+    }
+
+    /// This method takes care of preventing screens being abruptly replaced.
+    ///
+    /// Since the import method is called whenever the app is foregrounded, we want to make sure that
+    /// any root view controller replacements only happen where it is "allowed":
+    ///
+    ///   1. When there's no root view controller yet, or
+    ///   2. When the Load WordPress screen is shown.
+    ///
+    /// Note: We should remove this method when the migration phase is concluded and we no longer need
+    /// to perfom the migration.
+    ///
+    /// - Parameter navigationClosure: The closure containing logic that eventually calls the `show` method.
+    func performSafeRootNavigation(with navigationClosure: @escaping () -> Void) {
+        switch rootViewController {
+        case .none:
+            // we can perform the navigation directly when there's no root view controller yet.
+            navigationClosure()
+        case .some(let viewController) where viewController is MigrationLoadWordPressViewController:
+            // allow the Load WordPress view to be replaced in case the migration process fails.
+            viewController.dismiss(animated: true, completion: navigationClosure)
+        default:
+            // do nothing when another root view controller is already displayed.
+            break
+        }
     }
 }
