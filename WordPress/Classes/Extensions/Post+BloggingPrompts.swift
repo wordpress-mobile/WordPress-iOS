@@ -5,7 +5,7 @@ extension Post {
             return
         }
 
-        content = promptContentWithEmptyParagraph(promptText: prompt.text)
+        content = promptContent(withPromptText: prompt.text)
         bloggingPromptID = String(prompt.promptID)
 
         if let currentTags = tags {
@@ -19,8 +19,12 @@ extension Post {
         }
     }
 
-    private func promptContentWithEmptyParagraph(promptText: String) -> String {
-        pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
+    private func promptContent(withPromptText promptText: String) -> String {
+        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+            return pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
+        } else {
+            return pullquoteBlock(promptText: promptText)
+        }
     }
 
     private func pullquoteBlock(promptText: String) -> String {
