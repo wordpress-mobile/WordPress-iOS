@@ -10,12 +10,12 @@ extension Tracks {
         case .siteSelected(_, let context):
             if !context.isPreview {
                 trackWidgetUpdated(widgetKind: widgetKind,
-                                          widgetCountKey: widgetCountKey)
+                                   widgetCountKey: widgetCountKey)
             }
 
-        case .loggedOut, .noData:
+        case .loggedOut, .noSite, .noData:
             trackWidgetUpdated(widgetKind: widgetKind,
-                                      widgetCountKey: widgetCountKey)
+                               widgetCountKey: widgetCountKey)
         }
     }
 
