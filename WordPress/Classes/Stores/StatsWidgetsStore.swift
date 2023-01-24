@@ -37,19 +37,19 @@ class StatsWidgetsStore {
     @objc func initializeStatsWidgetsIfNeeded() {
         UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
 
-        if HomeWidgetTodayData.read() == nil || HomeWidgetTodayData.read()?.isEmpty == true {
+        if !HomeWidgetTodayData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
             HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.todayKind)
         }
 
-        if HomeWidgetThisWeekData.read() == nil || HomeWidgetThisWeekData.read()?.isEmpty == true {
+        if !HomeWidgetThisWeekData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
             HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.thisWeekKind)
         }
 
-        if HomeWidgetAllTimeData.read() == nil || HomeWidgetAllTimeData.read()?.isEmpty == true {
+        if !HomeWidgetAllTimeData.cacheDataExists() {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
             HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
             WidgetCenter.shared.reloadTimelines(ofKind: AppConfiguration.Widget.Stats.allTimeKind)
