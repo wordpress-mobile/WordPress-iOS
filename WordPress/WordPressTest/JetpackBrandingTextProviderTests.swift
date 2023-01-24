@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class JetpackBrandingTextProviderTests: XCTestCase {
+final class JetpackBrandingTextProviderTests: CoreDataTestCase {
 
     // MARK: Private Variables
 
@@ -17,9 +17,16 @@ final class JetpackBrandingTextProviderTests: XCTestCase {
     // MARK: Setup
 
     override func setUp() {
+        contextManager.useAsSharedInstance(untilTestFinished: self)
         remoteFeatureFlagsStore = RemoteFeatureFlagStoreMock()
         currentDateProvider = MockCurrentDateProvider()
         remoteConfigStore.removalDeadline = "2022-10-10"
+        let account = AccountBuilder(contextManager).build()
+        UserSettings.defaultDotComUUID = account.uuid
+    }
+
+    override func tearDown() {
+        UserSettings.defaultDotComUUID = nil
     }
 
     // MARK: Tests

@@ -87,6 +87,7 @@ class PostSignUpInterstitialViewController: UIViewController {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "create_new_site"])
         })
 
+        RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
         dismiss?(.createSite)
 
     }
@@ -96,6 +97,7 @@ class PostSignUpInterstitialViewController: UIViewController {
             WPAnalytics.track(.welcomeNoSitesInterstitialButtonTapped, withProperties: ["button": "add_self_hosted_site"])
         })
 
+        RootViewCoordinator.sharedPresenter.willDisplayPostSignupFlow()
         dismiss?(.addSelfHosted)
     }
 

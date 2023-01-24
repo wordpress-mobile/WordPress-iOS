@@ -36,24 +36,22 @@
 
     static var allInsights: [StatSection] {
         if FeatureFlag.statsNewInsights.enabled {
-            return [StatSection.insightsViewsVisitors,
-                    .insightsLatestPostSummary,
-                    .insightsAllTime,
+            return [.insightsViewsVisitors,
                     .insightsLikesTotals,
                     .insightsCommentsTotals,
                     .insightsFollowerTotals,
                     .insightsMostPopularTime,
-                    .insightsTagsAndCategories,
+                    .insightsLatestPostSummary,
+                    .insightsAllTime,
                     .insightsAnnualSiteStats,
-                    .insightsCommentsAuthors,
-                    .insightsCommentsPosts,
-                    .insightsFollowersWordPress,
-                    .insightsFollowersEmail,
                     .insightsTodaysStats,
                     .insightsPostingActivity,
+                    .insightsTagsAndCategories,
+                    .insightsFollowersWordPress,
+                    .insightsFollowersEmail,
                     .insightsPublicize]
         } else {
-            return [StatSection.insightsLatestPostSummary,
+            return [.insightsLatestPostSummary,
                     .insightsAllTime,
                     .insightsFollowerTotals,
                     .insightsMostPopularTime,

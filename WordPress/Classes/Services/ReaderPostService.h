@@ -9,9 +9,6 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
 @interface ReaderPostService : LocalCoreDataService
 
-@property (copy, nonatomic) NSString *nextPageHandle;
-@property (nonatomic) NSInteger pageNumber;
-
 /**
  Fetches the posts for the specified topic
 

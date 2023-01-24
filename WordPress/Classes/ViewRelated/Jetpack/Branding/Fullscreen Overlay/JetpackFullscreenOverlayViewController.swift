@@ -50,6 +50,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var footnoteLabel: UILabel!
     @IBOutlet weak var learnMoreButton: UIButton!
+    @IBOutlet weak var learnMoreSuperView: UIView!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
@@ -71,6 +72,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         super.viewDidLoad()
 
         self.isModalInPresentation = true
+        addSecondaryViewIfAvailable()
         configureNavigationBar()
         applyStyles()
         setupConstraints()
@@ -83,6 +85,14 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     // MARK: Helpers
+
+    private func addSecondaryViewIfAvailable() {
+        guard let secondaryView = viewModel.secondaryView,
+              let index = contentStackView.arrangedSubviews.firstIndex(of: learnMoreSuperView) else {
+            return
+        }
+        contentStackView.insertArrangedSubview(secondaryView, at: index)
+    }
 
     private func configureNavigationBar() {
         addCloseButtonIfNeeded()
@@ -107,6 +117,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     private func applyStyles() {
+        contentStackView.spacing = viewModel.isCompact ? Metrics.compactStackViewSpacing : Metrics.normalStackViewSpacing
         switchButton.layer.cornerRadius = Metrics.switchButtonCornerRadius
     }
 
@@ -258,6 +269,8 @@ private extension JetpackFullscreenOverlayViewController {
     }
 
     enum Metrics {
+        static let normalStackViewSpacing: CGFloat = 20
+        static let compactStackViewSpacing: CGFloat = 10
         static let closeButtonRadius: CGFloat = 30
         static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
         static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)

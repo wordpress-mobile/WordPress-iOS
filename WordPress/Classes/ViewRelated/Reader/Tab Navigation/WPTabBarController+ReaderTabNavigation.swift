@@ -66,6 +66,11 @@ extension WPTabBarController {
         navigateToReader(searchController)
     }
 
+    func navigateToReaderSearch(withSearchText searchText: String) {
+        let searchController = ReaderSearchViewController.controller(withSearchText: searchText)
+        navigateToReader(searchController)
+    }
+
     func navigateToReaderSite(_ topic: ReaderSiteTopic) {
         let contentController = ReaderStreamViewController.controllerWithTopic(topic)
         navigateToReader(contentController)

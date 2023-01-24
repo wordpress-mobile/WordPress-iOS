@@ -1720,6 +1720,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
         [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
     }
+    
+    // Delete local data after removing the last site
+    if (!AccountHelper.isLoggedIn) {
+        [AccountHelper deleteAccountData];
+    }
 
     [self.navigationController popToRootViewControllerAnimated:YES];
 }

@@ -16,6 +16,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
     private var insightsToShow: [InsightType] {
         get {
             SiteStatsInformation.sharedInstance.getCurrentSiteInsights()
+                .filter(StatSection.allInsights.compactMap(\.insightType).contains)
         }
 
         set {

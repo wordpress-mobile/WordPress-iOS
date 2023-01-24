@@ -92,9 +92,10 @@ class StatsPeriodHelper {
         }
     }
 
-    func calculateEndDate(from currentDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
-        let calendar = Calendar.autoupdatingCurrent
-
+    func calculateEndDate(from currentDate: Date,
+                          offsetBy count: Int = 1,
+                          unit: StatsPeriodUnit,
+                          calendar: Calendar = Calendar.autoupdatingCurrent) -> Date? {
         guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: currentDate) else {
             DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
             return currentDate
@@ -105,21 +106,28 @@ class StatsPeriodHelper {
             return adjustedDate.normalizedDate()
 
         case .week:
+            if FeatureFlag.statsNewInsights.enabled {
+                guard let endDate = currentDate.lastDayOfTheWeek(in: calendar, with: count) else {
+                    DDLogError("[Stats] Couldn't determine the last day of the week for a given date in Stats. Returning original value.")
+                    return currentDate
+                }
 
-            // The hours component here is because the `dateInterval` returned by Calendar is a closed range
-            // — so the "end" of a specific week is also simultenously a 'start' of the next one.
-            // This causes problem when calling this math on dates that _already are_ an end/start of a week.
-            // This doesn't work for our calculations, so we force it to rollover using this hack.
-            // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
-            // I spend like 10h on this ~50 LoC method. Beware.)
-            let components = DateComponents(day: 7 * count, hour: -12)
+                return endDate.normalizedDate()
+            } else {
+                // The hours component here is because the `dateInterval` returned by Calendar is a closed range
+                // — so the "end" of a specific week is also simultenously a 'start' of the next one.
+                // This causes problem when calling this math on dates that _already are_ an end/start of a week.
+                // This doesn't work for our calculations, so we force it to rollover using this hack.
+                // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
+                // I spend like 10h on this ~50 LoC method. Beware.)
+                let components = DateComponents(day: 7 * count, hour: -12)
 
-            guard let weekAdjusted = calendar.date(byAdding: components, to: currentDate.normalizedDate()) else {
-                DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
-                return currentDate
+                guard let weekAdjusted = calendar.date(byAdding: components, to: currentDate.normalizedDate()) else {
+                    DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
+                    return currentDate
+                }
+                return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end.normalizedDate()
             }
-            return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end.normalizedDate()
-
         case .month:
             guard let endDate = adjustedDate.lastDayOfTheMonth(in: calendar) else {
                 DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
@@ -169,17 +177,11 @@ private extension Date {
     }
 
     func lastDayOfTheWeek(in calendar: Calendar, with offset: Int) -> Date? {
-        // The hours component here is because the `dateInterval` returnd by Calendar is a closed range
-        // — so the "end" of a specific week is also simultenously a 'start' of the next one.
-        // This causes problem when calling this math on dates that _already are_ an end/start of a week.
-        // This doesn't work for our calculations, so we force it to rollover using this hack.
-        // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
-        // I spend like 10h on this ~50 LoC method. Beware.)
-        let components = DateComponents(day: 7 * offset, hour: -12)
+        let components = DateComponents(day: 7 * offset)
 
         guard let weekAdjusted = calendar.date(byAdding: components, to: normalizedDate()),
-        let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end else {
-            DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
+              let endOfAdjustedWeek = StatsPeriodHelper().weekIncludingDate(weekAdjusted)?.weekEnd else {
+            DDLogError("[Stats] Couldn't add a multiple of 7 days to a date in Stats. Returning original value.")
             return nil
         }
         return endOfAdjustedWeek

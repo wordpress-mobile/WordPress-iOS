@@ -32,16 +32,15 @@
                 finishedSync:(void(^)(Blog *))finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
     NSString *url = [options stringForKeyPath:@"home_url.value"];
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc andUsername:username];
+    Blog *blog = [Blog lookupWithUsername:username xmlrpc:xmlrpc inContext:context];
     if (!blog) {
-        blog = [blogService createBlogWithAccount:nil];
+        blog = [Blog createBlankBlogInContext:context];
         if (url) {
             blog.url = url;
         }
