@@ -5,6 +5,7 @@
 21.6
 -----
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
+* [**] [internal] Refactored fetching blog editor settings. [#19915]
 * [*] [Jetpack-only] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
 * [***] [Jetpack-only] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
 * [***] [internal] Delete all the activity logs after logging out. [#19930]
