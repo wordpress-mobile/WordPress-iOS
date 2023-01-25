@@ -58,7 +58,7 @@ import Foundation
         isJetpack = remoteInfo.isJetpack
         isPrivate = remoteInfo.isPrivate
         isVisible = remoteInfo.isVisible
-        organizationID = remoteInfo.organizationID.intValue
+        organizationID = remoteInfo.organizationID?.intValue ?? 0
         path = remoteInfo.postsEndpoint ?? remoteInfo.endpointPath ?? ""
         postCount = remoteInfo.postCount ?? 0
         showInMenu = false

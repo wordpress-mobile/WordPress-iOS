@@ -26,7 +26,7 @@ import WordPressKit
         capabilitiesServiceRemote.for(siteIds: blogs.compactMap { $0.blogID as? Int },
                  success: { capabilities in
                     blogs.forEach { blog in
-                        if let cap = capabilities["\(blog.blogID!)"] as? [String] {
+                        if let cap = capabilities["\(blog.blogID)"] as? [String] {
                             cap.forEach { blog.capabilities[$0] = true }
                         }
                     }
