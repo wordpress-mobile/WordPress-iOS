@@ -62,13 +62,13 @@ class FollowCommentsService: NSObject {
                                 failure: @escaping (Error?) -> Void) {
         let objID = post.objectID
         let successBlock = { (taskSuccessful: Bool) -> Void in
-            self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave({ context in
                 if let post = try? context.existingObject(with: objID) as? ReaderPost {
                     post.isSubscribedComments = !isSubscribed
                 }
-            } completion: {
+            }, completion: {
                 success(taskSuccessful)
-            }
+            }, on: .main)
         }
 
         if isSubscribed {
@@ -104,7 +104,7 @@ class FollowCommentsService: NSObject {
                 if let post = try? context.existingObject(with: self.post.objectID) as? ReaderPost {
                     post.receivesCommentNotifications = isNotificationsEnabled
                 }
-            }, completion: success)
+            }, completion: success, on: .main)
         } failure: { error in
             DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
             failure(error)

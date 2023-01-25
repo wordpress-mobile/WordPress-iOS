@@ -1,0 +1,7 @@
+Vi har arbetat hårt med tekniska korrigeringar och uppdateringar bakom kulisserna för att se till att Jetpack-appen fungerar smidigt.
+
+- Postikulering av funktioner
+- Omarbetning av gränssnitt
+- Retikulering av splines
+- Kodifiering av likhet
+- Ombyggnad av gigaversumet

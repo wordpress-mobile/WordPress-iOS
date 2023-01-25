@@ -19,6 +19,7 @@ class DomainsServiceTests: CoreDataTestCase {
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
         testBlog = makeTestBlog()
+        contextManager.saveContextAndWait(mainContext)
     }
 
     override func tearDown() {
@@ -38,9 +39,8 @@ class DomainsServiceTests: CoreDataTestCase {
 
     fileprivate func makeTestBlog() -> Blog {
         let accountService = AccountService(managedObjectContext: mainContext)
-        let blogService = BlogService(managedObjectContext: mainContext)
         let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
-        let blog = blogService.createBlog(with: account)
+        let blog = Blog.createBlankBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
         blog.url = "http://dotcom1.wordpress.com/"
         blog.dotComID = testSiteID as NSNumber?
@@ -64,7 +64,7 @@ class DomainsServiceTests: CoreDataTestCase {
 
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
-        let service = DomainsService(managedObjectContext: mainContext, remote: remote)
+        let service = DomainsService(coreDataStack: contextManager, remote: remote)
         service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
             expect.fulfill()
         }

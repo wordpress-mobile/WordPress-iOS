@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 13:54:07+0000 */
+/* Translation-Revision-Date: 2023-01-19 14:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ar */
@@ -10130,7 +10130,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.notifications.actions.secondary.title" = "التقرير لاحقًا";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "عندما يظهر التنبيه، انقر على السماح للاستمرار في تلقي كل تنبيهات ووردبريس الخاصة بك.";
+"migration.notifications.footer" = "عندما يظهر التنبيه، انقر على \"سماح\" للاستمرار في تلقي كل تنبيهات ووردبريس الخاصة بك.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "السماح";

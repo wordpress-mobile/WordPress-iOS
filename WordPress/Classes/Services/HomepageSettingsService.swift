@@ -33,7 +33,7 @@ struct HomepageSettingsService {
         var originalHomepageType: HomepageType?
         var originalHomePageID: Int?
         var originalPostsPageID: Int?
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             guard let blog = Blog.lookup(withObjectID: self.blog.objectID, in: context) else {
                 return
             }
@@ -63,7 +63,7 @@ struct HomepageSettingsService {
             case .posts:
                 blog.homepageType = .posts
             }
-        } completion: {
+        }, completion: {
             remote.setHomepageType(
                 type: type.remoteType,
                 for: siteID,
@@ -71,19 +71,19 @@ struct HomepageSettingsService {
                 homePageID: blog.homepagePageID,
                 success: success,
                 failure: { error in
-                    self.coreDataStack.performAndSave { context in
+                    self.coreDataStack.performAndSave({ context in
                         guard let blog = Blog.lookup(withObjectID: self.blog.objectID, in: context) else {
                             return
                         }
                         blog.homepageType = originalHomepageType
                         blog.homepagePostsPageID = originalPostsPageID
                         blog.homepagePageID = originalHomePageID
-                    } completion: {
+                    }, completion: {
                         failure(error)
-                    }
+                    }, on: .main)
                 }
             )
-        }
+        }, on: .main)
 
 
     }

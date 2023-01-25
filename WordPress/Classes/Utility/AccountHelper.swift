@@ -39,6 +39,12 @@ import Foundation
         return !AccountHelper.isDotcomAvailable()
     }
 
+    static var defaultSiteId: NSNumber? {
+        let context = ContextManager.sharedInstance().mainContext
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        return account?.defaultBlog?.dotComID
+    }
+
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
         let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         let blogsByAccount = Dictionary(grouping: allBlogs, by: { $0.account })
@@ -80,6 +86,10 @@ import Foundation
 
         service.removeDefaultWordPressComAccount()
 
+        deleteAccountData()
+    }
+
+    @objc static func deleteAccountData() {
         // Delete saved dashboard states
         BlogDashboardState.resetAllStates()
 
@@ -97,5 +107,8 @@ import Foundation
 
         // Refresh Remote Feature Flags
         WordPressAppDelegate.shared?.updateFeatureFlags()
+
+        // Delete all the logs after logging out
+        WPLogger.shared().deleteAllLogs()
     }
 }

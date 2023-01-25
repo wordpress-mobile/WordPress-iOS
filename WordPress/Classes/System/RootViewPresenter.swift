@@ -10,6 +10,7 @@ protocol RootViewPresenter: AnyObject {
     func getMeScenePresenter() -> ScenePresenter
     func currentlySelectedScreen() -> String
     func currentlyVisibleBlog() -> Blog?
+    func willDisplayPostSignupFlow()
 
     // MARK: Reader
 
@@ -23,6 +24,7 @@ protocol RootViewPresenter: AnyObject {
     func resetReaderDiscoverNudgeFlow()
     func resetReaderTab()
     func navigateToReaderSearch()
+    func navigateToReaderSearch(withSearchText: String)
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool)
     func switchToMyLikes()
     func switchToFollowedSites()

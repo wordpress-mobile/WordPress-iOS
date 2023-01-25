@@ -11,6 +11,12 @@ public extension Blog {
     }
 }
 
+/// Site Deletion Notification
+///
+extension NSNotification.Name {
+    static let WPSiteDeleted = NSNotification.Name(rawValue: "SiteDeleted")
+}
+
 /// SiteManagementService handles operations for managing a WordPress.com site.
 ///
 open class SiteManagementService: LocalCoreDataService {
@@ -31,9 +37,10 @@ open class SiteManagementService: LocalCoreDataService {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
                     blogService.remove(blog)
 
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+                        NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
                         success?()
-                    })
+                    }, on: .main)
                 }
             },
             failure: { error in

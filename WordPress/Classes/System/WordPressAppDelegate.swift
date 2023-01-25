@@ -198,9 +198,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
 #if JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
-        if let windowManager = windowManager as? JetpackWindowManager,
-           windowManager.shouldImportMigrationData {
-            windowManager.importAndShowMigrationContent()
+        if let windowManager = windowManager as? JetpackWindowManager {
+            windowManager.startMigrationFlowIfNeeded()
         }
 #endif
     }
@@ -646,6 +645,8 @@ extension WordPressAppDelegate {
 #if JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
+        case is MigrationLoadWordPressViewController:
+            return "Jetpack Migration Load WordPress View"
 #endif
         default:
             return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()

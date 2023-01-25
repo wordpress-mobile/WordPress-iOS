@@ -713,6 +713,11 @@ static NSInteger HideSearchMinSites = 3;
     if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
         [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
     }
+    
+    // Delete local data after removing the last site
+    if (!AccountHelper.isLoggedIn) {
+        [AccountHelper deleteAccountData];
+    }
 
     [self.tableView reloadData];
 }
