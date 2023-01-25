@@ -384,6 +384,7 @@ import Foundation
     // Blogging Prompts
     case promptsBottomSheetAnswerPrompt
     case promptsBottomSheetHelp
+    case promptsBottomSheetViewed
     case promptsIntroductionModalViewed
     case promptsIntroductionModalDismissed
     case promptsIntroductionModalTryItNow
@@ -395,6 +396,7 @@ import Foundation
     case promptsDashboardCardMenuSkip
     case promptsDashboardCardMenuRemove
     case promptsDashboardCardMenuLearnMore
+    case promptsDashboardCardViewed
     case promptsListViewed
     case promptsReminderSettingsIncludeSwitch
     case promptsReminderSettingsHelp
@@ -402,6 +404,7 @@ import Foundation
     case promptsNotificationDismissActionTapped
     case promptsNotificationTapped
     case promptsNotificationDismissed
+    case promptsOtherAnswersTapped
 
     // Jetpack branding
     case jetpackPoweredBadgeTapped
@@ -1072,6 +1075,8 @@ import Foundation
             return "my_site_create_sheet_answer_prompt_tapped"
         case .promptsBottomSheetHelp:
             return "my_site_create_sheet_prompt_help_tapped"
+        case .promptsBottomSheetViewed:
+            return "blogging_prompts_create_sheet_card_viewed"
         case .promptsIntroductionModalViewed:
             return "blogging_prompts_introduction_modal_viewed"
         case .promptsIntroductionModalDismissed:
@@ -1094,6 +1099,8 @@ import Foundation
             return "blogging_prompts_my_site_card_menu_remove_from_dashboard_tapped"
         case .promptsDashboardCardMenuLearnMore:
             return "blogging_prompts_my_site_card_menu_learn_more_tapped"
+        case .promptsDashboardCardViewed:
+            return "blogging_prompts_my_site_card_viewed"
         case .promptsListViewed:
             return "blogging_prompts_prompts_list_viewed"
         case .promptsReminderSettingsIncludeSwitch:
@@ -1108,6 +1115,8 @@ import Foundation
             return "blogging_reminders_notification_prompt_tapped"
         case .promptsNotificationDismissed:
             return "blogging_reminders_notification_prompt_dismissed"
+        case .promptsOtherAnswersTapped:
+            return "blogging_prompts_other_answers_tapped"
 
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:

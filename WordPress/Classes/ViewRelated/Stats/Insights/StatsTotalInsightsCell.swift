@@ -376,8 +376,14 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private enum TextContent {
         static let differenceDelimiter = Character("*")
-        static let differenceHigher = NSLocalizedString("*%@%@ (%@%%)* higher than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
-        static let differenceLower = NSLocalizedString("*%@%@ (%@%%)* lower than the previous week", comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
-        static let differenceSame = NSLocalizedString("The same as the previous week", comment: "Label shown in Stats Insights when a metric is showing the same level as the previous week")
+        static let differenceHigher = NSLocalizedString("stats.insights.label.totalLikes.higher",
+                                                        value: "*%@%@ (%@%%)* higher than the previous 7-days",
+                                                        comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
+        static let differenceLower = NSLocalizedString("stats.insights.label.totalLikes.higher",
+                                                       value: "*%@%@ (%@%%)* lower than the previous 7-days",
+                                                       comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
+        static let differenceSame = NSLocalizedString("stats.insights.label.totalLikes.same",
+                                                      value: "The same as the previous 7-days",
+                                                      comment: "Label shown in Stats Insights when a metric is showing the same level as the previous 7 days")
     }
 }

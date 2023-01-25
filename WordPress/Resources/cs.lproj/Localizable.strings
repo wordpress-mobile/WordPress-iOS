@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-10 09:20:08+0000 */
+/* Translation-Revision-Date: 2023-01-17 10:33:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -2119,6 +2119,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Vytvořit příspěvek";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Vytvořit web";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Vytvořit štítek";
@@ -9761,6 +9764,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "eg. 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Více";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -9898,8 +9904,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Vyberte záměr webu";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ se přesunou za %2$@";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ se přesune za %2$@";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "%@ se brzy přesunou";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "%@ se brzy přesune";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Poháněno Jetpackem";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Získejte aplikaci Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Vyzkoušejte novou aplikaci Jetpack";
@@ -9921,6 +9942,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Pokračujte do oznámení";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Odložit na později";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistiky, čtečka, upozornění a další funkce poháněné Jetpack byly z aplikace WordPress odstraněny.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Funkce Jetpacku se přesunuly";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Přepněte na aplikaci Jetpack, abyste do svého zařízení i nadále dostávali upozornění v reálném čase.";
@@ -9945,6 +9975,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseThree.footnote" = "Přepínání je zdarma a trvá jen minutu.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Pokračovat bez Jetpacku";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Funkce jetpacku se brzy přesunou.";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.\n\nAplikace WordPress již nepodporuje vytváření nového webu.";
@@ -9978,6 +10014,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Pokračujte na statistiky";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "Statistiky, čtečka, upozornění a další funkce se brzy přesunou do mobilní aplikace Jetpack.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Skrýt";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Zjistit více";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Přejděte na Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Připomenout později";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Přidejte autora";
@@ -10069,6 +10120,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The secondary button title in the Load WordPress screen */
 "migration.loadWordpress.secondaryButton" = "Ne, děkuji";
 
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "Chcete přenést svá data z aplikace WordPress a přihlásit se automaticky?";
+
 /* The title in the Load WordPress screen */
 "migration.loadWordpress.title" = "Vítejte v Jetpacku!";
 
@@ -10076,7 +10130,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "migration.notifications.actions.secondary.title" = "Vybrat později";
 
 /* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Když se zobrazí upozornění, klepněte na Povolit, abyste i nadále dostávali všechna vaše oznámení WordPress.";
+"migration.notifications.footer" = "Když se zobrazí upozornění, klepněte na Povolit, abyste i nadále dostávali všechna oznámení WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Povolit";

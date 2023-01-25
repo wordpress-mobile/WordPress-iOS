@@ -47,6 +47,7 @@
                     .insightsTodaysStats,
                     .insightsPostingActivity,
                     .insightsTagsAndCategories,
+                    .insightsFollowersWordPress,
                     .insightsFollowersEmail,
                     .insightsPublicize]
         } else {

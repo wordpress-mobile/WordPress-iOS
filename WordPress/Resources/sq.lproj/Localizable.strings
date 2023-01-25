@@ -10021,9 +10021,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vendosni më vonë";
 
-/* Footer for the migration notifications screen. */
-"migration.notifications.footer" = "Kur shfaqen sinjalizime, prekni “Lejoje” që të vazhdoni të merrni krejt njoftimet tuaja WordPress.";
-
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Lejoje";
 

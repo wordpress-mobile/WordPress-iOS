@@ -313,18 +313,18 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
 
         // Save the new topic + posts in the contet
         var expect = expectation(description: "topics saved expectation")
-        contextManager.save(mainContext, withCompletionBlock: { () -> Void in
+        contextManager.save(mainContext, completion: {
             expect.fulfill()
-        })
+        }, on: .global())
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         // Delete the topic and posts from the context
         mainContext.delete(topic)
 
         expect = expectation(description: "topics saved expectation")
-        contextManager.save(mainContext, withCompletionBlock: { () -> Void in
+        contextManager.save(mainContext, completion: {
             expect.fulfill()
-        })
+        }, on: .global())
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderListTopic.classNameWithoutNamespaces())

@@ -155,12 +155,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
                                     actionWithTitle:trashButtonTitle
                                     style:UIAlertActionStyleDestructive
                                     handler:^(UIAlertAction *action) {
-                                      for (DDLogFileInfo *logFileInfo in self.logFiles) {
-                                          if (logFileInfo.isArchived) {
-                                              [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
-                                          }
-                                      }
-                                      DDLogWarn(@"All archived log files erased.");
+                                      [WPLogger.shared deleteArchivedLogs];
                                       [self loadLogFiles];
                                       [self.tableView reloadData];
                                     }];

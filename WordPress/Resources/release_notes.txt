@@ -1,7 +1,3 @@
-We’ve been hard at work on extra-technical, behind-the-scenes fixes and updates to keep the WordPress app running smoothly.
-
-- Posticulating features
-- Rearchitecting interfaces
-- Reticulating splines
-- Codifying similitude
-- Rebuilding the gigaverse
+* [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
+* [***] [internal] Delete all the activity logs after logging out. [#19930]
+* [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
