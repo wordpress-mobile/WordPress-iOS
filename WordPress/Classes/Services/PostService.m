@@ -905,13 +905,12 @@ typedef void (^AutosaveSuccessBlock)(RemotePost *post, NSString *previewURL);
 
 - (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
-        PostCategory *category = [categoryService findWithBlogObjectID:blogObjectID andCategoryID:remoteCategory.categoryID];
+        PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:self.managedObjectContext];
         if (!category) {
-            category = [categoryService newCategoryForBlogObjectID:blogObjectID];
+            category = [PostCategory createWithBlogObjectID:blogObjectID inContext:self.managedObjectContext];
             category.categoryID = remoteCategory.categoryID;
             category.categoryName = remoteCategory.name;
             category.parentID = remoteCategory.parentID;
