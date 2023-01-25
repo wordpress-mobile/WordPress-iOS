@@ -1,5 +1,9 @@
 21.6
 -----
+* [*] [Jetpack-only] Fixed an issue where stats were not displaying latest data when the system date rolls over to the next day while the app is in background. [#19989]
+
+21.6
+-----
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
 * [*] [Jetpack-only] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
 * [***] [Jetpack-only] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
