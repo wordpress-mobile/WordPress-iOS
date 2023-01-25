@@ -1,7 +1,0 @@
-WordPress uygulamasının sorunsuz çalışmasını sağlamak için çok teknik, sahne arkası düzeltmeler ve güncellemeler üzerinde yoğun bir şekilde çalışıyoruz.
-
-- Düşünülen özellikleri uygulama
-- Arayüzleri yeniden tasarlama
-- Şeritleri örme
-- Benzerlikleri kodlama
-- Gigaverse'i yeniden oluşturma
