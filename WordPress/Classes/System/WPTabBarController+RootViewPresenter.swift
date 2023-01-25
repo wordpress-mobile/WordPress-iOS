@@ -29,6 +29,10 @@ extension WPTabBarController: RootViewPresenter {
         return mySitesCoordinator.currentBlog
     }
 
+    func willDisplayPostSignupFlow() {
+        mySitesCoordinator.willDisplayPostSignupFlow()
+    }
+
     // MARK: My Site
 
     func showPages(for blog: Blog) {

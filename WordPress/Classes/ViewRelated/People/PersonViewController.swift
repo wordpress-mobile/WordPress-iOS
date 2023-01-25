@@ -67,7 +67,7 @@ final class PersonViewController: UITableViewController {
         self.context = context
         self.person = person
         self.screenMode = screenMode
-        self.service = PeopleService(blog: blog, context: context)
+        self.service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
 
         super.init(coder: coder)
     }

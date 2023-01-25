@@ -170,7 +170,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupFonts() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
-        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true

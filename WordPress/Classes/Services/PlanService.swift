@@ -50,7 +50,7 @@ open class PlanService: NSObject {
             self.mergeRemoteWpcomPlans(remotePlans, in: context)
             self.mergeRemotePlanGroups(remoteGroups, in: context)
             self.mergeRemotePlanFeatures(remoteFeatures, in: context)
-        }, completion: onComplete)
+        }, completion: onComplete, on: .main)
     }
 
 

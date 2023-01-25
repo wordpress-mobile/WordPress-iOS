@@ -76,9 +76,9 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
             topic.path = path(slug: interest.slug)
         }
 
-        ContextManager.sharedInstance().save(managedObjectContext, withCompletionBlock: { [weak self] in
+        ContextManager.sharedInstance().save(managedObjectContext, completion: { [weak self] in
             self?.fetchFollowedInterestsLocally(completion: success)
-        })
+        }, on: .main)
     }
 
     private func apiRequest() -> WordPressComRestApi {

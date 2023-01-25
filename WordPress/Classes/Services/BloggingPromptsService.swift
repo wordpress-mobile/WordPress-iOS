@@ -320,14 +320,10 @@ private extension BloggingPromptsService {
     ///   - remoteSettings: The blogging prompt settings from the remote.
     ///   - completion: Closure to be called on completion.
     func saveSettings(_ remoteSettings: RemoteBloggingPromptsSettings, completion: @escaping () -> Void) {
-        contextManager.performAndSave { derivedContext in
+        contextManager.performAndSave({ derivedContext in
             let settings = self.loadSettings(context: derivedContext) ?? BloggingPromptSettings(context: derivedContext)
             settings.configure(with: remoteSettings, siteID: self.siteID.int32Value, context: derivedContext)
-        } completion: {
-            DispatchQueue.main.async {
-                completion()
-            }
-        }
+        }, completion: completion, on: .main)
     }
 
     func loadSettings(context: NSManagedObjectContext) -> BloggingPromptSettings? {
