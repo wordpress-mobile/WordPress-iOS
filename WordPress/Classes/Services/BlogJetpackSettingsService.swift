@@ -68,7 +68,7 @@ struct BlogJetpackSettingsService {
 
                 self.updateJetpackSettings(blogSettings, remoteSettings: remoteJetpackSettings)
                 self.updateJetpackMonitorSettings(blogSettings, remoteSettings: remoteJetpackMonitorSettings)
-            }, completion: success)
+            }, completion: success, on: .main)
         })
     }
 
@@ -95,7 +95,7 @@ struct BlogJetpackSettingsService {
                         return
                     }
                     self.updateJetpackModulesSettings(blogSettings, remoteSettings: remoteModulesSettings)
-                }, completion: success)
+                }, completion: success, on: .main)
             },
             failure: failure
         )
@@ -160,7 +160,7 @@ struct BlogJetpackSettingsService {
                         return
                     }
                     blogSettingsInContext.jetpackLazyLoadImages = isActive
-                }, completion: success)
+                }, completion: success, on: .main)
             },
             failure: failure
         )
@@ -183,7 +183,7 @@ struct BlogJetpackSettingsService {
                         return
                     }
                     blogSettingsInContext.jetpackServeImagesFromOurServers = isActive
-                }, completion: success)
+                }, completion: success, on: .main)
             },
             failure: failure
         )
@@ -263,6 +263,6 @@ private extension BlogJetpackSettingsService {
             for (key, value) in changes {
                 blogSettingsInContext.setValue(value, forKey: key)
             }
-        }, completion: success)
+        }, completion: success, on: .main)
     }
 }
