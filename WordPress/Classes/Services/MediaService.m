@@ -231,7 +231,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                     if (failure) {
                         failure(customError);
                     }
-                }];
+                } onQueue:dispatch_get_main_queue()];
                 return;
             }
             if (failure) {
@@ -280,7 +280,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 if (success) {
                     success();
                 }
-            }];
+            } onQueue:dispatch_get_main_queue()];
         }];
     };
 
@@ -331,7 +331,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 if (success) {
                     success();
                 }
-            }];
+            } onQueue:dispatch_get_main_queue()];
         }];
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -465,11 +465,8 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
             [self.managedObjectContext deleteObject:mediaInContext];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext
-                                     withCompletionBlock:^{
-                                         if (success) {
-                                             success();
-                                         }
-                                     }];
+                                     withCompletionBlock:success
+                                                 onQueue:dispatch_get_main_queue()];
         }];
     };
 

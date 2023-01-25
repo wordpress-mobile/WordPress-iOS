@@ -38,9 +38,9 @@ class LikeUserHelperTests: CoreDataTestCase {
         XCTAssertNotNil(likeUser)
 
         // TODO: The save crashes when it fails, interrupting all other tests.
-        contextManager.save(context, withCompletionBlock: {
+        contextManager.save(context, completion: {
             completionExpectation.fulfill()
-        })
+        }, on: .main)
 
         waitForExpectations(timeout: 5)
     }
@@ -71,9 +71,9 @@ class LikeUserHelperTests: CoreDataTestCase {
         XCTAssertTrue(existingPreferredBlog.isDeleted)
 
         // TODO: The save crashes when it fails, interrupting all other tests.
-        contextManager.save(context, withCompletionBlock: {
+        contextManager.save(context, completion: {
             completionExpectation.fulfill()
-        })
+        }, on: .main)
 
         waitForExpectations(timeout: 5)
     }

@@ -37,10 +37,10 @@ open class SiteManagementService: LocalCoreDataService {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
                     blogService.remove(blog)
 
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                         NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
                         success?()
-                    })
+                    }, on: .main)
                 }
             },
             failure: { error in
