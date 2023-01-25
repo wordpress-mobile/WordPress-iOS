@@ -67,9 +67,9 @@ open class PlanService: NSObject {
 
 
     private func findPlanByShortname(_ shortname: String, in context: NSManagedObjectContext) -> Plan? {
-        let plans = allPlans(in: context) as NSArray
-        let results = plans.filtered(using: NSPredicate(format: "shortname = %@", shortname))
-        return results.first as? Plan
+        allPlans(in: context).first {
+            $0.shortname == shortname
+        }
     }
 
 
