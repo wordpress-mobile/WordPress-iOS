@@ -116,7 +116,9 @@ private extension SupportTableViewController {
                                 TextRow.self,
                                 HelpRow.self,
                                 DestructiveButtonRow.self,
-                                SupportEmailRow.self],
+                                SupportEmailRow.self,
+                                SupportForumRow.self,
+                                SupportForumButtonRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
@@ -155,6 +157,18 @@ private extension SupportTableViewController {
             rows: helpSectionRows,
             footerText: LocalizedText.helpFooter)
 
+        // Community Forums Section
+        var communityForumsSectionRows = [ImmuTableRow]()
+        communityForumsSectionRows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
+                                                          accessibilityHint: "",
+                                                          action: nil,
+                                                          accessibilityIdentifier: ""))
+        communityForumsSectionRows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
+                                                                accessibilityHint: "",
+                                                                action: visitForumsSelected(),
+                                                                accessibilityIdentifier: "visit-wordpress-forums-button"))
+        let forumsSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: communityForumsSectionRows, footerText: nil)
+
         // Information Section
         var informationSection: ImmuTableSection?
         if configuration.showsLogsSection {
@@ -182,7 +196,7 @@ private extension SupportTableViewController {
         }
 
         // Create and return table
-        let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
+        let sections = [helpSection, forumsSection, informationSection, logOutSections].compactMap { $0 }
         return ImmuTable(sections: sections)
     }
 
@@ -266,6 +280,17 @@ private extension SupportTableViewController {
                 self.reloadViewModel()
                 self.checkForAutomatticEmail()
             }
+        }
+    }
+
+    func visitForumsSelected() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let self = self else { return }
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            guard let url = Constants.forumsURL else {
+                return
+            }
+            UIApplication.shared.open(url)
         }
     }
 
@@ -360,6 +385,82 @@ private extension SupportTableViewController {
         }
     }
 
+    struct SupportForumRow: ImmuTableRow {
+        static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+        let title: String
+        let accessibilityHint: String
+        let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
+
+        func configureCell(_ cell: UITableViewCell) {
+            cell.textLabel?.text = title
+            WPStyleGuide.configureTableViewCell(cell)
+            cell.accessibilityHint = accessibilityHint
+        }
+    }
+
+    struct SupportForumButtonRow: ImmuTableRow {
+        static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+        let title: String
+        let accessibilityHint: String
+        let action: ImmuTableAction?
+        let accessibilityIdentifier: String?
+
+        let button: SpotlightableButton = {
+            let button = SpotlightableButton(type: .custom)
+
+            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.lineBreakMode = .byTruncatingTail
+            button.contentHorizontalAlignment = .trailing
+
+            button.setTitleColor(.primary, for: .normal)
+
+            button.setImage(UIImage.gridicon(.external,
+                                             size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),
+                            for: .normal)
+
+            // Align the image to the right
+            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+                button.semanticContentAttribute = .forceLeftToRight
+                button.imageEdgeInsets = LayoutSpacing.rtlButtonTitleImageInsets
+            } else {
+                button.semanticContentAttribute = .forceRightToLeft
+                button.imageEdgeInsets = LayoutSpacing.buttonTitleImageInsets
+            }
+
+            button.translatesAutoresizingMaskIntoConstraints = false
+
+            return button
+        }()
+
+        func configureCell(_ cell: UITableViewCell) {
+            button.setTitle(title, for: .normal)
+            button.accessibilityHint = accessibilityHint
+            button.addAction(UIAction { _ in
+                action?(self)
+            }, for: .touchUpInside)
+            cell.contentView.addSubview(button)
+
+            NSLayoutConstraint.activate([
+                button.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: LayoutSpacing.padding),
+                button.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -LayoutSpacing.padding),
+                button.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: LayoutSpacing.padding),
+                button.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -LayoutSpacing.padding)
+            ])
+        }
+
+        enum LayoutSpacing {
+            static let imageSize: CGFloat = 17.0
+            static let padding: CGFloat = 16.0
+            static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+            static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
+        }
+    }
+
     // MARK: - Helpers
 
     func controllerToShowFrom() -> UIViewController? {
@@ -374,6 +475,9 @@ private extension SupportTableViewController {
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
         static let contactUs = NSLocalizedString("Contact Support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
+        static let wpForumsSectionHeader = NSLocalizedString("Community Forums", comment: "Section header in Support view for the Forums.")
+        static let wpForumPrompt = NSLocalizedString("Ask a question in the community forum and get help from our group of volunteers.", comment: "Suggestion in Support view to visit the Forums.")
+        static let visitWpForumsButton = NSLocalizedString("Visit WordPress.org", comment: "Option in Support view to visit the Forums.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
