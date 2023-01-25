@@ -287,7 +287,12 @@ private extension SiteStatsPeriodViewModel {
             mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
             self.mostRecentChartData = periodSummary
         } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
-            mostRecentChartData = chartData
+            if let lastSummaryDataEntry = summaryData.last, periodSummary.periodEndDate == lastSummaryDataEntry.periodStartDate {
+                mostRecentChartData = periodSummary
+                currentEntryIndex = summaryData.count - 1
+            } else {
+                mostRecentChartData = chartData
+            }
         }
 
         let periodDate = summaryData.indices.contains(currentEntryIndex) ? summaryData[currentEntryIndex].periodStartDate : nil
