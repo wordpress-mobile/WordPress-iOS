@@ -63,6 +63,10 @@ extension MySitesCoordinator: RootViewPresenter {
         unsupportedFeatureFallback()
     }
 
+    func navigateToReaderSearch(withSearchText: String) {
+        unsupportedFeatureFallback()
+    }
+
     func switchToTopic(where predicate: (ReaderAbstractTopic) -> Bool) {
         unsupportedFeatureFallback()
     }

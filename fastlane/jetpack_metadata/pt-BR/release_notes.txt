@@ -1,0 +1,7 @@
+Temos trabalhado duro em atualizações e correções bem técnicas por trás das câmeras para manter o aplicativo do Jetpack funcionando normalmente.
+
+- Inventando novas funcionalidades
+- Reorganizando interfaces
+- Combinando redes
+- Reunindo ideias distintas
+- Reformulando o gigaverso

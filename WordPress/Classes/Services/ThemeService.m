@@ -155,7 +155,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                              if (success) {
                                                                  success(theme);
                                                              }
-                                                         }];
+                                                         } onQueue:dispatch_get_main_queue()];
                                                      } failure:failure];
     
     return progress;
@@ -184,7 +184,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                                  if (success) {
                                                                      success(themes, NO, themes.count);
                                                                  }
-                                                             }];
+                                                             } onQueue:dispatch_get_main_queue()];
                                                          } failure:failure];
     
     return progress;
@@ -213,7 +213,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                 if (success) {
                                                     success(theme);
                                                 }
-                                            }];
+                                            } onQueue:dispatch_get_main_queue()];
                                         } failure:failure];
     
     return progress;
@@ -242,7 +242,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                     if (success) {
                                                         success(themes, hasMore, totalThemeCount);
                                                     }
-                                                }];
+                                                } onQueue:dispatch_get_main_queue()];
                                             } failure:failure];
     
     return progress;
@@ -291,7 +291,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                        if (success) {
                                            success(themes, hasMore, totalThemeCount);
                                        }
-                                   }];
+                                   } onQueue:dispatch_get_main_queue()];
                                } failure:failure];
     } else {
         return [remote getThemesForBlogId:[blog dotComID]
@@ -312,7 +312,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                           if (success) {
                                               success(themes, hasMore, totalThemeCount);
                                           }
-                                      }];
+                                      } onQueue:dispatch_get_main_queue()];
                                   } failure:failure];
     }
 }
@@ -364,7 +364,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                             if (success) {
                                                 success(themes, hasMore, themes.count);
                                             }
-                                        }];
+                                        } onQueue:dispatch_get_main_queue()];
                                     } failure:failure];
 }
 
@@ -388,7 +388,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                          if (success) {
                                              success(themes, hasMore, themes.count);
                                          }
-                                     }];
+                                     } onQueue:dispatch_get_main_queue()];
                                  } failure:failure];
 }
 
@@ -473,7 +473,7 @@ const NSInteger ThemeOrderTrailing = 9999;
         if (success) {
             success(theme);
         }
-    }];
+    } onQueue:dispatch_get_main_queue()];
 }
 
 - (RemoteTheme *)removeWPComSuffixIfNeeded:(RemoteTheme *)remoteTheme
