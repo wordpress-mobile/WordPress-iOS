@@ -47,9 +47,7 @@ open class PlanService: LocalCoreDataService {
         mergeRemotePlanGroups(remoteGroups)
         mergeRemotePlanFeatures(remoteFeatures)
 
-        ContextManager.sharedInstance().save(managedObjectContext) {
-            onComplete()
-        }
+        ContextManager.sharedInstance().save(managedObjectContext, completion: onComplete, on: .main)
     }
 
 

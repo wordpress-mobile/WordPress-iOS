@@ -65,11 +65,9 @@ class FollowCommentsService: NSObject {
                 if let post = try? context.existingObject(with: objID) as? ReaderPost {
                     post.isSubscribedComments = !isSubscribed
                 }
-                ContextManager.sharedInstance().save(context) {
-                    DispatchQueue.main.async {
-                        success(taskSuccessful)
-                    }
-                }
+                ContextManager.sharedInstance().save(context, completion: {
+                    success(taskSuccessful)
+                }, on: .main)
             }
         }
 

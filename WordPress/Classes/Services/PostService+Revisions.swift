@@ -27,9 +27,9 @@ extension PostService {
                                         let revisions = self.syncPostRevisions(from: remoteRevisions ?? [],
                                                                                for: postId.intValue,
                                                                                with: blogId.intValue)
-                                        ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                                             success(revisions)
-                                        })
+                                        }, on: .main)
                                     }
         }, failure: failure)
     }

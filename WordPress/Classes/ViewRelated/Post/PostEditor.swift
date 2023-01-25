@@ -157,4 +157,5 @@ enum PostEditorEntryPoint: String {
     case bloggingPromptsActionSheetHeader = "add_new_sheet_answer_prompt"
     case bloggingPromptsNotification = "blogging_reminders_notification_answer_prompt"
     case bloggingPromptsDashboardCard = "my_site_card_answer_prompt"
+    case bloggingPromptsListView = "blogging_prompts_list_view"
 }

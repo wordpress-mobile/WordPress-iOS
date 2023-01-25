@@ -467,7 +467,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             success(topic.objectID);
-        }];
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), slug, error);
         if (failure) {
@@ -650,7 +650,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo: siteInfo];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             success(topic.objectID, siteInfo.isFollowing);
-        }];
+        } onQueue:dispatch_get_main_queue()];
 
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
@@ -994,11 +994,7 @@ array are marked as being unfollowed in Core Data.
              }
          }
 
-         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-             if (success) {
-                 success();
-             }
-         }];
+         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
      }];
 }
 
@@ -1065,11 +1061,7 @@ array are marked as being unfollowed in Core Data.
             }
         }
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (success) {
-                success();
-            }
-        }];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
 
     }];
 }

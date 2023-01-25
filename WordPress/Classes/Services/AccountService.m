@@ -432,8 +432,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            // set the default site ID for iOS 14 Stats Widgets
-            [sharedDefaults setObject:siteId forKey:AppConfigurationWidgetStats.userDefaultsSiteIdKey];
 
             TodayExtensionService *service = [TodayExtensionService new];
             [service configureTodayWidgetWithSiteID:todayExtensionSiteID

@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    if (success) {
                                        success();
                                    }
-                               }];
+                               } onQueue: dispatch_get_main_queue()];
                            } failure:failure];
 }
 
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
                                         }];
                                         success(postCategories);
                                     }
-                                }];
+                                } onQueue: dispatch_get_main_queue()];
                             } failure:failure];
 }
 
@@ -137,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
                                // filters might change the content
                                [self syncCategoriesForBlog:blog success:nil failure:nil];
                            }
-                       }];
+                       } onQueue: dispatch_get_main_queue()];
                    } failure:failure];
 }
 
