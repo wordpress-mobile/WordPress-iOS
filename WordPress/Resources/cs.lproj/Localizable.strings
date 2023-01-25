@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-17 10:33:07+0000 */
+/* Translation-Revision-Date: 2023-01-24 07:31:40+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -282,12 +282,6 @@ translators: Block name. %s: The localized block name */
 
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(žádný název)";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* higher than the previous week" = "*%1$@%2$@ (%3$@%%)* vyšší než v předchozím týdnu";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* lower than the previous week" = "*%1$@%2$@ (%3$@%%)* nižší než v předchozím týdnu";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "*Johann Brandt* nyní sleduje váš web!";
@@ -3843,12 +3837,6 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "Přehledy";
 
-/* Description of updated Stats Insights displayed in the Feature Introduction view. */
-"Insights help you understand how your content is performing and what’s resonating with your audience." = "Statistiky vám pomohou pochopit, jak si váš obsah vede a co u vašeho publika rezonuje.";
-
-/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
-"Insights update" = "Aktualizace statistik";
-
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "Instalovat";
@@ -4125,9 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Další informace o rolích";
-
-/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
-"Learn more in My Site > Stats > Insights." = "Další informace najdete v části Můj web > Statistiky > Statistiky.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Další informace...";
@@ -5122,7 +5107,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Oznámení bude obsahovat slovo nebo krátkou frázi pro inspiraci";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -5839,9 +5825,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Zobrazte náhled pro kontrolu, jak uvidí stránku ostatní";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"Previous Week" = "Minulý týden";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Předcházející měsíc";
 
@@ -5850,9 +5833,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Předchozí období";
-
-/* Previous week legend label */
-"Previous week" = "Minulý týden";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6008,7 +5988,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Přečíst zdrojový příspěvek";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -6099,9 +6080,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Připomeň mi";
-
-/* Button title dismiss the Stats Insights feature announcement screen. */
-"Remind me later" = "Připomenout později";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Připomenutí odstraněny!";
@@ -7057,9 +7035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Přeskočit";
 
-/* Menu title to skip today's prompt. */
-"Skip this prompt" = "Přeskočte tuto výzvu";
-
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Výsledky lomítka";
 
@@ -7633,9 +7608,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Příspěvek, který se pokoušíte zkopírovat, má dvě verze, které jsou v konfliktu, nebo jste nedávno provedli změny, ale neuložili jste je.\nNejprve upravte příspěvek, abyste vyřešili jakýkoli konflikt, nebo pokračujte v kopírování verze z této aplikace.";
 
-/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
-"The same as the previous week" = "Stejně jako minulý týden";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Série požadavků se nezdařila.";
 
@@ -7828,9 +7800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Jsou publikovány jako nový blogový příspěvek na vašem webu, takže vašemu publiku nikdy nic neunikne.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"This Week" = "Tento týden";
-
 /* Insights 'This Year' header */
 "This Year" = "Tento rok";
 
@@ -7902,9 +7871,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Tento uživatelský účet nelze uzavřít, pokud má aktivní předplatná.";
-
-/* This week legend label */
-"This week" = "Tento týden";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8149,8 +8115,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Zkuste vyhledat jiný výraz";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Zkuste to teď";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -9638,24 +9603,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Váš web již nebude odesílat data na WordPress.com a funkce Jetpack přestanou fungovat. Ztratíte přístup k webu v aplikaci a budete jej muset znovu přidat pomocí pověření webu.";
 
-/* Stats insights views higher than previous week */
-"Your views this week are %@ higher than the previous week.\n" = "Vaše zhlédnutí za tento týden jsou o %@ vyšší než v předchozím týdnu.\n";
-
-/* Stats insights views lower than previous week */
-"Your views this week are %@ lower than the previous week.\n" = "Vaše zhlédnutí za tento týden jsou o %@ nižší než v předchozím týdnu.\n";
-
-/* Stats insights label shown when the user's view count is the same as the previous week. */
-"Your views this week are the same as the previous week.\n" = "Vaše názory tento týden jsou stejné jako minulý týden.\n";
-
-/* Stats insights visitors higher than previous week */
-"Your visitors this week are %@ higher than the previous week.\n" = "Vaši návštěvníci jsou tento týden o %@ vyšší než minulý týden.\n";
-
-/* Stats insights visitors lower than previous week */
-"Your visitors this week are %@ lower than the previous week.\n" = "Vaši návštěvníci jsou tento týden o %@ nižší než minulý týden.\n";
-
-/* Stats insights label shown when the user's visitor count is the same as the previous week. */
-"Your visitors this week are the same as the previous week.\n" = "Vaši návštěvníci tento týden jsou stejní jako minulý týden.\n";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Pověření na vašem webu nebudou uložena a budou použita pouze za účelem instalace Jetpack.";
 
@@ -9874,11 +9821,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Pomocí tohoto odkazu můžete připojit členy svého týmu, aniž byste je museli pozvat jeden po druhém. Kdokoli, kdo navštíví tuto adresu URL, se bude moci zaregistrovat do vaší organizace, i když obdržel odkaz od někoho jiného, takže se ujistěte, že jej sdílíte s důvěryhodnými lidmi.";
 
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
-"ios-jetpack-sharesheet.CFBundleDisplayName" = "Uložit do Jetpacku";
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Uložit jako koncept";
 
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
-"ios-jetpack-sharesheet.CFBundleName" = "Uložit do Jetpacku";
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Uložit jako koncept";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Uložit jako koncept";
