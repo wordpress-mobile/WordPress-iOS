@@ -182,7 +182,7 @@ private extension BlockEditorSettingsService {
 // MARK: Shared Events
 private extension BlockEditorSettingsService {
     func clearCoreData(completion: @escaping BlockEditorSettingsServiceCompletion) {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             guard let blogInContext = try? context.existingObject(with: self.blog.objectID) as? Blog else {
                 return
             }
@@ -190,10 +190,10 @@ private extension BlockEditorSettingsService {
                 // Block Editor Settings nullify on delete
                 context.delete(blockEditorSettings)
             }
-        } completion: {
+        }, completion: {
             let result = SettingsServiceResult(hasChanges: true, blockEditorSettings: nil)
             completion(.success(result))
-        }
+        }, on: .main)
     }
 
     func track(isBlockEditorSettings: Bool, isFSE: Bool) {
