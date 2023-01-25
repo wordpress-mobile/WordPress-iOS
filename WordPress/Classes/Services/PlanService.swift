@@ -86,9 +86,9 @@ open class PlanService: NSObject {
 
 
     private func findPlanGroupBySlug(_ slug: String, in context: NSManagedObjectContext) -> PlanGroup? {
-        let groups = allPlanGroups(in: context) as NSArray
-        let results = groups.filtered(using: NSPredicate(format: "slug = %@", slug))
-        return results.first as? PlanGroup
+        allPlanGroups(in: context).first {
+            $0.slug == slug
+        }
     }
 
 
