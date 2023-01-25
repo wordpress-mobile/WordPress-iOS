@@ -22,7 +22,7 @@ final class ReaderShowMenuAction {
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
 
-        // Block button
+        // Block site button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
             let handler: (UIAlertAction) -> Void = { action in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
@@ -41,6 +41,30 @@ final class ReaderShowMenuAction {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
                                                handler: handler)
+        }
+
+        if shouldShowBlockUserMenuItem(post: post) {
+            // Block user button
+            alertController.addActionWithTitle(
+                ReaderPostMenuButtonTitles.blockUser,
+                style: .destructive,
+                handler: { (action: UIAlertAction) in
+                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
+                        ReaderBlockUserAction(asBlocked: true).execute(with: post, context: context, completion: {
+                            ReaderHelpers.dispatchUserBlockedMessage(post: post, success: true)
+
+                            // Notify Reader Cards Stream so the post card is updated.
+                            NotificationCenter.default.post(
+                                name: .ReaderUserBlocked,
+                                object: nil,
+                                userInfo: [ReaderNotificationKeys.post: post]
+                            )
+                        }, failure: { _ in
+                            ReaderHelpers.dispatchUserBlockedMessage(post: post, success: false)
+                        })
+                    }
+                }
+            )
         }
 
         // Report button
@@ -176,6 +200,16 @@ final class ReaderShowMenuAction {
             ReaderHelpers.topicIsDiscover(topic) ||
             ReaderHelpers.topicIsFreshlyPressed(topic) ||
             ReaderHelpers.topicIsFollowing(topic)
+    }
+
+    private func shouldShowBlockUserMenuItem(post: ReaderPost) -> Bool {
+        guard isLoggedIn else {
+            return false
+        }
+
+        // we don't currently handle blocking users on non-WP.com sites due to
+        // author IDs not being unique
+        return post.isWPCom
     }
 
     private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
