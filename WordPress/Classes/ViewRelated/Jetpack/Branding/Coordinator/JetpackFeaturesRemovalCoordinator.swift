@@ -10,7 +10,8 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case two
         case three
         case four
-        case newUsers
+        case newUsers = "new_users"
+        case selfHosted = "self_hosted"
 
         var frequencyConfig: JetpackOverlayFrequencyTracker.FrequencyConfig {
             switch self {
@@ -61,6 +62,11 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             return .normal // Always return normal for Jetpack
         }
 
+
+        if AccountHelper.noWordPressDotComAccount {
+            let selfHostedRemoval = featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted)
+            return selfHostedRemoval ? .selfHosted : .normal
+        }
         if featureFlagStore.value(for: FeatureFlag.jetpackFeaturesRemovalPhaseNewUsers) {
             return .newUsers
         }
@@ -107,15 +113,19 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         return formatter.date(from: dateString)
     }
 
-    /// Used to determine if the Jetpack features are enabled based on the removal phase.
+    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// Default root view coordinator is used.
     @objc
     static func jetpackFeaturesEnabled() -> Bool {
-        switch generalPhase() {
-        case .four, .newUsers:
-            return false
-        default:
-            return true
-        }
+        return jetpackFeaturesEnabled(rootViewCoordinator: .shared)
+    }
+
+    /// Used to determine if the Jetpack features are enabled based on the current app UI type.
+    /// This way we ensure features are not removed before reloading the UI.
+    /// Using two separate methods (rather than one method with a default argument) because Obj-C.
+    /// - Returns: `true` if UI type is normal, and `false` if UI type is simplified.
+    static func jetpackFeaturesEnabled(rootViewCoordinator: RootViewCoordinator) -> Bool {
+        return rootViewCoordinator.currentAppUIType == .normal
     }
 
     /// Used to display feature-specific or feature-collection overlays.
@@ -125,18 +135,20 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     ///   - forced: Pass `true` to override the overlay frequency logic. Default is `false`.
     ///   - fullScreen: If `true` and not on iPad, the fullscreen modal presentation type is used.
     ///   Else the form sheet type is used. Default is `false`.
+    ///   - blog: `Blog` object used to determine if Jetpack is installed in case of the self-hosted phase.
     ///   - onWillDismiss: Callback block to be called when the overlay is about to be dismissed.
     ///   - onDidDismiss: Callback block to be called when the overlay has finished dismissing.
     static func presentOverlayIfNeeded(in viewController: UIViewController,
                                        source: OverlaySource,
                                        forced: Bool = false,
                                        fullScreen: Bool = false,
+                                       blog: Blog? = nil,
                                        onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                        onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source)
+        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog)
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,

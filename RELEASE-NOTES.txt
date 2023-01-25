@@ -1,7 +1,17 @@
+21.7
+-----
+
+
 21.6
 -----
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
 * [**] [internal] Refactored fetching blog editor settings. [#19915]
+* [*] [Jetpack-only] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
+* [***] [Jetpack-only] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
+* [***] [internal] Delete all the activity logs after logging out. [#19930]
+* [*] [Jetpack-only] Fixed an issue where Stats Followers details did not update on Pull-to-refresh in the Stats Followers Details screen [#19935]
+* [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
+* [*] [Jetpack-only] Tweak Migration Screens UI when fonts are enlarged. [#19944]
 
 21.5
 -----
@@ -9,6 +19,7 @@
 * [**] [internal] Disable Story posts when Jetpack features are removed [#19823]
 * [*] [internal] Editor: Only register core blocks when `onlyCoreBlocks` capability is enabled [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5293]
 * [**] [internal] Disable StockPhoto and Tenor media sources when Jetpack features are removed [#19826]
+* [*] [Jetpack-only] Fixed a bug where analytics calls weren't synced to the user account. [#19926]
 
 21.4
 -----

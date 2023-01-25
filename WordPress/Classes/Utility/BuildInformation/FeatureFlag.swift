@@ -3,6 +3,7 @@
 @objc
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingPrompts
+    case bloggingPromptsEnhancements
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -40,6 +41,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseThree
     case jetpackFeaturesRemovalPhaseFour
     case jetpackFeaturesRemovalPhaseNewUsers
+    case jetpackFeaturesRemovalPhaseSelfHosted
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -50,6 +52,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         switch self {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
+        case .bloggingPromptsEnhancements:
+            return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .debugMenu:
@@ -128,6 +132,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return false
+        case .jetpackFeaturesRemovalPhaseSelfHosted:
+            return false
         }
     }
 
@@ -148,6 +154,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_four"
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "jp_removal_new_users"
+        case .jetpackFeaturesRemovalPhaseSelfHosted:
+            return "jp_removal_self_hosted"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
             default:
@@ -172,6 +180,8 @@ extension FeatureFlag {
         switch self {
         case .bloggingPrompts:
             return "Blogging Prompts"
+        case .bloggingPromptsEnhancements:
+            return "Blogging Prompts Enhancements"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -246,6 +256,8 @@ extension FeatureFlag {
             return "Jetpack Features Removal Phase Four"
         case .jetpackFeaturesRemovalPhaseNewUsers:
             return "Jetpack Features Removal Phase For New Users"
+        case .jetpackFeaturesRemovalPhaseSelfHosted:
+            return "Jetpack Features Removal Phase For Self-Hosted Sites"
         }
     }
 

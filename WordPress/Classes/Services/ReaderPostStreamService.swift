@@ -18,7 +18,7 @@ class ReaderPostStreamService {
 
         let remoteService = ReaderPostServiceRemote.withDefaultApi()
         remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { posts, pageHandle in
-            self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave({ context in
                 guard let readerTopic = try? context.existingObject(with: topic.objectID) as? ReaderAbstractTopic else {
                     // if there was an error or the topic was deleted just bail.
                     success(0, false)
@@ -44,10 +44,10 @@ class ReaderPostStreamService {
                 let serivce = ReaderPostService(managedObjectContext: context)
                 serivce.deletePostsInExcessOfMaxAllowed(for: readerTopic)
                 serivce.deletePostsFromBlockedSites()
-            } completion: {
+            }, completion: {
                 let hasMore = pageHandle != nil
                 success(posts.count, hasMore)
-            }
+            }, on: .main)
         }, failure: { error in
             failure(error)
         })

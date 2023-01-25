@@ -87,6 +87,9 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
     }
 
+    /// A boolean indicating whether a site creation or adding self-hosted site flow has been initiated but not yet displayed.
+    var willDisplayPostSignupFlow: Bool = false
+
     private var createButtonCoordinator: CreateButtonCoordinator?
 
     private let meScenePresenter: ScenePresenter
@@ -703,10 +706,11 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @objc
     func launchSiteCreationFromNotification() {
         self.launchSiteCreation(source: "signup_epilogue")
+        willDisplayPostSignupFlow = false
     }
 
     func launchSiteCreation(source: String) {
-        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onWillDismiss: {
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: self, source: source, onDidDismiss: {
             guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                 return
             }
@@ -724,6 +728,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     @objc
     private func showAddSelfHostedSite() {
         WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        willDisplayPostSignupFlow = false
     }
 
     @objc
@@ -1038,10 +1043,10 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
-        if isViewOnScreen() {
-            let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded()
+        if isViewOnScreen(), !willDisplayPostSignupFlow {
+            let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
-                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen)
+                JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
             }
         }
     }

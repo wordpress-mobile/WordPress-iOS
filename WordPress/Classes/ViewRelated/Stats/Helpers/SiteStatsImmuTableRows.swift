@@ -97,11 +97,23 @@ class SiteStatsImmuTableRows {
     }
 
     enum Constants {
-        static let viewsHigher = NSLocalizedString("Your views this week are %@ higher than the previous week.\n", comment: "Stats insights views higher than previous week")
-        static let viewsLower = NSLocalizedString("Your views this week are %@ lower than the previous week.\n", comment: "Stats insights views lower than previous week")
-        static let visitorsHigher = NSLocalizedString("Your visitors this week are %@ higher than the previous week.\n", comment: "Stats insights visitors higher than previous week")
-        static let visitorsLower = NSLocalizedString("Your visitors this week are %@ lower than the previous week.\n", comment: "Stats insights visitors lower than previous week")
-        static let viewsNoDifference = NSLocalizedString("Your views this week are the same as the previous week.\n", comment: "Stats insights label shown when the user's view count is the same as the previous week.")
-        static let visitorsNoDifference = NSLocalizedString("Your visitors this week are the same as the previous week.\n", comment: "Stats insights label shown when the user's visitor count is the same as the previous week.")
+        static let viewsHigher = NSLocalizedString("stats.insights.label.views.sevenDays.higher",
+                                                   value: "Your views in the last 7-days are %@ higher than the previous 7-days.\n",
+                                                   comment: "Stats insights views higher than previous 7 days")
+        static let viewsLower = NSLocalizedString("stats.insights.label.views.sevenDays.lower",
+                                                  value: "Your views in the last 7-days are %@ lower than the previous 7-days.\n",
+                                                  comment: "Stats insights views lower than previous 7 days")
+        static let visitorsHigher = NSLocalizedString("stats.insights.label.visitors.sevenDays.higher",
+                                                      value: "Your visitors in the last 7-days are %@ higher than the previous 7-days.\n",
+                                                      comment: "Stats insights visitors higher than previous 7 days")
+        static let visitorsLower = NSLocalizedString("stats.insights.label.visitors.sevenDays.lower",
+                                                     value: "Your visitors in the last 7-days are %@ lower than the previous 7-days.\n",
+                                                     comment: "Stats insights visitors lower than previous 7 days")
+        static let viewsNoDifference = NSLocalizedString("stats.insights.label.views.sevenDays.same",
+                                                         value: "Your views in the last 7-days are the same as the previous 7-days.\n",
+                                                         comment: "Stats insights label shown when the user's view count is the same as the previous 7 days.")
+        static let visitorsNoDifference = NSLocalizedString("stats.insights.label.visitors.sevenDays.same",
+                                                            value: "Your visitors in the last 7-days are the same as the previous 7-days.\n",
+                                                            comment: "Stats insights label shown when the user's visitor count is the same as the previous 7 days.")
     }
 }

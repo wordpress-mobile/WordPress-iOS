@@ -74,7 +74,8 @@ extension WordPressAuthenticationManager {
                                                    enableSignInWithApple: enableSignInWithApple,
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
-                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled)
+                                                   enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
+                                                   enableSocialLogin: true)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
@@ -386,7 +387,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.onCreateNewSite = {
             let source = "login_epilogue"
-            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onWillDismiss: {
+            JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: navigationController, source: source, onDidDismiss: {
                 guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
                     return
                 }
@@ -691,6 +692,11 @@ private extension WordPressAuthenticationManager {
     private func syncWPCom(authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
         let service = WordPressComSyncService()
 
+        // Create a dispatch group to wait for both API calls.
+        let syncGroup = DispatchGroup()
+
+        // Sync account and blog
+        syncGroup.enter()
         service.syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
 
             /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
@@ -699,14 +705,21 @@ private extension WordPressAuthenticationManager {
             let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
 
-            // Refresh Remote Feature Flags
-            WordPressAppDelegate.shared?.updateFeatureFlags()
-
-            onCompletion()
-
+            syncGroup.leave()
         }, onFailure: { _ in
-            onCompletion()
+            syncGroup.leave()
         })
+
+        // Refresh Remote Feature Flags
+        syncGroup.enter()
+        WordPressAppDelegate.shared?.updateFeatureFlags(authToken: authToken, completion: {
+            syncGroup.leave()
+        })
+
+        // Sync done
+        syncGroup.notify(queue: .main) {
+            onCompletion()
+        }
     }
 
     /// Synchronizes a WordPress.org account with the specified credentials.

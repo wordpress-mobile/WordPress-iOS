@@ -1,5 +1,3 @@
-* [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]
-* [**] [internal] Disable Story posts when Jetpack features are removed [#19823]
-* [*] [internal] Editor: Only register core blocks when `onlyCoreBlocks` capability is enabled [https://github.com/wordpress-mobile/gutenberg-mobile/pull/5293]
-* [**] [internal] Disable StockPhoto and Tenor media sources when Jetpack features are removed [#19826]
-
+* [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
+* [***] [internal] Delete all the activity logs after logging out. [#19930]
+* [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]

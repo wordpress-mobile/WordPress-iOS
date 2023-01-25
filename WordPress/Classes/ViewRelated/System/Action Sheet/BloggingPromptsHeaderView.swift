@@ -31,6 +31,7 @@ class BloggingPromptsHeaderView: UIView, NibLoadable {
     static func view(for prompt: BloggingPrompt?) -> BloggingPromptsHeaderView {
         let promptsHeaderView = BloggingPromptsHeaderView.loadFromNib()
         promptsHeaderView.configure(prompt)
+        WPAnalytics.track(.promptsBottomSheetViewed)
         return promptsHeaderView
     }
 }

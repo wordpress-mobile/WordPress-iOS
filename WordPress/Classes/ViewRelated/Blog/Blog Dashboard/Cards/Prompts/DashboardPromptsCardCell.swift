@@ -4,7 +4,6 @@ import WordPressUI
 import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
-
     // MARK: - Public Properties
 
     // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
@@ -164,17 +163,31 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return trainContainerView
     }
 
-    private var answerInfoLabel: UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = answerInfoText
-        label.font = WPStyleGuide.BloggingPrompts.answerInfoLabelFont
-        label.textColor = WPStyleGuide.BloggingPrompts.answerInfoLabelColor
-        label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
+    private var answerInfoButton: UIButton {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(answerInfoText, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
+        button.setTitleColor(
+            FeatureFlag.bloggingPromptsEnhancements.enabled
+            ? WPStyleGuide.BloggingPrompts.buttonTitleColor
+            : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
+            for: .normal
+        )
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.addTarget(self, action: #selector(didTapAnswerInfoButton), for: .touchUpInside)
+        return button
+    }
 
-        return label
+    @objc
+    private func didTapAnswerInfoButton() {
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        let promptID = prompt?.promptID else {
+            return
+        }
+        RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
+        WPAnalytics.track(.promptsOtherAnswersTapped)
     }
 
     private var answerInfoView: UIView {
@@ -182,7 +195,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.answerInfoViewSpacing
-        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoLabel])
+        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoButton])
 
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -534,6 +547,10 @@ private extension DashboardPromptsCardCell {
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
+        static let dailyPromptsSearchText = NSLocalizedString(
+            "dailyprompts",
+            comment: "Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people"
+        )
     }
 
     struct Style {
@@ -554,6 +571,7 @@ private extension DashboardPromptsCardCell {
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
+        static let dailyPromptTag = "dailyprompt"
     }
 
     // MARK: Contextual Menu
@@ -569,7 +587,7 @@ private extension DashboardPromptsCardCell {
             case .viewMore:
                 return NSLocalizedString("View more prompts", comment: "Menu title to show more prompts.")
             case .skip:
-                return NSLocalizedString("Skip this prompt", comment: "Menu title to skip today's prompt.")
+                return NSLocalizedString("Skip for today", comment: "Menu title to skip today's prompt.")
             case .remove:
                 return NSLocalizedString("Remove from dashboard", comment: "Destructive menu title to remove the prompt card from the dashboard.")
             case .learnMore:

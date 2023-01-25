@@ -197,6 +197,7 @@
 
 /* Add New Stats Card category title
    Noun. Links to a blog's Activity screen.
+   Noun. Name of the Activity Log feature
    Title for the activity list */
 "Activity" = "Aktivita";
 
@@ -1654,7 +1655,8 @@
 /* H6 Aztec Style */
 "Heading 6" = "Nadpis 6";
 
-/* Help button */
+/* Help button
+   Open editor help options */
 "Help" = "Pomoc";
 
 /* Link to Help section
@@ -2193,6 +2195,7 @@
 "Menu Name" = "Názov menu";
 
 /* Menus option in the blog details
+   Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu";
 
@@ -2495,6 +2498,7 @@
 /* Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
+   Noun. Name of the Notifications feature
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Upozornenia";
@@ -3012,7 +3016,8 @@
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Prečítajte si zdrojový príspevok";
 
-/* The accessibility value of the Reader tab.
+/* Noun. Name of the Reader feature
+   The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
    The menu item to select during a guided tour.
@@ -3456,7 +3461,8 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podeľte sa o svoj príbeh...";
 
-/* Noun. Title. Links to a blog's sharing options.
+/* Noun. Name of the Social Sharing feature
+   Noun. Title. Links to a blog's sharing options.
    The menu item to select during a guided tour.
    Title for blog detail sharing screen. */
 "Sharing" = "Zdieľanie";
@@ -3683,6 +3689,7 @@
 "Start Over" = "Začať znova";
 
 /* Label for post stats option. Tapping displays statistics for a post.
+   Noun. Abbreviation of Statistics. Name of the Stats feature
    Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Noun. Title for stats button.
    Stats 3D Touch Shortcut
@@ -3936,7 +3943,8 @@
 /* Title of alert when theme activation succeeds */
 "Theme Activated" = "Téma aktivovaná";
 
-/* The menu item to select during a guided tour.
+/* Noun. Name of the Themes feature
+   The menu item to select during a guided tour.
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Témy";
@@ -4982,9 +4990,6 @@
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "nasledujúce položky budú zmazané:";
-
-/* Today */
-"today" = "dnes";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "neznáma url adresa";

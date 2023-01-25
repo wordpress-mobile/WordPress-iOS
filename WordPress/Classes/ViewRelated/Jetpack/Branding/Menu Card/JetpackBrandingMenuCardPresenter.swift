@@ -9,30 +9,35 @@ class JetpackBrandingMenuCardPresenter {
         }
 
         let description: String
-        let learnMoreButtonURL: String?
         let type: CardType
     }
 
     // MARK: Private Variables
 
+    private let blog: Blog?
     private let remoteConfigStore: RemoteConfigStore
     private let persistenceStore: UserPersistentRepository
     private let currentDateProvider: CurrentDateProvider
     private let featureFlagStore: RemoteFeatureFlagStore
+    private let rootViewCoordinator: RootViewCoordinator
     private var phase: JetpackFeaturesRemovalCoordinator.GeneralPhase {
         return JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: featureFlagStore)
     }
 
     // MARK: Initializers
 
-    init(remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+    init(blog: Blog?,
+         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
          featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
          persistenceStore: UserPersistentRepository = UserDefaults.standard,
-         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider()) {
+         currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider(),
+         rootViewCoordinator: RootViewCoordinator = .shared) {
+        self.blog = blog
         self.remoteConfigStore = remoteConfigStore
         self.persistenceStore = persistenceStore
         self.currentDateProvider = currentDateProvider
         self.featureFlagStore = featureFlagStore
+        self.rootViewCoordinator = rootViewCoordinator
     }
 
     // MARK: Public Functions
@@ -41,12 +46,16 @@ class JetpackBrandingMenuCardPresenter {
         switch phase {
         case .three:
             let description = Strings.phaseThreeDescription
-            let url = RemoteConfig(store: remoteConfigStore).phaseThreeBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .expanded)
+            return .init(description: description, type: .expanded)
         case .four:
             let description = Strings.phaseFourTitle
-            let url = RemoteConfig(store: remoteConfigStore).phaseFourBlogPostUrl.value
-            return .init(description: description, learnMoreButtonURL: url, type: .compact)
+            return .init(description: description, type: .compact)
+        case .newUsers:
+            let description = Strings.newUsersPhaseDescription
+            return .init(description: description, type: .expanded)
+        case .selfHosted:
+            let description = Strings.selfHostedPhaseDescription
+            return .init(description: description, type: .expanded)
         default:
             return nil
         }
@@ -56,9 +65,12 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        switch phase {
-        case .three:
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(rootViewCoordinator: rootViewCoordinator)
+        switch (phase, jetpackFeaturesEnabled) {
+        case (.three, true):
             return true
+        case (.selfHosted, false):
+            return blog?.jetpackIsConnected ?? false
         default:
             return false
         }
@@ -68,8 +80,11 @@ class JetpackBrandingMenuCardPresenter {
         guard isCardEnabled() else {
             return false
         }
-        switch phase {
-        case .four:
+        let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(rootViewCoordinator: rootViewCoordinator)
+        switch (phase, jetpackFeaturesEnabled) {
+        case (.four, false):
+            fallthrough
+        case (.newUsers, false):
             return true
         default:
             return false
@@ -115,7 +130,7 @@ extension JetpackBrandingMenuCardPresenter {
         WPAnalytics.track(.jetpackBrandingMenuCardTapped, properties: analyticsProperties)
     }
 
-    func trackContexualMenuAccessed() {
+    func trackContextualMenuAccessed() {
         WPAnalytics.track(.jetpackBrandingMenuCardContextualMenuAccessed, properties: analyticsProperties)
     }
 
@@ -184,5 +199,9 @@ private extension JetpackBrandingMenuCardPresenter {
         static let phaseFourTitle = NSLocalizedString("jetpack.menuCard.phaseFour.title",
                                                            value: "Switch to Jetpack",
                                                            comment: "Title of a button prompting users to switch to the Jetpack app.")
+        static let newUsersPhaseDescription = NSLocalizedString("jetpack.menuCard.newUsers.title",
+                                                                value: "Unlock your site’s full potential. Get Stats, Reader, Notifications and more with Jetpack.",
+                                                                comment: "Description inside a menu card prompting users to switch to the Jetpack app.")
+        static let selfHostedPhaseDescription = newUsersPhaseDescription
     }
 }

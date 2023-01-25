@@ -16,6 +16,7 @@ private enum UPRUConstants {
     static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
+    static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -166,12 +167,22 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var isJPContentImportComplete: Bool {
+    var jetpackContentMigrationState: MigrationState {
         get {
-            return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.isJPContentImportCompleteKey)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.isJPContentImportCompleteKey)
+            let repository = UserPersistentStoreFactory.instance()
+            if let value = repository.string(forKey: UPRUConstants.jetpackContentMigrationStateKey) {
+                return MigrationState(rawValue: value) ?? .notStarted
+            } else if repository.bool(forKey: UPRUConstants.isJPContentImportCompleteKey) {
+                // Migrate the value of the old `isJPContentImportCompleteKey` to `jetpackContentMigrationStateKey`
+                let state = MigrationState.completed
+                repository.set(state.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
+                repository.set(nil, forKey: UPRUConstants.isJPContentImportCompleteKey)
+                return state
+            } else {
+                return .notStarted
+            }
+        } set {
+            UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
         }
     }
 }

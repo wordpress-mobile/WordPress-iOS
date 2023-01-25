@@ -437,7 +437,7 @@ extension InvitePersonViewController {
     }
 
     @objc func sendInvitation(_ blog: Blog, recipient: String, role: String, message: String) {
-        guard let service = PeopleService(blog: blog, context: context) else {
+        guard let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             return
         }
 
@@ -503,7 +503,7 @@ extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func validateInvitation() {
-        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, context: context) else {
+        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared) else {
             sendActionEnabled = false
             return
         }
@@ -669,7 +669,7 @@ private extension InvitePersonViewController {
         guard let siteID = blog.dotComID?.intValue else {
             return
         }
-        let service = PeopleService(blog: blog, context: context)
+        let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
         service?.fetchInviteLinks(siteID, success: { [weak self] _ in
             self?.bumpStat(event: .inviteLinksGetStatus, error: nil)
             self?.updatingInviteLinks = false
@@ -690,7 +690,7 @@ private extension InvitePersonViewController {
             return
         }
         updatingInviteLinks = true
-        let service = PeopleService(blog: blog, context: context)
+        let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
         service?.generateInviteLinks(siteID, success: { [weak self] _ in
             self?.bumpStat(event: .inviteLinksGenerate, error: nil)
             self?.updatingInviteLinks = false
@@ -739,7 +739,7 @@ private extension InvitePersonViewController {
             return
         }
         updatingInviteLinks = true
-        let service = PeopleService(blog: blog, context: context)
+        let service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
         service?.disableInviteLinks(siteID, success: { [weak self] in
             self?.bumpStat(event: .inviteLinksDisable, error: nil)
             self?.updatingInviteLinks = false

@@ -70,7 +70,7 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
     }()
 
     private lazy var domainService = {
-        DomainsService(managedObjectContext: context, remote: domainsServiceRemote)
+        DomainsService(coreDataStack: ContextManager.shared, remote: domainsServiceRemote)
     }()
 
     private lazy var domainsServiceRemote = {

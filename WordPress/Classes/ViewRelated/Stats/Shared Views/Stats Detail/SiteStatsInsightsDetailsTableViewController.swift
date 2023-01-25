@@ -212,7 +212,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
         refreshControl.beginRefreshing()
 
         switch statSection {
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             viewModel?.refreshFollowers()
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             viewModel?.refreshComments()
