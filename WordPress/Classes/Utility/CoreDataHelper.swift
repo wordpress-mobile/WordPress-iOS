@@ -189,7 +189,9 @@ extension CoreDataStack {
             if case .success = result {
                 self.saveContextAndWait(context)
             }
-            completion?(result)
+            DispatchQueue.main.async {
+                completion?(result)
+            }
         }
     }
 

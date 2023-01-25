@@ -48,7 +48,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             return
         }
 
-        let plansService = PlanService.init(managedObjectContext: context)
+        let plansService = PlanService(coreDataStack: ContextManager.shared)
         plansService.getWpcomPlans(account,
                                    success: { [weak self] in
             self?.updateViewModel()
@@ -59,13 +59,14 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func updateViewModel() {
-        let service = PlanService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let allPlans = service.allPlans()
+        let contextManager = ContextManager.shared
+        let service = PlanService(coreDataStack: contextManager)
+        let allPlans = service.allPlans(in: contextManager.mainContext)
         guard allPlans.count > 0 else {
             viewModel = .error
             return
         }
-        viewModel = .ready(allPlans, service.allPlanFeatures())
+        viewModel = .ready(allPlans, service.allPlanFeatures(in: contextManager.mainContext))
     }
 
     func configureAppearance() {

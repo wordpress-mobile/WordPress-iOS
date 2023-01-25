@@ -7,10 +7,12 @@
 * [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
 * [**] [internal] Refactor saving changes in the "Account Settings" page. [#19910]
 * [*] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
+* [**] [internal] Refactored fetching blog editor settings. [#19915]
 * [*] [Jetpack-only] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
 * [***] [Jetpack-only] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
 * [***] [internal] Delete all the activity logs after logging out. [#19930]
 * [*] [Jetpack-only] Fixed an issue where Stats Followers details did not update on Pull-to-refresh in the Stats Followers Details screen [#19935]
+* [**] Refactored loading WP.com plans. [#19949]
 * [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
 * [*] [Jetpack-only] Tweak Migration Screens UI when fonts are enlarged. [#19944]
 
