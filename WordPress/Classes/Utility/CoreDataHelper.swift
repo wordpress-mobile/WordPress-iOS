@@ -189,7 +189,9 @@ extension CoreDataStack {
             if case .success = result {
                 self.saveContextAndWait(context)
             }
-            completion?(result)
+            DispatchQueue.main.async {
+                completion?(result)
+            }
         }
     }
 
@@ -199,6 +201,15 @@ extension CoreDataStack {
                 continuation.resume(with: $0)
             }
         }
+    }
+
+    /// Perform a query using the `mainContext` and return the result.
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
+        var value: T! = nil
+        self.mainContext.performAndWait {
+            value = block(self.mainContext)
+        }
+        return value
     }
 
     // MARK: - Database Migration

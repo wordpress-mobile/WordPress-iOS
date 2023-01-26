@@ -43,7 +43,7 @@ class ReaderCardService {
 
                                 self.pageHandle = pageHandle
 
-                                self.coreDataStack.performAndSave { context in
+                                self.coreDataStack.performAndSave({ context in
                                     if isFirstPage {
                                         self.pageNumber = 1
                                         self.removeAllCards(in: context)
@@ -79,10 +79,10 @@ class ReaderCardService {
                                         // To keep the API order
                                         card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
                                     }
-                                } completion: {
+                                }, completion: {
                                     let hasMore = pageHandle != nil
                                     success(cards.count, hasMore)
-                                }
+                                }, on: .main)
             }, failure: { error in
                 failure(error)
             })

@@ -212,7 +212,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                             BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
                             success(hasMore);
                         }
-                    }];
+                    } onQueue:dispatch_get_main_queue()];
                 }];
             }];
         }];
@@ -377,11 +377,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        success(comment);
-                    });
+                    success(comment);
                 }
-            }];
+            } onQueue:dispatch_get_main_queue()];
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error loading comment for blog: %@", error);
@@ -423,11 +421,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        success(comment);
-                    });
+                    success(comment);
                 }
-            }];
+            } onQueue:dispatch_get_main_queue()];
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error loading comment for post: %@", error);
@@ -586,9 +582,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 if (failure) {
                     failure(error);
                 }
-            }];
+            } onQueue:dispatch_get_main_queue()];
         }];
-    }];
+    } onQueue:dispatch_get_main_queue()];
 }
 
 #pragma mark - Post-centric methods
@@ -1052,11 +1048,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        if (completion) {
-            dispatch_async(dispatch_get_main_queue(), completion);
-        }
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
 }
 
 #pragma mark - Post centric methods
@@ -1253,7 +1245,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         onComplete(newCommentCount > 0);
-    }];
+    } onQueue:dispatch_get_main_queue()];
 }
 
 // Does not save context

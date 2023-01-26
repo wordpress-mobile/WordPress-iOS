@@ -268,15 +268,13 @@ final class NotificationSyncMediator {
     ///
     func deleteNote(noteID: String) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
-            contextManager.performAndSave { context in
+            contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
 
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            } completion: {
-                done()
-            }
+            }, completion: done, on: .main)
         })
     }
 
@@ -290,14 +288,12 @@ final class NotificationSyncMediator {
     ///
     func invalidateCacheForNotifications(_ noteIDs: [String]) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
-            contextManager.performAndSave { context in
+            contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
                 let notifications = context.allObjects(ofType: Notification.self, matching: predicate)
 
                 notifications.forEach { $0.notificationHash = nil }
-            } completion: {
-                done()
-            }
+            }, completion: done, on: .main)
         })
     }
 }
@@ -350,19 +346,19 @@ private extension NotificationSyncMediator {
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
-            contextManager.performAndSave { context in
+            contextManager.performAndSave({ context in
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
                     let localNote = context.firstObject(ofType: Notification.self, matching: predicate) ?? context.insertNewObject(ofType: Notification.self)
 
                     localNote.update(with: remoteNote)
                 }
-            } completion: {
+            }, completion: {
                 done()
                 DispatchQueue.main.async {
                     completion?()
                 }
-            }
+            }, on: .global())
         })
     }
 
@@ -374,19 +370,19 @@ private extension NotificationSyncMediator {
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
-            contextManager.performAndSave { context in
+            contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
 
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            } completion: {
+            }, completion: {
                 done()
                 DispatchQueue.main.async {
                     completion()
                 }
-            }
+            }, on: .global())
         })
     }
 

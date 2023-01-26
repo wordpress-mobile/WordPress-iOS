@@ -302,10 +302,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
-        let blog = post.blog
-        guard let context = blog.managedObjectContext else { return nil }
-
-        return BlockEditorSettingsService(blog: blog, context: context)
+        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
     }()
 
     // MARK: - Initializers
