@@ -24,12 +24,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 @implementation BlogService
 
-+ (instancetype)serviceWithMainContext
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    return [[BlogService alloc] initWithManagedObjectContext:context];
-}
-
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure

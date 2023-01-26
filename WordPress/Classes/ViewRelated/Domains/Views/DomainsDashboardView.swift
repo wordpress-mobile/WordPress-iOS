@@ -5,7 +5,7 @@ import WordPressKit
 struct DomainsDashboardView: View {
     @ObservedObject var blog: Blog
     @State var isShowingDomainRegistrationFlow = false
-    @State var blogService = BlogService.withMainContext()
+    @State var blogService = BlogService(coreDataStack: ContextManager.shared)
     @State var domainsList: [Blog.DomainRepresentation] = []
 
     // Property observer

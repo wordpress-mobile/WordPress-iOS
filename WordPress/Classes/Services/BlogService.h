@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 #import "Blog.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -10,11 +10,7 @@ extern NSString *const WPBlogUpdatedNotification;
 @class WPAccount;
 @class SiteInfo;
 
-@interface BlogService : LocalCoreDataService
-
-+ (instancetype)serviceWithMainContext;
-
-- (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+@interface BlogService : CoreDataService
 
 /**
  *  Sync all available blogs for an acccount
