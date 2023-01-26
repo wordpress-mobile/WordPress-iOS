@@ -48,7 +48,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             return
         }
         guard let defaultSiteID = defaultSiteID else {
-            let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey) ?? false
+            let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
             if loggedIn {
                 completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
@@ -127,5 +127,4 @@ enum StatsWidgetKind {
     case today
     case allTime
     case thisWeek
-    // TODD:- Might add disabled here
 }
