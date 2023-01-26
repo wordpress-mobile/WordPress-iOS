@@ -65,6 +65,13 @@ struct StatsTotalInsightsData {
     }
 
     public static func makeTotalInsightsGuideText(lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
+
+        /// NSAttributedString initialized with HTML on the background  crashes the app
+        /// This method can be called when traitCollectionDidChange which can be triggered when app goes to background
+        guard UIApplication.shared.applicationState != .background else {
+            return nil
+        }
+
         switch statsSummaryType {
         case .likes:
             guard let summary = lastPostInsight else {
