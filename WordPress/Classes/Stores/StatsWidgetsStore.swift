@@ -7,9 +7,11 @@ class StatsWidgetsStore {
     init(blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
         self.blogService = blogService
 
+        updateJetpackFeaturesEnabled()
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
         observeApplicationLaunched()
+        observeJetpackFeaturesState()
     }
 
     /// Refreshes the site list used to configure the widgets when sites are added or deleted
@@ -287,6 +289,26 @@ private extension StatsWidgetsStore {
                                                object: nil,
                                                queue: nil) { [weak self] _ in
             self?.handleJetpackWidgetsMigration()
+        }
+    }
+
+    func observeJetpackFeaturesState() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateJetpackFeaturesEnabled),
+                                               name: .WPAppUITypeChanged,
+                                               object: nil)
+    }
+
+    @objc func updateJetpackFeaturesEnabled() {
+        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+        let key = AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesEnabledKey
+        let oldValue = defaults.bool(forKey: key)
+        let newValue = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        defaults.setValue(newValue, forKey: key)
+        if oldValue != newValue {
+            refreshStatsWidgetsSiteList()
         }
     }
 }
