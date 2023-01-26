@@ -377,7 +377,7 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
                                                      value: "Get your notifications with the Jetpack app",
                                                      comment: "Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
                 static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.notifications.subtitle",
-                                                     value: "Switch to the Jetpack app to keep recieving real-time notifications on your device.",
+                                                     value: "Switch to the Jetpack app to keep receiving real-time notifications on your device.",
                                                      comment: "Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app.")
             }
         }
