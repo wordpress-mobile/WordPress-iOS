@@ -87,4 +87,9 @@ enum LocalizableStrings {
     static let unavailableViewTitle = AppLocalizedString("widget.today.view.unavailable.title",
                                                          value: "View is unavailable",
                                                          comment: "Error message to show if a widget view is unavailable")
+
+    // Stats disabled view
+    static let statsDisabledViewTitle = AppLocalizedString("widget.today.disabled.view.title",
+                                                           value: "Stats have moved to the Jetpack app. Switching is free and only takes a minute.",
+                                                           comment: "Title of the disabled view in today widget")
 }

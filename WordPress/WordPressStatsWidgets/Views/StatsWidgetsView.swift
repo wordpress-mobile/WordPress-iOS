@@ -19,7 +19,9 @@ struct StatsWidgetsView: View {
         case .noData:
             UnconfiguredView(widgetKind: .noStats)
                 .widgetURL(nil)
-
+        case .disabled:
+            UnconfiguredView(widgetKind: .disabled)
+                .widgetURL(nil)
         case .siteSelected(let content, _):
             if let viewData = makeGroupedViewData(from: content) {
                 switch family {

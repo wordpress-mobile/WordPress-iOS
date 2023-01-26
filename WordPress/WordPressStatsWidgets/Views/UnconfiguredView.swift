@@ -22,6 +22,8 @@ struct UnconfiguredView: View {
             return AppConfiguration.Widget.Localization.unconfiguredViewThisWeekTitle
         case .noStats:
             return LocalizableStrings.noDataViewTitle
+        case .disabled:
+            return LocalizableStrings.statsDisabledViewTitle
         }
     }
 }

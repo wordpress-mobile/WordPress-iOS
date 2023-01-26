@@ -125,4 +125,5 @@ enum StatsWidgetKind {
     case allTime
     case thisWeek
     case noStats
+    case disabled
 }
