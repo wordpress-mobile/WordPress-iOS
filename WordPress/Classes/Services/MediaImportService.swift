@@ -55,9 +55,9 @@ open class MediaImportService: LocalCoreDataService {
             let exportProgress = exporter.export(onCompletion: { export in
                 self.managedObjectContext.perform {
                     self.configureMedia(media, withExport: export)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                         onCompletion(media)
-                    })
+                    }, on: .main)
                 }
             }, onError: { mediaExportError in
                 self.handleExportError(mediaExportError, errorHandler: onError)

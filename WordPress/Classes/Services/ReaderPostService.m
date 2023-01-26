@@ -285,7 +285,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                     if (failure) {
                         failure(error);
                     }
-                }];
+                } onQueue:dispatch_get_main_queue()];
             }];
         };
 
@@ -510,7 +510,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                     if (failure) {
                         failure(error);
                     }
-                }];
+                } onQueue:dispatch_get_main_queue()];
             }];
         };
         
@@ -895,7 +895,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             if (success) {
                 success(postsCount, hasMore);
             }
-        }];
+        } onQueue:dispatch_get_main_queue()];
     }];
 }
 

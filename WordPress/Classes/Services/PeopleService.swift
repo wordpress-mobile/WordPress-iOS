@@ -41,11 +41,11 @@ struct PeopleService {
     ///
     func loadUsersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getUsers(siteID, offset: offset, count: count, success: { users, hasMore in
-            coreDataStack.performAndSave { context in
+            coreDataStack.performAndSave({ context in
                 self.mergePeople(users, in: context)
-            } completion: {
+            }, completion: {
                 success(users.count, hasMore)
-            }
+            }, on: .main)
         }, failure: { error in
             DDLogError(String(describing: error))
             failure?(error)
@@ -62,11 +62,11 @@ struct PeopleService {
     ///
     func loadFollowersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
-            coreDataStack.performAndSave { context in
+            coreDataStack.performAndSave({ context in
                 self.mergePeople(followers, in: context)
-            } completion: {
+            }, completion: {
                 success(followers.count, hasMore)
-            }
+            }, on: .main)
         }, failure: { error in
             DDLogError(String(describing: error))
             failure?(error)
@@ -87,11 +87,11 @@ struct PeopleService {
                                 failure: ((Error) -> Void)? = nil) {
         let page = (offset / count) + 1
         remote.getEmailFollowers(siteID, page: page, max: count, success: { followers, hasMore in
-            self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave({ context in
                 self.mergePeople(followers, in: context)
-            } completion: {
+            }, completion: {
                 success(followers.count, hasMore)
-            }
+            }, on: .main)
         }, failure: { error in
             DDLogError(String(describing: error))
             failure?(error)
@@ -108,11 +108,11 @@ struct PeopleService {
     ///
     func loadViewersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getViewers(siteID, offset: offset, count: count, success: { viewers, hasMore in
-            self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave({ context in
                 self.mergePeople(viewers, in: context)
-            } completion: {
+            }, completion: {
                 success(viewers.count, hasMore)
-            }
+            }, on: .main)
         }, failure: { error in
             DDLogError(String(describing: error))
             failure?(error)
@@ -437,7 +437,7 @@ extension PeopleService {
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
     func deleteInviteLinks(keys: [String], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             let request = InviteLinks.fetchRequest() as NSFetchRequest<InviteLinks>
             request.predicate = NSPredicate(format: "inviteKey IN %@ AND blog.blogID = %@", keys, NSNumber(value: siteID))
 
@@ -449,11 +449,7 @@ extension PeopleService {
             } catch {
                 DDLogError("Error fetching stale invite links: \(error)")
             }
-        } completion: {
-            DispatchQueue.main.async {
-                onComplete()
-            }
-        }
+        }, completion: onComplete, on: .main)
     }
 
     /// Markes for deletion InviteLinks whose inviteKeys are not included in the supplied array of keys.
@@ -515,13 +511,13 @@ private extension PeopleService {
         success: (() -> Void)?,
         failure: ((Error) -> Void)?
     ) {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             guard let managedPerson = managedPersonFromPerson(person, in: context) else {
                 return
             }
             // Pre-emptively nuke the entity
             context.delete(managedPerson)
-        } completion: {
+        }, completion: {
             // Hit the Backend
             api { result in
                 switch result {
@@ -529,14 +525,14 @@ private extension PeopleService {
                     success?()
                 case let .failure(error):
                     // Revert the deletion
-                    self.coreDataStack.performAndSave { context in
+                    self.coreDataStack.performAndSave({ context in
                         self.createManagedPerson(person, in: context)
-                    } completion: {
+                    }, completion: {
                         failure?(error)
-                    }
+                    }, on: .main)
                 }
             }
-        }
+        }, on: .main)
 
     }
 

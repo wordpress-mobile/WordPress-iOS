@@ -7,7 +7,7 @@ class JetpackOverlayView: UIView {
 
     private var dismissButtonTintColor: UIColor {
         UIColor(light: .muriel(color: .gray, .shade5),
-                dark: .muriel(color: .jetpackGreen, .shade90))
+                       dark: .muriel(color: .jetpackGreen, .shade90).lightVariant())
     }
 
     private var dismissButtonImage: UIImage {

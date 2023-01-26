@@ -5,7 +5,6 @@ import WordPressKit
 class AtomicAuthenticationService {
 
     let remote: AtomicAuthenticationServiceRemote
-    fileprivate let context = ContextManager.sharedInstance().mainContext
 
     init(remote: AtomicAuthenticationServiceRemote) {
         self.remote = remote
