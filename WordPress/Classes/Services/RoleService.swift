@@ -6,11 +6,11 @@ import WordPressKit
 struct RoleService {
     let blog: Blog
 
-    fileprivate let context: NSManagedObjectContext
+    fileprivate let coreDataStack: CoreDataStack
     fileprivate let remote: PeopleServiceRemote
     fileprivate let siteID: Int
 
-    init?(blog: Blog, context: NSManagedObjectContext) {
+    init?(blog: Blog, coreDataStack: CoreDataStack) {
         guard let api = blog.wordPressComRestApi(), let dotComID = blog.dotComID as? Int else {
             return nil
         }
@@ -18,28 +18,22 @@ struct RoleService {
         self.remote = PeopleServiceRemote(wordPressComRestApi: api)
         self.siteID = dotComID
         self.blog = blog
-        self.context = context
-    }
-
-    /// Returns a role from Core Data with the given slug.
-    ///
-    func getRole(slug: String) -> Role? {
-        let predicate = NSPredicate(format: "slug = %@ AND blog = %@", slug, blog)
-        return context.firstObject(ofType: Role.self, matching: predicate)
+        self.coreDataStack = coreDataStack
     }
 
     /// Forces a refresh of roles from the api and stores them in Core Data.
     ///
-    func fetchRoles(success: @escaping ([Role]) -> Void, failure: @escaping (Error) -> Void) {
+    func fetchRoles(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         remote.getUserRoles(siteID, success: { (remoteRoles) in
-            let roles = self.mergeRoles(remoteRoles)
-            success(roles)
+            self.coreDataStack.performAndSave({ context in
+                self.mergeRoles(remoteRoles, in: context)
+            }, completion: success, on: .main)
         }, failure: failure)
     }
 }
 
 private extension RoleService {
-    func mergeRoles(_ remoteRoles: [RemoteRole]) -> [Role] {
+    func mergeRoles(_ remoteRoles: [RemoteRole], in context: NSManagedObjectContext) {
         let existingRoles = blog.roles ?? []
         var rolesToKeep = [Role]()
         for (order, remoteRole) in remoteRoles.enumerated() {
@@ -57,7 +51,5 @@ private extension RoleService {
         }
         let rolesToDelete = existingRoles.subtracting(rolesToKeep)
         rolesToDelete.forEach(context.delete(_:))
-        ContextManager.sharedInstance().save(context)
-        return rolesToKeep
     }
 }
