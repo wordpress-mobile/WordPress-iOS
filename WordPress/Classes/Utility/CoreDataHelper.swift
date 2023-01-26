@@ -203,6 +203,15 @@ extension CoreDataStack {
         }
     }
 
+    /// Perform a query using the `mainContext` and return the result.
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
+        var value: T! = nil
+        self.mainContext.performAndWait {
+            value = block(self.mainContext)
+        }
+        return value
+    }
+
     // MARK: - Database Migration
 
     /// Creates a copy of the current open store and saves it to the specified destination
