@@ -136,6 +136,9 @@
 		0107E18D29000E3300DE87DB /* AppStyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2538E26116A1600EDAF88 /* AppStyleGuide.swift */; };
 		0107E18E29000EA100DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
 		0107E18F29000EA200DE87DB /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
+		0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
+		0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */; };
+		014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */; };
 		0147D64E294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
 		0147D64F294B1E1600AA6410 /* StatsRevampStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */; };
 		0147D651294B6EA600AA6410 /* StatsRevampStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */; };
@@ -5526,6 +5529,8 @@
 		0107E1842900059300DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		0107E1862900065400DE87DB /* LocalizationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationConfiguration.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
+		0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfiguration.swift; sourceTree = "<group>"; };
+		0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportConfigurationTests.swift; sourceTree = "<group>"; };
 		0147D64D294B1E1600AA6410 /* StatsRevampStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStore.swift; sourceTree = "<group>"; };
 		0147D650294B6EA600AA6410 /* StatsRevampStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRevampStoreTests.swift; sourceTree = "<group>"; };
 		0148CC282859127F00CF5D96 /* StatsWidgetsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsWidgetsStoreTests.swift; sourceTree = "<group>"; };
@@ -9268,6 +9273,14 @@
 				0107E1842900059300DE87DB /* LocalizationConfiguration.swift */,
 			);
 			path = JetpackStatsWidgets;
+			sourceTree = "<group>";
+		};
+		0141929E2983F5D900CAEDB0 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		027AC51F2278982D0033E56E /* DomainCredit */ = {
@@ -13465,6 +13478,7 @@
 				98077B592075561800109F95 /* SupportTableViewController.swift */,
 				F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */,
 				F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */,
+				0141929B2983F0A300CAEDB0 /* SupportConfiguration.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -14896,6 +14910,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				0141929E2983F5D900CAEDB0 /* Support */,
 				F41E4E8F28F1949D001880C6 /* App Icons */,
 				AC68C9C728E5DEB1009030A9 /* Notification */,
 				C3C2F84428AC8B9E00937E45 /* Jetpack */,
@@ -21559,6 +21574,7 @@
 				809101982908DE8500FCB4EA /* JetpackFullscreenOverlayViewModel.swift in Sources */,
 				9A034CEB237DB8660047B41B /* StatsForegroundObservable.swift in Sources */,
 				8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */,
+				0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */,
 				9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */,
@@ -22599,6 +22615,7 @@
 				80535DC5294BF4BE00873161 /* JetpackBrandingMenuCardPresenterTests.swift in Sources */,
 				7EAA66EF22CB36FD00869038 /* TestAnalyticsTracker.swift in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
+				014192A02983F5E800CAEDB0 /* SupportConfigurationTests.swift in Sources */,
 				B5882C471D5297D1008E0EAA /* NotificationTests.swift in Sources */,
 				DC2CA0852837B9080037E17E /* SiteStatsInsightsDetailsViewModelTests.swift in Sources */,
 				F4D9AF53288AE2BA00803D40 /* SuggestionsTableViewDelegateMock.swift in Sources */,
@@ -23703,6 +23720,7 @@
 				FABB23C82602FC2C00C8785C /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
 				FABB23CA2602FC2C00C8785C /* EditPostViewController.swift in Sources */,
+				0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */,
 				FABB23CB2602FC2C00C8785C /* PostListFilter.swift in Sources */,
 				FABB23CC2602FC2C00C8785C /* MediaThumbnailExporter.swift in Sources */,
 				C79C307C26EA915100E88514 /* ReferrerDetailsTableViewController.swift in Sources */,
