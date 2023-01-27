@@ -83,7 +83,7 @@ msgstr ""
 
 msgctxt "v21.6-whats-new"
 msgid ""
-"Insight check—find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.\n"
+"Find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.\n"
 "\n"
 "We also fixed a few issues in various areas of the app.\n"
 "\n"
