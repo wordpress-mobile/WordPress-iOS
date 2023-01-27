@@ -65,13 +65,6 @@ struct StatsTotalInsightsData {
     }
 
     public static func makeTotalInsightsGuideText(lastPostInsight: StatsLastPostInsight?, statsSummaryType: StatsSummaryType) -> NSAttributedString? {
-
-        /// NSAttributedString initialized with HTML on the background  crashes the app
-        /// This method can be called when traitCollectionDidChange which can be triggered when app goes to background
-        guard UIApplication.shared.applicationState != .background else {
-            return nil
-        }
-
         switch statsSummaryType {
         case .likes:
             guard let summary = lastPostInsight else {
@@ -276,6 +269,12 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     // Rebuilds guide view for accessibility only if guide view already exists
     private func rebuildGuideViewIfNeeded() {
+        /// NSAttributedString initialized with HTML on the background  crashes the app
+        /// This method can be called when traitCollectionDidChange which can be triggered when app goes to background
+        guard UIApplication.shared.applicationState != .background else {
+            return
+        }
+
         if guideText != nil,
            let statsSummaryType = statsSummaryType,
            let guideText = StatsTotalInsightsData.makeTotalInsightsGuideText(lastPostInsight: lastPostInsight, statsSummaryType: statsSummaryType) {
