@@ -40,16 +40,12 @@ open class SiteManagementService: NSObject {
         }
         remote.deleteSite(blog.dotComID!,
             success: {
-                self.coreDataStack.performAndSave({ context in
-                    guard let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog else {
-                        return
-                    }
-                    let blogService = BlogService(managedObjectContext: context)
-                    blogService.remove(blogInContext)
-                }, completion: {
+                let blogService = BlogService(coreDataStack: self.coreDataStack)
+                blogService.remove(blog)
+                DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
                     success?()
-                }, on: .main)
+                }
             },
             failure: { error in
                 failure?(error)

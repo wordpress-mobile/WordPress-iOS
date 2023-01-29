@@ -706,8 +706,8 @@ static NSInteger HideSearchMinSites = 3;
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     [self removeBlogItemsFromSpotlight:blog];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService removeBlog:blog];
 
     if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
