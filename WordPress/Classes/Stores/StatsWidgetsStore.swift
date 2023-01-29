@@ -7,7 +7,7 @@ class StatsWidgetsStore {
     init(blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
         self.blogService = blogService
 
-        updateJetpackFeaturesEnabled()
+        updateJetpackFeaturesDisabled()
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
         observeApplicationLaunched()
@@ -295,18 +295,18 @@ private extension StatsWidgetsStore {
 
     func observeJetpackFeaturesState() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateJetpackFeaturesEnabled),
+                                               selector: #selector(updateJetpackFeaturesDisabled),
                                                name: .WPAppUITypeChanged,
                                                object: nil)
     }
 
-    @objc func updateJetpackFeaturesEnabled() {
+    @objc func updateJetpackFeaturesDisabled() {
         guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
-        let key = AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesEnabledKey
+        let key = AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey
         let oldValue = defaults.bool(forKey: key)
-        let newValue = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        let newValue = !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
         defaults.setValue(newValue, forKey: key)
         if oldValue != newValue {
             refreshStatsWidgetsSiteList()

@@ -43,7 +43,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
             return
         }
-        guard defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesEnabledKey) else {
+        guard !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
             completion(Timeline(entries: [.disabled], policy: .never))
             return
         }
