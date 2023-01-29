@@ -21,6 +21,12 @@ class WindowManager: NSObject {
     ///
     private(set) var isShowingFullscreenSignIn = false
 
+    /// The root view controller for the window.
+    ///
+    var rootViewController: UIViewController? {
+        return window.rootViewController
+    }
+
     init(window: UIWindow) {
         self.window = window
     }

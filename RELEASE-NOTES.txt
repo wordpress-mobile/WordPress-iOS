@@ -16,6 +16,10 @@
 * [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
 * [*] [Jetpack-only] Tweak Migration Screens UI when fonts are enlarged. [#19944]
 
+21.5.1
+-----
+* [*] [Jetpack-only] Fixed a bug where the Login flow was restarting every time the app enters the foreground. [#19961]
+
 21.5
 -----
 * [***] [internal] A significant refactor to the app’s architecture was made to allow for the new simplified UI. Regression testing on the app’s main flows is needed. [#19817]

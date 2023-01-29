@@ -1,7 +1,8 @@
-* [*] Fix a layout issue impacting the "No media matching your search" empty state message of the Media Picker screen.  [#19820]
-* [*] The Migration flow doesn't complete automatically if the user interrupts the migration mid flow. [#19888]
-* [***] Stats Insights Update. Helps you understand how your content is performing and what’s resonating with your audience. [#19909]
-* [***] [internal] Delete all the activity logs after logging out. [#19930]
-* [*] Fixed an issue where Stats Followers details did not update on Pull-to-refresh in the Stats Followers Details screen [#19935]
-* [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
-* [*] Tweak Migration Screens UI when fonts are enlarged. [#19944]
+Find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.
+
+We also fixed a few issues in various areas of the app.
+
+- The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.
+- Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.
+- You’ll no longer skip to the end of the migration flow if you close the app while migrating your site content from WordPress to Jetpack. We made some design adjustments to the final migration screen, too.
+- Pull-to-refresh properly updates your follower stats on the Total Followers Details screen. 10/10, would pull again.
