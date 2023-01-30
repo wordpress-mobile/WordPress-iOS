@@ -632,21 +632,13 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 {
     return ^void(RemoteBlog *remoteBlog) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:@[remoteBlog] success:^(NSArray<RemoteBlog *> *blogs) {
-            [self.managedObjectContext performBlock:^{
-                NSError *error = nil;
-                Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                               error:&error];
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
                 if (blog) {
                     [self updateBlog:blog withRemoteBlog:blogs.firstObject];
-                    [self updatePromptSettingsFor:blogs.firstObject context:self.managedObjectContext];
-
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                    [self updatePromptSettingsFor:blogs.firstObject context:context];
                 }
-
-                if (completion) {
-                    completion();
-                }
-            }];
+            } completion:completion onQueue:dispatch_get_main_queue()];
         }];
     };
 }
