@@ -60,14 +60,11 @@ import CocoaLumberjack
     @objc func deleteAllSuggestions() {
         self.coreDataStack.performAndSave { context in
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
-            var suggestions = [ReaderSearchSuggestion]()
             do {
-                suggestions = try context.fetch(fetchRequest) as! [ReaderSearchSuggestion]
+                let suggestions = try context.fetch(fetchRequest) as! [ReaderSearchSuggestion]
+                suggestions.forEach(context.delete(_:))
             } catch let error as NSError {
                 DDLogError("Error fetching search suggestion : \(error.localizedDescription)")
-            }
-            for suggestion in suggestions {
-                context.delete(suggestion)
             }
         }
     }
