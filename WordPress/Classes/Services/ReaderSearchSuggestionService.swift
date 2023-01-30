@@ -18,9 +18,10 @@ import CocoaLumberjack
     /// - Parameters:
     ///     - phrase: The search phrase in question.
     ///
-    @objc func createOrUpdateSuggestionForPhrase(_ phrase: String) {
+    @objc(createOrUpdateSuggestionForPhrase:)
+    func createOrUpdateSuggestion(forPhrase phrase: String) {
         self.coreDataStack.performAndSave { context in
-            var suggestion = self.findSuggestionForPhrase(phrase, in: context)
+            var suggestion = self.findSuggestion(forPhrase: phrase, in: context)
             if suggestion == nil {
                 suggestion = NSEntityDescription.insertNewObject(
                     forEntityName: ReaderSearchSuggestion.classNameWithoutNamespaces(),
@@ -40,7 +41,7 @@ import CocoaLumberjack
     ///
     /// - Returns: A matching search phrase or nil.
     ///
-    private func findSuggestionForPhrase(_ phrase: String, in context: NSManagedObjectContext) -> ReaderSearchSuggestion? {
+    private func findSuggestion(forPhrase phrase: String, in context: NSManagedObjectContext) -> ReaderSearchSuggestion? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase MATCHES[cd] %@", phrase)
 
