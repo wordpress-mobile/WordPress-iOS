@@ -254,4 +254,13 @@ class MySitesCoordinator: NSObject {
         mySiteViewController = makeMySiteViewController()
         navigationController.viewControllers = [rootContentViewController]
     }
+
+    func displayJetpackOverlayForDisabledEntryPoint() {
+        let viewController = mySiteViewController
+        if viewController.isViewOnScreen() {
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
+                                                                     source: .disabledEntryPoint,
+                                                                     blog: viewController.blog)
+        }
+    }
 }
