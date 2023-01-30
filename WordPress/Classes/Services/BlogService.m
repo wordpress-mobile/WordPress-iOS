@@ -388,36 +388,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     return [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
 }
 
-- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                   inAccount:(WPAccount *)account
-{
-    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", xmlrpc]];
-    if ([foundBlogs count] == 1) {
-        return [foundBlogs anyObject];
-    }
-
-    // If more than one blog matches, return the first and delete the rest
-    if ([foundBlogs count] > 1) {
-        Blog *blogToReturn = [foundBlogs anyObject];
-        for (Blog *b in foundBlogs) {
-            // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
-            if (!([b.url hasPrefix:HttpsPrefix])) {
-                blogToReturn = b;
-                break;
-            }
-        }
-
-        for (Blog *b in foundBlogs) {
-            if (!([b isEqual:blogToReturn])) {
-                [self.managedObjectContext deleteObject:b];
-            }
-        }
-
-        return blogToReturn;
-    }
-    return nil;
-}
-
 - (void)removeBlog:(Blog *)blog
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);

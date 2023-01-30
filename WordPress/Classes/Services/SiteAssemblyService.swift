@@ -140,7 +140,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         let xmlRpcUrlString = createdSite.xmlrpcString
 
         let blog: Blog
-        if let existingBlog = blogService.findBlog(withXmlrpc: xmlRpcUrlString, in: defaultAccount) {
+        if let existingBlog = Blog.lookup(xmlrpc: xmlRpcUrlString, andRemoveDuplicateBlogsOf: defaultAccount, in: managedObjectContext) {
             blog = existingBlog
         } else {
             blog = Blog.createBlankBlog(with: defaultAccount)

@@ -126,23 +126,6 @@ extern NSString *const WPBlogUpdatedNotification;
 
 - (void)removeBlog:(Blog *)blog;
 
-///--------------------
-/// @name Blog creation
-///--------------------
-
-/**
- Searches for a `Blog` object for this account with the given XML-RPC endpoint
-
- @warn If more than one blog is found, they'll be considered duplicates and be
- deleted leaving only one of them.
-
- @param xmlrpc the XML-RPC endpoint URL as a string
- @param account the account the blog belongs to
- @return the blog if one was found, otherwise it returns nil
- */
-- (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                            inAccount:(WPAccount *)account;
-
 @end
 
 NS_ASSUME_NONNULL_END

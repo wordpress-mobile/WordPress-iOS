@@ -69,6 +69,42 @@ public extension Blog {
         try? BlogQuery().xmlrpc(matching: xmlrpc).selfHostedBlogUsername(username).blog(in: context)
     }
 
+    /// Searches for a `Blog` object for this account with the given XML-RPC endpoint
+    ///
+    /// - Warning: If more than one blog is found, they'll be considered duplicates and be
+    /// deleted leaving only one of them.
+    ///
+    /// - Parameters:
+    ///   - xmlrpc: the XML-RPC endpoint URL as a string
+    ///   - account: the account the blog belongs to
+    ///   - context: the NSManagedObjectContext containing the account and the Blog object.
+    /// - Returns: the blog if one was found, otherwise it returns nil
+    static func lookup(xmlrpc: String, andRemoveDuplicateBlogsOf account: WPAccount, in context: NSManagedObjectContext) -> Blog? {
+        let predicate = NSPredicate(format: "xmlrpc like %@", xmlrpc)
+        let foundBlogs = account.blogs.filter { predicate.evaluate(with: $0) }
+
+        if foundBlogs.isEmpty {
+            return nil
+        }
+
+        if foundBlogs.count == 1 {
+            return foundBlogs.first
+        }
+
+        // If more than one blog matches, return the first and delete the rest
+
+        // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+        let blogToReturn = foundBlogs.first { $0.url?.starts(with: "https://") == false }
+            ?? foundBlogs.randomElement()!
+
+        // Remove the duplicates
+        var duplicates = foundBlogs
+        duplicates.remove(blogToReturn)
+        duplicates.forEach(context.delete(_:))
+
+        return blogToReturn
+    }
+
     @objc(countInContext:)
     static func count(in context: NSManagedObjectContext) -> Int {
         BlogQuery().count(in: context)
