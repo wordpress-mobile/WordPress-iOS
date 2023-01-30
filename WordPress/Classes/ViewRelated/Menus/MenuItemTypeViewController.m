@@ -54,7 +54,7 @@
 
     // Sync the available postTypes for blog
     __weak __typeof__(self) weakSelf = self;
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
+    BlogService *service = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service syncPostTypesForBlog:blog success:^{
         // synced post types
         [weakSelf addCustomBlogPostTypesIfNeeded:blog];

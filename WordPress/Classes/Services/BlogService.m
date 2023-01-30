@@ -681,9 +681,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                        completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
-        [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                           error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
                 if (![formats objectForKey:PostFormatStandard]) {
@@ -692,14 +691,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;
-
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
-
-            if (completion) {
-                completion();
-            }
-        }];
+        } completion:completion onQueue:dispatch_get_main_queue()];
     };
 }
 

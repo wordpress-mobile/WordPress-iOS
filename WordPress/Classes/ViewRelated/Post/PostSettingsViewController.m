@@ -147,8 +147,7 @@ FeaturedImageViewControllerDelegate>
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-    _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+    _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     
     [self setupPostDateFormatter];
 
