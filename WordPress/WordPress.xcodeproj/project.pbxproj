@@ -3468,6 +3468,8 @@
 		F4CBE3D7292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */; };
 		F4CBE3D929265BC8004FFBB6 /* LogOutActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */; };
 		F4CBE3DA29265BC8004FFBB6 /* LogOutActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */; };
+		F4D36AD5298498E600E6B84C /* ReaderSiteBlockingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D36AD4298498E600E6B84C /* ReaderSiteBlockingController.swift */; };
+		F4D36AD6298498E600E6B84C /* ReaderSiteBlockingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D36AD4298498E600E6B84C /* ReaderSiteBlockingController.swift */; };
 		F4D829622930E9F300038726 /* MigrationDeleteWordPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D829612930E9F300038726 /* MigrationDeleteWordPressViewController.swift */; };
 		F4D829642930EA4C00038726 /* MigrationDeleteWordPressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D829632930EA4C00038726 /* MigrationDeleteWordPressViewModel.swift */; };
 		F4D829662931046F00038726 /* UIButton+Dismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D829652931046F00038726 /* UIButton+Dismiss.swift */; };
@@ -8657,6 +8659,7 @@
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
 		F4CBE3D829265BC8004FFBB6 /* LogOutActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutActionHandler.swift; sourceTree = "<group>"; };
+		F4D36AD4298498E600E6B84C /* ReaderSiteBlockingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteBlockingController.swift; sourceTree = "<group>"; };
 		F4D829612930E9F300038726 /* MigrationDeleteWordPressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationDeleteWordPressViewController.swift; sourceTree = "<group>"; };
 		F4D829632930EA4C00038726 /* MigrationDeleteWordPressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationDeleteWordPressViewModel.swift; sourceTree = "<group>"; };
 		F4D829652931046F00038726 /* UIButton+Dismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Dismiss.swift"; sourceTree = "<group>"; };
@@ -11671,6 +11674,7 @@
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				C7192ECE25E8432D00C3020D /* ReaderTopicsCardCell.xib */,
+				F4D36AD4298498E600E6B84C /* ReaderSiteBlockingController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -20393,6 +20397,7 @@
 				0A9610F928B2E56300076EBA /* UserSuggestion+Comparable.swift in Sources */,
 				170CE7402064478600A48191 /* PostNoticeNavigationCoordinator.swift in Sources */,
 				740516892087B73400252FD0 /* SearchableActivityConvertable.swift in Sources */,
+				F4D36AD5298498E600E6B84C /* ReaderSiteBlockingController.swift in Sources */,
 				F5B390EA2537E30B0097049E /* GridCell.swift in Sources */,
 				C31B6D5B28BFB6F300E64FEB /* SplashPrologueView.swift in Sources */,
 				B5F641B31E37C36700B7819F /* AdaptiveNavigationController.swift in Sources */,
@@ -24132,6 +24137,7 @@
 				FABB25182602FC2C00C8785C /* NoticeStyle.swift in Sources */,
 				FABB25192602FC2C00C8785C /* NotificationSettings.swift in Sources */,
 				FABB251A2602FC2C00C8785C /* HeaderContentStyles.swift in Sources */,
+				F4D36AD6298498E600E6B84C /* ReaderSiteBlockingController.swift in Sources */,
 				8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */,
 				FABB251B2602FC2C00C8785C /* Revision.swift in Sources */,
 				FABB251C2602FC2C00C8785C /* PluginDirectoryAccessoryItem.swift in Sources */,
