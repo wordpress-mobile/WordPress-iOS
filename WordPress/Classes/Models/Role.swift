@@ -13,7 +13,6 @@ extension Role {
         return RemoteRole(slug: slug, name: name)
     }
 
-    /// Returns a role from Core Data with the given slug.
     static func lookup(withBlogID blogID: NSManagedObjectID, slug: String, in context: NSManagedObjectContext) throws -> Role? {
         guard let blog = try context.existingObject(with: blogID) as? Blog else {
             return nil
