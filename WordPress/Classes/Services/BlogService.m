@@ -396,29 +396,25 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     BOOL filterJetpackSites = [AppConfiguration showJetpackSitesOnly];
     
     [remote getBlogs:filterJetpackSites success:^(NSArray *remoteBlogs) {
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            NSMutableSet *accountBlogIDs = [NSMutableSet new];
+            for (RemoteBlog *remoteBlog in remoteBlogs) {
+                [accountBlogIDs addObject:remoteBlog.blogID];
+            }
 
-        NSMutableSet *accountBlogIDs = [NSMutableSet new];
-        for (RemoteBlog *remoteBlog in remoteBlogs) {
-            [accountBlogIDs addObject:remoteBlog.blogID];
-        }
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+            request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
+            NSArray *blogs = [context executeFetchRequest:request error:nil];
+            blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                Blog *blog = (Blog *)evaluatedObject;
+                NSNumber *jetpackBlogID = blog.jetpack.siteID;
+                return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
+            }]];
 
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
-        request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
-        NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
-        blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            Blog *blog = (Blog *)evaluatedObject;
-            NSNumber *jetpackBlogID = blog.jetpack.siteID;
-            return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
-        }]];
-        [account addBlogs:[NSSet setWithArray:blogs]];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-        success();
-
-    } failure:^(NSError *error) {
-        failure(error);
-
-    }];
+            WPAccount *accountInContext = [context existingObjectWithID:account.objectID error:nil];
+            [accountInContext addBlogs:[NSSet setWithArray:blogs]];
+        } completion:success onQueue:dispatch_get_main_queue()];
+    } failure:failure];
 }
 
 #pragma mark - Private methods
