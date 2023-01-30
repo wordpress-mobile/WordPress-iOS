@@ -165,10 +165,10 @@ private extension JetpackNewUsersOverlaySecondaryView {
         static let statsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
                                                   value: "Watch your traffic grow with helpful insights and comprehensive stats.",
                                                   comment: "Description of the Statistics feature.")
-        static let readerSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
+        static let readerSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.reader.subtitle",
                                                       value: "Find and follow your favorite sites and communities, and share you content.",
                                                       comment: "Description of the Reader feature.")
-        static let notificationsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.stats.subtitle",
+        static let notificationsSubtitle = NSLocalizedString("jetpack.fullscreen.overlay.newUsers.notifications.subtitle",
                                                              value: "Get notifications for new comments, likes, views, and more.",
                                                              comment: "Description of the Notifications feature.")
     }
