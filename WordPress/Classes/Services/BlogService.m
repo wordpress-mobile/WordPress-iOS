@@ -301,12 +301,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     }];
 }
 
-- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
-{
-    blog.password = password;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
 - (void)syncPostTypesForBlog:(Blog *)blog
                      success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure
