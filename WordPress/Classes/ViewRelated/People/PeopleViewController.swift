@@ -173,7 +173,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         tableView.deselectSelectedRowWithAnimation(true)
         refreshNoResultsView()
 
-        guard let blog = blog else {
+        guard let blog else {
             return
         }
 
