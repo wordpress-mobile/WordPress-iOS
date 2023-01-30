@@ -90,7 +90,7 @@ enum LocalizableStrings {
                                                            value: "Create or add a site to see all time stats.",
                                                            comment: "Title of the no site view in all time widget")
 
-    static let noSiteViewThisWeekTitle = AppLocalizedString("widget.thisweek.nosite.view.titlee",
+    static let noSiteViewThisWeekTitle = AppLocalizedString("widget.thisweek.nosite.view.title",
                                                             value: "Create or add a site to see this week's stats.",
                                                             comment: "Title of the no site view in this week widget")
 
