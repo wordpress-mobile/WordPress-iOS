@@ -299,7 +299,9 @@ private extension CreateButtonCoordinator {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
-              let prompt = prompt else {
+              let prompt = prompt,
+              let siteID = blog.dotComID?.stringValue,
+              !UserPersistentStoreFactory.instance().promptsRemovedSites.contains(siteID) else {
             return nil
         }
 

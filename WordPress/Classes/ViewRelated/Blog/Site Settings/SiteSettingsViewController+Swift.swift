@@ -184,6 +184,7 @@ extension SiteSettingsViewController {
         case language
         case timezone
         case bloggingReminders
+        case bloggingPrompts
     }
 
     var generalSettingsRows: [GeneralSettingsRow] {
@@ -201,6 +202,10 @@ extension SiteSettingsViewController {
             rows.append(.bloggingReminders)
         }
 
+        if FeatureFlag.bloggingPrompts.enabled && FeatureFlag.bloggingPromptsEnhancements.enabled {
+            rows.append(.bloggingPrompts)
+        }
+
         return rows
     }
 
@@ -212,6 +217,7 @@ extension SiteSettingsViewController {
     @objc
     func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
+        cell.reset()
 
         switch generalSettingsRows[row] {
         case .title:
@@ -228,6 +234,8 @@ extension SiteSettingsViewController {
             configureCellForTimezone(cell)
         case .bloggingReminders:
             configureCellForBloggingReminders(cell)
+        case .bloggingPrompts:
+            configureCellForBloggingPrompts(cell)
         }
 
         return cell
@@ -320,6 +328,18 @@ extension SiteSettingsViewController {
         cell.detailTextLabel?.minimumScaleFactor = 0.75
         cell.accessoryType = .none
         cell.textValue = schedule(for: blog)
+    }
+
+    private func configureCellForBloggingPrompts(_ cell: SettingTableViewCell) {
+        cell.editable = false
+        cell.textLabel?.text = NSLocalizedString("sitesettings.prompts.title", value: "Blogging Prompts", comment: "Label for the blogging prompts setting")
+        let promptsSwitch = UISwitch()
+        if let siteID = blog.dotComID?.stringValue {
+            let promptsEnabled = !UserPersistentStoreFactory.instance().promptsRemovedSites.contains(siteID)
+            promptsSwitch.isOn = promptsEnabled
+        }
+        promptsSwitch.addTarget(self, action: #selector(promptsSwitchTapped), for: .valueChanged)
+        cell.accessoryView = promptsSwitch
     }
 
     // MARK: - Schedule Description
@@ -416,4 +436,32 @@ extension SiteSettingsViewController {
                                         fieldName: fieldName,
                                         value: value)
     }
+
+    @objc func promptsSwitchTapped(_ promptsSwitch: UISwitch) {
+        guard let siteID = blog.dotComID?.stringValue else {
+            return
+        }
+        let repository = UserPersistentStoreFactory.instance()
+        var promptsRemovedSites = repository.promptsRemovedSites
+        if promptsSwitch.isOn {
+            promptsRemovedSites.remove(siteID)
+        } else {
+            promptsRemovedSites.insert(siteID)
+        }
+        repository.promptsRemovedSites = promptsRemovedSites
+    }
+}
+
+// MARK: - SettingTableViewCell
+
+private extension SettingTableViewCell {
+
+    func reset() {
+        editable = false
+        textLabel?.text = ""
+        textValue = ""
+        accessoryView = nil
+        accessoryType = .none
+    }
+
 }
