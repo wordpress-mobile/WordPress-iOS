@@ -583,8 +583,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 - (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context performBlock:^{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         NSError *error;
         Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:&error];
         if (error) {
@@ -594,7 +593,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
             return;
         }
         
-        [self updateBlogAuthorsForBlog:blog withRemoteUsers:users];
+        [self updateBlogAuthorsForBlog:blog withRemoteUsers:users inContext:context];
         
         blog.isMultiAuthor = users.count > 1;
         /// Search for a matching user ID
@@ -620,7 +619,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 }
             }
         }
-        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 

@@ -6,15 +6,15 @@ extension BlogService {
     /// - Parameters:
     ///   - blog: Blog object.
     ///   - remoteUsers: Array of `RemoteUser`s.
-    @objc(updateBlogAuthorsForBlog:withRemoteUsers:)
-    func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser]) {
+    @objc(updateBlogAuthorsForBlog:withRemoteUsers:inContext:)
+    func updateBlogAuthors(for blog: Blog, with remoteUsers: [RemoteUser], in context: NSManagedObjectContext) {
         do {
-            guard let blog = try managedObjectContext.existingObject(with: blog.objectID) as? Blog else {
+            guard let blog = try context.existingObject(with: blog.objectID) as? Blog else {
                 return
             }
 
             remoteUsers.forEach {
-                let blogAuthor = findBlogAuthor(with: $0.userID, and: blog)
+                let blogAuthor = findBlogAuthor(with: $0.userID, and: blog, in: context)
                 blogAuthor.userID = $0.userID
                 blogAuthor.username = $0.username
                 blogAuthor.email = $0.email
@@ -40,8 +40,7 @@ extension BlogService {
 
 
 private extension BlogService {
-    private func findBlogAuthor(with userId: NSNumber, and blog: Blog) -> BlogAuthor {
-        return managedObjectContext.entity(of: BlogAuthor.self,
-                                           with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@ AND \(#keyPath(BlogAuthor.blog)) = %@", userId, blog))
+    private func findBlogAuthor(with userId: NSNumber, and blog: Blog, in context: NSManagedObjectContext) -> BlogAuthor {
+        return context.entity(of: BlogAuthor.self, with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@ AND \(#keyPath(BlogAuthor.blog)) = %@", userId, blog))
     }
 }
