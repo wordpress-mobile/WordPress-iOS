@@ -15,7 +15,7 @@ class ActivityStoreTests: CoreDataTestCase {
 
         dispatcher = ActionDispatcher()
         activityServiceMock = ActivityServiceRemoteMock()
-        backupServiceMock = JetpackBackupServiceMock(managedObjectContext: contextManager.mainContext)
+        backupServiceMock = JetpackBackupServiceMock(coreDataStack: contextManager)
         store = ActivityStore(dispatcher: dispatcher, activityServiceRemote: activityServiceMock, backupService: backupServiceMock)
     }
 
