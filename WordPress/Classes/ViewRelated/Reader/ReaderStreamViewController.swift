@@ -110,7 +110,6 @@ import Combine
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
-    private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -663,11 +662,6 @@ import Combine
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
         }
-
-//        if !listentingForBlockedSiteNotification {
-//            self.listentingForBlockedSiteNotification = true
-//            self.observeSiteBlockingNotifications()
-//        }
     }
 
 
