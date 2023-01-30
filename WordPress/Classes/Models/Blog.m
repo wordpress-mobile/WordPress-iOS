@@ -597,6 +597,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsLayoutGrid];
         case BlogFeatureTiledGallery:
             return [self supportsTiledGallery];
+        case BlogFeatureVideoPress:
+            return [self supportsVideoPress];
         case BlogFeatureFacebookEmbed:
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureInstagramEmbed:
@@ -709,6 +711,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 }
 
 - (BOOL)supportsTiledGallery
+{
+    return self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsVideoPress
 {
     return self.isHostedAtWPcom;
 }
