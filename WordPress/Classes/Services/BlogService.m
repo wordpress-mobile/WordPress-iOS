@@ -316,23 +316,24 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostTypesWithSuccess:^(NSArray<RemotePostType *> *remotePostTypes) {
-        [self.managedObjectContext performBlock:^{
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
             NSError *blogError;
-            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                           error:&blogError];
+            Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:&blogError];
             if (!blogInContext || blogError) {
                 DDLogError(@"Error occurred fetching blog in context with: %@", blogError);
-                if (failure) {
-                    failure(blogError);
-                    return;
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (failure) {
+                        failure(blogError);
+                        return;
+                    }
+                });
             }
             // Create new PostType entities with the RemotePostType objects.
             NSMutableSet *postTypes = [NSMutableSet setWithCapacity:remotePostTypes.count];
             NSString *entityName = NSStringFromClass([PostType class]);
             for (RemotePostType *remoteType in remotePostTypes) {
                 PostType *postType = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                                                   inManagedObjectContext:self.managedObjectContext];
+                                                                   inManagedObjectContext:context];
                 postType.name = remoteType.name;
                 postType.label = remoteType.label;
                 postType.apiQueryable = remoteType.apiQueryable;
@@ -340,11 +341,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
             }
             // Replace the current set of postTypes with new entities.
             blogInContext.postTypes = [NSSet setWithSet:postTypes];
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            if (success) {
-                success();
-            }
-        }];
+        } completion:success onQueue:dispatch_get_main_queue()];
     } failure:failure];
 }
 
