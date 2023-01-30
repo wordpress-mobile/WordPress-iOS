@@ -112,8 +112,6 @@ extern NSString *const WPBlogUpdatedNotification;
                                      success:(void (^)(void))success
                                      failure:(void (^)(NSError *error))failure;
 
-- (BOOL)hasAnyJetpackBlogs;
-
 - (void)removeBlog:(Blog *)blog;
 
 @end

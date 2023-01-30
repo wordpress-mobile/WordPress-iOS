@@ -115,6 +115,24 @@ public extension Blog {
         BlogQuery().hostedByWPCom(true).count(in: context)
     }
 
+    static func hasAnyJetpackBlogs(in context: NSManagedObjectContext) throws -> Bool {
+        let fetchRequest = NSFetchRequest<Self>(entityName: Blog.entityName())
+        fetchRequest.predicate = NSPredicate(format: "account != NULL AND isHostedAtWPcom = NO")
+        if try context.count(for: fetchRequest) > 0 {
+            return true
+        }
+
+        return Blog.selfHosted(in: context)
+            .filter { $0.jetpack?.isConnected == true }
+            .count > 0
+    }
+
+    @available(swift, obsoleted: 1.0)
+    @objc(hasAnyJetpackBlogsInContext:)
+    static func objc_hasAnyJetpackBlogs(in context: NSManagedObjectContext) -> Bool {
+        (try? hasAnyJetpackBlogs(in: context)) == true
+    }
+
     @objc(selfHostedInContext:)
     static func selfHosted(in context: NSManagedObjectContext) -> [Blog] {
         (try? BlogQuery().hostedByWPCom(false).blogs(in: context)) ?? []

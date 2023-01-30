@@ -350,22 +350,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                failure:failure];
 }
 
-- (BOOL)hasAnyJetpackBlogs
-{
-    NSPredicate *jetpackManagedPredicate = [NSPredicate predicateWithFormat:@"account != NULL AND isHostedAtWPcom = NO"];
-    NSInteger jetpackManagedCount = [self blogCountWithPredicate:jetpackManagedPredicate];
-    if (jetpackManagedCount > 0) {
-        return YES;
-    }
-
-    NSArray *selfHostedBlogs = [self blogsWithNoAccount];
-    NSArray *jetpackUnmanagedBlogs = [selfHostedBlogs wp_filter:^BOOL(Blog *blog) {
-        return blog.jetpack.isConnected;
-    }];
-
-    return [jetpackUnmanagedBlogs count] > 0;
-}
-
 - (NSArray *)blogsWithNoAccount
 {
     return [Blog selfHostedInContext:self.managedObjectContext];
@@ -597,45 +581,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     }
 
     return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
-}
-
-- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
-{
-    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"settings.name"
-                                                                     ascending:YES];
-    request.sortDescriptors = @[ sortDescriptor ];
-
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request
-                                                                error:&error];
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs with predicate %@: %@", predicate, error);
-        return nil;
-    }
-
-    return results;
-}
-
-- (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
-{
-    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
-
-    NSError *err;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request
-                                                                 error:&err];
-    if (count == NSNotFound) {
-        count = 0;
-    }
-    return count;
-}
-
-- (NSFetchRequest *)fetchRequestWithPredicate:(NSPredicate *)predicate
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
-    request.includesSubentities = NO;
-    request.predicate = predicate;
-    return request;
 }
 
 #pragma mark - Completion handlers
