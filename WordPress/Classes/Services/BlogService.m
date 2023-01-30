@@ -121,16 +121,14 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
         dispatch_group_enter(syncGroup);
         [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
-            [self.managedObjectContext performBlock:^{
-                NSError *error = nil;
-                Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                                        error:&error];
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
                 if (blogInContext) {
                     [self updateSettings:blogInContext.settings withRemoteSettings:settings];
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                 }
+            } completion:^{
                 dispatch_group_leave(syncGroup);
-            }];
+            } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
         } failure:^(NSError *error) {
             DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
             dispatch_group_leave(syncGroup);
@@ -219,18 +217,20 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                     failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = [blog objectID];
-    [self.managedObjectContext performBlock:^{
-        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+    [self.coreDataStack.mainContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.coreDataStack.mainContext objectWithID:blogID];
         if (!blogInContext) {
             if (success) {
                 success();
             }
             return;
         }
+
         void(^updateOnSuccess)(RemoteBlogSettings *) = ^(RemoteBlogSettings *remoteSettings) {
-            [self.managedObjectContext performBlock:^{
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Blog *blogInContext = (Blog *)[context objectWithID:blogID];
                 [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
+
             }];
         };
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
@@ -273,29 +273,37 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                      failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = [blog objectID];
-    [self.managedObjectContext performBlock:^{
-        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+    NSManagedObjectContext *context = self.coreDataStack.mainContext;
+    [context performBlock:^{
+        Blog *blogInContext = (Blog *)[context objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        RemoteBlogSettings *remoteSettings = [self remoteSettingFromSettings:blogInContext.settings];
 
-        void(^saveOnSuccess)(void) = ^() {
-            [self.managedObjectContext performBlock:^{
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
-            }];
+        void(^onSuccess)(void) = ^() {
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Blog *blogInContext = (Blog *)[context existingObjectWithID:blogID error:nil];
+                if (blogInContext) {
+                    [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
+                }
+            } completion:^{
+                if (success) {
+                    success();
+                }
+            } onQueue:dispatch_get_main_queue()];
         };
 
         if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
 
             BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-            RemoteBlogSettings *remoteSettings = [self remoteSettingFromSettings:blogInContext.settings];
             [xmlrpcRemote updateBlogOptionsWith:[RemoteBlogOptionsHelper remoteOptionsForUpdatingBlogTitleAndTagline:remoteSettings]
-                                        success:saveOnSuccess
+                                        success:onSuccess
                                         failure:failure];
 
         } else if([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
 
             BlogServiceRemoteREST *restRemote = remote;
-            [restRemote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
-                               success:saveOnSuccess
+            [restRemote updateBlogSettings:remoteSettings
+                               success:onSuccess
                                failure:failure];
         }
     }];
@@ -650,19 +658,17 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
-        [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
-                                                                           error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
             if (!blog) {
-                if (completion) {
-                    completion();
-                }
                 return;
             }
+
             blog.options = [NSDictionary dictionaryWithDictionary:options];
 
             RemoteBlogSettings *remoteSettings = [RemoteBlogOptionsHelper remoteBlogSettingsFromXMLRPCDictionaryOptions:options];
             [self updateSettings:blog.settings withRemoteSettings:remoteSettings];
+
 
             // NOTE: `[blog version]` can return nil. If this happens `version` will be `0`
             CGFloat version = [[blog version] floatValue];
@@ -670,15 +676,15 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 if (blog.lastUpdateWarning == nil
                     || [blog.lastUpdateWarning floatValue] < [WordPressMinimumVersion floatValue])
                 {
-                    // TODO :: Remove UI call from service layer
-                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], WordPressMinimumVersion]];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // TODO :: Remove UI call from service layer
+                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], WordPressMinimumVersion]];
+                    });
                     blog.lastUpdateWarning = WordPressMinimumVersion;
                 }
             }
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
-        }];
+        } completion:completion onQueue:dispatch_get_main_queue()];
     };
 }
 
