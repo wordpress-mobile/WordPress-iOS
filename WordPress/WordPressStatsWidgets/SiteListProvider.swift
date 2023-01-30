@@ -39,8 +39,16 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     }
 
     func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
+        guard let defaults = UserDefaults(suiteName: WPAppGroupName) else {
+            completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
+            return
+        }
+        guard !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
+            completion(Timeline(entries: [.disabled], policy: .never))
+            return
+        }
         guard let defaultSiteID = defaultSiteID else {
-            let loggedIn = UserDefaults(suiteName: WPAppGroupName)?.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey) ?? false
+            let loggedIn = defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
 
             if loggedIn {
                 completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))

@@ -5,12 +5,13 @@ enum StatsWidgetEntry: TimelineEntry {
     case loggedOut(StatsWidgetKind)
     case noSite(StatsWidgetKind)
     case noData(StatsWidgetKind)
+    case disabled
 
     var date: Date {
         switch self {
         case .siteSelected(let widgetData, _):
             return widgetData.date
-        case .loggedOut, .noSite, .noData:
+        case .loggedOut, .noSite, .noData, .disabled:
             return Date()
         }
     }
