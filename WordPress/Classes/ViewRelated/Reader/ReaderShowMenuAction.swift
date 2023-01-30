@@ -24,23 +24,23 @@ final class ReaderShowMenuAction {
 
         // Block button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
+            let handler: (UIAlertAction) -> Void = { action in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                self.postSiteBlockingWillBeginNotification(post)
+                ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+                    ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
+                    self.postSiteBlockingDidFinish(post)
+                },
+                failure: { error in
+                    ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
+                    self.postSiteBlockingDidFail(post, error: error)
+                })
+            }
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
-                                               handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
-                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
-
-                                                        // Notify Reader Cards Stream so the post card is updated.
-                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
-                                                                                        object: nil,
-                                                                                        userInfo: [ReaderNotificationKeys.post: post])
-                                                    },
-                                                    failure: { _ in
-                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
-                                                    })
-                                                }
-                                               })
+                                               handler: handler)
         }
 
         // Report button
@@ -175,7 +175,7 @@ final class ReaderShowMenuAction {
         return ReaderHelpers.isTopicTag(topic) ||
             ReaderHelpers.topicIsDiscover(topic) ||
             ReaderHelpers.topicIsFreshlyPressed(topic) ||
-            (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
+            ReaderHelpers.topicIsFollowing(topic)
     }
 
     private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
@@ -199,5 +199,26 @@ final class ReaderShowMenuAction {
         }
 
         return "unknown"
+    }
+
+    // MARK: - Sending Notifications
+
+    private func postSiteBlockingWillBeginNotification(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderSiteBlockingWillBegin,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    /// Notify Reader Cards Stream so the post card is updated.
+    private func postSiteBlockingDidFinish(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    private func postSiteBlockingDidFail(_ post: ReaderPost, error: Error?) {
+        NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post, ReaderNotificationKeys.error: error])
     }
 }

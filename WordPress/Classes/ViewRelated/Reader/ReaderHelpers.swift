@@ -14,9 +14,14 @@ extension NSNotification.Name {
     static let ReaderPostSeenToggled = NSNotification.Name(rawValue: "ReaderPostSeenToggled")
     // Sent when a site is blocked.
     static let ReaderSiteBlocked = NSNotification.Name(rawValue: "ReaderSiteBlocked")
+    // Sent when site blocking will begin.
+    static let ReaderSiteBlockingWillBegin = NSNotification.Name(rawValue: "ReaderSiteBlockingWillBegin")
+    // Sent when site blocking failed.
+    static let ReaderSiteBlockingFailed = NSNotification.Name(rawValue: "ReaderSiteBlockingFailed")
 }
 
 struct ReaderNotificationKeys {
+    static let error = "error"
     static let post = "post"
     static let topic = "topic"
 }
