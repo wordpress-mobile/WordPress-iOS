@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "0BAD9BB4-5B91-4378-828D-69177CF0A0CB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPress.xcodeproj",
+      "identifier" : "FABB1F8F2602FC2C00C8785C",
+      "name" : "Jetpack"
+    }
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "EditorAztecTests",
+        "LoginTests\/testEmailMagicLinkLogin()",
+        "MainNavigationTests",
+        "SignupTests",
+        "SignupTests\/testEmailSignup()",
+        "StatsTests"
+      ],
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "EA0C6DA22964BCF700000518",
+        "name" : "JetpackUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
