@@ -84,25 +84,37 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     }
 
     func remoteTopicsForTests() -> [RemoteReaderTopic] {
-        let foo = RemoteReaderTopic()
-        foo.topicID = 1
-        foo.title = "foo"
-        foo.path = "/tags/foo"
-        foo.isSubscribed = true
+        let foo = RemoteReaderTopic(
+            dictionary: [
+                "ID": 1,
+                "title": "foo",
+                "URL": "/tags/foo",
+            ],
+            subscribed: true,
+            recommended: false
+        )
         foo.isMenuItem = true
 
-        let bar = RemoteReaderTopic()
-        bar.topicID = 2
-        bar.title = "bar"
-        bar.path = "/tags/bar"
-        bar.isSubscribed = true
+        let bar = RemoteReaderTopic(
+            dictionary: [
+                "ID": 2,
+                "title": "bar",
+                "URL": "/tags/bar",
+            ],
+            subscribed: true,
+            recommended: false
+        )
         bar.isMenuItem = true
 
-        let baz = RemoteReaderTopic()
-        baz.topicID = 3
-        baz.title = "baz"
-        baz.path = "/tags/baz"
-        baz.isSubscribed = true
+        let baz = RemoteReaderTopic(
+            dictionary: [
+                "ID": 3,
+                "title": "baz",
+                "URL": "/tags/baz",
+            ],
+            subscribed: true,
+            recommended: false
+        )
         baz.isMenuItem = true
 
         return [foo, bar, baz]
@@ -111,11 +123,15 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     func remoteAndDefaultTopicForTests() -> [RemoteReaderTopic] {
         var remoteTopics = remoteTopicsForTests()
 
-        let def = RemoteReaderTopic()
-        def.topicID = 4
-        def.title = "def"
-        def.path = "/def"
-        def.isSubscribed = true
+        let def = RemoteReaderTopic(
+            dictionary: [
+                "ID": 4,
+                "title": "def",
+                "URL": "/def",
+            ],
+            subscribed: true,
+            recommended: false
+        )
         def.isMenuItem = true
 
         remoteTopics.append(def)
@@ -313,18 +329,18 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
 
         // Save the new topic + posts in the contet
         var expect = expectation(description: "topics saved expectation")
-        contextManager.save(mainContext, withCompletionBlock: { () -> Void in
+        contextManager.save(mainContext, completion: {
             expect.fulfill()
-        })
+        }, on: .global())
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         // Delete the topic and posts from the context
         mainContext.delete(topic)
 
         expect = expectation(description: "topics saved expectation")
-        contextManager.save(mainContext, withCompletionBlock: { () -> Void in
+        contextManager.save(mainContext, completion: {
             expect.fulfill()
-        })
+        }, on: .global())
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderListTopic.classNameWithoutNamespaces())

@@ -244,7 +244,7 @@ class ContextManagerTests: XCTestCase {
             self.expectation(description: "Second User is saved"),
         ]
 
-        contextManager.performAndSave {
+        contextManager.performAndSave({
             let account = WPAccount(context: $0)
             account.userID = 1
             account.username = "First User"
@@ -257,9 +257,9 @@ class ContextManagerTests: XCTestCase {
             saveOperations[1].fulfill()
 
             XCTAssertEqual(accounts(), ["Second User"])
-        } completion: {
+        }, completion: {
             saveOperations[0].fulfill()
-        }
+        }, on: .main)
 
         wait(for: saveOperations, timeout: 0.1)
         XCTAssertEqual(accounts(), ["First User", "Second User"])

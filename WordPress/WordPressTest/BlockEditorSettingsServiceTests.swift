@@ -20,7 +20,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        contextManager.saveContextAndWait(mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
     }
 
     // MARK: Editor `theme_supports` support
@@ -29,8 +30,9 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
+        contextManager.saveContextAndWait(mainContext)
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
         let mockedResponse = mockedData(withFilename: twentytwentyoneResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { result in
@@ -56,8 +58,9 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
+        contextManager.saveContextAndWait(mainContext)
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
 
         setData(withFilename: twentytwentyResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
@@ -87,8 +90,9 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
             .build()
+        contextManager.saveContextAndWait(mainContext)
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
 
         setData(withFilename: twentytwentyoneResponseFilename)
         let originalChecksum = blog.blockEditorSettings?.checksum ?? ""
@@ -244,7 +248,7 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
     func testFetchBlockEditorSettings_OrgSite_NoPlugin() {
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, coreDataStack: contextManager)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { _ in
@@ -265,7 +269,7 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
     func testFetchBlockEditorSettings_OrgSite() {
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let mockOrgRemoteApi = MockWordPressOrgRestApi()
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockOrgRemoteApi, coreDataStack: contextManager)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
         service.fetchSettings { _ in
@@ -284,8 +288,9 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.8")
             .withAnAccount()
             .build()
+        contextManager.saveContextAndWait(mainContext)
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
@@ -305,8 +310,9 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             .with(wordPressVersion: "5.9")
             .withAnAccount()
             .build()
+        contextManager.saveContextAndWait(mainContext)
 
-        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, context: mainContext)
+        service = BlockEditorSettingsService(blog: blog, remoteAPI: mockRemoteApi, coreDataStack: contextManager)
 
         let mockedResponse = mockedData(withFilename: blockSettingsNOTThemeJSONResponseFilename)
         let waitExpectation = expectation(description: "Theme should be successfully fetched")

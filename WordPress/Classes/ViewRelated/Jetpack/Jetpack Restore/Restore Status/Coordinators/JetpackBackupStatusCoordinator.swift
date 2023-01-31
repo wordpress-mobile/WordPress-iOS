@@ -25,8 +25,8 @@ class JetpackBackupStatusCoordinator {
          downloadID: Int,
          view: JetpackBackupStatusView,
          service: JetpackBackupService? = nil,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
-        self.service = service ?? JetpackBackupService(managedObjectContext: context)
+         coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
+        self.service = service ?? JetpackBackupService(coreDataStack: coreDataStack)
         self.site = site
         self.downloadID = downloadID
         self.view = view

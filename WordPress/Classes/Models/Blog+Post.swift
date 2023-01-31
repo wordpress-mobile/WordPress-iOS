@@ -48,7 +48,7 @@ extension Blog {
 
         if let categoryID = settings?.defaultCategoryID,
            categoryID.intValue != PostCategoryUncategorized,
-           let category = PostCategoryService(managedObjectContext: context).find(withBlogObjectID: objectID, andCategoryID: categoryID) {
+           let category = try? PostCategory.lookup(withBlogID: objectID, categoryID: categoryID, in: context) {
             post.addCategoriesObject(category)
         }
 

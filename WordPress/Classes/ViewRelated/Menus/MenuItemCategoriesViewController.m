@@ -55,7 +55,7 @@ static NSString * const CategorySortKey = @"categoryName";
     void(^stopLoading)(void) = ^() {
         [self hideLoadingSourcesIndicator];
     };
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [categoryService syncCategoriesForBlog:[self blog]
                                     number:@(CategorySyncLimit)
                                     offset:@(0)

@@ -60,4 +60,9 @@ extension HomeWidgetData {
             DDLogError("HomeWidgetToday: Failed writing data item: \(error.localizedDescription)")
         }
     }
+
+    static func cacheDataExists() -> Bool {
+        let data = read()
+        return data != nil && data?.isEmpty == false
+    }
 }

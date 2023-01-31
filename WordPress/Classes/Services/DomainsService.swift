@@ -46,7 +46,7 @@ struct DomainsService {
                 self.mergeDomains(domains, forSite: siteID, in: context)
             }, completion: {
                 completion?(.success(()))
-            })
+            }, on: .main)
         }, failure: { error in
             completion?(.failure(error))
         })

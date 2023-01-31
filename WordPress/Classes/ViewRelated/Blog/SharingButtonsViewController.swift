@@ -632,10 +632,10 @@ import WordPressShared
     ///
     private func saveButtonChanges(_ refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
-        ContextManager.sharedInstance().save(context) { [weak self] in
+        ContextManager.sharedInstance().save(context, completion: { [weak self] in
             self?.reloadButtons()
             self?.syncButtonChangesToBlog(refreshAfterSync)
-        }
+        }, on: .main)
     }
 
     /// Retrives a fresh copy of the SharingButtons from core data, updating the

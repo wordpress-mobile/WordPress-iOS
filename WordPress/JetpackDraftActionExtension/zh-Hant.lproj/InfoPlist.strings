@@ -2,10 +2,5 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict>
-    <key>CFBundleDisplayName</key>
-    <string>儲存至 Jetpack</string>
-    <key>CFBundleName</key>
-    <string>儲存至 Jetpack</string>
-  </dict>
+  <dict/>
 </plist>

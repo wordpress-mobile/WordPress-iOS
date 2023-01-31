@@ -47,7 +47,7 @@ extension ReaderTopicService {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
 
         let successBlock = {
-            ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: success)
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
         }
 
         switch action {
@@ -130,9 +130,9 @@ extension ReaderTopicService {
                 return
             }
             siteTopic.postSubscription?.sendPosts = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                 failure(error)
-            }
+            }, on: .main)
         }
 
         remoteAction(for: .notifications(siteId: siteId), subscribe, success, failureBlock)
@@ -188,9 +188,9 @@ extension ReaderTopicService {
                 return
             }
             siteTopic.emailSubscription?.sendComments = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                 failure(error)
-            }
+            }, on: .main)
         }
 
         remoteAction(for: .comments(siteId: siteId), subscribe, success, failureBlock)
@@ -284,9 +284,9 @@ extension ReaderTopicService {
                 return
             }
             siteTopic.emailSubscription?.sendPosts = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                 failure(error)
-            }
+            }, on: .main)
         }
 
         remoteAction(for: .postsEmail(siteId: siteId), subscribe, success, failureBlock)
@@ -307,9 +307,9 @@ extension ReaderTopicService {
                 return
             }
             siteTopic.emailSubscription?.postDeliveryFrequency = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext) {
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                 failure(error)
-            }
+            }, on: .main)
         }
 
         remoteAction(for: .updatePostsEmail(siteId: siteId, frequency: frequency), false, success, failureBlock)

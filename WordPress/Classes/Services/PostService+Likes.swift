@@ -96,7 +96,7 @@ private extension PostService {
             return
         }
 
-        ContextManager.shared.performAndSave { derivedContext in
+        ContextManager.shared.performAndSave({ derivedContext in
             let likers = remoteLikeUsers.map { remoteUser in
                 LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }
@@ -104,11 +104,7 @@ private extension PostService {
             if purgeExisting {
                 self.deleteExistingUsersFor(postID: postID, siteID: siteID, from: derivedContext, likesToKeep: likers)
             }
-        } completion: {
-            DispatchQueue.main.async {
-                onComplete()
-            }
-        }
+        }, completion: onComplete, on: .main)
     }
 
     func deleteExistingUsersFor(postID: NSNumber, siteID: NSNumber, from context: NSManagedObjectContext, likesToKeep: [LikeUser]) {

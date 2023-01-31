@@ -104,9 +104,9 @@ open class SharingService: LocalCoreDataService {
                 WPAppAnalytics.track(.sharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
                 do {
                     let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                         success?(pubConn)
-                    })
+                    }, on: .main)
 
                 } catch let error as NSError {
                     DDLogError("Error creating publicize connection from remote: \(error)")
@@ -160,10 +160,7 @@ open class SharingService: LocalCoreDataService {
                     WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
                     do {
                         _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                            success?()
-                        })
-
+                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
                     } catch let error as NSError {
                         DDLogError("Error creating publicize connection from remote: \(error)")
                         failure?(error)
@@ -172,9 +169,9 @@ open class SharingService: LocalCoreDataService {
                 },
                 failure: { (error: NSError?) in
                     pubConn.shared = oldValue
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
                         failure?(error)
-                    })
+                    }, on: .main)
             })
     }
 
@@ -209,9 +206,7 @@ open class SharingService: LocalCoreDataService {
                 success: { remoteConnection in
                     do {
                         _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-                        ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                            success?()
-                        })
+                        ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
 
                     } catch let error as NSError {
                         DDLogError("Error creating publicize connection from remote: \(error)")
@@ -339,9 +334,7 @@ open class SharingService: LocalCoreDataService {
             }
 
             // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                success?()
-            })
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
         }
     }
 
@@ -463,9 +456,7 @@ open class SharingService: LocalCoreDataService {
             }
 
             // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                onComplete?()
-            })
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: onComplete, on: .main)
         }
     }
 
@@ -607,9 +598,7 @@ open class SharingService: LocalCoreDataService {
             }
 
             // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                onComplete?()
-            })
+            ContextManager.sharedInstance().save(self.managedObjectContext, completion: onComplete, on: .main)
         }
     }
 

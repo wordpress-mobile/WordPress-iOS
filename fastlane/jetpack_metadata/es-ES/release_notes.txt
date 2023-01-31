@@ -1,7 +1,0 @@
-Hemos hecho correcciones y actualizaciones de aspectos técnicos en segundo plano para que la aplicación de Jetpack siga funcionando sin problemas. 
-
-- Proponiendo funciones
-- Rediseñando la arquitectura de las interfaces
-- Materializando ideas
-- Codificando similitudes
-- Reconstruyendo el gigaverso

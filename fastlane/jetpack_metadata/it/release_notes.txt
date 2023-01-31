@@ -1,7 +1,0 @@
-Abbiamo lavorato duramente su correzioni e aggiornamenti extra tecnici dietro le quinte per mantenere l'app Jetpack senza intoppi.
-
-- Funzionalità postulanti
-- Riprogettare le interfacce
-- Spline reticolanti
-- Similitudine codificante
-- Ricostruire il gigaverso
