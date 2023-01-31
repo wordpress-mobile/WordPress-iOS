@@ -109,7 +109,8 @@ extension AccountSettings {
                   webAddress: managed.webAddress,
                   language: managed.language,
                   tracksOptOut: managed.tracksOptOut,
-                  blockEmailNotifications: managed.blockEmailNotifications)
+                  blockEmailNotifications: managed.blockEmailNotifications,
+                  twoStepEnabled: false)
     }
 
     var emailForDisplay: String {
