@@ -65,11 +65,12 @@ class AccountSettingsService {
         loadSettings()
     }
 
-    func getSettingsAttempt(count: Int = 0) {
+    func getSettingsAttempt(count: Int = 0, completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
         self.remote.getSettings(
             success: { settings in
                 self.updateSettings(settings)
                 self.status = .idle
+                completion?(.success(settings))
             },
             failure: { error in
                 let error = error as NSError
@@ -80,20 +81,21 @@ class AccountSettingsService {
                 }
 
                 if error.domain == NSURLErrorDomain && count < Defaults.maxRetries {
-                    self.getSettingsAttempt(count: count + 1)
+                    self.getSettingsAttempt(count: count + 1, completion: completion)
                 } else {
                     self.status = .failed
+                    completion?(.failure(error))
                 }
             }
         )
     }
 
-    func refreshSettings() {
+    func refreshSettings(completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
         guard status == .idle || status == .failed else {
             return
         }
         status = .refreshing
-        getSettingsAttempt()
+        getSettingsAttempt(completion: completion)
         stallTimer = Timer.scheduledTimer(timeInterval: Defaults.stallTimeout,
                                                        target: self,
                                                        selector: #selector(AccountSettingsService.stallTimerFired),

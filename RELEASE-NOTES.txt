@@ -1,6 +1,7 @@
 21.7
 -----
 * [*] [Jetpack-only] Fixed an issue where stats were not displaying latest data when the system date rolls over to the next day while the app is in background. [#19989]
+* [*] [Jetpack-only] Hide Scan Login Code when logged into an account with 2FA. [#19567]
 
 21.6
 -----
