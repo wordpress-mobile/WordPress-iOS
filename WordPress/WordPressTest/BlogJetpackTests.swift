@@ -163,6 +163,58 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertEqual(3, Blog.count(in: mainContext))
     }
 
+    // MARK: Jetpack Individual Plugins
+
+    func test_jetpackIsConnectedWithoutFullPlugin_givenIndividualPluginOnly_returnsTrue() {
+        // Arrange
+        let plugins = ["jetpack-search"]
+
+        // Act
+        blog.options? = makeActivePluginOption(values: plugins)
+
+        // Assert
+        XCTAssertTrue(blog.jetpackIsConnectedWithoutFullPlugin)
+    }
+
+    func test_jetpackIsConnectedWithoutFullPlugin_givenMultipleIndividualPlugins_returnsTrue() {
+        // Arrange
+        let plugins = ["jetpack-search", "jetpack-backup"]
+
+        // Act
+        blog.options? = makeActivePluginOption(values: plugins)
+
+        // Assert
+        XCTAssertTrue(blog.jetpackIsConnectedWithoutFullPlugin)
+    }
+
+    func test_jetpackIsConnectedWithoutFullPlugin_givenFullJetpackSite_returnsFalse() {
+        // Arrange
+        let plugins = ["jetpack"]
+
+        // Act
+        blog.options? = makeActivePluginOption(values: plugins)
+
+        // Assert
+        XCTAssertFalse(blog.jetpackIsConnectedWithoutFullPlugin)
+    }
+
+    func test_jetpackIsConnectedWithoutFullPlugin_givenNoActivePlugins_returnsFalse() {
+        // Default Blog setup doesn't have any active plugins.
+
+        // Assert
+        XCTAssertFalse(blog.jetpackIsConnectedWithoutFullPlugin)
+    }
+
+    func test_jetpackIsConnectedWithoutFullPlugin_givenBothIndividualAndFullJetpackPlugins_returnsFalse() {
+        // Arrange
+        let plugins = ["jetpack-search", "jetpack"]
+
+        // Act
+        blog.options? = makeActivePluginOption(values: plugins)
+
+        // Assert
+        XCTAssertFalse(blog.jetpackIsConnectedWithoutFullPlugin)
+    }
 }
 
 // MARK: - Helpers
@@ -204,5 +256,9 @@ private extension BlogJetpackTests {
                 "readonly": true
             ]
         ]
+    }
+
+    func makeActivePluginOption(values: [String]) -> [NSString: [NSString: Any]] {
+        return ["jetpack_connection_active_plugins": ["value": values]]
     }
 }

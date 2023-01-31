@@ -52,6 +52,21 @@ extension Blog {
         return jetpack.isConnected
     }
 
+    // MARK: Jetpack Individual Plugins Support
+
+    var jetpackConnectionActivePlugins: [String]? {
+        switch getOptionValue("jetpack_connection_active_plugins") {
+        case .some(let values as [NSString]):
+            return values.map { String($0) }
+        case .some(let values as [String]):
+            return values
+        case .none:
+            fallthrough
+        default:
+            return nil
+        }
+    }
+
     /// Returns true if the blog is Jetpack-connected only through individual plugins. Otherwise false.
     ///
     /// If the site is hosted at WP.com, the key `jetpack_connection_active_plugins` will not exist in `options`.
@@ -61,7 +76,7 @@ extension Blog {
     /// Note: We can't use `jetpackIsConnected` because it checks the installed Jetpack version.
     ///
     var jetpackIsConnectedWithoutFullPlugin: Bool {
-        guard let activeJetpackPlugins = getOptionValue("jetpack_connection_active_plugins") as? [String] else {
+        guard let activeJetpackPlugins = jetpackConnectionActivePlugins else {
             return false
         }
 
