@@ -47,26 +47,25 @@ final class MockSiteVerticalsService: SiteVerticalsService {
 
 /// Retrieves candidate Site Verticals used to create a new site.
 ///
-final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsService {
+final class SiteCreationVerticalsService: SiteVerticalsService {
 
     // MARK: Properties
 
     /// A facade for WPCOM services.
     private let remoteService: WordPressComServiceRemote
 
-    // MARK: LocalCoreDataService
-
-    override init(managedObjectContext context: NSManagedObjectContext) {
+    init(coreDataStack: CoreDataStack) {
+        let account = coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        }
 
         let api: WordPressComRestApi
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
+        if let account {
             api = account.wordPressComRestV2Api
         } else {
             api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
         }
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
-
-        super.init(managedObjectContext: context)
     }
 
     // MARK: SiteVerticalsService

@@ -28,6 +28,7 @@ class ManagedAccountSettings: NSManagedObject {
         language = accountSettings.language
         tracksOptOut = accountSettings.tracksOptOut
         blockEmailNotifications = accountSettings.blockEmailNotifications
+        twoStepEnabled = accountSettings.twoStepEnabled
     }
 
     /// Applies a change to the account settings
@@ -109,7 +110,8 @@ extension AccountSettings {
                   webAddress: managed.webAddress,
                   language: managed.language,
                   tracksOptOut: managed.tracksOptOut,
-                  blockEmailNotifications: managed.blockEmailNotifications)
+                  blockEmailNotifications: managed.blockEmailNotifications,
+                  twoStepEnabled: managed.twoStepEnabled)
     }
 
     var emailForDisplay: String {

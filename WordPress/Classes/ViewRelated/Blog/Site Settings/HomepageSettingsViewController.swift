@@ -281,7 +281,7 @@ import WordPressShared
                                         value: (homepageType == .page) ? "page" : "posts")
 
         /// Send the remove service call
-        let service = HomepageSettingsService(blog: blog, context: blog.managedObjectContext!)
+        let service = HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
         service?.setHomepageType(homepageType,
                                  withPostsPageID: homepagePostsPageID,
                                  homePageID: homepagePageID,

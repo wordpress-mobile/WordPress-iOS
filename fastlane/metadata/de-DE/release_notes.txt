@@ -1,7 +1,0 @@
-Wir haben hinter den Kulissen intensiv an besonders technischen Fehlerbehebungen und Updates gearbeitet, damit WordPress weiterhin reibungslos funktioniert.
-
-- Ausdenken neuer Funktionen
-- Überdenken von Benutzeroberflächen
-- Kombinieren von Netzwerken
-- Zusammenführen von Ideen
-- Neuaufbau des Ökosystems

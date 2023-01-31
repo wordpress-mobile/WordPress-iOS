@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-09 18:58:58+0000 */
+/* Translation-Revision-Date: 2023-01-24 19:27:42+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
@@ -251,6 +251,9 @@ translators: Block name. %s: The localized block name */
 "%s block. This block has invalid content" = "%s bllok. Ky bllok ka lëndë të pavlefshme";
 
 /* translators: %s: name of the reusable block */
+"%s converted to regular block" = "%s shndërruar në bllok të rregullt";
+
+/* translators: %s: name of the reusable block */
 "%s converted to regular blocks" = "%s u shndërrua në blloqe të rregullt";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
@@ -279,12 +282,6 @@ translators: Block name. %s: The localized block name */
 
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(pa titull)";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* higher than the previous week" = "*%1$@%2$@ (%3$@%%)* më sipër se javën e kaluar";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* lower than the previous week" = "*%1$@%2$@ (%3$@%%)* më poshtë se javën e kaluar";
 
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "*Pal Bardhi* tani po ndjek sajtin tuaj!";
@@ -733,6 +730,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Alternatively, you can detach and edit these blocks separately by tapping “Convert to regular blocks”." = "Ndryshe, mund t’i shkëputni dhe përpunoni ndarazi këto blloqe, duke prekur “Shndërroji në blloqe të rregullt”.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Convert to regular block”." = "Ndryshe, mund ta shkëputni dhe përpunoni ndarazi këtë bllok, duke prekur “Shndërroje në bllok të rregullt”.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Ndryshe, mund të jepni fjalëkalimin për këtë llogari.";
@@ -2113,6 +2113,9 @@ translators: Block name. %s: The localized block name */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Krijoni një Postim";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Krijoni një Sajt";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Krijoni një Etiketë";
@@ -3828,12 +3831,6 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "Tendenca";
 
-/* Description of updated Stats Insights displayed in the Feature Introduction view. */
-"Insights help you understand how your content is performing and what’s resonating with your audience." = "Tendencat ju ndihmojnë të kuptoni se si ecën lënda juaj dhe se ç’ka rezonancë me publikun tuaj.";
-
-/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
-"Insights update" = "Përditësim tendencash";
-
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "Instaloje";
@@ -4110,9 +4107,6 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Mësoni më tepër rreth rolesh";
-
-/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
-"Learn more in My Site > Stats > Insights." = "Mësoni më tepër te Sajti Im > Statistika > Tendenca.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "Mësoni më tepër…";
@@ -5107,7 +5101,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Njoftimi do të përfshijë një fjalë, ose togfjalësh të shkurtër, për frymëzim";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -5821,9 +5816,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Bëni një paraparje të sajtit tuaj që të shihni ç’do të shohin vizitorët tuaj.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"Previous Week" = "Java e Kaluar";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "Muaji i mëparshëm";
 
@@ -5832,9 +5824,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "Periudha e mëparshme";
-
-/* Previous week legend label */
-"Previous week" = "Java e kaluar";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -5990,7 +5979,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Lexoni postimin burim";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -6081,9 +6071,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "Kujtoma";
-
-/* Button title dismiss the Stats Insights feature announcement screen. */
-"Remind me later" = "Kujtoma më vonë";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "Kujtuesit u hoqën";
@@ -6580,7 +6567,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Select %@ to see your checklist" = "Përzgjidhni %@ që të shihni listën tuaj";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Select %@ to see your current library." = "Përzgjidhni %@ që të shihni mediatekën tuaj të tanishme";
+"Select %@ to see your current library." = "Përzgjidhni %@ që të shihni mediatekën tuaj të tanishme.";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to see your current plan and other available plans." = "Përzgjidhni %@ që të shihni planin tuaj të tanishëm dhe të tjerë plane të mundshëm.";
@@ -7040,7 +7027,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Skip" = "Anashkaloje";
 
 /* Menu title to skip today's prompt. */
-"Skip this prompt" = "Anashkaloje këtë cytje";
+"Skip for today" = "Anashkaloje për sot";
 
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Identifikues";
@@ -7381,6 +7368,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Take a Video" = "Bëni një Video";
 
+/* A hint shown to the user in stats telling them how to navigate to the Comments detail view. */
+"Tap \"View more\" to see your top commenters." = "Prekni “Shihni më tepër”, që të shihni komentuesit tuaj kryesues.";
+
 /* A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact. */
 "Tap [bookmark-outline] to save a post to your list." = "Prekeni [bookmark-outline] që të ruani një postim te lista juaj.";
 
@@ -7609,9 +7599,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Postimi që po rrekeni të kopjoni, ka dy versione që kanë përplasje, ose keni bërë ndryshime tani afër, por nuk i ruajtët ato.\nSë pari përpunoni postimin, që të zgjidhet çfarëdo përplasje ose që të vazhdohet kopjimi i versionit prej këtij aplikacioni.";
 
-/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
-"The same as the previous week" = "Po aq sa javën e shkuar";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serializimi i kërkesës dështoi.";
 
@@ -7804,9 +7791,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "Botohen si postim i ri blogu në sajtin tuaj, që kështu publiku juaj kurrë të mos humbë një gjë.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"This Week" = "Këtë javë";
-
 /* Insights 'This Year' header */
 "This Year" = "Këtë Vit";
 
@@ -7878,9 +7862,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "Kjo llogari përdoruesi s’mund të mbyllet, teksa ka pajtime aktive.";
-
-/* This week legend label */
-"This week" = "Këtë javë";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8125,8 +8106,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "Provoni një tjetër term kërkimi";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Provojeni tani";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -9614,24 +9594,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "Sajti juaj s’do të dërgojë më të dhëna te WordPress.com dhe veçoritë Jetpack do të reshtin së funksionuari. Do të humbni mundësinë e hyrjes në sajt që nga aplikacioni dhe do t’ju duhet ta rishtoni me kredenciale sajti.";
 
-/* Stats insights views higher than previous week */
-"Your views this week are %@ higher than the previous week.\n" = "Parjet tuaja këtë javë janë %@ më sipër se sa javën e kaluar.\n";
-
-/* Stats insights views lower than previous week */
-"Your views this week are %@ lower than the previous week.\n" = "Parjet tuaja këtë javë janë %@ më poshtë se sa javën e kaluar.\n";
-
-/* Stats insights label shown when the user's view count is the same as the previous week. */
-"Your views this week are the same as the previous week.\n" = "Parjet tuaja këtë javë janë po aq sa javën e kaluar.\n";
-
-/* Stats insights visitors higher than previous week */
-"Your visitors this week are %@ higher than the previous week.\n" = "Vizitorët tuaj këtë javë janë %@ më sipër se sa javën e kaluar.\n";
-
-/* Stats insights visitors lower than previous week */
-"Your visitors this week are %@ lower than the previous week.\n" = "Vizitorët tuaj këtë javë janë %@ më poshtë se sa javën e kaluar.\n";
-
-/* Stats insights label shown when the user's visitor count is the same as the previous week. */
-"Your visitors this week are the same as the previous week.\n" = "Vizitorët tuaj këtë javë janë po aq sa javën e kaluar.\n";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "Kredencialet tuaja për në sajt nuk do të depozitohen dhe përdoren vetëm për qëllimin e instalimit të Jetpack-ut.";
 
@@ -9740,6 +9702,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "p.sh., 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Më tepër";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -9847,11 +9812,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Përdoreni këtë lidhje për mirëseardhjen e anëtarëve të ekipit tuaj, pa pasur nevojë t’i ftoni ata tek për tek. Cilido që viziton këtë URL, do të jetë në gjendje të regjistrohet në entin tuaj, madje edhe nëse lidhjen e morën nga dikush tjetër, ndaj kujdesuni t’ua jepni personave të besuar.";
 
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
-"ios-jetpack-sharesheet.CFBundleDisplayName" = "Ruaje ë Jetpack";
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Ruaje si Skicë";
 
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
-"ios-jetpack-sharesheet.CFBundleName" = "Ruaje në Jetpack";
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Ruaje si Skicë";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Ruaje si Skicë";
@@ -9877,8 +9842,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Përzgjidhni Synim Sajti";
 
+/* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.plural" = "%1$@ po kalohen në %2$@";
+
+/* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
+"jetpack.branding.badge_banner.moving_in.singular" = "%1$@ po kalohet në %2$@";
+
+/* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
+"jetpack.branding.badge_banner.moving_soon.plural" = "Së shpejti %@ do të lëvizen";
+
+/* Title of a badge indicating that a feature in singular form will be removed soon. First argument is the feature name. Ex: Reader is moving soon */
+"jetpack.branding.badge_banner.moving_soon.singular" = "Së shpejti %@ do të lëvizet";
+
 /* Title of the Jetpack powered badge. */
 "jetpack.branding.badge_banner.title" = "Bazuar në Jetpack";
+
+/* Title of the Jetpack powered badge. */
+"jetpack.branding.badge_banner.title.phase2" = "Merrni aplikacionin Jetpack";
 
 /* Button title of the Jetpack powered overlay. */
 "jetpack.branding.overlay.button.title" = "Provoni aplikacionin e ri Jetpack";
@@ -9892,11 +9872,37 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.early.switch.title" = "Kalo në aplikacionin e ri Jetpack";
 
+/* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
+"jetpack.fullscreen.overlay.late.switch.title" = "Kaloni te aplikacioni Jetpack";
+
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Mësoni më tepër te jetpack.com";
 
+/* Description of the Notifications feature.
+   Description of the Reader feature.
+   Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Shiheni si rritet trafiku juaj, me prirje të dobishme dhe statistika të plota.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistika & Tendenca";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack-u ju lejon të bëni më tepër gjëra me sajtin tuaj WordPress. Kalimi është falas dhe do vetëm një minutë.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Jepini WordPress-it një përforcim me Jetpack-un";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Vazhdo te Njoftimet";
+
+/* Title of a button that dismisses an overlay that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.general.continue.title" = "Bëjeni më vonë";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut janë hequr nga aplikacioni WordPress.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseFour.title" = "Veçori të Jetpack-ut janë lëvizur.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Që të vazhdoni të merrni në pajisjen tuaj njoftime të atypëratyshme, kaloni te aplikacioni Jetpack.";
@@ -9919,11 +9925,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.stats.title" = "Merrni statistikat tuaja duke përdorur aplikacionin e ri Jetpack";
 
+/* A footnote in a screen displayed when the user accesses a Jetpack powered feature from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.footnote" = "Kalimi është falas dhe do vetëm një minutë.";
+
+/* Title of a button that dismisses an overlay that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.continue.title" = "Vazhdo pa Jetpack-un";
+
+/* Title of a screen that showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseThree.general.title" = "Veçoritë Jetpack së shpejti do të shpërngulen.";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseTwo.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.\n\nAplikacioni WordPress nuk mbulon më krijimin e një sajti të ri.";
 
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.fallbackSubtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të hiqen së shpejti nga aplikacioni WordPress.";
+
+/* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.notifications.title" = "Njoftimet po kalojnë te aplikacioni Jetpack";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.reader.title" = "Lexuesi po kalohet te aplikacioni Jetpack";
+
+/* Title of a screen displayed when the user accesses the Stats screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.stats.title" = "Statistikat po kalojnë te aplikacioni Jetpack";
+
+/* Subtitle of a screen displayed when the user accesses a Jetpack-powered feature from the WordPress app. The '%@' characters are a placeholder for the date the features will be removed. */
+"jetpack.fullscreen.overlay.phaseTwoAndThree.subtitle" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të hiqen së shpejti nga aplikacioni WordPress në %@.";
+
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Vazhdo te Lexuesi";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "Aplikacioni Jetpack për celular është menduar të punojë tok me shtojcën Jetpack. Kaloni tani, që të mund të përdorni Statistikat, Lexuesin, Njoftimet, etj.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "Sajti juaj e ka shtojcën Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Vazhdo pa Jetpack-un";
@@ -9936,6 +9972,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Vazhdo te Statistika";
+
+/* Description inside a menu card communicating that features are moving to the Jetpack app. */
+"jetpack.menuCard.description" = "Statistikat, Lexuesi, Njoftimet dhe të tjera veçorit të fuqishme të Jetpack-ut do të kalohen së shpejti te aplikacioni Jetpack për celular.";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Fshihe këtë";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Mësoni më tepër";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Çlironi potencialin e plotë të sajtit tuaj. Merrni Statistika, Lexuesi, Njoftime, etj me Jetpack-un.";
+
+/* Title of a button prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.phaseFour.title" = "Kalo te Jetpack";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Kujtoma më vonë";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Shtoni një autor";
@@ -10018,8 +10072,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the migration done screen. */
 "migration.done.title" = "Faleminderit që kaloni në Jetpack!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Duket sikur keni të instaluar aplikacionin WordPress.";
+
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Hap WordPress-in";
+
+/* The secondary button title in the Load WordPress screen */
+"migration.loadWordpress.secondaryButton" = "Jo, faleminderit";
+
+/* The secondary description in the Load WordPress screen */
+"migration.loadWordpress.secondaryDescription" = "Do të donit të shpërngulnit të dhënat tuaja nga aplikacioni WordPress dhe të bëhet hyrja automatikisht?";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Mirë se vini te Jetpack-u!";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Vendosni më vonë";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Kur shfaqet sinjalizime prekni “Lejoje” që të vazhdoni të merrni krejt njoftimet tuaja WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Lejoje";
@@ -10138,6 +10210,43 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Gabim Gjatë Ndarjes Me të Tjerë";
 
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 ditët e fundit";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 ditët e shkuara";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.
+   Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* më sipër se 7 ditët e shkuara";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Njësoj si 7 ditët e shkuara";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "Parjet tuaja gjatë 7 ditëve të fundit janë %@ më lart se ato të 7 ditëve të kaluara.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "Parjet tuaja gjatë 7 ditëve të fundit janë %@ më poshtë se ato të 7 ditëve të kaluara.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "Parjet tuaja gjatë 7 ditëve të fundit janë njësoj me ato të 7 ditëve të kaluara.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "7 ditët e fundit";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "7 ditët e mëparshme";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "Vizitorët tuaj gjatë 7 ditëve të fundit janë %@ më shumë se ata të 7 ditëve të mëparshme.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "Vizitorët tuaj gjatë 7 ditëve të fundit janë %@ më pak se ata të 7 ditëve të mëparshme.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "Vizitorët tuaj gjatë 7 ditëve të fundit janë njësoj me ata të 7 ditëve të mëparshme.\n";
+
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komente";
 
@@ -10172,7 +10281,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.management.savePrompt.discardButton" = "Hidhi Tej Ndryshimet";
 
 /* Title of alert in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
-"stats.insights.management.savePrompt.message" = "Bëtë ndryshime te skedat tuaja aktive të Prirjeve";
+"stats.insights.management.savePrompt.message" = "Bëtë ndryshime te skedat tuaja aktive të Prirjeve.";
 
 /* Title of button in Stats Insights management, prompting the user to save changes to their list of active Stats cards. */
 "stats.insights.management.savePrompt.saveButton" = "Ruaji Ndryshimet";

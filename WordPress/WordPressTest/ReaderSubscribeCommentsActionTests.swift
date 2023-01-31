@@ -88,8 +88,8 @@ private class MockFollowCommentsService: FollowCommentsService {
         super.init(post: post)
     }
 
-    @objc required init?(post: ReaderPost, remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
-        super.init(post: post, remote: remote)
+    required init?(post: ReaderPost, coreDataStack: CoreDataStack, remote: ReaderPostServiceRemote) {
+        fatalError("unsupported initialiser")
     }
 
     @objc override func toggleSubscribed(

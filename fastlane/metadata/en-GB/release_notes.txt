@@ -1,7 +1,0 @@
-We’ve been hard at work on extra-technical, behind-the-scenes fixes and updates to keep the WordPress app running smoothly.
-
-- Posticulating features
-- Rearchitecting interfaces
-- Reticulating splines
-- Codifying similitude
-- Rebuilding the gigaverse

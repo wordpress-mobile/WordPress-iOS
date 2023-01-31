@@ -56,7 +56,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        siteManagementService = SiteManagementServiceTester(managedObjectContext: contextManager.mainContext)
+        siteManagementService = SiteManagementServiceTester(coreDataStack: contextManager)
         mockRemoteService = siteManagementService.mockRemoteService
     }
 
@@ -95,18 +95,14 @@ class SiteManagementServiceTests: CoreDataTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testDeleteSiteRemovesExistingBlogOnSuccess() {
+    func testDeleteSiteRemovesExistingBlogOnSuccess() throws {
         let context = contextManager.mainContext
-        let blog =
+        let blog = insertBlog(context)
 
-
-            insertBlog(context)
         let blogObjectID = blog.objectID
-
         XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
 
-        let expect = expectation(
-            description: "Remove Blog success expectation")
+        let expect = expectation(description: "Remove Blog success expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
             success: {
@@ -115,8 +111,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
         mockRemoteService.successBlockPassedIn?()
         waitForExpectations(timeout: 2, handler: nil)
 
-        let shouldBeRemoved = try? context.existingObject(with: blogObjectID)
-        XCTAssertFalse(shouldBeRemoved != nil, "Blog was not removed")
+        try XCTAssertEqual(context.count(for: Blog.fetchRequest()), 0)
     }
 
     func testDeleteSiteCallsFailureBlock() {

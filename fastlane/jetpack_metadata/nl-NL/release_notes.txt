@@ -1,7 +1,0 @@
-We hebben achter de schermen hard gewerkt aan extra technische oplossingen en updates om de Jetpack-app vloeiend te laten functioneren.
-
-- Functies poneren
-- Interfaces opnieuw vormgeven
-- Een netwerk van splines maken
-- Vergelijkingen codificeren
-- Het gigaversum opnieuw opbouwen
