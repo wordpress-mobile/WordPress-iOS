@@ -156,7 +156,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                        dispatch_group_leave(syncGroup);
                                    }];
 
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:self.coreDataStack];
     dispatch_group_enter(syncGroup);
     [sharingService syncPublicizeConnectionsForBlog:blog
                                             success:^{

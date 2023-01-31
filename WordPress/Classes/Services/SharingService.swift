@@ -51,29 +51,6 @@ open class SharingService: LocalCoreDataService {
     }
 
 
-    /// Syncs Publicize connections for the specified wpcom blog.
-    ///
-    /// - Parameters:
-    ///     - blog: The `Blog` for which to sync publicize connections
-    ///     - success: An optional success block accepting no parameters.
-    ///     - failure: An optional failure block accepting an `NSError` parameter.
-    ///
-    @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
-        let blogObjectID = blog.objectID
-        guard let remote = remoteForBlog(blog) else {
-            failure?(SharingServiceError.siteWithNoRemote as NSError)
-            return
-        }
-
-        remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
-
-            // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
-        },
-        failure: failure)
-    }
-
-
     /// Creates a new publicize connection for the specified `Blog`, using the specified
     /// keyring.  Optionally the connection can target a particular external user account.
     ///
@@ -367,135 +344,7 @@ open class SharingService: LocalCoreDataService {
     }
 
 
-    // MARK: - Public PublicizeConnection Methods
-
-
-    /// Finds a cached `PublicizeConnection` by its `connectionID`
-    ///
-    /// - Parameter connectionID: The ID of the `PublicizeConnection`.
-    ///
-    /// - Returns: The requested `PublicizeConnection` or nil.
-    ///
-    @objc open func findPublicizeConnectionByID(_ connectionID: NSNumber) -> PublicizeConnection? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeConnection.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "connectionID = %@", connectionID)
-
-        var services: [PublicizeConnection]
-        do {
-            services = try managedObjectContext.fetch(request) as! [PublicizeConnection]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Service with ID \(connectionID) : \(error.localizedDescription)")
-            services = []
-        }
-
-        return services.first
-    }
-
-
-    /// Returns an array of all cached `PublicizeConnection` objects.
-    ///
-    /// - Parameters
-    ///     - blog: A `Blog` object
-    ///
-    /// - Returns: An array of `PublicizeConnection`.  The array is empty if no objects are cached.
-    ///
-    @objc open func allPublicizeConnectionsForBlog(_ blog: Blog) -> [PublicizeConnection] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeConnection.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "blog = %@", blog)
-
-        var connections: [PublicizeConnection]
-        do {
-            connections = try managedObjectContext.fetch(request) as! [PublicizeConnection]
-        } catch let error as NSError {
-            DDLogError("Error fetching Publicize Connections: \(error.localizedDescription)")
-            connections = []
-        }
-
-        return connections
-    }
-
-
     // MARK: - Private PublicizeConnection Methods
-
-
-    /// Called when syncing Publicize connections. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
-    ///
-    /// - Parameters:
-    ///     - blogObjectID: the NSManagedObjectID of a `Blog`
-    ///     - remoteConnections: An array of `RemotePublicizeConnection` objects to merge.
-    ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
-    ///
-    fileprivate func mergePublicizeConnectionsForBlog(_ blogObjectID: NSManagedObjectID, remoteConnections: [RemotePublicizeConnection], onComplete: (() -> Void)?) {
-        managedObjectContext.perform {
-            var blog: Blog
-            do {
-                blog = try self.managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            } catch let error as NSError {
-                DDLogError("Error fetching Blog: \(error)")
-                // Because of the error we'll bail early, but we still need to call
-                // the success callback if one was passed.
-                onComplete?()
-                return
-            }
-
-            let currentPublicizeConnections = self.allPublicizeConnectionsForBlog(blog)
-
-            // Create or update based on the contents synced.
-            let connectionsToKeep = remoteConnections.map { (remoteConnection) -> PublicizeConnection in
-                let pubConnection = self.createOrReplaceFromRemotePublicizeConnection(remoteConnection)
-                pubConnection.blog = blog
-                return pubConnection
-            }
-
-            // Delete any cached PublicizeServices that were not synced.
-            for pubConnection in currentPublicizeConnections {
-                if !connectionsToKeep.contains(pubConnection) {
-                    self.managedObjectContext.delete(pubConnection)
-                }
-            }
-
-            // Save all the things.
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: onComplete, on: .main)
-        }
-    }
-
-
-    /// Composes a new `PublicizeConnection`, or updates an existing one, with
-    /// data represented by the passed `RemotePublicizeConnection`.
-    ///
-    /// - Parameter remoteConnection: The remote connection representing the publicize connection.
-    ///
-    /// - Returns: A `PublicizeConnection`.
-    ///
-    fileprivate func createOrReplaceFromRemotePublicizeConnection(_ remoteConnection: RemotePublicizeConnection) -> PublicizeConnection {
-        var pubConnection = findPublicizeConnectionByID(remoteConnection.connectionID)
-        if pubConnection == nil {
-            pubConnection = NSEntityDescription.insertNewObject(forEntityName: PublicizeConnection.classNameWithoutNamespaces(),
-                into: managedObjectContext) as? PublicizeConnection
-        }
-
-        pubConnection?.connectionID = remoteConnection.connectionID
-        pubConnection?.dateExpires = remoteConnection.dateExpires
-        pubConnection?.dateIssued = remoteConnection.dateIssued
-        pubConnection?.externalDisplay = remoteConnection.externalDisplay
-        pubConnection?.externalFollowerCount = remoteConnection.externalFollowerCount
-        pubConnection?.externalID = remoteConnection.externalID
-        pubConnection?.externalName = remoteConnection.externalName
-        pubConnection?.externalProfilePicture = remoteConnection.externalProfilePicture
-        pubConnection?.externalProfileURL = remoteConnection.externalProfileURL
-        pubConnection?.keyringConnectionID = remoteConnection.keyringConnectionID
-        pubConnection?.keyringConnectionUserID = remoteConnection.keyringConnectionUserID
-        pubConnection?.label = remoteConnection.label
-        pubConnection?.refreshURL = remoteConnection.refreshURL
-        pubConnection?.service = remoteConnection.service
-        pubConnection?.shared = remoteConnection.shared
-        pubConnection?.status = remoteConnection.status
-        pubConnection?.siteID = remoteConnection.siteID
-        pubConnection?.userID = remoteConnection.userID
-
-        return pubConnection!
-    }
 
 
     /// Composes a new `PublicizeConnection`, with data represented by the passed `RemotePublicizeConnection`.
@@ -509,7 +358,7 @@ open class SharingService: LocalCoreDataService {
         remoteConnection: RemotePublicizeConnection) throws -> PublicizeConnection {
 
             let blog = try managedObjectContext.existingObject(with: blogObjectID) as! Blog
-            let pubConn = createOrReplaceFromRemotePublicizeConnection(remoteConnection)
+            let pubConn = PublicizeConnection.createOrReplace(from: remoteConnection, in: self.managedObjectContext)
             pubConn.blog = blog
 
             return pubConn

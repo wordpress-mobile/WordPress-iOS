@@ -8,7 +8,7 @@ class SharingServiceTests: CoreDataTestCase {
 
         let expect = expectation(description: "Sharing service completion block called.")
 
-        let sharingService = SharingService(managedObjectContext: mainContext)
+        let sharingService = SharingSyncService(coreDataStack: contextManager)
         sharingService.syncPublicizeConnectionsForBlog(blog) {
             expect.fulfill()
         } failure: { (error) in

@@ -1101,6 +1101,10 @@
 		4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
 		4A072CD329093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
 		4A17C1A4281A823E0001FFE5 /* NSManagedObject+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */; };
+		4A1E77C6298897F6006281CC /* SharingSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E77C5298897F6006281CC /* SharingSyncService.swift */; };
+		4A1E77C7298897F6006281CC /* SharingSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E77C5298897F6006281CC /* SharingSyncService.swift */; };
+		4A1E77C92988997C006281CC /* PublicizeConnection+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */; };
+		4A1E77CA2988997C006281CC /* PublicizeConnection+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */; };
 		4A2172F828EAACFF0006F4F1 /* BlogQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */; };
 		4A2172F928EAACFF0006F4F1 /* BlogQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */; };
 		4A2172FE28F688890006F4F1 /* Blog+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172FD28F688890006F4F1 /* Blog+Media.swift */; };
@@ -6467,6 +6471,8 @@
 		49E3445F1B568603958DA79D /* Pods-JetpackNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackNotificationServiceExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackNotificationServiceExtension/Pods-JetpackNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		4A072CD129093704006235BE /* AsyncBlockOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperation.swift; sourceTree = "<group>"; };
 		4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Fixture.swift"; sourceTree = "<group>"; };
+		4A1E77C5298897F6006281CC /* SharingSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingSyncService.swift; sourceTree = "<group>"; };
+		4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeConnection+Creation.swift"; sourceTree = "<group>"; };
 		4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQuery.swift; sourceTree = "<group>"; };
 		4A2172FD28F688890006F4F1 /* Blog+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Media.swift"; sourceTree = "<group>"; };
 		4A266B8E282B05210089CF3D /* JSONObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObjectTests.swift; sourceTree = "<group>"; };
@@ -10191,6 +10197,7 @@
 				08B6D6F01C8F7DCE0052C52B /* PostType.h */,
 				08B6D6F11C8F7DCE0052C52B /* PostType.m */,
 				E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */,
+				4A1E77C82988997C006281CC /* PublicizeConnection+Creation.swift */,
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
 				8BB185D424B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift */,
 				8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */,
@@ -13447,6 +13454,7 @@
 				E1D28E921F2F6EB500A5DAFD /* RoleService.swift */,
 				930F09161C7D110E00995926 /* ShareExtensionService.swift */,
 				E616E4B21C480896002C024E /* SharingService.swift */,
+				4A1E77C5298897F6006281CC /* SharingSyncService.swift */,
 				D82253DB2199411F0014D0E2 /* SiteAddressService.swift */,
 				73178C3021BEE45300E37C9A /* SiteAssembly.swift */,
 				73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */,
@@ -20427,6 +20435,7 @@
 				F181EDE526B2AC7200C61241 /* BackgroundTasksCoordinator.swift in Sources */,
 				8B93412F257029F60097D0AC /* FilterChipButton.swift in Sources */,
 				40A71C68220E1952002E3D25 /* StatsRecordValue+CoreDataClass.swift in Sources */,
+				4A1E77C6298897F6006281CC /* SharingSyncService.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				FA90EFEF262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */,
 				9A8ECE1D2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift in Sources */,
@@ -20642,6 +20651,7 @@
 				3223393C24FEC18100BDD4BF /* ReaderDetailFeaturedImageView.swift in Sources */,
 				98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */,
 				8BAD272C241FEF3300E9D105 /* PrepublishingViewController.swift in Sources */,
+				4A1E77C92988997C006281CC /* PublicizeConnection+Creation.swift in Sources */,
 				9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */,
 				F10D634F26F0B78E00E46CC7 /* Blog+Organization.swift in Sources */,
 				DCCDF75B283BEFEA00AA347E /* SiteStatsInsightsDetailsTableViewController.swift in Sources */,
@@ -24211,6 +24221,7 @@
 				FABB254E2602FC2C00C8785C /* SettingTableViewCell.m in Sources */,
 				FABB254F2602FC2C00C8785C /* CountriesMapView.swift in Sources */,
 				FAD257132611B04D00EDAF88 /* UIColor+JetpackColors.swift in Sources */,
+				4A1E77C7298897F6006281CC /* SharingSyncService.swift in Sources */,
 				FABB25502602FC2C00C8785C /* MediaLibraryViewController.swift in Sources */,
 				FABB25512602FC2C00C8785C /* TodayWidgetStats.swift in Sources */,
 				FABB25522602FC2C00C8785C /* GutenbergMediaFilesUploadProcessor.swift in Sources */,
@@ -24370,6 +24381,7 @@
 				FABB25C92602FC2C00C8785C /* CreateButtonCoordinator.swift in Sources */,
 				3FBF21B8267AA17A0098335F /* BloggingRemindersAnimator.swift in Sources */,
 				FABB25CA2602FC2C00C8785C /* SearchManager.swift in Sources */,
+				4A1E77CA2988997C006281CC /* PublicizeConnection+Creation.swift in Sources */,
 				FE9CC71B26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */,
 				F195C42B26DFBDC2000EC884 /* BackgroundTasksCoordinator.swift in Sources */,
 				FABB25CB2602FC2C00C8785C /* BlogToBlogMigration87to88.swift in Sources */,

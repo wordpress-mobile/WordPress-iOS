@@ -340,7 +340,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)syncConnections
 {
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
     [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
