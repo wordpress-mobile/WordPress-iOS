@@ -44,7 +44,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             return
         }
         guard !defaults.bool(forKey: AppConfiguration.Widget.Stats.userDefaultsJetpackFeaturesDisabledKey) else {
-            completion(Timeline(entries: [.disabled], policy: .never))
+            completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
             return
         }
         guard let defaultSiteID = defaultSiteID else {

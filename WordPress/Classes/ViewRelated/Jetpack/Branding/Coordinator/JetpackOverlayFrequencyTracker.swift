@@ -56,6 +56,8 @@ class JetpackOverlayFrequencyTracker {
         case .reader:
             return frequenciesPassed()
         case .card:
+            fallthrough
+        case .disabledEntryPoint:
             return true
         case .login:
             fallthrough

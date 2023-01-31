@@ -11,7 +11,10 @@ struct StatsWidgetsView: View {
 
         switch timelineEntry {
 
-        case .loggedOut, .noSite, .noData, .disabled:
+        case .disabled(let kind):
+            UnconfiguredView(timelineEntry: timelineEntry)
+                .widgetURL(kind.statsURL)
+        case .loggedOut, .noSite, .noData:
             UnconfiguredView(timelineEntry: timelineEntry)
                 .widgetURL(nil)
                 // This seems to prevent a bug where the URL for subsequent widget
@@ -117,5 +120,18 @@ private extension HomeWidgetThisWeekData {
 
     var statsURL: URL? {
         URL(string: Self.statsUrl + "\(siteID)?source=widget")
+    }
+}
+
+private extension StatsWidgetKind {
+    var statsURL: URL? {
+        switch self {
+        case .today:
+            return URL(string: "https://wordpress.com/stats/day/?source=widget")
+        case .allTime:
+            return URL(string: "https://wordpress.com/stats/insights/?source=widget")
+        case .thisWeek:
+            return URL(string: "https://wordpress.com/stats/week/?source=widget")
+        }
     }
 }
