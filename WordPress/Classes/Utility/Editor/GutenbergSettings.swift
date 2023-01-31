@@ -88,7 +88,7 @@ class GutenbergSettings {
                 database.set(true, forKey: Key.enabledOnce(for: blog))
             }
         }
-        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        let editorSettingsService = EditorSettingsService(coreDataStack: Environment.current.contextManager)
         editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
             WPAnalytics.refreshMetadata()
         })
@@ -139,7 +139,7 @@ class GutenbergSettings {
     ///
     /// - Parameter blog: The site to synch editor settings
     func postSettingsToRemote(for blog: Blog) {
-        let editorSettingsService = EditorSettingsService(managedObjectContext: context)
+        let editorSettingsService = EditorSettingsService(coreDataStack: Environment.current.contextManager)
         editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
             DDLogError("Failed to post new post selection with Error: \(error)")
         }

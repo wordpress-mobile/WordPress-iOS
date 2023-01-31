@@ -194,7 +194,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         dispatch_group_leave(syncGroup);
     }];
 
-    EditorSettingsService *editorService = [[EditorSettingsService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    EditorSettingsService *editorService = [[EditorSettingsService alloc] initWithCoreDataStack:self.coreDataStack];
     dispatch_group_enter(syncGroup);
     [editorService syncEditorSettingsForBlog:blog success:^{
         dispatch_group_leave(syncGroup);

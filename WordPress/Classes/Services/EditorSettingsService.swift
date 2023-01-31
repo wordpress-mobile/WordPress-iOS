@@ -4,7 +4,8 @@ import Foundation
     case mobileEditorNotSet
 }
 
-@objc class EditorSettingsService: LocalCoreDataService {
+@objc class EditorSettingsService: CoreDataService {
+
     @objc(syncEditorSettingsForBlog:success:failure:)
     func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard let api = api(for: blog) else {
@@ -19,14 +20,18 @@ import Foundation
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.getEditorSettings(siteID, success: { (settings) in
-            do {
-                try self.update(blog, remoteEditorSettings: settings)
-                ContextManager.sharedInstance().save(self.managedObjectContext)
-                success()
-            } catch EditorSettingsServiceError.mobileEditorNotSet {
-                self.migrateLocalSettingToRemote(for: blog, success: success, failure: failure)
-            } catch {
-                failure(error)
+            self.coreDataStack.performAndSave { context in
+                let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
+                try self.update(blogInContext, remoteEditorSettings: settings)
+            } completion: { result in
+                switch result {
+                case .success:
+                    success()
+                case .failure(EditorSettingsServiceError.mobileEditorNotSet):
+                    self.migrateLocalSettingToRemote(for: blog, success: success, failure: failure)
+                case let .failure(error):
+                    failure(error)
+                }
             }
         }, failure: failure)
     }
@@ -78,7 +83,9 @@ import Foundation
 
 private extension EditorSettingsService {
     var defaultWPComAccount: WPAccount? {
-        try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
+        coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        }
     }
 
     func updateAllSites(with response: [Int: EditorSettings.Mobile]) {
