@@ -37,7 +37,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
 
     override init(managedObjectContext context: NSManagedObjectContext) {
         self.accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
-        self.blogService = BlogService(managedObjectContext: context)
+        self.blogService = BlogService(coreDataStack: ContextManager.sharedInstance())
 
         let api: WordPressComRestApi
         if let wpcomApi = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi {

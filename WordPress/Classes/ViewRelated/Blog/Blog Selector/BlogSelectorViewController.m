@@ -236,14 +236,15 @@
 
 - (void)syncBlogs
 {
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-        if (!defaultAccount) {
+    id<CoreDataStack> coreDataStack = [ContextManager sharedInstance];
+    [coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
+        if (account == nil) {
             return;
         }
 
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:coreDataStack];
+        [blogService syncBlogsForAccount:account success:nil failure:nil];
     }];
 }
 

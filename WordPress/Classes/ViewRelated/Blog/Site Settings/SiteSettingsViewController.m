@@ -1021,8 +1021,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (void)refreshData
 {
     __weak __typeof__(self) weakSelf = self;
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+    BlogService *service = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
@@ -1120,7 +1119,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         return;
     }
     
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService updateSettingsForBlog:self.blog success:^{
         [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
     } failure:^(NSError *error) {

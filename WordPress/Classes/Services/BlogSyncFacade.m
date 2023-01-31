@@ -14,8 +14,7 @@
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService syncBlogsForAccount:account success:^{
         WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
         [shortcutCreator createShortcutsIf3DTouchAvailable:YES];

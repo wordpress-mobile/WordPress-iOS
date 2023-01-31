@@ -98,7 +98,7 @@
     }];
 
     AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:self.testContextManager];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:self.testContextManager];
     NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
@@ -122,6 +122,8 @@
                                           @"readonly": @YES,
                                           },
                                   };
+
+    [self.testContextManager saveContextAndWait:self.testContextManager.mainContext];
 
     // test.blog + wp.com + jetpack
     XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
@@ -166,7 +168,7 @@
     }];
 
     AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:self.testContextManager];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:self.testContextManager];
     NSManagedObjectID *accountID = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     WPAccount *wpComAccount = [self.testContextManager.mainContext existingObjectWithID:accountID error:nil];
 
@@ -179,6 +181,8 @@
     jetpackBlog.username = @"jetpack";
     jetpackBlog.xmlrpc = @"https://jetpack.example.com/xmlrpc.php";
     jetpackBlog.url = @"https://jetpack.example.com/";
+
+    [self.testContextManager saveContextAndWait:self.testContextManager.mainContext];
 
     XCTAssertEqual(1, [WPAccount lookupNumberOfAccountsInContext:self.testContextManager.mainContext]);
     // test.blog + wp.com + jetpack (legacy)

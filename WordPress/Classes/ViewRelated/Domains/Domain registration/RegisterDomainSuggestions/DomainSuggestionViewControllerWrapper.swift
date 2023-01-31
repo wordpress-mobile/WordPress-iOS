@@ -21,7 +21,7 @@ struct DomainSuggestionViewControllerWrapper: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> LightNavigationController {
-        let blogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        let blogService = BlogService(coreDataStack: ContextManager.shared)
 
         self.domainSuggestionViewController.domainPurchasedCallback = { domain in
             blogService.syncBlogAndAllMetadata(self.blog) { }

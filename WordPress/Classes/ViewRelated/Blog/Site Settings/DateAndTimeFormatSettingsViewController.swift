@@ -37,7 +37,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     @objc public convenience init(blog: Blog) {
         self.init(style: .insetGrouped)
         self.blog = blog
-        self.service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        self.service = BlogService(coreDataStack: ContextManager.shared)
     }
 
     // MARK: - View Lifecycle
@@ -228,7 +228,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     }
 
     fileprivate func refreshSettings() {
-        let service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         service.syncSettings(for: blog,
                              success: { [weak self] in
                                 self?.reloadViewModel()

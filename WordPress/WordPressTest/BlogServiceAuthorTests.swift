@@ -8,7 +8,7 @@ class BlogServiceAuthorTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        blogService = BlogService(managedObjectContext: contextManager.mainContext)
+        blogService = BlogService(coreDataStack: contextManager)
     }
 
     override func tearDown() {

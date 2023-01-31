@@ -15,7 +15,7 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         blog = BlogBuilder(contextManager.mainContext).build()
         blog.dashboardState.syncingStatuses = []
         postService = PostServiceMock()
-        blogService = BlogServiceMock(managedObjectContext: contextManager.mainContext)
+        blogService = BlogServiceMock(coreDataStack: contextManager)
     }
 
     override func tearDown() {

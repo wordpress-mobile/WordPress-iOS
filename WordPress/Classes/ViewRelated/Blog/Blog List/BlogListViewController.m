@@ -383,13 +383,11 @@ static NSInteger HideSearchMinSites = 3;
         });
     };
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlogsForAccount:defaultAccount success:^{
-            completionBlock();
-        } failure:^(NSError * _Nonnull error) {
-            completionBlock();
-        }];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [blogService syncBlogsForAccount:defaultAccount success:^{
+        completionBlock();
+    } failure:^(NSError * _Nonnull error) {
+        completionBlock();
     }];
 }
 

@@ -361,7 +361,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    self.blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [self preloadMetadata];
 
     if (self.blog.account && !self.blog.account.userID) {

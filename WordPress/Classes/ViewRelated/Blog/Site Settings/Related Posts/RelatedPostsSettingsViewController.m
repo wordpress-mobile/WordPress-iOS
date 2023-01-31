@@ -251,7 +251,8 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.on;
     self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.on;
     
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    BlogService *blogService = nil;
+    // TODO: the save operation in `updateSettingsForBlog` is needed.
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];
     } failure:^(NSError *error) {

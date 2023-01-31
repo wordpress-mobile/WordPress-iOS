@@ -537,8 +537,7 @@ import WordPressShared
             tableView.reloadData()
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         let dotComID = blog.dotComID
         service.updateSettings(
             for: self.blog,
@@ -570,7 +569,7 @@ import WordPressShared
     /// when finished.  Fails silently if there is an error.
     ///
     private func syncSharingSettings() {
-        let service = BlogService(managedObjectContext: viewContext)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         service.syncSettings(for: blog, success: { [weak self] in
                 self?.reloadSettingsSections()
             },
