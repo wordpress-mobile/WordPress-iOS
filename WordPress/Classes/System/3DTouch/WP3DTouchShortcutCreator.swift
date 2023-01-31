@@ -23,7 +23,6 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     var shortcutsProvider: ApplicationShortcutsProvider
     @objc let mainContext = ContextManager.sharedInstance().mainContext
-    @objc let blogService: BlogService
 
     fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
     fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"
@@ -33,7 +32,6 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     public init(shortcutsProvider: ApplicationShortcutsProvider) {
         self.shortcutsProvider = shortcutsProvider
-        blogService = BlogService(managedObjectContext: mainContext)
         super.init()
         registerForNotifications()
     }

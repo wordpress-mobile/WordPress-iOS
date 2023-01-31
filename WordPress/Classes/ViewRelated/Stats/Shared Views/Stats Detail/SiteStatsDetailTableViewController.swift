@@ -47,10 +47,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         return MediaService(managedObjectContext: mainContext)
     }()
 
-    private lazy var blogService: BlogService = {
-        return BlogService(managedObjectContext: mainContext)
-    }()
-
     // MARK: - View
 
     override func viewDidLoad() {

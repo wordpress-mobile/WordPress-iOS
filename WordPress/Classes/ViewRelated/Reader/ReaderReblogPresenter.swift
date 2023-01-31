@@ -24,23 +24,23 @@ class ReaderReblogPresenter {
     }
 
     /// Presents the reblog screen(s)
-    func presentReblog(blogService: BlogService,
+    func presentReblog(coreDataStack: CoreDataStack,
                        readerPost: ReaderPost,
                        origin: UIViewController) {
-
-        let blogCount = BlogQuery().visible(true).hostedByWPCom(true).count(in: blogService.managedObjectContext)
+        let context = coreDataStack.mainContext
+        let blogCount = BlogQuery().visible(true).hostedByWPCom(true).count(in: context)
 
         switch blogCount {
         case 0:
             presentNoSitesScene(origin: origin)
         case 1:
-            guard let blog = try? BlogQuery().visible(true).hostedByWPCom(true).blog(in: blogService.managedObjectContext) else {
+            guard let blog = try? BlogQuery().visible(true).hostedByWPCom(true).blog(in: context) else {
                 return
             }
             presentEditor(with: readerPost, blog: blog, origin: origin)
         default:
             presentBlogPicker(from: origin,
-                              blogService: blogService,
+                              coreDataStack: coreDataStack,
                               readerPost: readerPost)
         }
     }
@@ -51,7 +51,7 @@ class ReaderReblogPresenter {
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
     func presentBlogPicker(from origin: UIViewController,
-                           blogService: BlogService,
+                           coreDataStack: CoreDataStack,
                            readerPost: ReaderPost) {
 
         let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: nil,
@@ -65,7 +65,7 @@ private extension ReaderReblogPresenter {
         let navigationController = getNavigationController(selectorViewController)
 
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
-            guard let newBlog = blogService.managedObjectContext.object(with: selectedObjectID) as? Blog else {
+            guard let newBlog = coreDataStack.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
             navigationController.dismiss(animated: true) {

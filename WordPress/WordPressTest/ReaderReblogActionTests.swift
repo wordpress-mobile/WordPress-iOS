@@ -6,25 +6,22 @@ import XCTest
 class MockReblogPresenter: ReaderReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 
-    override func presentReblog(blogService: BlogService, readerPost: ReaderPost, origin: UIViewController) {
+    override func presentReblog(coreDataStack: CoreDataStack, readerPost: ReaderPost, origin: UIViewController) {
         presentReblogExpectation?.fulfill()
     }
 }
 
 class ReblogTestCase: CoreDataTestCase {
     var readerPost: ReaderPost?
-    var blogService: BlogService?
     var postService: PostService?
 
     override func setUp() {
         readerPost = ReaderPost(context: self.mainContext)
-        blogService = BlogService(managedObjectContext: self.mainContext)
         postService = PostService(managedObjectContext: self.mainContext)
     }
 
     override func tearDown() {
         readerPost = nil
-        blogService = nil
         postService = nil
     }
 }
@@ -35,7 +32,7 @@ class ReaderReblogActionTests: ReblogTestCase {
         // Given
         let presenter = MockReblogPresenter(postService: postService!)
         presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
-        let action = ReaderReblogAction(blogService: blogService!, presenter: presenter)
+        let action = ReaderReblogAction(coreDataStack: contextManager, presenter: presenter)
         let controller = UIViewController()
         // When
         action.execute(readerPost: readerPost!, origin: controller, reblogSource: .list)
@@ -52,15 +49,14 @@ class ReblogPresenterTests: ReblogTestCase {
 
     func testPresentEditorForOneSite() throws {
         // Given
-        BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+        BlogBuilder(contextManager.mainContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
         // TODO: Replace this expectation with other ways to assert the `ReaderReblogPresenter.presentEditor` is called.
-//        blogService!.blogsForAllAccountsExpectation = expectation(description: "blogsForAllAccounts was called")
         let draftPosts = NSFetchRequest<Post>(entityName: "Post")
         draftPosts.predicate = NSPredicate(format: "status = %@", Post.Status.draft.rawValue)
         try XCTAssertEqual(mainContext.count(for: draftPosts), 0)
         let presenter = ReaderReblogPresenter(postService: postService!)
         // When
-        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: UIViewController())
+        presenter.presentReblog(coreDataStack: contextManager, readerPost: readerPost!, origin: UIViewController())
         // Then
         try XCTAssertEqual(mainContext.count(for: draftPosts), 1)
     }
@@ -68,13 +64,13 @@ class ReblogPresenterTests: ReblogTestCase {
     func testPresentEditorForMultipleSites() {
         // Given
         for _ in 1...2 {
-            BlogBuilder(blogService!.managedObjectContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
+            BlogBuilder(contextManager.mainContext).with(visible: true).isHostedAtWPcom().withAnAccount().build()
         }
         let presenter = ReaderReblogPresenter(postService: postService!)
         let origin = MockViewController()
         origin.presentExpectation = expectation(description: "blog selector is presented")
         // When
-        presenter.presentReblog(blogService: blogService!, readerPost: readerPost!, origin: origin)
+        presenter.presentReblog(coreDataStack: contextManager, readerPost: readerPost!, origin: origin)
         // Then
         waitForExpectations(timeout: 4) { error in
             if let error = error {

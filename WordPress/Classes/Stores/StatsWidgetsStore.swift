@@ -2,10 +2,10 @@ import WidgetKit
 import WordPressAuthenticator
 
 class StatsWidgetsStore {
-    private let blogService: BlogService
+    private let coreDataStack: CoreDataStack
 
-    init(blogService: BlogService = BlogService(managedObjectContext: ContextManager.shared.mainContext)) {
-        self.blogService = blogService
+    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+        self.coreDataStack = coreDataStack
 
         updateJetpackFeaturesDisabled()
         observeAccountChangesForWidgets()
@@ -140,7 +140,7 @@ private extension StatsWidgetsStore {
         guard let currentData = T.read() else {
             return nil
         }
-        let updatedSiteList = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: blogService.managedObjectContext)) ?? []
+        let updatedSiteList = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
 
         let newData = updatedSiteList.reduce(into: [Int: T]()) { sitesList, site in
             guard let blogID = site.dotComID else {
@@ -196,7 +196,7 @@ private extension StatsWidgetsStore {
     }
 
     func initializeHomeWidgetData<T: HomeWidgetData>(type: T.Type) -> [Int: T] {
-        let blogs = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: blogService.managedObjectContext)) ?? []
+        let blogs = (try? BlogQuery().visible(true).hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
         return blogs.reduce(into: [Int: T]()) { result, element in
             if let blogID = element.dotComID,
                let url = element.url,
@@ -320,7 +320,7 @@ private extension StatsWidgetsStore {
     /// The required flags in shared UserDefaults are set and widgets are initialized.
     func handleJetpackWidgetsMigration() {
         // If user is logged in but defaultSiteIdKey is not set
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: blogService.managedObjectContext),
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
               let siteId = account.defaultBlog?.dotComID,
               let userDefaults = UserDefaults(suiteName: WPAppGroupName),
               userDefaults.value(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) == nil else {
