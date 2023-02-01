@@ -8,22 +8,20 @@ class BlogJetpackTests: CoreDataTestCase {
     // Properties
 
     private let timeout: TimeInterval = 2.0
-    private var blog: Blog!
-    private var accountService: AccountService!
-    private var blogService: BlogService!
 
-    override func setUp() {
-        super.setUp()
+    lazy private var blog: Blog = {
+        makeBlog()
+    }()
 
-        blog = makeBlog()
-        accountService = .init(managedObjectContext: mainContext)
-        blogService = .init(managedObjectContext: mainContext)
-    }
+    lazy private var accountService: AccountService = {
+        .init(managedObjectContext: mainContext)
+    }()
+
+    lazy private var blogService: BlogService = {
+        .init(managedObjectContext: mainContext)
+    }()
 
     override func tearDown() {
-        blog = nil
-        accountService = nil
-        blogService = nil
         HTTPStubs.removeAllStubs()
 
         super.tearDown()
@@ -87,10 +85,10 @@ class BlogJetpackTests: CoreDataTestCase {
         // wait on the merge to be completed
         wait(for: [saveExpectation], timeout: timeout)
 
-        // test.blog + wp.com + jetpack
+        // wp.com + jetpack
         XCTAssertEqual(1, accountService.numberOfAccounts())
-        // test.blog + wp.com + jetpack (legacy)
-        XCTAssertEqual(3, Blog.count(in: mainContext))
+        // wp.com + jetpack (legacy)
+        XCTAssertEqual(2, Blog.count(in: mainContext))
         // dotcom1.wordpress.com
         XCTAssertEqual(1, wpComAccount.blogs.count)
 
@@ -104,12 +102,12 @@ class BlogJetpackTests: CoreDataTestCase {
         }
         wait(for: [syncExpectation], timeout: 5.0)
 
-        // test.blog + wp.com
+        // wp.com
         XCTAssertEqual(1, accountService.numberOfAccounts())
         // dotcom1.wordpress.com + jetpack.example.com
         XCTAssertEqual(2, wpComAccount.blogs.count)
-        // test.blog + wp.com + jetpack (wpcc)
-        XCTAssertEqual(3, Blog.count(in: mainContext))
+        // wp.com + jetpack (wpcc)
+        XCTAssertEqual(2, Blog.count(in: mainContext))
 
         let testBlog = wpComAccount.blogs.first { $0.dotComID?.intValue == 1 }
         XCTAssertNotNil(testBlog)
@@ -140,8 +138,8 @@ class BlogJetpackTests: CoreDataTestCase {
         wait(for: [saveExpectation], timeout: timeout)
 
         XCTAssertEqual(1, accountService.numberOfAccounts())
-        // test.blog + wp.com + jetpack (legacy)
-        XCTAssertEqual(3, Blog.count(in: mainContext))
+        // wp.com + jetpack (legacy)
+        XCTAssertEqual(2, Blog.count(in: mainContext))
         // dotcom1.wordpress.com
         XCTAssertEqual(1, wpComAccount.blogs.count)
 
@@ -157,8 +155,8 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertEqual(1, accountService.numberOfAccounts())
         // dotcom1.wordpress.com + jetpack.example.com
         XCTAssertEqual(2, wpComAccount.blogs.count)
-        // test.blog + wp.com + jetpack (wpcc)
-        XCTAssertEqual(3, Blog.count(in: mainContext))
+        // wp.com + jetpack (wpcc)
+        XCTAssertEqual(2, Blog.count(in: mainContext))
     }
 
     // MARK: Jetpack Individual Plugins
