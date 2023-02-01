@@ -1,0 +1,8 @@
+Descubra o desempenho do seu conteúdo com nossas alterações em Informações sobre estatísticas e saiba quais tipos de conteúdo seus leitores gostam de ver.
+
+Também solucionamos alguns problemas em várias áreas do aplicativo.
+
+- A mensagem "Nenhuma mídia corresponde à sua pesquisa" no seletor de mídia agora aparece no lugar certo. Lar doce lar.
+- Alguns usuários não conseguiam sair da tela "Em que você gostaria de focar primeiro?" após o login, só que não mais. O foco mudou!
+- Você não vai mais pular para o final do fluxo de migração se fechar o aplicativo ao migrar o conteúdo do seu site do WordPress para o Jetpack. Também fizemos alguns ajustes de design na tela de migração final.
+- Arrastar para atualizar atualiza corretamente suas estatísticas de seguidores na tela de detalhes do total de seguidores. 10 a cada 10 pessoas fariam isso novamente.

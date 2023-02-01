@@ -1,0 +1,8 @@
+Kom erachter hoe je content presteert via de wijzigingen die we hebben aangebracht aan Statistieken en inzichten en zie welk soort content je lezers graag zien.
+
+We hebben ook enkele fouten opgelost in verschillende gedeeltes van de app.
+
+- Het bericht "Er komen geen media overeen met je zoekopdracht" in de Mediazoeker staat nu op de juiste plek. Oost west, thuis best.
+- Sommige gebruikers liepen vast op het scherm 'Waar wil je je eerst op richten?' na het inloggen, maar dit is niet langer het geval; je kunt je richten op wat je maar wilt!
+- Je springt niet langer naar het einde van de migratieflow wanneer je de app sluit terwijl je je sitecontent migreert van WordPress naar Jetpack. Ook hebben we wat ontwerpaanpassingen aan het laatste migratiescherm doorgevoerd.
+- Omlaag vegen om te vernieuwen werkt op juiste wijze je volgerstatistieken bij op het scherm Informatie totaal aantal volgers. 10/10, zou nog een keer vegen.

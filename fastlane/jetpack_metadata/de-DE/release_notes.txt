@@ -1,0 +1,8 @@
+Finde dank unserer Änderungen an Statistikeinsichten heraus, wie erfolgreich deine Inhalte sind, und erfahre, welche Arten von Inhalten deine Leser sich wünschen.
+
+Wir haben außerdem einige Fehler in verschiedenen Bereichen der App behoben.
+
+– Die Nachricht „Keine Medien entsprechen deiner Suche“ in der Medienauswahl wird nun an der richtigen Stelle angezeigt. Das wurde auch Zeit.
+– Einige Benutzer kamen nach der Anmeldung auf dem Bildschirm „Was möchtest du als Erstes tun?“ nicht weiter. Dieses Problem gehört nun jedoch der Vergangenheit an.
+– Wenn du die App während der Migration deiner Websiteinhalte von WordPress zu Jetpack schließt, springst du nicht länger ans Ende des Migrationsvorgangs. Außerdem haben wir auch das Design des letzten Bildschirms im Migrationsprozess angepasst.
+– Auf dem Bildschirm mit den Details zu „Follower insgesamt“ werden deine Follower-Statistiken nun korrekt aktualisiert, wenn du den Bildschirm nach unten ziehst. Ist das nicht super?

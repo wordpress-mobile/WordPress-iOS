@@ -1,0 +1,8 @@
+İstatistik Bilgilerinde yaptığımız değişikliklerle içeriğinizin nasıl performans gösterdiğini öğrenin ve okuyucularınızın ne tür içerik görmekten hoşlandıklarını öğrenin.
+
+Ayrıca uygulamanın çeşitli alanlarındaki birkaç sorunu da düzelttik.
+
+- Ortam Seçici'deki "Aramanızla eşleşen ortam yok" mesajı artık doğru yerde görünüyor. Evim evim, güzel evim.
+- Bazı kullanıcılar giriş yaptıktan sonra "İlk olarak neye odaklanmak istersiniz?" ekranında takılıyordu, artık takılmıyorlar. Artık başka bir şeye odaklanabilirsiniz arkadaşlar.
+- Site içeriğinizi WordPress'ten Jetpack'e taşırken uygulamayı kapatırsanız artık geçiş akışının sonuna atlamayacaksınız. Son taşıma ekranında da bazı tasarım ayarlamaları yaptık.
+- Yenilemek için çek, Toplam Takipçi Ayrıntıları ekranında takipçi istatistiklerinizi uygun şekilde günceller. 10/10 olsa tekrar çekerdi.
