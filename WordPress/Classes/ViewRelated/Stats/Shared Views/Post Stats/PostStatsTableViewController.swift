@@ -43,6 +43,11 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         addWillEnterForegroundObserver()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeWillEnterForegroundObserver()
