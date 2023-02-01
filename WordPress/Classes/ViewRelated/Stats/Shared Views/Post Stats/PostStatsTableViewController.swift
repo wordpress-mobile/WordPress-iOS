@@ -26,7 +26,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var changeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: self)
     }()
 
     // MARK: - View
