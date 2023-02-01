@@ -7,7 +7,7 @@ class BlogJetpackTests: CoreDataTestCase {
 
     // Properties
 
-    private var timeout: TimeInterval = 2.0
+    private let timeout: TimeInterval = 2.0
     private var blog: Blog!
     private var accountService: AccountService!
     private var blogService: BlogService!
@@ -15,14 +15,12 @@ class BlogJetpackTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        // TODO: Account, Blog, testMainContext
         blog = makeBlog()
         accountService = .init(managedObjectContext: mainContext)
         blogService = .init(managedObjectContext: mainContext)
     }
 
     override func tearDown() {
-        // TODO
         blog = nil
         accountService = nil
         blogService = nil
@@ -165,7 +163,7 @@ class BlogJetpackTests: CoreDataTestCase {
 
     // MARK: Jetpack Individual Plugins
 
-    func test_jetpackIsConnectedWithoutFullPlugin_givenIndividualPluginOnly_returnsTrue() {
+    func testJetpackIsConnectedWithoutFullPluginGivenIndividualPluginOnlyReturnsTrue() {
         // Arrange
         let plugins = ["jetpack-search"]
 
@@ -176,7 +174,7 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertTrue(blog.jetpackIsConnectedWithoutFullPlugin)
     }
 
-    func test_jetpackIsConnectedWithoutFullPlugin_givenMultipleIndividualPlugins_returnsTrue() {
+    func testJetpackIsConnectedWithoutFullPluginGivenMultipleIndividualPluginsReturnsTrue() {
         // Arrange
         let plugins = ["jetpack-search", "jetpack-backup"]
 
@@ -187,7 +185,7 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertTrue(blog.jetpackIsConnectedWithoutFullPlugin)
     }
 
-    func test_jetpackIsConnectedWithoutFullPlugin_givenFullJetpackSite_returnsFalse() {
+    func testJetpackIsConnectedWithoutFullPluginGivenFullJetpackSiteReturnsFalse() {
         // Arrange
         let plugins = ["jetpack"]
 
@@ -198,14 +196,14 @@ class BlogJetpackTests: CoreDataTestCase {
         XCTAssertFalse(blog.jetpackIsConnectedWithoutFullPlugin)
     }
 
-    func test_jetpackIsConnectedWithoutFullPlugin_givenNoActivePlugins_returnsFalse() {
+    func testJetpackIsConnectedWithoutFullPluginGivenNoActivePluginsReturnsFalse() {
         // Default Blog setup doesn't have any active plugins.
 
         // Assert
         XCTAssertFalse(blog.jetpackIsConnectedWithoutFullPlugin)
     }
 
-    func test_jetpackIsConnectedWithoutFullPlugin_givenBothIndividualAndFullJetpackPlugins_returnsFalse() {
+    func testJetpackIsConnectedWithoutFullPluginGivenBothIndividualAndFullJetpackPluginsReturnsFalse() {
         // Arrange
         let plugins = ["jetpack-search", "jetpack"]
 
