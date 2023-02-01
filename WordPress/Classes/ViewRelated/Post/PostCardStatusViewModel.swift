@@ -178,9 +178,10 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.publish)
             }
 
-            let jetpackFeaturesEnabled = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
-            if jetpackFeaturesEnabled && post.status == .publish && post.hasRemote() {
-                buttons.append(.stats)
+            if post.status == .publish && post.hasRemote() {
+                if JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+                    buttons.append(.stats)
+                }
                 buttons.append(.share)
             }
 
