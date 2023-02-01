@@ -10,6 +10,11 @@ class AccountServiceTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
+        stub(condition: isHost("public-api.wordpress.com")) { request in
+            NSLog("[Warning] Received an unexpected request sent to \(String(describing: request.url))")
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
         contextManager.useAsSharedInstance(untilTestFinished: self)
         accountService = AccountService(coreDataStack: contextManager)
     }
@@ -18,6 +23,7 @@ class AccountServiceTests: CoreDataTestCase {
         super.tearDown()
 
         accountService = nil
+        HTTPStubs.removeAllStubs()
     }
 
     func testCreateWordPressComAccountUUID() throws {
