@@ -1,0 +1,3 @@
+Meddelandet "Inga mediafiler matchar din sökning" i mediaväljaren visas nu på rätt plats. Hem, ljuva hem.
+
+Vissa användare fastnade på skärmen "Vad vill du fokusera på först?" efter inloggning, men detta problem har nu åtgärdats. Fokusera på, vänner.

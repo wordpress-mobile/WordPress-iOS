@@ -1,0 +1,3 @@
+El mensaje de que «Ningún medio coincide con tu búsqueda» en el selector de medios ahora aparece en la esquina derecha. Hogar, dulce hogar.
+
+Algunos usuarios se atascaban en la pantalla de «¿En qué te gustaría centrarte primero?» después de acceder, pero ya no – a concentrarse, amigos.
