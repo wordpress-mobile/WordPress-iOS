@@ -52,7 +52,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     lazy var homepageSettingsService = {
-        return HomepageSettingsService(blog: blog, context: blog.managedObjectContext ?? ContextManager.shared.mainContext)
+        return HomepageSettingsService(blog: blog, coreDataStack: ContextManager.shared)
     }()
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {

@@ -1,6 +1,12 @@
 
 import Foundation
 
+/// Site Creation Notification
+///
+extension NSNotification.Name {
+    static let WPSiteCreated = NSNotification.Name(rawValue: "SiteCreated")
+}
+
 // MARK: - EnhancedSiteCreationService
 
 /// Working implementation of a `SiteAssemblyService`.
@@ -90,7 +96,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         // Here we designate the new site as the last used, so that it will be presented post-creation
         if let siteUrl = createdBlog?.url {
             RecentSitesService().touch(site: siteUrl)
-            StoreContainer.shared.statsWidgets.refreshStatsWidgetsSiteList()
+            NotificationCenter.default.post(name: .WPSiteCreated, object: nil)
         }
 
         currentStatus = .succeeded
@@ -154,7 +160,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
 
         defaultAccount.defaultBlog = blog
 
-        ContextManager.sharedInstance().save(managedObjectContext) { [weak self] in
+        ContextManager.sharedInstance().save(managedObjectContext, completion: { [weak self] in
             guard let self = self else {
                 return
             }
@@ -166,7 +172,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
                 },
                                                       failure: { error in self.endFailedAssembly() })
             })
-        }
+        }, on: .main)
     }
 
     private func validatePendingRequest() {

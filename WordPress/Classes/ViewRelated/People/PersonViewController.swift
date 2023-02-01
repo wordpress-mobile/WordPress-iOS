@@ -67,7 +67,7 @@ final class PersonViewController: UITableViewController {
         self.context = context
         self.person = person
         self.screenMode = screenMode
-        self.service = PeopleService(blog: blog, context: context)
+        self.service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
 
         super.init(coder: coder)
     }
@@ -598,10 +598,7 @@ private extension PersonViewController {
         case .Viewer:
             return .viewer
         case .User:
-            guard let service = RoleService(blog: blog, context: context) else {
-                return nil
-            }
-            return service.getRole(slug: person.role)?.toUnmanaged()
+            return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: context)?.toUnmanaged()
         case .Email:
             return .follower
         }

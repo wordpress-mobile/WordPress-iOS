@@ -481,7 +481,8 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nem most";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -643,7 +644,8 @@
 /* Mobile Push Notifications */
 "Push Notifications" = "Értesítések";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader

@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>Uložit do Jetpacku</string>
+    <string>Uložit jako koncept</string>
     <key>CFBundleName</key>
-    <string>Uložit do Jetpacku</string>
+    <string>Uložit jako koncept</string>
   </dict>
 </plist>

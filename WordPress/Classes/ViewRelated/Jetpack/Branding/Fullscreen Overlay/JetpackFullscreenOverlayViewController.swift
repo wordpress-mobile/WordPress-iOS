@@ -170,7 +170,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupFonts() {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
-        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true
@@ -293,6 +292,7 @@ private extension JetpackFullscreenOverlayViewController {
     enum Colors {
         private static let jetpackGreen50 = UIColor.muriel(color: .jetpackGreen, .shade50).lightVariant()
         private static let jetpackGreen30 = UIColor.muriel(color: .jetpackGreen, .shade30).lightVariant()
+        private static let jetpackGreen90 = UIColor.muriel(color: .jetpackGreen, .shade90).lightVariant()
 
         static let backgroundColor = UIColor(light: .systemBackground,
                                              dark: .muriel(color: .jetpackGreen, .shade100))
@@ -303,12 +303,6 @@ private extension JetpackFullscreenOverlayViewController {
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)
         static let switchButtonTextColor = UIColor.white
         static let closeButtonTintColor = UIColor(light: .muriel(color: .gray, .shade5),
-                                                  dark: .muriel(color: .jetpackGreen, .shade90))
-    }
-}
-
-fileprivate extension UIColor {
-    func lightVariant() -> UIColor {
-        return self.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+                                                  dark: jetpackGreen90)
     }
 }

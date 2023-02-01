@@ -45,15 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v21.5-whats-new"
+msgctxt "v21.6-whats-new"
 msgid ""
-"We’ve been hard at work on extra-technical, behind-the-scenes fixes and updates to keep the WordPress app running smoothly.\n"
+"The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.\n"
 "\n"
-"- Posticulating features\n"
-"- Rearchitecting interfaces\n"
-"- Reticulating splines\n"
-"- Codifying similitude\n"
-"- Rebuilding the gigaverse\n"
+"Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

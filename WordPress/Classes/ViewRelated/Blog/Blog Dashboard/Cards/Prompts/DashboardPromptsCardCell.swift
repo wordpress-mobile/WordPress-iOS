@@ -4,7 +4,6 @@ import WordPressUI
 import WordPressFlux
 
 class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
-
     // MARK: - Public Properties
 
     // This is public so it can be accessed from the BloggingPromptsFeatureDescriptionView.
@@ -164,17 +163,31 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         return trainContainerView
     }
 
-    private var answerInfoLabel: UILabel {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = answerInfoText
-        label.font = WPStyleGuide.BloggingPrompts.answerInfoLabelFont
-        label.textColor = WPStyleGuide.BloggingPrompts.answerInfoLabelColor
-        label.textAlignment = (effectiveUserInterfaceLayoutDirection == .leftToRight ? .left : .right)
-        label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
+    private var answerInfoButton: UIButton {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(answerInfoText, for: .normal)
+        button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
+        button.setTitleColor(
+            FeatureFlag.bloggingPromptsEnhancements.enabled
+            ? WPStyleGuide.BloggingPrompts.buttonTitleColor
+            : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
+            for: .normal
+        )
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.addTarget(self, action: #selector(didTapAnswerInfoButton), for: .touchUpInside)
+        return button
+    }
 
-        return label
+    @objc
+    private func didTapAnswerInfoButton() {
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        let promptID = prompt?.promptID else {
+            return
+        }
+        RootViewCoordinator.sharedPresenter.readerCoordinator?.showTag(named: "\(Constants.dailyPromptTag)-\(promptID)")
+        WPAnalytics.track(.promptsOtherAnswersTapped)
     }
 
     private var answerInfoView: UIView {
@@ -182,7 +195,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = Constants.answerInfoViewSpacing
-        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoLabel])
+        stackView.addArrangedSubviews([avatarTrainContainerView, answerInfoButton])
 
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -554,6 +567,7 @@ private extension DashboardPromptsCardCell {
         static let cardIconSize = CGSize(width: 18, height: 18)
         static let cardFrameConstraintPriority = UILayoutPriority(999)
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
+        static let dailyPromptTag = "dailyprompt"
     }
 
     // MARK: Contextual Menu

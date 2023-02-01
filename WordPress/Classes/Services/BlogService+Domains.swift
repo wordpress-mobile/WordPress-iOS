@@ -22,7 +22,7 @@ extension BlogService {
             return
         }
 
-        let service = DomainsService(managedObjectContext: managedObjectContext, account: account)
+        let service = DomainsService(coreDataStack: ContextManager.shared, account: account)
 
         service.refreshDomains(siteID: siteID) { result in
             switch result {

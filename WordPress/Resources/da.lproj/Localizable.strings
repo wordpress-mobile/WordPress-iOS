@@ -861,7 +861,8 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Ikke nu";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -1103,7 +1104,8 @@
 /* Displayed when Push Notifications are disabled (iOS 7) */
 "Push Notifications have been turned off in iOS Settings" = "Push notifikationer er blevet deaktiveret i iOS indstillinger";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader

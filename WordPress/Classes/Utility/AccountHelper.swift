@@ -39,6 +39,12 @@ import Foundation
         return !AccountHelper.isDotcomAvailable()
     }
 
+    static var defaultSiteId: NSNumber? {
+        let context = ContextManager.sharedInstance().mainContext
+        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        return account?.defaultBlog?.dotComID
+    }
+
     static func logBlogsAndAccounts(context: NSManagedObjectContext) {
         let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         let blogsByAccount = Dictionary(grouping: allBlogs, by: { $0.account })

@@ -19,6 +19,7 @@ class DomainsServiceTests: CoreDataTestCase {
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
         testBlog = try makeTestBlog()
+        contextManager.saveContextAndWait(mainContext)
     }
 
     override func tearDown() {
@@ -64,7 +65,7 @@ class DomainsServiceTests: CoreDataTestCase {
 
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
-        let service = DomainsService(managedObjectContext: mainContext, remote: remote)
+        let service = DomainsService(coreDataStack: contextManager, remote: remote)
         service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
             expect.fulfill()
         }

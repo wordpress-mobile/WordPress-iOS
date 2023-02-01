@@ -159,6 +159,10 @@ class MySitesCoordinator: NSObject {
 
     // MARK: - Adding a new site
 
+    func willDisplayPostSignupFlow() {
+        mySiteViewController.willDisplayPostSignupFlow = true
+    }
+
     func showSiteCreation() {
         showRootViewController()
         mySiteViewController.launchSiteCreation(source: "my_site")
@@ -249,5 +253,14 @@ class MySitesCoordinator: NSObject {
     @objc func signinDidFinish() {
         mySiteViewController = makeMySiteViewController()
         navigationController.viewControllers = [rootContentViewController]
+    }
+
+    func displayJetpackOverlayForDisabledEntryPoint() {
+        let viewController = mySiteViewController
+        if viewController.isViewOnScreen() {
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
+                                                                     source: .disabledEntryPoint,
+                                                                     blog: viewController.blog)
+        }
     }
 }

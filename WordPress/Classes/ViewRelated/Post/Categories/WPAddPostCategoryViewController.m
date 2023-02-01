@@ -84,7 +84,7 @@
 - (void)saveAddCategory:(id)sender
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:context];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     NSString *catName = [self.createCategoryCell.textField.text trim];
 
     if (!catName ||[catName length] == 0) {
@@ -96,7 +96,10 @@
         return;
     }
 
-    PostCategory *category = [categoryService findWithBlogObjectID:self.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
+    PostCategory *category = [PostCategory lookupWithBlogObjectID:self.blog.objectID
+                                                 parentCategoryID:self.parentCategory.categoryID
+                                                     categoryName:catName
+                                                        inContext:context];
     if (category) {
         // If there's an existing category with that name and parent, let's use that
         [self dismissWithCategory:category];

@@ -11,15 +11,14 @@ struct StatsWidgetsView: View {
 
         switch timelineEntry {
 
-        case .loggedOut(let widgetKind):
-            UnconfiguredView(widgetKind: widgetKind)
+        case .disabled(let kind):
+            UnconfiguredView(timelineEntry: timelineEntry)
+                .widgetURL(kind.statsURL)
+        case .loggedOut, .noSite, .noData:
+            UnconfiguredView(timelineEntry: timelineEntry)
                 .widgetURL(nil)
                 // This seems to prevent a bug where the URL for subsequent widget
                 // types is being triggered if one isn't specified here.
-        case .noData:
-            UnconfiguredView(widgetKind: .noStats)
-                .widgetURL(nil)
-
         case .siteSelected(let content, _):
             if let viewData = makeGroupedViewData(from: content) {
                 switch family {
@@ -121,5 +120,18 @@ private extension HomeWidgetThisWeekData {
 
     var statsURL: URL? {
         URL(string: Self.statsUrl + "\(siteID)?source=widget")
+    }
+}
+
+private extension StatsWidgetKind {
+    var statsURL: URL? {
+        switch self {
+        case .today:
+            return URL(string: "https://wordpress.com/stats/day/?source=widget")
+        case .allTime:
+            return URL(string: "https://wordpress.com/stats/insights/?source=widget")
+        case .thisWeek:
+            return URL(string: "https://wordpress.com/stats/week/?source=widget")
+        }
     }
 }

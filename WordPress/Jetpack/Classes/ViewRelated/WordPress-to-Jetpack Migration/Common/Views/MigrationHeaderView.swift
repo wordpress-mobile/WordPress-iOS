@@ -74,10 +74,17 @@ final class MigrationHeaderView: UIView {
     }
 
     private func configureAppearance() {
+        // Set image and labels
         imageView.image = configuration.image
         titleLabel.text = configuration.title
         primaryDescriptionLabel.text = configuration.primaryDescription
         secondaryDescriptionLabel.text = configuration.secondaryDescription
+
+        // Hide image and labels if they're empty
+        imageView.isHidden = imageView.image == nil
+        [titleLabel, primaryDescriptionLabel, secondaryDescriptionLabel].forEach { label in
+            label.isHidden = label.text?.isEmpty ?? true
+        }
     }
 
     // MARK: - Types
