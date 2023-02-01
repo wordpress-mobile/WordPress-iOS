@@ -48,7 +48,7 @@ public extension SiteSettingsViewController {
 
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsExportSiteRequested, with: trackedBlog)
-        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
         service.exportContentForBlog(blog,
             success: {
                 WPAppAnalytics.track(.siteSettingsExportSiteResponseOK, with: trackedBlog)
@@ -79,7 +79,7 @@ public extension SiteSettingsViewController {
         SVProgressHUD.show(withStatus: status)
 
         WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesRequested, with: blog)
-        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
         service.getActivePurchasesForBlog(blog,
             success: { [weak self] purchases in
                 SVProgressHUD.dismiss()

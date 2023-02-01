@@ -19,7 +19,14 @@ extension NSNotification.Name {
 
 /// SiteManagementService handles operations for managing a WordPress.com site.
 ///
-open class SiteManagementService: LocalCoreDataService {
+open class SiteManagementService: NSObject {
+
+    private let coreDataStack: CoreDataStack
+
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+    }
+
     /// Deletes the specified WordPress.com site.
     ///
     /// - Parameters:
@@ -33,15 +40,16 @@ open class SiteManagementService: LocalCoreDataService {
         }
         remote.deleteSite(blog.dotComID!,
             success: {
-                self.managedObjectContext.perform {
-                    let blogService = BlogService(managedObjectContext: self.managedObjectContext)
-                    blogService.remove(blog)
-
-                    ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
-                        NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
-                        success?()
-                    }, on: .main)
-                }
+                self.coreDataStack.performAndSave({ context in
+                    guard let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog else {
+                        return
+                    }
+                    let blogService = BlogService(managedObjectContext: context)
+                    blogService.remove(blogInContext)
+                }, completion: {
+                    NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
+                    success?()
+                }, on: .main)
             },
             failure: { error in
                 failure?(error)

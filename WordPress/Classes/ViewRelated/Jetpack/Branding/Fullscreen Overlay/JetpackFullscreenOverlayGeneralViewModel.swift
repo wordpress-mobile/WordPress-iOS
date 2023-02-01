@@ -152,6 +152,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.login, _):
             fallthrough
         case (.appOpen, _):
+            fallthrough
+        case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationLtr
         }
     }
@@ -173,6 +175,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case (.login, _):
             fallthrough
         case (.appOpen, _):
+            fallthrough
+        case (.disabledEntryPoint, _):
             return Constants.allFeaturesLogosAnimationRtl
         }
     }
