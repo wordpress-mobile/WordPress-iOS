@@ -33,8 +33,7 @@ extension AccountService {
             mergeAccount(account: account, into: destination, in: context)
         }
 
-        let service = BlogService(managedObjectContext: context)
-        service.deduplicateBlogs(for: destination)
+        destination.deduplicateBlogs()
     }
 
     private func mergeAccount(account: WPAccount, into destination: WPAccount, in context: NSManagedObjectContext) {

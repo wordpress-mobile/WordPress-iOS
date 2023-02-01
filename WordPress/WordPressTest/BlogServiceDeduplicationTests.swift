@@ -127,7 +127,7 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
 
 private extension BlogServiceDeduplicationTests {
     func deduplicateAndSave(_ account: WPAccount) {
-        blogService.deduplicateBlogs(for: account)
+        account.deduplicateBlogs()
         contextManager.saveContextAndWait(mainContext)
     }
 

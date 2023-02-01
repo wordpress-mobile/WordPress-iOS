@@ -36,27 +36,9 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
     [remote getBlogs:filterJetpackSites success:^(NSArray *blogs) {
         [[[JetpackCapabilitiesService alloc] init] syncWithBlogs:blogs success:^(NSArray<RemoteBlog *> *blogs) {
-            [self.managedObjectContext performBlock:^{
-
-                // Let's check if the account object is not nil. Otherwise we'll get an exception below.
-                NSManagedObjectID *accountObjectID = account.objectID;
-                if (!accountObjectID) {
-                    DDLogError(@"Error: The Account objectID could not be loaded");
-                    return;
-                }
-
-                // Reload the Account in the current Context
-                NSError *error = nil;
-                WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountObjectID
-                                                                                                     error:&error];
-                if (!accountInContext) {
-                    DDLogError(@"Error loading WordPress Account: %@", error);
-                    return;
-                }
-
-                [self mergeBlogs:blogs withAccount:accountInContext completion:success];
-
-            }];
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                [self mergeBlogs:blogs withAccountID:account.objectID inContext:context];
+            } completion:success onQueue:dispatch_get_main_queue()];
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
@@ -176,7 +158,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         dispatch_group_leave(syncGroup);
     }];
 
-    PlanService *planService = [[PlanService alloc] initWithCoreDataStack: [ContextManager sharedInstance]];
+    PlanService *planService = [[PlanService alloc] initWithCoreDataStack:self.coreDataStack];
     dispatch_group_enter(syncGroup);
     [planService getWpcomPlans:blog.account
                        success:^{
@@ -355,11 +337,6 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                failure:failure];
 }
 
-- (NSArray *)blogsWithNoAccount
-{
-    return [Blog selfHostedInContext:self.managedObjectContext];
-}
-
 ///--------------------
 /// @name Blog creation
 ///--------------------
@@ -424,9 +401,10 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)(void))completion
+- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccountID:(NSManagedObjectID *)accountID inContext:(NSManagedObjectContext *)context
 {
     // Nuke dead blogs
+    WPAccount *account = [context existingObjectWithID:accountID error:nil];
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"blogID"]];
     NSSet *localSet = [account.blogs valueForKey:@"dotComID"];
     NSMutableSet *toDelete = [localSet mutableCopy];
@@ -438,7 +416,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 [self unscheduleBloggingRemindersFor:blog];
                 // Consider switching this to a call to removeBlog in the future
                 // to consolidate behaviour @frosty
-                [self.managedObjectContext deleteObject:blog];
+                [context deleteObject:blog];
             }
         }
     }
@@ -446,8 +424,8 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
-        [self updateBlogWithRemoteBlog:remoteBlog account:account];
-        [self updatePromptSettingsFor:remoteBlog context:self.managedObjectContext];
+        [self updateBlogWithRemoteBlog:remoteBlog account:account inContext:context];
+        [self updatePromptSettingsFor:remoteBlog context:context];
     }
 
     /*
@@ -459,25 +437,19 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
      More context here:
      https://github.com/wordpress-mobile/WordPress-iOS/issues/7886#issuecomment-524221031
      */
-    [self deduplicateBlogsForAccount:account];
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [account deduplicateBlogs];
 
     // Ensure that the account has a default blog defined (if there is one).
-    AccountService *service = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    AccountService *service = [[AccountService alloc] initWithCoreDataStack:self.coreDataStack];
     [service updateDefaultBlogIfNeeded:account];
-
-    if (completion != nil) {
-        dispatch_async(dispatch_get_main_queue(), completion);
-    }
 }
 
-- (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account
+- (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account inContext:(NSManagedObjectContext *)context
 {
     Blog *blog = [self findBlogWithDotComID:remoteBlog.blogID inAccount:account];
 
     if (!blog && remoteBlog.jetpack) {
-        blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
+        blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account inContext:context];
     }
 
     if (!blog) {
@@ -485,7 +457,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         if (account != nil) {
             blog = [Blog createBlankBlogWithAccount:account];
         } else {
-            blog = [Blog createBlankBlogInContext:self.managedObjectContext];
+            blog = [Blog createBlankBlogInContext:context];
         }
         blog.xmlrpc = remoteBlog.xmlrpc;
     }
@@ -537,6 +509,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
  */
 - (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog
                         forAccount:(WPAccount *)account
+                         inContext:(NSManagedObjectContext *)context
 {
     assert(remoteBlog.xmlrpc != nil);
     NSURL *xmlrpcURL = [NSURL URLWithString:remoteBlog.xmlrpc];
@@ -547,7 +520,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         components.scheme = @"https";
     }
     NSURL *alternateXmlrpcURL = components.URL;
-    NSArray *blogsWithNoAccount = [self blogsWithNoAccount];
+    NSArray *blogsWithNoAccount = [Blog selfHostedInContext:context];
     Blog *jetpackBlog = [[blogsWithNoAccount wp_filter:^BOOL(Blog *blogToTest) {
         return [blogToTest.xmlrpc caseInsensitiveCompare:xmlrpcURL.absoluteString] == NSOrderedSame
         || [blogToTest.xmlrpc caseInsensitiveCompare:alternateXmlrpcURL.absoluteString] == NSOrderedSame;
