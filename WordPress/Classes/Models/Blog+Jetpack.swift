@@ -60,8 +60,6 @@ extension Blog {
             return values.map { String($0) }
         case .some(let values as [String]):
             return values
-        case .none:
-            fallthrough
         default:
             return nil
         }
