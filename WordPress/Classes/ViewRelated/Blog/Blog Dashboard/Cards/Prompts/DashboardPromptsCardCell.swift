@@ -568,11 +568,11 @@ private extension DashboardPromptsCardCell {
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
         static let promptRemovedTitle = NSLocalizedString("prompts.notification.removed.title",
-                                                          value: "Prompts hidden from Dashboard",
-                                                          comment: "Title of the notification when prompts are removed from the dashboard")
+                                                          value: "Blogging Prompts hidden",
+                                                          comment: "Title of the notification when prompts are hidden from the dashboard card")
         static let promptRemovedSubtitle = NSLocalizedString("prompts.notification.removed.subtitle",
                                                              value: "Visit Site Settings to turn back on",
-                                                             comment: "Subtitle of the notification when prompts are removed from the dashboard")
+                                                             comment: "Subtitle of the notification when prompts are hidden from the dashboard card")
     }
 
     struct Style {
