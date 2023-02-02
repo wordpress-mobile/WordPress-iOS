@@ -169,7 +169,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.setTitle(answerInfoText, for: .normal)
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
         button.setTitleColor(
-            FeatureFlag.bloggingPromptsEnhancements.enabled
+            FeatureFlag.bloggingPromptsSocial.enabled
             ? WPStyleGuide.BloggingPrompts.buttonTitleColor
             : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
             for: .normal
@@ -182,7 +182,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
-        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        guard FeatureFlag.bloggingPromptsSocial.enabled,
         let promptID = prompt?.promptID else {
             return
         }
