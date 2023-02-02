@@ -785,10 +785,25 @@ import Combine
     ///
     private func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
-
+        removeBlockedPosts()
         content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
     }
 
+    private func removeBlockedPosts() {
+        guard let topic = readerTopic as? ReaderSiteTopic,
+              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
+              let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
+        else {
+            return
+        }
+        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
+        request.predicate = NSPredicate(format: "siteID = %@", blocked.blogID)
+        let result = (try? viewContext.fetch(request)) ?? []
+        for post in result {
+            viewContext.deleteObject(post)
+        }
+        try? viewContext.save()
+    }
 
     func updateStreamHeaderIfNeeded() {
         guard let topic = readerTopic else {
