@@ -173,37 +173,6 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure
-{
-    WordPressComRestApi *api = [self apiForRequest];
-    if (!api) {
-        if (failure) {
-            failure([self errorForNotLoggedIn]);
-        }
-        return;
-    }
-
-    // Optimistically flag the posts from the site being blocked.
-    [self flagPostsFromSite:siteID asBlocked:blocked];
-
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
-    [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
-        NSDictionary *properties = @{WPAppAnalyticsKeyBlogID:siteID};
-        [WPAppAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
-        
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        // Undo the changes
-        [self flagPostsFromSite:siteID asBlocked:!blocked];
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)topicWithSiteURL:(NSURL *)siteURL success:(void (^)(ReaderSiteTopic *topic))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
