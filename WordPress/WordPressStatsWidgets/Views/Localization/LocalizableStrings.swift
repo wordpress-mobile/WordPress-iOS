@@ -65,9 +65,34 @@ enum LocalizableStrings {
                                                                          value: "Log in to Jetpack to see this week's stats.",
                                                                          comment: "Title of the unconfigured view in this week widget")
     // No data view
-    static let noDataViewTitle = AppLocalizedString("widget.today.nodata.view.title",
+    static let noDataViewTitle = AppLocalizedString("widget.today.nodata.view.fallbackTitle",
                                                     value: "Unable to load site stats.",
-                                                    comment: "Title of the nodata view in today widget")
+                                                    comment: "Fallback title of the no data view in the stats widget")
+
+    static let noDataViewTodayTitle = AppLocalizedString("widget.today.nodata.view.title",
+                                                         value: "Unable to load today's stats.",
+                                                         comment: "Title of the no data view in today widget")
+
+    static let noDataViewAllTimeTitle = AppLocalizedString("widget.alltime.nodata.view.title",
+                                                           value: "Unable to load all time stats.",
+                                                           comment: "Title of the no data view in all time widget")
+
+    static let noDataViewThisWeekTitle = AppLocalizedString("widget.thisweek.nodata.view.title",
+                                                            value: "Unable to load this week's stats.",
+                                                            comment: "Title of the no data view in this week widget")
+
+    // No site view
+    static let noSiteViewTodayTitle = AppLocalizedString("widget.today.nosite.view.title",
+                                                         value: "Create or add a site to see today's stats.",
+                                                         comment: "Title of the no site view in today widget")
+
+    static let noSiteViewAllTimeTitle = AppLocalizedString("widget.alltime.nosite.view.title",
+                                                           value: "Create or add a site to see all time stats.",
+                                                           comment: "Title of the no site view in all time widget")
+
+    static let noSiteViewThisWeekTitle = AppLocalizedString("widget.thisweek.nosite.view.title",
+                                                            value: "Create or add a site to see this week's stats.",
+                                                            comment: "Title of the no site view in this week widget")
 
     // Today Widget Preview
     static let todayPreviewDescription = AppLocalizedString("widget.today.preview.description",
@@ -87,4 +112,9 @@ enum LocalizableStrings {
     static let unavailableViewTitle = AppLocalizedString("widget.today.view.unavailable.title",
                                                          value: "View is unavailable",
                                                          comment: "Error message to show if a widget view is unavailable")
+
+    // Stats disabled view
+    static let statsDisabledViewTitle = AppLocalizedString("widget.today.disabled.view.title",
+                                                           value: "Stats have moved to the Jetpack app. Switching is free and only takes a minute.",
+                                                           comment: "Title of the disabled view in today widget")
 }

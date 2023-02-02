@@ -3,7 +3,13 @@ import CocoaLumberjack
 import WordPressKit
 
 
-open class PlanService: LocalCoreDataService {
+open class PlanService: NSObject {
+
+    private let coreDataStack: CoreDataStack
+
+    @objc init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+    }
 
     public func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
                                                                   success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
@@ -31,33 +37,28 @@ open class PlanService: LocalCoreDataService {
         let remote = PlanServiceRemote(wordPressComRestApi: api)
         remote.getWpcomPlans({ plans in
 
-            self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: {
-                success()
-            })
+            self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: success)
 
         }, failure: failure)
     }
 
-    func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan],
+    private func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan],
                                remoteGroups: [RemotePlanGroup],
                                remoteFeatures: [RemotePlanFeature],
                                onComplete: @escaping () -> Void ) {
-
-        mergeRemoteWpcomPlans(remotePlans)
-        mergeRemotePlanGroups(remoteGroups)
-        mergeRemotePlanFeatures(remoteFeatures)
-
-        ContextManager.sharedInstance().save(managedObjectContext) {
-            onComplete()
-        }
+        coreDataStack.performAndSave({ context in
+            self.mergeRemoteWpcomPlans(remotePlans, in: context)
+            self.mergeRemotePlanGroups(remoteGroups, in: context)
+            self.mergeRemotePlanFeatures(remoteFeatures, in: context)
+        }, completion: onComplete, on: .main)
     }
 
 
-    func allPlans() -> [Plan] {
+    func allPlans(in context: NSManagedObjectContext) -> [Plan] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Plan")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
         do {
-            return try managedObjectContext.fetch(fetchRequest) as! [Plan]
+            return try context.fetch(fetchRequest) as! [Plan]
         } catch let error as NSError {
             DDLogError("Error fetching Plans: \(error.localizedDescription)")
             return [Plan]()
@@ -65,18 +66,18 @@ open class PlanService: LocalCoreDataService {
     }
 
 
-    func findPlanByShortname(_ shortname: String) -> Plan? {
-        let plans = allPlans() as NSArray
-        let results = plans.filtered(using: NSPredicate(format: "shortname = %@", shortname))
-        return results.first as? Plan
+    private func findPlanByShortname(_ shortname: String, in context: NSManagedObjectContext) -> Plan? {
+        allPlans(in: context).first {
+            $0.shortname == shortname
+        }
     }
 
 
-    func allPlanGroups() -> [PlanGroup] {
+    private func allPlanGroups(in context: NSManagedObjectContext) -> [PlanGroup] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanGroup")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
         do {
-            return try managedObjectContext.fetch(fetchRequest) as! [PlanGroup]
+            return try context.fetch(fetchRequest) as! [PlanGroup]
         } catch let error as NSError {
             DDLogError("Error fetching PlanGroups: \(error.localizedDescription)")
             return [PlanGroup]()
@@ -84,17 +85,17 @@ open class PlanService: LocalCoreDataService {
     }
 
 
-    func findPlanGroupBySlug(_ slug: String) -> PlanGroup? {
-        let groups = allPlanGroups() as NSArray
-        let results = groups.filtered(using: NSPredicate(format: "slug = %@", slug))
-        return results.first as? PlanGroup
+    private func findPlanGroupBySlug(_ slug: String, in context: NSManagedObjectContext) -> PlanGroup? {
+        allPlanGroups(in: context).first {
+            $0.slug == slug
+        }
     }
 
 
-    func allPlanFeatures() -> [PlanFeature] {
+    func allPlanFeatures(in context: NSManagedObjectContext) -> [PlanFeature] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanFeature")
         do {
-            return try managedObjectContext.fetch(fetchRequest) as! [PlanFeature]
+            return try context.fetch(fetchRequest) as! [PlanFeature]
         } catch let error as NSError {
             DDLogError("Error fetching PlanFeatures: \(error.localizedDescription)")
             return [PlanFeature]()
@@ -102,21 +103,21 @@ open class PlanService: LocalCoreDataService {
     }
 
 
-    func findPlanFeatureBySlug(_ slug: String) -> PlanFeature? {
-        let features = allPlanFeatures() as NSArray
+    private func findPlanFeatureBySlug(_ slug: String, in context: NSManagedObjectContext) -> PlanFeature? {
+        let features = allPlanFeatures(in: context) as NSArray
         let results = features.filtered(using: NSPredicate(format: "slug = %@", slug))
         return results.first as? PlanFeature
     }
 
 
-    func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan]) {
+    private func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan], in context: NSManagedObjectContext) {
 
         // create or update plans
         var plansToKeep = [Plan]()
         for remotePlan in remotePlans {
-            var plan = findPlanByShortname(remotePlan.shortname)
+            var plan = findPlanByShortname(remotePlan.shortname, in: context)
             if plan == nil {
-                plan = NSEntityDescription.insertNewObject(forEntityName: "Plan", into: managedObjectContext) as? Plan
+                plan = NSEntityDescription.insertNewObject(forEntityName: "Plan", into: context) as? Plan
             }
             plan?.order = Int16(plansToKeep.count)
             plan?.groups = remotePlan.groups
@@ -135,25 +136,25 @@ open class PlanService: LocalCoreDataService {
         }
 
         // Delete missing plans
-        let plans = allPlans()
+        let plans = allPlans(in: context)
         for plan in plans {
             if plansToKeep.contains(plan) {
                 continue
             }
-            managedObjectContext.delete(plan)
+            context.delete(plan)
         }
 
     }
 
 
-    func mergeRemotePlanGroups(_ remoteGroups: [RemotePlanGroup]) {
+    private func mergeRemotePlanGroups(_ remoteGroups: [RemotePlanGroup], in context: NSManagedObjectContext) {
 
         // create or update plans
         var groupsToKeep = [PlanGroup]()
         for remoteGroup in remoteGroups {
-            var group = findPlanGroupBySlug(remoteGroup.slug)
+            var group = findPlanGroupBySlug(remoteGroup.slug, in: context)
             if group == nil {
-                group = NSEntityDescription.insertNewObject(forEntityName: "PlanGroup", into: managedObjectContext) as? PlanGroup
+                group = NSEntityDescription.insertNewObject(forEntityName: "PlanGroup", into: context) as? PlanGroup
             }
 
             group?.order = Int16(groupsToKeep.count)
@@ -164,24 +165,24 @@ open class PlanService: LocalCoreDataService {
         }
 
         // Delete missing plans
-        let groups = allPlanGroups()
+        let groups = allPlanGroups(in: context)
         for group in groups {
             if groupsToKeep.contains(group) {
                 continue
             }
-            managedObjectContext.delete(group)
+            context.delete(group)
         }
 
     }
 
-    func mergeRemotePlanFeatures(_ remoteFeatures: [RemotePlanFeature]) {
+    private func mergeRemotePlanFeatures(_ remoteFeatures: [RemotePlanFeature], in context: NSManagedObjectContext) {
 
         // create or update plans
         var featuresToKeep = [PlanFeature]()
         for remoteFeature in remoteFeatures {
-            var feature = findPlanFeatureBySlug(remoteFeature.slug)
+            var feature = findPlanFeatureBySlug(remoteFeature.slug, in: context)
             if feature == nil {
-                feature = NSEntityDescription.insertNewObject(forEntityName: "PlanFeature", into: managedObjectContext) as? PlanFeature
+                feature = NSEntityDescription.insertNewObject(forEntityName: "PlanFeature", into: context) as? PlanFeature
             }
 
             feature?.slug = remoteFeature.slug
@@ -192,12 +193,12 @@ open class PlanService: LocalCoreDataService {
         }
 
         // Delete missing plans
-        let features = allPlanFeatures()
+        let features = allPlanFeatures(in: context)
         for feature in features {
             if featuresToKeep.contains(feature) {
                 continue
             }
-            managedObjectContext.delete(feature)
+            context.delete(feature)
         }
     }
 }

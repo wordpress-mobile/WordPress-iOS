@@ -102,6 +102,10 @@ import AutomatticTracks
         }
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
+            // Display overlay
+            RootViewCoordinator.sharedPresenter.mySitesCoordinator.displayJetpackOverlayForDisabledEntryPoint()
+
+            // Track incorrect access
             let properties = ["calling_function": "deep_link", "url": url.absoluteString]
             WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
             return false
