@@ -55,7 +55,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .bloggingPromptsEnhancements:
-            return false
+            return AppConfiguration.isJetpack
         case .bloggingPromptsSocial:
             return false
         case .jetpackDisconnect:
