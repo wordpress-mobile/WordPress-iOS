@@ -119,10 +119,11 @@ private extension SiteSettingsViewController {
     // MARK: - Constants
 
     struct Strings {
-        static let remindersTitle = NSLocalizedString("Blogging Reminders",
+        static let remindersTitle = NSLocalizedString("sitesettings.reminders.title",
+                                                      value: "Reminders",
                                                       comment: "Label for the blogging reminders setting")
         static let promptsTitle = NSLocalizedString("sitesettings.prompts.title",
-                                                    value: "Blogging Prompts",
+                                                    value: "Show prompts",
                                                     comment: "Label for the blogging prompts setting")
     }
 }
