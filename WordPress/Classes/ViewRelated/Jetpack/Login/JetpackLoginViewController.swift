@@ -40,6 +40,13 @@ class JetpackLoginViewController: UIViewController {
     @objc init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deviceOrientationDidChange),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -54,9 +61,8 @@ class JetpackLoginViewController: UIViewController {
         setupControls()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        toggleHidingImageView(for: newCollection)
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Configuration
@@ -65,7 +71,7 @@ class JetpackLoginViewController: UIViewController {
     ///
     fileprivate func setupControls() {
         jetpackImage.image = promptType.image
-        toggleHidingImageView(for: traitCollection)
+        toggleHidingImageView()
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = .text
@@ -78,8 +84,12 @@ class JetpackLoginViewController: UIViewController {
         updateMessageAndButton()
     }
 
-    private func toggleHidingImageView(for collection: UITraitCollection) {
-        jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
+    @objc private func deviceOrientationDidChange() {
+        toggleHidingImageView()
+    }
+
+    private func toggleHidingImageView() {
+        jetpackImage.isHidden = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
