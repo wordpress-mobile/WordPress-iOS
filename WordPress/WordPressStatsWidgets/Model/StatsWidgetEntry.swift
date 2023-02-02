@@ -5,7 +5,7 @@ enum StatsWidgetEntry: TimelineEntry {
     case loggedOut(StatsWidgetKind)
     case noSite(StatsWidgetKind)
     case noData(StatsWidgetKind)
-    case disabled
+    case disabled(StatsWidgetKind)
 
     var date: Date {
         switch self {
