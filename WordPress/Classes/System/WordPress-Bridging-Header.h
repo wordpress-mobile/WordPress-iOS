@@ -63,6 +63,7 @@
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
+#import "ReaderSiteService_Internal.h"
 #import "ReaderTopicService.h"
 
 #import "TextBundleWrapper.h"
