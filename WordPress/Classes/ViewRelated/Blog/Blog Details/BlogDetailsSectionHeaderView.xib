@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-Sb-m3L">
-                    <rect key="frame" x="36" y="11" width="30.5" height="14.5"/>
+                    <rect key="frame" x="16" y="10" width="32.5" height="16"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                     <color key="textColor" name="Gray50"/>
@@ -36,7 +36,7 @@
             <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="eUE-Sb-m3L" firstAttribute="centerY" secondItem="OEo-2z-Cmk" secondAttribute="centerY" id="5cB-Im-fBT"/>
-                <constraint firstAttribute="leadingMargin" secondItem="eUE-Sb-m3L" secondAttribute="leading" constant="-20" id="Bi6-N7-44O"/>
+                <constraint firstAttribute="leadingMargin" secondItem="eUE-Sb-m3L" secondAttribute="leading" id="Bi6-N7-44O"/>
                 <constraint firstAttribute="trailingMargin" secondItem="OEo-2z-Cmk" secondAttribute="trailing" id="EWN-SE-Ilb"/>
                 <constraint firstAttribute="bottom" secondItem="OEo-2z-Cmk" secondAttribute="bottom" id="a35-Lf-TpM"/>
             </constraints>
