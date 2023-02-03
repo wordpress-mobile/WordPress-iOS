@@ -265,6 +265,92 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(accounts(), ["First User", "Second User"])
     }
 
+    func testSaveUsingBlockWithNestedCallsUsingAsyncAPI() {
+        let contextManager = ContextManager.forTesting()
+        let accounts: () -> Set<String> = {
+            let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
+            return Set(all.map { $0.username! })
+        }
+        XCTAssertTrue(accounts().isEmpty)
+
+        let saveOperations = [
+            self.expectation(description: "First User is saved"),
+            self.expectation(description: "Second User is saved"),
+        ]
+
+        contextManager.performAndSave({
+            let account = WPAccount(context: $0)
+            account.userID = 1
+            account.username = "First User"
+
+            contextManager.performAndSave({
+                let account = WPAccount(context: $0)
+                account.userID = 2
+                account.username = "Second User"
+            }, completion: {
+                saveOperations[1].fulfill()
+            }, on: .main)
+        }, completion: {
+            saveOperations[0].fulfill()
+        }, on: .main)
+
+        wait(for: saveOperations, timeout: 1)
+        XCTAssertEqual(accounts(), ["First User", "Second User"])
+    }
+
+    func testConcurrencyAsyncAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "SyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            contextManager.performAndSave({ context in
+                do {
+                    try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+                } catch {
+                    XCTFail("Failed to create/update the account: \(error)")
+                }
+            }, completion: { expectation.fulfill() }, on: .main)
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
+    func testConcurrencySyncAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "SyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            DispatchQueue.global().async {
+                contextManager.performAndSave { context in
+                    do {
+                        try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+                    } catch {
+                        XCTFail("Failed to create/update the account: \(error)")
+                    }
+                }
+                expectation.fulfill()
+            }
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
@@ -280,6 +366,15 @@ class ContextManagerTests: XCTestCase {
         blog.url = "http://test.blog/"
         blog.account = account
         return blog
+    }
+
+    private func createOrUpdateAccount(username: String, newToken: String, in context: NSManagedObjectContext) throws {
+        var account = try WPAccount.lookup(withUsername: username, in: context)
+        if account == nil {
+            account = WPAccount(context: context)
+            account?.username = username
+        }
+        account?.authToken = newToken
     }
 
     /// Insert data into `storeURL` using the context object provided by this function.
