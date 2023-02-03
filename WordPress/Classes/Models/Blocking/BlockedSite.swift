@@ -27,7 +27,7 @@ extension BlockedSite {
             return []
         }
     }
-    
+
     // MARK: Inserting Elements
 
     static func insert(into context: NSManagedObjectContext) -> BlockedSite {
