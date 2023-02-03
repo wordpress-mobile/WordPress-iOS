@@ -4,18 +4,21 @@ import WordPressKit
 
     let capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote
 
-    init(context: NSManagedObjectContext = ContextManager.shared.mainContext,
-         capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote? = nil) {
-        let api = WordPressComRestApi.defaultApi(in: context, localeKey: WordPressComRestApi.LocaleKeyV2)
+    init(coreDataStack: CoreDataStack, capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote?) {
+        if let capabilitiesServiceRemote {
+            self.capabilitiesServiceRemote = capabilitiesServiceRemote
+        } else {
+            var api: WordPressComRestApi!
+            coreDataStack.performAndSave {
+                api = WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)
+            }
 
-        self.capabilitiesServiceRemote = capabilitiesServiceRemote ?? JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
+            self.capabilitiesServiceRemote = JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
+        }
     }
 
-    override init() {
-        let api = WordPressComRestApi.defaultApi(in: ContextManager.shared.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2)
-
-        self.capabilitiesServiceRemote = JetpackCapabilitiesServiceRemote(wordPressComRestApi: api)
-        super.init()
+    override convenience init() {
+        self.init(coreDataStack: ContextManager.shared, capabilitiesServiceRemote: nil)
     }
 
     /// Returns an array of [RemoteBlog] with the Jetpack capabilities added in `capabilities`
@@ -26,7 +29,7 @@ import WordPressKit
         capabilitiesServiceRemote.for(siteIds: blogs.compactMap { $0.blogID as? Int },
                  success: { capabilities in
                     blogs.forEach { blog in
-                        if let cap = capabilities["\(blog.blogID!)"] as? [String] {
+                        if let cap = capabilities["\(blog.blogID)"] as? [String] {
                             cap.forEach { blog.capabilities[$0] = true }
                         }
                     }

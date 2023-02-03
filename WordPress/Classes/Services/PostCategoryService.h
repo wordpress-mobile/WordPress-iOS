@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataStack.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,12 +10,11 @@ typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
     PostCategoryServiceErrorsBlogNotFound
 };
 
-@interface PostCategoryService : LocalCoreDataService
+@interface PostCategoryService : NSObject
 
-- (PostCategory *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID;
+@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
 
-- (nullable PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID;
-- (nullable PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(nullable NSNumber *)parentID andName:(NSString *)name;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack;
 
 /** 
  Sync an initial batch of categories for blog via default remote parameters and responses.

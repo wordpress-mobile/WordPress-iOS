@@ -252,7 +252,6 @@ extension ReaderTabViewModel {
     }
 
     private func clearSearchSuggestions() {
-        let context = ContextManager.sharedInstance().mainContext
-        ReaderSearchSuggestionService(managedObjectContext: context).deleteAllSuggestions()
+        ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance()).deleteAllSuggestions()
     }
 }

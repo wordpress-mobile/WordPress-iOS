@@ -3,12 +3,12 @@ import XCTest
 
 @testable import WordPress
 
-class JetpackCapabilitiesServiceTests: XCTestCase {
+class JetpackCapabilitiesServiceTests: CoreDataTestCase {
 
     /// Gives the correct siteIDs to the remote service
     func testCallServiceRemote() {
         let remoteMock = JetpackCapabilitiesServiceRemoteMock()
-        let service = JetpackCapabilitiesService(capabilitiesServiceRemote: remoteMock)
+        let service = JetpackCapabilitiesService(coreDataStack: contextManager, capabilitiesServiceRemote: remoteMock)
 
         service.sync(blogs: [RemoteBlog.mock()], success: { _ in })
 
@@ -20,7 +20,7 @@ class JetpackCapabilitiesServiceTests: XCTestCase {
         let expect = expectation(description: "Adds jetpack capabilities into the RemoteBlog")
 
         let remoteMock = JetpackCapabilitiesServiceRemoteMock()
-        let service = JetpackCapabilitiesService(capabilitiesServiceRemote: remoteMock)
+        let service = JetpackCapabilitiesService(coreDataStack: contextManager, capabilitiesServiceRemote: remoteMock)
 
         service.sync(blogs: [RemoteBlog.mock()], success: { blogs in
             XCTAssertTrue(blogs.first!.capabilities["backup"] as! Bool)

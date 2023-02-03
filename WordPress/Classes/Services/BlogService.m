@@ -153,7 +153,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                    dispatch_group_leave(syncGroup);
                                }];
 
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     dispatch_group_enter(syncGroup);
     [categoryService syncCategoriesForBlog:blog
                                    success:^{
@@ -184,7 +184,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         dispatch_group_leave(syncGroup);
     }];
 
-    PlanService *planService = [[PlanService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PlanService *planService = [[PlanService alloc] initWithCoreDataStack: [ContextManager sharedInstance]];
     dispatch_group_enter(syncGroup);
     [planService getWpcomPlans:blog.account
                        success:^{
@@ -236,11 +236,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
         void(^updateOnSuccess)(RemoteBlogSettings *) = ^(RemoteBlogSettings *remoteSettings) {
             [self.managedObjectContext performBlock:^{
                 [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (success) {
-                        success();
-                    }
-                }];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
             }];
         };
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
@@ -289,11 +285,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 
         void(^saveOnSuccess)(void) = ^() {
             [self.managedObjectContext performBlock:^{
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (success) {
-                        success();
-                    }
-                }];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
             }];
         };
 
@@ -787,7 +779,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                 }
             }
 
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
         }];
     };
 }

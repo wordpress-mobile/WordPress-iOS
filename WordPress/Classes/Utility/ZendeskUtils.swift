@@ -173,7 +173,7 @@ extension NSNotification.Name {
             return
         }
 
-        let planService = planService ?? PlanService(managedObjectContext: contextManager.mainContext)
+        let planService = planService ?? PlanService(coreDataStack: contextManager)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
         }, failure: { error in })
@@ -988,8 +988,8 @@ private extension ZendeskUtils {
 
     /// Obtains the available plans, sorted by priority
     private func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
-        let planService = planService ?? PlanService(managedObjectContext: ContextManager.shared.mainContext)
-        return planService.allPlans().map {
+        let planService = planService ?? PlanService(coreDataStack: contextManager)
+        return planService.allPlans(in: contextManager.mainContext).map {
             SupportPlan(priority: $0.supportPriority,
                         name: $0.shortname,
                         nonLocalizedName: $0.nonLocalizedShortname,
