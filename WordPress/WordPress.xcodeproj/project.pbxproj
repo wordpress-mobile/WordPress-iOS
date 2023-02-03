@@ -5308,6 +5308,8 @@
 		FECA443028350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */; };
 		FECA44322836647100D01F15 /* PromptRemindersSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */; };
 		FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */; };
+		FED77258298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */; };
+		FED77259298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */; };
 		FEDA1AD8269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDA1AD9269D475D0038EC98 /* ListTableViewCell+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */; };
 		FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */; };
@@ -8914,6 +8916,7 @@
 		FECA442E28350B7800D01F15 /* PromptRemindersScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersScheduler.swift; sourceTree = "<group>"; };
 		FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersSchedulerTests.swift; sourceTree = "<group>"; };
 		FED65D78293511E4008071BF /* SharedDataIssueSolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataIssueSolver.swift; sourceTree = "<group>"; };
+		FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginJetpackProxyService.swift; sourceTree = "<group>"; };
 		FEDA1AD7269D475D0038EC98 /* ListTableViewCell+Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Comments.swift"; sourceTree = "<group>"; };
 		FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListTableViewCell+Notifications.swift"; sourceTree = "<group>"; };
 		FEF4DC5428439357003806BE /* ReminderScheduleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinator.swift; sourceTree = "<group>"; };
@@ -13459,6 +13462,7 @@
 				E6311C401EC9FF4A00122529 /* UsersService.swift */,
 				B543D2B420570B5A00D3D4CC /* WordPressComSyncService.swift */,
 				010459E529153FFF000C7778 /* JetpackNotificationMigrationService.swift */,
+				FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -20250,6 +20254,7 @@
 				803DE821290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
 				17C1D67C2670E3DC006C8970 /* SiteIconPickerView.swift in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
+				FED77258298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */,
 				FEA7949026DF7F3700CEC520 /* WPStyleGuide+CommentDetail.swift in Sources */,
 				8B074A5027AC3A64003A2EB8 /* BlogDashboardViewModel.swift in Sources */,
 				F5A34A9925DEF47D00C9654B /* WPMediaPicker+MediaPicker.swift in Sources */,
@@ -23406,6 +23411,7 @@
 				FABB22D92602FC2C00C8785C /* UITextView+RichTextView.swift in Sources */,
 				FABB22DA2602FC2C00C8785C /* RoundedButton.swift in Sources */,
 				FABB22DC2602FC2C00C8785C /* MenuLocation.m in Sources */,
+				FED77259298BC5B300C2346E /* PluginJetpackProxyService.swift in Sources */,
 				3FD9CB7E28998ADB00CF76DE /* JetpackOverlayView.swift in Sources */,
 				FABB22DD2602FC2C00C8785C /* RevisionsTableViewCell.swift in Sources */,
 				E6D6A1312683ABE6004C24A7 /* ReaderSubscribeCommentsAction.swift in Sources */,
