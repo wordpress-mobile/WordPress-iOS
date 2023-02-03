@@ -148,17 +148,18 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog)
+//        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog)
+        var viewModel = JetpackPluginOverlayViewModel(siteName: "https://alpavanoglu.wordpress.com")
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
                                                               phaseString: frequencyTrackerPhaseString,
                                                               source: source)
-        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
-            onWillDismiss?()
-            onDidDismiss?()
-            return
-        }
+//        guard viewModel.shouldShowOverlay, frequencyTracker.shouldShow(forced: forced) else {
+//            onWillDismiss?()
+//            onDidDismiss?()
+//            return
+//        }
         createAndPresentOverlay(with: viewModel, in: viewController, fullScreen: fullScreen)
         frequencyTracker.track()
     }

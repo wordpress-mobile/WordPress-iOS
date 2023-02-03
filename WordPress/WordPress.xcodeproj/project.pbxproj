@@ -225,6 +225,8 @@
 		08A4E12C289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
 		08A4E12D289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */; };
 		08A4E12F289D2795001D9EC7 /* UserPersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */; };
+		08A7343F298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */; };
+		08A73440298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */; };
 		08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD69E1CBEA47D002B2418 /* MenusService.m */; };
 		08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
@@ -232,6 +234,10 @@
 		08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B6E51B1F037ADD00268F57 /* MediaFileManagerTests.swift */; };
 		08B832421EC130D60079808D /* test-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08B832411EC130D60079808D /* test-gif.gif */; };
 		08B954F328535EE800B07185 /* FeatureHighlightStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B954F228535EE800B07185 /* FeatureHighlightStoreTests.swift */; };
+		08BA4BC7298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 08BA4BC5298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json */; };
+		08BA4BC8298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json in Resources */ = {isa = PBXBuildFile; fileRef = 08BA4BC5298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json */; };
+		08BA4BC9298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */; };
+		08BA4BCA298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json in Resources */ = {isa = PBXBuildFile; fileRef = 08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */; };
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
 		08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */; };
 		08C42C31281807880034720B /* ReaderSubscribeCommentsActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C42C30281807880034720B /* ReaderSubscribeCommentsActionTests.swift */; };
@@ -5622,6 +5628,7 @@
 		08A4E128289D202F001D9EC7 /* UserPersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStore.swift; sourceTree = "<group>"; };
 		08A4E12B289D2337001D9EC7 /* UserPersistentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentRepository.swift; sourceTree = "<group>"; };
 		08A4E12E289D2795001D9EC7 /* UserPersistentStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersistentStoreTests.swift; sourceTree = "<group>"; };
+		08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayViewModel.swift; sourceTree = "<group>"; };
 		08AAD69D1CBEA47D002B2418 /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08AAD69E1CBEA47D002B2418 /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08AAD6A01CBEA610002B2418 /* MenusServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceTests.m; sourceTree = "<group>"; };
@@ -5631,6 +5638,8 @@
 		08B6E51B1F037ADD00268F57 /* MediaFileManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFileManagerTests.swift; sourceTree = "<group>"; };
 		08B832411EC130D60079808D /* test-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "test-gif.gif"; sourceTree = "<group>"; };
 		08B954F228535EE800B07185 /* FeatureHighlightStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlightStoreTests.swift; sourceTree = "<group>"; };
+		08BA4BC5298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackInstallPluginLogoAnimation_rtl.json; sourceTree = "<group>"; };
+		08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JetpackInstallPluginLogoAnimation_ltr.json; sourceTree = "<group>"; };
 		08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporter.swift; sourceTree = "<group>"; };
 		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
 		08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+WPMediaAsset.m"; sourceTree = "<group>"; };
@@ -12544,6 +12553,7 @@
 				8000361C292468D4007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel.swift */,
 				8000361F29246956007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel+Analytics.swift */,
 				805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */,
+				08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */,
 			);
 			path = "Fullscreen Overlay";
 			sourceTree = "<group>";
@@ -12551,6 +12561,8 @@
 		801D94F4291AB36A0051993E /* Lottie Animations */ = {
 			isa = PBXGroup;
 			children = (
+				08BA4BC6298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json */,
+				08BA4BC5298A9AD400015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json */,
 				801D950C291AB3CF0051993E /* JetpackNotificationsLogoAnimation_ltr.json */,
 				801D950B291AB3CE0051993E /* JetpackNotificationsLogoAnimation_rtl.json */,
 				801D9507291AB3CD0051993E /* JetpackReaderLogoAnimation_ltr.json */,
@@ -18060,6 +18072,7 @@
 				5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				17222D89261DDDF90047B163 /* celadon-icon-app-60x60@3x.png in Resources */,
+				08BA4BC9298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				3236F77624ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.xib in Resources */,
 				9A19D441236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib in Resources */,
@@ -18070,6 +18083,7 @@
 				803C493E283A7C2200003E9B /* QuickStartChecklistHeader.xib in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
 				1761F17726209AEE000815EF /* wordpress-dark-icon-app-76x76.png in Resources */,
+				08BA4BC7298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json in Resources */,
 				98F537A922496D0D00B334F9 /* SiteStatsTableHeaderView.xib in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
 				1761F18426209AEE000815EF /* jetpack-green-icon-app-76x76@2x.png in Resources */,
@@ -18574,6 +18588,7 @@
 				F465979028E65F8A00D5F49A /* celadon-on-white-icon-app-76@2x.png in Resources */,
 				F46597DF28E6694200D5F49A /* pink-on-white-icon-app-83.5@2x.png in Resources */,
 				FABB1FAC2602FC2C00C8785C /* PostingActivityCell.xib in Resources */,
+				08BA4BCA298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json in Resources */,
 				F41E4EE528F24623001880C6 /* 3d-icon-app-76.png in Resources */,
 				FABB1FB02602FC2C00C8785C /* SignupEpilogueCell.xib in Resources */,
 				F465979C28E65FC800D5F49A /* dark-green-icon-app-60@2x.png in Resources */,
@@ -18641,6 +18656,7 @@
 				F41E4EC028F22932001880C6 /* spectrum-icon-app-83.5@2x.png in Resources */,
 				FABB1FEA2602FC2C00C8785C /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				FABB1FED2602FC2C00C8785C /* InlineEditableNameValueCell.xib in Resources */,
+				08BA4BC8298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_rtl.json in Resources */,
 				FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */,
 				F41E4EC328F22932001880C6 /* spectrum-icon-app-60@3x.png in Resources */,
 				FABB1FEF2602FC2C00C8785C /* MediaQuotaCell.xib in Resources */,
@@ -20987,6 +21003,7 @@
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
 				176BA53B268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
 				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
+				08A7343F298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */,
 				E11C4B72201096EF00A6619C /* JetpackState.swift in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
 				595CB3761D2317D50082C7E9 /* PostListFilter.swift in Sources */,
@@ -23905,6 +23922,7 @@
 				FABB246D2602FC2C00C8785C /* ReaderSelectInterestsViewController.swift in Sources */,
 				FABB246E2602FC2C00C8785C /* ReaderShowMenuAction.swift in Sources */,
 				3FFDEF882918596B00B625CE /* MigrationDoneViewModel.swift in Sources */,
+				08A73440298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift in Sources */,
 				FABB246F2602FC2C00C8785C /* NSURLCache+Helpers.swift in Sources */,
 				FABB24702602FC2C00C8785C /* String+Extensions.swift in Sources */,
 				FABB24712602FC2C00C8785C /* CollapsableHeaderFilterBar.swift in Sources */,
