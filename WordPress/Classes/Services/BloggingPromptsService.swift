@@ -2,7 +2,7 @@ import CoreData
 import WordPressKit
 
 class BloggingPromptsService {
-    private let contextManager: CoreDataStack
+    private let contextManager: CoreDataStackSwift
     private let siteID: NSNumber
     private let remote: BloggingPromptsServiceRemote
     private let calendar: Calendar = .autoupdatingCurrent
@@ -179,7 +179,7 @@ class BloggingPromptsService {
 
     // MARK: - Init
 
-    required init?(contextManager: CoreDataStack = ContextManager.shared,
+    required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
@@ -198,10 +198,10 @@ class BloggingPromptsService {
 /// Convenience factory to generate `BloggingPromptsService` for different blogs.
 ///
 class BloggingPromptsServiceFactory {
-    let contextManager: CoreDataStack
+    let contextManager: CoreDataStackSwift
     let remote: BloggingPromptsServiceRemote?
 
-    init(contextManager: CoreDataStack = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
+    init(contextManager: CoreDataStackSwift = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote
     }

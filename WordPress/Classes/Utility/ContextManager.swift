@@ -6,8 +6,16 @@ import CoreData
 /// - SeeAlso: ContextManager.init(modelName:store:)
 let ContextManagerModelNameCurrent = "$CURRENT"
 
+public protocol CoreDataStackSwift: CoreDataStack {
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?)
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
+
+}
+
 @objc
-public class ContextManager: NSObject, CoreDataStack {
+public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     static var inMemoryStoreURL: URL {
         URL(fileURLWithPath: "/dev/null")
     }
@@ -72,6 +80,27 @@ public class ContextManager: NSObject, CoreDataStack {
             block(context)
 
             self.save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
+        }
+    }
+
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
+        let context = newDerivedContext()
+        context.perform {
+            let result = Result(catching: { try block(context) })
+            if case .success = result {
+                self.saveContextAndWait(context)
+            }
+            DispatchQueue.main.async {
+                completion?(result)
+            }
+        }
+    }
+
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            performAndSave(block) {
+                continuation.resume(with: $0)
+            }
         }
     }
 
@@ -231,9 +260,9 @@ private extension ContextManager {
 extension ContextManager {
     private static let internalSharedInstance = ContextManager()
     /// Tests purpose only
-    static var overrideInstance: CoreDataStack?
+    static var overrideInstance: ContextManager?
 
-    @objc class func sharedInstance() -> CoreDataStack {
+    @objc class func sharedInstance() -> ContextManager {
         if let overrideInstance = overrideInstance {
             return overrideInstance
         }
@@ -241,7 +270,7 @@ extension ContextManager {
         return ContextManager.internalSharedInstance
     }
 
-    static var shared: CoreDataStack {
+    static var shared: ContextManager {
         return sharedInstance()
     }
 }

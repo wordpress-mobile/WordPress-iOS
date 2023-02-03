@@ -182,27 +182,6 @@ extension ContextManager {
 }
 
 extension CoreDataStack {
-    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
-        let context = newDerivedContext()
-        context.perform {
-            let result = Result(catching: { try block(context) })
-            if case .success = result {
-                self.saveContextAndWait(context)
-            }
-            DispatchQueue.main.async {
-                completion?(result)
-            }
-        }
-    }
-
-    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
-        try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block) {
-                continuation.resume(with: $0)
-            }
-        }
-    }
-
     /// Perform a query using the `mainContext` and return the result.
     func performQuery<T>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
         var value: T! = nil
