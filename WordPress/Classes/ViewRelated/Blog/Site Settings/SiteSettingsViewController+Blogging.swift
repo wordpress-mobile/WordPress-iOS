@@ -101,6 +101,7 @@ private extension SiteSettingsViewController {
 
     var promptsSwitchOnChange: (Bool) -> () {
         return { [weak self] isPromptsEnabled in
+            WPAnalytics.track(.promptsSettingsShowPromptsTapped, properties: ["enabled": isPromptsEnabled])
             guard let siteID = self?.blog.dotComID?.stringValue else {
                 return
             }
