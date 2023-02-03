@@ -79,7 +79,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupContent()
         setupColors()
         setupFonts()
-        setupButtonInsets()
+        setupButtons()
         animationView.play()
         viewModel.trackOverlayDisplayed()
     }
@@ -141,7 +141,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
         learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
         continueButton.isHidden = viewModel.continueButtonIsHidden
-        setupLearnMoreButton()
+        setupLearnMoreButtonTitle()
     }
 
     private func setTitle() {
@@ -178,6 +178,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 
+    private func setupButtons() {
+        setupButtonInsets()
+        switchButton.titleLabel?.textAlignment = .center
+        continueButton.titleLabel?.textAlignment = .center
+    }
+
     private func setupButtonInsets() {
         if #available(iOS 15.0, *) {
             // Continue & Switch Buttons
@@ -208,7 +214,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         }
     }
 
-    private func setupLearnMoreButton() {
+    private func setupLearnMoreButtonTitle() {
         let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Metrics.externalIconSize).withTintColor(Colors.learnMoreButtonTextColor))
         externalAttachment.bounds = Metrics.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)
