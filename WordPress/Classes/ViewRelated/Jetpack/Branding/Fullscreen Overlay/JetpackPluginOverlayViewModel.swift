@@ -10,7 +10,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     let subtitle: NSAttributedString
     let animationLtr: String = Constants.lottieLTRFileName
     let animationRtl: String = Constants.lottieRTLFileName
-    let footnote: String? = Strings.footnote
+    let footnote: NSAttributedString? = JetpackPluginOverlayViewModel.footnote()
     let learnMoreButtonURL: String? = nil
     let switchButtonText = Strings.primaryButtonTitle
     let continueButtonText: String? = Strings.secondaryButtonTitle
@@ -41,21 +41,50 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     private static func subtitle(withSiteName siteName: String) -> NSAttributedString {
-        let siteNameAttributedText = attributedSubtitle(with: siteName, fontWeight: .bold)
-        let jetpackBackupAttributedText = attributedSubtitle(with: Strings.jetpackBackupText, fontWeight: .bold)
-        let jetpackPluginAttributedText = attributedSubtitle(with: Strings.jetpackPluginText, fontWeight: .bold)
+        let siteNameAttributedText = attributedSubtitle(
+            with: siteName,
+            fontWeight: .bold
+        )
+        let jetpackBackupAttributedText = attributedSubtitle(
+            with: Strings.jetpackBackupText,
+            fontWeight: .bold
+        )
+        let jetpackPluginAttributedText = attributedSubtitle(
+            with: Strings.jetpackPluginText,
+            fontWeight: .bold
+        )
 
         return NSAttributedString(
             format: attributedSubtitle(
                 with: Strings.subtitle,
                 fontWeight: .regular),
-            args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackBackupAttributedText), ("%3$@", jetpackBackupAttributedText)
+            args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackBackupAttributedText), ("%3$@", jetpackPluginAttributedText)
         )
     }
 
-    private static func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSMutableAttributedString {
+    private static func footnote() -> NSAttributedString {
+        let footnoteBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        let footnoteBaseText = NSAttributedString(string: Strings.footnote, attributes: [.font: footnoteBaseFont])
+
+        let footnoteTermsFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        let footnoteTermsText = NSAttributedString(
+            string: Strings.termsAndConditions,
+            attributes: [
+                .font: footnoteBaseFont,
+                .underlineStyle: NSUnderlineStyle.single.rawValue
+            ]
+        )
+
+        let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        return NSAttributedString(
+            format: footnoteBaseText,
+            args: ("%@", footnoteTermsText)
+        )
+    }
+
+    private static func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSAttributedString {
         let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: fontWeight)
-        return NSMutableAttributedString(string: string, attributes: [.font: font])
+        return NSAttributedString(string: string, attributes: [.font: font])
     }
 }
 
@@ -108,8 +137,14 @@ private extension JetpackPluginOverlayViewModel {
 
         static let footnote = NSLocalizedString(
             "jetpack.plugin.modal.footnote",
-            value: "By setting up jetpack you agree to our Terms and Conditions",
+            value: "By setting up jetpack you agree to our %@",
             comment: "Jetpack Plugin Modal footnote"
+        )
+
+        static let termsAndConditions = NSLocalizedString(
+            "jetpack.plugin.modal.terms",
+            value: "Terms and Conditions",
+            comment: "Jetpack Plugin Modal footnote terms and conditions"
         )
 
         static let primaryButtonTitle = NSLocalizedString(

@@ -135,7 +135,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         animationView.animation = animation
         setTitle()
         subtitleLabel.attributedText = viewModel.subtitle
-        footnoteLabel.text = viewModel.footnote
+        footnoteLabel.attributedText = viewModel.footnote
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)
         footnoteLabel.isHidden = viewModel.footnoteIsHidden

@@ -177,7 +177,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         }
     }
 
-    var footnote: String? {
+    var footnote: NSAttributedString? {
         switch phase {
         case .one:
             return nil
@@ -190,7 +190,8 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .newUsers:
             fallthrough
         case .selfHosted:
-            return Strings.General.footnote
+            let footnoteBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+            return NSAttributedString(string: Strings.General.footnote, attributes: [.font: footnoteBaseFont])
         default:
             return nil
         }

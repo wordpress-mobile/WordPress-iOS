@@ -8,7 +8,7 @@ protocol JetpackFullscreenOverlayViewModel {
     var subtitle: NSAttributedString { get }
     var animationLtr: String { get }
     var animationRtl: String { get }
-    var footnote: String? { get }
+    var footnote: NSAttributedString? { get }
     var learnMoreButtonURL: String? { get }
     var switchButtonText: String { get }
     var continueButtonText: String? { get }

@@ -41,7 +41,7 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
         return Constants.wpJetpackLogoAnimationRtl
     }
 
-    var footnote: String? {
+    var footnote: NSAttributedString? {
         return nil
     }
 
