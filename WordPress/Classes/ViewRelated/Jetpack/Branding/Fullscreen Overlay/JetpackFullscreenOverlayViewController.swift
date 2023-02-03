@@ -278,8 +278,8 @@ private extension JetpackFullscreenOverlayViewController {
         static let normalStackViewSpacing: CGFloat = 20
         static let compactStackViewSpacing: CGFloat = 10
         static let closeButtonRadius: CGFloat = 30
-        static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
-        static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
+        static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 12)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)
