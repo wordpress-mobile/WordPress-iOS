@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-01 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-02-03 05:51:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: he_IL */
@@ -10104,6 +10104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "אני אחליט מאוחר יותר";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "כאשר ההתראה מופיעה, יש להקיש על 'להרשות' כדי להמשיך לקבל את כל ההודעות מ-WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "להרשות";

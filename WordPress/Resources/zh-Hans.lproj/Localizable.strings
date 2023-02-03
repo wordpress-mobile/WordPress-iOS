@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-31 17:54:23+0000 */
+/* Translation-Revision-Date: 2023-02-03 05:57:50+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
@@ -10095,6 +10095,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍后再决定";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "出现警报时，点击“允许”可继续接收所有 WordPress 通知。";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "允许";

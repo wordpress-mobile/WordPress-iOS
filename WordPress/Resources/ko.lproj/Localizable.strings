@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-01 16:54:08+0000 */
+/* Translation-Revision-Date: 2023-02-03 05:53:38+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -10104,6 +10104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "나중에 결정";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "모든 워드프레스 알림을 계속 받으려면 경고가 표시될 때 허용을 누르세요.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "허용";

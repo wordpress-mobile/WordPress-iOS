@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-01 12:54:09+0000 */
+/* Translation-Revision-Date: 2023-02-03 06:51:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -10021,6 +10021,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Tik op Toestaan wanneer je de melding krijgt om meldingen van WordPress te blijven ontvangen.";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack-app.";
 
@@ -10068,6 +10071,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Afwijzen";
+
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Tik op '%@' en ga terug naar je webbrowser om door te gaan.";
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Afwijzen";

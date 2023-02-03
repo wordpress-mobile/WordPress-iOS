@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-01 10:54:09+0000 */
+/* Translation-Revision-Date: 2023-02-03 05:53:19+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ja_JP */
@@ -10104,6 +10104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "後で決める";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "アラートが表示されたら「許可する」をタップして、すべての WordPress の通知を引き続き受信します。";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "許可する";
