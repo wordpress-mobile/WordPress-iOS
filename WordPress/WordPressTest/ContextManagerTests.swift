@@ -302,7 +302,7 @@ class ContextManagerTests: XCTestCase {
         let contextManager = ContextManager.forTesting()
 
         let iterations = 50
-        let username = "SyncAPI"
+        let username = "AsyncAPI"
 
         var allCompleted: [XCTestExpectation] = []
         for iter in 1...iterations {
@@ -315,6 +315,27 @@ class ContextManagerTests: XCTestCase {
                     XCTFail("Failed to create/update the account: \(error)")
                 }
             }, completion: { expectation.fulfill() }, on: .main)
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
+    func testConcurrencyAsyncThrowingAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "AsyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            contextManager.performAndSave({ context in
+                try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+            }, completion: { _ in expectation.fulfill() }, on: .main)
         }
         wait(for: allCompleted, timeout: 1)
 
@@ -348,6 +369,7 @@ class ContextManagerTests: XCTestCase {
 
         let request = WPAccount.fetchRequest()
         request.predicate = NSPredicate(format: "username = %@", username)
+        XCTExpectFailure("See the comment in `ContextManager.writerQueue` for details")
         try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
     }
 

@@ -135,7 +135,7 @@ private final class CoreDataStackMock: CoreDataStack {
     func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
 
     func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void, on queue: DispatchQueue) {}
+    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
 }
 
 // MARK: - KeychainUtilsMock

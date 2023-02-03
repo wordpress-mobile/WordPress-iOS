@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)saveContext:(NSManagedObjectContext *)context;
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^ _Nullable)(void))completionBlock onQueue:(dispatch_queue_t)queue NS_SWIFT_NAME(save(_:completion:on:));
 - (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock;
-- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^)(void))completion onQueue:(dispatch_queue_t)queue;
+- (void)performAndSaveUsingBlock:(void (^)(NSManagedObjectContext *context))aBlock completion:(void (^ _Nullable)(void))completion onQueue:(dispatch_queue_t)queue;
 @end
 
 NS_ASSUME_NONNULL_END
