@@ -111,7 +111,7 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: context)
-        }, completion: completion)
+        }, completion: completion, on: .main)
     }
 }
 
@@ -175,7 +175,7 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: context)
-        }, completion: completion)
+        }, completion: completion, on: .main)
     }
 }
 

@@ -34,7 +34,7 @@ extension Media {
     ///   - onError: block to invoke if any error occurs while the update is being made.
     ///
     static func refreshMediaStatus(using coreDataStack: CoreDataStackSwift, onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             let fetch = NSFetchRequest<Media>(entityName: Media.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.processing.rawValue))
@@ -54,17 +54,15 @@ extension Media {
                     context.delete(media)
                 }
             }
-        } completion: { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    onCompletion?()
-                case let .failure(error):
-                    DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
-                    onError?(error)
-                }
+        }, completion: { result in
+            switch result {
+            case .success:
+                onCompletion?()
+            case let .failure(error):
+                DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
+                onError?(error)
             }
-        }
+        }, on: .main)
     }
 
 }

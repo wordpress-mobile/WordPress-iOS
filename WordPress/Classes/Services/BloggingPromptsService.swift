@@ -286,7 +286,7 @@ private extension BloggingPromptsService {
         let fetchRequest = BloggingPrompt.fetchRequest()
         fetchRequest.predicate = predicate
 
-        contextManager.performAndSave { derivedContext in
+        contextManager.performAndSave({ derivedContext in
             var foundExistingIDs = [Int32]()
             let results = try derivedContext.fetch(fetchRequest)
             results.forEach { prompt in
@@ -307,11 +307,7 @@ private extension BloggingPromptsService {
                 }
                 newPrompt.configure(with: remotePrompt, for: self.siteID.int32Value)
             }
-        } completion: { result in
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
+        }, completion: completion, on: .main)
     }
 
     /// Updates existing settings or creates new settings from the remote prompt settings.

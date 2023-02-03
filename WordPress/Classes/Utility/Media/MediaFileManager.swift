@@ -221,7 +221,7 @@ class MediaFileManager: NSObject {
     /// Removes any local Media files, except any Media matching the predicate.
     ///
     fileprivate func purgeMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
-        ContextManager.shared.performAndSave { context in
+        ContextManager.shared.performAndSave({ context in
             let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
             fetch.predicate = predicate
             fetch.resultType = .dictionaryResultType
@@ -243,17 +243,15 @@ class MediaFileManager: NSObject {
                 }
             }
             try self.purgeDirectory(exceptFiles: filesToKeep)
-        } completion: { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    onCompletion?()
-                case let .failure(error):
-                    DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
-                    onError?(error)
-                }
+        }, completion: { result in
+            switch result {
+            case .success:
+                onCompletion?()
+            case let .failure(error):
+                DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
+                onError?(error)
             }
-        }
+        }, on: .main)
     }
 
     /// Removes files in the Media directory, except any files found in the set.

@@ -8,7 +8,7 @@ let ContextManagerModelNameCurrent = "$CURRENT"
 
 public protocol CoreDataStackSwift: CoreDataStack {
 
-    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?)
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue)
 
     func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
 
@@ -83,14 +83,14 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         }
     }
 
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?) {
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue) {
         let context = newDerivedContext()
         context.perform {
             let result = Result(catching: { try block(context) })
             if case .success = result {
                 self.saveContextAndWait(context)
             }
-            DispatchQueue.main.async {
+            queue.async {
                 completion?(result)
             }
         }
@@ -98,9 +98,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
     public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
-            performAndSave(block) {
-                continuation.resume(with: $0)
-            }
+            performAndSave(block, completion: continuation.resume(with:), on: DispatchQueue.global())
         }
     }
 

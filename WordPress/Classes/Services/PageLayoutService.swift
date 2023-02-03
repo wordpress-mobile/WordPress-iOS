@@ -106,7 +106,7 @@ extension PageLayoutService {
             cleanUpStoredLayouts(forBlog: blog, context: context)
             try persistCategoriesToCoreData(blog, layouts.categories, context: context)
             try persistLayoutsToCoreData(blog, layouts.layouts, context: context)
-        }, completion: completion)
+        }, completion: completion, on: .main)
     }
 
     private static func cleanUpStoredLayouts(forBlog blog: Blog, context: NSManagedObjectContext) {

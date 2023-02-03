@@ -407,7 +407,7 @@ extension PeopleService {
     ///   - onComplete: A completion block that is called after changes are saved to core data.
     ///
     func merge(remoteInvites: [RemoteInviteLink], for siteID: Int, onComplete: @escaping (() -> Void)) {
-        coreDataStack.performAndSave { context in
+        coreDataStack.performAndSave({ context in
             guard let blog = try Blog.lookup(withID: siteID, in: context) else {
                 return
             }
@@ -422,11 +422,7 @@ extension PeopleService {
             for remoteInvite in remoteInvites {
                 createOrUpdateInviteLink(remoteInvite: remoteInvite, blog: blog, context: context)
             }
-        } completion: { _ in
-            DispatchQueue.main.async {
-                onComplete()
-            }
-        }
+        }, completion: { _ in onComplete() }, on: .main)
     }
 
     /// Deletes InviteLinks whose inviteKeys belong to the supplied array of keys.
