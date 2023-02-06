@@ -137,7 +137,7 @@ private extension BloggingPromptsFeatureIntroduction {
     }
 
     enum HeaderStrings {
-        static let title: String = NSLocalizedString("Introducing Prompts", comment: "Title displayed on the feature introduction view.")
+        static let title: String = NSLocalizedString("Introducing Blogging Prompts", comment: "Title displayed on the feature introduction view.")
         static let subtitle: String = NSLocalizedString("The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!", comment: "Subtitle displayed on the feature introduction view.")
     }
 

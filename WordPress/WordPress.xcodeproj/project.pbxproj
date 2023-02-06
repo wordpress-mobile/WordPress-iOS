@@ -1868,6 +1868,8 @@
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		830A58D82793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */; };
 		830A58D92793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */; };
+		8313B9EE298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313B9ED298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift */; };
+		8313B9EF298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313B9ED298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift */; };
 		8320BDE5283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */; };
 		8320BDE6283D9359009DF2DE /* BlogService+BloggingPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */; };
 		8323789828526E6D003F4443 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
@@ -7017,6 +7019,7 @@
 		82FFBF4E1F45E03D00F4573F /* WordPress 66.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 66.xcdatamodel"; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		830A58D72793AB4400CDE94F /* LoginEpilogueAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueAnimator.swift; sourceTree = "<group>"; };
+		8313B9ED298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+Blogging.swift"; sourceTree = "<group>"; };
 		8320BDE4283D9359009DF2DE /* BlogService+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+BloggingPrompts.swift"; sourceTree = "<group>"; };
 		8332DD2329259AE300802F7D /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
 		8332DD2729259BEB00802F7D /* DataMigratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigratorTests.swift; sourceTree = "<group>"; };
@@ -10715,6 +10718,7 @@
 				82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
+				8313B9ED298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift */,
 				82C420751FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift */,
 				3F43603723F369A9001DEE70 /* Related Posts */,
 			);
@@ -20219,6 +20223,7 @@
 				F52CACCC24512EA700661380 /* EmptyActionView.swift in Sources */,
 				D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */,
 				FFABD800213423F1003C65B6 /* LinkSettingsViewController.swift in Sources */,
+				8313B9EE298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
 				8BAC9D9E27BAB97E008EA44C /* BlogDashboardRemoteEntity.swift in Sources */,
 				E62AFB6B1DC8E593007484FC /* WPRichContentView.swift in Sources */,
@@ -24059,6 +24064,7 @@
 				FABB24DF2602FC2C00C8785C /* TimeZoneStore.swift in Sources */,
 				FABB24E02602FC2C00C8785C /* UserSuggestion+CoreDataClass.swift in Sources */,
 				069A4AA72664448F00413FA9 /* GutenbergFeaturedImageHelper.swift in Sources */,
+				8313B9EF298B1ACD000AF26E /* SiteSettingsViewController+Blogging.swift in Sources */,
 				982DA9A8263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
 				FABB24E12602FC2C00C8785C /* MediaLibraryPicker.swift in Sources */,
 				3F435222289B2B5A00CE19ED /* JetpackOverlayView.swift in Sources */,

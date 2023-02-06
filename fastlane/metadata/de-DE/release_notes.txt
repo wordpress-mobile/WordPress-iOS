@@ -1,0 +1,3 @@
+Die Nachricht „Keine Medien entsprechen deiner Suche“ in der Medienauswahl wird nun an der richtigen Stelle angezeigt. Das wurde auch Zeit.
+
+Einige Benutzer kamen nach der Anmeldung auf dem Bildschirm „Was möchtest du als Erstes tun?“ nicht weiter. Dieses Problem gehört nun jedoch der Vergangenheit an.

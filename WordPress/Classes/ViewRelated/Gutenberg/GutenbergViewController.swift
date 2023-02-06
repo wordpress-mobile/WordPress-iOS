@@ -46,7 +46,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         else {
             return nil
         }
-        return BlogJetpackSettingsService(managedObjectContext: context)
+        return BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - Aztec
