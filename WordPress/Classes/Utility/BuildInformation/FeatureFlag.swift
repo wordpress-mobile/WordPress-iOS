@@ -43,6 +43,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseFour
     case jetpackFeaturesRemovalPhaseNewUsers
     case jetpackFeaturesRemovalPhaseSelfHosted
+    case wordPressSupportForum
     case jetpackIndividualPluginSupport
 
     /// Returns a boolean indicating if the feature is enabled
@@ -138,6 +139,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
+        case .wordPressSupportForum:
+            return false
         case .jetpackIndividualPluginSupport:
             return false
         }
@@ -164,6 +167,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_self_hosted"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
+        case .wordPressSupportForum:
+            return "enable_wordpress_support_forum"
             default:
                 return nil
         }
@@ -266,6 +271,8 @@ extension FeatureFlag {
             return "Jetpack Features Removal Phase For New Users"
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
+        case .wordPressSupportForum:
+            return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
         }
