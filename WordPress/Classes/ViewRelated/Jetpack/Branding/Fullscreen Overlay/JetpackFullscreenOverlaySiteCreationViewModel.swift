@@ -6,6 +6,9 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
 
     let phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase
     let source: String
+    let actionInfoText: NSAttributedString? = nil
+    let footnote: String? = nil
+    let learnMoreButtonURL: String? = nil
 
     var shouldShowOverlay: Bool {
         switch phase {
@@ -39,14 +42,6 @@ struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayVi
 
     var animationRtl: String {
         return Constants.wpJetpackLogoAnimationRtl
-    }
-
-    var footnote: NSAttributedString? {
-        return nil
-    }
-
-    var learnMoreButtonURL: String? {
-        return nil
     }
 
     var switchButtonText: String {

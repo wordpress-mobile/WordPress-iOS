@@ -7,6 +7,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
     let source: JetpackFeaturesRemovalCoordinator.OverlaySource
     let blog: Blog?
+    let actionInfoText: NSAttributedString? = nil
 
     var shouldShowOverlay: Bool {
         switch (phase, source) {
@@ -177,7 +178,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         }
     }
 
-    var footnote: NSAttributedString? {
+    var footnote: String? {
         switch phase {
         case .one:
             return nil
@@ -190,8 +191,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
         case .newUsers:
             fallthrough
         case .selfHosted:
-            let footnoteBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-            return NSAttributedString(string: Strings.General.footnote, attributes: [.font: footnoteBaseFont])
+            return Strings.General.footnote
         default:
             return nil
         }

@@ -8,12 +8,13 @@ protocol JetpackFullscreenOverlayViewModel {
     var subtitle: NSAttributedString { get }
     var animationLtr: String { get }
     var animationRtl: String { get }
-    var footnote: NSAttributedString? { get }
+    var footnote: String? { get }
     var learnMoreButtonURL: String? { get }
     var switchButtonText: String { get }
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
+    var actionInfoText: NSAttributedString? { get }
     var onWillDismiss: JetpackOverlayDismissCallback? { get }
     var onDidDismiss: JetpackOverlayDismissCallback? { get }
 

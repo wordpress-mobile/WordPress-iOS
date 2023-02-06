@@ -54,6 +54,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var actionInfoLabel: UILabel!
 
     // MARK: Initializers
 
@@ -135,7 +136,8 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         animationView.animation = animation
         setTitle()
         subtitleLabel.attributedText = viewModel.subtitle
-        footnoteLabel.attributedText = viewModel.footnote
+        footnoteLabel.text = viewModel.footnote
+        actionInfoLabel.attributedText = viewModel.actionInfoText
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
@@ -161,6 +163,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupColors() {
         view.backgroundColor = Colors.backgroundColor
         footnoteLabel.textColor = Colors.footnoteTextColor
+        actionInfoLabel.textColor = Colors.footnoteTextColor
         learnMoreButton.tintColor = Colors.learnMoreButtonTextColor
         switchButton.backgroundColor = Colors.switchButtonBackgroundColor
         switchButton.tintColor = Colors.switchButtonTextColor
@@ -173,6 +176,8 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true
+        actionInfoLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        actionInfoLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)

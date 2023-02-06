@@ -10,7 +10,8 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     let subtitle: NSAttributedString
     let animationLtr: String = Constants.lottieLTRFileName
     let animationRtl: String = Constants.lottieRTLFileName
-    let footnote: NSAttributedString? = JetpackPluginOverlayViewModel.footnote()
+    let footnote: String? = nil
+    let actionInfoText: NSAttributedString? = JetpackPluginOverlayViewModel.footnote()
     let learnMoreButtonURL: String? = nil
     let switchButtonText = Strings.primaryButtonTitle
     let continueButtonText: String? = Strings.secondaryButtonTitle
