@@ -1,7 +1,0 @@
-Kami telah intens memperbaiki dan memperbarui proses yang sangat teknis agar aplikasi Jetpack tetap berjalan lancar.
-
-- Menetapkan fitur-fitur
-- Merancang ulang antarmuka
-- Merangkai spline
-- Menyederhanakan kemiripan
-- Membangun ulang gigaverse

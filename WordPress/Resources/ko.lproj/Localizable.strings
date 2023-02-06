@@ -283,12 +283,6 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(제목 없음)";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* higher than the previous week" = "이전 주보다 *%1$@%2$@(%3$@%%)* 높음";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* lower than the previous week" = "이전 주보다 *%1$@%2$@(%3$@%%)* 낮음";
-
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "*Johann Brandt* 님이 지금 회원님의 사이트를 팔로우 중입니다!";
 
@@ -3843,12 +3837,6 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "인사이트";
 
-/* Description of updated Stats Insights displayed in the Feature Introduction view. */
-"Insights help you understand how your content is performing and what’s resonating with your audience." = "인사이트는 콘텐츠의 성과와 잠재 고객이 공감하는 내용을 이해하는 데 도움이 됩니다.";
-
-/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
-"Insights update" = "인사이트 업데이트";
-
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "설치";
@@ -4125,9 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "역할에 대하여 더 알아보기";
-
-/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
-"Learn more in My Site > Stats > Insights." = "내 사이트 > 통계 > 인사이트에서 자세히 알아보세요.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "더 알아보기...";
@@ -5122,7 +5107,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "영감을 주는 단어 또는 짧은 구문이 알림에 포함됩니다.";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -5839,9 +5825,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "새 사이트를 미리 보며 방문자에게 표시되는 내용을 참조하세요.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"Previous Week" = "이전 주";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "이전 달";
 
@@ -5850,9 +5833,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "이전 기간";
-
-/* Previous week legend label */
-"Previous week" = "이전 주";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6008,7 +5988,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "원글 읽기";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -6099,9 +6080,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "나에게 알림";
-
-/* Button title dismiss the Stats Insights feature announcement screen. */
-"Remind me later" = "나중에 다시 알림";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "알림 제거됨";
@@ -7057,9 +7035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "생략하기";
 
-/* Menu title to skip today's prompt. */
-"Skip this prompt" = "이 프롬프트 건너뛰기";
-
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "슬래시 삽입기 결과";
 
@@ -7633,9 +7608,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "복사하려는 글이 충돌하거나 최근에 변경사항을 만들었지만 저장하지 않은 두 버전을 가지고 있습니다.\n충돌을 해결하거나 이 앱으로부터 버전 복사를 진행하려면 먼저 글을 편집하세요.";
 
-/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
-"The same as the previous week" = "이전 주와 동일";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "요청 직렬화에 실패했습니다.";
 
@@ -7828,9 +7800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "사이트에 새 블로그 글로 발행하는 순간 독자가 하나도 놓치지 않습니다.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"This Week" = "이번 주";
-
 /* Insights 'This Year' header */
 "This Year" = "올해";
 
@@ -7902,9 +7871,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "활성 구독이 있는 동안에는 이 사용자 계정을 종료할 수 없습니다.";
-
-/* This week legend label */
-"This week" = "이번 주";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8149,8 +8115,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "다른 검색어 시도";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "지금 사용해 보기";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -9638,24 +9603,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "사이트에서 데이터를 워드프레스닷컴에 더 이상 보내지 않고 젯팩 기능의 작동이 멈춥니다. 앱에서 사이트에 액세스할 수 없으므로 사이트 자격 증명을 사용하여 다시 추가해야 합니다.";
 
-/* Stats insights views higher than previous week */
-"Your views this week are %@ higher than the previous week.\n" = "이번 주 조회수는 이전 주보다 %@회 많습니다.\n";
-
-/* Stats insights views lower than previous week */
-"Your views this week are %@ lower than the previous week.\n" = "이번 주 조회수는 이전 주보다 %@회 적습니다.\n";
-
-/* Stats insights label shown when the user's view count is the same as the previous week. */
-"Your views this week are the same as the previous week.\n" = "이번 주 조회수는 이전 주와 같습니다.\n";
-
-/* Stats insights visitors higher than previous week */
-"Your visitors this week are %@ higher than the previous week.\n" = "이번 주 방문자는 이전 주보다 %@명 많습니다.\n";
-
-/* Stats insights visitors lower than previous week */
-"Your visitors this week are %@ lower than the previous week.\n" = "이번 주 방문자는 이전 주보다 %@명 적습니다.\n";
-
-/* Stats insights label shown when the user's visitor count is the same as the previous week. */
-"Your visitors this week are the same as the previous week.\n" = "이번 주 방문자 수는 이전 주와 같습니다.\n";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "웹사이트 자격 증명은 저장되지 않으며 젯팩을 설치하는 용도로만 사용됩니다.";
 
@@ -9873,12 +9820,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "이 링크를 활용하면 일일이 한 명씩 초대하지 않아도 여러 팀원이 팀에 참여할 수 있게 됩니다. 이 URL을 방문하는 사람은 누구나 조직에 가입할 수 있습니다. 다른 사람을 통해서 이 링크를 전달받은 사람도 가입할 수 있기 때문에 신뢰할 수 있는 사람에게만 공유하세요.";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
-"ios-jetpack-sharesheet.CFBundleDisplayName" = "젯팩에 저장";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
-"ios-jetpack-sharesheet.CFBundleName" = "젯팩에 저장";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "임시글로 저장";

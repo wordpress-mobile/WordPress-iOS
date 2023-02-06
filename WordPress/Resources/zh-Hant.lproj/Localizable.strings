@@ -283,12 +283,6 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(無標題)";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* higher than the previous week" = "較上週高 *%1$@%2$@ (%3$@%%)*";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* lower than the previous week" = "較上週低 *%1$@%2$@ (%3$@%%)*";
-
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "*Johann Brandt* 開始追蹤你的網站了！";
 
@@ -3843,12 +3837,6 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "Insights";
 
-/* Description of updated Stats Insights displayed in the Feature Introduction view. */
-"Insights help you understand how your content is performing and what’s resonating with your audience." = "洞察報告可協助你瞭解自己的內容成效如何，以及哪些內容能讓讀者產生共鳴。";
-
-/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
-"Insights update" = "洞察報告更新";
-
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "安裝";
@@ -4125,9 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "瞭解更多有關角色的資訊";
-
-/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
-"Learn more in My Site > Stats > Insights." = "在「我的網站」>「統計資料」>「洞察報告」瞭解詳情。";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "瞭解更多...";
@@ -5122,7 +5107,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "通知會包含可啟發靈感的字詞或短語";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -5839,9 +5825,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "預覽你的網站即可查看訪客將會看到的內容。";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"Previous Week" = "上週";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "上個月";
 
@@ -5850,9 +5833,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "上個期間";
-
-/* Previous week legend label */
-"Previous week" = "上週";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6008,7 +5988,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "參閱原始文章";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -6099,9 +6080,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "提醒我";
-
-/* Button title dismiss the Stats Insights feature announcement screen. */
-"Remind me later" = "稍後提醒我";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "提醒已移除";
@@ -7057,9 +7035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "跳過";
 
-/* Menu title to skip today's prompt. */
-"Skip this prompt" = "略過此提示";
-
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜線插入工具結果";
 
@@ -7633,9 +7608,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "你嘗試複製的文章有兩個互相不一致的版本，或者你最近進行變更但沒有儲存。\n首先編輯文章，解決任何不一致，或繼續複製此應用程式的版本。";
 
-/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
-"The same as the previous week" = "與上週相同";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "要求序列化失敗。";
 
@@ -7828,9 +7800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "它們會以新網誌文章的形式發佈在你的網站上，這樣你的讀者群永遠不會錯過任何精彩內容。";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"This Week" = "本週";
-
 /* Insights 'This Year' header */
 "This Year" = "今年";
 
@@ -7902,9 +7871,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "由於這個使用者帳號仍有使用中的訂購項目，因此無法關閉。";
-
-/* This week legend label */
-"This week" = "本週";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8149,8 +8115,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "嘗試其他搜尋字詞";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "立即試試";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -9638,24 +9603,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "你的頁面將停止傳送數據給WordPress.com而Jetpack功能也將停止運作。你將無法繼續以應用程式存取頁面資料，你必須以頁面憑證重新做加載。 ";
 
-/* Stats insights views higher than previous week */
-"Your views this week are %@ higher than the previous week.\n" = "你本週的瀏覽次數比上週增加了 %@。\n";
-
-/* Stats insights views lower than previous week */
-"Your views this week are %@ lower than the previous week.\n" = "你本週的瀏覽次數比上週減少了 %@。\n";
-
-/* Stats insights label shown when the user's view count is the same as the previous week. */
-"Your views this week are the same as the previous week.\n" = "你本週的瀏覽次數與上週相同。\n";
-
-/* Stats insights visitors higher than previous week */
-"Your visitors this week are %@ higher than the previous week.\n" = "你本週的訪客比上週增加了 %@。\n";
-
-/* Stats insights visitors lower than previous week */
-"Your visitors this week are %@ lower than the previous week.\n" = "你本週的訪客比上週減少了 %@。\n";
-
-/* Stats insights label shown when the user's visitor count is the same as the previous week. */
-"Your visitors this week are the same as the previous week.\n" = "你本週的訪客數與上週相同。\n";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "我們不會儲存你的網站憑證，而且只會將其用於安裝 Jetpack。";
 
@@ -9873,12 +9820,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "用這個連結直接加入成員，就不需要一個一個邀請。 造訪此 URL 的人都可以註冊你的組織，即使他們是從其他人那裡收到連結，因此請務必與值得信任的人分享。";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
-"ios-jetpack-sharesheet.CFBundleDisplayName" = "儲存至 Jetpack";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
-"ios-jetpack-sharesheet.CFBundleName" = "儲存至 Jetpack";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "儲存為草稿";

@@ -5,22 +5,24 @@ class FollowCommentsService: NSObject {
 
     let post: ReaderPost
     let remote: ReaderPostServiceRemote
-    let context: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
     fileprivate let postID: Int
     fileprivate let siteID: Int
 
-    @objc required init?(post: ReaderPost,
-                         remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()) {
+    required init?(
+        post: ReaderPost,
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()
+    ) {
         guard let postID = post.postID as? Int,
-              let siteID = post.siteID as? Int,
-              let context = post.managedObjectContext
+              let siteID = post.siteID as? Int
         else {
             return nil
         }
 
         self.post = post
-        self.context = context
+        self.coreDataStack = coreDataStack
         self.postID = postID
         self.siteID = siteID
         self.remote = remote
@@ -59,16 +61,14 @@ class FollowCommentsService: NSObject {
                                 success: @escaping (Bool) -> Void,
                                 failure: @escaping (Error?) -> Void) {
         let objID = post.objectID
-        let context = self.context
         let successBlock = { (taskSuccessful: Bool) -> Void in
-            context.perform {
+            self.coreDataStack.performAndSave({ context in
                 if let post = try? context.existingObject(with: objID) as? ReaderPost {
                     post.isSubscribedComments = !isSubscribed
                 }
-                ContextManager.sharedInstance().save(context, completion: {
-                    success(taskSuccessful)
-                }, on: .main)
-            }
+            }, completion: {
+                success(taskSuccessful)
+            }, on: .main)
         }
 
         if isSubscribed {
@@ -100,10 +100,11 @@ class FollowCommentsService: NSObject {
                 return
             }
 
-            self.post.receivesCommentNotifications = isNotificationsEnabled
-            ContextManager.sharedInstance().saveContextAndWait(self.context)
-            success()
-
+            self.coreDataStack.performAndSave({ context in
+                if let post = try? context.existingObject(with: self.post.objectID) as? ReaderPost {
+                    post.receivesCommentNotifications = isNotificationsEnabled
+                }
+            }, completion: success, on: .main)
         } failure: { error in
             DDLogError("Error updating notification settings for followed conversation: \(String(describing: error))")
             failure(error)

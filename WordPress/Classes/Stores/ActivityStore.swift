@@ -101,7 +101,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
          activityServiceRemote: ActivityServiceRemote? = nil,
          backupService: JetpackBackupService? = nil) {
         self.activityServiceRemote = activityServiceRemote
-        self.backupService = backupService ?? JetpackBackupService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        self.backupService = backupService ?? JetpackBackupService(coreDataStack: ContextManager.sharedInstance())
         super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 

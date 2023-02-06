@@ -283,12 +283,6 @@ translators: Block name. %s: The localized block name */
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(بدون عنوان)";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* higher than the previous week" = "*%1$@%2$@ (%3$@%%)* أعلى من الأسبوع الماضي";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous week'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"*%@%@ (%@%%)* lower than the previous week" = "*%1$@%2$@ (%3$@%%)* أقل من الأسبوع الماضي";
-
 /* Example notification content displayed on the Enable Notifications prompt that is personalized based on a users selection. Words marked between * characters will be displayed as bold text. */
 "*Johann Brandt* is now following your site!" = "يتابع *Johann Brandt* الآن موقعك!";
 
@@ -3843,12 +3837,6 @@ translators: Block name. %s: The localized block name */
 /* Title of Insights stats filter. */
 "Insights" = "الرؤى";
 
-/* Description of updated Stats Insights displayed in the Feature Introduction view. */
-"Insights help you understand how your content is performing and what’s resonating with your audience." = "تساعدك الرؤى على فهم مدى أداء محتواك وما يفلح مع جمهورك.";
-
-/* Title displayed on the feature introduction view that announces the updated Stats Insight screen. */
-"Insights update" = "تحديث الرؤى";
-
 /* Button label to install a plugin
    Confirmation button displayd in alert displayed when user installs their first plugin. */
 "Install" = "تثبيت";
@@ -4125,9 +4113,6 @@ translators: Block name. %s: The localized block name */
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "معرفة المزيد عن الأدوار (الرُتب)";
-
-/* Note displayed in the Feature Introduction view for the updated Stats Insights feature. */
-"Learn more in My Site > Stats > Insights." = "اعرف مزيدًا في موقعي > الإحصاءات > الرؤى.";
 
 /* Jetpack Settings: WordPress.com Login WordPress login footer text */
 "Learn more..." = "اعرف المزيد...";
@@ -5122,7 +5107,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "سيتضمن التنبيه كلمة أو عبارة مختصرة كمصدر للإلهام";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -5839,9 +5825,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "قم بمعاينة موقعك لرؤية ما سيراه الزائرون.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"Previous Week" = "الأسبوع الماضي";
-
 /* Accessibility label for the button which shows the previous month in the monthly calendar view */
 "Previous month" = "الشهر السابق";
 
@@ -5850,9 +5833,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label */
 "Previous period" = "الفترة السابقة";
-
-/* Previous week legend label */
-"Previous week" = "الأسبوع الماضي";
 
 /* Primary Site Picker's Title
    Primary Web Site */
@@ -6008,7 +5988,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "قراءة مقالة المصدر";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -6099,9 +6080,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title on the blogging prompt's feature introduction view to set a reminder. */
 "Remind me" = "ذكِّرني";
-
-/* Button title dismiss the Stats Insights feature announcement screen. */
-"Remind me later" = "ذكرني لاحقًا";
 
 /* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
 "Reminders removed" = "تمت إزالة التذكيرات";
@@ -7057,9 +7035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "تخطي";
 
-/* Menu title to skip today's prompt. */
-"Skip this prompt" = "تخطي هذه المطالبة";
-
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "نتائج أداة إدراج الشرطة المائلة";
 
@@ -7633,9 +7608,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in popup when user tries to copy a post with conflicts */
 "The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "تحتوي المقالة التي تحاول نسخها على إصدارين متعارضين أو أنك قمت بإجراء تغييرات مؤخرًا لكنك لم تحفظها.\nقم بتحرير المقالة أولاً لحل أي تعارض أو استمر في نسخ الإصدار من هذا التطبيق.";
 
-/* Label shown in Stats Insights when a metric is showing the same level as the previous week */
-"The same as the previous week" = "مثل الأسبوع الماضي";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "فشل إنشاء تسلسل الطلب.";
 
@@ -7828,9 +7800,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Second story intro item description */
 "They're published as a new blog post on your site so your audience never misses out on a thing." = "تُنشر المقالة كمقالة جديدة على موقعك حتى لا يفوِّت جمهورك أي شيء.";
 
-/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
-"This Week" = "هذا الأسبوع";
-
 /* Insights 'This Year' header */
 "This Year" = "هذا العام";
 
@@ -7902,9 +7871,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active subscriptions. */
 "This user account cannot be closed while it has active subscriptions." = "لا يمكن إغلاق حساب المستخدم هذا ومازالت عليه اشتراكات نشطة.";
-
-/* This week legend label */
-"This week" = "هذا الأسيوع";
 
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
@@ -8149,8 +8115,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Try another search term" = "تجربة مصطلح بحث آخر";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "جرّبه الآن";
 
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
@@ -9638,24 +9603,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Explanatory text bellow the Disconnect from WordPress.com button */
 "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials." = "لن يُرسل موقعك بيانات بعد الآن إلى WordPress.com وستتوقف ميزات Jetpack عن العمل. ستفقد الوصول إلى الموقع على التطبيق وستضطر إلى إضافة بيانات اعتماد الموقع مرة أخرى.";
 
-/* Stats insights views higher than previous week */
-"Your views this week are %@ higher than the previous week.\n" = "تزيد مشاهداتك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
-
-/* Stats insights views lower than previous week */
-"Your views this week are %@ lower than the previous week.\n" = "تقل مشاهداتك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
-
-/* Stats insights label shown when the user's view count is the same as the previous week. */
-"Your views this week are the same as the previous week.\n" = "يشبه عدد مشاهداتك هذا الأسبوع عدد مشاهداتك الأسبوع الماضي.\n";
-
-/* Stats insights visitors higher than previous week */
-"Your visitors this week are %@ higher than the previous week.\n" = "يزيد زائروك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
-
-/* Stats insights visitors lower than previous week */
-"Your visitors this week are %@ lower than the previous week.\n" = "يقل زائروك هذا الأسبوع عن الأسبوع الماضي بنسبة قدرها %@.\n";
-
-/* Stats insights label shown when the user's visitor count is the same as the previous week. */
-"Your visitors this week are the same as the previous week.\n" = "يشبه عدد زائريك هذ الأسبوع عدد زائريك الأسبوع الماضي.\n";
-
 /* The default Jetpack view message */
 "Your website credentials will not be stored and are used only for the purpose of installing Jetpack." = "لن يتم تخزين بيانات اعتمادك وستُستخدم فقط بغرض تنصيب Jetpack.";
 
@@ -9873,12 +9820,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "استخدم هذا الرابط لضم أعضاء فريقك من دون دعوتهم واحدًا تلو الآخر. سيتمكن أي شخص يزور عنوان URL هذا من التسجيل في مؤسستك، حتى إذا تلقى الرابط من شخص آخر، لذا تأكَّد من مشاركته مع أشخاص موثوق بهم.";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
-"ios-jetpack-sharesheet.CFBundleDisplayName" = "حفظ إلى Jetpack";
-
-/* Name of the "Save to Jetpack" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
-"ios-jetpack-sharesheet.CFBundleName" = "حفظ إلى Jetpack";
 
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "حفظ كمسودة";

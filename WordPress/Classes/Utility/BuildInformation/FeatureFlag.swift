@@ -43,6 +43,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseNewUsers
     case jetpackFeaturesRemovalPhaseSelfHosted
     case wordPressSupportForum
+    case jetpackIndividualPluginSupport
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -136,6 +137,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .wordPressSupportForum:
+            return false
+        case .jetpackIndividualPluginSupport:
             return false
         }
     }
@@ -265,6 +268,8 @@ extension FeatureFlag {
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
         case .wordPressSupportForum:
             return "Provide support through a forum"
+        case .jetpackIndividualPluginSupport:
+            return "Jetpack Individual Plugin Support"
         }
     }
 

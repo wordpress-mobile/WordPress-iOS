@@ -1,6 +1,7 @@
 21.7
 -----
 * [*] [Jetpack-only] Fixed an issue where stats were not displaying latest data when the system date rolls over to the next day while the app is in background. [#19989]
+* [*] [Jetpack-only] Hide Scan Login Code when logged into an account with 2FA. [#19567]
 
 21.6
 -----
@@ -15,6 +16,10 @@
 * [**] Refactored loading WP.com plans. [#19949]
 * [*] Resolve an edge case that was causing the user to be stuck in the "Onboading Questions" screen. [#19791]
 * [*] [Jetpack-only] Tweak Migration Screens UI when fonts are enlarged. [#19944]
+
+21.5.1
+-----
+* [*] [Jetpack-only] Fixed a bug where the Login flow was restarting every time the app enters the foreground. [#19961]
 
 21.5
 -----

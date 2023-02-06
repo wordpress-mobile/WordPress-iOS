@@ -51,4 +51,33 @@ extension Blog {
         }
         return jetpack.isConnected
     }
+
+    // MARK: Jetpack Individual Plugins Support
+
+    var jetpackConnectionActivePlugins: [String]? {
+        switch getOptionValue("jetpack_connection_active_plugins") {
+        case .some(let values as [NSString]):
+            return values.map { String($0) }
+        case .some(let values as [String]):
+            return values
+        default:
+            return nil
+        }
+    }
+
+    /// Returns true if the blog is Jetpack-connected only through individual plugins. Otherwise false.
+    ///
+    /// If the site is hosted at WP.com, the key `jetpack_connection_active_plugins` will not exist in `options`.
+    /// Atomic sites will have the full Jetpack plugin automatically installed.
+    /// Example values for Jetpack individual plugins: `jetpack-search`, `jetpack-backup`, etc.
+    ///
+    /// Note: We can't use `jetpackIsConnected` because it checks the installed Jetpack version.
+    ///
+    var jetpackIsConnectedWithoutFullPlugin: Bool {
+        guard let activeJetpackPlugins = jetpackConnectionActivePlugins else {
+            return false
+        }
+
+        return !(activeJetpackPlugins.isEmpty || activeJetpackPlugins.contains("jetpack"))
+    }
 }
