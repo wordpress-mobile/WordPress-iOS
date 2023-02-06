@@ -303,6 +303,7 @@ platform :ios do
 
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
+  # rubocop:disable Metrics/AbcSize
   def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, sentry_project_slug:)
     configuration = 'Release-Alpha'
 
@@ -381,6 +382,7 @@ platform :ios do
     list = metadata.map { |k, v| " - **#{k}**: #{v}" }.join("\n")
     buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
+  # rubocop:enable Metrics/AbcSize
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
