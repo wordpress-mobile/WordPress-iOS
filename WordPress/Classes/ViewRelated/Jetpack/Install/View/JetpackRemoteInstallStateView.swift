@@ -5,8 +5,20 @@ protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func customerSupportButtonDidTouch()
 }
 
+protocol JetpackRemoteInstallStateViewModel: AnyObject {
+    var image: UIImage? { get }
+    var titleText: String { get }
+    var descriptionText: String { get }
+    var buttonTitleText: String { get }
+
+    var hidesMainButton: Bool { get }
+    var hidesLoadingIndicator: Bool { get }
+    var hidesSupportButton: Bool { get }
+}
+
 class JetpackRemoteInstallStateView: UIViewController {
     weak var delegate: JetpackRemoteInstallStateViewDelegate?
+    weak var model: JetpackRemoteInstallStateViewModel?
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
@@ -24,23 +36,22 @@ class JetpackRemoteInstallStateView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func setupView(for state: JetpackRemoteInstallState) {
-        imageView.image = state.image
-
-        titleLabel.text = state.title
-        descriptionLabel.text = state.message
-
-        mainButton.isHidden = state == .installing
-        mainButton.setTitle(state.buttonTitle, for: .normal)
-
-        activityIndicatorContainer.isHidden = state != .installing
-
-        switch state {
-        case .failure:
-            supportButton.isHidden = false
-        default:
-            supportButton.isHidden = true
+    func setupView() {
+        guard let model else {
+            return
         }
+
+        imageView.image = model.image
+
+        titleLabel.text = model.titleText
+        descriptionLabel.text = model.descriptionText
+
+        mainButton.isHidden = model.hidesMainButton
+        mainButton.setTitle(model.buttonTitleText, for: .normal)
+
+        activityIndicatorContainer.isHidden = model.hidesLoadingIndicator
+
+        supportButton.isHidden = model.hidesSupportButton
     }
 }
 
