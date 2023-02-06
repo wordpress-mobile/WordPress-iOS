@@ -18,12 +18,15 @@ extension NSNotification.Name {
     static let ReaderSiteBlockingWillBegin = NSNotification.Name(rawValue: "ReaderSiteBlockingWillBegin")
     // Sent when site blocking failed.
     static let ReaderSiteBlockingFailed = NSNotification.Name(rawValue: "ReaderSiteBlockingFailed")
-    // Sent when a user is blocked.
-    static let ReaderUserBlocked = NSNotification.Name(rawValue: "ReaderUserBlocked")
+    // Sent when the user blocking request is sent
+    static let ReaderUserBlockingWillBegin = NSNotification.Name(rawValue: "ReaderUserBlockingWillBegin")
+    // Sent when the user blocking request is complete
+    static let ReaderUserBlockingDidFinish = NSNotification.Name(rawValue: "ReaderUserBlockingDidFinish")
 }
 
 struct ReaderNotificationKeys {
     static let error = "error"
+    static let result = "result"
     static let post = "post"
     static let topic = "topic"
 }
@@ -47,7 +50,11 @@ enum ReaderPostMenuSource {
 struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
     static let blockSite = NSLocalizedString("Block this site", comment: "The title of a button that triggers blocking a site from the user's reader.")
-    static let blockUser = NSLocalizedString("Block user", comment: "The title of a button that triggers blocking a user from the user's reader.")
+    static let blockUser = NSLocalizedString(
+        "reader.post.menu.block.user",
+        value: "Block user",
+        comment: "The title of a button that triggers blocking a user from the user's reader."
+    )
     static let reportPost = NSLocalizedString("Report this post", comment: "The title of a button that triggers reporting of a post from the user's reader.")
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
@@ -491,8 +498,16 @@ struct ReaderPostMenuButtonTitles {
         static let enableButtonLabel = NSLocalizedString("Enable", comment: "Button title for the enable site notifications action.")
         static let blockSiteSuccess = NSLocalizedString("Blocked site", comment: "Notice title when blocking a site succeeds.")
         static let blockSiteFail = NSLocalizedString("Unable to block site", comment: "Notice title when blocking a site fails.")
-        static let blockUserSuccess = NSLocalizedString("Blocked user", comment: "Notice title when blocking a user succeeds.")
-        static let blockUserFail = NSLocalizedString("Unable to block user", comment: "Notice title when blocking a user fails.")
+        static let blockUserSuccess = NSLocalizedString(
+            "Blocked user",
+            value: "Blocked user",
+            comment: "Notice title when blocking a user succeeds."
+        )
+        static let blockUserFail = NSLocalizedString(
+            "reader.notice.user.blocked",
+            value: "reader.notice.user.block.failed",
+            comment: "Notice title when blocking a user fails."
+        )
         static let commentFollowSuccess = NSLocalizedString("Following this conversation", comment: "The app successfully subscribed to the comments for the post")
         static let commentFollowSuccessMessage = NSLocalizedString("You'll get notifications in the app", comment: "The app successfully subscribed to the comments for the post")
         static let commentFollowActionTitle = NSLocalizedString("Undo", comment: "Revert enabling notification after successfully subcribing to the comments for the post.")
