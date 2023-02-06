@@ -196,6 +196,7 @@
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
 		084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */; };
+		084FC3B729913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */; };
 		0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */; };
 		0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2721CE5375F0014AE99 /* MenuItemInsertionView.m */; };
 		0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2741CE5375F0014AE99 /* MenuItemsVisualOrderingView.m */; };
@@ -5602,6 +5603,7 @@
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
 		084A07052848E1820054508A /* FeatureHighlightStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlightStore.swift; sourceTree = "<group>"; };
 		084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video-device-gps.m4v"; sourceTree = "<group>"; };
+		084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayViewModelTests.swift; sourceTree = "<group>"; };
 		084FF460C7742309671B3A86 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		0857C26F1CE5375F0014AE99 /* MenuItemAbstractView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemAbstractView.h; sourceTree = "<group>"; };
 		0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemAbstractView.m; sourceTree = "<group>"; };
@@ -9361,6 +9363,14 @@
 			path = "Feature Highlight";
 			sourceTree = "<group>";
 		};
+		084FC3B529913B0A00A17BCF /* JetpackOverlay */ = {
+			isa = PBXGroup;
+			children = (
+				084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */,
+			);
+			name = JetpackOverlay;
+			sourceTree = "<group>";
+		};
 		086C4D0C1E81F7920011D960 /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -12545,13 +12555,13 @@
 		800035BF291DDF57007D2D26 /* Fullscreen Overlay */ = {
 			isa = PBXGroup;
 			children = (
-				8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */,
-				8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */,
-				809101972908DE8500FCB4EA /* JetpackFullscreenOverlayViewModel.swift */,
 				801D94EE2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift */,
 				800035BC291DD0D7007D2D26 /* JetpackFullscreenOverlayGeneralViewModel+Analytics.swift */,
 				8000361C292468D4007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel.swift */,
 				8000361F29246956007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel+Analytics.swift */,
+				8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */,
+				8091019229078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.xib */,
+				809101972908DE8500FCB4EA /* JetpackFullscreenOverlayViewModel.swift */,
 				805CC0C0296CF3B3002941DC /* JetpackNewUsersOverlaySecondaryView.swift */,
 				08A7343E298AB68000F925C7 /* JetpackPluginOverlayViewModel.swift */,
 			);
@@ -12593,6 +12603,7 @@
 		803DE81D29063689007D4E9C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
+				084FC3B529913B0A00A17BCF /* JetpackOverlay */,
 				8332DD2629259B9700802F7D /* Utility */,
 				803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */,
 				801D951C291ADB7E0051993E /* JetpackOverlayFrequencyTrackerTests.swift */,
@@ -22455,6 +22466,7 @@
 				8BBBEBB224B8F8C0005E358E /* ReaderCardTests.swift in Sources */,
 				D81C2F5E20F88CE5002AE1F1 /* MarkAsSpamActionTests.swift in Sources */,
 				D848CC1520FF33FC00A9038F /* NotificationContentRangeTests.swift in Sources */,
+				084FC3B729913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift in Sources */,
 				D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */,
 				7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
