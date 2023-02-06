@@ -1,0 +1,8 @@
+Descubre qué tal funciona tu contenido con nuestros cambios en Detalles de las estadísticas y entérate de qué tipo de contenido les gusta ver a tus lectores.
+
+También hemos solucionado algunos problemas en varias áreas de la aplicación.
+
+- El mensaje "No hay medios que coincidan con tu búsqueda" del Selector de medios aparece ahora en el lugar correcto. Hogar, dulce hogar.
+- Algunos usuarios se quedaban atascados en la pantalla "¿En qué te gustaría centrarte primero?" después de conectarse, pero se acabó. ¡A centrarse!
+- Ya no pasarás al final del proceso de migración si cierras la aplicación mientras migras el contenido de tu sitio de WordPress a Jetpack. También hemos hecho algunos cambios de diseño en la pantalla final de la migración.
+- Al deslizar hacia abajo se actualizan correctamente las estadísticas de tus seguidores en la pantalla Detalles del total de seguidores. 10/10, lo volvería a hacer.

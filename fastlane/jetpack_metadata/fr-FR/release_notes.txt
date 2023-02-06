@@ -1,0 +1,8 @@
+Découvrez les performances de votre contenu grâce aux modifications apportées à la fonctionnalité Statistiques et tendances et découvrez les types de contenu que vos lecteurs apprécient.
+
+Nous avons également corrigé quelques problèmes à divers endroits de l’application.
+
+- Le message « Aucun média ne correspond à votre recherche » dans le sélecteur de média apparaît désormais au bon endroit. Votre « chez vous »
+- Après la connexion, certains utilisateurs étaient confrontés à un blocage dans l’écran « Sur quoi voulez-vous vous concentrer en premier lieu ? », mais ce n’est plus le cas. Concentrez-vous, les amis.
+- Vous n’arriverez plus à la fin du flux de migration si vous fermez l’application pendant la migration du contenu de votre site de WordPress vers Jetpack. Nous avons également procédé à quelques ajustements du design dans l’écran de migration final.
+- La fonction « Glisser pour actualiser » met correctement à jour les statistiques de vos abonnés dans l’écran « Détails du nombre total d’abonnés ». 10/10, si vous répétez l’opération.
