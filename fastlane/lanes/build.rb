@@ -330,6 +330,14 @@ platform :ios do
     )
 
     # Upload to App Center
+    commit = ENV.fetch('BUILDKITE_COMMIT', 'Unknown')
+    pr = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
+    release_notes = <<~NOTES
+      - Branch: \`#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}\`\n
+      - Commit: [#{commit[0...7]}](https://github.com/#{GITHUB_REPO}/commit/#{commit})\n
+      - Pull Request: [\##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
+    NOTES
+
     appcenter_upload(
       api_token: get_required_env('APPCENTER_API_TOKEN'),
       owner_name: APPCENTER_OWNER_NAME,
@@ -337,6 +345,7 @@ platform :ios do
       app_name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      release_notes: release_notes,
       destinations: 'Collaborators',
       notify_testers: false
     )
