@@ -1,12 +1,21 @@
+import Foundation
+
 /// Encapsulates a command to block a user
 final class ReaderBlockUserAction {
-    private let asBlocked: Bool
 
-    init(asBlocked: Bool) {
-        self.asBlocked = asBlocked
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil, failure: ((Error?) -> Void)? = nil) {
-        completion?()
+    // MARK: - Execution
+
+    func execute(with post: ReaderPost, blocked: Bool, completion: CompletionHandler? = nil) {
+        completion?(.success(()))
     }
+
+    // MARK: - Types
+
+    typealias CompletionHandler = (Result<Void, Error>) -> Void
 }

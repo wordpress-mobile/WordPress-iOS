@@ -43,27 +43,28 @@ final class ReaderShowMenuAction {
                                                handler: handler)
         }
 
+        // Block user button
         if shouldShowBlockUserMenuItem(post: post) {
-            // Block user button
+            let handler: (UIAlertAction) -> Void = { _ in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                self.postUserBlockingWillBeginNotification(post)
+                let action = ReaderBlockUserAction(context: context)
+                action.execute(with: post, blocked: true) { result in
+                    switch result {
+                    case .success:
+                        ReaderHelpers.dispatchUserBlockedMessage(post: post, success: true)
+                    case .failure:
+                        ReaderHelpers.dispatchUserBlockedMessage(post: post, success: false)
+                    }
+                    self.postUserBlockingDidFinishNotification(post, result: result)
+                }
+            }
             alertController.addActionWithTitle(
                 ReaderPostMenuButtonTitles.blockUser,
                 style: .destructive,
-                handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                        ReaderBlockUserAction(asBlocked: true).execute(with: post, context: context, completion: {
-                            ReaderHelpers.dispatchUserBlockedMessage(post: post, success: true)
-
-                            // Notify Reader Cards Stream so the post card is updated.
-                            NotificationCenter.default.post(
-                                name: .ReaderUserBlocked,
-                                object: nil,
-                                userInfo: [ReaderNotificationKeys.post: post]
-                            )
-                        }, failure: { _ in
-                            ReaderHelpers.dispatchUserBlockedMessage(post: post, success: false)
-                        })
-                    }
-                }
+                handler: handler
             )
         }
 
@@ -254,5 +255,17 @@ final class ReaderShowMenuAction {
         NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
                                         object: nil,
                                         userInfo: [ReaderNotificationKeys.post: post, ReaderNotificationKeys.error: error])
+    }
+
+    private func postUserBlockingWillBeginNotification(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderUserBlockingWillBegin,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    private func postUserBlockingDidFinishNotification(_ post: ReaderPost, result: Result<Void, Error>) {
+        let center = NotificationCenter.default
+        let userInfo: [String: Any] = [ReaderNotificationKeys.post: post, ReaderNotificationKeys.result: result]
+        center.post(name: .ReaderUserBlockingDidFinish, object: nil, userInfo: userInfo)
     }
 }
