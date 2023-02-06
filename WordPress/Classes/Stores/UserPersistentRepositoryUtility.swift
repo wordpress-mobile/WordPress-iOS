@@ -17,6 +17,7 @@ private enum UPRUConstants {
     static let announcementsVersionDisplayedKey = "announcementsVersionDisplayed"
     static let isJPContentImportCompleteKey = "jetpackContentImportComplete"
     static let jetpackContentMigrationStateKey = "jetpackContentMigrationState"
+    static let promptsRemovedKey = "prompts-removed-sites"
 }
 
 protocol UserPersistentRepositoryUtility: AnyObject {
@@ -183,6 +184,18 @@ extension UserPersistentRepositoryUtility {
             }
         } set {
             UserPersistentStoreFactory.instance().set(newValue.rawValue, forKey: UPRUConstants.jetpackContentMigrationStateKey)
+        }
+    }
+
+    var promptsRemovedSites: Set<String> {
+        get {
+            guard let sites = UserPersistentStoreFactory.instance().array(forKey: UPRUConstants.promptsRemovedKey) as? [String] else {
+                return Set()
+            }
+            return Set(sites)
+        }
+        set {
+            UserPersistentStoreFactory.instance().set(newValue.array, forKey: UPRUConstants.promptsRemovedKey)
         }
     }
 }

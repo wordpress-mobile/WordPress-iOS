@@ -163,6 +163,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     }
 
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
+    
+    if (self.bloggingSettingsRowCount > 0) {
+        [sections addObject:@(SiteSettingsSectionBlogging)];
+    }
 
     if ([Feature enabled:FeatureFlagHomepageSettings] && [self.blog supports:BlogFeatureHomepageSettings]) {
         [sections addObject:@(SiteSettingsSectionHomepage)];
@@ -242,6 +246,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         {
             return self.generalSettingsRowCount;
         }
+        case SiteSettingsSectionBlogging:
+            return self.bloggingSettingsRowCount;
         case SiteSettingsSectionHomepage:
         {
             return SiteSettingsHomepageCount;
@@ -641,6 +647,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionGeneral:
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
 
+        case SiteSettingsSectionBlogging:
+            return [self tableView:tableView cellForBloggingSettingsInRow:indexPath.row];
+            
         case SiteSettingsSectionHomepage:
             return self.homepageSettingsCell;
 
@@ -697,6 +706,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (section) {
         case SiteSettingsSectionGeneral:
             headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
+            break;
+        
+        case SiteSettingsSectionBlogging:
+            headingTitle = NSLocalizedString(@"Blogging", @"Title for the blogging section in site settings screen");
             break;
 
         case SiteSettingsSectionHomepage:
@@ -978,6 +991,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
             [self tableView:tableView didSelectInGeneralSettingsAt:indexPath];
+            break;
+            
+        case SiteSettingsSectionBlogging:
+            [self tableView:tableView didSelectInBloggingSettingsAt:indexPath];
             break;
 
         case SiteSettingsSectionHomepage:

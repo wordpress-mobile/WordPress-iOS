@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-24 05:36:22+0000 */
+/* Translation-Revision-Date: 2023-01-31 14:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ru */
@@ -7035,6 +7035,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Пропустить";
 
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Пропустить сегодня";
+
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Результат вставки по слешу";
 
@@ -9702,6 +9705,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Попробовать";
 
+/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
+"dailyprompts" = "ежедневные подсказки";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "нажмите дважды для смены единиц";
 
@@ -9887,6 +9893,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Узнайте больше на Jetpack.com";
 
+/* Description of the Notifications feature.
+   Description of the Reader feature.
+   Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Увеличивайте посещаемость с помощью полезной статистики и аналитики.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Статистика и обзор";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack открывает дополнительные возможности для сайтов WordPress. Переход бесплатен и занимает всего минуту.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Расширьте возможности WordPress с помощью Jetpack";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Перейти к уведомлениям";
 
@@ -9951,6 +9971,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Перейти в Чтиво";
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "Мобильное приложение Jetpack создано работать в паре с плагином Jetpack. Перейдите в приложение, чтобы использовать статистику, Чтиво, уведомления и другие возможности.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.selfHosted.title" = "На вашем сайте установлен плагин Jetpack";
 
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
@@ -9973,6 +9996,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "Узнать больше";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Используйте возможности сайта максимально эффективно. Установите Jetpack и получите доступ к статистике, Чтиву, уведомлениям и многим другим функциям.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Перейти на Jetpack";
@@ -10198,6 +10224,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Ошибка поделиться";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Последние 7 дней";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Предыдущие 7 дней";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* по сравнению с предыдущим 7-дневным периодом";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* по сравнению с предыдущими 7 днями";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Как в предыдущие 7 дней";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "За последние 7 дней количество просмотров увеличилось на %@ по сравнению с предыдущим 7-дневным периодом.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "За последние 7 дней количество просмотров снизилось на %@ по сравнению с предыдущим 7-дневным периодом.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "За последние 7 дней просмотров было столько же, сколько за предыдущий 7-дневный период.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "Последние 7 дней";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "Предыдущие 7 дней";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "За последние 7 дней количество посетителей увеличилось на %@ по сравнению с предыдущим 7-дневным периодом.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "За последние 7 дней количество посетителей снизилось на %@ по сравнению с предыдущим 7-дневным периодом.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "За последние 7 дней сайт посетило столько же человек, сколько за предыдущий 7-дневный период.\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Комментарии";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 23:54:08+0000 */
+/* Translation-Revision-Date: 2023-02-03 05:56:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -7035,6 +7035,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Sauter";
 
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Ignorer";
+
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Résultats de l’outil d’insertion de barre oblique";
 
@@ -9702,6 +9705,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Essayer maintenant";
 
+/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
+"dailyprompts" = "invitesquotidiennes";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "appuyer deux fois pour modifier l’unité";
 
@@ -9821,6 +9827,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Utilisez ce lien pour ajouter les membres de votre équipe sans avoir à les inviter individuellement. Toute personne ayant accès à ce lien sera en mesure de rejoindre votre organisation, même si le lien a été envoyé par quelqu’un d’autre que vous. Veillez à le partager uniquement avec des personnes de confiance.";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Enregistrer comme brouillon";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
 
@@ -9880,6 +9892,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Lire la suite sur jetpack.com";
+
+/* Description of the Notifications feature.
+   Description of the Reader feature.
+   Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Suivez l’évolution de votre trafic avec des tendances utiles et des statistiques complètes.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistiques et tendances";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack vous aide à en faire plus avec votre site WordPress. Passer d’une application à l’autre est gratuit et ne prend qu’une minute.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Booster WordPress avec Jetpack";
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Poursuivre vers la section Notifications";
@@ -9944,6 +9970,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Poursuivre vers la section Lecteur";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "L’application mobile Jetpack est conçue pour compléter l’extension Jetpack. Commencez à l’utiliser dès maintenant pour accéder à des statistiques, au lecteur, à des notifications et bien d’autres choses encore.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "Votre site comporte l’extension Jetpack";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continuer sans Jetpack";
 
@@ -9964,6 +9996,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "Lire la suite";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Libérez tout le potentiel de votre site. Profitez de statistiques, du lecteur, de notifications et de bien d’autres choses encore avec Jetpack.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Passer à Jetpack";
@@ -10069,6 +10104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Décider ultérieurement";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Lorsque l’alerte s’affiche à l’écran, sélectionnez Autoriser pour continuer de recevoir l’ensemble de vos notifications WordPress.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Autoriser";
@@ -10186,6 +10224,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Erreur de partage";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 derniers jours";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 jours précédents";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Identique aux 7 jours précédents";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "Au cours des 7 derniers jours, vous avez enregistré %@ de vues en plus par rapport aux 7 jours précédents.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "Au cours des 7 derniers jours, vous avez enregistré %@ de vues en moins par rapport aux 7 jours précédents.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "Au cours des 7 derniers jours, vous avez enregistré autant de vues qu’au cours des 7 jours précédents.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "7 derniers jours";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "7 jours précédents";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "Au cours des 7 derniers jours, vous avez enregistré %@ de visiteurs en plus par rapport aux 7 jours précédents.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "Au cours des 7 derniers jours, vous avez enregistré %@ de visiteurs en moins par rapport aux 7 jours précédents.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "Au cours des 7 derniers jours, vous avez enregistré autant de visiteurs qu’au cours des 7 jours précédents.\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Commentaires";

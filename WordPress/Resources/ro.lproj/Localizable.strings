@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-24 15:53:05+0000 */
+/* Translation-Revision-Date: 2023-01-30 04:38:39+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -10231,9 +10231,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 zile anterioare";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.
-   Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.higher" = "cu *%1$@%2$@ (%3$@%%)* mai mult decât în 7 zile anterioare";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "cu *%1$@%2$@ (%3$@%%)* mai puțin decât în 7 zile anterioare";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "La fel ca cele din 7 zile anterioare";
@@ -10254,10 +10256,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.label.viewsVisitorsPreviousDays" = "7 zile anterioare";
 
 /* Stats insights visitors higher than previous 7 days */
-"stats.insights.label.visitors.sevenDays.higher" = "Vizitatorii din ultimele 7 zile sunt cu %@ mai mari ca număr decât vizitatorii din 7 zile anterioare.\n";
+"stats.insights.label.visitors.sevenDays.higher" = "Vizitatorii din ultimele 7 zile sunt cu %@ mai mulți decât vizitatorii din 7 zile anterioare.\n";
 
 /* Stats insights visitors lower than previous 7 days */
-"stats.insights.label.visitors.sevenDays.lower" = "Vizitatorii din ultimele 7 zile sunt cu %@ mai mici ca număr decât vizitatorii din 7 zile anterioare.\n";
+"stats.insights.label.visitors.sevenDays.lower" = "Vizitatorii din ultimele 7 zile sunt cu %@ mai puțini decât vizitatorii din 7 zile anterioare.\n";
 
 /* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
 "stats.insights.label.visitors.sevenDays.same" = "Vizitatorii din ultimele 7 zile sunt identici ca număr cu vizitatorii din 7 zile anterioare.\n";

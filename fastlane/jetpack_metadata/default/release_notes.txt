@@ -1,4 +1,4 @@
-Insight check—find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.
+Find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.
 
 We also fixed a few issues in various areas of the app.
 

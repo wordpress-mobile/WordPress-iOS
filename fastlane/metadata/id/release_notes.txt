@@ -1,0 +1,3 @@
+Pesan “Tidak ada media yang sesuai dengan pencarian Anda” di Pemilih Media kini muncul di tempat yang tepat. Rumahku istanaku.
+
+Beberapa pengguna mengalami kendala di layar “Ke mana dulu Anda ingin fokus?” setelah login. Sekarang itu sudah beres—silakan fokus ke yang lain.

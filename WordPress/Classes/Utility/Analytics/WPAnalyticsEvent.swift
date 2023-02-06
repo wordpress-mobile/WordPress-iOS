@@ -405,6 +405,7 @@ import Foundation
     case promptsNotificationTapped
     case promptsNotificationDismissed
     case promptsOtherAnswersTapped
+    case promptsSettingsShowPromptsTapped
 
     // Jetpack branding
     case jetpackPoweredBadgeTapped
@@ -1117,6 +1118,8 @@ import Foundation
             return "blogging_reminders_notification_prompt_dismissed"
         case .promptsOtherAnswersTapped:
             return "blogging_prompts_my_site_card_view_answers_tapped"
+        case .promptsSettingsShowPromptsTapped:
+            return "blogging_prompts_settings_show_prompts_tapped"
 
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:

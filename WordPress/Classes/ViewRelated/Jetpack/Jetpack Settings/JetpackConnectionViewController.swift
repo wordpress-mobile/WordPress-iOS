@@ -36,7 +36,7 @@ open class JetpackConnectionViewController: UITableViewController {
     @objc public convenience init(blog: Blog) {
         self.init(style: .insetGrouped)
         self.blog = blog
-        self.service = BlogJetpackSettingsService(managedObjectContext: blog.managedObjectContext!)
+        self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }
 
     // MARK: - View Lifecycle
