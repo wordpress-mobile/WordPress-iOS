@@ -565,9 +565,4 @@ open class SharingService: LocalCoreDataService {
 
         return SharingServiceRemote(wordPressComRestApi: api)
     }
-
-    // Error for failure states
-    enum SharingServiceError: Error {
-        case siteWithNoRemote
-    }
 }

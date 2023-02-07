@@ -30,7 +30,7 @@ import WordPressKit
     @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
-            failure?(SharingSyncServiceError.siteWithNoRemote as NSError)
+            failure?(Error.siteWithNoRemote as NSError)
             return
         }
 
@@ -104,7 +104,7 @@ import WordPressKit
     }
 
     // Error for failure states
-    enum SharingSyncServiceError: Error {
+    enum Error: Swift.Error {
         case siteWithNoRemote
     }
 
