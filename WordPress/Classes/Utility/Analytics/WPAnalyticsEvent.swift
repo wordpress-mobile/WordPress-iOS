@@ -426,6 +426,9 @@ import Foundation
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
 
+    // Help & Support
+    case supportOpenMobileForumTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1157,6 +1160,9 @@ import Foundation
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
 
+        // Help & Support
+        case .supportOpenMobileForumTapped:
+            return "support_open_mobile_forum_tapped"
         } // END OF SWITCH
     }
 
