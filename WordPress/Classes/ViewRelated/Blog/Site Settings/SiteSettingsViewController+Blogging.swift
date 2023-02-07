@@ -96,7 +96,7 @@ private extension SiteSettingsViewController {
             return false
         }
 
-        return !UserPersistentStoreFactory.instance().promptsRemovedSites.contains(siteID)
+        return UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID] ?? false
     }
 
     var promptsSwitchOnChange: (Bool) -> () {
@@ -106,14 +106,9 @@ private extension SiteSettingsViewController {
                 return
             }
             let repository = UserPersistentStoreFactory.instance()
-            var removedSites = repository.promptsRemovedSites
-
-            if isPromptsEnabled {
-                removedSites.remove(siteID)
-            } else {
-                removedSites.insert(siteID)
-            }
-            repository.promptsRemovedSites = removedSites
+            var promptsEnabledSettings = repository.promptsEnabledSettings
+            promptsEnabledSettings[siteID] = isPromptsEnabled
+            repository.promptsEnabledSettings = promptsEnabledSettings
         }
     }
 
