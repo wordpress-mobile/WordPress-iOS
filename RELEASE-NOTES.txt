@@ -1,6 +1,6 @@
 21.8
 -----
-
+* [*] [WordPress-only] We have redesigned and simplified the landing screen. [#20061]
 
 21.7
 -----
