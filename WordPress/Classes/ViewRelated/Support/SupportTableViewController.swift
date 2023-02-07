@@ -16,6 +16,7 @@ class SupportTableViewController: UITableViewController {
 
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserPersistentStoreFactory.instance()
+    private let featureFlagStore: RemoteFeatureFlagStore
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.
@@ -24,8 +25,9 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped, featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
         self.configuration = configuration
+        self.featureFlagStore = featureFlagStore
         super.init(style: style)
     }
 
@@ -137,10 +139,9 @@ private extension SupportTableViewController {
     func tableViewModel() -> ImmuTable {
 
         // Help Section
-        var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
-
-        if ZendeskUtils.zendeskEnabled {
+        var helpSection: ImmuTableSection?
+        if SupportConfiguration.current(featureFlagStore: featureFlagStore) == .zendesk {
+            var helpSectionRows = [ImmuTableRow]()
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
@@ -148,26 +149,25 @@ private extension SupportTableViewController {
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected(),
                                                    accessibilityIdentifier: "set-contact-email-button"))
-        } else {
-            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
+            helpSection = ImmuTableSection(
+                    headerText: LocalizedText.prioritySupportSectionHeader,
+                    rows: helpSectionRows,
+                    footerText: nil)
         }
-
-        let helpSection = ImmuTableSection(
-            headerText: nil,
-            rows: helpSectionRows,
-            footerText: LocalizedText.helpFooter)
 
         // Community Forums Section
         var communityForumsSectionRows = [ImmuTableRow]()
         communityForumsSectionRows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
-                                                          accessibilityHint: "",
                                                           action: nil,
-                                                          accessibilityIdentifier: ""))
+                                                          accessibilityIdentifier: "visit-wordpress-forums-prompt"))
         communityForumsSectionRows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
-                                                                accessibilityHint: "",
+                                                                accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
                                                                 action: visitForumsSelected(),
                                                                 accessibilityIdentifier: "visit-wordpress-forums-button"))
-        let forumsSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: communityForumsSectionRows, footerText: nil)
+
+        let forumsSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader,
+                                             rows: communityForumsSectionRows,
+                                             footerText: nil)
 
         // Information Section
         var informationSection: ImmuTableSection?
@@ -178,7 +178,7 @@ private extension SupportTableViewController {
                                       onChange: extraDebugToggled())
             let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
             informationSection = ImmuTableSection(
-                headerText: nil,
+                headerText: LocalizedText.advancedSectionHeader,
                 rows: [versionRow, switchRow, logsRow],
                 footerText: LocalizedText.informationFooter
             )
@@ -200,12 +200,67 @@ private extension SupportTableViewController {
         return ImmuTable(sections: sections)
     }
 
+    // TODO - remove after FeatureFlag.wordPressSupportForum is removed
+    func oldTableViewModel() -> ImmuTable {
+
+        // Help Section
+        var helpSectionRows = [ImmuTableRow]()
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
+
+        if ZendeskUtils.zendeskEnabled {
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
+            helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
+                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
+                                                   action: supportEmailSelected(),
+                                                   accessibilityIdentifier: "set-contact-email-button"))
+        } else {
+            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
+        }
+
+        let helpSection = ImmuTableSection(
+                headerText: nil,
+                rows: helpSectionRows,
+                footerText: LocalizedText.helpFooter)
+
+        // Information Section
+        var informationSection: ImmuTableSection?
+        if configuration.showsLogsSection {
+            let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
+            let switchRow = SwitchRow(title: LocalizedText.extraDebug,
+                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
+                                      onChange: extraDebugToggled())
+            let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+            informationSection = ImmuTableSection(
+                    headerText: nil,
+                    rows: [versionRow, switchRow, logsRow],
+                    footerText: LocalizedText.informationFooter
+            )
+        }
+
+        // Log out Section
+        var logOutSections: ImmuTableSection?
+        if configuration.showsLogOutButton {
+            let logOutRow = DestructiveButtonRow(
+                    title: LocalizedText.logOutButtonTitle,
+                    action: logOutTapped(),
+                    accessibilityIdentifier: ""
+            )
+            logOutSections = .init(headerText: LocalizedText.wpAccount, optionalRows: [logOutRow])
+        }
+
+        // Create and return table
+        let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
+        return ImmuTable(sections: sections)
+    }
+
     @objc func refreshNotificationIndicator(_ notification: Foundation.Notification) {
         reloadViewModel()
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = tableViewModel()
+        tableHandler?.viewModel = featureFlagStore.value(for: FeatureFlag.wordPressSupportForum) ? tableViewModel() : oldTableViewModel()
     }
 
     // MARK: - Row Handlers
@@ -225,7 +280,7 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
+            if SupportConfiguration.current(featureFlagStore: self.featureFlagStore) == .zendesk {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
@@ -235,12 +290,7 @@ private extension SupportTableViewController {
                     }
                 }
             } else {
-                guard let url = Constants.forumsURL else {
-                    return
-                }
-
-                WPAnalytics.track(.supportOpenMobileForumTapped)
-                UIApplication.shared.open(url)
+                self.launchForum(url: Constants.forumsURL)
             }
         }
     }
@@ -289,11 +339,16 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            guard let url = Constants.forumsURL else {
-                return
-            }
-            UIApplication.shared.open(url)
+            self.launchForum(url: Constants.newForumsURL)
         }
+    }
+
+    private func launchForum(url: URL?) {
+        guard let url = url else {
+            return
+        }
+        WPAnalytics.track(.supportOpenMobileForumTapped)
+        UIApplication.shared.open(url)
     }
 
     /// Zendesk does not allow agents to submit tickets, and displays a 'Message failed to send' error upon attempt.
@@ -391,14 +446,13 @@ private extension SupportTableViewController {
         static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
         let title: String
-        let accessibilityHint: String
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
+            cell.selectionStyle = .none
             WPStyleGuide.configureTableViewCell(cell)
-            cell.accessibilityHint = accessibilityHint
         }
     }
 
@@ -448,16 +502,17 @@ private extension SupportTableViewController {
             cell.contentView.addSubview(button)
 
             NSLayoutConstraint.activate([
-                button.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: LayoutSpacing.padding),
-                button.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -LayoutSpacing.padding),
-                button.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: LayoutSpacing.padding),
-                button.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -LayoutSpacing.padding)
+                button.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: LayoutSpacing.horizontalPadding),
+                button.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -LayoutSpacing.horizontalPadding),
+                button.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: LayoutSpacing.verticalPadding),
+                button.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -LayoutSpacing.verticalPadding)
             ])
         }
 
         enum LayoutSpacing {
             static let imageSize: CGFloat = 17.0
-            static let padding: CGFloat = 16.0
+            static let verticalPadding: CGFloat = 16.0
+            static let horizontalPadding: CGFloat = 20.0
             static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
             static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
         }
@@ -477,9 +532,12 @@ private extension SupportTableViewController {
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
         static let contactUs = NSLocalizedString("Contact Support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
+        static let prioritySupportSectionHeader = NSLocalizedString("Priority Support", comment: "Section header in Support view for priority support.")
         static let wpForumsSectionHeader = NSLocalizedString("Community Forums", comment: "Section header in Support view for the Forums.")
+        static let advancedSectionHeader = NSLocalizedString("Advanced", comment: "Section header in Support view for advanced information.")
         static let wpForumPrompt = NSLocalizedString("Ask a question in the community forum and get help from our group of volunteers.", comment: "Suggestion in Support view to visit the Forums.")
-        static let visitWpForumsButton = NSLocalizedString("Visit WordPress.org", comment: "Option in Support view to visit the Forums.")
+        static let visitWpForumsButton = NSLocalizedString("Visit WordPress.org", comment: "Option in Support view to visit the WordPress.org support forums.")
+        static let visitWpForumsButtonAccessibilityHint = NSLocalizedString("Tap to visit the community forum website in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the support forums website.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
@@ -503,7 +561,10 @@ private extension SupportTableViewController {
 
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
+
+        // TODO can be removed after FeatureFlag.wordPressSupportForum is removed
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
+        static let newForumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 
