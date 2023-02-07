@@ -1,7 +1,3 @@
-Vi har arbetat hårt med tekniska korrigeringar och uppdateringar bakom kulisserna för att se till att WordPress-appen fungerar smidigt.
+Meddelandet "Inga mediafiler matchar din sökning" i mediaväljaren visas nu på rätt plats. Hem, ljuva hem.
 
-- Postikulering av funktioner
-- Omarbetning av gränssnitt
-- Retikulering av splines
-- Kodifiering av likhet
-- Ombyggnad av gigaversumet
+Vissa användare fastnade på skärmen "Vad vill du fokusera på först?" efter inloggning, men detta problem har nu åtgärdats. Fokusera på, vänner.

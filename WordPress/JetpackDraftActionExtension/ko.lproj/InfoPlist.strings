@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>젯팩에 저장</string>
+    <string>임시글로 저장</string>
     <key>CFBundleName</key>
-    <string>젯팩에 저장</string>
+    <string>임시글로 저장</string>
   </dict>
 </plist>

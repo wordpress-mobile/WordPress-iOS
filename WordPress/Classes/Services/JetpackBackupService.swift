@@ -2,17 +2,19 @@ import Foundation
 
 class JetpackBackupService {
 
-    private let managedObjectContext: NSManagedObjectContext
+    private let coreDataStack: CoreDataStack
 
     private lazy var service: JetpackBackupServiceRemote = {
-        let api = WordPressComRestApi.defaultApi(in: managedObjectContext,
-                                                 localeKey: WordPressComRestApi.LocaleKeyV2)
+        var api: WordPressComRestApi!
+        coreDataStack.mainContext.performAndWait {
+            api = WordPressComRestApi.defaultApi(in: self.coreDataStack.mainContext, localeKey: WordPressComRestApi.LocaleKeyV2)
+        }
 
         return JetpackBackupServiceRemote(wordPressComRestApi: api)
     }()
 
-    init(managedObjectContext: NSManagedObjectContext) {
-        self.managedObjectContext = managedObjectContext
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
     }
 
     func prepareBackup(for site: JetpackSiteRef,

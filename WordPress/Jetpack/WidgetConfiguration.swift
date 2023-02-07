@@ -4,7 +4,7 @@ import Foundation
 
 /// - Warning:
 /// This configuration extension has a **WordPress** counterpart in the WordPress bundle.
-/// Make sure to keep them in sync to avoid build errors when builing the WordPress target.
+/// Make sure to keep them in sync to avoid build errors when building the WordPress target.
 @objc extension AppConfiguration {
 
     @objc(AppConfigurationWidget)
@@ -15,6 +15,7 @@ import Foundation
             @objc static let keychainServiceName = "JetpackTodayWidget"
             @objc static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
             @objc static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
+            @objc static let userDefaultsJetpackFeaturesDisabledKey = "JetpackJPFeaturesDisabledKey"
             @objc static let todayKind = "JetpackHomeWidgetToday"
             @objc static let allTimeKind = "JetpackHomeWidgetAllTime"
             @objc static let thisWeekKind = "JetpackHomeWidgetThisWeek"

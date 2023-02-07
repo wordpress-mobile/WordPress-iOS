@@ -41,6 +41,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         case card
         case login
         case appOpen = "app_open"
+        case disabledEntryPoint = "disabled_entry_point"
 
         /// Used to differentiate between last saved dates for different phases.
         /// Should return a dynamic value if each phase should be treated differently.

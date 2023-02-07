@@ -221,7 +221,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
-        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
         service.deleteSiteForBlog(blog,
                                   success: { [weak self] in
                                     WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)

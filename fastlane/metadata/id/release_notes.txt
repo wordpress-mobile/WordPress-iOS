@@ -1,7 +1,3 @@
-Kami telah intens memperbaiki dan memperbarui proses yang sangat teknis agar aplikasi Jetpack tetap berjalan lancar.
+Pesan “Tidak ada media yang sesuai dengan pencarian Anda” di Pemilih Media kini muncul di tempat yang tepat. Rumahku istanaku.
 
-- Menetapkan fitur-fitur
-- Merancang ulang antarmuka
-- Merangkai spline
-- Menyederhanakan kemiripan
-- Membangun ulang gigaverse
+Beberapa pengguna mengalami kendala di layar “Ke mana dulu Anda ingin fokus?” setelah login. Sekarang itu sudah beres—silakan fokus ke yang lain.

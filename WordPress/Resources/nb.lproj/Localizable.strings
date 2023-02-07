@@ -3494,7 +3494,8 @@ translators: Block name. %s: The localized block name */
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Varserinnstillinger";
 
-/* Notifications 3D Touch Shortcut
+/* Name of the Notifications feature.
+   Notifications 3D Touch Shortcut
    Notifications tab bar item accessibility label
    Notifications View Controller title
    Noun. Name of the Notifications feature
@@ -4210,7 +4211,8 @@ translators: Block name. %s: The localized block name */
 /* Displayed at the footer of a Pingback Notification. */
 "Read the source post" = "Les det originale innlegget";
 
-/* Noun. Name of the Reader feature
+/* Name of the Reader feature.
+   Noun. Name of the Reader feature
    The accessibility value of the Reader tab.
    The accessibility value of the reader tab.
    The default title of the Reader
@@ -5786,8 +5788,7 @@ translators: Block name. %s: The localized block name */
 /* No comment provided by engineer. */
 "Try another search term" = "Prøv et annet søkeord";
 
-/* Button title on the blogging prompt's feature introduction view to answer a prompt.
-   Button title to take user to the new Stats Insights screen. */
+/* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Prøv nå";
 
 /* When social login fails, this button offers to let the user try again with a differen email address */

@@ -143,7 +143,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
 
     @objc func clearSearchHistory() {
-        let service = ReaderSearchSuggestionService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderSearchSuggestionService(coreDataStack: ContextManager.sharedInstance())
         service.deleteAllSuggestions()
         tableView.reloadData()
         updateHeightConstraint()

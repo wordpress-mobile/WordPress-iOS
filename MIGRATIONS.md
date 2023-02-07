@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 146
+
+@salimbraksa 2023-01-31
+
+- `ManagedAccountSettings`: added `twoStepEnabled` attribute. ( required, default `NO`, `Boolean`)
+
 ## WordPress 145
 
 @geriux 2022-07-08

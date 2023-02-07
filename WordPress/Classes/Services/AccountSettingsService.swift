@@ -51,24 +51,26 @@ class AccountSettingsService {
 
     var stallTimer: Timer?
 
-    fileprivate let context = ContextManager.sharedInstance().mainContext
+    private let coreDataStack: CoreDataStack
 
     convenience init(userID: Int, api: WordPressComRestApi) {
         let remote = AccountSettingsRemote.remoteWithApi(api)
         self.init(userID: userID, remote: remote)
     }
 
-    init(userID: Int, remote: AccountSettingsRemoteInterface) {
+    init(userID: Int, remote: AccountSettingsRemoteInterface, coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
         self.userID = userID
         self.remote = remote
+        self.coreDataStack = coreDataStack
         loadSettings()
     }
 
-    func getSettingsAttempt(count: Int = 0) {
+    func getSettingsAttempt(count: Int = 0, completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
         self.remote.getSettings(
             success: { settings in
                 self.updateSettings(settings)
                 self.status = .idle
+                completion?(.success(settings))
             },
             failure: { error in
                 let error = error as NSError
@@ -79,20 +81,21 @@ class AccountSettingsService {
                 }
 
                 if error.domain == NSURLErrorDomain && count < Defaults.maxRetries {
-                    self.getSettingsAttempt(count: count + 1)
+                    self.getSettingsAttempt(count: count + 1, completion: completion)
                 } else {
                     self.status = .failed
+                    completion?(.failure(error))
                 }
             }
         )
     }
 
-    func refreshSettings() {
+    func refreshSettings(completion: ((Result<AccountSettings, Error>) -> Void)? = nil) {
         guard status == .idle || status == .failed else {
             return
         }
         status = .refreshing
-        getSettingsAttempt()
+        getSettingsAttempt(completion: completion)
         stallTimer = Timer.scheduledTimer(timeInterval: Defaults.stallTimeout,
                                                        target: self,
                                                        selector: #selector(AccountSettingsService.stallTimerFired),
@@ -159,7 +162,9 @@ class AccountSettingsService {
     }
 
     func primarySiteNameForSettings(_ settings: AccountSettings) -> String? {
-        return try? Blog.lookup(withID: settings.primarySiteID, in: context)?.settings?.name
+        coreDataStack.performQuery { context in
+            try? Blog.lookup(withID: settings.primarySiteID, in: context)?.settings?.name
+        }
     }
 
     /// Change the current user's username
@@ -181,41 +186,46 @@ class AccountSettingsService {
     }
 
     @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) throws -> AccountSettingsChange {
-        guard let settings = managedAccountSettingsWithID(userID) else {
-            DDLogError("Tried to apply a change to nonexistent settings (ID: \(userID)")
-            throw Errors.notFound
+        var reverse: Result<AccountSettingsChange, Error>! = nil
+        coreDataStack.performAndSave { context in
+            guard let settings = self.managedAccountSettingsWithID(self.userID, in: context) else {
+                DDLogError("Tried to apply a change to nonexistent settings (ID: \(self.userID)")
+                reverse = .failure(Errors.notFound)
+                return
+            }
+
+            reverse = .success(settings.applyChange(change))
+            settings.account.applyChange(change)
         }
 
-        let reverse = settings.applyChange(change)
-        settings.account.applyChange(change)
-
-        ContextManager.sharedInstance().save(context)
         loadSettings()
 
-        return reverse
+        return try reverse.get()
     }
 
     fileprivate func updateSettings(_ settings: AccountSettings) {
-        if let managedSettings = managedAccountSettingsWithID(userID) {
-            managedSettings.updateWith(settings)
-        } else {
-            createAccountSettings(userID, settings: settings)
+        coreDataStack.performAndSave { context in
+            if let managedSettings = self.managedAccountSettingsWithID(self.userID, in: context) {
+                managedSettings.updateWith(settings)
+            } else {
+                self.createAccountSettings(self.userID, settings: settings, in: context)
+            }
         }
 
-        ContextManager.sharedInstance().save(context)
         loadSettings()
     }
 
     fileprivate func accountSettingsWithID(_ userID: Int) -> AccountSettings? {
+        coreDataStack.performQuery { context in
+            guard let managedAccount = self.managedAccountSettingsWithID(userID, in: context) else {
+                return nil
+            }
 
-        guard let managedAccount = managedAccountSettingsWithID(userID) else {
-            return nil
+            return AccountSettings.init(managed: managedAccount)
         }
-
-        return AccountSettings.init(managed: managedAccount)
     }
 
-    fileprivate func managedAccountSettingsWithID(_ userID: Int) -> ManagedAccountSettings? {
+    fileprivate func managedAccountSettingsWithID(_ userID: Int, in context: NSManagedObjectContext) -> ManagedAccountSettings? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedAccountSettings.entityName())
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
@@ -225,7 +235,7 @@ class AccountSettingsService {
         return results.first
     }
 
-    fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
+    fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings, in context: NSManagedObjectContext) {
 
         guard let account = try? WPAccount.lookup(withUserID: Int64(userID), in: context) else {
             DDLogError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")

@@ -41,6 +41,8 @@ struct UnconfiguredView: View {
             case .thisWeek:
                 return LocalizableStrings.noDataViewThisWeekTitle
             }
+        case .disabled:
+            return LocalizableStrings.statsDisabledViewTitle
         default:
             return LocalizableStrings.noDataViewTitle
         }

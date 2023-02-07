@@ -610,7 +610,7 @@ fileprivate extension ShareModularViewController {
         clearAllSelectedSiteRows()
         cell.accessoryType = .checkmark
         shareData.selectedSiteID = site.blogID.intValue
-        shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        shareData.selectedSiteName = site.name.count > 0 ? site.name : URL(string: site.url)?.host
         fetchCategoriesForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()

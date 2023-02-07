@@ -238,6 +238,8 @@ private extension SupportTableViewController {
                 guard let url = Constants.forumsURL else {
                     return
                 }
+
+                WPAnalytics.track(.supportOpenMobileForumTapped)
                 UIApplication.shared.open(url)
             }
         }

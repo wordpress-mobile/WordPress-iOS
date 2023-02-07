@@ -133,6 +133,10 @@ extension MySitesCoordinator: RootViewPresenter {
 
     /// Default implementation for functions that are not supported by the simplified UI.
     func unsupportedFeatureFallback(callingFunction: String = #function) {
+        // Display overlay
+        displayJetpackOverlayForDisabledEntryPoint()
+
+        // Track incorrect access
         let properties = ["calling_function": callingFunction]
         WPAnalytics.track(.jetpackFeatureIncorrectlyAccessed, properties: properties)
     }

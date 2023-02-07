@@ -80,8 +80,8 @@ private extension BloggingPromptsFeatureDescriptionView {
     enum Strings {
         static let featureDescription: String = NSLocalizedString("We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!", comment: "Description of Blogging Prompts displayed in the Feature Introduction view.")
         static let noteLabel: String = NSLocalizedString("Note:", comment: "Label for the note displayed in the Feature Introduction view.")
-        static let noteText: String = NSLocalizedString("You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders.", comment: "Note displayed in the Feature Introduction view.")
-        static let noteTextAccessibilityLabel: String = NSLocalizedString("You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders.", comment: "Accessibility hint for Note displayed in the Feature Introduction view.")
+        static let noteText: String = NSLocalizedString("You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging", comment: "Note displayed in the Feature Introduction view.")
+        static let noteTextAccessibilityLabel: String = NSLocalizedString("You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging", comment: "Accessibility hint for Note displayed in the Feature Introduction view.")
     }
 
     enum Style {

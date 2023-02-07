@@ -1,7 +1,3 @@
-Nous nous sommes focalisés sur les correctifs et les mises à jour en arrière-plan dépassant le cadre technique, afin que l'application WordPress puisse continuer de fonctionner de façon homogène.
+The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.
 
-- Posticulation des fonctions
-- Réarchitecturation des interfaces
-- Réticulations des splines
-- Codification des similitudes
-- Reconception du gigaverse
+Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.

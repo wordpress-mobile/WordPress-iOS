@@ -327,4 +327,12 @@ extension UIColor {
         }
         return self
     }
+
+    func lightVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .light))
+    }
+
+    func darkVariant() -> UIColor {
+        return color(for: UITraitCollection(userInterfaceStyle: .dark))
+    }
 }

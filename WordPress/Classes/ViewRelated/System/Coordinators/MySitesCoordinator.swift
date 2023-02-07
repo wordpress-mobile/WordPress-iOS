@@ -107,6 +107,8 @@ class MySitesCoordinator: NSObject {
         showRootViewController()
 
         mySiteViewController.blog = blog
+        RecentSitesService().touch(blog: blog)
+
         if mySiteViewController.presentedViewController != nil {
             mySiteViewController.dismiss(animated: true, completion: nil)
         }
@@ -253,5 +255,14 @@ class MySitesCoordinator: NSObject {
     @objc func signinDidFinish() {
         mySiteViewController = makeMySiteViewController()
         navigationController.viewControllers = [rootContentViewController]
+    }
+
+    func displayJetpackOverlayForDisabledEntryPoint() {
+        let viewController = mySiteViewController
+        if viewController.isViewOnScreen() {
+            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
+                                                                     source: .disabledEntryPoint,
+                                                                     blog: viewController.blog)
+        }
     }
 }

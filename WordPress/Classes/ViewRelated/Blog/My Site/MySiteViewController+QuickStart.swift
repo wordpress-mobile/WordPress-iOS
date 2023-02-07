@@ -18,7 +18,7 @@ extension MySiteViewController {
                     self?.scrollView.scrollToTop(animated: true)
                     fallthrough
 
-                case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications:
+                case .siteMenu, .pages, .sharing, .stats, .readerTab, .notifications, .mediaScreen:
                     self?.additionalSafeAreaInsets = Constants.quickStartNoticeInsets
 
                 default:

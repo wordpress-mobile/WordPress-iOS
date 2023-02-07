@@ -10,11 +10,11 @@ struct HomepageSettingsService {
 
     let blog: Blog
 
-    fileprivate let context: NSManagedObjectContext
+    fileprivate let coreDataStack: CoreDataStack
     fileprivate let remote: HomepageSettingsServiceRemote
     fileprivate let siteID: Int
 
-    init?(blog: Blog, context: NSManagedObjectContext) {
+    init?(blog: Blog, coreDataStack: CoreDataStack) {
         guard let api = blog.wordPressComRestApi(), let dotComID = blog.dotComID as? Int else {
             return nil
         }
@@ -22,7 +22,7 @@ struct HomepageSettingsService {
         self.remote = HomepageSettingsServiceRemote(wordPressComRestApi: api)
         self.siteID = dotComID
         self.blog = blog
-        self.context = context
+        self.coreDataStack = coreDataStack
     }
 
     public func setHomepageType(_ type: HomepageType,
@@ -30,49 +30,61 @@ struct HomepageSettingsService {
                                 homePageID: Int? = nil,
                                 success: @escaping () -> Void,
                                 failure: @escaping (Error) -> Void) {
-
-        // Keep track of the original settings in case we need to revert
-        let originalHomepageType = blog.homepageType
-        let originalHomePageID = blog.homepagePageID
-        let originalPostsPageID = blog.homepagePostsPageID
-
-        switch type {
-        case .page:
-            blog.homepageType = .page
-            if let postsPageID = postsPageID {
-                blog.homepagePostsPageID = postsPageID
-                if postsPageID == originalHomePageID {
-                    // Don't allow the same page to be set for both values
-                    blog.homepagePageID = 0
-                }
+        var originalHomepageType: HomepageType?
+        var originalHomePageID: Int?
+        var originalPostsPageID: Int?
+        coreDataStack.performAndSave({ context in
+            guard let blog = Blog.lookup(withObjectID: self.blog.objectID, in: context) else {
+                return
             }
-            if let homePageID = homePageID {
-                blog.homepagePageID = homePageID
-                if homePageID == originalPostsPageID {
-                    // Don't allow the same page to be set for both values
-                    blog.homepagePostsPageID = 0
+
+            // Keep track of the original settings in case we need to revert
+            originalHomepageType = blog.homepageType
+            originalHomePageID = blog.homepagePageID
+            originalPostsPageID = blog.homepagePostsPageID
+
+            switch type {
+            case .page:
+                blog.homepageType = .page
+                if let postsPageID = postsPageID {
+                    blog.homepagePostsPageID = postsPageID
+                    if postsPageID == originalHomePageID {
+                        // Don't allow the same page to be set for both values
+                        blog.homepagePageID = 0
+                    }
                 }
+                if let homePageID = homePageID {
+                    blog.homepagePageID = homePageID
+                    if homePageID == originalPostsPageID {
+                        // Don't allow the same page to be set for both values
+                        blog.homepagePostsPageID = 0
+                    }
+                }
+            case .posts:
+                blog.homepageType = .posts
             }
-        case .posts:
-            blog.homepageType = .posts
-        }
+        }, completion: {
+            remote.setHomepageType(
+                type: type.remoteType,
+                for: siteID,
+                withPostsPageID: blog.homepagePostsPageID,
+                homePageID: blog.homepagePageID,
+                success: success,
+                failure: { error in
+                    self.coreDataStack.performAndSave({ context in
+                        guard let blog = Blog.lookup(withObjectID: self.blog.objectID, in: context) else {
+                            return
+                        }
+                        blog.homepageType = originalHomepageType
+                        blog.homepagePostsPageID = originalPostsPageID
+                        blog.homepagePageID = originalHomePageID
+                    }, completion: {
+                        failure(error)
+                    }, on: .main)
+                }
+            )
+        }, on: .main)
 
-        ContextManager.sharedInstance().save(context)
 
-        remote.setHomepageType(type: type.remoteType,
-                               for: siteID,
-                               withPostsPageID: blog.homepagePostsPageID,
-                               homePageID: blog.homepagePageID,
-                               success: success,
-                               failure: { error in
-                                self.context.performAndWait {
-                                    self.blog.homepageType = originalHomepageType
-                                    self.blog.homepagePostsPageID = originalPostsPageID
-                                    self.blog.homepagePageID = originalHomePageID
-                                    ContextManager.sharedInstance().saveContextAndWait(self.context)
-                                }
-
-                                failure(error)
-        })
     }
 }

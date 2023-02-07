@@ -510,7 +510,7 @@ private extension QuickStartTourGuide {
     }
 
     private func grantCongratulationsAward(for blog: Blog) {
-        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SiteManagementService(coreDataStack: ContextManager.sharedInstance())
         service.markQuickStartChecklistAsComplete(for: blog)
     }
 

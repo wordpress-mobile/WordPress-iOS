@@ -7,7 +7,7 @@ import CoreData
     @NSManaged open var sendPosts: Bool
 
     class func createOrUpdate(from remoteSiteInfo: RemoteReaderSiteInfo, topic: ReaderSiteTopic, context: NSManagedObjectContext) -> ReaderSiteInfoSubscriptionPost? {
-        guard remoteSiteInfo.postSubscription.wp_isValidObject() else {
+        guard let postSubscription = remoteSiteInfo.postSubscription, postSubscription.wp_isValidObject() else {
             return nil
         }
 
@@ -17,7 +17,7 @@ import CoreData
         }
 
         subscription?.siteTopic = topic
-        subscription?.sendPosts = remoteSiteInfo.postSubscription.sendPosts
+        subscription?.sendPosts = postSubscription.sendPosts
 
         return subscription
     }

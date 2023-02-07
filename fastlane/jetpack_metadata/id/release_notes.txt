@@ -1,7 +1,8 @@
-Kami telah intens memperbaiki dan memperbarui proses yang sangat teknis agar aplikasi Jetpack tetap berjalan lancar.
+Dengan perubahan baru di Wawasan Statistik, ketahui seberapa besar dampak konten Anda serta jenis konten apa saja yang mampu menggaet para pembaca.
 
-- Menetapkan fitur-fitur
-- Merancang ulang antarmuka
-- Merangkai spline
-- Menyederhanakan kemiripan
-- Membangun ulang gigaverse
+Kami juga memperbaiki masalah-masalah di berbagai bagian aplikasi.
+
+- Pesan “Tidak ada media yang sesuai dengan pencarian Anda” di Pemilih Media kini muncul di tempat yang tepat. Rumahku istanaku.
+- Beberapa pengguna mengalami kendala di layar “Ke mana dulu Anda ingin fokus?” setelah login. Sekarang itu sudah beres—silakan fokus ke yang lain.
+- Anda tak akan lagi terlempar ke akhir alur migrasi jika menutup aplikasi ketika sedang menjalankan migrasi konten situs dari WordPress ke Jetpack. Kami juga menyesuaikan desain layar migrasi akhir.
+- Tindakan tarik-untuk-segarkan kini memperbarui statistik pengikut dengan benar di layar Detail Total Pengikut. Anda pasti akan ketagihan mengeceknya.

@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>Jetpack に保存</string>
+    <string>下書きとして保存</string>
     <key>CFBundleName</key>
-    <string>Jetpack に保存</string>
+    <string>下書きとして保存</string>
   </dict>
 </plist>

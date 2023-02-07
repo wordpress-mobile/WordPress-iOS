@@ -173,7 +173,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         tableView.deselectSelectedRowWithAnimation(true)
         refreshNoResultsView()
 
-        guard let blog = blog else {
+        guard let blog else {
             return
         }
 
@@ -420,7 +420,7 @@ private extension PeopleViewController {
     func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blogInContext,
             let peopleService = PeopleService(blog: blog, coreDataStack: ContextManager.shared),
-            let roleService = RoleService(blog: blog, context: viewContext) else {
+            let roleService = RoleService(blog: blog, coreDataStack: ContextManager.shared) else {
                 return
         }
 
@@ -438,7 +438,7 @@ private extension PeopleViewController {
         })
 
         group.enter()
-        roleService.fetchRoles(success: {_ in
+        roleService.fetchRoles(success: {
             group.leave()
         }, failure: { error in
             loadError = error
@@ -521,11 +521,10 @@ private extension PeopleViewController {
     }
 
     func role(person: Person) -> Role? {
-        guard let blog = blog,
-            let service = RoleService(blog: blog, context: viewContext) else {
-                return nil
+        guard let blog = blog else {
+            return nil
         }
-        return service.getRole(slug: person.role)
+        return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: viewContext)
     }
 
     func setupFilterBar() {

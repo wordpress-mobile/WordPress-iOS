@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>保存到 Jetpack</string>
+    <string>保存为草稿</string>
     <key>CFBundleName</key>
-    <string>保存到 Jetpack</string>
+    <string>保存为草稿</string>
   </dict>
 </plist>

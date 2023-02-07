@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>حفظ إلى Jetpack</string>
+    <string>حفظ كمسودة</string>
     <key>CFBundleName</key>
-    <string>حفظ إلى Jetpack</string>
+    <string>حفظ كمسودة</string>
   </dict>
 </plist>

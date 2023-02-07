@@ -4,8 +4,8 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleDisplayName</key>
-    <string>Spara till Jetpack</string>
+    <string>Spara som utkast</string>
     <key>CFBundleName</key>
-    <string>Spara till Jetpack</string>
+    <string>Spara som utkast</string>
   </dict>
 </plist>

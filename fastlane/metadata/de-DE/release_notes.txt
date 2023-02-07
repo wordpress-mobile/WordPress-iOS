@@ -1,7 +1,3 @@
-Wir haben hinter den Kulissen intensiv an besonders technischen Fehlerbehebungen und Updates gearbeitet, damit WordPress weiterhin reibungslos funktioniert.
+Die Nachricht „Keine Medien entsprechen deiner Suche“ in der Medienauswahl wird nun an der richtigen Stelle angezeigt. Das wurde auch Zeit.
 
-- Ausdenken neuer Funktionen
-- Überdenken von Benutzeroberflächen
-- Kombinieren von Netzwerken
-- Zusammenführen von Ideen
-- Neuaufbau des Ökosystems
+Einige Benutzer kamen nach der Anmeldung auf dem Bildschirm „Was möchtest du als Erstes tun?“ nicht weiter. Dieses Problem gehört nun jedoch der Vergangenheit an.

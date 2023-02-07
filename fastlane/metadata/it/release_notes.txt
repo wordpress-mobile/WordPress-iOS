@@ -1,7 +1,3 @@
-Abbiamo lavorato duramente su correzioni e aggiornamenti extra tecnici dietro le quinte per mantenere l'app WordPress senza intoppi.
+Il messaggio "Nessun media corrispondente alla tua ricerca" nel Selettore multimediale ora appare nel punto giusto. Casa, dolce casa.
 
-- Funzionalità postulanti
-- Riprogettare le interfacce
-- Spline reticolanti
-- Similitudine codificante
-- Ricostruire il gigaverso
+Alcuni utenti si sono bloccati sulla schermata "Su cosa vorresti concentrarti prima?" dopo l'accesso, ma non accadrà più: problema eliminato, amici.

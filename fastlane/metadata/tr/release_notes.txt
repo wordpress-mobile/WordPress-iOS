@@ -1,7 +1,3 @@
-WordPress uygulamasının sorunsuz çalışmasını sağlamak için çok teknik, sahne arkası düzeltmeler ve güncellemeler üzerinde yoğun bir şekilde çalışıyoruz.
+Ortam seçici'deki "Aramanızla eşleşen ortam yok" mesajı artık doğru yerde görünüyor. Evim güzel evim.
 
-- Düşünülen özellikleri uygulama
-- Arayüzleri yeniden tasarlama
-- Şeritleri örme
-- Benzerlikleri kodlama
-- Gigaverse'i yeniden oluşturma
+Bazı kullanıcılar oturum açtıktan sonra "İlk olarak neye odaklanmak istersiniz?" ekranında takılı kalıyordu, ancak artık değil - başka yöne odaklanın arkadaşlar.
