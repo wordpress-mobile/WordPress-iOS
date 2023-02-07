@@ -27,8 +27,8 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     /// A serial queue used to ensure there is only one writing operation at a time.
     ///
     /// - Note: This queue currently is not used in `performAndSave(_:)` the "save synchronously" function, since it's
-    ///   not safe to block current thread. Considering this function is going to be removed soon, I think it's okay to
-    ///   make this compromise.
+    ///   not safe to block current thread. Considering the aforementioned `performAndSave(_:)` function is going to be
+    ///   removed soon, I think it's okay to make this compromise.
     private let writerQueue: OperationQueue
 
     @objc
