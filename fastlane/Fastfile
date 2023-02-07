@@ -51,7 +51,7 @@ ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
-GHHELPER_REPO = 'wordpress-mobile/wordpress-iOS'
+GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 ENV['PROJECT_NAME'] = 'WordPress'
 ENV['PUBLIC_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.Public.xcconfig')
 ENV['INTERNAL_CONFIG_FILE'] = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.internal.xcconfig')
