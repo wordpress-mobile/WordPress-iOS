@@ -83,11 +83,7 @@ public extension Blog {
         let predicate = NSPredicate(format: "xmlrpc like %@", xmlrpc)
         let foundBlogs = account.blogs.filter { predicate.evaluate(with: $0) }
 
-        if foundBlogs.isEmpty {
-            return nil
-        }
-
-        if foundBlogs.count == 1 {
+        guard foundBlogs.count > 1 else {
             return foundBlogs.first
         }
 
