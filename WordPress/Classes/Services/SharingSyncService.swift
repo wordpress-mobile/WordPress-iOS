@@ -50,7 +50,7 @@ import WordPressKit
     ///     - remoteConnections: An array of `RemotePublicizeConnection` objects to merge.
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
-    fileprivate func mergePublicizeConnectionsForBlog(_ blogObjectID: NSManagedObjectID, remoteConnections: [RemotePublicizeConnection], onComplete: (() -> Void)?) {
+    private func mergePublicizeConnectionsForBlog(_ blogObjectID: NSManagedObjectID, remoteConnections: [RemotePublicizeConnection], onComplete: (() -> Void)?) {
         coreDataStack.performAndSave({ context in
             var blog: Blog
             do {
