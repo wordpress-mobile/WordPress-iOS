@@ -339,7 +339,7 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            self.launchForum(url: Constants.newForumsURL)
+            self.launchForum(url: Constants.forumsURL)
         }
     }
 
@@ -457,65 +457,28 @@ private extension SupportTableViewController {
     }
 
     struct SupportForumButtonRow: ImmuTableRow {
-        static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+        typealias CellType = SupportForumButtonCell
+
+        static let cell = ImmuTableCell.class(CellType.self)
 
         let title: String
         let accessibilityHint: String
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
 
-        let button: SpotlightableButton = {
-            let button = SpotlightableButton(type: .custom)
-
-            button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
-            button.titleLabel?.adjustsFontForContentSizeCategory = true
-            button.titleLabel?.adjustsFontSizeToFitWidth = true
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.contentHorizontalAlignment = .trailing
-
-            button.setTitleColor(.primary, for: .normal)
-
-            button.setImage(UIImage.gridicon(.external,
-                                             size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),
-                            for: .normal)
-
-            // Align the image to the right
-            if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-                button.semanticContentAttribute = .forceLeftToRight
-                button.imageEdgeInsets = LayoutSpacing.rtlButtonTitleImageInsets
-            } else {
-                button.semanticContentAttribute = .forceRightToLeft
-                button.imageEdgeInsets = LayoutSpacing.buttonTitleImageInsets
-            }
-
-            button.translatesAutoresizingMaskIntoConstraints = false
-
-            return button
-        }()
 
         func configureCell(_ cell: UITableViewCell) {
-            button.setTitle(title, for: .normal)
-            button.accessibilityHint = accessibilityHint
-            button.addAction(UIAction { _ in
+            guard let cell = cell as? CellType else {
+                return
+            }
+
+            cell.button.setTitle(title, for: .normal)
+            cell.button.accessibilityHint = accessibilityHint
+            cell.button.addAction(UIAction { _ in
                 action?(self)
             }, for: .touchUpInside)
-            cell.contentView.addSubview(button)
-
-            NSLayoutConstraint.activate([
-                button.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: LayoutSpacing.horizontalPadding),
-                button.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -LayoutSpacing.horizontalPadding),
-                button.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: LayoutSpacing.verticalPadding),
-                button.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -LayoutSpacing.verticalPadding)
-            ])
         }
 
-        enum LayoutSpacing {
-            static let imageSize: CGFloat = 17.0
-            static let verticalPadding: CGFloat = 16.0
-            static let horizontalPadding: CGFloat = 20.0
-            static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
-            static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
-        }
     }
 
     // MARK: - Helpers
@@ -562,10 +525,67 @@ private extension SupportTableViewController {
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/mobile-app-support/")
 
-        // TODO can be removed after FeatureFlag.wordPressSupportForum is removed
-        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
-        static let newForumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
+        static let forumsURL = URL(string: "https://wordpress.org/support/forum/mobile/")
         static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
+}
 
+private class SupportForumButtonCell: WPTableViewCellDefault {
+
+    let button: SpotlightableButton = {
+        let button = SpotlightableButton(type: .custom)
+
+        button.titleLabel?.font = WPStyleGuide.fontForTextStyle(.callout)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.contentHorizontalAlignment = .trailing
+
+        button.setTitleColor(.primary, for: .normal)
+
+        button.setImage(UIImage.gridicon(.external,
+                                         size: CGSize(width: LayoutSpacing.imageSize, height: LayoutSpacing.imageSize)),
+                        for: .normal)
+
+        // Align the image to the right
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            button.semanticContentAttribute = .forceLeftToRight
+            button.imageEdgeInsets = LayoutSpacing.rtlButtonTitleImageInsets
+        } else {
+            button.semanticContentAttribute = .forceRightToLeft
+            button.imageEdgeInsets = LayoutSpacing.buttonTitleImageInsets
+        }
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        return button
+    }()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setup() {
+        contentView.addSubview(button)
+
+        NSLayoutConstraint.activate([
+                                        button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutSpacing.padding),
+                                        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -LayoutSpacing.padding),
+                                        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: LayoutSpacing.padding),
+                                        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -LayoutSpacing.padding)
+                                    ])
+    }
+
+    enum LayoutSpacing {
+        static let imageSize: CGFloat = 17.0
+        static let padding: CGFloat = 16.0
+        static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
+        static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
+    }
 }
