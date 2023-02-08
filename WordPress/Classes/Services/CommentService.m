@@ -1350,7 +1350,11 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
  */
 - (WordPressComRestApi *)apiForRESTRequest
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WPAccount * __block defaultAccount = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+    }];
+
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     //Sergio Estevao: Do we really want to do this? If the call going to be valid if no credential is available?
     if (![api hasCredentials]) {
