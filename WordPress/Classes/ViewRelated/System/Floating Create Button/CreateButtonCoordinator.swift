@@ -8,6 +8,7 @@ import WordPressFlux
         static let heightWidth: CGFloat = 56 // Height and width of the button
         static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
         static let maximumTooltipViews = 5 // Caps the number of times the user can see the announcement tooltip
+        static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
     }
 
     var button: FloatingActionButton = {
@@ -299,7 +300,10 @@ private extension CreateButtonCoordinator {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog = blog,
               blog.isAccessibleThroughWPCom(),
-              let prompt = prompt else {
+              let prompt = prompt,
+              let siteID = blog.dotComID?.stringValue,
+              !UserPersistentStoreFactory.instance().promptsRemovedSites.contains(siteID),
+              !userSkippedPrompt(prompt, for: blog) else {
             return nil
         }
 
@@ -324,6 +328,18 @@ private extension CreateButtonCoordinator {
         }
 
         return promptsHeaderView
+    }
+
+    func userSkippedPrompt(_ prompt: BloggingPrompt, for blog: Blog) -> Bool {
+        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+              let siteID = blog.dotComID?.stringValue,
+              let allSkippedPrompts = UserPersistentStoreFactory.instance().array(forKey: Constants.skippedPromptsUDKey) as? [[String: Int32]] else {
+            return false
+        }
+        let siteSkippedPrompts = allSkippedPrompts.filter { $0.keys.first == siteID }
+        let matchingPrompts = siteSkippedPrompts.filter { $0.values.first == prompt.promptID }
+
+        return !matchingPrompts.isEmpty
     }
 
 }

@@ -183,7 +183,6 @@ extension SiteSettingsViewController {
         case privacy
         case language
         case timezone
-        case bloggingReminders
     }
 
     var generalSettingsRows: [GeneralSettingsRow] {
@@ -195,10 +194,6 @@ extension SiteSettingsViewController {
 
         if blog.supports(.wpComRESTAPI) {
             rows.append(.timezone)
-        }
-
-        if blog.areBloggingRemindersAllowed() {
-            rows.append(.bloggingReminders)
         }
 
         return rows
@@ -226,8 +221,6 @@ extension SiteSettingsViewController {
             configureCellForLanguage(cell)
         case .timezone:
             configureCellForTimezone(cell)
-        case .bloggingReminders:
-            configureCellForBloggingReminders(cell)
         }
 
         return cell
@@ -246,8 +239,6 @@ extension SiteSettingsViewController {
             showLanguageSelector(for: blog)
         case .timezone where blog.isAdmin:
             showTimezoneSelector()
-        case .bloggingReminders:
-            presentBloggingRemindersFlow(indexPath: indexPath)
         default:
             break
         }
@@ -311,26 +302,6 @@ extension SiteSettingsViewController {
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
         cell.textValue = timezoneLabel()
-    }
-
-    private func configureCellForBloggingReminders(_ cell: SettingTableViewCell) {
-        cell.editable = true
-        cell.textLabel?.text = NSLocalizedString("Blogging Reminders", comment: "Label for the blogging reminders setting")
-        cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
-        cell.detailTextLabel?.minimumScaleFactor = 0.75
-        cell.accessoryType = .none
-        cell.textValue = schedule(for: blog)
-    }
-
-    // MARK: - Schedule Description
-
-    private func schedule(for blog: Blog) -> String {
-        guard let scheduler = try? ReminderScheduleCoordinator() else {
-            return ""
-        }
-
-        let formatter = BloggingRemindersScheduleFormatter()
-        return formatter.shortScheduleDescription(for: scheduler.schedule(for: blog), time: scheduler.scheduledTime(for: blog).toLocalTime()).string
     }
 
     // MARK: - Handling General Setting Cell Taps
@@ -398,22 +369,10 @@ extension SiteSettingsViewController {
         self.navigationController?.pushViewController(siteTaglineViewController, animated: true)
     }
 
-    private func presentBloggingRemindersFlow(indexPath: IndexPath) {
-        BloggingRemindersFlow.present(from: self, for: blog, source: .blogSettings) { [weak self] in
-            guard let self = self,
-                  let cell = self.tableView.cellForRow(at: indexPath) as? SettingTableViewCell else {
-                return
-            }
-
-            cell.textValue = self.schedule(for: self.blog)
-        }
-
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
     func trackSettingsChange(fieldName: String, value: Any? = nil) {
         WPAnalytics.trackSettingsChange("site_settings",
                                         fieldName: fieldName,
                                         value: value)
     }
+
 }

@@ -4,6 +4,7 @@
 enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case bloggingPrompts
     case bloggingPromptsEnhancements
+    case bloggingPromptsSocial
     case jetpackDisconnect
     case debugMenu
     case readerCSS
@@ -42,7 +43,9 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseFour
     case jetpackFeaturesRemovalPhaseNewUsers
     case jetpackFeaturesRemovalPhaseSelfHosted
+    case wordPressSupportForum
     case jetpackIndividualPluginSupport
+    case blaze
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -54,6 +57,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .bloggingPromptsEnhancements:
+            return AppConfiguration.isJetpack
+        case .bloggingPromptsSocial:
             return false
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
@@ -118,7 +123,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .newJetpackLandingScreen:
             return true
         case .newWordPressLandingScreen:
-            return false
+            return true
         case .newCoreDataContext:
             return true
         case .jetpackMigrationPreventDuplicateNotifications:
@@ -135,7 +140,11 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
+        case .wordPressSupportForum:
+            return false
         case .jetpackIndividualPluginSupport:
+            return false
+        case .blaze:
             return false
         }
     }
@@ -161,6 +170,10 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "jp_removal_self_hosted"
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
+        case .wordPressSupportForum:
+            return "enable_wordpress_support_forum"
+        case .blaze:
+            return "blaze"
             default:
                 return nil
         }
@@ -185,6 +198,8 @@ extension FeatureFlag {
             return "Blogging Prompts"
         case .bloggingPromptsEnhancements:
             return "Blogging Prompts Enhancements"
+        case .bloggingPromptsSocial:
+            return "Blogging Prompts Social"
         case .jetpackDisconnect:
             return "Jetpack disconnect"
         case .debugMenu:
@@ -261,8 +276,12 @@ extension FeatureFlag {
             return "Jetpack Features Removal Phase For New Users"
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return "Jetpack Features Removal Phase For Self-Hosted Sites"
+        case .wordPressSupportForum:
+            return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
+        case .blaze:
+            return "Blaze"
         }
     }
 

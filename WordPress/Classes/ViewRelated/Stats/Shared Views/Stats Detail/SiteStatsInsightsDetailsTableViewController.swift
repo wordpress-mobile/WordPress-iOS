@@ -300,8 +300,9 @@ extension SiteStatsInsightsDetailsTableViewController: SiteStatsDetailsDelegate 
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         removeViewModelListeners()
-        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
+        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
+                                                                                            postTitle: postTitle,
+                                                                                            postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 

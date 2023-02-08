@@ -25,7 +25,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
         self.viewController = viewController
         self.moduleName = moduleName
         self.blog = blog
-        self.service = BlogJetpackSettingsService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
+        self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
         self.blogService = BlogService(managedObjectContext: blog.settings?.managedObjectContext ?? ContextManager.sharedInstance().mainContext)
     }
 

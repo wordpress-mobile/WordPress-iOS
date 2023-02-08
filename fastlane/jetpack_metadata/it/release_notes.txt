@@ -1,0 +1,8 @@
+Scopri come stanno andando i tuoi contenuti con le nostre modifiche alla Panoramica delle statistiche e scopri quali tipi di contenuti piacciono ai tuoi lettori.
+
+Abbiamo anche risolto alcuni problemi in varie aree dell'app.
+
+- Il messaggio "Nessun media corrispondente alla tua ricerca" nel Selettore multimediale ora appare nel punto giusto. Casa, dolce casa.
+- Alcuni utenti si sono bloccati sulla schermata "Su cosa vorresti concentrarti prima?" dopo l'accesso, ma non accadrà più: problema eliminato, amici.
+- Non passerai più alla fine del flusso di migrazione se chiudi l'app durante la migrazione dei contenuti del tuo sito da WordPress a Jetpack. Abbiamo anche apportato alcune modifiche di design alla schermata di migrazione finale.
+- Pull-to-refresh aggiorna correttamente le statistiche dei follower nella schermata Dettagli follower totali. 10 su 10 tirerebbero di nuovo.

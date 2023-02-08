@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-24 07:31:40+0000 */
+/* Translation-Revision-Date: 2023-01-30 10:24:14+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -7035,6 +7035,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Přeskočit";
 
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Pro dnešek přeskočte";
+
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Výsledky lomítka";
 
@@ -9702,6 +9705,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Zkuste to teď";
 
+/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
+"dailyprompts" = "denní výzvy";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dvojitým klepnutím změníte jednotku";
 
@@ -9887,6 +9893,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Více se dozvíte na jetpack.com";
 
+/* Description of the Notifications feature.
+   Description of the Reader feature.
+   Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Sledujte, jak vaše návštěvnost roste, pomocí užitečných statistik a komplexních statistik.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistiky a postřehy";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack vám umožní udělat více s vaším webem WordPress. Přepínání je zdarma a trvá jen minutu.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Dejte WordPressu podporu s Jetpackem";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Pokračujte do oznámení";
 
@@ -9950,6 +9970,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Pokračovat do čtečky";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "Mobilní aplikace Jetpack je navržena tak, aby fungovala společně s pluginem Jetpack. Přepněte nyní a získejte přístup ke statistikám, čtečce, oznámením a dalším.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "Vaše stránky mají plugin Jetpack";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Pokračujte bez Jetpacku";
 
@@ -9970,6 +9996,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "Zjistit více";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Odemkněte plný potenciál svého webu. Získejte statistiky, čtečku, upozornění a další s Jetpack.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Přejděte na Jetpack";
@@ -10195,6 +10224,45 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Chyba sdílení";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "Posledních 7 dní";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Předchozích 7 dní";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* vyšší než za předchozích 7 dní";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* nižší než za předchozích 7 dní";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Stejně jako předchozích 7 dní";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "Vaše zhlédnutí za posledních 7 dní jsou o %@ vyšší než za předchozích 7 dní.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "Vaše zhlédnutí za posledních 7 dní jsou o %@ nižší než za předchozích 7 dní.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "Vaše zobrazení za posledních 7 dní jsou stejná jako za předchozích 7 dní.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "Posledních 7 dní";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "Předchozích 7 dní";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "Vaši návštěvníci za posledních 7 dní jsou o %@ vyšší než za předchozích 7 dní.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "Vaši návštěvníci za posledních 7 dní jsou o %@ nižší než za předchozích 7 dní.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "Vaši návštěvníci za posledních 7 dní jsou stejní jako za předchozích 7 dní.\n\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentáře";
