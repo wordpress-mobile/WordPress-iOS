@@ -92,6 +92,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Create comment
 - (Comment *)createCommentForBlog:(Blog *)blog
 {
+    NSParameterAssert(blog.managedObjectContext != nil);
+
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class])
                                                      inManagedObjectContext:blog.managedObjectContext];
     comment.dateCreated = [NSDate new];
@@ -249,7 +251,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL && blog=%@", blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
-    Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+    Comment *oldestComment = [[blog.managedObjectContext executeFetchRequest:request error:nil] firstObject];
     return oldestComment;
 }
 
@@ -678,7 +680,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID];
+    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID inContext:self.managedObjectContext];
     BOOL isPrivateSite = post.isPrivate;
 
     // This fixes an issue where the comment may not appear for some posts after a successful posting
@@ -732,7 +734,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID];
+    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID inContext:self.managedObjectContext];
     BOOL isPrivateSite = post.isPrivate;
 
     // This fixes an issue where the comment may not appear for some posts after a successful posting
@@ -915,18 +917,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 #pragma mark - Private methods
 
 // Deletes orphaned comments. Does not save context.
-- (void)deleteUnownedComments
+- (void)deleteUnownedCommentsInContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = NULL && blog = NULL"];
 
     NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Error fetching orphaned comments: %@", error);
     }
     for (Comment *comment in results) {
-        [self.managedObjectContext deleteObject:comment];
+        [context deleteObject:comment];
     }
 }
 
@@ -984,6 +986,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         purgeExisting:(BOOL)purgeExisting
     completionHandler:(void (^)(void))completion
 {
+    NSParameterAssert(blog.managedObjectContext != nil);
+
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (RemoteComment *remoteComment in comments) {
         Comment *comment = [blog commentWithID:remoteComment.commentID];
@@ -1001,14 +1005,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 // Don't delete unpublished comments
                 if (![commentsToKeep containsObject:comment] && comment.commentID != 0) {
                     DDLogInfo(@"Deleting Comment: %@", comment);
-                    [self.managedObjectContext deleteObject:comment];
+                    [blog.managedObjectContext deleteObject:comment];
                 }
             }
         }
     }
 
-    [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
+    [self deleteUnownedCommentsInContext:blog.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:blog.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
 }
 
 #pragma mark - Post centric methods
@@ -1054,13 +1058,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return [NSString stringWithFormat:@"%010u", [commentID integerValue]];
 }
 
-- (Comment *)createHierarchicalCommentWithContent:(NSString *)content withParent:(NSNumber *)parentID postID:(NSNumber *)postID siteID:(NSNumber *)siteID
+- (Comment *)createHierarchicalCommentWithContent:(NSString *)content withParent:(NSNumber *)parentID postID:(NSNumber *)postID siteID:(NSNumber *)siteID inContext:(NSManagedObjectContext *)context
 {
     // Fetch the relevant ReaderPost
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
         return nil;
@@ -1073,9 +1077,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // (Insert a new comment into core data. Check for its existance first for paranoia sake.
     // In theory a sync could include a newly created comment before the request that created it returned.
-    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:context];
 
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     comment.author = [account username];
     comment.authorID = [account.userID intValue];
     comment.content = content;
@@ -1098,17 +1102,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // Update depth and hierarchy
     [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
 
-    [self.managedObjectContext obtainPermanentIDsForObjects:@[comment] error:&error];
+    [context obtainPermanentIDsForObjects:@[comment] error:&error];
     if (error) {
         DDLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
     }
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:context];
 
     return comment;
 }
 
 - (void)setHierarchyAndDepthOnComment:(Comment *)comment withParentComment:(Comment *)parentComment
 {
+    NSParameterAssert(comment.managedObjectContext != nil);
+
     // Update depth and hierarchy
     NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
 
@@ -1127,13 +1133,15 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         comment.depth = 0;
     }
 
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [comment.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:comment.managedObjectContext];
     }];
 }
 
 - (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
+    NSParameterAssert(comment.managedObjectContext != nil);
+
     [self updateComment:comment withRemoteComment:remoteComment];
     // Find its parent comment (if it exists)
     Comment *parentComment;
@@ -1144,11 +1152,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // Update depth and hierarchy
     [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:comment.managedObjectContext];
 }
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post onComplete:(void (^)(BOOL includesNewComments))onComplete
 {
+    NSParameterAssert(post.managedObjectContext != nil);
+
     if (![comments count]) {
         onComplete(NO);
         return;
@@ -1164,7 +1174,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         Comment *comment = [post commentWithID:remoteComment.commentID];
         if (!comment) {
             newCommentCount++;
-            comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
+            comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:post.managedObjectContext];
         }
 
         [self updateComment:comment withRemoteComment:remoteComment];
@@ -1195,7 +1205,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // helps avoid certain cases where some pages might not be resynced, creating gaps in the content.
     if (page == 1) {
         [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
-        [self deleteUnownedComments];
+        [self deleteUnownedCommentsInContext:post.managedObjectContext];
     }
 
     // Make sure the post's comment count is at least the number of comments merged.
@@ -1203,7 +1213,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+    [[ContextManager sharedInstance] saveContext:post.managedObjectContext withCompletionBlock:^{
         onComplete(newCommentCount > 0);
     } onQueue:dispatch_get_main_queue()];
 }
@@ -1213,7 +1223,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     for (Comment *comment in post.comments) {
         if (![commentsToKeep containsObject:comment]) {
-            [self.managedObjectContext deleteObject:comment];
+            [post.managedObjectContext deleteObject:comment];
         }
     }
 }
@@ -1232,7 +1242,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [fetchRequest setFetchOffset:offset];
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [post.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Error fetching top level comments for page %i : %@", page, error);
     }
@@ -1265,7 +1275,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     fetchRequest.sortDescriptors = @[sortDescriptor];
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [post.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"Error fetching last comment for page %i : %@", page, error);
     }
@@ -1276,6 +1286,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
+    NSParameterAssert(comment.managedObjectContext != nil);
+
     comment.commentID = [remoteComment.commentID intValue];
     comment.authorID = [remoteComment.authorID intValue];
     comment.author = remoteComment.author;
@@ -1298,7 +1310,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // if the post for the comment is not set, check if that post is already stored and associate them
     if (!comment.post) {
-        comment.post = [comment.blog lookupPostWithID:[NSNumber numberWithInt:comment.postID] inContext:self.managedObjectContext];
+        comment.post = [comment.blog lookupPostWithID:[NSNumber numberWithInt:comment.postID] inContext:comment.managedObjectContext];
     }
 }
 
@@ -1331,11 +1343,13 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (id<CommentServiceRemote>)remoteForComment:(Comment *)comment
 {
+    NSParameterAssert(comment.managedObjectContext != nil);
+
     // If the comment is fetched through the Reader API, the blog will always be nil.
     // Try to find the Blog locally first, as it should exist if the user has a role on the site.
     if (comment.post && [comment.post isKindOfClass:[ReaderPost class]]) {
         ReaderPost *readerPost = (ReaderPost *)comment.post;
-        return [self remoteForBlog:[Blog lookupWithHostname:readerPost.blogURL inContext:self.managedObjectContext]];
+        return [self remoteForBlog:[Blog lookupWithHostname:readerPost.blogURL inContext:comment.managedObjectContext]];
     }
 
     return [self remoteForBlog:comment.blog];
