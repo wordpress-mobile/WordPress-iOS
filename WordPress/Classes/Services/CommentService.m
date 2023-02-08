@@ -848,41 +848,38 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    // toggle the like status and change the like count and save it
-    comment.isLiked = !comment.isLiked;
-    comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-    __weak __typeof(self) weakSelf = self;
     NSManagedObjectID *commentObjectID = comment.objectID;
-
-    // This block will reverse the like/unlike action
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
-        if (!comment) {
-            return;
-        }
-        DDLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
-
-        comment.isLiked = !comment.isLiked;
+    BOOL isLikedOriginally = comment.isLiked;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        // toggle the like status and change the like count and save it
+        Comment *comment = [context existingObjectWithID:commentObjectID error:nil];
+        comment.isLiked = !isLikedOriginally;
         comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
+    } completion:^{
+        // This block will reverse the like/unlike action
+        void (^failureBlock)(NSError *) = ^(NSError *error) {
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *comment = [context existingObjectWithID:commentObjectID error:nil];
+                DDLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
 
-        [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
+                comment.isLiked = isLikedOriginally;
+                comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1);
+            } completion:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        };
 
-        if (failure) {
-            failure(error);
+        NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
+
+        if (!isLikedOriginally) {
+            [self likeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
         }
-    };
-
-    NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
-
-    if (comment.isLiked) {
-        [self likeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
-    }
-    else {
-        [self unlikeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
-    }
+        else {
+            [self unlikeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
+        }
+    } onQueue:dispatch_get_main_queue()];
 }
 
 
