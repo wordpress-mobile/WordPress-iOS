@@ -398,16 +398,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     NSManagedObjectID *commentObjectID = comment.objectID;
     void (^successBlock)(RemoteComment *comment) = ^(RemoteComment *comment) {
-        [self.managedObjectContext performBlock:^{
-            Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Comment *commentInContext = [context existingObjectWithID:commentObjectID error:nil];
             if (commentInContext) {
                 [self updateComment:commentInContext withRemoteComment:comment];
             }
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            if (success) {
-                success();
-            }
-        }];
+        } completion:success onQueue:dispatch_get_main_queue()];
     };
 
     if (comment.commentID != 0) {
