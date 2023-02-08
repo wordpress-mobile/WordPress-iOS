@@ -487,11 +487,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // If this comment is local only, just delete. No need to query the endpoint or do any other work.
     if (comment.commentID == 0) {
-        [self.managedObjectContext deleteObject:comment];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        if (success) {
-            success();
-        }
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+            if (commentInContext != nil) {
+                [context deleteObject:commentInContext];
+            }
+        } completion:success onQueue:dispatch_get_main_queue()];
         return;
     }
 
@@ -507,23 +508,23 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     // For the best user experience we want to optimistically delete the comment.
     // However, if there is an error we need to restore it.
     NSManagedObjectID *blogObjID = comment.blog.objectID;
-    NSManagedObjectContext *context = self.managedObjectContext;
-
-    [context deleteObject:comment];
-    [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+        if (commentInContext != nil) {
+            [context deleteObject:commentInContext];
+        }
+    } completion:^{
         [remote trashComment:remoteComment success:success failure:^(NSError *error) {
             // Failure.  Restore the comment.
-            Blog *blog = (Blog *)[context objectWithID:blogObjID];
-            if (!blog) {
-                if (failure) {
-                    failure(error);
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Blog *blog = [context objectWithID:blogObjID];
+                if (!blog) {
+                    return;
                 }
-                return;
-            }
 
-            Comment *comment = [self createCommentForBlog:blog];
-            [self updateComment:comment withRemoteComment:remoteComment];
-            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                Comment *comment = [self createCommentForBlog:blog];
+                [self updateComment:comment withRemoteComment:remoteComment];
+            } completion:^{
                 if (failure) {
                     failure(error);
                 }
