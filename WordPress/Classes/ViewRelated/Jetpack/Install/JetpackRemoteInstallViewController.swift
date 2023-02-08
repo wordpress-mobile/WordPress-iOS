@@ -10,15 +10,13 @@ class JetpackRemoteInstallViewController: UIViewController {
     private typealias JetpackInstallBlock = (String, String, String, WPAnalyticsStat) -> Void
 
     private weak var delegate: JetpackRemoteInstallDelegate?
-    private var promptType: JetpackLoginPromptType
     private var blog: Blog
     private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
 
-    init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
+    init(blog: Blog, delegate: JetpackRemoteInstallDelegate?) {
         self.blog = blog
         self.delegate = delegate
-        self.promptType = promptType
         self.viewModel = JetpackRemoteInstallViewModel()
         super.init(nibName: nil, bundle: nil)
     }
