@@ -952,11 +952,15 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return;
     }
 
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+        commentInContext.status = currentStatus;
+    }];
+
     comment.status = currentStatus;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
     id <CommentServiceRemote> remote = [self remoteForComment:comment];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
-    NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
                     success:^(RemoteComment *comment) {
                         if (success) {
@@ -964,20 +968,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                         }
                     } failure:^(NSError *error) {
                         DDLogError(@"Error moderating comment: %@", error);
-                        [self.managedObjectContext performBlock:^{
-                            // Note: The comment might have been deleted at this point
-                            Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-                            if (commentInContext) {
-                                commentInContext.status = prevStatus;
-                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            }
-
+                        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                            Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+                            commentInContext.status = prevStatus;
+                        } completion:^{
                             if (failure) {
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    failure(error);
-                                });
+                                failure(error);
                             }
-                        }];
+                        } onQueue:dispatch_get_main_queue()];
                     }];
 }
 
