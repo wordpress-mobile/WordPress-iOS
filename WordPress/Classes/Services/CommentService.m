@@ -145,52 +145,45 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
-        [self.managedObjectContext performBlock:^{
-            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-
-            if (!blogInContext) {
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Blog *blog = [context existingObjectWithID:blogID error:nil];
+            if (!blog) {
                 return;
             }
+
             NSArray *fetchedComments = comments;
             if (filterUnreplied) {
                 NSString *author = @"";
                 if (blog.account) {
                     // See if there is a linked Jetpack user that we should use.
-                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithLinkedID:blog.account.userID];
-                    author = (blogAuthor) ? blogAuthor.email : blogInContext.account.email;
+                    BlogAuthor *blogAuthor = [blog getAuthorWithLinkedID:blog.account.userID];
+                    author = (blogAuthor) ? blogAuthor.email : blog.account.email;
                 } else {
-                    BlogAuthor *blogAuthor = [blogInContext getAuthorWithId:blogInContext.userID];
+                    BlogAuthor *blogAuthor = [blog getAuthorWithId:blog.userID];
                     author = (blogAuthor) ? blogAuthor.email : author;
                 }
                 fetchedComments = [self filterUnrepliedComments:comments forAuthor:author];
             }
+            [self mergeComments:fetchedComments forBlog:blog purgeExisting:YES];
+            blog.lastCommentsSync = [NSDate date];
+        } completion:^{
+            [[self class] stopSyncingCommentsForBlog:blogID];
 
-            [self mergeComments:fetchedComments
-                        forBlog:blog
-                  purgeExisting:YES
-              completionHandler:^{
-                [[self class] stopSyncingCommentsForBlog:blogID];
-
-                [self.managedObjectContext performBlock:^{
-                    blogInContext.lastCommentsSync = [NSDate date];
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                        if (success) {
-                            // Note:
-                            // We'll assume that if the requested page size couldn't be filled, there are no
-                            // more comments left to retrieve.  However, for unreplied comments, we only fetch the first page (for now).
-                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
-                            success(hasMore);
-                        }
-                    } onQueue:dispatch_get_main_queue()];
-                }];
-            }];
-        }];
+            if (success) {
+                // Note:
+                // We'll assume that if the requested page size couldn't be filled, there are no
+                // more comments left to retrieve.  However, for unreplied comments, we only fetch the first page (for now).
+                BOOL hasMore = comments.count >= WPNumberOfCommentsToSync && !filterUnreplied;
+                success(hasMore);
+            }
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         [[self class] stopSyncingCommentsForBlog:blogID];
+
         if (failure) {
-            [self.managedObjectContext performBlock:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
-            }];
+            });
         }
     }];
 }
@@ -290,26 +283,24 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync
                                 options:options
                                 success:^(NSArray *comments) {
-        [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Blog *blog = [context existingObjectWithID:blogID error:nil];
             if (!blog) {
                 return;
             }
-
-            [self mergeComments:comments forBlog:blog purgeExisting:NO completionHandler:^{
-                [[self class] stopSyncingCommentsForBlog:blogID];
-                if (success) {
-                    success(comments.count > 1);
-                }
-            }];
-        }];
-
+            [self mergeComments:comments forBlog:blog purgeExisting:NO];
+        } completion:^{
+            [[self class] stopSyncingCommentsForBlog:blogID];
+            if (success) {
+                success(comments.count > 1);
+            }
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         [[self class] stopSyncingCommentsForBlog:blogID];
         if (failure) {
-            [self.managedObjectContext performBlock:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
-            }];
+            });
         }
     }];
 }
@@ -982,7 +973,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)mergeComments:(NSArray *)comments
               forBlog:(Blog *)blog
         purgeExisting:(BOOL)purgeExisting
-    completionHandler:(void (^)(void))completion
 {
     NSParameterAssert(blog.managedObjectContext != nil);
 
@@ -1010,7 +1000,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     [self deleteUnownedCommentsInContext:blog.managedObjectContext];
-    [[ContextManager sharedInstance] saveContext:blog.managedObjectContext withCompletionBlock:completion onQueue:dispatch_get_main_queue()];
 }
 
 #pragma mark - Post centric methods
