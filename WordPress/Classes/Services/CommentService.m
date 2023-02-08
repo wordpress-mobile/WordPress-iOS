@@ -572,57 +572,61 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     NSUInteger commentsPerPage = number ?: WPTopLevelHierarchicalCommentsPerPage;
     NSUInteger pageNumber = page ?: 1;
 
-    [self.managedObjectContext performBlock:^{
-        CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
-        [service syncHierarchicalCommentsForPost:postID
-                                            page:pageNumber
-                                          number:commentsPerPage
-                                         success:^(NSArray *comments, NSNumber *totalComments) {
-                                             [self.managedObjectContext performBlock:^{
-                                                 NSError *error;
-                                                 ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-                                                 if (!aPost) {
-                                                     if (failure) {
-                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                             failure(error);
-                                                         });
-                                                     }
-                                                     return;
-                                                 }
-
-                                                 [self mergeHierarchicalComments:comments forPage:page forPost:aPost onComplete:^(BOOL includesNewComments) {
-                                                     if (!success) {
-                                                         return;
-                                                     }
-
-                                                     [self.managedObjectContext performBlock:^{
-                                                         // There are no more comments when:
-                                                         // - There are fewer top level comments in the results than requested
-                                                         // - Page > 1, the number of top level comments matches those requested, but there are no new comments
-                                                         // We check this way because the API can return the last page of results instead
-                                                         // of returning zero results when the requested page is the last + 1.
-                                                         NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
-                                                         BOOL hasMore = YES;
-                                                         if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
-                                                             hasMore = NO;
-                                                         }
-
-                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                             success(hasMore, totalComments);
-                                                         });
-                                                     }];
-                                                 }];
-                                             }];
-                                         } failure:^(NSError *error) {
-                                             [self.managedObjectContext performBlock:^{
+    CommentServiceRemoteREST *service = [self restRemoteForSite:siteID];
+    [service syncHierarchicalCommentsForPost:postID
+                                        page:pageNumber
+                                      number:commentsPerPage
+                                     success:^(NSArray *comments, NSNumber *totalComments) {
+                                         BOOL __block includesNewComments = NO;
+                                         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                                             NSError *error;
+                                             ReaderPost *aPost = [context existingObjectWithID:postObjectID error:&error];
+                                             if (!aPost) {
                                                  if (failure) {
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          failure(error);
                                                      });
                                                  }
+                                                 return;
+                                             }
+
+                                             includesNewComments = [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
+                                         } completion:^{
+                                             if (!success) {
+                                                 return;
+                                             }
+
+                                             [self.coreDataStack.mainContext performBlock:^{
+                                                 NSError *error;
+                                                 ReaderPost *aPost = [self.coreDataStack.mainContext existingObjectWithID:postObjectID error:&error];
+                                                 if (!aPost) {
+                                                     if (failure) {
+                                                         failure(error);
+                                                     }
+                                                     return;
+                                                 }
+
+                                                 // There are no more comments when:
+                                                 // - There are fewer top level comments in the results than requested
+                                                 // - Page > 1, the number of top level comments matches those requested, but there are no new comments
+                                                 // We check this way because the API can return the last page of results instead
+                                                 // of returning zero results when the requested page is the last + 1.
+                                                 NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
+                                                 BOOL hasMore = YES;
+                                                 if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
+                                                     hasMore = NO;
+                                                 }
+
+                                                 success(hasMore, totalComments);
                                              }];
-                                         }];
-    }];
+                                         } onQueue:dispatch_get_main_queue()];
+                                     } failure:^(NSError *error) {
+                                         if (failure) {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 failure(error);
+                                             });
+                                         }
+                                     }];
 }
 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
@@ -664,50 +668,41 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:post.postID siteID:post.siteID inContext:self.managedObjectContext];
     BOOL isPrivateSite = post.isPrivate;
+    [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentID) {
+        void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *comment = [context existingObjectWithID:commentID error:nil];
+                if (!comment) {
+                    return;
+                }
 
-    // This fixes an issue where the comment may not appear for some posts after a successful posting
-    // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
-    comment.post = post;
+                remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
 
-    NSManagedObjectID *commentID = comment.objectID;
-    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
-        [self.managedObjectContext performBlock:^{
-            Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-            if (!comment) {
-                return;
-            }
+                [self updateHierarchicalComment:comment withRemoteComment:remoteComment];
+            } completion:success onQueue:dispatch_get_main_queue()];
+        };
 
-            remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
-
-            // Update and save the comment
-            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
-            if (success) {
-                success();
-            }
-        }];
-    };
-
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        [self.managedObjectContext performBlock:^{
-            Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-            if (!comment) {
-                return;
-            }
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
             // Remove the optimistically saved comment.
-            [self deleteComment:comment success:nil failure:nil];
-            if (failure) {
-                failure(error);
-            }
-        }];
-    };
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *commentInContext = [context existingObjectWithID:commentID error:nil];
+                if (commentInContext != nil) {
+                    [context deleteObject:commentInContext];
+                }
+            } completion:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        };
 
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:post.siteID];
-    [remote replyToPostWithID:post.postID
-                      content:content
-                      success:successBlock
-                      failure:failureBlock];
+        CommentServiceRemoteREST *remote = [self restRemoteForSite:post.siteID];
+        [remote replyToPostWithID:post.postID
+                          content:content
+                          success:successBlock
+                          failure:failureBlock];
+    }];
 }
 
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
@@ -718,52 +713,45 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     // Create and optimistically save a comment, based on the current wpcom acct
     // post and content provided.
-    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:post.postID siteID:post.siteID inContext:self.managedObjectContext];
     BOOL isPrivateSite = post.isPrivate;
+    [self createHierarchicalCommentWithContent:content withParent:nil postObjectID:post.objectID siteID:post.siteID completion:^(NSManagedObjectID *commentObjectID) {
+        void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+            // Update and save the comment
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *comment = [context existingObjectWithID:commentObjectID error:nil];
+                if (!comment) {
+                    return;
+                }
 
-    // This fixes an issue where the comment may not appear for some posts after a successful posting
-    // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
-    comment.post = post;
+                remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
 
-    NSManagedObjectID *commentObjectID = comment.objectID;
-    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
-        // Update and save the comment
-        [self.managedObjectContext performBlock:^{
-            Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
-            if (!comment) {
-                return;
-            }
+                [self updateHierarchicalComment:comment withRemoteComment:remoteComment];
+            } completion:success onQueue:dispatch_get_main_queue()];
+        };
 
-            remoteComment.content = [self sanitizeCommentContent:remoteComment.content isPrivateSite:isPrivateSite];
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *commentInContext = [context existingObjectWithID:commentObjectID error:nil];
+                if (!commentInContext) {
+                    return;
+                }
+                // Remove the optimistically saved comment.
+                [context deleteObject:commentInContext];
+                ReaderPost *post = (ReaderPost *)commentInContext.post;
+                post.commentCount = @([post.commentCount integerValue] - 1);
+            } completion:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        };
 
-            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
-            if (success) {
-                success();
-            }
-        }];
-    };
-
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        [self.managedObjectContext performBlock:^{
-            Comment *comment = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
-            if (!comment) {
-                return;
-            }
-            // Remove the optimistically saved comment.
-            ReaderPost *post = (ReaderPost *)comment.post;
-            post.commentCount = @([post.commentCount integerValue] - 1);
-            [self deleteComment:comment success:nil failure:nil];
-            if (failure) {
-                failure(error);
-            }
-        }];
-    };
-
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:post.siteID];
-    [remote replyToCommentWithID:commentID
-                         content:content
-                         success:successBlock
-                         failure:failureBlock];
+        CommentServiceRemoteREST *remote = [self restRemoteForSite:post.siteID];
+        [remote replyToCommentWithID:commentID
+                             content:content
+                             success:successBlock
+                             failure:failureBlock];
+    }];
 }
 
 - (void)replyToCommentWithID:(NSNumber *)commentID
@@ -1038,6 +1026,24 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return [NSString stringWithFormat:@"%010u", [commentID integerValue]];
 }
 
+- (void)createHierarchicalCommentWithContent:(NSString *)content
+                                  withParent:(NSNumber *)parentID
+                                postObjectID:(NSManagedObjectID *)postObjectID
+                                      siteID:(NSNumber *)siteID
+                                  completion:(void (^)(NSManagedObjectID *commentID))completion
+{
+    NSManagedObjectID * __block objectID = nil;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderPost *post = [context existingObjectWithID:postObjectID error:nil];
+        Comment *comment = [self createHierarchicalCommentWithContent:content withParent:parentID postID:post.postID siteID:siteID inContext:context];
+        // This fixes an issue where the comment may not appear for some posts after a successful posting
+        // More information: https://github.com/wordpress-mobile/WordPress-iOS/issues/13259
+        comment.post = post;
+    } completion:^{
+        completion(objectID);
+    } onQueue:dispatch_get_main_queue()];
+}
+
 - (Comment *)createHierarchicalCommentWithContent:(NSString *)content withParent:(NSNumber *)parentID postID:(NSNumber *)postID siteID:(NSNumber *)siteID inContext:(NSManagedObjectContext *)context
 {
     // Fetch the relevant ReaderPost
@@ -1086,7 +1092,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     if (error) {
         DDLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
     }
-    [[ContextManager sharedInstance] saveContext:context];
 
     return comment;
 }
@@ -1112,13 +1117,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         comment.hierarchy = [self formattedHierarchyElement:commentID];
         comment.depth = 0;
     }
-
-    [comment.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:comment.managedObjectContext];
-    }];
 }
 
-- (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
+- (void)updateHierarchicalComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     NSParameterAssert(comment.managedObjectContext != nil);
 
@@ -1132,16 +1133,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     // Update depth and hierarchy
     [self setHierarchyAndDepthOnComment:comment withParentComment:parentComment];
-    [[ContextManager sharedInstance] saveContext:comment.managedObjectContext];
 }
 
-- (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post onComplete:(void (^)(BOOL includesNewComments))onComplete
+- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     NSParameterAssert(post.managedObjectContext != nil);
 
     if (![comments count]) {
-        onComplete(NO);
-        return;
+        return NO;
     }
 
     NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
@@ -1193,9 +1192,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [[ContextManager sharedInstance] saveContext:post.managedObjectContext withCompletionBlock:^{
-        onComplete(newCommentCount > 0);
-    } onQueue:dispatch_get_main_queue()];
+    return newCommentCount > 0;
 }
 
 // Does not save context
