@@ -17,7 +17,7 @@ steps:
 
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
-    priority: 1
+    priority: 2
     env: *common_env
     plugins: *common_plugins
     notify:
@@ -33,7 +33,7 @@ steps:
 
   - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-jetpack.sh"
-    priority: 1
+    priority: 2
     env: *common_env
     plugins: *common_plugins
     notify:
