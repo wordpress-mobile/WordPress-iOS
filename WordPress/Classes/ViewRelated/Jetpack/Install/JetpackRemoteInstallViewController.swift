@@ -7,8 +7,6 @@ protocol JetpackRemoteInstallDelegate: AnyObject {
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
-    private typealias JetpackInstallBlock = (String, String, String, WPAnalyticsStat) -> Void
-
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var blog: Blog
     private let jetpackView = JetpackRemoteInstallStateView()
@@ -70,16 +68,15 @@ private extension JetpackRemoteInstallViewController {
 
             switch state {
             case .success:
-                WPAnalytics.track(.installJetpackRemoteCompleted)
+                self?.viewModel.track(.completed)
             case .failure(let error):
-                WPAnalytics.track(.installJetpackRemoteFailed,
-                                  withProperties: ["error_type": error.type.rawValue,
-                                                   "site_url": self?.blog.url ?? "unknown"])
-                let url = self?.blog.url ?? "unknown"
+                let blogURLString = self?.blog.url ?? "unknown"
+                self?.viewModel.track(.failed(description: error.type.rawValue, siteURLString: blogURLString))
+
                 let title = error.title ?? "no error message"
                 let type = error.type.rawValue
                 let code = error.code
-                DDLogError("Jetpack Remote Install error for site \(url) – \(title) (\(code): \(type))")
+                DDLogError("Jetpack Remote Install error for site \(blogURLString) – \(title) (\(code): \(type))")
 
                 if error.isBlockingError {
                     DDLogInfo("Jetpack Remote Install error - Blocking error")
@@ -92,17 +89,11 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func openInstallJetpackURL() {
-        let event: WPAnalyticsStat = AccountHelper.isLoggedIn ? .installJetpackRemoteConnect : .installJetpackRemoteLogin
-        WPAnalytics.track(event)
+        viewModel.track(AccountHelper.isLoggedIn ? .connect : .login)
 
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
-        WPAnalytics.track(event)
-        viewModel.installJetpack(with: url, username: username, password: password)
     }
 
     @objc func cancel() {
@@ -134,9 +125,9 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
 
         switch viewModel.state {
         case .install:
-            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteStart)
+            viewModel.installJetpack(for: blog)
         case .failure:
-            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteRetry)
+            viewModel.installJetpack(for: blog, isRetry: true)
         case .success:
             openInstallJetpackURL()
         default:
