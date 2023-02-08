@@ -15,7 +15,7 @@ class JetpackRemoteInstallViewController: UIViewController {
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?) {
         self.blog = blog
         self.delegate = delegate
-        self.viewModel = JetpackRemoteInstallViewModel()
+        self.viewModel = SelfHostedJetpackRemoteInstallViewModel()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -117,15 +117,9 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
-        guard let url = blog.url,
-            let username = blog.username,
-            let password = blog.password else {
-            return
-        }
-
         switch viewModel.state {
         case .install:
-            viewModel.installJetpack(for: blog)
+            viewModel.installJetpack(for: blog, isRetry: false)
         case .failure:
             viewModel.installJetpack(for: blog, isRetry: true)
         case .success:

@@ -1,8 +1,50 @@
-import WordPressFlux
+/// Represents the core logic behind the Jetpack Remote Install.
+///
+/// This protocol is mainly used by `JetpackRemoteInstallViewController`, and allows the installation process
+/// to be abstracted since there are many different ways to install the Jetpack plugin.
+///
+protocol JetpackRemoteInstallViewModel: AnyObject {
+
+    // MARK: Properties
+
+    /// The view controller can implement the closure to subscribe to every `state` changes.
+    var onChangeState: ((JetpackRemoteInstallState) -> Void)? { get set }
+
+    /// An enum that represents the current installation state.
+    var state: JetpackRemoteInstallState { get }
+
+    // MARK: Methods
+
+    /// Called by the view controller when it's ready to receive user interaction.
+    func viewReady()
+
+    /// Starts the Jetpack plugin installation.
+    ///
+    /// The progress will be reflected into the `state` object, which should be subscribed by
+    /// the view controller through the `onChangeState` method.
+    ///
+    /// - Parameters:
+    ///   - blog: The Blog to install the Jetpack plugin.
+    ///   - isRetry: For tracking purposes. True means this is a retry attempt.
+    func installJetpack(for blog: Blog, isRetry: Bool)
+
+    /// Abstracted tracking implementation for the `JetpackRemoteInstallEvent`.
+    ///
+    /// - Parameter event: The events to track. See `JetpackRemoteInstallEvent` for more info.
+    func track(_ event: JetpackRemoteInstallEvent)
+}
+
+// MARK: - Jetpack Remote Install Events
 
 enum JetpackRemoteInstallEvent {
+    // User is seeing the initial installation screen.
+    case initial
+
     // User initiated the Jetpack installation process.
     case start
+
+    // Jetpack plugin is being installed.
+    case loading
 
     // Jetpack plugin installation succeeded.
     case completed
@@ -18,64 +60,4 @@ enum JetpackRemoteInstallEvent {
 
     // User initiated a login to authorize the Jetpack connection.
     case login
-}
-
-class JetpackRemoteInstallViewModel {
-    typealias JetpackRemoteInstallOnChangeState = (JetpackRemoteInstallState) -> Void
-
-    var onChangeState: JetpackRemoteInstallOnChangeState?
-    private let store = StoreContainer.shared.jetpackInstall
-    private var storeReceipt: Receipt?
-
-    private(set) var state: JetpackRemoteInstallState = .install {
-        didSet {
-            onChangeState?(state)
-        }
-    }
-
-    func viewReady() {
-        state = .install
-
-        storeReceipt = store.onStateChange { [weak self] (_, state) in
-            switch state.current {
-            case .loading:
-                self?.state = .installing
-            case .success:
-                self?.state = .success
-            case .failure(let error):
-                self?.state = .failure(error)
-            default:
-                break
-            }
-        }
-    }
-
-    func installJetpack(for blog: Blog, isRetry: Bool = false) {
-        guard let url = blog.url,
-              let username = blog.username,
-              let password = blog.password else {
-            return
-        }
-
-        track(isRetry ? .retry : .start)
-        store.onDispatch(JetpackInstallAction.install(url: url, username: username, password: password))
-    }
-
-    func track(_ event: JetpackRemoteInstallEvent) {
-        switch event {
-        case .start:
-            WPAnalytics.track(.installJetpackRemoteStart)
-        case .completed:
-            WPAnalytics.track(.installJetpackRemoteCompleted)
-        case .failed(let description, let siteURLString):
-            WPAnalytics.track(.installJetpackRemoteFailed,
-                              withProperties: ["error_type": description, "site_url": siteURLString])
-        case .retry:
-            WPAnalytics.track(.installJetpackRemoteRetry)
-        case .connect:
-            WPAnalytics.track(.installJetpackRemoteConnect)
-        case .login:
-            WPAnalytics.track(.installJetpackRemoteLogin)
-        }
-    }
 }
