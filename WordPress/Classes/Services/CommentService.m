@@ -315,8 +315,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     [remote getCommentWithID:commentID
                      success:^(RemoteComment *remoteComment) {
-        [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Blog *blog = [context existingObjectWithID:blogID error:nil];
             if (!blog) {
                 return;
             }
@@ -327,22 +327,21 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             }
 
             [self updateComment:comment withRemoteComment:remoteComment];
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                if (success) {
-                    success(comment);
-                }
-            } onQueue:dispatch_get_main_queue()];
-        }];
+        } completion:^{
+            if (success) {
+                [self.coreDataStack.mainContext performBlock:^{
+                    Blog *blog = [self.coreDataStack.mainContext existingObjectWithID:blogID error:nil];
+                    success([blog commentWithID:remoteComment.commentID]);
+                }];
+            }
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"Error loading comment for blog: %@", error);
-        [self.managedObjectContext performBlock:^{
-            if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure(error);
-                });
-            }
-        }];
+        if (failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
+        }
     }];
 }
 
@@ -356,8 +355,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
     [service getCommentWithID:commentID
                       success:^(RemoteComment *remoteComment) {
-        [self.managedObjectContext performBlock:^{
-            ReaderPost *post = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postID error:nil];
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderPost *post = [context existingObjectWithID:postID error:nil];
             if (!post) {
                 return;
             }
@@ -365,28 +364,27 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
             Comment *comment = [post commentWithID:remoteComment.commentID];
 
             if (!comment) {
-                comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+                comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:context];
                 comment.dateCreated = [NSDate new];
             }
 
             comment.post = post;
             [self updateComment:comment withRemoteComment:remoteComment];
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                if (success) {
-                    success(comment);
-                }
-            } onQueue:dispatch_get_main_queue()];
-        }];
+        } completion:^{
+            if (success) {
+                [self.coreDataStack.mainContext performBlock:^{
+                    ReaderPost *post = [self.coreDataStack.mainContext existingObjectWithID:postID error:nil];
+                    success([post commentWithID:remoteComment.commentID]);
+                }];
+            }
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"Error loading comment for post: %@", error);
-        [self.managedObjectContext performBlock:^{
-            if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure(error);
-                });
-            }
-        }];
+        if (failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
+        }
     }];
 }
 
