@@ -110,40 +110,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return reply;
 }
 
-// Restore draft reply
-- (Comment *)restoreReplyForComment:(Comment *)comment
-{
-    NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Comment class])];
-    NSString *draft = [Comment descriptionFor:CommentStatusTypeDraft];
-    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@",
-                               draft,
-                               comment.commentID];
-    existingReply.fetchLimit = 1;
-
-    NSError *error;
-    NSArray *replies = [self.managedObjectContext executeFetchRequest:existingReply error:&error];
-    if (error) {
-        DDLogError(@"Failed to fetch reply: %@", error);
-    }
-
-    Comment *reply = [replies firstObject];
-    if (!reply) {
-        reply = [self createReplyForComment:comment];
-    }
-
-    reply.status = draft;
-    return reply;
-}
-
 // Sync comments
-
-- (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *error))failure
-{
-    [self syncCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
-}
-
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
                     success:(void (^)(BOOL hasMore))success
@@ -284,13 +251,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     request.sortDescriptors = @[sortDescriptor];
     Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
     return oldestComment;
-}
-
-- (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^)(BOOL hasMore))success
-                        failure:(void (^)(NSError *))failure
-{
-    [self loadMoreCommentsForBlog:blog withStatus:CommentStatusFilterAll success:success failure:failure];
 }
 
 - (void)loadMoreCommentsForBlog:(Blog *)blog
