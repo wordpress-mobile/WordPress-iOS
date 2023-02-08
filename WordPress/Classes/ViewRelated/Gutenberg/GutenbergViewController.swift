@@ -1231,7 +1231,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .instagramEmbed: post.blog.supports(.instagramEmbed),
             .loomEmbed: post.blog.supports(.loomEmbed),
             .smartframeEmbed: post.blog.supports(.smartframeEmbed),
-            .supportSection: true
+            .supportSection: SupportConfiguration.current() == .zendesk
         ]
     }
 
