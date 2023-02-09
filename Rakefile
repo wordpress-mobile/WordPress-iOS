@@ -150,7 +150,7 @@ bundle exec fastlane run configure_apply force:true
 
     task :install do
       fold('install.swiftlint') do
-        puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
+        puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{SWIFTLINT_PATH}"
         Dir.mktmpdir do |tmpdir|
           # Try first using a binary release
           zipfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.zip"
@@ -158,16 +158,16 @@ bundle exec fastlane run configure_apply force:true
           if File.exist?(zipfile)
             extracted_dir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
             sh "unzip #{zipfile} -d #{extracted_dir}"
-            FileUtils.mkdir_p("#{swiftlint_path}/bin")
-            FileUtils.cp("#{extracted_dir}/swiftlint", "#{swiftlint_path}/bin/swiftlint")
+            FileUtils.mkdir_p("#{SWIFTLINT_PATH}/bin")
+            FileUtils.cp("#{extracted_dir}/swiftlint", "#{SWIFTLINT_PATH}/bin/swiftlint")
           else
             sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
             Dir.chdir(tmpdir) do
               sh "git checkout --quiet #{SWIFTLINT_VERSION}"
               sh 'git submodule --quiet update --init --recursive'
-              FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
-              FileUtils.mkdir_p(swiftlint_path)
-              sh "make prefix_install PREFIX='#{swiftlint_path}'"
+              FileUtils.remove_entry_secure(SWIFTLINT_PATH) if Dir.exist?(SWIFTLINT_PATH)
+              FileUtils.mkdir_p(SWIFTLINT_PATH)
+              sh "make prefix_install PREFIX='#{SWIFTLINT_PATH}'"
             end
           end
         end
@@ -702,16 +702,14 @@ def podfile_locked?
   podfile_checksum == lockfile_checksum
 end
 
-def swiftlint_path
-  "#{PROJECT_DIR}/vendor/swiftlint"
-end
+SWIFTLINT_PATH = File.join(PROJECT_DIR, 'vendor', 'swiftlint')
 
 def swiftlint(args)
   args = [SWIFTLINT_BIN] + args
   sh(*args)
 end
 
-SWIFTLINT_BIN = File.join(swiftlint_path, 'bin', 'swiftlint')
+SWIFTLINT_BIN = File.join(SWIFTLINT_PATH, 'bin', 'swiftlint')
 
 def swiftlint_needs_install
   return true unless File.exist?(SWIFTLINT_BIN)
