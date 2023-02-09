@@ -45,11 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v21.6-whats-new"
+msgctxt "v21.7-whats-new"
 msgid ""
-"The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.\n"
-"\n"
-"Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.\n"
+"There are no updates\n"
+"Our team is busy coding\n"
+"Enjoy this haiku\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
