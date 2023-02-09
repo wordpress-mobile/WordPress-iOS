@@ -239,12 +239,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
+    NSParameterAssert(blog.managedObjectContext != nil);
+
     NSString *entityName = NSStringFromClass([Comment class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL && blog=%@", blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
-    Comment *oldestComment = [[blog.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+
+    Comment * __block oldestComment = nil;
+    [blog.managedObjectContext performBlockAndWait:^{
+        oldestComment = [[blog.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+    }];
     return oldestComment;
 }
 
