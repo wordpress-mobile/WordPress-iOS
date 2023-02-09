@@ -142,8 +142,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)refreshStatus
 {
     [self.loadingIndicator startAnimating];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof(self) weakSelf = self;
     [blogService syncBlog:self.blog success:^{
         [self.loadingIndicator stopAnimating];
