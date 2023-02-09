@@ -68,7 +68,7 @@ class LikesListController: NSObject {
     }()
 
     private lazy var commentService: CommentService = {
-        CommentService(managedObjectContext: ContextManager.shared.mainContext)
+        CommentService(coreDataStack: ContextManager.shared)
     }()
 
     // Notification Likes has a table header. Post Likes does not.

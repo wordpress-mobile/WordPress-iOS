@@ -140,7 +140,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
 
     private lazy var commentService: CommentService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
