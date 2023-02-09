@@ -58,24 +58,26 @@ extension CommentService {
      @param after       Filter results to likes after this Date. Optional.
      */
     func likeUsersFor(commentID: NSNumber, siteID: NSNumber, after: Date? = nil) -> [LikeUser] {
-        let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
+        self.coreDataStack.performQuery { context in
+            let request = LikeUser.fetchRequest() as NSFetchRequest<LikeUser>
 
-        request.predicate = {
-            if let after = after {
-                // The date comparison is 'less than' because Likes are in descending order.
-                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
+            request.predicate = {
+                if let after = after {
+                    // The date comparison is 'less than' because Likes are in descending order.
+                    return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@ AND dateLiked < %@", siteID, commentID, after as CVarArg)
+                }
+
+                return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
+            }()
+
+            request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
+
+            if let users = try? context.fetch(request) {
+                return users
             }
 
-            return NSPredicate(format: "likedSiteID = %@ AND likedCommentID = %@", siteID, commentID)
-        }()
-
-        request.sortDescriptors = [NSSortDescriptor(key: "dateLiked", ascending: false)]
-
-        if let users = try? managedObjectContext.fetch(request) {
-            return users
+            return [LikeUser]()
         }
-
-        return [LikeUser]()
     }
 
 }
