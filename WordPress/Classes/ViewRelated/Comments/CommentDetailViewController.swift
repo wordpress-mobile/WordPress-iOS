@@ -1118,20 +1118,15 @@ private extension CommentDetailViewController {
             return
         }
 
-        guard let reply = commentService.createReply(for: comment) else {
-            DDLogError("Failed creating comment reply.")
-            return
+        commentService.createReply(for: comment, content: content) { reply in
+            self.commentService.uploadComment(reply, success: { [weak self] in
+                self?.displayReplyNotice(success: true)
+                self?.refreshCommentReplyIfNeeded()
+            }, failure: { [weak self] error in
+                DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                self?.displayReplyNotice(success: false)
+            })
         }
-
-        reply.content = content
-
-        commentService.uploadComment(reply, success: { [weak self] in
-            self?.displayReplyNotice(success: true)
-            self?.refreshCommentReplyIfNeeded()
-        }, failure: { [weak self] error in
-            DDLogError("Failed uploading comment reply: \(String(describing: error))")
-            self?.displayReplyNotice(success: false)
-        })
     }
 
     func createPostCommentReply(content: String) {

@@ -24,7 +24,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                  commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
 // Create reply
-- (Comment * _Nullable)createReplyForComment:(Comment *)comment;
+- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog

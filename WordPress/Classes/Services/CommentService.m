@@ -102,14 +102,25 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 }
 
 // Create reply
-- (Comment *)createReplyForComment:(Comment *)comment
+- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion
 {
-    Comment *reply = [self createCommentForBlog:comment.blog];
-    reply.postID = comment.postID;
-    reply.post = comment.post;
-    reply.parentID = comment.commentID;
-    reply.status = [Comment descriptionFor:CommentStatusTypeApproved];
-    return reply;
+    NSManagedObjectID *parentCommentID = comment.objectID;
+    NSManagedObjectID * __block replyID = nil;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        Comment *comment = [context existingObjectWithID:parentCommentID error:nil];
+        Comment *reply = [self createCommentForBlog:comment.blog];
+        reply.postID = comment.postID;
+        reply.post = comment.post;
+        reply.parentID = comment.commentID;
+        reply.status = [Comment descriptionFor:CommentStatusTypeApproved];
+        reply.content = content;
+        [context obtainPermanentIDsForObjects:@[reply] error:nil];
+        replyID = reply.objectID;
+    } completion:^{
+        if (completion) {
+            completion([self.coreDataStack.mainContext existingObjectWithID:replyID error:nil]);
+        }
+    } onQueue:dispatch_get_main_queue()];
 }
 
 // Sync comments
