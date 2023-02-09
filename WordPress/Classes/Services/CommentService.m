@@ -1225,9 +1225,14 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post
 {
-    NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
-    NSInteger count = MIN(comments.count, number);
-    return [comments subarrayWithRange:NSMakeRange(0, count)];
+    NSParameterAssert(post.managedObjectContext != nil);
+    NSArray * __block commentsToReturn = nil;
+    [post.managedObjectContext performBlockAndWait:^{
+        NSArray *comments = [self topLevelCommentsForPage:1 forPost:post];
+        NSInteger count = MIN(comments.count, number);
+        commentsToReturn = [comments subarrayWithRange:NSMakeRange(0, count)];
+    }];
+    return commentsToReturn;
 }
 
 #pragma mark - Transformations
