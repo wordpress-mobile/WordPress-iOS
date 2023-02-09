@@ -4,6 +4,22 @@ During development, using [`NSLocalizedString()`](https://developer.apple.com/do
 
 During the release process, `NSLocalizedString` statements are scanned and stored in the `Localizable.strings` file. The file is then uploaded to [GlotPress](https://translate.wordpress.org/projects/apps/ios/) for translation. Before the release build is finalized, all the translations are grabbed from GlotPress and saved back to the `Localizable.strings` files.
 
+## Use unique reverse-DNS naming style Keys
+
+Use unique reverse-DNS naming style keys for localized strings (instead of using the English copy as key) to avoid issues where the same word in English could need different translations based on context or long keys being uncomfortable for translators.
+
+```swift
+// Do
+let postBtnTitle = NSLocalizedString("editor.post.buttonTitle", value: "Post", comment: "Verb. Action to publish a post")
+let postType = NSLocalizedString("reader.post.title", value: "Post", comment: "Noun. Describes when an entry is a blog post (and not story or page)"
+```
+
+```swift
+// Don't
+let postBtnTitle = NSLocalizedString("Post", comment: "Verb. Action to publish a post")
+let postType = NSLocalizedString("Post", comment: "Noun. Describes when an entry is a blog post (and not story or page)"
+```
+
 ## Always add Comments
 
 Always add a meaningful comment. If possible, describe where and how the string will be used. If there are placeholders, describe what each placeholder is. 
