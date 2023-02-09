@@ -47,7 +47,9 @@ class SupportTableViewController: UITableViewController {
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
-        checkForAutomatticEmail()
+        if !isForumShown {
+            checkForAutomatticEmail()
+        }
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
     }
