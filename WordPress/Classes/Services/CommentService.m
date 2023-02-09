@@ -21,20 +21,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 @implementation CommentService
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
 {
-    return [self initWithManagedObjectContext:context
-                  commentServiceRemoteFactory:[CommentServiceRemoteFactory new]];
+    return [self initWithCoreDataStack:coreDataStack commentServiceRemoteFactory:[CommentServiceRemoteFactory new]];
 }
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
-                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+          commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory
 {
-    self = [super initWithManagedObjectContext:context];
+    self = [super initWithCoreDataStack:coreDataStack];
     if (self) {
         self.remoteFactory = remoteFactory;
     }
-
     return self;
 }
 

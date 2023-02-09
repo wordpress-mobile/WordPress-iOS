@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,14 +14,14 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class RemoteUser;
 @class CommentServiceRemoteFactory;
 
-@interface CommentService : LocalCoreDataService
+@interface CommentService : CoreDataService
 
 /// Initializes the instance with a custom service remote provider.
 ///
-/// @param context The context this instance will use for interacting with CoreData.
+/// @param coreDataStack The `CoreDataStack` this instance will use for interacting with CoreData.
 /// @param commentServiceRemoteFactory The factory this instance will use to get service remote instances from.
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
-                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+          commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
 // Create reply
 - (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion;
