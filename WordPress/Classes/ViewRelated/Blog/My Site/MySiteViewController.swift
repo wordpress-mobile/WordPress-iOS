@@ -310,7 +310,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///     - Segmented control container view
     ///       - Segmented control
     ///     - Blog dashboard view controller OR blog details view controller
-    /// 
+    ///
     private func setupConstraints() {
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
