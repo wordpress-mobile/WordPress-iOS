@@ -107,6 +107,8 @@ class MySitesCoordinator: NSObject {
         showRootViewController()
 
         mySiteViewController.blog = blog
+        RecentSitesService().touch(blog: blog)
+
         if mySiteViewController.presentedViewController != nil {
             mySiteViewController.dismiss(animated: true, completion: nil)
         }

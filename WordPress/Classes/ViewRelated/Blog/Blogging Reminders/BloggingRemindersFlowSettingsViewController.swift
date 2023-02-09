@@ -754,7 +754,7 @@ private enum TextContent {
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
-    static let bloggingPromptsTitle = NSLocalizedString("Include prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
+    static let bloggingPromptsTitle = NSLocalizedString("Include a Blogging Prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
     static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
     static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
 }

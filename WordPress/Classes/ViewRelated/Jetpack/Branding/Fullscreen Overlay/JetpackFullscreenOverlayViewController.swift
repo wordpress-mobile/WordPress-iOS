@@ -79,7 +79,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupContent()
         setupColors()
         setupFonts()
-        setupButtonInsets()
+        setupButtons()
         animationView.play()
         viewModel.trackOverlayDisplayed()
     }
@@ -141,7 +141,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
         learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
         continueButton.isHidden = viewModel.continueButtonIsHidden
-        setupLearnMoreButton()
+        setupLearnMoreButtonTitle()
     }
 
     private func setTitle() {
@@ -178,6 +178,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 
+    private func setupButtons() {
+        setupButtonInsets()
+        switchButton.titleLabel?.textAlignment = .center
+        continueButton.titleLabel?.textAlignment = .center
+    }
+
     private func setupButtonInsets() {
         if #available(iOS 15.0, *) {
             // Continue & Switch Buttons
@@ -208,7 +214,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         }
     }
 
-    private func setupLearnMoreButton() {
+    private func setupLearnMoreButtonTitle() {
         let externalAttachment = NSTextAttachment(image: UIImage.gridicon(.external, size: Metrics.externalIconSize).withTintColor(Colors.learnMoreButtonTextColor))
         externalAttachment.bounds = Metrics.externalIconBounds
         let attachmentString = NSAttributedString(attachment: externalAttachment)
@@ -272,8 +278,8 @@ private extension JetpackFullscreenOverlayViewController {
         static let normalStackViewSpacing: CGFloat = 20
         static let compactStackViewSpacing: CGFloat = 10
         static let closeButtonRadius: CGFloat = 30
-        static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24)
-        static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        static let mainButtonsContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
+        static let mainButtonsContentEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 12)
         static let learnMoreButtonContentInsets = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 24)
         static let learnMoreButtonContentEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 24)
         static let externalIconSize = CGSize(width: 16, height: 16)

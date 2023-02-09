@@ -32,9 +32,10 @@ class GutenbergSettings {
     }
 
     // MARK: - Internal variables
-    fileprivate let database: KeyValueDatabase
-
-    let context = Environment.current.contextManager.mainContext
+    private let database: KeyValueDatabase
+    private var coreDataStack: CoreDataStack {
+        Environment.current.contextManager
+    }
 
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
@@ -67,7 +68,7 @@ class GutenbergSettings {
     func performGutenbergPhase2MigrationIfNeeded() {
         guard
             ReachabilityUtils.isInternetReachable(),
-            let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+            let account = coreDataStack.performQuery({ try? WPAccount.lookupDefaultWordPressComAccount(in: $0) })
         else {
             return
         }
@@ -81,14 +82,14 @@ class GutenbergSettings {
     }
 
     private func setGutenbergEnabledForAllSites() {
-        let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
+        let allBlogs = coreDataStack.performQuery({ (try? BlogQuery().blogs(in: $0)) ?? [] })
         allBlogs.forEach { blog in
             if blog.editor == .aztec {
                 setShowPhase2Dialog(true, for: blog)
                 database.set(true, forKey: Key.enabledOnce(for: blog))
             }
         }
-        let editorSettingsService = EditorSettingsService(coreDataStack: Environment.current.contextManager)
+        let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
             WPAnalytics.refreshMetadata()
         })
@@ -115,10 +116,15 @@ class GutenbergSettings {
             trackSettingChange(to: isEnabled, from: source)
         }
 
-        blog.mobileEditor = isEnabled ? .gutenberg : .aztec
-        ContextManager.sharedInstance().save(context)
+        let mobileEditor: MobileEditor = isEnabled ? .gutenberg : .aztec
+        blog.mobileEditor = mobileEditor
 
-        WPAnalytics.refreshMetadata()
+        coreDataStack.performAndSave({ context in
+            let blogInContext = try? context.existingObject(with: blog.objectID) as? Blog
+            blogInContext?.mobileEditor = mobileEditor
+        }, completion: {
+            WPAnalytics.refreshMetadata()
+        }, on: .main)
     }
 
     private func shouldUpdateSettings(enabling isEnablingGutenberg: Bool, for blog: Blog) -> Bool {
@@ -139,7 +145,7 @@ class GutenbergSettings {
     ///
     /// - Parameter blog: The site to synch editor settings
     func postSettingsToRemote(for blog: Blog) {
-        let editorSettingsService = EditorSettingsService(coreDataStack: Environment.current.contextManager)
+        let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
             DDLogError("Failed to post new post selection with Error: \(error)")
         }

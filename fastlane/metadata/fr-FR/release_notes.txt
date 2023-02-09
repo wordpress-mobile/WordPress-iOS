@@ -1,0 +1,3 @@
+The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.
+
+Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.

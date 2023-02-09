@@ -2,5 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>CFBundleDisplayName</key>
+    <string>Enregistrer comme brouillon</string>
+    <key>CFBundleName</key>
+    <string>Enregistrer comme brouillon</string>
+  </dict>
 </plist>

@@ -1,0 +1,3 @@
+Ortam seçici'deki "Aramanızla eşleşen ortam yok" mesajı artık doğru yerde görünüyor. Evim güzel evim.
+
+Bazı kullanıcılar oturum açtıktan sonra "İlk olarak neye odaklanmak istersiniz?" ekranında takılı kalıyordu, ancak artık değil - başka yöne odaklanın arkadaşlar.

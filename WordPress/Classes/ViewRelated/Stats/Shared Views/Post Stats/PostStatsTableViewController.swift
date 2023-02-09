@@ -26,7 +26,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var changeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: self)
     }()
 
     // MARK: - View
@@ -41,6 +41,11 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         initViewModel()
         trackAccessEvent()
         addWillEnterForegroundObserver()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 19:54:10+0000 */
+/* Translation-Revision-Date: 2023-02-03 06:51:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -7035,6 +7035,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Overslaan";
 
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Overslaan voor vandaag";
+
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter resultaten";
 
@@ -9687,6 +9690,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.dismissButton.title" = "Afwijzen";
 
+/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
+"dailyprompts" = "dailyprompts";
+
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
@@ -9824,6 +9830,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Ga naar jetpack.com voor meer informatie";
 
+/* Description of the Notifications feature.
+   Description of the Reader feature.
+   Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Laat het aantal bezoekers van je site groeien via waardevolle inzichten en uitgebreide statistieken.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistieken en inzichten";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Met Jetpack kun je meer doen met je WordPress-site. Overstappen is gratis en duurt maar een minuut.";
+
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.subtitle" = "Statistieken, Reader, meldingen en andere functies die door Jetpack aangedreven worden, zijn verwijderd uit de WordPress-app.";
 
@@ -9881,6 +9898,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Doorgaan naar Lezer";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "De Jetpack mobiele app is ontworpen om samen met de Jetpack-plugin te werken. Stap nu over om toegang te krijgen tot Statistieken, Lezer, Meldingen en meer.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "Je site heeft de Jetpack-plugin";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.switch.title" = "Probeer de Jetpack-app";
 
@@ -9898,6 +9921,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "Meer informatie";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Ontgrendel de volledige functionaliteit van je site. Krijg Statistieken, Lezer, Meldingen en meer met Jetpack.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Overstappen naar Jetpack";
@@ -9995,6 +10021,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Later beslissen";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Tik op Toestaan wanneer je de melding krijgt om meldingen van WordPress te blijven ontvangen.";
+
 /* Primary description in the migration notifications screen. */
 "migration.notifications.primaryDescription" = "Je krijgt dezelfde meldingen, maar ze komen nu van de Jetpack-app.";
 
@@ -10043,6 +10072,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Afwijzen";
 
+/* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
+"qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Tik op '%@' en ga terug naar je webbrowser om door te gaan.";
+
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Afwijzen";
 
@@ -10069,6 +10101,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog text. */
 "shareModularViewController.retryAlert.message" = "Oeps, er is iets fout gegaan tijdens het delen. Probeer het opnieuw, het kan een glitch zijn geweest.";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* minder dan de vorige 7 dagen";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "Je hebt de afgelopen 7dagen %@ meer weergaven gehad dan de vorige 7 dagen.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "Je hebt de afgelopen 7dagen %@ minder weergaven gehad dan de vorige 7 dagen.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "Je hebt de afgelopen 7 dagen hetzelfde aantal weergaven gehad als de vorige 7 dagen.\n";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "Je hebt de afgelopen 7dagen %@ meer bezoekers gehad dan de vorige 7 dagen.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "Je hebt de afgelopen 7dagen %@ minder bezoekers gehad dan de vorige 7 dagen.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "Je hebt de afgelopen 7dagen hetzelfde aantal bezoekers gehad als de vorige 7 dagen.\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Reacties";

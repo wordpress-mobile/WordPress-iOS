@@ -679,8 +679,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
         let postURL = URL(string: apost.permaLink! as String)
-        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
+        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
+                                                                                            postTitle: apost.titleForDisplay(),
+                                                                                            postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 

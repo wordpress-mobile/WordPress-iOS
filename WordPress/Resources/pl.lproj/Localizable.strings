@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2022-12-27 06:07:41+0000 */
+/* Translation-Revision-Date: 2023-01-30 11:26:29+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pl */
@@ -14,6 +14,9 @@
 
 /* Plural format string for displaying the number of users that answered the blogging prompt. */
 "%1$d answers" = "%1$d odpowiedzi";
+
+/* translators:  %1$s: Select control button label e.g. \"Button width\". %2$s: Select control option value e.g: \"Auto, 25%\". */
+"%1$s. Currently selected: %2$s" = "%1$s. Aktualnie wybrano: %2$s";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
 "%@ billion" = "%@ miliard";
@@ -172,6 +175,9 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Dodaj zdjęcie profilowe";
 
+/* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
+"Add a domain" = "Dodaj domenę";
+
 /* Add self-hosted site button */
 "Add self-hosted site" = "Dodaj stronę z własnym hostingiem";
 
@@ -181,6 +187,9 @@
 /* Label for url blog setting
    Register Domain - Address information field placeholder for Address line */
 "Address" = "Adres";
+
+/* No comment provided by engineer. */
+"Address Settings" = "Ustawienia adresu";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Zaawansowane";
@@ -232,6 +241,9 @@
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Wystąpił błąd.";
 
+/* A failure reason for when the error that occured wasn't able to be determined. */
+"An unknown error occurred." = "Wystąpił nieznany błąd.";
+
 /* the comment has an anonymous author. */
 "Anonymous" = "Anonim";
 
@@ -276,6 +288,9 @@
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Czy próbujesz zalogować się do %1$@ w pobliżu %2$@?";
 
+/* Title that asks the user if they are the trying to log in.  %1$@ is a placeholder for the users location */
+"Are you trying to log in to your web browser near %1$@?" = "Czy próbujesz zalogować się do swojej przeglądarki w pobliżu %1$@?";
+
 /* No comment provided by engineer. */
 "Authenticating" = "Uwierzytelnianie";
 
@@ -314,6 +329,9 @@
    Dismiss view
    Previous web page */
 "Back" = "Powrót";
+
+/* Title for button on the post details page when there are no comments. */
+"Be the first to comment" = "Napisz pierwszy komentarz";
 
 /* Beauty site intent topic */
 "Beauty" = "Uroda";
@@ -491,6 +509,9 @@
    Main title */
 "Change Password" = "Zmiana hasła";
 
+/* Title of button that takes user to the system Settings section for the app */
+"Change Settings" = "Zmień ustawienia";
+
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Zmiana nie powiodła się";
 
@@ -517,6 +538,9 @@
 
 /* Label for Publish date picker */
 "Choose a date" = "Wybierz datę";
+
+/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
+"Choose a new app icon" = "Wybierz nową ikonkę aplikacji";
 
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
@@ -582,6 +606,9 @@
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
 "Comment" = "Komentarz";
+
+/* Message displayed when trashing a comment succeeds. */
+"Comment moved to trash." = "Komentarz został przeniesiony do kosza.";
 
 /* Comments table header label.
    Filters Comments Notifications
@@ -772,6 +799,9 @@
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Utwórz wpis";
 
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "Utwórz witrynę";
+
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Utwórz tag";
 
@@ -792,6 +822,9 @@
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Bieżący motyw";
+
+/* No comment provided by engineer. */
+"Custom URL" = "Własny adres URL";
 
 /* No comment provided by engineer. */
 "Customize Gradient" = "Dostosuj gradient";
@@ -894,6 +927,9 @@
    User's Display Name */
 "Display Name" = "Wyświetlana nazwa";
 
+/* Accessibility label for other media items in the media collection view. The parameter is the creation date of the document. */
+"Document, %@" = "Dokument, %@";
+
 /* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
 "Document: %@" = "Dokument: %@";
 
@@ -934,6 +970,12 @@
 
 /* No comment provided by engineer. */
 "Double tap to select an image" = "Stuknij dwukrotnie aby wybrać obrazek";
+
+/* No comment provided by engineer. */
+"Double tap to select default font size" = "Stuknij dwukrotnie aby wybrać domyślną wielkość liter";
+
+/* No comment provided by engineer. */
+"Double tap to select font size" = "Stuknij dwukrotnie aby wybrać wielkość liter";
 
 /* translators: accessibility text (hint for selecting option) */
 "Double tap to select the option" = "Stuknij dwukrotnie aby wybrać opcję";
@@ -1171,6 +1213,9 @@
    Verb. Button title. Follow a new blog. */
 "Follow" = "Obserwuj";
 
+/* Verb. Button title. Follow the comments on a post. */
+"Follow conversation" = "Obserwuj konwersację";
+
 /* Verb. An option to follow a site. */
 "Follow site" = "Obserwuj witrynę";
 
@@ -1230,6 +1275,12 @@
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Poznaj aplikację Jetpack";
 
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress app. */
+"Get to know the WordPress app" = "Poznaj aplikację WordPress";
+
+/* Name of the Quick Start list that guides users through a few tasks to explore the WordPress/Jetpack app. */
+"Get to know the app" = "Poznaj aplikację";
+
 /* Title of the second alert preparing users to grant permission for us to send them push notifications. */
 "Get your notifications faster" = "Szybciej otrzymuj powiadomienia";
 
@@ -1252,6 +1303,10 @@
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Idź do ustawień iOS";
+
+/* Button title on the blogging prompt's feature introduction view to dismiss the view.
+   Title for the continue button in the dashboard's custom What's New page. */
+"Got it" = "Rozumiem";
 
 /* Okay button title shown in alert announcing new Create Button feature. */
 "Got it!" = "Rozumiem!";
@@ -1362,6 +1417,9 @@
 
 /* Hint for image description on image settings. */
 "Image Description" = "Opis obrazka";
+
+/* No comment provided by engineer. */
+"Image file not found." = "Nie znaleziono obrazka.";
 
 /* Hint for image title on image settings. */
 "Image title" = "Tytuł obrazka";
@@ -1513,6 +1571,9 @@
 /* Heading for instructions on Start Over settings page */
 "Let Us Help" = "Pozwól nam pomóc";
 
+/* Lifestyle site intent topic */
+"Lifestyle" = "Styl życia";
+
 /* Title for the app appearance setting for light mode */
 "Light" = "Jasny";
 
@@ -1611,6 +1672,9 @@
 /* No comment provided by engineer. */
 "Logs" = "Dziennik zdarzeń";
 
+/* Title for the error view when the stats module is disabled. */
+"Looking for stats?" = "Szukasz statystyk?";
+
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Wygląda na to że masz zainstalowany Jetpack na swojej stronie. Gratulujemy! Zaloguj się używając swojej nazwy użytkownika i hasła z WordPress.com żeby włączyć Statystyki i Powiadomienia.";
 
@@ -1630,6 +1694,9 @@
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Zarządzanie witryny";
+
+/* Marks comment as spam */
+"Mark as Spam" = "Oznacz jako spam";
 
 /* Action title for marking referrer as spam */
 "Mark as spam" = "Oznacz jako spam";
@@ -1689,6 +1756,9 @@
    Label for the More Options area in post settings. Should use the same translation as core WP. */
 "More Options" = "Więcej opcji";
 
+/* Screen reader text for button that will move the menu item. Argument is menu item's name. */
+"Move %@" = "Przenieś %@";
+
 /* No comment provided by engineer. */
 "Move block left" = "Przesuń blok w lewo";
 
@@ -1708,6 +1778,10 @@
    Trash option in the trash page confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Przenieś do kosza";
+
+/* An example tag used in the login prologue screens.
+   Music site intent topic */
+"Music" = "Muzyka";
 
 /* Link to My Profile section
    My Profile view title */
@@ -1825,6 +1899,9 @@
 /* Accessibility value for a Stats' Posting Activity Month if there are no posts. */
 "No posts." = "Brak wpisów.";
 
+/* Title of unanswered Blogging Prompts filter. */
+"Not Answered" = "Bez odpowiedzi";
+
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nie teraz";
@@ -1848,6 +1925,9 @@
    The item to select during a guided tour.
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Powiadomienia";
+
+/* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
+"Notify me" = "Powiadom mnie";
 
 /* Body text of alert announcing new Create Button feature. */
 "Now there are fewer and better-organized tabs, posting shortcuts, and more, so you can find what you need fast." = "Mamy teraz mniej kart, za to uporządkowanych, skrótów służących do publikowania wpisów i wiele innych, aby  szybko znaleźć, to czego potrzeba.";
@@ -1915,6 +1995,9 @@
 /* No comment provided by engineer. */
 "Open Block Actions Menu" = "Otwórz menu działań na blokach";
 
+/* No comment provided by engineer. */
+"Open Jetpack Security settings" = "Otwórz ustawienia zabezpieczeń Jetpacka";
+
 /* Go to the settings app
    Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otwórz ustawienia";
@@ -1943,6 +2026,9 @@
 
 /* Caption for the recommended sections in site designs. */
 "PICKED FOR YOU" = "WYBRANE DLA CIEBIE";
+
+/* No comment provided by engineer. */
+"Padding" = "Dopełnienie";
 
 /* Menu item label for linking a page.
    Noun. Type of content being selected is a blog page
@@ -2116,7 +2202,13 @@
 "Preview" = "Podgląd";
 
 /* No comment provided by engineer. */
+"Preview page" = "Podgląd strony";
+
+/* No comment provided by engineer. */
 "Preview post" = "Podgląd wpisu";
+
+/* Accessibility label for the button which shows the previous month in the monthly calendar view */
+"Previous month" = "Poprzedni miesiąc";
 
 /* Label for the privacy setting
    Privacy settings section header
@@ -2138,6 +2230,9 @@
    Text for privacy settings: Private
    Title of the Private Badge */
 "Private" = "Prywatny";
+
+/* Error message title informing the user that reader content could not be loaded. */
+"Problem loading content" = "Wystąpił problem z wczytywaniem treści";
 
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
@@ -2204,6 +2299,9 @@
    Title of the Reader section of the debug screen used in debug builds of the app */
 "Reader" = "Czytnik";
 
+/* Real Estate site intent topic */
+"Real Estate" = "Nieruchomości";
+
 /* Text for the 'Reblog' button. */
 "Reblog" = "Rebloguj";
 
@@ -2239,6 +2337,9 @@
    Label for selecting the related posts options
    Title for screen that allows configuration of your blog/site related posts settings. */
 "Related Posts" = "Powiązane posty";
+
+/* Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed. */
+"Reminders removed" = "Przypomnienia zostały usunięte";
 
 /* Add asset to media picker list
    Alert button to confirm a plugin to be removed
@@ -2449,6 +2550,9 @@
 /* Label for a button that sets the selected page as the site's Homepage */
 "Set as Homepage" = "Ustaw jako stronę domową";
 
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"Set reminders" = "Ustaw przypomnienia";
+
 /* Link to plugin's Settings
    Section title
    The menu item to select during a guided tour.
@@ -2530,6 +2634,9 @@
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Zarejestruj się używając e-maila";
+
+/* Header for a single site, shown in Notification user profile. */
+"Site" = "Witryna";
 
 /* The accessibility label for the followed sites search field
    The item to select during a guided tour. */
@@ -2635,6 +2742,9 @@
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Przyspiesz swoją witrynę";
+
+/* Sports site intent topic */
+"Sports" = "Sport";
 
 /* Standard post format label */
 "Standard" = "Standardowy";
@@ -2906,6 +3016,9 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Spróbuj jeszcze raz";
 
+/* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
+"Turn on notifications" = "Włącz powiadomienia";
+
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Wyłączenie przełącznika spowoduje wyłączenie wszystkich powiadomień z aplikacji, niezależnie od ich rodzaju.";
 
@@ -2917,6 +3030,9 @@
 
 /* No comment provided by engineer. */
 "Two" = "Dwa";
+
+/* Type menu item in share extension. */
+"Type" = "Rodzaj";
 
 /* A placeholder for the sharing label. */
 "Type a label" = "Wpisz etykietę";
@@ -2972,6 +3088,9 @@
 /* Filters Unread Notifications */
 "Unread" = "Nieprzeczytane";
 
+/* Title of unreplied Comments filter. */
+"Unreplied" = "Bez odpowiedzi";
+
 /* No comment provided by engineer. */
 "Unsupported" = "Niewspierane";
 
@@ -2999,6 +3118,9 @@
 /* Message displayed on a post's card when the post has failed to upload
    System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nie powiodło się przesyłanie";
+
+/* Title of a Quick Start Tour */
+"Upload photos or videos" = "Prześlij zdjęcia lub filmy";
 
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
@@ -3104,6 +3226,9 @@
    Today's Stats 'Views' label */
 "Views" = "Wyświetlenia";
 
+/* Insights views and visitors header */
+"Views & Visitors" = "Wyświetlenia i odwiedzający";
+
 /* Label for Visibility
    The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
@@ -3160,11 +3285,17 @@
    Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Adres internetowy";
 
+/* Title of a button. A call to action to view more stats for this week */
+"Week" = "Tydzień";
+
 /* Blog Writing Settings: Weeks starts on */
 "Week starts on" = "Tydzień zaczyna się od";
 
 /* Title of Weeks stats filter. */
 "Weeks" = "Tygodnie";
+
+/* Post Signup Interstitial Title Text for Jetpack iOS */
+"Welcome to Jetpack" = "Witamy w Jetpacku!";
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Witamy w WordPress";
@@ -3230,6 +3361,9 @@
 /* WordPress.com Notification Settings Title */
 "WordPress.com Updates" = "Wiadomości z WordPress.com";
 
+/* Title of button that displays the Automattic Work With Us web page */
+"Work With Us" = "Pracuj z nami";
+
 /* Placeholder text for inline compose view */
 "Write a reply…" = "Napisz odpowiedź…";
 
@@ -3264,6 +3398,9 @@
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Można obserwować wpisy lub określony temat, dodając znacznik.";
 
+/* A text for subtitle label on Login epilogue screen */
+"You can switch sites at any time." = "Można przełączyć się pomiędzy witrynami w dowolnym momencie.";
+
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nie można użyć tego adresu e-mail do rejestracji. Mamy problemy z blokowaniem naszych wiadomości przez wybranego dostawcę. Proszę, użyć adresu e-mail innego dostawcy.";
 
@@ -3280,6 +3417,9 @@
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Twoje witryny";
+
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %@ placeholder will be replaced with the title of a post, the %d with the number of likes, and the HTML tags should remain intact. */
+"Your latest post <a href=\"\">%@<\/a> has received <strong>%d<\/strong> likes." = "Twój ostatni wpis <a href=\"\">%1$@<\/a> otrzymał <strong>%2$d<\/strong> polubień.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %@ placeholder will be replaced with the title of a post, and the HTML tags should remain intact. */
 "Your latest post <a href=\"\">%@<\/a> has received <strong>one<\/strong> like." = "Twój ostatni wpis <a href=\"\">%@<\/a> otrzymał <strong>jedno<\/strong> polubienie.";
@@ -3436,6 +3576,12 @@
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Zapisz jako szkic";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Zapisz jako szkic";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Zapisz jako szkic";
 
@@ -3510,6 +3656,15 @@
 
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Przejdź do statystyk";
+
+/* Menu item title to hide the card. */
+"jetpack.menuCard.hide" = "Ukryj";
+
+/* Title of a button that displays a blog post in a web view. */
+"jetpack.menuCard.learnMore" = "Dowiedz się więcej";
+
+/* Menu item title to hide the card for now and show it later. */
+"jetpack.menuCard.remindLater" = "Przypomnij później";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Dodaj autora";
@@ -3586,8 +3741,14 @@
 /* Title of the migration done screen. */
 "migration.done.title" = "Dziękujemy za przejście na Jetpacka!";
 
+/* The primary button title in the Load WordPress screen */
+"migration.loadWordpress.primaryButton" = "Otwórz WordPressa";
+
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
+
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Po pojawieniu się komunikatu proszę wybrać Zezwól, aby otrzymywać wszystkie powiadomienia z WordPressa.";
 
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Zezwól";
@@ -3706,6 +3867,9 @@
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentarze";
 
+/* Title of button shown in Stats prompting the user to create a post on their site. */
+"stats.insights.latestPostSummary.createPost" = "Utwórz wpis";
+
 /* Title for Likes count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.likes" = "Polubienia";
 
@@ -3749,6 +3913,9 @@
 "widget.alltime.posts.label" = "Wpisy";
 
 /* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "By zobaczyć wszystkie statystyki, zaloguj się do WordPressa.";
+
+/* Title of the unconfigured view in all time widget */
 "widget.jetpack.alltime.unconfigured.view.title" = "Zaloguj się do Jetpacka, aby zobaczyć wszystkie statystyki.";
 
 /* Title of the unconfigured view in this week widget */
@@ -3756,6 +3923,9 @@
 
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Zaloguj się do Jetpacka, aby zobaczyć dzisiejsze statystyki.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Bieżący tydzień";
 
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Komentarze";
@@ -3774,6 +3944,9 @@
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successcard.description" = "Usuń aplikację WordPress";
+
+/* Placeholder for site url, if the url is unknown.Presented when logging in with a site address that does not have a valid Jetpack installation.The error would read: to use this app for your site you'll need... */
+"your site" = "twoja witryna";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domeny";
