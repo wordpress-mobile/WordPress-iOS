@@ -1,6 +1,7 @@
 21.8
 -----
 * [*] [WordPress-only] We have redesigned and simplified the landing screen. [#20061]
+* [*] [internal] Refactored account related operations (i.e. log in and out of the app). [#19893]
 
 21.7
 -----
