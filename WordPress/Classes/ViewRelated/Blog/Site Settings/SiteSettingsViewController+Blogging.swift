@@ -38,7 +38,7 @@ private extension SiteSettingsViewController {
         if blog.areBloggingRemindersAllowed() {
             rows.append(.reminders)
         }
-        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+        if blog.isAccessibleThroughWPCom() && FeatureFlag.bloggingPromptsEnhancements.enabled {
             rows.append(.prompts)
         }
         return rows
