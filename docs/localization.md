@@ -26,13 +26,20 @@ Always add a meaningful comment. If possible, describe where and how the string 
 
 ```swift
 // Do
-let title = NSLocalizedString("Following %@",
-                              comment: "Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site.")
+let succeededMessage = String(format: NSLocalizedString(
+    "reader.post.follow.successTitle",
+    value: "Following %1$@",
+    comment: "Notice title when following a site succeeds. %1$@ is a placeholder for the site name."
+), siteName)
 ```
 
 ```swift
-// Avoid
-let title = NSLocalizedString("Following %@", comment: "")
+// Don't
+let succeededMessage = String(format: NSLocalizedString(
+    "reader.post.follow.successTitle",
+    value: "Following %1$@",
+    comment: ""
+), siteName)
 ```
 
 Comments help give more context to translators.
@@ -43,14 +50,14 @@ Do not use variables as the argument of `NSLocalizedString()`. The string value 
 
 ```swift
 // Do
-let myText = NSLocalizedString("This is the text I want to translate.", comment: "Put a meaningful comment here.")
+let myText = NSLocalizedString("some.place.title", value: "This is the text I want to translate.", comment: "Put a meaningful comment here.")
 myTextLabel?.text = myText
 ```
 
 ```swift
 // Don't
 let myText = "This is the text I want to translate."
-myTextLabel?.text = NSLocalizedString(myText, comment: "Put a meaningful comment here.")
+myTextLabel?.text = NSLocalizedString("some.place.title", value: myText, comment: "Put a meaningful comment here.")
 ```
 
 ## Do not use Interpolated Strings
@@ -62,14 +69,14 @@ Use [`String.localizedStringWithFormat`](https://developer.apple.com/documentati
 ```swift
 // Do
 let year = 2019
-let template = NSLocalizedString("© %d Acme, Inc.", comment: "Copyright Notice")
+let template = NSLocalizedString("mysite.copyrightNotice.title", value: "© %d Acme, Inc.", comment: "Copyright Notice")
 let str = String.localizeStringWithFormat(template, year)
 ```
 
 ```swift
 // Don't
 let year = 2019
-let str = NSLocalizedString("© \(year) Acme, Inc.", comment: "Copyright Notice")
+let str = NSLocalizedString("mysite.copyrightNotice.title", value: "© \(year) Acme, Inc.", comment: "Copyright Notice")
 ```
 
 ## Multiline Strings
@@ -79,7 +86,8 @@ For readability, you can split the string and concatenate the parts using the pl
 ```swift
 // Okay
 NSLocalizedString(
-    "Take some long text here " +
+    "some.place.concatenatedDescription",
+    value: "Take some long text here " +
     "and then concatenate it using the '+' symbol."
     comment: "You can even use this form of concatenation " +
         "for extra-long comments that take the time to explain " +
@@ -92,6 +100,7 @@ Do not use extended delimiters (e.g. triple quotes). They are not automatically 
 ```swift
 // Don't
 NSLocalizedString(
+    "some.place.tripleQuotedDescription",
     """Triple-quoted text, when used in NSLocalizedString, is Not OK. Our scripts break when you use this."""
     comment: """Triple-quoted text, when used in NSLocalizedString, is Not OK."""
 )
@@ -103,8 +112,8 @@ GlotPress currently does not support pluralization using the [`.stringsdict` fil
 
 ```swift
 struct PostCountLabels {
-    static let singular = NSLocalizedString("%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
-    static let plural = NSLocalizedString("%d Posts", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural).")
+    static let singular = NSLocalizedString("reader.post.title" ,value: "%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
+    static let plural = NSLocalizedString("reader.postList.title", value: "%d Posts", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural).")
 }
 
 let postCountText = (count == 1 ? PostCountLabels.singular : PostCountLabels.plural)
