@@ -44,6 +44,28 @@ let succeededMessage = String(format: NSLocalizedString(
 
 Comments help give more context to translators.
 
+## Use positional placeholders
+
+Use the %n$x format (with n being an integer for the parameter position/index in the arguments to String(format:), and x being one of the type specifiers like @ or d) and don't use just %x (the one without explicit positional index) for positional placeholders.
+
+```swift
+// Do
+let alertWarning = String(format: NSLocalizedString(
+    "login.email.locationWarning",
+    value: "Are you trying to log in to %1$@ near %2$@?",
+    comment: "Login location warning alert. %1$@ is an account name and %2$@ is a location name."
+), accountName, locationName)
+```
+
+```swift
+// Don't
+let alertWarning = String(format: NSLocalizedString(
+    "login.email.locationWarning",
+    value: "Are you trying to log in to %@ near %@?",
+    comment: "Login location warning alert."
+), accountName, locationName)
+```
+
 ## Do not use Variables
 
 Do not use variables as the argument of `NSLocalizedString()`. The string value will not be automatically picked up. 
