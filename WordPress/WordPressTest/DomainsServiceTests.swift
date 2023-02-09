@@ -41,7 +41,7 @@ class DomainsServiceTests: CoreDataTestCase {
         let accountService = AccountService(coreDataStack: contextManager)
         let accountID = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
         let account = try XCTUnwrap(contextManager.mainContext.existingObject(with: accountID) as? WPAccount)
-        let blog = try Blog.createBlankBlog(with: account)
+        let blog = Blog.createBlankBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
         blog.url = "http://dotcom1.wordpress.com/"
         blog.dotComID = testSiteID as NSNumber?
