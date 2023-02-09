@@ -141,7 +141,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .wordPressSupportForum:
-            return false
+            return true
         case .jetpackIndividualPluginSupport:
             return false
         case .blaze:
