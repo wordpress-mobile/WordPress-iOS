@@ -30,7 +30,7 @@ import Combine
     ///
     /// There is nothing really wrong with keeping the blocking logic in `ReaderSiteBlockingController` but this
     /// view controller is very large, with over 2000 lines of code!
-    private let siteBlockingController = ReaderSiteBlockingController()
+    private let siteBlockingController = ReaderPostBlockingController()
 
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     private let sharingController = PostSharingController()
@@ -790,14 +790,27 @@ import Combine
     }
 
     private func removeBlockedPosts() {
-        guard let topic = readerTopic as? ReaderSiteTopic,
-              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
-              let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
-        else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext) else {
             return
         }
+
+        // Blocked site predicate
+        var predicates = [NSPredicate]()
+        if let topic = readerTopic as? ReaderSiteTopic,
+           let siteBlocking = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
+        {
+            predicates.append(NSPredicate(format: "siteID = %@", siteBlocking.blogID))
+        }
+
+        // Blocked author predicate
+        let authorBlockings = BlockedAuthor.find(.accountID(account.userID), context: viewContext).map { $0.authorID }
+        if !authorBlockings.isEmpty {
+            predicates.append(NSPredicate(format: "authorID IN %@", authorBlockings))
+        }
+
+        // Perform request
         let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
-        request.predicate = NSPredicate(format: "siteID = %@", blocked.blogID)
+        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
         let result = (try? viewContext.fetch(request)) ?? []
         for post in result {
             viewContext.deleteObject(post)
@@ -830,8 +843,20 @@ import Combine
 
     /// Update the post card when a site is blocked from post details.
     ///
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost) {
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost) {
         guard let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post)
+        else {
+            return
+        }
+        recentlyBlockedSitePostObjectIDs.remove(post.objectID)
+        updateAndPerformFetchRequest()
+        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+    }
+
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didFinishBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {
+        guard case .success = result,
+              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
               let indexPath = content.indexPath(forObject: post)
         else {
             return
@@ -1604,7 +1629,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         let shouldLoadMoreItems = syncHelper.hasMoreContent
         && !syncHelper.isSyncing
         && !cleanupAndRefreshAfterScrolling
-        && !siteBlockingController.isBlockingSites
+        && !siteBlockingController.isBlockingPosts
         if shouldLoadMoreItems {
             syncHelper.syncMoreContent()
         }

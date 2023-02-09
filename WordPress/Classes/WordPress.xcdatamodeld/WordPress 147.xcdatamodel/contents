@@ -116,6 +116,14 @@
         </fetchIndex>
         <userInfo/>
     </entity>
+    <entity name="BlockedAuthor" representedClassName="BlockedAuthor" syncable="YES">
+        <attribute name="accountID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="authorID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <fetchIndex name="byPropertyIndex">
+            <fetchIndexElement property="accountID" type="Binary" order="ascending"/>
+            <fetchIndexElement property="authorID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <entity name="BlockEditorSettingElement" representedClassName="BlockEditorSettingElement" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
