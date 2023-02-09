@@ -707,18 +707,16 @@ def swiftlint_path
 end
 
 def swiftlint(args)
-  args = [swiftlint_bin] + args
+  args = [SWIFTLINT_BIN] + args
   sh(*args)
 end
 
-def swiftlint_bin
-  "#{swiftlint_path}/bin/swiftlint"
-end
+SWIFTLINT_BIN = File.join(swiftlint_path, 'bin', 'swiftlint')
 
 def swiftlint_needs_install
-  return true unless File.exist?(swiftlint_bin)
+  return true unless File.exist?(SWIFTLINT_BIN)
 
-  installed_version = `"#{swiftlint_bin}" version`.chomp
+  installed_version = `"#{SWIFTLINT_BIN}" version`.chomp
   (installed_version != SWIFTLINT_VERSION)
 end
 
