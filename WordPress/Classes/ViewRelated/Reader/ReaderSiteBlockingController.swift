@@ -3,15 +3,13 @@ import Foundation
 protocol ReaderSiteBlockingControllerDelegate: AnyObject {
 
     func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, willBeginBlockingSiteOfPost post: ReaderPost)
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost)
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didFailToBlockSiteOfPost post: ReaderPost, error: Error?)
+    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>)
 }
 
 extension ReaderSiteBlockingControllerDelegate {
 
     func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, willBeginBlockingSiteOfPost post: ReaderPost) {}
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost) {}
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didFailToBlockSiteOfPost post: ReaderPost, error: Error?) {}
+    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {}
 }
 
 final class ReaderSiteBlockingController {
@@ -74,15 +72,21 @@ final class ReaderSiteBlockingController {
             return
         }
         self.ongoingSitesBlocking.remove(post.siteID)
-        self.delegate?.readerSiteBlockingController(self, didBlockSiteOfPost: post)
+        self.delegate?.readerSiteBlockingController(self, didBlockSiteOfPost: post, result: .success(()))
     }
 
     @objc private func handleSiteBlockingFailed(_ notification: Foundation.Notification) {
         guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost else {
             return
         }
-        let error = notification.userInfo?[ReaderNotificationKeys.error] as? Error
+        let error = (notification.userInfo?[ReaderNotificationKeys.error] as? Error) ?? BlockingError.unknown
         self.ongoingSitesBlocking.remove(post.siteID)
-        self.delegate?.readerSiteBlockingController(self, didFailToBlockSiteOfPost: post, error: error)
+        self.delegate?.readerSiteBlockingController(self, didBlockSiteOfPost: post, result: .failure(error))
+    }
+
+    // MARK: - Types
+
+    private enum BlockingError: Error {
+        case unknown
     }
 }

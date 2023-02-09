@@ -815,8 +815,9 @@ import Combine
 
     /// Update the post card when a site is blocked from post details.
     ///
-    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost) {
-        guard let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+        guard case .success = result,
+              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
               let indexPath = content.indexPath(forObject: post)
         else {
             return
