@@ -17,6 +17,7 @@ class SupportTableViewController: UITableViewController {
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserPersistentStoreFactory.instance()
     private let featureFlagStore: RemoteFeatureFlagStore
+    private let isForumShown = SupportConfiguration.current() == .forum
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.
@@ -101,7 +102,7 @@ private extension SupportTableViewController {
     }
 
     func setupNavBar() {
-        title = featureFlagStore.value(for: FeatureFlag.wordPressSupportForum) ? LocalizedText.viewTitle : LocalizedText.viewTitleSupport
+        title = isForumShown ? LocalizedText.viewTitle : LocalizedText.viewTitleSupport
 
         if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
@@ -142,14 +143,14 @@ private extension SupportTableViewController {
         var helpSection: ImmuTableSection?
         if SupportConfiguration.current(featureFlagStore: featureFlagStore) == .zendesk {
             var helpSectionRows = [ImmuTableRow]()
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: isForumShown))
+            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: isForumShown))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.email,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected(),
                                                    accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+                                                   featureFlagSupportForumEnabled: isForumShown))
             helpSection = ImmuTableSection(
                     headerText: LocalizedText.prioritySupportSectionHeader,
                     rows: helpSectionRows,
@@ -206,19 +207,19 @@ private extension SupportTableViewController {
 
         // Help Section
         var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button", featureFlagSupportForum: isForumShown))
 
         if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: isForumShown))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: isForumShown))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected(),
                                                    accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+                                                   featureFlagSupportForumEnabled: isForumShown))
         } else {
-            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected(), featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
+            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected(), featureFlagSupportForum: isForumShown))
         }
 
         let helpSection = ImmuTableSection(
@@ -262,7 +263,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = featureFlagStore.value(for: FeatureFlag.wordPressSupportForum) ? tableViewModel() : oldTableViewModel()
+        tableHandler?.viewModel = isForumShown ? tableViewModel() : oldTableViewModel()
     }
 
     // MARK: - Row Handlers
