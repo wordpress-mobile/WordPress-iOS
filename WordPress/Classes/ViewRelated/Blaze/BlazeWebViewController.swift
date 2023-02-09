@@ -5,10 +5,26 @@ class BlazeWebViewController: UIViewController {
 
     // MARK: Private Variables
 
-    let blog: Blog
-    let postID: NSNumber?
-    let webView: WKWebView
-    let progressView = WebProgressView()
+    private let blog: Blog
+    private let postID: NSNumber?
+    private let webView: WKWebView
+    private let progressView = WebProgressView()
+
+    // MARK: Computed Variables
+
+    private var initialURL: URL? {
+        guard let siteURL = blog.displayURL else {
+            return nil
+        }
+        var urlString: String
+        if let postID {
+            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue)
+        }
+        else {
+            urlString = String(format: Constants.blazeSiteURLFormat, siteURL)
+        }
+        return URL(string: urlString)
+    }
 
     // MARK: Initializers
 
@@ -53,10 +69,22 @@ class BlazeWebViewController: UIViewController {
     }
 
     private func startBlazeFlow() {
-        // load url
+        guard let initialURL else {
+            // TODO: Call delegate with error
+            return
+        }
+        let request = URLRequest(url: initialURL)
+        webView.load(request)
     }
 }
 
 extension BlazeWebViewController: WKNavigationDelegate {
 
+}
+
+private extension BlazeWebViewController {
+    enum Constants {
+        static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@"
+        static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d"
+    }
 }
