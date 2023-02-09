@@ -18,7 +18,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
         account.username = username
         account.authToken = authToken
         contextManager.saveContextAndWait(mainContext)
-        AccountService(managedObjectContext: mainContext).setDefaultWordPressComAccount(account)
+        AccountService(coreDataStack: contextManager).setDefaultWordPressComAccount(account)
     }
 
     fileprivate func stubResponse(forEndpoint endpoint: String, responseFilename filename: String) {

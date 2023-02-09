@@ -367,7 +367,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
-        AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
+        AccountService *acctService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
     
@@ -1737,6 +1737,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *deletedObjects = note.userInfo[NSDeletedObjectsKey];
     if ([deletedObjects containsObject:self.blog]) {
         [self.navigationController popToRootViewControllerAnimated:NO];
+        return;
+    }
+
+    if (self.blog.account == nil || self.blog.account.isDeleted) {
+        // No need to reload this screen if the blog's account is deleted (i.e. during logout)
+        return;
     }
 
     BOOL isQuickStartSectionShownBefore = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;

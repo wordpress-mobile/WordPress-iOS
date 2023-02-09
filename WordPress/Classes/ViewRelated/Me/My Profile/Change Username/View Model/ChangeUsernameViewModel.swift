@@ -38,7 +38,6 @@ class ChangeUsernameViewModel {
     private let settings: AccountSettings?
     private let store: AccountSettingsStore
     private let reachability = Reachability.forInternetConnection()
-    private let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var receipt: Receipt?
     private var saveUsernameBlock: StateBlock?
     private var reloadAllSections: Bool = true
