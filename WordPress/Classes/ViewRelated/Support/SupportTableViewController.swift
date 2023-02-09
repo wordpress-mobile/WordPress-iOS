@@ -530,7 +530,7 @@ private extension SupportTableViewController {
         static let informationFooterOld = NSLocalizedString("support.sectionFooter.advanced.old.title", value: "The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
         static let extraDebug = NSLocalizedString("support.row.extraDebug.title", value: "Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Contact Email", comment: "Support email label.")
-        static let viewTitleSupport = NSLocalizedString("support.title", value: "Support", comment: "View title for Help & Support page.")
+        static let viewTitleSupport = NSLocalizedString("zendeskSupport.title", value: "Support", comment: "View title for Help & Support page.")
     }
 
     // MARK: - User Defaults Keys
