@@ -140,24 +140,6 @@ private extension SupportTableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        // Help Section
-        var helpSection: ImmuTableSection?
-        if SupportConfiguration.current(featureFlagStore: featureFlagStore) == .zendesk {
-            var helpSectionRows = [ImmuTableRow]()
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(SupportEmailRow(title: LocalizedText.email,
-                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
-                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected(),
-                                                   accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSection = ImmuTableSection(
-                    headerText: LocalizedText.prioritySupportSectionHeader,
-                    rows: helpSectionRows,
-                    footerText: nil)
-        }
-
         // Community Forums Section
         var communityForumsSectionRows = [ImmuTableRow]()
         communityForumsSectionRows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
@@ -199,7 +181,7 @@ private extension SupportTableViewController {
         }
 
         // Create and return table
-        let sections = [helpSection, forumsSection, informationSection, logOutSections].compactMap { $0 }
+        let sections = [forumsSection, informationSection, logOutSections].compactMap { $0 }
         return ImmuTable(sections: sections)
     }
 
