@@ -1230,32 +1230,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     return [comments subarrayWithRange:NSMakeRange(0, count)];
 }
 
-- (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
-{
-    NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
-    return [comments firstObject];
-}
-
-- (Comment *)lastCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
-{
-    NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
-    Comment *lastParentComment = [comments lastObject];
-
-    NSString *entityName = NSStringFromClass([Comment class]);
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    NSString *wildCard = [NSString stringWithFormat:@"%@*", lastParentComment.hierarchy];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy LIKE %@", post, wildCard];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
-    fetchRequest.sortDescriptors = @[sortDescriptor];
-
-    NSError *error = nil;
-    NSArray *fetchedObjects = [post.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(@"Error fetching last comment for page %i : %@", page, error);
-    }
-    return [fetchedObjects lastObject];
-}
-
 #pragma mark - Transformations
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
