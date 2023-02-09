@@ -51,7 +51,7 @@ private extension JetpackRemoteInstallViewController {
         view.backgroundColor = .neutral(.shade5)
 
         jetpackView.delegate = self
-        jetpackView.model = self
+        jetpackView.model = viewModel
         add(jetpackView)
         jetpackView.view.frame = view.bounds
 
@@ -132,44 +132,4 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     func customerSupportButtonDidTouch() {
         navigationController?.pushViewController(SupportTableViewController(), animated: true)
     }
-}
-
-// MARK: - Jetpack State View Model
-
-extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewModel {
-
-    var image: UIImage? {
-        viewModel.state.image
-    }
-
-    var titleText: String {
-        viewModel.state.title
-    }
-
-    var descriptionText: String {
-        viewModel.state.message
-    }
-
-    var buttonTitleText: String {
-        viewModel.state.buttonTitle
-    }
-
-    var hidesMainButton: Bool {
-        viewModel.state == .installing
-    }
-
-    var hidesLoadingIndicator: Bool {
-        viewModel.state != .installing
-    }
-
-    var hidesSupportButton: Bool {
-        switch viewModel.state {
-        case .failure:
-            return false
-        default:
-            return true
-        }
-    }
-
-
 }

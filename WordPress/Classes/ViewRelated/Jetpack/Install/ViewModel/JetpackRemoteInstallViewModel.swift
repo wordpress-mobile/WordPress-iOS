@@ -3,7 +3,7 @@
 /// This protocol is mainly used by `JetpackRemoteInstallViewController`, and allows the installation process
 /// to be abstracted since there are many different ways to install the Jetpack plugin.
 ///
-protocol JetpackRemoteInstallViewModel: AnyObject {
+protocol JetpackRemoteInstallViewModel: AnyObject, JetpackRemoteInstallStateViewModel {
 
     // MARK: Properties
 
@@ -32,6 +32,43 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     ///
     /// - Parameter event: The events to track. See `JetpackRemoteInstallEvent` for more info.
     func track(_ event: JetpackRemoteInstallEvent)
+}
+
+// MARK: - Default Jetpack State View Model Implementation
+
+extension JetpackRemoteInstallViewModel {
+    var image: UIImage? {
+        state.image
+    }
+
+    var titleText: String {
+        state.title
+    }
+
+    var descriptionText: String {
+        state.message
+    }
+
+    var buttonTitleText: String {
+        state.buttonTitle
+    }
+
+    var hidesMainButton: Bool {
+        state == .installing
+    }
+
+    var hidesLoadingIndicator: Bool {
+        state != .installing
+    }
+
+    var hidesSupportButton: Bool {
+        switch state {
+        case .failure:
+            return false
+        default:
+            return true
+        }
+    }
 }
 
 // MARK: - Jetpack Remote Install Events
