@@ -313,8 +313,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 let dotComFollowersCount = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
                 let emailFollowersCount = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
                 let publicizeCount = insightsStore.getPublicizeCount()
-                let totalFollowers = insightsStore.getTotalFollowerCount()
-                let totalFollowersCountManual = dotComFollowersCount + emailFollowersCount + publicizeCount
 
                 if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
                     let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
