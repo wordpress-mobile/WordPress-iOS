@@ -28,6 +28,9 @@ class BlazeWebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSubviews()
+        configureWebView()
+        configureNavBar()
+        startBlazeFlow()
     }
 
     // MARK: Private Helpers
@@ -40,7 +43,8 @@ class BlazeWebViewController: UIViewController {
     }
 
     private func configureWebView() {
-        // set delegate
+        webView.navigationDelegate = self
+        progressView.observeProgress(webView: webView)
     }
 
     private func configureNavBar() {
@@ -51,4 +55,8 @@ class BlazeWebViewController: UIViewController {
     private func startBlazeFlow() {
         // load url
     }
+}
+
+extension BlazeWebViewController: WKNavigationDelegate {
+
 }
