@@ -25,8 +25,9 @@
     self.coreDataStack = [self coreDataStackForTesting];
 
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:[self.coreDataStack mainContext]];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
-    WPAccount *account = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
+    AccountService *service = [[AccountService alloc] initWithCoreDataStack:self.coreDataStack];
+    NSManagedObjectID *accountID = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
+    WPAccount *account = [self.coreDataStack.mainContext existingObjectWithID:accountID error:nil];
     self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.coreDataStack.mainContext];
     self.blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     self.blog.url = @"http://test.blog/";
