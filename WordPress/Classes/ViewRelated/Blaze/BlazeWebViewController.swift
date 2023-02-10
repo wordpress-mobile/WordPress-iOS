@@ -60,6 +60,7 @@ class BlazeWebViewController: UIViewController {
 
     private func configureWebView() {
         webView.navigationDelegate = self
+        webView.customUserAgent = WPUserAgent.wordPress()
         progressView.observeProgress(webView: webView)
     }
 
