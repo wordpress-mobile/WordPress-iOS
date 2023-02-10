@@ -106,6 +106,7 @@ class BlazeWebViewController: UIViewController {
     // MARK: Actions
 
     @objc func cancelButtonTapped() {
+        dismiss(animated: true)
         // TODO: To be implemented
     }
 }
