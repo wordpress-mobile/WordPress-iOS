@@ -77,7 +77,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: BlazeWebView
 
-    func loadRequest(request: URLRequest) {
+    func load(request: URLRequest) {
         webView.load(request)
     }
 
@@ -94,7 +94,19 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 }
 
 extension BlazeWebViewController: WKNavigationDelegate {
-
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let viewModel else {
+            decisionHandler(.cancel)
+            return
+        }
+        let policy = viewModel.shouldNavigate(request: navigationAction.request)
+        if let redirect = policy.redirectRequest {
+            load(request: redirect)
+        }
+        decisionHandler(policy.action)
+    }
 }
 
 private extension BlazeWebViewController {

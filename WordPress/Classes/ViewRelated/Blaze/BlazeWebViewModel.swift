@@ -1,7 +1,7 @@
 import Foundation
 
 protocol BlazeWebView {
-    func loadRequest(request: URLRequest)
+    func load(request: URLRequest)
     var cookieJar: CookieJar { get }
 }
 
@@ -38,13 +38,20 @@ struct BlazeWebViewModel {
             return
         }
         authenticatedRequest(for: initialURL, with: view.cookieJar) { (request) in
-            view.loadRequest(request: request)
+            view.load(request: request)
         }
     }
 
     func cancelTapped() {
         // TODO: To be implemented
         // Track event
+    }
+
+    func shouldNavigate(request: URLRequest) -> WebNavigationPolicy {
+        // TODO: To be implemented
+        // Use this to track the current step and take actions accordingly
+        // We should also block unknown urls
+        return .allow
     }
 }
 
