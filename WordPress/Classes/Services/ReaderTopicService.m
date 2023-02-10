@@ -618,16 +618,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
- Finds an existing topic matching the specified name and, if found, makes it the
- selected topic.
- */
-- (void)selectTopicNamed:(NSString *)topicName
-{
-    ReaderAbstractTopic *topic = [self findTopicNamed:topicName];
-    [self setCurrentTopic:topic];
-}
-
-/**
  Finds an existing topic matching the specified topicID and, if found, makes it the
  selected topic.
  */
@@ -635,29 +625,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderAbstractTopic *topic = [self findTopicWithID:topicID];
     [self setCurrentTopic:topic];
-}
-
-/**
- Find an existing topic with the specified title.
-
- @param topicName The title of the topic to find in core data.
- @return A matching `ReaderTagTopic` instance or nil.
- */
-- (ReaderTagTopic *)findTopicNamed:(NSString *)topicName
-{
-    NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"title LIKE[c] %@", topicName];
-
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    request.sortDescriptors = @[sortDescriptor];
-    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return [topics firstObject];
 }
 
 /**
