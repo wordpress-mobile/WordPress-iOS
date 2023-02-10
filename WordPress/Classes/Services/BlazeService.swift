@@ -31,7 +31,16 @@ final class BlazeService {
         remote.getStatus(forSiteId: siteId) { result in
             switch result {
             case .success(let approved):
-                success(approved)
+
+                self.contextManager.performAndSave({ context in
+                    guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
+                        return
+                    }
+                    blog.isBlazeApproved = approved
+                }, completion: {
+                    success(approved)
+                }, on: .main)
+
             case .failure(let error):
                 failure(error)
             }
