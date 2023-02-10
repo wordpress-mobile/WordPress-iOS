@@ -5294,6 +5294,8 @@
 		FEA088052696F7AA00193358 /* WPStyleGuide+List.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */; };
 		FEA1123C29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1123B29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift */; };
 		FEA1123D29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1123B29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift */; };
+		FEA1123F29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1123E29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift */; };
+		FEA1124029964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1123E29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift */; };
 		FEA312842987FB0100FFD405 /* BlogJetpackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA312832987FB0100FFD405 /* BlogJetpackTests.swift */; };
 		FEA5CE7F2701DC8000B41F2A /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		FEA6517B281C491C002EA086 /* BloggingPromptsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA6517A281C491C002EA086 /* BloggingPromptsService.swift */; };
@@ -8912,6 +8914,7 @@
 		FEA088022696E81F00193358 /* ListTableHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableHeaderView.xib; sourceTree = "<group>"; };
 		FEA088042696F7AA00193358 /* WPStyleGuide+List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+List.swift"; sourceTree = "<group>"; };
 		FEA1123B29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfHostedJetpackRemoteInstallViewModel.swift; sourceTree = "<group>"; };
+		FEA1123E29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPComJetpackRemoteInstallViewModel.swift; sourceTree = "<group>"; };
 		FEA312832987FB0100FFD405 /* BlogJetpackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogJetpackTests.swift; sourceTree = "<group>"; };
 		FEA6517A281C491C002EA086 /* BloggingPromptsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsService.swift; sourceTree = "<group>"; };
 		FEA7948C26DD136700CEC520 /* CommentHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -14015,6 +14018,7 @@
 			children = (
 				9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */,
 				FEA1123B29944896008097B0 /* SelfHostedJetpackRemoteInstallViewModel.swift */,
+				FEA1123E29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -20741,6 +20745,7 @@
 				17A28DC3205001A900EA6D9E /* FilterTabBar.swift in Sources */,
 				400A2C8C2217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift in Sources */,
 				D858F30320E201F4007E8A1C /* EditComment.swift in Sources */,
+				FEA1123F29964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */,
 				FAE8EE99273AC06F00A65307 /* QuickStartSettings.swift in Sources */,
 				B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
@@ -24485,6 +24490,7 @@
 				FABB26112602FC2C00C8785C /* LastPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB26122602FC2C00C8785C /* ActivityRangesFactory.swift in Sources */,
 				08A4E12D289D2337001D9EC7 /* UserPersistentRepository.swift in Sources */,
+				FEA1124029964BCA008097B0 /* WPComJetpackRemoteInstallViewModel.swift in Sources */,
 				C35D4FF2280077F100DB90B5 /* SiteCreationStep.swift in Sources */,
 				C79C308026EA975000E88514 /* ReferrerDetailsRow.swift in Sources */,
 				FABB26132602FC2C00C8785C /* SFHFKeychainUtils.m in Sources */,
