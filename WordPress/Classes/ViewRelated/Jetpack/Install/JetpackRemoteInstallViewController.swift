@@ -123,6 +123,10 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
         case .failure:
             viewModel.installJetpack(for: blog, isRetry: true)
         case .success:
+            guard viewModel.shouldConnectToJetpack else {
+                delegate?.jetpackRemoteInstallCompleted()
+                return
+            }
             openInstallJetpackURL()
         default:
             break
