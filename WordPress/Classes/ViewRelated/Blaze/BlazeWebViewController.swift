@@ -26,6 +26,16 @@ class BlazeWebViewController: UIViewController {
         return URL(string: urlString)
     }
 
+    // MARK: Lazy Loaded Views
+
+    private lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: Strings.cancelButtonTitle,
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(cancelButtonTapped))
+        return button
+    }()
+
     // MARK: Initializers
 
     init(blog: Blog, postID: NSNumber?) {
@@ -65,8 +75,21 @@ class BlazeWebViewController: UIViewController {
     }
 
     private func configureNavBar() {
-        // set title
-        // set button
+        title = Strings.navigationTitle
+        navigationItem.rightBarButtonItem = cancelButton
+        configureNavBarAppearance()
+    }
+
+    private func configureNavBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = Colors.navigationBarColor
+        appearance.shadowColor = .clear
+        navigationItem.standardAppearance = appearance
+        navigationItem.compactAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationItem.compactScrollEdgeAppearance = appearance
+        }
     }
 
     private func startBlazeFlow() {
@@ -77,6 +100,12 @@ class BlazeWebViewController: UIViewController {
         authenticatedRequest(for: initialURL, on: webView) { [weak self] (request) in
             self?.webView.load(request)
         }
+    }
+
+    // MARK: Actions
+
+    @objc func cancelButtonTapped() {
+        // TODO: To be implemented
     }
 }
 
@@ -94,5 +123,16 @@ private extension BlazeWebViewController {
     enum Constants {
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@"
         static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d"
+    }
+
+    enum Strings {
+        static let navigationTitle = NSLocalizedString("feature.blaze.title",
+                                                       value: "Blaze",
+                                                       comment: "Name of a feature that allows the user to promote their posts.")
+        static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+    }
+
+    enum Colors {
+        static let navigationBarColor = UIColor(hexString: "F2F1F6")?.withAlphaComponent(0.8)
     }
 }
