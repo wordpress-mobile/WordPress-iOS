@@ -7,6 +7,7 @@ struct SupportTableViewControllerConfiguration {
     var meHeaderConfiguration: MeHeaderView.Configuration?
     var showsLogOutButton: Bool = false
     var showsLogsSection: Bool = true
+    
 
     // MARK: Default Configurations
 
