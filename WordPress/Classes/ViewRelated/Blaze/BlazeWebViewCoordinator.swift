@@ -12,6 +12,9 @@ class BlazeWebViewCoordinator {
                                  source: Source,
                                  blog: Blog,
                                  postID: NSNumber?) {
-        // TODO: Implement this
+        let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID)
+        let navigationViewController = UINavigationController(rootViewController: blazeViewController)
+        navigationViewController.modalPresentationStyle = .formSheet
+        viewController.present(navigationViewController, animated: true)
     }
 }
