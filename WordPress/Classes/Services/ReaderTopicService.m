@@ -201,7 +201,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)deleteAllTopics
 {
     [self setCurrentTopic:nil];
-    NSArray *currentTopics = [self allTopics];
+    NSArray *currentTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext error:nil];
     for (ReaderAbstractTopic *topic in currentTopics) {
         DDLogInfo(@"Deleting topic: %@", topic.title);
         [self preserveSavedPostsFromTopic:topic];
@@ -1003,24 +1003,6 @@ array are marked as being unfollowed in Core Data.
 
 /**
  Fetch all `ReaderAbstractTopics` currently in Core Data.
-
- @return An array of all `ReaderAbstractTopics` currently persisted in Core Data.
- */
-- (NSArray *)allTopics
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return results;
-}
-
-/**
- Fetch all `ReaderAbstractTopics` currently in Core Data.
  
  @return An array of all `ReaderAbstractTopics` currently persisted in Core Data.
  */
@@ -1052,13 +1034,15 @@ array are marked as being unfollowed in Core Data.
  */
 - (ReaderAbstractTopic *)findWithPath:(NSString *)path
 {
-    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
+    NSArray *allTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext];
+    NSArray *results = [allTopics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
 }
 
 - (ReaderAbstractTopic *)findContainingPath:(NSString *)path
 {
-    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS %@", [path lowercaseString]]];
+    NSArray *allTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext];
+    NSArray *results = [allTopics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS %@", [path lowercaseString]]];
     return [results firstObject];
 }
 
