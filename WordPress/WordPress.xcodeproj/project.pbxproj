@@ -1789,6 +1789,8 @@
 		80C523A2299597E600B1C14B /* BlazeWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A0299597E600B1C14B /* BlazeWebViewCoordinator.swift */; };
 		80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A329959DE000B1C14B /* BlazeWebViewController.swift */; };
 		80C523A529959DE000B1C14B /* BlazeWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A329959DE000B1C14B /* BlazeWebViewController.swift */; };
+		80C523A72995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */; };
+		80C523A82995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */; };
 		80C740FB2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */; };
 		80C740FC2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */; };
 		80EF671F27F135EB0063B138 /* WhatIsNewViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */; };
@@ -6983,6 +6985,7 @@
 		80B016D02803AB9F00D15566 /* DashboardPostsListCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPostsListCardCell.swift; sourceTree = "<group>"; };
 		80C523A0299597E600B1C14B /* BlazeWebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewCoordinator.swift; sourceTree = "<group>"; };
 		80C523A329959DE000B1C14B /* BlazeWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewController.swift; sourceTree = "<group>"; };
+		80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewModel.swift; sourceTree = "<group>"; };
 		80C740FA2989FC4600199027 /* PostStatsTableViewController+JetpackBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostStatsTableViewController+JetpackBannerViewController.swift"; sourceTree = "<group>"; };
 		80EF671E27F135EB0063B138 /* WhatIsNewViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatIsNewViewAppearance.swift; sourceTree = "<group>"; };
 		80EF672127F160720063B138 /* DashboardCustomAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCustomAnnouncementCell.swift; sourceTree = "<group>"; };
@@ -12657,6 +12660,7 @@
 			children = (
 				80C523A0299597E600B1C14B /* BlazeWebViewCoordinator.swift */,
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
+				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -20101,6 +20105,7 @@
 				F1C197A62670DDB100DE1FF7 /* BloggingRemindersTracker.swift in Sources */,
 				17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
+				80C523A72995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */,
 				C7A09A4D28403A34003096ED /* QRLoginURLParser.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */,
@@ -23406,6 +23411,7 @@
 				8BBBCE712717651200B277AC /* JetpackModuleHelper.swift in Sources */,
 				FABB22B62602FC2C00C8785C /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				FABB22B72602FC2C00C8785C /* SettingsListEditorViewController.swift in Sources */,
+				80C523A82995D73C00B1C14B /* BlazeWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
 				FABB22B92602FC2C00C8785C /* NoResultsTenorConfiguration.swift in Sources */,
