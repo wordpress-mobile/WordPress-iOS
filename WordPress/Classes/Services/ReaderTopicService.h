@@ -93,15 +93,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                 source:(NSString *)source;
 
 /**
- Follow the tag with the specified slug
-
- @param tagName The name of a tag to follow.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
-
-/**
  Toggle the following status of the tag for the specified tag topic
 
  @param topic The tag topic to toggle following status
