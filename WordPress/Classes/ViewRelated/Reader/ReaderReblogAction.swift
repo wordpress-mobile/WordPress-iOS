@@ -6,26 +6,20 @@ class ReaderReblogAction {
         case detail
     }
 
-    private let blogService: BlogService
+    private let coreDataStack: CoreDataStack
     private let presenter: ReaderReblogPresenter
 
-    init(blogService: BlogService? = nil,
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
          presenter: ReaderReblogPresenter = ReaderReblogPresenter()) {
+        self.coreDataStack = coreDataStack
         self.presenter = presenter
-
-        // fallback for self.blogService
-        func makeBlogService() -> BlogService {
-            let context = ContextManager.sharedInstance().mainContext
-            return BlogService(managedObjectContext: context)
-        }
-        self.blogService = blogService ?? makeBlogService()
     }
 
     /// Executes the reblog action on the origin UIViewController
     func execute(readerPost: ReaderPost, origin: UIViewController, reblogSource: ReblogSource) {
         trackReblog(readerPost: readerPost, reblogSource: reblogSource)
 
-        presenter.presentReblog(blogService: blogService,
+        presenter.presentReblog(coreDataStack: coreDataStack,
                                 readerPost: readerPost,
                                 origin: origin)
     }

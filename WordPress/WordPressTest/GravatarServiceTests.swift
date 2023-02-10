@@ -52,8 +52,9 @@ class GravatarServiceTests: CoreDataTestCase {
     private func createTestAccount(username: String, token: String, emailAddress: String) -> WPAccount {
         let mainContext = contextManager.mainContext
 
-        let accountService = AccountService(managedObjectContext: mainContext)
-        let defaultAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
+        let accountService = AccountService(coreDataStack: contextManager)
+        let accountId = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
+        let defaultAccount = try! contextManager.mainContext.existingObject(with: accountId) as! WPAccount
         defaultAccount.email = emailAddress
         contextManager.saveContextAndWait(mainContext)
 

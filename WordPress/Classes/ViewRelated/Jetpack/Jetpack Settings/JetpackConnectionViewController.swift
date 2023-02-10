@@ -106,10 +106,8 @@ open class JetpackConnectionViewController: UITableViewController {
                                                success: { [weak self] in
                                                    self?.stopLoading()
                                                    if let blog = self?.blog {
-                                                       let context = ContextManager.sharedInstance().mainContext
-                                                       let service = BlogService(managedObjectContext: context)
+                                                       let service = BlogService(coreDataStack: ContextManager.sharedInstance())
                                                        service.remove(blog)
-                                                       try? context.save()
                                                        self?.delegate?.jetpackDisconnectedForBlog(blog)
                                                    } else {
                                                        self?.dismiss()
