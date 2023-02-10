@@ -11,6 +11,7 @@ private struct ElementStringIDs {
     static let postsButton = "Blog Post Row"
     static let mediaButton = "Media Row"
     static let statsButton = "Stats Row"
+    static let peopleButton = "People Row"
     static let settingsButton = "Settings Row"
     static let createButton = "floatingCreateButton"
     static let ReaderButton = "Reader"
@@ -151,6 +152,10 @@ public class MySiteScreen: ScreenObject {
 
     public func goToMenu() {
         segmentedControlMenuButton(app).tap()
+    }
+
+    public func goToPeople() {
+        app.cells[ElementStringIDs.peopleButton].tap()
     }
 
     public static func isLoaded() -> Bool {
