@@ -53,6 +53,7 @@ class BlazeWebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.isModalInPresentation = true
         configureSubviews()
         configureWebView()
         configureNavBar()
