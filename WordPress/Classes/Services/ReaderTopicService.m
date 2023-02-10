@@ -915,7 +915,7 @@ array are marked as being unfollowed in Core Data.
 - (void)mergeMenuTopics:(NSArray *)topics isLoggedIn:(BOOL)isLoggedIn withSuccess:(void (^)(void))success
 {
     [self.managedObjectContext performBlock:^{
-        NSArray *currentTopics = [self allMenuTopics];
+        NSArray *currentTopics = [ReaderAbstractTopic lookupAllMenusInContext:self.managedObjectContext error:nil];
         NSMutableArray *topicsToKeep = [NSMutableArray array];
 
         for (RemoteReaderTopic *remoteTopic in topics) {
@@ -979,26 +979,6 @@ array are marked as being unfollowed in Core Data.
     [self mergeMenuTopics:topics
                isLoggedIn:ReaderHelpers.isLoggedIn
               withSuccess:success];
-}
-
-/**
- Fetch all `ReaderAbstractTopics` for the menu currently in Core Data.
-
- @return An array of all `ReaderAbstractTopics` for the menu currently persisted in Core Data.
- */
-- (NSArray *)allMenuTopics
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = YES"];
-
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return results;
 }
 
 /**
