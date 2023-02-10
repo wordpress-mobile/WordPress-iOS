@@ -73,13 +73,20 @@ class BlazeWebViewController: UIViewController {
             // TODO: Call delegate with error
             return
         }
-        let request = URLRequest(url: initialURL)
-        webView.load(request)
+        authenticatedRequest(for: initialURL, on: webView) { [weak self] (request) in
+            self?.webView.load(request)
+        }
     }
 }
 
 extension BlazeWebViewController: WKNavigationDelegate {
 
+}
+
+extension BlazeWebViewController: WebKitAuthenticatable {
+    var authenticator: RequestAuthenticator? {
+        RequestAuthenticator(blog: blog)
+    }
 }
 
 private extension BlazeWebViewController {
