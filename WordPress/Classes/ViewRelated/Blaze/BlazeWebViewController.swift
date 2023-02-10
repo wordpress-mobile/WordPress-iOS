@@ -1,31 +1,16 @@
 import UIKit
 import WebKit
 
-class BlazeWebViewController: UIViewController {
+class BlazeWebViewController: UIViewController, BlazeWebView {
+
+    // MARK: Public Variables
+
+    let webView: WKWebView
 
     // MARK: Private Variables
 
-    private let source: BlazeWebViewCoordinator.Source
-    private let blog: Blog
-    private let postID: NSNumber?
-    private let webView: WKWebView
+    private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
-
-    // MARK: Computed Variables
-
-    private var initialURL: URL? {
-        guard let siteURL = blog.displayURL else {
-            return nil
-        }
-        var urlString: String
-        if let postID {
-            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.rawValue)
-        }
-        else {
-            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.rawValue)
-        }
-        return URL(string: urlString)
-    }
 
     // MARK: Lazy Loaded Views
 
@@ -40,11 +25,9 @@ class BlazeWebViewController: UIViewController {
     // MARK: Initializers
 
     init(source: BlazeWebViewCoordinator.Source, blog: Blog, postID: NSNumber?) {
-        self.source = source
-        self.blog = blog
-        self.postID = postID
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
+        viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)
     }
 
     required init?(coder: NSCoder) {
@@ -59,7 +42,7 @@ class BlazeWebViewController: UIViewController {
         configureSubviews()
         configureWebView()
         configureNavBar()
-        startBlazeFlow()
+        viewModel?.startBlazeFlow()
     }
 
     // MARK: Private Helpers
@@ -95,32 +78,22 @@ class BlazeWebViewController: UIViewController {
         }
     }
 
-    private func startBlazeFlow() {
-        guard let initialURL else {
-            // TODO: Call delegate with error
-            return
-        }
-        authenticatedRequest(for: initialURL, on: webView) { [weak self] (request) in
-            self?.webView.load(request)
-        }
+    // MARK: BlazeWebView
+
+    func loadRequest(request: URLRequest) {
+        webView.load(request)
     }
 
     // MARK: Actions
 
     @objc func cancelButtonTapped() {
         dismiss(animated: true)
-        // TODO: To be implemented
+        viewModel?.cancelTapped()
     }
 }
 
 extension BlazeWebViewController: WKNavigationDelegate {
 
-}
-
-extension BlazeWebViewController: WebKitAuthenticatable {
-    var authenticator: RequestAuthenticator? {
-        RequestAuthenticator(blog: blog)
-    }
 }
 
 private extension BlazeWebViewController {
