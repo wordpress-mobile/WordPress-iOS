@@ -3,12 +3,9 @@ import WebKit
 
 class BlazeWebViewController: UIViewController, BlazeWebView {
 
-    // MARK: Public Variables
-
-    let webView: WKWebView
-
     // MARK: Private Variables
 
+    private let webView: WKWebView
     private var viewModel: BlazeWebViewModel?
     private let progressView = WebProgressView()
 
@@ -82,6 +79,10 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     func loadRequest(request: URLRequest) {
         webView.load(request)
+    }
+
+    var cookieJar: CookieJar {
+        webView.configuration.websiteDataStore.httpCookieStore
     }
 
     // MARK: Actions

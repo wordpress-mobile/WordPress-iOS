@@ -2,7 +2,7 @@ import Foundation
 
 protocol BlazeWebView {
     func loadRequest(request: URLRequest)
-    var webView: WKWebView { get }
+    var cookieJar: CookieJar { get }
 }
 
 struct BlazeWebViewModel {
@@ -37,7 +37,7 @@ struct BlazeWebViewModel {
             // TODO: Track error & dismiss view
             return
         }
-        authenticatedRequest(for: initialURL, on: view.webView) { (request) in
+        authenticatedRequest(for: initialURL, with: view.cookieJar) { (request) in
             view.loadRequest(request: request)
         }
     }
