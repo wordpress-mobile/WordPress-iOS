@@ -5,6 +5,7 @@ class BlazeWebViewController: UIViewController {
 
     // MARK: Private Variables
 
+    private let source: BlazeWebViewCoordinator.Source
     private let blog: Blog
     private let postID: NSNumber?
     private let webView: WKWebView
@@ -18,10 +19,10 @@ class BlazeWebViewController: UIViewController {
         }
         var urlString: String
         if let postID {
-            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue)
+            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.rawValue)
         }
         else {
-            urlString = String(format: Constants.blazeSiteURLFormat, siteURL)
+            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.rawValue)
         }
         return URL(string: urlString)
     }
@@ -38,7 +39,8 @@ class BlazeWebViewController: UIViewController {
 
     // MARK: Initializers
 
-    init(blog: Blog, postID: NSNumber?) {
+    init(source: BlazeWebViewCoordinator.Source, blog: Blog, postID: NSNumber?) {
+        self.source = source
         self.blog = blog
         self.postID = postID
         self.webView = WKWebView(frame: .zero)
@@ -123,8 +125,8 @@ extension BlazeWebViewController: WebKitAuthenticatable {
 
 private extension BlazeWebViewController {
     enum Constants {
-        static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@"
-        static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d"
+        static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"
+        static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d&source=%@"
     }
 
     enum Strings {
