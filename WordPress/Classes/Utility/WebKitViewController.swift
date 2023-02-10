@@ -11,13 +11,17 @@ protocol WebKitAuthenticatable {
 
 extension WebKitAuthenticatable {
     func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
+        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+        authenticatedRequest(for: url, with: cookieStore, completion: completion)
+    }
+
+    func authenticatedRequest(for url: URL, with cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
         guard let authenticator = authenticator else {
             return completion(URLRequest(url: url))
         }
 
         DispatchQueue.main.async {
-            let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-            authenticator.request(url: url, cookieJar: cookieStore) { (request) in
+            authenticator.request(url: url, cookieJar: cookieJar) { (request) in
                 completion(request)
             }
         }
