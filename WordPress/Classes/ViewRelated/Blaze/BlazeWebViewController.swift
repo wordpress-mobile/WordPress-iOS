@@ -110,11 +110,6 @@ extension BlazeWebViewController: WKNavigationDelegate {
 }
 
 private extension BlazeWebViewController {
-    enum Constants {
-        static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"
-        static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d&source=%@"
-    }
-
     enum Strings {
         static let navigationTitle = NSLocalizedString("feature.blaze.title",
                                                        value: "Blaze",
