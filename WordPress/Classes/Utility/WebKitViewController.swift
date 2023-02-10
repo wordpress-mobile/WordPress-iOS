@@ -11,8 +11,8 @@ protocol WebKitAuthenticatable {
 
 extension WebKitAuthenticatable {
     func authenticatedRequest(for url: URL, on webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
-        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-        authenticatedRequest(for: url, with: cookieStore, completion: completion)
+        let cookieJar = webView.configuration.websiteDataStore.httpCookieStore
+        authenticatedRequest(for: url, with: cookieJar, completion: completion)
     }
 
     func authenticatedRequest(for url: URL, with cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
