@@ -36,13 +36,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                               failure:(void(^)(NSError *error))failure;
 
 /**
- Counts the number of `ReaderTagTopics` the user has subscribed to.
- 
- @return The number of ReaderTagTopics whose `followed` property is set to `YES`
- */
-- (NSUInteger)numberOfSubscribedTopics;
-
-/**
  Deletes all search topics from core data and saves the context.
  Use to clean-up searches when they are finished.
  */
@@ -70,13 +63,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)deleteTopic:(ReaderAbstractTopic *)topic;
 
 /**
- Marks the specified topic as being subscribed, and marks it current.
- 
- @param topic The ReaderAbstractTopic to follow and make current.
- */
-- (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic;
-
-/**
  Creates a ReaderSearchTopic from the specified search phrase.
  
  @param phrase: The search phrase.
@@ -84,18 +70,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @return A ReaderSearchTopic instance.
  */
 - (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase;
-
-
-/**
- Unfollows the specified topic. If the specified topic was the current topic the 
- current topic is updated to a default.
-
- @param topic The ReaderAbstractTopic to unfollow.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-
-- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Unfollows the specified topic
@@ -169,13 +143,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @return A `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderAbstractTopic *)topicForFollowedSites;
-
-/**
- Fetch the topic for 'Discover' if it exists.
-
- @return A `ReaderAbstractTopic` instance or nil.
- */
-- (ReaderAbstractTopic *)topicForDiscover;
 
 /**
  Fetch a tag topic for a tag with the specified slug.

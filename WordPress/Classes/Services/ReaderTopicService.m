@@ -133,19 +133,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 }
 
-- (NSUInteger)numberOfSubscribedTopics
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"following = YES"];
-    NSError *error;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
-        return 0;
-    }
-    return count;
-}
-
 - (void)deleteAllSearchTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSearchTopic classNameWithoutNamespaces]];
@@ -273,39 +260,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return topic;
-}
-
-- (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic
-{
-    // Optimistically mark the topic subscribed.
-    topic.following = YES;
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-    [self setCurrentTopic:topic];
-
-    NSString *topicName = [topic.title lowercaseString];
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
-        // noop
-    } failure:^(NSError *error) {
-        DDLogError(@"%@ error following topic: %@", NSStringFromSelector(_cmd), error);
-    }];
-}
-
-- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
-{
-    BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
-    [self unfollowTag:topic withSuccess:^{
-        if (deletingCurrentTopic) {
-            [self setCurrentTopic:nil];
-            [self currentTopic];
-        }
-        if (success) {
-            success();
-        }
-    } failure:failure];
-
 }
 
 - (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
@@ -603,19 +557,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
-        return nil;
-    }
-    return (ReaderAbstractTopic *)[results firstObject];
-}
-
-- (ReaderAbstractTopic *)topicForDiscover
-{
-    NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/sites/53424024/posts"];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Failed to fetch topic for Discover: %@", error);
         return nil;
     }
     return (ReaderAbstractTopic *)[results firstObject];
