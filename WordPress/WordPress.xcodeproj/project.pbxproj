@@ -3596,6 +3596,8 @@
 		FA3536F525B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3536F425B01A2C0005A3A0 /* JetpackRestoreCompleteViewController.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
+		FA4BC0D02996A589005EB077 /* BlazeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BC0CF2996A589005EB077 /* BlazeService.swift */; };
+		FA4BC0D12996A589005EB077 /* BlazeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BC0CF2996A589005EB077 /* BlazeService.swift */; };
 		FA4F383627D766020068AAF5 /* MySiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F383527D766020068AAF5 /* MySiteSettings.swift */; };
 		FA4F383727D766020068AAF5 /* MySiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F383527D766020068AAF5 /* MySiteSettings.swift */; };
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
@@ -8785,6 +8787,7 @@
 		FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsScreen.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
+		FA4BC0CF2996A589005EB077 /* BlazeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeService.swift; sourceTree = "<group>"; };
 		FA4F383527D766020068AAF5 /* MySiteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteSettings.swift; sourceTree = "<group>"; };
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreHeaderView.swift; sourceTree = "<group>"; };
@@ -13374,6 +13377,7 @@
 				E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */,
 				F1ADCAF6241FEF0C00F150D2 /* AtomicAuthenticationService.swift */,
 				F12FA5D82428FA8F0054DA21 /* AuthenticationService.swift */,
+				FA4BC0CF2996A589005EB077 /* BlazeService.swift */,
 				46F584812624DCC80010A723 /* BlockEditorSettingsService.swift */,
 				FEA6517A281C491C002EA086 /* BloggingPromptsService.swift */,
 				822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */,
@@ -20439,6 +20443,7 @@
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				57047A4F22A961BC00B461DF /* PostSearchHeader.swift in Sources */,
+				FA4BC0D02996A589005EB077 /* BlazeService.swift in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
 				C3C2F84828AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift in Sources */,
 				F181EDE526B2AC7200C61241 /* BackgroundTasksCoordinator.swift in Sources */,
@@ -23210,6 +23215,7 @@
 				FABB222F2602FC2C00C8785C /* StoryPoster.swift in Sources */,
 				8B074A5127AC3A64003A2EB8 /* BlogDashboardViewModel.swift in Sources */,
 				FEAC916F28001FC4005026E7 /* AvatarTrainView.swift in Sources */,
+				FA4BC0D12996A589005EB077 /* BlazeService.swift in Sources */,
 				FABB22302602FC2C00C8785C /* Double+Stats.swift in Sources */,
 				FABB22312602FC2C00C8785C /* CircularProgressView.swift in Sources */,
 				FABB22322602FC2C00C8785C /* StatsNoDataRow.swift in Sources */,
