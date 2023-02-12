@@ -126,6 +126,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
+            getBlazeStatus(for: newBlog)
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateNavigationTitle(for: newBlog)
@@ -814,6 +815,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
+            self.getBlazeStatus(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
@@ -939,6 +941,22 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         }
 
         self.blog = blog
+    }
+
+    // MARK: - Blaze
+
+    private func getBlazeStatus(for blog: Blog?) {
+        guard FeatureFlag.blaze.enabled,
+              let blog = blog,
+              let blazeService = BlazeService() else {
+            return
+        }
+
+        blazeService.getStatus(for: blog, success: { approved in
+            print(approved)
+        }, failure: { error in
+            print(error)
+        })
     }
 
     // MARK: - Blogging Prompts
