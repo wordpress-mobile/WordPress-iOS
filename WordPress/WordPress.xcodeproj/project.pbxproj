@@ -1128,6 +1128,8 @@
 		4A9B81E42921AE03007A05D1 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9B81E22921AE02007A05D1 /* ContextManager.swift */; };
 		4AA33EF829963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */; };
 		4AA33EF929963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */; };
+		4AA33EFB2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */; };
+		4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6493,6 +6495,7 @@
 		4A9948E3297624EF006282A9 /* Blog+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Creation.swift"; sourceTree = "<group>"; };
 		4A9B81E22921AE02007A05D1 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderAbstractTopic+Lookup.swift"; sourceTree = "<group>"; };
+		4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderListTopic+Creation.swift"; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -10229,6 +10232,7 @@
 				E62079DE1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift */,
 				E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */,
 				E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */,
+				4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */,
 				E6BDEA721CE4824300682885 /* ReaderSearchTopic.swift */,
 				E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */,
 				9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */,
@@ -21556,6 +21560,7 @@
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,
 				43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */,
 				3F8CB10623A07B17007627BF /* ReaderReblogAction.swift in Sources */,
+				4AA33EFB2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */,
 				934098C3271957A600B3E77E /* SiteStatsInsightsDelegate.swift in Sources */,
 				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
@@ -24497,6 +24502,7 @@
 				FABB260E2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.swift in Sources */,
 				FABB260F2602FC2C00C8785C /* RemoteFeatureFlagStore.swift in Sources */,
 				FABB26102602FC2C00C8785C /* SuggestionsTableViewCell.m in Sources */,
+				4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */,
 				F10D635026F0B78E00E46CC7 /* Blog+Organization.swift in Sources */,
 				FABB26112602FC2C00C8785C /* LastPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				FABB26122602FC2C00C8785C /* ActivityRangesFactory.swift in Sources */,

@@ -242,7 +242,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
     NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
-    ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
+    ReaderSearchTopic *topic = (ReaderSearchTopic *)[ReaderAbstractTopic lookupWithPath:path inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
@@ -715,7 +715,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTagTopic *)tagTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderTagTopic *topic = (ReaderTagTopic *)[self findWithPath:remoteTopic.path];
+    ReaderTagTopic *topic = (ReaderTagTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderTagTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTagTopic classNameWithoutNamespaces]
                                                              inManagedObjectContext:self.managedObjectContext];
@@ -733,7 +733,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderListTopic *)listTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderListTopic *topic = (ReaderListTopic *)[self findWithPath:remoteTopic.path];
+    ReaderListTopic *topic = (ReaderListTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderListTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderListTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
@@ -752,7 +752,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderDefaultTopic *)defaultTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[self findWithPath:remoteTopic.path];
+    ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderDefaultTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
@@ -768,7 +768,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTeamTopic *)teamTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderTeamTopic *topic = (ReaderTeamTopic *)[self findWithPath:remoteTopic.path];
+    ReaderTeamTopic *topic = (ReaderTeamTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderTeamTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTeamTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
@@ -786,7 +786,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo
 {
-    ReaderSiteTopic *topic = (ReaderSiteTopic *)[self findWithPath:siteInfo.postsEndpoint];
+    ReaderSiteTopic *topic = (ReaderSiteTopic *)[ReaderAbstractTopic lookupWithPath:siteInfo.postsEndpoint inContext:self.managedObjectContext];
     if (!topic || ![topic isKindOfClass:[ReaderSiteTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
@@ -1004,26 +1004,6 @@ array are marked as being unfollowed in Core Data.
     }
     
     return results;
-}
-
-/**
- Find a specific ReaderAbstractTopic by its `path` property.
-
- @param path The unique, cannonical path of the topic.
- @return A matching `ReaderAbstractTopic` or nil if there is no match.
- */
-- (ReaderAbstractTopic *)findWithPath:(NSString *)path
-{
-    NSArray *allTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext];
-    NSArray *results = [allTopics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
-    return [results firstObject];
-}
-
-- (ReaderAbstractTopic *)findContainingPath:(NSString *)path
-{
-    NSArray *allTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext];
-    NSArray *results = [allTopics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS %@", [path lowercaseString]]];
-    return [results firstObject];
 }
 
 - (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID
