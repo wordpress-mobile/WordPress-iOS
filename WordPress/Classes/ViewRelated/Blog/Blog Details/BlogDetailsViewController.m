@@ -118,6 +118,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
              accessibilityHint:accessibilityHint
                          image:image
                     imageColor:[UIColor murielListIcon]
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                       callback:callback];
 }
 
@@ -147,14 +148,33 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
              accessibilityHint:nil
                          image:image
                     imageColor:imageColor
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                       callback:callback];
 }
+
+- (instancetype)initWithTitle:(NSString *)title
+      accessibilityIdentifier:(NSString *)accessibilityIdentifier
+                        image:(UIImage *)image
+                   imageColor:(UIColor *)imageColor
+                renderingMode:(UIImageRenderingMode)renderingMode
+                     callback:(void (^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+       accessibilityIdentifier:accessibilityIdentifier
+             accessibilityHint:nil
+                         image:image
+                    imageColor:imageColor
+                 renderingMode:renderingMode
+                      callback:callback];
+}
+
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
             accessibilityHint:(NSString * __nullable)accessibilityHint
                         image:(UIImage * __nonnull)image
-                   imageColor:(UIColor * __nonnull)imageColor
+                   imageColor:(UIColor * __nullable)imageColor
                      callback:(void(^_Nullable)(void))callback
 {
     return [self initWithTitle:title
@@ -163,21 +183,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
           accessibilityHint:nil
                       image:image
                  imageColor:imageColor
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                    callback:callback];
 }
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
-                    identifier:(NSString * __nonnull)identifier
-       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
-             accessibilityHint:(NSString *__nullable)accessibilityHint
-                         image:(UIImage * __nonnull)image
-                    imageColor:(UIColor * __nonnull)imageColor
-                      callback:(void(^)(void))callback
+                   identifier:(NSString * __nonnull)identifier
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+            accessibilityHint:(NSString *__nullable)accessibilityHint
+                        image:(UIImage * __nonnull)image
+                   imageColor:(UIColor * __nullable)imageColor
+                renderingMode:(UIImageRenderingMode)renderingMode
+                     callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
         _title = title;
-        _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _image = [image imageWithRenderingMode:renderingMode];
         _imageColor = imageColor;
         _callback = callback;
         _identifier = identifier;
@@ -908,7 +930,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                      accessibilityIdentifier:@"Blaze Row"
+                                                        image:[UIImage imageNamed:@"icon-blaze"]
+                                                   imageColor:nil
+                                                renderingMode:UIImageRenderingModeAlwaysOriginal
                                                      callback:^{
                                                          [weakSelf showBlaze];
                                                      }]];
