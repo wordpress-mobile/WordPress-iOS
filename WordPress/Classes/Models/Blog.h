@@ -100,7 +100,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureSmartframeEmbed,
     /// Does the blog support File Downloads section in stats?
     BlogFeatureFileDownloadsStats,
-
+    /// Does the blog support Blaze?
+    BlogFeatureBlaze,
+    
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {

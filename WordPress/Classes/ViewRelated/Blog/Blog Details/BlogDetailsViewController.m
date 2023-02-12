@@ -507,6 +507,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionBlaze:
+            if ([self.blog supports:BlogFeatureBlaze]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showBlaze];
+            }
+            break;
         case BlogDetailsSubsectionJetpackSettings:
             if ([self.blog supports:BlogFeatureActivity]) {
                 self.restorableSelectedIndexPath = indexPath;
@@ -571,6 +580,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionStats:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
+        case BlogDetailsSubsectionBlaze:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionJetpackSettings:
             return [NSIndexPath indexPathForRow:1 inSection:section];
@@ -893,6 +904,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                            }];
 
         [rows addObject:settingsRow];
+    }
+    
+    if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                                        image:[UIImage gridiconOfType:GridiconTypeHistory]
+                                                     callback:^{
+                                                         [weakSelf showBlaze];
+                                                     }]];
     }
     NSString *title = @"";
 
@@ -1593,6 +1612,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (void)showBlaze
+{
+    // TODO: Show Blaze screen
 }
 
 - (void)showScan

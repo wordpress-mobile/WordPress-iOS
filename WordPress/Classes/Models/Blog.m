@@ -608,6 +608,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsEmbedVariation: @"10.2"];
         case BlogFeatureFileDownloadsStats:
             return [self isHostedAtWPcom];
+        case BlogFeatureBlaze:
+            return [self isBlazeApproved];
     }
 }
 
