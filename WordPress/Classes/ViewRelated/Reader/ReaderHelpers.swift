@@ -246,6 +246,11 @@ struct ReaderPostMenuButtonTitles {
         return properties
     }
 
+    @objc open class func statsPropertiesForPostAuthor(_ post: ReaderPost, andValue value: AnyObject? = nil, forKey key: String? = nil) -> [AnyHashable: Any] {
+        var properties = Self.statsPropertiesForPost(post, andValue: value, forKey: key)
+        properties[WPAppAnalyticsKeyPostAuthorID] = post.authorID
+        return properties
+    }
 
     @objc open class func bumpPageViewForPost(_ post: ReaderPost) {
         // Don't bump page views for feeds else the wrong blog/post get's bumped

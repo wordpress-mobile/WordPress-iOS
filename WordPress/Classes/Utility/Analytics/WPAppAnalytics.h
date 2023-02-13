@@ -9,6 +9,7 @@ extern NSString * const WPAppAnalyticsDefaultsUserOptedOut;
 extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated;
 extern NSString * const WPAppAnalyticsKeyBlogID;
 extern NSString * const WPAppAnalyticsKeyPostID;
+extern NSString * const WPAppAnalyticsKeyPostAuthorID;
 extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
