@@ -388,6 +388,10 @@ target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
 end
 
+abstract_target 'Tools' do
+  pod 'SwiftLint', '~> 0.50'
+end
+
 # Static Frameworks:
 # ============
 #
@@ -500,4 +504,8 @@ post_install do |installer|
   tracks_target.build_configurations.each do |config|
     config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
   end
+
+  yellow_marker = "\033[33m"
+  reset_marker = "\033[0m"
+  puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
 end

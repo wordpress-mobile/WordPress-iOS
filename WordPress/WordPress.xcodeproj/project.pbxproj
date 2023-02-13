@@ -5418,6 +5418,20 @@
 			remoteGlobalIDString = 3F526C4B2538CF2A0069706C;
 			remoteInfo = WordPressHomeWidgetTodayExtension;
 		};
+		3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFA8E22A1F94E3DE0002170F;
+			remoteInfo = SwiftLint;
+		};
+		3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFA8E22A1F94E3DE0002170F;
+			remoteInfo = SwiftLint;
+		};
 		7358E6BD210BD318002323EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -17522,6 +17536,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3FCFFAFE2994A949002840C9 /* PBXTargetDependency */,
 				096A92FD26E2A0AE00448C68 /* PBXTargetDependency */,
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
 				7457667B202B558C00F42E40 /* PBXTargetDependency */,
@@ -17795,6 +17810,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3FCFFB002994AB25002840C9 /* PBXTargetDependency */,
 				0107E15728FEA03800DE87DB /* PBXTargetDependency */,
 				0107E0ED28F97E6100DE87DB /* PBXTargetDependency */,
 				8096212728E5411400940A5D /* PBXTargetDependency */,
@@ -19972,6 +19988,7 @@
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -19981,7 +19998,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nrake lint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "rake lint\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -24599,6 +24617,16 @@
 			isa = PBXTargetDependency;
 			target = 3F526C4B2538CF2A0069706C /* WordPressStatsWidgets */;
 			targetProxy = 3F526C5A2538CF2B0069706C /* PBXContainerItemProxy */;
+		};
+		3FCFFAFE2994A949002840C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
+			targetProxy = 3FCFFAFD2994A949002840C9 /* PBXContainerItemProxy */;
+		};
+		3FCFFB002994AB25002840C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
+			targetProxy = 3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */;
 		};
 		7358E6BE210BD318002323EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
