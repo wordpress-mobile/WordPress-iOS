@@ -38,15 +38,15 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     }
 
     func installJetpack(for blog: Blog, isRetry: Bool) {
-        // Ensure that the blog is accessible through the WP.com API, and doesn't already have the Jetpack plugin.
+        // Ensure that the blog is accessible through a WP.com account,
+        // and doesn't already have the Jetpack plugin.
         guard let siteID = blog.dotComID?.intValue,
-              !blog.hasJetpack,
-              blog.jetpackIsConnectedWithoutFullPlugin,
-              blog.isAccessibleThroughWPCom() else {
+              blog.jetpackIsConnectedWithoutFullPlugin else {
             // In this case, let's do nothing for now. Falling to this state should be a logic error.
             return
         }
 
+        // trigger the loading state.
         state = .installing
 
         service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
@@ -59,7 +59,7 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
             }
         }
 
-        // TODO: Handle cancellation.
+        // TODO: Handle cancellation?
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {

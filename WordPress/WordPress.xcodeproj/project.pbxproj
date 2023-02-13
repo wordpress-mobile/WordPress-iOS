@@ -5296,6 +5296,7 @@
 		FE6BB144293227AC001E5F7A /* ContentMigrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */; };
 		FE6BB1462932289B001E5F7A /* ContentMigrationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */; };
 		FE76C5E0293A63A800573C92 /* UIApplication+AppAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AB4878292F114A001F7AF8 /* UIApplication+AppAvailability.swift */; };
+		FE7FAABB299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */; };
 		FE9CC71A26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FE9CC71B26D7A2A40026AEF3 /* CommentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */; };
 		FEA088012696E7F600193358 /* ListTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA088002696E7F600193358 /* ListTableHeaderView.swift */; };
@@ -8923,6 +8924,7 @@
 		FE59DA9527D1FD0700624D26 /* WordPress 138.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 138.xcdatamodel"; sourceTree = "<group>"; };
 		FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinator.swift; sourceTree = "<group>"; };
 		FE6BB1452932289B001E5F7A /* ContentMigrationCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMigrationCoordinatorTests.swift; sourceTree = "<group>"; };
+		FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPComJetpackRemoteInstallViewModelTests.swift; sourceTree = "<group>"; };
 		FE97BC13274FCE7A00CF08F9 /* WordPress 137.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 137.xcdatamodel"; sourceTree = "<group>"; };
 		FE9CC71926D7A2A40026AEF3 /* CommentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailViewController.swift; sourceTree = "<group>"; };
 		FEA088002696E7F600193358 /* ListTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableHeaderView.swift; sourceTree = "<group>"; };
@@ -12625,6 +12627,7 @@
 		803DE81D29063689007D4E9C /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
+				FE7FAAB9299A35D40032A6F2 /* Install */,
 				8332DD2629259B9700802F7D /* Utility */,
 				803DE81E290636A4007D4E9C /* JetpackFeaturesRemovalCoordinatorTests.swift */,
 				801D951C291ADB7E0051993E /* JetpackOverlayFrequencyTrackerTests.swift */,
@@ -17348,6 +17351,14 @@
 				FE6BB142293227AC001E5F7A /* ContentMigrationCoordinator.swift */,
 			);
 			path = Migration;
+			sourceTree = "<group>";
+		};
+		FE7FAAB9299A35D40032A6F2 /* Install */ = {
+			isa = PBXGroup;
+			children = (
+				FE7FAABA299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift */,
+			);
+			name = Install;
 			sourceTree = "<group>";
 		};
 		FEA087FB2696DDE900193358 /* List */ = {
@@ -22647,6 +22658,7 @@
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				931215E1267DE1C0008C3B69 /* StatsTotalRowDataTests.swift in Sources */,
 				F41E4E8C28F18B7B001880C6 /* AppIconListViewModelTests.swift in Sources */,
+				FE7FAABB299A36570032A6F2 /* WPComJetpackRemoteInstallViewModelTests.swift in Sources */,
 				08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */,
 				805CC0B7296680CF002941DC /* RemoteFeatureFlagStoreMock.swift in Sources */,
 				73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */,
