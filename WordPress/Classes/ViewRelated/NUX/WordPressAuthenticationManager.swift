@@ -75,7 +75,8 @@ extension WordPressAuthenticationManager {
                                                    enableSignupWithGoogle: AppConfiguration.allowSignUp,
                                                    enableUnifiedAuth: true,
                                                    enableUnifiedCarousel: FeatureFlag.unifiedPrologueCarousel.enabled,
-                                                   enableSocialLogin: true)
+                                                   enableSocialLogin: true,
+                                                   googleLoginWithoutSDK: FeatureFlag.sdkLessGoogleSignIn.enabled)
     }
 
     private func authenticatorStyle() -> WordPressAuthenticatorStyle {
