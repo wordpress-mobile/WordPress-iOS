@@ -125,7 +125,7 @@ extension ReaderTopicService {
         postSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value:siteId), in: context) else {
+            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
                 failure(.topicNotfound(id: siteId))
                 return
             }
