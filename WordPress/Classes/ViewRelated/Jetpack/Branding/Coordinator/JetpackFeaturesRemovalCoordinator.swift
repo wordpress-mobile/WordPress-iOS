@@ -149,7 +149,13 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         let phase = generalPhase()
         let frequencyConfig = phase.frequencyConfig
         let frequencyTrackerPhaseString = source.frequencyTrackerPhaseString(phase: phase)
-        var viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog)
+
+        let coordinator = JetpackDefaultOverlayCoordinator()
+        let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog, coordinator: coordinator)
+        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
+        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+        coordinator.navigationController = navigationViewController
+        coordinator.viewModel = viewModel
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = JetpackOverlayFrequencyTracker(frequencyConfig: frequencyConfig,
@@ -160,7 +166,12 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
-        createAndPresentOverlay(with: viewModel, in: viewController, fullScreen: fullScreen)
+        presentOverlay(
+            navigationViewController: navigationViewController,
+            viewModel: viewModel,
+            in: viewController,
+            fullScreen: fullScreen
+        )
         frequencyTracker.track()
     }
 
@@ -175,7 +186,16 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
                                                    onWillDismiss: JetpackOverlayDismissCallback? = nil,
                                                    onDidDismiss: JetpackOverlayDismissCallback? = nil) {
         let phase = siteCreationPhase()
-        var viewModel = JetpackFullscreenOverlaySiteCreationViewModel(phase: phase, source: source)
+        let coordinator = JetpackDefaultOverlayCoordinator()
+        //
+        let viewModel = JetpackFullscreenOverlaySiteCreationViewModel(
+            phase: phase,
+            source: source,
+            coordinator: coordinator
+        )
+        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
+        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+        coordinator.viewModel = viewModel
         viewModel.onWillDismiss = onWillDismiss
         viewModel.onDidDismiss = onDidDismiss
         guard viewModel.shouldShowOverlay else {
@@ -183,14 +203,17 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
-        createAndPresentOverlay(with: viewModel, in: viewController)
+        presentOverlay(
+            navigationViewController: navigationViewController,
+            viewModel: viewModel,
+            in: viewController
+        )
     }
 
-    private static func createAndPresentOverlay(with viewModel: JetpackFullscreenOverlayViewModel,
-                                                in viewController: UIViewController,
-                                                fullScreen: Bool = false) {
-        let overlay = JetpackFullscreenOverlayViewController(with: viewModel)
-        let navigationViewController = UINavigationController(rootViewController: overlay)
+    private static func presentOverlay(navigationViewController: UINavigationController,
+                                       viewModel: JetpackFullscreenOverlayViewModel,
+                                       in viewController: UIViewController,
+                                       fullScreen: Bool = false) {
         let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
 

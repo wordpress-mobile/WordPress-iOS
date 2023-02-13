@@ -27,23 +27,28 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     var secondaryView: UIView? = nil
     let isCompact = false
 
+    var coordinator: JetpackOverlayCoordinator?
+
     init(siteName: String, plugin: Plugin) {
         self.subtitle = Self.subtitle(withSiteName: siteName, plugin: plugin)
     }
 
-    func trackOverlayDisplayed() {
+    func didDisplayOverlay() {
     }
 
-    func trackLearnMoreTapped() {
+    func didTapLink() {
+        // TODO: coordinator?.navigateToLinkRoute
     }
 
-    func trackSwitchButtonTapped() {
+    func didTapPrimary() {
+        coordinator?.navigateToPrimaryRoute()
     }
 
-    func trackCloseButtonTapped() {
+    func didTapClose() {
     }
 
-    func trackContinueButtonTapped() {
+    func didTapSecondary() {
+        coordinator?.navigateToSecondaryRoute()
     }
 
     private static func subtitle(withSiteName siteName: String, plugin: Plugin) -> NSAttributedString {

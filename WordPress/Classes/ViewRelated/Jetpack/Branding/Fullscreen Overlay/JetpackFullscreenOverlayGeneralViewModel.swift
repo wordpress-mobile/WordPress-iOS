@@ -2,12 +2,25 @@ import Foundation
 
 /// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the general phase
 /// Should be used for feature-specific and feature-collection overlays.
-struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewModel {
-
+final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewModel {
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
     let source: JetpackFeaturesRemovalCoordinator.OverlaySource
     let blog: Blog?
-    let actionInfoText: NSAttributedString? = nil
+    let actionInfoText: NSAttributedString?
+
+    let coordinator: JetpackDefaultOverlayCoordinator?
+
+    init(phase: JetpackFeaturesRemovalCoordinator.GeneralPhase,
+         source: JetpackFeaturesRemovalCoordinator.OverlaySource,
+         blog: Blog?,
+         actionInfoText: NSAttributedString? = nil,
+         coordinator: JetpackDefaultOverlayCoordinator) {
+        self.phase = phase
+        self.source = source
+        self.blog = blog
+        self.actionInfoText = actionInfoText
+        self.coordinator = coordinator
+    }
 
     var shouldShowOverlay: Bool {
         switch (phase, source) {
