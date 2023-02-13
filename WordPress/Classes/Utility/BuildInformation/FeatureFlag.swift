@@ -40,6 +40,7 @@ enum FeatureFlag: Int, CaseIterable {
     case siteCreationDomainPurchasing
     case readerUserBlocking
     case personalizeHomeTab
+    case sdkLessGoogleSignIn
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -128,6 +129,8 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .personalizeHomeTab:
             return false
+        case .sdkLessGoogleSignIn:
+            return true
         }
     }
 
@@ -226,6 +229,8 @@ extension FeatureFlag {
             return "Reader User Blocking"
         case .personalizeHomeTab:
             return "Personalize Home Tab"
+        case .sdkLessGoogleSignIn:
+            return "Sign-In with Google without the Google SDK"
         }
     }
 }
