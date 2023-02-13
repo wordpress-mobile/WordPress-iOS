@@ -6,13 +6,14 @@ final class WPComJetpackRemoteInstallViewModelTests: CoreDataTestCase {
 
     private let blogID = 101
     private let api = MockWordPressComRestApi()
+    private let tracker = MockEventTracker()
 
     private lazy var service: PluginJetpackProxyService = {
         .init(remote: JetpackProxyServiceRemote(wordPressComRestApi: api))
     }()
 
     private lazy var viewModel: WPComJetpackRemoteInstallViewModel = {
-        .init(service: service)
+        .init(service: service, tracker: tracker)
     }()
 
     // MARK: - Tests
@@ -116,6 +117,11 @@ private extension WPComJetpackRemoteInstallViewModelTests {
         case selfHostedViaSiteAddress
         case atomic
         case hostedAtWPCom
+    }
+
+    class MockEventTracker: EventTracker {
+        var event: WPAnalyticsEvent? = nil
+        var properties = [AnyHashable: Any]()
     }
 
     func makeBlog(with type: BlogType) -> Blog {
