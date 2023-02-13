@@ -34,7 +34,8 @@ class WPComJetpackRemoteInstallViewModel {
 
 extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     func viewReady() {
-        // No op.
+        // set the initial state & trigger the callback.
+        state = .install
     }
 
     func installJetpack(for blog: Blog, isRetry: Bool) {
