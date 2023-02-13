@@ -70,27 +70,33 @@ extension JetpackRemoteInstallStateViewData {
 // MARK: - Jetpack Remote Install Events
 
 enum JetpackRemoteInstallEvent {
-    // User is seeing the initial installation screen.
+    /// User is seeing the initial installation screen.
     case initial
 
-    // User initiated the Jetpack installation process.
+    /// User initiated the Jetpack installation process.
     case start
 
-    // Jetpack plugin is being installed.
+    /// Jetpack plugin is being installed.
     case loading
 
-    // Jetpack plugin installation succeeded.
+    /// Jetpack plugin installation succeeded.
     case completed
 
-    // Jetpack plugin installation failed.
+    /// Jetpack plugin installation failed.
     case failed(description: String, siteURLString: String)
 
-    // User retried the Jetpack installation process.
+    /// User retried the Jetpack installation process.
     case retry
 
-    // User initiated the Jetpack connection authorization.
+    /// User cancelled the installation process.
+    case cancel
+
+    /// User tapped the primary button in the completed state.
+    case completePrimaryButtonTapped
+
+    /// User initiated the Jetpack connection authorization.
     case connect
 
-    // User initiated a login to authorize the Jetpack connection.
+    /// User initiated a login to authorize the Jetpack connection.
     case login
 }
