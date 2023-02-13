@@ -5,20 +5,19 @@ protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func customerSupportButtonDidTouch()
 }
 
-protocol JetpackRemoteInstallStateViewModel: AnyObject {
-    var image: UIImage? { get }
-    var titleText: String { get }
-    var descriptionText: String { get }
-    var buttonTitleText: String { get }
+struct JetpackRemoteInstallStateViewData {
+    let image: UIImage?
+    let titleText: String
+    let descriptionText: String
+    let buttonTitleText: String
 
-    var hidesMainButton: Bool { get }
-    var hidesLoadingIndicator: Bool { get }
-    var hidesSupportButton: Bool { get }
+    let hidesMainButton: Bool
+    let hidesLoadingIndicator: Bool
+    let hidesSupportButton: Bool
 }
 
 class JetpackRemoteInstallStateView: UIViewController {
     weak var delegate: JetpackRemoteInstallStateViewDelegate?
-    weak var model: JetpackRemoteInstallStateViewModel?
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
@@ -36,22 +35,18 @@ class JetpackRemoteInstallStateView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func setupView() {
-        guard let model else {
-            return
-        }
+    func configure(with viewData: JetpackRemoteInstallStateViewData) {
+        imageView.image = viewData.image
 
-        imageView.image = model.image
+        titleLabel.text = viewData.titleText
+        descriptionLabel.text = viewData.descriptionText
 
-        titleLabel.text = model.titleText
-        descriptionLabel.text = model.descriptionText
+        mainButton.isHidden = viewData.hidesMainButton
+        mainButton.setTitle(viewData.buttonTitleText, for: .normal)
 
-        mainButton.isHidden = model.hidesMainButton
-        mainButton.setTitle(model.buttonTitleText, for: .normal)
+        activityIndicatorContainer.isHidden = viewData.hidesLoadingIndicator
 
-        activityIndicatorContainer.isHidden = model.hidesLoadingIndicator
-
-        supportButton.isHidden = model.hidesSupportButton
+        supportButton.isHidden = viewData.hidesSupportButton
     }
 }
 
