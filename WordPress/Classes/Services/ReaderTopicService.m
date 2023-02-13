@@ -548,20 +548,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-
-- (ReaderAbstractTopic *)topicForFollowedSites
-{
-    NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/following"];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
-        return nil;
-    }
-    return (ReaderAbstractTopic *)[results firstObject];
-}
-
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
                         isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success

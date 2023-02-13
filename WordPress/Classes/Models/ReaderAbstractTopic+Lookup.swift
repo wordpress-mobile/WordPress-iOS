@@ -69,4 +69,22 @@ extension ReaderAbstractTopic {
         try? lookup(pathContaining: path, in: context)
     }
 
+    /// Fetch the topic for 'sites I follow' if it exists.
+    ///
+    /// - Returns: A `ReaderAbstractTopic` instance or nil.
+    static func lookupFollowedSitesTopic(in context: NSManagedObjectContext) throws -> ReaderAbstractTopic? {
+        let request = NSFetchRequest<ReaderAbstractTopic>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "path LIKE %@", "*/read/following")
+        request.fetchLimit = 1
+        return try context.fetch(request).first
+    }
+
+    /// Fetch the topic for 'sites I follow' if it exists.
+    ///
+    /// - Returns: A `ReaderAbstractTopic` instance or nil.
+    @objc(lookupFollowedSitesTopicInContext:)
+    static func objc_lookupFollowedSitesTopic(in context: NSManagedObjectContext) -> ReaderAbstractTopic? {
+        try? lookupFollowedSitesTopic(in: context)
+    }
+
 }

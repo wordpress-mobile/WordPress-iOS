@@ -161,8 +161,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)syncPostsForFollowedSites
 {
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
+    ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:self.managedObjectContext];
     if (!followedSites) {
         return;
     }
