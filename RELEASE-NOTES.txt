@@ -8,6 +8,7 @@
 * [*] [internal] Refactored blog related operations (i.e. loading blogs of the logged in account, updating blog settings). [#20047]
 * [*] Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to block a followed site. [#20053]
+* [*] Add ability to block a followed site. [#20053]
 
 21.7
 -----
