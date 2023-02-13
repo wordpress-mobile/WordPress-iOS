@@ -10,8 +10,6 @@
 @import WordPressKit;
 
 
-NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
-NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
@@ -126,10 +124,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     } else {
         [[UserPersistentStoreFactory userDefaultsInstance] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil]; 
-        });
     }
 }
 

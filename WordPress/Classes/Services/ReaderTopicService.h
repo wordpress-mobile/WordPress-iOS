@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
-extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderAbstractTopic;
