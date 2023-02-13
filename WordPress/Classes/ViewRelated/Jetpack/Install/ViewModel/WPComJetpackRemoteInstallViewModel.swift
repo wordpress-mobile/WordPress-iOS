@@ -6,51 +6,75 @@
 ///
 class WPComJetpackRemoteInstallViewModel {
 
-    // The flow should complete after the plugin is installed.
+    // MARK: Dependencies
+
+    private let service: PluginJetpackProxyService
+
+    // MARK: Properties
+
+    // The flow should always complete after the plugin is installed.
     let shouldConnectToJetpack = false
 
-    var onChangeState: ((JetpackRemoteInstallState) -> Void)? = nil
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)? = nil
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
-            onChangeState?(state)
+            onChangeState?(state, viewData)
         }
     }
 
+    // MARK: Methods
+
+    init(service: PluginJetpackProxyService = .init()) {
+        self.service = service
+    }
 }
 
 // MARK: - View Model Implementation
 
 extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     func viewReady() {
-        // TODO
+        // No op.
     }
 
     func installJetpack(for blog: Blog, isRetry: Bool) {
-        // TODO
+        // Ensure that the blog is accessible through the WP.com API, and doesn't already have the Jetpack plugin.
+        guard let siteID = blog.dotComID?.intValue,
+              !blog.hasJetpack,
+              blog.jetpackIsConnectedWithoutFullPlugin,
+              blog.isAccessibleThroughWPCom() else {
+            // In this case, let's do nothing for now. Falling to this state should be a logic error.
+            return
+        }
+
+        state = .installing
+
+        service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
+            switch result {
+            case .success:
+                self?.state = .success
+            case .failure(let error):
+                DDLogError("Error: Jetpack plugin installation via proxy failed. \(error.localizedDescription)")
+                self?.state = .failure(.unknown)
+            }
+        }
+
+        // TODO: Handle cancellation.
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {
-        // TODO
-    }
-}
-
-// MARK: - Jetpack State View Model Overrides
-
-extension WPComJetpackRemoteInstallViewModel {
-    var descriptionText: String {
-        state == .success ? Constants.successDescriptionText : state.message
-    }
-
-    var buttonTitleText: String {
-        state == .success ? Constants.successButtonTitleText : state.buttonTitle
+        // TODO: Create a thin tracker object as dependency to make this testable.
     }
 }
 
 // MARK: - Private Helpers
 
 private extension WPComJetpackRemoteInstallViewModel {
+
     enum Constants {
+        // The identifier for the Jetpack plugin, used for the proxied .org plugin endpoint.
+        static let jetpackSlug = "jetpack"
+
         static let successDescriptionText = NSLocalizedString(
             "jetpack.install-flow.success.description",
             value: "Ready to use this site with the app.",
@@ -64,4 +88,14 @@ private extension WPComJetpackRemoteInstallViewModel {
                 + "Tapping on the button dismisses the installation screen."
         )
     }
+
+    // View data overrides.
+    var viewData: JetpackRemoteInstallStateViewData {
+        return .init(
+            state: state,
+            descriptionText: (state == .success ? Constants.successDescriptionText : state.message),
+            buttonTitleText: (state == .success ? Constants.successButtonTitleText : state.buttonTitle)
+        )
+    }
+
 }
