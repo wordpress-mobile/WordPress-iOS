@@ -7,6 +7,7 @@ struct JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayViewMod
     let phase: JetpackFeaturesRemovalCoordinator.GeneralPhase
     let source: JetpackFeaturesRemovalCoordinator.OverlaySource
     let blog: Blog?
+    let actionInfoText: NSAttributedString? = nil
 
     var shouldShowOverlay: Bool {
         switch (phase, source) {
