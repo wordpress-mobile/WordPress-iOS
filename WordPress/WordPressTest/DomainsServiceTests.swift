@@ -13,12 +13,12 @@ class DomainsServiceTests: CoreDataTestCase {
     var domainsEndpoint: String { return "sites/\(testSiteID)/domains" }
     let contentTypeJson = "application/json"
 
-    override func setUp() {
+    override func setUpWithError() throws {
         super.setUp()
 
         let api = WordPressComRestApi(oAuthToken: "")
         remote = DomainsServiceRemote(wordPressComRestApi: api)
-        testBlog = makeTestBlog()
+        testBlog = try makeTestBlog()
         contextManager.saveContextAndWait(mainContext)
     }
 
@@ -37,9 +37,10 @@ class DomainsServiceTests: CoreDataTestCase {
         }
     }
 
-    fileprivate func makeTestBlog() -> Blog {
-        let accountService = AccountService(managedObjectContext: mainContext)
-        let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
+    fileprivate func makeTestBlog() throws -> Blog {
+        let accountService = AccountService(coreDataStack: contextManager)
+        let accountID = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
+        let account = try XCTUnwrap(contextManager.mainContext.existingObject(with: accountID) as? WPAccount)
         let blog = Blog.createBlankBlog(with: account)
         blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
         blog.url = "http://dotcom1.wordpress.com/"

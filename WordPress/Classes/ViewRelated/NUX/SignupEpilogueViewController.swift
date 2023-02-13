@@ -287,7 +287,7 @@ private extension SignupEpilogueViewController {
             self.dismissEpilogue()
             return
         }
-        AccountService(managedObjectContext: context).updateUserDetails(for: account, success: { () in
+        AccountService(coreDataStack: ContextManager.sharedInstance()).updateUserDetails(for: account, success: { () in
             finished()
         }, failure: { _ in
             finished()

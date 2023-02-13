@@ -1,16 +1,31 @@
 import WordPressFlux
 
 class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
-    typealias JetpackRemoteInstallOnChangeState = (JetpackRemoteInstallState) -> Void
-
-    var onChangeState: JetpackRemoteInstallOnChangeState?
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)?
     private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
-            onChangeState?(state)
+            onChangeState?(state, viewData)
         }
+    }
+
+    var viewData: JetpackRemoteInstallStateViewData {
+        .init(image: state.image,
+              titleText: state.title,
+              descriptionText: state.message,
+              buttonTitleText: state.buttonTitle,
+              hidesMainButton: state == .installing,
+              hidesLoadingIndicator: state != .installing,
+              hidesSupportButton: {
+                  switch state {
+                  case .failure:
+                      return false
+                  default:
+                      return true
+                  }
+              }())
     }
 
     func viewReady() {

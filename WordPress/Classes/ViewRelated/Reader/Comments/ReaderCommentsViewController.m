@@ -32,7 +32,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                             ReaderCommentsFollowPresenterDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
-@property (nonatomic, strong) AccountService *accountService;
 @property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -79,14 +78,12 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     ReaderCommentsViewController *controller = [[self alloc] init];
     controller.post = post;
     controller.source = source;
-    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     return controller;
 }
 
 + (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID source:(ReaderCommentsSource)source
 {
     ReaderCommentsViewController *controller = [[self alloc] init];
-    controller.accountService = [[AccountService alloc] initWithManagedObjectContext:ContextManager.sharedInstance.mainContext];
     [controller setupWithPostID:postID siteID:siteID];
     [controller trackCommentsOpenedWithPostID:postID siteID:siteID source:source];
     return controller;

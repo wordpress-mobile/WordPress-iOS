@@ -3,12 +3,12 @@
 /// This protocol is mainly used by `JetpackRemoteInstallViewController`, and allows the installation process
 /// to be abstracted since there are many different ways to install the Jetpack plugin.
 ///
-protocol JetpackRemoteInstallViewModel: AnyObject, JetpackRemoteInstallStateViewModel {
+protocol JetpackRemoteInstallViewModel: AnyObject {
 
     // MARK: Properties
 
     /// The view controller can implement the closure to subscribe to every `state` changes.
-    var onChangeState: ((JetpackRemoteInstallState) -> Void)? { get set }
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)? { get set }
 
     /// An enum that represents the current installation state.
     var state: JetpackRemoteInstallState { get }

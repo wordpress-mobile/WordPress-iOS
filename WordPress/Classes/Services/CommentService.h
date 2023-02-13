@@ -23,22 +23,10 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                  commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
-+ (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
-
-// Create comment
-- (Comment * _Nullable)createCommentForBlog:(Blog *)blog;
-
 // Create reply
 - (Comment * _Nullable)createReplyForComment:(Comment *)comment;
 
-// Restore draft reply
-- (Comment * _Nullable)restoreReplyForComment:(Comment *)comment;
-
 // Sync comments
-- (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^ _Nullable)(BOOL hasMore))success
-                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
-
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
                     success:(void (^ _Nullable)(BOOL hasMore))success
@@ -54,10 +42,6 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
 // Load extra comments
-- (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^ _Nullable)(BOOL hasMore))success
-                        failure:(void (^ _Nullable)(NSError * _Nullable))failure;
-
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                      withStatus:(CommentStatusFilter)status
                         success:(void (^ _Nullable)(BOOL hasMore))success
