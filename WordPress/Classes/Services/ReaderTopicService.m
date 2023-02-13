@@ -408,7 +408,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     // Find existing tag by slug
-    ReaderTagTopic *existingTopic = [self findTagWithSlug:slug];
+    ReaderTagTopic *existingTopic = [ReaderTagTopic lookupWithSlug:slug inContext:self.managedObjectContext];
     if (existingTopic) {
         dispatch_async(dispatch_get_main_queue(), ^{
             success(existingTopic.objectID);
@@ -609,54 +609,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  */
 - (void)selectTopicWithID:(NSNumber *)topicID
 {
-    ReaderAbstractTopic *topic = [self findTopicWithID:topicID];
+    ReaderAbstractTopic *topic = [ReaderTagTopic lookupWithTagID:topicID inContext:self.managedObjectContext];
     [self setCurrentTopic:topic];
-}
-
-/**
- Find an existing topic with the specified slug.
-
- @param slug The slug of the topic to find in core data.
- @return A matching `ReaderTagTopic` instance or nil.
- */
-- (ReaderTagTopic *)findTagWithSlug:(NSString *)slug
-{
-    NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"slug = %@", slug];
-
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    request.sortDescriptors = @[sortDescriptor];
-    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return [topics firstObject];
-}
-
-/**
- Find an existing topic with the specified topicID.
-
- @param topicID The topicID of the topic to find in core data.
- @return A matching `ReaderTagTopic` instance or nil.
- */
-- (ReaderTagTopic *)findTopicWithID:(NSNumber *)topicID
-{
-    NSError *error;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"tagID = %@", topicID];
-
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    request.sortDescriptors = @[sortDescriptor];
-    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return [topics firstObject];
 }
 
 /**

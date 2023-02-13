@@ -1132,6 +1132,8 @@
 		4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */; };
 		4AA33F012999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */; };
 		4AA33F022999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */; };
+		4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
+		4AA33F05299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6499,6 +6501,7 @@
 		4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderAbstractTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderListTopic+Creation.swift"; sourceTree = "<group>"; };
 		4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSiteTopic+Lookup.swift"; sourceTree = "<group>"; };
+		4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTagTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -10241,6 +10244,7 @@
 				4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */,
 				9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */,
 				E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */,
+				4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */,
 				E1DB326B1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift */,
 				E10290731F30615A00DAC588 /* Role.swift */,
 				E6E27D611C6144DB0063F821 /* SharingButton.swift */,
@@ -21186,6 +21190,7 @@
 				F532AE1C253E55D40013B42E /* CreateButtonActionSheet.swift in Sources */,
 				8BCB83D124C21063001581BD /* ReaderStreamViewController+Ghost.swift in Sources */,
 				174C11932624C78900346EC6 /* Routes+Start.swift in Sources */,
+				4AA33F04299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
 				FA347AED26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FE32F006275F62620040BE67 /* WebCommentContentRenderer.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
@@ -23669,6 +23674,7 @@
 				FABB23812602FC2C00C8785C /* MySiteViewController.swift in Sources */,
 				46F584B92624E6380010A723 /* BlockEditorSettings+GutenbergEditorSettings.swift in Sources */,
 				F4D829622930E9F300038726 /* MigrationDeleteWordPressViewController.swift in Sources */,
+				4AA33F05299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */,
 				FABB23822602FC2C00C8785C /* FooterContentGroup.swift in Sources */,
 				FABB23832602FC2C00C8785C /* BasePageListCell.m in Sources */,
 				F163541726DE2ECE008B625B /* NotificationEventTracker.swift in Sources */,
