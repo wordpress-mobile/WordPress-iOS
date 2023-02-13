@@ -10,6 +10,7 @@ public class BloggingPromptSettings: NSManagedObject {
         self.reminderTime = remoteSettings.reminderTime
         self.promptRemindersEnabled = remoteSettings.promptRemindersEnabled
         self.isPotentialBloggingSite = remoteSettings.isPotentialBloggingSite
+        updatePromptSettingsIfNecessary(siteID: String(siteID), enabled: isPotentialBloggingSite)
         self.reminderDays = reminderDays ?? BloggingPromptSettingsReminderDays(context: context)
         reminderDays?.configure(with: remoteSettings.reminderDays)
     }
@@ -21,6 +22,15 @@ public class BloggingPromptSettings: NSManagedObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH.mm"
         return dateFormatter.date(from: reminderTime)
+    }
+
+    private func updatePromptSettingsIfNecessary(siteID: String, enabled: Bool) {
+        let repository = UserPersistentStoreFactory.instance()
+        var promptsEnabledSettings = repository.promptsEnabledSettings
+        if promptsEnabledSettings[siteID] == nil {
+            promptsEnabledSettings[siteID] = enabled
+            repository.promptsEnabledSettings = promptsEnabledSettings
+        }
     }
 
 }

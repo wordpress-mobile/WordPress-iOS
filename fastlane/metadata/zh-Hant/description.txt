@@ -6,6 +6,6 @@ iOS 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力�
 
 iOS 版 WordPress 支援 WordPress.com 和執行 WordPress 4.0 或以上版本的自助託管 WordPress.org 網站。
 
-需要應用程式的說明嗎？ 請造訪論壇：https://ios.forums.wordpress.org/ 或使用 Twitter 推文給我們：@WordPressiOS。
+需要應用程式的說明嗎？ 請造訪論壇：https://wordpress.org/support/forum/mobile/ 或使用 Twitter 推文給我們：@WordPressiOS。
 
 請檢閱加州使用者的隱私權聲明：https://automattic.com/privacy/#california-consumer-privacy-act-ccpa。
