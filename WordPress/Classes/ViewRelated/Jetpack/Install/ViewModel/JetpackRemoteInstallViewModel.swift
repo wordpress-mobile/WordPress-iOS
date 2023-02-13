@@ -34,41 +34,34 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     func track(_ event: JetpackRemoteInstallEvent)
 }
 
-// MARK: - Default Jetpack State View Model Implementation
+// MARK: - Default Init Jetpack State View Data
 
-extension JetpackRemoteInstallViewModel {
-    var image: UIImage? {
-        state.image
+extension JetpackRemoteInstallStateViewData {
+
+    init(state: JetpackRemoteInstallState,
+         image: UIImage? = nil,
+         titleText: String? = nil,
+         descriptionText: String? = nil,
+         buttonTitleText: String? = nil,
+         hidesMainButton: Bool? = nil,
+         hidesLoadingIndicator: Bool? = nil,
+         hidesSupportButton: Bool? = nil) {
+        self.image = image ?? state.image
+        self.titleText = titleText ?? state.title
+        self.descriptionText = descriptionText ?? state.message
+        self.buttonTitleText = buttonTitleText ?? state.buttonTitle
+        self.hidesMainButton = hidesMainButton ?? (state == .installing)
+        self.hidesLoadingIndicator = hidesLoadingIndicator ?? (state != .installing)
+        self.hidesSupportButton = hidesSupportButton ?? {
+            switch state {
+            case .failure:
+                return false
+            default:
+                return true
+            }
+        }()
     }
 
-    var titleText: String {
-        state.title
-    }
-
-    var descriptionText: String {
-        state.message
-    }
-
-    var buttonTitleText: String {
-        state.buttonTitle
-    }
-
-    var hidesMainButton: Bool {
-        state == .installing
-    }
-
-    var hidesLoadingIndicator: Bool {
-        state != .installing
-    }
-
-    var hidesSupportButton: Bool {
-        switch state {
-        case .failure:
-            return false
-        default:
-            return true
-        }
-    }
 }
 
 // MARK: - Jetpack Remote Install Events

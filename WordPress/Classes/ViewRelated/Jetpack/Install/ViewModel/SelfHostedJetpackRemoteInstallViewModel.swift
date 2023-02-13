@@ -7,25 +7,8 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
-            onChangeState?(state, viewData)
+            onChangeState?(state, .init(state: state))
         }
-    }
-
-    var viewData: JetpackRemoteInstallStateViewData {
-        .init(image: state.image,
-              titleText: state.title,
-              descriptionText: state.message,
-              buttonTitleText: state.buttonTitle,
-              hidesMainButton: state == .installing,
-              hidesLoadingIndicator: state != .installing,
-              hidesSupportButton: {
-                  switch state {
-                  case .failure:
-                      return false
-                  default:
-                      return true
-                  }
-              }())
     }
 
     func viewReady() {
