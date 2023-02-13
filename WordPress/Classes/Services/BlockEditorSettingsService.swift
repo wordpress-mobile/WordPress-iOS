@@ -15,13 +15,13 @@ class BlockEditorSettingsService {
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
-    let coreDataStack: CoreDataStack
+    let coreDataStack: CoreDataStackSwift
 
     var cachedSettings: BlockEditorSettings? {
         return blog.blockEditorSettings
     }
 
-    convenience init?(blog: Blog, coreDataStack: CoreDataStack) {
+    convenience init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
         let remoteAPI: WordPressRestApi
         if blog.isAccessibleThroughWPCom(),
            blog.dotComID?.intValue != nil,
@@ -37,7 +37,7 @@ class BlockEditorSettingsService {
         self.init(blog: blog, remoteAPI: remoteAPI, coreDataStack: coreDataStack)
     }
 
-    init(blog: Blog, remoteAPI: WordPressRestApi, coreDataStack: CoreDataStack) {
+    init(blog: Blog, remoteAPI: WordPressRestApi, coreDataStack: CoreDataStackSwift) {
         assert(blog.objectID.persistentStore != nil, "The blog instance should be saved first")
         self.blog = blog
         self.coreDataStack = coreDataStack
@@ -111,7 +111,7 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(editorTheme: editorTheme, context: context)
-        }, completion: completion)
+        }, completion: completion, on: .main)
     }
 }
 
@@ -175,7 +175,7 @@ private extension BlockEditorSettingsService {
             }
 
             blog.blockEditorSettings = BlockEditorSettings(remoteSettings: remoteSettings, context: context)
-        }, completion: completion)
+        }, completion: completion, on: .main)
     }
 }
 

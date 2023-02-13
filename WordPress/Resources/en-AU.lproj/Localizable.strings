@@ -3140,9 +3140,6 @@ translators: Block name. %s: The localized block name */
 /* Interior Design site intent topic */
 "Interior Design" = "Interior Design";
 
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Introducing Prompts";
-
 /* Stories intro header title */
 "Introducing Story Posts" = "Introducing Story Posts";
 
@@ -7832,9 +7829,6 @@ translators: Block name. %s: The localized block name */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "You can follow posts on a specific subject by adding a tag.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";

@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "无效，自动更新已启用";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "包括提示";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "包含在站点中";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "室内设计";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "提示功能简介";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "故事文章简介";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "从仪表盘中移除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "您可以通过添加主题的方式来关注特定主题的文章。";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "您可以在“我的站点”>“设置”>“博客提醒”中了解更多信息并随时设置提醒。";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "您可以在“我的站点”、“设置”、“博客提醒”中了解详情并随时设置提醒。";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
 
@@ -9705,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "立即试用";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
 
@@ -9890,9 +9872,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "请访问 jetpack.com 以了解详情";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "借助有用的数据分析和全面的统计信息，观察您的流量增长情况。";
 
 /* Name of the Statistics feature. */
@@ -9915,9 +9895,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已移动。";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切换到 Jetpack 应用，以在设备上接收实时通知。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "使用 Jetpack 应用获取通知";
@@ -10380,9 +10357,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "赞";
-
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "无法加载站点统计数据。";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "在您的WordPress网站上了解今日活动。";

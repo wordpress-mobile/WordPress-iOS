@@ -6,6 +6,6 @@ WordPress untuk iOS adalah proyek Sumber Terbuka, yang berarti Anda juga bisa me
 
 WordPress untuk iOS mendukung WordPress.com dan situs WordPress.org yang dihosting sendiri yang menjalankan WordPress versi 4.0 atau versi lebih tinggi.
 
-Memerlukan bantuan berkaitan dengan aplikasi? Kunjungi forum di https://ios.forums.wordpress.org/ atau tweet kami di @WordPressiOS.
+Memerlukan bantuan berkaitan dengan aplikasi? Kunjungi forum di https://wordpress.org/support/forum/mobile/ atau tweet kami di @WordPressiOS.
 
 Lihat Pemberitahuan Privasi untuk Pengguna California di https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

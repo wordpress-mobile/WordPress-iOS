@@ -51,7 +51,6 @@ private extension JetpackRemoteInstallViewController {
         view.backgroundColor = .neutral(.shade5)
 
         jetpackView.delegate = self
-        jetpackView.model = viewModel
         add(jetpackView)
         jetpackView.view.frame = view.bounds
 
@@ -61,9 +60,9 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func setupViewModel() {
-        viewModel.onChangeState = { [weak self] state in
+        viewModel.onChangeState = { [weak self] state, viewData in
             DispatchQueue.main.async {
-                self?.jetpackView.setupView()
+                self?.jetpackView.configure(with: viewData)
             }
 
             switch state {
