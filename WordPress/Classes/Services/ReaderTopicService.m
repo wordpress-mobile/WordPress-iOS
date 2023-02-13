@@ -529,7 +529,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 // Updates the site topic's following status in core data only.
 - (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL
 {
-    ReaderSiteTopic *topic = [self findSiteTopicWithFeedURL:feedURL];
+    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithFeedURL:feedURL inContext:self.managedObjectContext];
     if (!topic) {
         return;
     }
@@ -540,7 +540,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 // Updates the site topic's following status in core data only.
 - (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID
 {
-    ReaderSiteTopic *topic = [self findSiteTopicWithSiteID:siteID];
+    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.managedObjectContext];
     if (!topic) {
         return;
     }
@@ -570,9 +570,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderSiteTopic *siteTopic;
 
     if (isFeed) {
-        siteTopic = [self findSiteTopicWithFeedID:siteID];
+        siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.managedObjectContext];
     } else {
-        siteTopic = [self findSiteTopicWithSiteID:siteID];
+        siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.managedObjectContext];
     }
 
     if (siteTopic) {
@@ -979,48 +979,6 @@ array are marked as being unfollowed in Core Data.
     [self mergeMenuTopics:topics
                isLoggedIn:ReaderHelpers.isLoggedIn
               withSuccess:success];
-}
-
-- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return (ReaderSiteTopic *)[results firstObject];
-}
-
-- (ReaderSiteTopic *)findSiteTopicWithFeedID:(NSNumber *)feedID
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"feedID = %@", feedID];
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return (ReaderSiteTopic *)[results firstObject];
-}
-
-- (ReaderSiteTopic *)findSiteTopicWithFeedURL:(NSString *)feedURL
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"feedURL = %@", feedURL];
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return nil;
-    }
-
-    return (ReaderSiteTopic *)[results firstObject];
 }
 
 @end

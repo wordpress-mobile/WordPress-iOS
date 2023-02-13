@@ -22,8 +22,8 @@ extension ReaderTopicService {
         return WordPressComRestApi.defaultApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
     }
 
-    private func fetchSiteTopic(with siteId: Int, _ failure: @escaping (ReaderTopicServiceError?) -> Void) -> ReaderSiteTopic? {
-        guard let siteTopic = findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
+    private func fetchSiteTopic(with siteId: Int, in context: NSManagedObjectContext, _ failure: @escaping (ReaderTopicServiceError?) -> Void) -> ReaderSiteTopic? {
+        guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
             failure(.topicNotfound(id: siteId))
             return nil
         }
@@ -109,14 +109,14 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        toggleSiteNotifications(with: siteId, subscribe: subscribe, successBlock, failureBlock)
+        toggleSiteNotifications(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
     }
 
 
     // MARK: Private methods
 
-    private func toggleSiteNotifications(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+    private func toggleSiteNotifications(with siteId: Int, subscribe: Bool = false, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
+        guard let siteTopic = fetchSiteTopic(with: siteId, in: context, failure),
             let postSubscription = siteTopic.postSubscription else {
             return
         }
@@ -125,7 +125,7 @@ extension ReaderTopicService {
         postSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
+            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value:siteId), in: context) else {
                 failure(.topicNotfound(id: siteId))
                 return
             }
@@ -167,14 +167,14 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        togglePostComments(with: siteId, subscribe: subscribe, successBlock, failureBlock)
+        togglePostComments(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
     }
 
 
     // MARK: Private methods
 
-    private func togglePostComments(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+    private func togglePostComments(with siteId: Int, subscribe: Bool = false, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
+        guard let siteTopic = fetchSiteTopic(with: siteId, in: context, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
         }
@@ -183,7 +183,7 @@ extension ReaderTopicService {
         emailSubscription.sendComments = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
+            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
                 failure(.topicNotfound(id: siteId))
                 return
             }
@@ -225,7 +225,7 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        togglePostsEmail(with: siteId, subscribe: subscribe, successBlock, failureBlock)
+        togglePostsEmail(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
     }
 
 
@@ -250,7 +250,7 @@ extension ReaderTopicService {
             failure?(error)
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
-        updatePostsEmail(with: siteId, frequency: frequency, successBlock, failureBlock)
+        updatePostsEmail(with: siteId, frequency: frequency, in: self.managedObjectContext, successBlock, failureBlock)
     }
 
 
@@ -269,8 +269,8 @@ extension ReaderTopicService {
         }
     }
 
-    private func togglePostsEmail(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+    private func togglePostsEmail(with siteId: Int, subscribe: Bool = false, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
+        guard let siteTopic = fetchSiteTopic(with: siteId, in: context, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
         }
@@ -279,7 +279,7 @@ extension ReaderTopicService {
         emailSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
+            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
                 failure(nil)
                 return
             }
@@ -292,8 +292,8 @@ extension ReaderTopicService {
         remoteAction(for: .postsEmail(siteId: siteId), subscribe, success, failureBlock)
     }
 
-    private func updatePostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+    private func updatePostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, in context: NSManagedObjectContext, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
+        guard let siteTopic = fetchSiteTopic(with: siteId, in: context, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
         }
@@ -302,7 +302,7 @@ extension ReaderTopicService {
         emailSubscription.postDeliveryFrequency = frequency.rawValue
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
+            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
                 failure(.topicNotfound(id: siteId))
                 return
             }

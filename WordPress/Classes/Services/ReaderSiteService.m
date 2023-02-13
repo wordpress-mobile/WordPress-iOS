@@ -210,9 +210,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
         NSNumber *site = [NSNumber numberWithUnsignedLong:siteID];
-        ReaderSiteTopic *topic = [topicService findSiteTopicWithSiteID:site];
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:site inContext:self.managedObjectContext];
         success(topic);
     } failure:^(NSError *error) {
         failure(error);

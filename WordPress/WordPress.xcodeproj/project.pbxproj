@@ -1130,6 +1130,8 @@
 		4AA33EF929963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */; };
 		4AA33EFB2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */; };
 		4AA33EFC2999AE3B005B6E23 /* ReaderListTopic+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */; };
+		4AA33F012999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */; };
+		4AA33F022999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6496,6 +6498,7 @@
 		4A9B81E22921AE02007A05D1 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		4AA33EF729963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderAbstractTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderListTopic+Creation.swift"; sourceTree = "<group>"; };
+		4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSiteTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -10235,6 +10238,7 @@
 				4AA33EFA2999AE3B005B6E23 /* ReaderListTopic+Creation.swift */,
 				E6BDEA721CE4824300682885 /* ReaderSearchTopic.swift */,
 				E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */,
+				4AA33F002999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift */,
 				9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */,
 				E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */,
 				E1DB326B1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift */,
@@ -21012,6 +21016,7 @@
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				173BCE791CEB780800AE8817 /* Domain.swift in Sources */,
 				C324D7A928C26F3F00310DEF /* SplashPrologueStyleGuide.swift in Sources */,
+				4AA33F012999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */,
 				46B1A16B26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
 				590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */,
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
@@ -23846,6 +23851,7 @@
 				FABB241B2602FC2C00C8785C /* GutenGhostView.swift in Sources */,
 				FABB241C2602FC2C00C8785C /* ModelSettableCell.swift in Sources */,
 				FABB241D2602FC2C00C8785C /* FollowCommentsService.swift in Sources */,
+				4AA33F022999D11A005B6E23 /* ReaderSiteTopic+Lookup.swift in Sources */,
 				FABB241E2602FC2C00C8785C /* ForcePopoverPresenter.swift in Sources */,
 				FABB241F2602FC2C00C8785C /* LikePost.swift in Sources */,
 				FABB24202602FC2C00C8785C /* Routes+Post.swift in Sources */,

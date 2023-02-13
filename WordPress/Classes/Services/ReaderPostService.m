@@ -358,7 +358,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         return;
     }
 
-    ReaderSiteTopic *feedSiteTopic = [topicService findSiteTopicWithFeedID:post.feedID];
+    ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:post.feedID inContext:self.managedObjectContext];
     if (feedSiteTopic) {
         [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
         return;

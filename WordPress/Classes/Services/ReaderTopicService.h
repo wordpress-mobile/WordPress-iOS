@@ -159,22 +159,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;
 
-/**
- Find a site topic by its site id
-
- @param siteID The site id of the topic
- @return A matched site topic
- */
-- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID;
-
-/**
- Find a site topic by its feed id
-
- @param feedID The feed id of the topic
- @return A matched site topic
- */
-- (ReaderSiteTopic *)findSiteTopicWithFeedID:(NSNumber *)feedID;
-
 @end
 
 @interface ReaderTopicService (Tests)
