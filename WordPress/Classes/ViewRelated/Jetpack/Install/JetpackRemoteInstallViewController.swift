@@ -68,6 +68,10 @@ private extension JetpackRemoteInstallViewController {
             }
 
             switch state {
+            case .install:
+                self?.viewModel.track(.initial)
+            case .installing:
+                self?.viewModel.track(.loading)
             case .success:
                 self?.viewModel.track(.completed)
             case .failure(let error):
@@ -83,8 +87,6 @@ private extension JetpackRemoteInstallViewController {
                     DDLogInfo("Jetpack Remote Install error - Blocking error")
                     self?.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
-            default:
-                break
             }
         }
     }
@@ -97,8 +99,15 @@ private extension JetpackRemoteInstallViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    /// Cancels the flow.
     @objc func cancel() {
+        viewModel.track(.cancel)
         delegate?.jetpackRemoteInstallCanceled()
+    }
+
+    /// Completes the Jetpack installation flow.
+    func complete() {
+        delegate?.jetpackRemoteInstallCompleted()
     }
 }
 
@@ -106,11 +115,11 @@ private extension JetpackRemoteInstallViewController {
 
 extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCanceled() {
-        delegate?.jetpackRemoteInstallCanceled()
+        cancel()
     }
 
     func jetpackConnectionCompleted() {
-        delegate?.jetpackRemoteInstallCompleted()
+        complete()
     }
 }
 
@@ -120,12 +129,15 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     func mainButtonDidTouch() {
         switch viewModel.state {
         case .install:
+            viewModel.track(.start)
             viewModel.installJetpack(for: blog, isRetry: false)
         case .failure:
+            viewModel.track(.retry)
             viewModel.installJetpack(for: blog, isRetry: true)
         case .success:
+            viewModel.track(.completePrimaryButtonTapped)
             guard viewModel.shouldConnectToJetpack else {
-                delegate?.jetpackRemoteInstallCompleted()
+                complete()
                 return
             }
             openInstallJetpackURL()
