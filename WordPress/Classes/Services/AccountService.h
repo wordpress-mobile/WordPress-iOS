@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
-@interface AccountService : LocalCoreDataService
+@interface AccountService : CoreDataService
 
 ///------------------------------------
 /// @name Default WordPress.com account
@@ -77,19 +77,9 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  
  @param username the WordPress.com account's username
  @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
- @return a WordPress.com `WPAccount` object for the given `username`
+ @return The ID of the WordPress.com `WPAccount` object for the given `username`
  */
-- (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
-                                       authToken:(NSString *)authToken;
-
-- (NSUInteger)numberOfAccounts;
-
-/**
- Returns all accounts currently existing in core data.
-
- @return An array of WPAccounts.
- */
-- (NSArray<WPAccount *> *)allAccounts;
+- (NSManagedObjectID *)createOrUpdateAccountWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
 /**
  Updates user details including username, email, userID, avatarURL, and default blog.

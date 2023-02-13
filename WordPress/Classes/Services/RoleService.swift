@@ -4,7 +4,7 @@ import WordPressKit
 /// Service providing access to user roles
 ///
 struct RoleService {
-    let blog: Blog
+    let blogID: NSManagedObjectID
 
     fileprivate let coreDataStack: CoreDataStack
     fileprivate let remote: PeopleServiceRemote
@@ -17,7 +17,7 @@ struct RoleService {
 
         self.remote = PeopleServiceRemote(wordPressComRestApi: api)
         self.siteID = dotComID
-        self.blog = blog
+        self.blogID = blog.objectID
         self.coreDataStack = coreDataStack
     }
 
@@ -34,6 +34,10 @@ struct RoleService {
 
 private extension RoleService {
     func mergeRoles(_ remoteRoles: [RemoteRole], in context: NSManagedObjectContext) {
+        guard let blog = try? context.existingObject(with: blogID) as? Blog else {
+            DDLogError("The blog used to create RoleService was deleted")
+            return
+        }
         let existingRoles = blog.roles ?? []
         var rolesToKeep = [Role]()
         for (order, remoteRole) in remoteRoles.enumerated() {

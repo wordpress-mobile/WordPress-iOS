@@ -36,7 +36,7 @@ class AztecVerificationPromptHelper: NSObject, VerificationPromptHelper {
 
         self.wpComAccount = passedAccount
         self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
+        self.accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
 
         super.init()
 

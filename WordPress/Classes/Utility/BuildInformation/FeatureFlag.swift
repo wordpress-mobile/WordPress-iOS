@@ -45,6 +45,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case jetpackFeaturesRemovalPhaseSelfHosted
     case wordPressSupportForum
     case jetpackIndividualPluginSupport
+    case blaze
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -143,6 +144,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return false
         case .jetpackIndividualPluginSupport:
             return false
+        case .blaze:
+            return false
         }
     }
 
@@ -169,6 +172,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
             return "prevent_duplicate_notifs_remote_field"
         case .wordPressSupportForum:
             return "enable_wordpress_support_forum"
+        case .blaze:
+            return "blaze"
             default:
                 return nil
         }
@@ -275,6 +280,8 @@ extension FeatureFlag {
             return "Provide support through a forum"
         case .jetpackIndividualPluginSupport:
             return "Jetpack Individual Plugin Support"
+        case .blaze:
+            return "Blaze"
         }
     }
 
