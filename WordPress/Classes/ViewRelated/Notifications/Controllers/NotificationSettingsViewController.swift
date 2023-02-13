@@ -153,7 +153,7 @@ class NotificationSettingsViewController: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isExternal }
+            self?.followedSites = ((try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []).filter { !$0.isExternal }
             self?.setupSections()
             self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()

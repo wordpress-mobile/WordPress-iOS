@@ -159,14 +159,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;
 
-
-/**
- Fetch all saved Site topics
-
- @return A list of site topic
- */
-- (NSArray <ReaderSiteTopic *>*)allSiteTopics;
-
 /**
  Find a site topic by its site id
 

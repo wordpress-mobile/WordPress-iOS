@@ -164,7 +164,8 @@ extension ReaderSiteTopic {
         let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         siteService.fetchFollowedSites(success: {
-            completion(.success(siteService.allSiteTopics()))
+            let sites = (try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []
+            completion(.success(sites))
         }, failure: { error in
             DDLogError("Could not sync sites: \(String(describing: error))")
             let remoteServiceError = NSError(domain: WordPressComRestApiErrorDomain, code: -1, userInfo: nil)
@@ -175,8 +176,7 @@ extension ReaderSiteTopic {
     /// Fetch sites from Core Data
     ///
     private static func fetchStoredFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
-        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let sites = siteService.allSiteTopics() ?? []
+        let sites = (try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []
         completion(.success(sites))
     }
 

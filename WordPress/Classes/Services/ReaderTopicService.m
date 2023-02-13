@@ -883,7 +883,7 @@ array are marked as being unfollowed in Core Data.
 - (void)mergeFollowedSites:(NSArray *)sites withSuccess:(void (^)(void))success
 {
      [self.managedObjectContext performBlock:^{
-         NSArray *currentSiteTopics = [self allSiteTopics];
+         NSArray *currentSiteTopics = [ReaderAbstractTopic lookupAllSitesInContext:self.managedObjectContext error:nil];
          NSMutableArray *remoteFeedIds = [NSMutableArray array];
 
          for (RemoteReaderSiteInfo *siteInfo in sites) {
@@ -979,31 +979,6 @@ array are marked as being unfollowed in Core Data.
     [self mergeMenuTopics:topics
                isLoggedIn:ReaderHelpers.isLoggedIn
               withSuccess:success];
-}
-
-/**
- Fetch all `ReaderAbstractTopics` currently in Core Data.
- 
- @return An array of all `ReaderAbstractTopics` currently persisted in Core Data.
- */
-- (NSArray *)allSiteTopics
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"following = YES"];
-    
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title"
-                                                                     ascending:YES
-                                                                      selector:@selector(localizedCaseInsensitiveCompare:)];
-    request.sortDescriptors = @[sortDescriptor];
-    
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return @[];
-    }
-    
-    return results;
 }
 
 - (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID

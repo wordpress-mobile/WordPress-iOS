@@ -21,6 +21,18 @@ extension ReaderAbstractTopic {
         return try context.fetch(request)
     }
 
+    /// Fetch all `Fetch all saved Site topics` currently in Core Data.
+    ///
+    @objc(lookupAllSitesInContext:error:)
+    static func lookupAllSites(in context: NSManagedObjectContext) throws -> [ReaderSiteTopic] {
+        let request = NSFetchRequest<ReaderSiteTopic>(entityName: ReaderSiteTopic.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "following = YES")
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+        ]
+        return try context.fetch(request)
+    }
+
     /// Find a specific ReaderAbstractTopic by its `path` property.
     ///
     /// - Parameter path: The unique, cannonical path of the topic.
