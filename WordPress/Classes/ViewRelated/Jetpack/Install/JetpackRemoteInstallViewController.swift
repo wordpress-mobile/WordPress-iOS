@@ -63,20 +63,30 @@ private extension JetpackRemoteInstallViewController {
 
     func setupViewModel() {
         viewModel.onChangeState = { [weak self] state, viewData in
+            guard let self else {
+                return
+            }
+
             DispatchQueue.main.async {
-                self?.jetpackView.configure(with: viewData)
+                self.jetpackView.configure(with: viewData)
             }
 
             switch state {
             case .install:
-                self?.viewModel.track(.initial)
+                self.viewModel.track(.initial)
             case .installing:
-                self?.viewModel.track(.loading)
+                self.viewModel.track(.loading)
             case .success:
-                self?.viewModel.track(.completed)
+                self.viewModel.track(.completed)
+
+                // Hide the Cancel button if the flow skips the Jetpack connection.
+                if !self.viewModel.shouldConnectToJetpack {
+                    self.navigationItem.setLeftBarButton(nil, animated: false)
+                }
+
             case .failure(let error):
-                let blogURLString = self?.blog.url ?? "unknown"
-                self?.viewModel.track(.failed(description: error.type.rawValue, siteURLString: blogURLString))
+                let blogURLString = self.blog.url ?? "unknown"
+                self.viewModel.track(.failed(description: error.type.rawValue, siteURLString: blogURLString))
 
                 let title = error.title ?? "no error message"
                 let type = error.type.rawValue
@@ -85,7 +95,7 @@ private extension JetpackRemoteInstallViewController {
 
                 if error.isBlockingError {
                     DDLogInfo("Jetpack Remote Install error - Blocking error")
-                    self?.delegate?.jetpackRemoteInstallWebviewFallback()
+                    self.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
             }
         }
