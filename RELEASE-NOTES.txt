@@ -11,6 +11,7 @@
 * [*] Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to report a post's author. [#20064]
+* [*] Add ability to report a post's author. [#20064]
 
 21.7
 -----
