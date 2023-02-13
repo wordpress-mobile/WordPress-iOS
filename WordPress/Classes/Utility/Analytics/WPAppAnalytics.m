@@ -48,8 +48,6 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
  */
 @property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
 
-@property (nonatomic, strong, readwrite) AccountService *accountService;
-
 /**
  *  @brief      If set, this block will be called whenever this object needs to know what the last
  *              visible screen was, for tracking purposes.
@@ -67,16 +65,13 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     return nil;
 }
 
-- (instancetype)initWithAccountService:(AccountService *)accountService
-                lastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback
+- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
 {
-    NSParameterAssert(accountService);
     NSParameterAssert(lastVisibleScreenCallback);
     
     self = [super init];
     
     if (self) {
-        _accountService = accountService;
         _lastVisibleScreenCallback = lastVisibleScreenCallback;
 
         [self initializeAppTracking];

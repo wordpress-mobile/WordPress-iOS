@@ -1,6 +1,6 @@
 import Foundation
 
-extension BlogService {
+extension WPAccount {
     /// Removes any duplicate blogs in the given account
     ///
     /// We consider a blog to be a duplicate of another if they have the same dotComID.
@@ -10,10 +10,11 @@ extension BlogService {
     /// If there's more than one blog in each group with local drafts, those will be reassigned
     /// to the remaining blog.
     ///
-    @objc(deduplicateBlogsForAccount:)
-    func deduplicateBlogs(for account: WPAccount) {
+    @objc(deduplicateBlogs)
+    func deduplicateBlogs() {
+        let context = managedObjectContext!
         // Group all the account blogs by ID so it's easier to find duplicates
-        let blogsById = Dictionary(grouping: account.blogs, by: { $0.dotComID?.intValue ?? 0 })
+        let blogsById = Dictionary(grouping: blogs, by: { $0.dotComID?.intValue ?? 0 })
         // For any group with more than one blog, remove duplicates
         for (blogID, group) in blogsById where group.count > 1 {
             assert(blogID > 0, "There should not be a Blog without ID if it has an account")
@@ -22,11 +23,11 @@ extension BlogService {
                 continue
             }
             DDLogWarn("Found \(group.count - 1) duplicates for blog with ID \(blogID)")
-            deduplicate(group: group)
+            deduplicate(group: group, in: context)
         }
     }
 
-    private func deduplicate(group: [Blog]) {
+    private func deduplicate(group: [Blog], in context: NSManagedObjectContext) {
         // If there's a blog with local drafts, we'll preserve that one, otherwise we pick up the first
         // since we don't really care which blog to pick
         let candidateIndex = group.firstIndex(where: { !localDrafts(for: $0).isEmpty }) ?? 0
@@ -42,7 +43,7 @@ extension BlogService {
             }
             // Once the drafts are moved (if any), we can safely delete the duplicate
             DDLogInfo("Deleting duplicate blog \(blog.logDescription())")
-            managedObjectContext.delete(blog)
+            context.delete(blog)
         }
     }
 

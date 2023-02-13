@@ -1228,6 +1228,9 @@
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Dismiss";
 
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Blogging";
+
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Blogging Reminders";
 
@@ -2321,9 +2324,6 @@
 
 /* No comment provided by engineer. */
 "Cut block" = "Cut block";
-
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
 
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Dark";
@@ -3945,7 +3945,7 @@
 "Inactive, Autoupdates on" = "Inactive, Autoupdates on";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Include prompt";
+"Include a Blogging Prompt" = "Include a Blogging Prompt";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Included with Site";
@@ -4052,7 +4052,7 @@
 "Interior Design" = "Interior Design";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Introducing Prompts";
+"Introducing Blogging Prompts" = "Introducing Blogging Prompts";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introducing Story Posts";
@@ -4248,9 +4248,13 @@
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Learn more at jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Get notifications for new comments, likes, views, and more.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Find and follow your favorite sites and communities, and share you content.";
+
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Watch your traffic grow with helpful insights and comprehensive stats.";
 
 /* Name of the Statistics feature. */
@@ -4275,7 +4279,7 @@
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack features have moved.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Switch to the Jetpack app to keep recieving real-time notifications on your device.";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Switch to the Jetpack app to keep receiving real-time notifications on your device.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Get your notifications with the Jetpack app";
@@ -6385,6 +6389,12 @@
    View title for Blogging Prompts list. */
 "Prompts" = "Prompts";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Visit Site Settings to turn back on";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Blogging Prompts hidden";
+
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.
    Text for privacy settings: Public */
 "Public" = "Public";
@@ -6636,9 +6646,6 @@
 
 /* Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post. */
 "Remove Featured Image" = "Remove Featured Image";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Remove from dashboard";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remove from insights";
@@ -7568,6 +7575,12 @@
 
 /* A suggestion of topics the user might  */
 "Sites to follow" = "Sites to follow";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Show prompts";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Reminders";
 
 /* Image size option title. */
 "Size" = "Size";
@@ -8790,6 +8803,9 @@
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Try with the site address";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Turn off prompts";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Turn off site notifications";
 
@@ -9820,6 +9836,12 @@
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Best views ever";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Unable to load all time stats.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Create or add a site to see all time stats.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Posts";
 
@@ -9841,6 +9863,12 @@
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Log in to Jetpack to see today's stats.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Unable to load this week's stats.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Create or add a site to see this week's stats.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Stay up to date with this week activity on your WordPress site.";
 
@@ -9853,11 +9881,20 @@
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Comments";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Stats have moved to the Jetpack app. Switching is free and only takes a minute.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Likes";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Unable to load site stats.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Unable to load site stats.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Unable to load today's stats.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Create or add a site to see today's stats.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Stay up to date with today's activity on your WordPress site.";
@@ -10106,6 +10143,12 @@ from anywhere.";
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "You can always log in with a link like the one you just used, but you can also set up a password if you prefer.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today/Notification Center view." = "You can display a single site's stats in the iOS Today/Notification Center view.";
 
@@ -10117,12 +10160,6 @@ from anywhere.";
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "You can follow posts on a specific subject by adding a topic.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";
