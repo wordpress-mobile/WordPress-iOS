@@ -66,7 +66,10 @@ private extension JetpackRemoteInstallViewController {
     func setupViewModel() {
         viewModel.onChangeState = { [weak self] state in
             DispatchQueue.main.async {
-                self?.jetpackView.setupView(for: state)
+                guard let self else {
+                    return
+                }
+                self.jetpackView.configure(with: self.viewData(for: state))
             }
 
             switch state {
@@ -148,4 +151,27 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     func customerSupportButtonDidTouch() {
         navigationController?.pushViewController(SupportTableViewController(), animated: true)
     }
+}
+
+// MARK: - Jetpack State View Data
+
+extension JetpackRemoteInstallViewController {
+
+    func viewData(for state: JetpackRemoteInstallState) -> JetpackRemoteInstallStateViewData {
+        return .init(image: state.image,
+                     titleText: state.title,
+                     descriptionText: state.message,
+                     buttonTitleText: state.buttonTitle,
+                     hidesMainButton: state == .installing,
+                     hidesLoadingIndicator: state != .installing,
+                     hidesSupportButton: {
+                         switch state {
+                         case .failure:
+                             return false
+                         default:
+                             return true
+                         }
+                     }())
+    }
+
 }
