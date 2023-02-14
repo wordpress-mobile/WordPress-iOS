@@ -104,14 +104,14 @@ private extension SupportTableViewController {
     }
 
     func setupNavBar() {
-        title = isForumShown ? LocalizedText.viewTitle : LocalizedText.viewTitleSupport
+        title = LocalizedText.viewTitle
 
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
-                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
+                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,
                                                                action: #selector(SupportTableViewController.dismissPressed(_:)))
-            navigationItem.leftBarButtonItem?.accessibilityIdentifier = "close-button"
+            navigationItem.rightBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }
 
@@ -139,7 +139,7 @@ private extension SupportTableViewController {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func wordPressAppTableViewModel() -> ImmuTable {
 
         // Community Forums Section
         var communityForumsSectionRows = [ImmuTableRow]()
@@ -187,7 +187,7 @@ private extension SupportTableViewController {
     }
 
     // TODO - remove after FeatureFlag.wordPressSupportForum is removed
-    func oldTableViewModel() -> ImmuTable {
+    func jetpackAppTableViewModel() -> ImmuTable {
 
         // Help Section
         var helpSectionRows = [ImmuTableRow]()
@@ -195,7 +195,7 @@ private extension SupportTableViewController {
 
         if ZendeskUtils.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: isForumShown))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: isForumShown))
+            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: isForumShown))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
@@ -207,22 +207,22 @@ private extension SupportTableViewController {
         }
 
         let helpSection = ImmuTableSection(
-                headerText: nil,
+                headerText: LocalizedText.prioritySupportSectionHeader,
                 rows: helpSectionRows,
-                footerText: LocalizedText.helpFooter)
+                footerText: nil)
 
         // Information Section
         var informationSection: ImmuTableSection?
         if configuration.showsLogsSection {
             let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-            let switchRow = SwitchRow(title: LocalizedText.extraDebug,
+            let logsRow = NavigationItemRow(title: LocalizedText.logs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+            let switchRow = SwitchRow(title: LocalizedText.debug,
                                       value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
                                       onChange: extraDebugToggled())
-            let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
             informationSection = ImmuTableSection(
-                    headerText: nil,
-                    rows: [versionRow, switchRow, logsRow],
-                    footerText: LocalizedText.informationFooterOld
+                    headerText: LocalizedText.advancedSectionHeader,
+                    rows: [versionRow, logsRow, switchRow],
+                    footerText: LocalizedText.informationFooter
             )
         }
 
@@ -247,7 +247,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = isForumShown ? tableViewModel() : oldTableViewModel()
+        tableHandler?.viewModel = isForumShown ? wordPressAppTableViewModel() : jetpackAppTableViewModel()
     }
 
     // MARK: - Row Handlers
@@ -487,9 +487,9 @@ private extension SupportTableViewController {
 
     struct LocalizedText {
         static let viewTitle = NSLocalizedString("support.title", value: "Help", comment: "View title for Help & Support page.")
-        static let closeButton = NSLocalizedString("support.button.close.title", value: "Close", comment: "Dismiss the current view")
+        static let closeButton = NSLocalizedString("support.button.close.title", value: "Done", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("support.row.helpCenter.title", value: "WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact Support", comment: "Option in Support view to contact the support team.")
+        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("support.row.forums.title", value: "WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let prioritySupportSectionHeader = NSLocalizedString("support.sectionHeader.prioritySupport.title", value: "Priority Support", comment: "Section header in Support view for priority support.")
         static let wpForumsSectionHeader = NSLocalizedString("support.sectionHeader.forum.title", value: "Community Forums", comment: "Section header in Support view for the Forums.")
@@ -497,9 +497,7 @@ private extension SupportTableViewController {
         static let wpForumPrompt = NSLocalizedString("support.row.communityForum.title", value: "Ask a question in the community forum and get help from our group of volunteers.", comment: "Suggestion in Support view to visit the Forums.")
         static let visitWpForumsButton = NSLocalizedString("support.button.visitForum.title", value: "Visit WordPress.org", comment: "Option in Support view to visit the WordPress.org support forums.")
         static let visitWpForumsButtonAccessibilityHint = NSLocalizedString("support.button.visitForum.accessibilityHint", value: "Tap to visit the community forum website in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the support forums website.")
-        static let myTickets = NSLocalizedString("support.row.myTickets.title", value: "My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let tickets = NSLocalizedString("support.row.tickets.title", value: "Tickets", comment: "Option in Support view to access previous help tickets.")
-        static let helpFooter = NSLocalizedString("support.sectionFooter.helpCenter.title", value: "Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("support.row.version.title", value: "Version", comment: "Label in Support view displaying the app version.")
         static let debug = NSLocalizedString("support.row.debug.title", value: "Debug", comment: "Option in Support view to enable/disable adding debug information to support ticket.")
         static let logs = NSLocalizedString("support.row.logs.title", value: "Logs", comment: "Option in Support view to see activity logs.")
@@ -509,13 +507,7 @@ private extension SupportTableViewController {
         static let emailNotSet = NSLocalizedString("support.row.contactEmail.emailNoteSet.detail", value: "Not Set", comment: "Display value for Support email field if there is no user email address.")
         static let wpAccount = NSLocalizedString("support.sectionHeader.account.title", value: "WordPress.com Account", comment: "WordPress.com sign-out section header title")
         static let logOutButtonTitle = NSLocalizedString("support.button.logOut.title", value: "Log Out", comment: "Button for confirming logging out from WordPress.com account")
-
-        //TODO - can remove these below after WordPressSupportForum feature flag removed
-        static let activityLogs = NSLocalizedString("support.row.activityLogs.title", value: "Activity Logs", comment: "Option in Support view to see activity logs.")
-        static let informationFooterOld = NSLocalizedString("support.sectionFooter.advanced.old.title", value: "The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
-        static let extraDebug = NSLocalizedString("support.row.extraDebug.title", value: "Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
-        static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Contact Email", comment: "Support email label.")
-        static let viewTitleSupport = NSLocalizedString("zendeskSupport.title", value: "Support", comment: "View title for Help & Support page.")
+        static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Email", comment: "Support email label.")
     }
 
     // MARK: - User Defaults Keys
