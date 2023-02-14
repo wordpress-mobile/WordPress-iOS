@@ -12,10 +12,12 @@ class JetpackRemoteInstallViewController: UIViewController {
     private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
 
-    init(blog: Blog, delegate: JetpackRemoteInstallDelegate?) {
+    init(blog: Blog,
+         delegate: JetpackRemoteInstallDelegate?,
+         viewModel: JetpackRemoteInstallViewModel = SelfHostedJetpackRemoteInstallViewModel()) {
         self.blog = blog
         self.delegate = delegate
-        self.viewModel = SelfHostedJetpackRemoteInstallViewModel()
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -122,6 +124,10 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
         case .failure:
             viewModel.installJetpack(for: blog, isRetry: true)
         case .success:
+            guard viewModel.shouldConnectToJetpack else {
+                delegate?.jetpackRemoteInstallCompleted()
+                return
+            }
             openInstallJetpackURL()
         default:
             break

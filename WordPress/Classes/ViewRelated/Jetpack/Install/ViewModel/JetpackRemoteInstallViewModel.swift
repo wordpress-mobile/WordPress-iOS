@@ -13,6 +13,9 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     /// An enum that represents the current installation state.
     var state: JetpackRemoteInstallState { get }
 
+    /// Whether the install flow should continue with establishing a Jetpack connection for the site.
+    var shouldConnectToJetpack: Bool { get }
+
     // MARK: Methods
 
     /// Called by the view controller when it's ready to receive user interaction.

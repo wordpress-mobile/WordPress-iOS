@@ -5,6 +5,9 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
+    /// Always proceed to the Jetpack Connection flow after successfully installing Jetpack.
+    let shouldConnectToJetpack = true
+
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
             onChangeState?(state, .init(state: state))
