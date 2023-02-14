@@ -47,7 +47,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 6.0.0-beta'
+  # pod 'WordPressKit', '~> 6.1.0-beta'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: 'task/20089-add-blaze-status-endpoint'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
@@ -388,6 +388,10 @@ target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
 end
 
+abstract_target 'Tools' do
+  pod 'SwiftLint', '~> 0.50'
+end
+
 # Static Frameworks:
 # ============
 #
@@ -500,4 +504,8 @@ post_install do |installer|
   tracks_target.build_configurations.each do |config|
     config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'ALPHA=1'] if (config.name == 'Release-Alpha') || (config.name == 'Release-Internal')
   end
+
+  yellow_marker = "\033[33m"
+  reset_marker = "\033[0m"
+  puts "#{yellow_marker}The abstract target warning below is expected. Feel free to ignore it.#{reset_marker}"
 end

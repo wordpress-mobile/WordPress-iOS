@@ -351,13 +351,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
+              blog.isAccessibleThroughWPCom(),
               let promptsService = BloggingPromptsService(blog: blog),
-              let settings = promptsService.localSettings,
               let siteID = blog.dotComID?.stringValue else {
             return false
         }
-        let promptsRemovedSites = UserPersistentStoreFactory.instance().promptsRemovedSites
-        let shouldDisplayCard = !promptsRemovedSites.contains(siteID) && (settings.promptRemindersEnabled || settings.isPotentialBloggingSite)
+
+        let shouldDisplayCard = UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID] ?? false
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
             return shouldDisplayCard
@@ -512,14 +512,9 @@ private extension DashboardPromptsCardCell {
 
     func updatePromptSettings(for siteID: String, removed: Bool) {
         let repository = UserPersistentStoreFactory.instance()
-        var promptsRemovedSites = repository.promptsRemovedSites
-
-        if removed {
-            promptsRemovedSites.insert(siteID)
-        } else {
-            promptsRemovedSites.remove(siteID)
-        }
-        repository.promptsRemovedSites = promptsRemovedSites
+        var promptsEnabledSettings = repository.promptsEnabledSettings
+        promptsEnabledSettings[siteID] = !removed
+        repository.promptsEnabledSettings = promptsEnabledSettings
         presenterViewController?.reloadCardsLocally()
     }
 

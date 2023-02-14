@@ -15,8 +15,7 @@ class WordPressComSyncService {
     ///     - onFailure: Closure to be executed upon failure.
     ///
     func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         accountService.createOrUpdateAccount(withAuthToken: authToken, success: { account in
             self.syncOrAssociateBlogs(account: account, isJetpackLogin: isJetpackLogin, onSuccess: onSuccess, onFailure: onFailure)
         }, failure: { error in
@@ -33,8 +32,7 @@ class WordPressComSyncService {
     ///   - onFailure: Failure block
     ///
     func syncOrAssociateBlogs(account: WPAccount, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
 
         let onFailureInternal = { (error: Error) in
             /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss
@@ -49,7 +47,7 @@ class WordPressComSyncService {
         }
 
         if isJetpackLogin && !account.isDefaultWordPressComAccount {
-            let blogService = BlogService(managedObjectContext: context)
+            let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.associateSyncedBlogs(toJetpackAccount: account, success: onSuccessInternal, failure: onFailureInternal)
 
         } else {

@@ -383,13 +383,11 @@ static NSInteger HideSearchMinSites = 3;
         });
     };
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlogsForAccount:defaultAccount success:^{
-            completionBlock();
-        } failure:^(NSError * _Nonnull error) {
-            completionBlock();
-        }];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [blogService syncBlogsForAccount:defaultAccount success:^{
+        completionBlock();
+    } failure:^(NSError * _Nonnull error) {
+        completionBlock();
     }];
 }
 
@@ -706,8 +704,8 @@ static NSInteger HideSearchMinSites = 3;
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     [self removeBlogItemsFromSpotlight:blog];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService removeBlog:blog];
 
     if ([Feature enabled:FeatureFlagContentMigration] && [AppConfiguration isWordPress]) {
@@ -953,18 +951,16 @@ static NSInteger HideSearchMinSites = 3;
             UIAlertAction *hideAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
                                                                    style:UIAlertActionStyleDestructive
                                                                  handler:^(UIAlertAction *action){
-                                                                     [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-                                                                         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-                                                                         [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
-                                                                     }];
-                                                                 }];
+                AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+                WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:[[ContextManager sharedInstance] mainContext]];
+                [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
+            }];
             [alertController addAction:cancelAction];
             [alertController addAction:hideAction];
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    AccountService *accountService = [[AccountService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [accountService setVisibility:visible forBlogs:@[blog]];
 
     [WPAnalytics trackEvent:WPAnalyticsEventSiteSwitcherToggleBlogVisible properties:@{ @"visible": @(visible)} blog:blog];

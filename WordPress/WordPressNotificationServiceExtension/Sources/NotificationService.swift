@@ -140,7 +140,7 @@ class NotificationService: UNNotificationServiceExtension {
             if !NotificationKind.omitsRichNotificationBody(notificationKind) {
                 notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
 
-                // Improve the notification body by trimming whitespace and reducing any multiple blank lines 
+                // Improve the notification body by trimming whitespace and reducing any multiple blank lines
                 notificationContent.body = contentFormatter.body?.condenseWhitespace() ?? ""
             }
 
@@ -260,7 +260,7 @@ private extension NotificationService {
     /// This isn't meant to be extensive and has a few flaws, but since we don't know
     /// much information about the URL and if it's a blog without having to do another request
     /// this works for the current usecases.
-    /// 
+    ///
     /// - Parameter url: The URL to check
     /// - Returns: True if it's a WP.com site, False if not.
     private func isWPComSite(url: URL) -> Bool {

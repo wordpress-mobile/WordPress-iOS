@@ -1,8 +1,5 @@
-Find out how your content is performing with our changes to Stats Insights and learn what types of content your readers like to see.
+We made some tweaks to blogging prompts so you can answer old prompts or disable new ones. (Although we can’t imagine why you would.)
 
-We also fixed a few issues in various areas of the app.
+You won’t see the Scan Login QR code if your account uses two-factor authentication.
 
-- The “No media matching your search” message in the Media Picker now appears in the right spot. Home, sweet home.
-- Some users were getting stuck on the “What would you like to focus on first?” screen after logging in, but no more—focus away, friends.
-- You’ll no longer skip to the end of the migration flow if you close the app while migrating your site content from WordPress to Jetpack. We made some design adjustments to the final migration screen, too.
-- Pull-to-refresh properly updates your follower stats on the Total Followers Details screen. 10/10, would pull again.
+The Stats view consistently shows the day’s latest data, even if the date changes while the app is in the device’s background. All in a day’s work.

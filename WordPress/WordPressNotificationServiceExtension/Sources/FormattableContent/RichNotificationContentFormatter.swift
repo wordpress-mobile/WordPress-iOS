@@ -93,7 +93,7 @@ private extension RichNotificationContentFormatter {
         self.attributedBody = formattedBody
 
         // Grab the first media attachment that is not an Emoji so it can be displayed as a
-        // push notification media attachment 
+        // push notification media attachment
         if let notificationTextContent = formattableContent as? NotificationTextContent {
             self.mediaURL = notificationTextContent.media.first(where: {
                 !($0.mediaURL?.isEmojiURL() ?? false)
