@@ -140,7 +140,7 @@ private extension JetpackPluginOverlayViewModel {
             value: "Please install the full Jetpack plugin",
             comment: "Jetpack Plugin Modal title"
         )
-        
+
         static let subtitleSingular = NSLocalizedString(
             "jetpack.plugin.modal.subtitle.singular",
             value: """

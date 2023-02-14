@@ -35,7 +35,7 @@ final class DashboardQuickStartCardCell: UICollectionViewCell, Reusable, BlogDas
 
         configureCardFrameView(for: blog)
 
-        let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties:["type": DashboardCard.quickStart.rawValue])
+        let checklistTappedTracker: QuickStartChecklistTappedTracker = (event: .dashboardCardItemTapped, properties: ["type": DashboardCard.quickStart.rawValue])
 
         tourStateView.configure(blog: blog, sourceController: viewController, checklistTappedTracker: checklistTappedTracker)
 

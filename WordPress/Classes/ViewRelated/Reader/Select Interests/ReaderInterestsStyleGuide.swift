@@ -92,7 +92,7 @@ class ReaderSuggestedTopicsStyleGuide {
         let colorCount = Self.colors.count
 
         // Safety feature if for some reason the count of returned topics ever increases past 4 we will
-        // loop through the list colors again. 
+        // loop through the list colors again.
         return Self.colors[index % colorCount]
     }
 

@@ -35,7 +35,7 @@ class ReaderSelectInterestsCoordinator {
     // MARK: - Display Logic
 
     /// Determines whether or not the select interests view should be displayed
-    /// - Returns: true 
+    /// - Returns: true
     public func isFollowingInterests(completion: @escaping (Bool) -> Void) {
         interestsService.fetchFollowedInterestsLocally { followedInterests in
             guard let interests = followedInterests else {
