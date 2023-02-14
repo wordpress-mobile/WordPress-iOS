@@ -190,15 +190,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)deleteAllTopics
 {
-    [self setCurrentTopic:nil];
-    NSArray *currentTopics = [ReaderAbstractTopic lookupAllInContext:self.managedObjectContext error:nil];
-    for (ReaderAbstractTopic *topic in currentTopics) {
-        DDLogInfo(@"Deleting topic: %@", topic.title);
-        [self preserveSavedPostsFromTopic:topic];
-        [self.managedObjectContext deleteObject:topic];
-    }
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        [self setCurrentTopic:nil];
+        NSArray *currentTopics = [ReaderAbstractTopic lookupAllInContext:context error:nil];
+        for (ReaderAbstractTopic *topic in currentTopics) {
+            DDLogInfo(@"Deleting topic: %@", topic.title);
+            [self preserveSavedPostsFromTopic:topic];
+            [context deleteObject:topic];
+        }
     }];
 }
 
