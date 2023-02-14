@@ -21,7 +21,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Keep a reference to the NSManagedObjectID (if it exists).
     // We'll use it to verify that the account did not change while fetching topics.
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
 
         NSAssert(NSThread.isMainThread, @"This callback must be dispatched on the main thread");
@@ -47,7 +47,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
-    ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
         [WPAnalytics setSubscriptionCount: sites.count];
         [self mergeFollowedSites:sites withSuccess:success];
@@ -265,7 +265,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     NSString *slug = topic.slug;
     if (!slug) {
         // Fallback. It *shouldn't* happen, but we've had a couple of crash reports
@@ -307,12 +307,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     topicName = [[topicName lowercaseString] trim];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             NSDictionary *properties = @{@"tag":topicName, @"source":source};
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
-            [self selectTopicWithID:topicID];
+            [self selectTopicWithID:topicID inContext:self.managedObjectContext];
             if (success) {
                 success();
             }
@@ -340,7 +340,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
         successBlock();
     } failure:^(NSError *error) {
@@ -408,9 +408,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [remoteService fetchTagInfoForTagWithSlug:slug success:^(RemoteReaderTopic *remoteTopic) {
-        ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic];
+        ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic inContext:self.managedObjectContext];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             success(topic.objectID);
         } onQueue:dispatch_get_main_queue()];
@@ -560,13 +560,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
     [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
             return;
         }
 
-        ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo: siteInfo];
+        ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:self.managedObjectContext];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             success(topic.objectID, siteInfo.isFollowing);
         } onQueue:dispatch_get_main_queue()];
@@ -585,9 +585,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 /**
  Get the api to use for the request.
  */
-- (WordPressComRestApi *)apiForRequest
+- (WordPressComRestApi *)apiForRequestInContext:(NSManagedObjectContext *)context
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
         api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
@@ -599,9 +599,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Finds an existing topic matching the specified topicID and, if found, makes it the
  selected topic.
  */
-- (void)selectTopicWithID:(NSNumber *)topicID
+- (void)selectTopicWithID:(NSNumber *)topicID inContext:(NSManagedObjectContext *)context
 {
-    ReaderAbstractTopic *topic = [ReaderTagTopic lookupWithTagID:topicID inContext:self.managedObjectContext];
+    ReaderAbstractTopic *topic = [ReaderTagTopic lookupWithTagID:topicID inContext:context];
     [self setCurrentTopic:topic];
 }
 
@@ -611,7 +611,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  @param dict A `RemoteReaderTopic` object.
  @return A new or updated, but unsaved, `ReaderAbstractTopic`.
  */
-- (ReaderAbstractTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderAbstractTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
     NSString *path = remoteTopic.path;
 
@@ -624,33 +624,33 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    ReaderAbstractTopic *topic = [self topicForRemoteTopic:remoteTopic];
+    ReaderAbstractTopic *topic = [self topicForRemoteTopic:remoteTopic inContext:context];
     return topic;
 }
 
-- (ReaderAbstractTopic *)topicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderAbstractTopic *)topicForRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
     if ([remoteTopic.path rangeOfString:@"/tags/"].location != NSNotFound) {
-        return [self tagTopicForRemoteTopic:remoteTopic];
+        return [self tagTopicForRemoteTopic:remoteTopic inContext:context];
     }
 
     if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
-        return [self listTopicForRemoteTopic:remoteTopic];
+        return [self listTopicForRemoteTopic:remoteTopic inContext:context];
     }
 
     if ([remoteTopic.type isEqualToString:@"organization"]) {
-        return [self teamTopicForRemoteTopic:remoteTopic];
+        return [self teamTopicForRemoteTopic:remoteTopic inContext:context];
     }
 
-    return [self defaultTopicForRemoteTopic:remoteTopic];
+    return [self defaultTopicForRemoteTopic:remoteTopic inContext:context];
 }
 
-- (ReaderTagTopic *)tagTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderTagTopic *)tagTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
-    ReaderTagTopic *topic = (ReaderTagTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
+    ReaderTagTopic *topic = (ReaderTagTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:context];
     if (!topic || ![topic isKindOfClass:[ReaderTagTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTagTopic classNameWithoutNamespaces]
-                                                             inManagedObjectContext:self.managedObjectContext];
+                                                             inManagedObjectContext:context];
     }
     topic.type = [ReaderTagTopic TopicType];
     topic.tagID = remoteTopic.topicID;
@@ -663,12 +663,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
-- (ReaderListTopic *)listTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderListTopic *)listTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
-    ReaderListTopic *topic = (ReaderListTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
+    ReaderListTopic *topic = (ReaderListTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:context];
     if (!topic || ![topic isKindOfClass:[ReaderListTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderListTopic classNameWithoutNamespaces]
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     }
     topic.type = [ReaderListTopic TopicType];
     topic.listID = remoteTopic.topicID;
@@ -682,12 +682,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
-- (ReaderDefaultTopic *)defaultTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderDefaultTopic *)defaultTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
-    ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
+    ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:context];
     if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderDefaultTopic classNameWithoutNamespaces]
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     }
     topic.type = [ReaderDefaultTopic TopicType];
     topic.title = [self formatTitle:remoteTopic.title];
@@ -698,12 +698,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
-- (ReaderTeamTopic *)teamTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
+- (ReaderTeamTopic *)teamTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic inContext:(NSManagedObjectContext *)context
 {
-    ReaderTeamTopic *topic = (ReaderTeamTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:self.managedObjectContext];
+    ReaderTeamTopic *topic = (ReaderTeamTopic *)[ReaderAbstractTopic lookupWithPath:remoteTopic.path inContext:context];
     if (!topic || ![topic isKindOfClass:[ReaderTeamTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTeamTopic classNameWithoutNamespaces]
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     }
     topic.type = [ReaderTeamTopic TopicType];
     topic.title = [self formatTitle:remoteTopic.title];
@@ -716,12 +716,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
-- (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo
+- (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo inContext:(NSManagedObjectContext *)context
 {
-    ReaderSiteTopic *topic = (ReaderSiteTopic *)[ReaderAbstractTopic lookupWithPath:siteInfo.postsEndpoint inContext:self.managedObjectContext];
+    ReaderSiteTopic *topic = (ReaderSiteTopic *)[ReaderAbstractTopic lookupWithPath:siteInfo.postsEndpoint inContext:context];
     if (!topic || ![topic isKindOfClass:[ReaderSiteTopic class]]) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteTopic classNameWithoutNamespaces]
-                                              inManagedObjectContext:self.managedObjectContext];
+                                              inManagedObjectContext:context];
     }
 
     topic.feedID = siteInfo.feedID;
@@ -743,13 +743,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.type = ReaderSiteTopic.TopicType;
     topic.unseenCount = [siteInfo.unseenCount integerValue];
     
-    topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic];
-    topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic];
+    topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic inContext:context];
+    topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic inContext:context];
 
     return topic;
 }
 
-- (ReaderSiteInfoSubscriptionPost *)postSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic
+- (ReaderSiteInfoSubscriptionPost *)postSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     if (![siteInfo.postSubscription wp_isValidObject]) {
         return nil;
@@ -759,13 +759,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     
     if (![postSubscription wp_isValidObject]) {
         postSubscription = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteInfoSubscriptionPost classNameWithoutNamespaces]
-                                                         inManagedObjectContext:self.managedObjectContext];
+                                                         inManagedObjectContext:context];
     }
     postSubscription.siteTopic = topic;
     return postSubscription;
 }
 
-- (ReaderSiteInfoSubscriptionEmail *)emailSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic
+- (ReaderSiteInfoSubscriptionEmail *)emailSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     if (![siteInfo.emailSubscription wp_isValidObject]) {
         return nil;
@@ -774,7 +774,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderSiteInfoSubscriptionEmail *emailSubscription = topic.emailSubscription;
     if (![emailSubscription wp_isValidObject]) {
         emailSubscription = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteInfoSubscriptionEmail classNameWithoutNamespaces]
-                                                          inManagedObjectContext:self.managedObjectContext];
+                                                          inManagedObjectContext:context];
     }
     emailSubscription.sendPosts = siteInfo.emailSubscription.sendPosts;
     emailSubscription.sendComments = siteInfo.emailSubscription.sendComments;
@@ -823,7 +823,7 @@ array are marked as being unfollowed in Core Data.
                  [remoteFeedIds addObject:siteInfo.feedID];
              }
 
-             [self siteTopicForRemoteSiteInfo:siteInfo];
+             [self siteTopicForRemoteSiteInfo:siteInfo inContext:self.managedObjectContext];
          }
 
          for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
@@ -851,7 +851,7 @@ array are marked as being unfollowed in Core Data.
         NSMutableArray *topicsToKeep = [NSMutableArray array];
 
         for (RemoteReaderTopic *remoteTopic in topics) {
-            ReaderAbstractTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
+            ReaderAbstractTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic inContext:self.managedObjectContext];
             if (newTopic != nil) {
                 [topicsToKeep addObject:newTopic];
             } else {
