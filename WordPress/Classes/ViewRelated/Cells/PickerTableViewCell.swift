@@ -10,7 +10,7 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
 
     /// Closure, to be executed on selection change
     ///
-    @objc open var onChange : ((_ newValue: Int) -> ())?
+    @objc open var onChange: ((_ newValue: Int) -> ())?
 
 
     /// String Format, to be applied to the Row Titles

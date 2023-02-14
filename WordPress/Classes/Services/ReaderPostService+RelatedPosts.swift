@@ -4,7 +4,7 @@ extension ReaderPostService {
 
     /**
      Fetches related posts for a specific post.
-     
+
      @param post The reader post to fetch related posts for.
      @param success block called on a successful fetch.
      @param failure block called if there is any error. `error` can be any underlying network error.

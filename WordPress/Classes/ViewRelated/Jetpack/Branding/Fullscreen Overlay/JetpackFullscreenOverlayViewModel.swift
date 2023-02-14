@@ -14,6 +14,7 @@ protocol JetpackFullscreenOverlayViewModel {
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
     var analyticsSource: String { get }
+    var actionInfoText: NSAttributedString? { get }
     var onWillDismiss: JetpackOverlayDismissCallback? { get }
     var onDidDismiss: JetpackOverlayDismissCallback? { get }
 

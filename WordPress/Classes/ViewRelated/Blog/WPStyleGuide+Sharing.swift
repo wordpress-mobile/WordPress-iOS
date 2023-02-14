@@ -36,15 +36,15 @@ extension WPStyleGuide {
 
         // Handle special cases
         switch name {
-        case "print" :
+        case "print":
             return .gridicon(.print)
-        case "email" :
+        case "email":
             return .gridicon(.mail)
-        case "google-plus-1" :
+        case "google-plus-1":
             iconName = "social-google-plus"
-        case "press-this" :
+        case "press-this":
             iconName = "social-wordpress"
-        default :
+        default:
             iconName = "social-\(name)"
         }
 

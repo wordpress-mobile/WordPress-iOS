@@ -464,7 +464,7 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
-        // Editor    
+        // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
         case .editorPostPublishDismissed:
