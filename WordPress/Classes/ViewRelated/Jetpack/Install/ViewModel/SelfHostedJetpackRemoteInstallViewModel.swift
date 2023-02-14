@@ -38,7 +38,6 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
             return
         }
 
-        track(isRetry ? .retry : .start)
         store.onDispatch(JetpackInstallAction.install(url: url, username: username, password: password))
     }
 

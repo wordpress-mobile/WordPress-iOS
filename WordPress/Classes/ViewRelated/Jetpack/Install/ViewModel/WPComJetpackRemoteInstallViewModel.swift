@@ -9,6 +9,7 @@ class WPComJetpackRemoteInstallViewModel {
     // MARK: Dependencies
 
     private let service: PluginJetpackProxyService
+    private let tracker: EventTracker
 
     // MARK: Properties
 
@@ -25,8 +26,10 @@ class WPComJetpackRemoteInstallViewModel {
 
     // MARK: Methods
 
-    init(service: PluginJetpackProxyService = .init()) {
+    init(service: PluginJetpackProxyService = .init(),
+         tracker: EventTracker = DefaultEventTracker()) {
         self.service = service
+        self.tracker = tracker
     }
 }
 
@@ -64,7 +67,22 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {
-        // TODO: Create a thin tracker object as dependency to make this testable.
+        switch event {
+        case .initial, .loading, .failed:
+            tracker.track(.jetpackInstallFullPluginViewed, properties: ["status": state.statusForTracks])
+        case .cancel:
+            tracker.track(.jetpackInstallFullPluginCancelTapped, properties: ["status": state.statusForTracks])
+        case .start:
+            tracker.track(.jetpackInstallFullPluginInstallTapped)
+        case .retry:
+            tracker.track(.jetpackInstallFullPluginRetryTapped)
+        case .completePrimaryButtonTapped:
+            tracker.track(.jetpackInstallFullPluginDoneTapped)
+        case .completed:
+            tracker.track(.jetpackInstallFullPluginCompleted)
+        default:
+            break
+        }
     }
 }
 
@@ -98,5 +116,21 @@ private extension WPComJetpackRemoteInstallViewModel {
             buttonTitleText: (state == .success ? Constants.successButtonTitleText : state.buttonTitle)
         )
     }
+}
 
+// MARK: - Tracking Helpers
+
+private extension JetpackRemoteInstallState {
+    var statusForTracks: String {
+        switch self {
+        case .install:
+            return "initial"
+        case .installing:
+            return "loading"
+        case .failure:
+            return "error"
+        default:
+            return String()
+        }
+    }
 }
