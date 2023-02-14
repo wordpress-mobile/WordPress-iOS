@@ -190,19 +190,18 @@ private extension SupportTableViewController {
 
         // Help Section
         var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button", featureFlagSupportForum: isForumShown))
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
 
         if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: isForumShown))
-            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: isForumShown))
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
             helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
                                                    value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
                                                    accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
                                                    action: supportEmailSelected(),
-                                                   accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: isForumShown))
+                                                   accessibilityIdentifier: "set-contact-email-button"))
         } else {
-            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected(), featureFlagSupportForum: isForumShown))
+            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
 
         let helpSection = ImmuTableSection(
@@ -389,26 +388,20 @@ private extension SupportTableViewController {
         let showIndicator: Bool
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
-        let featureFlagSupportForumEnabled: Bool
 
-        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil, featureFlagSupportForum: Bool = false) {
+        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
             self.title = title
             self.showIndicator = showIndicator
             self.action = action
             self.accessibilityIdentifier = accessibilityIdentifier
-            self.featureFlagSupportForumEnabled = featureFlagSupportForum
         }
 
         func configureCell(_ cell: UITableViewCell) {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            if featureFlagSupportForumEnabled {
-                cell.accessoryType = .disclosureIndicator
-            } else {
-                cell.textLabel?.textColor = .primary
-                cell.showIndicator = showIndicator
-            }
+            cell.textLabel?.textColor = .primary
+            cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
             cell.accessibilityIdentifier = accessibilityIdentifier
         }
@@ -422,15 +415,12 @@ private extension SupportTableViewController {
         let accessibilityHint: String
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
-        let featureFlagSupportForumEnabled: Bool
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            if !featureFlagSupportForumEnabled {
-                cell.textLabel?.textColor = .primary
-            }
+            cell.textLabel?.textColor = .primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
             cell.accessibilityIdentifier = accessibilityIdentifier
