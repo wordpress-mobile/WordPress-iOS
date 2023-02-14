@@ -127,22 +127,21 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)deleteAllSearchTopics
 {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSearchTopic classNameWithoutNamespaces]];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSearchTopic classNameWithoutNamespaces]];
 
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-        return;
-    }
+        NSError *error;
+        NSArray *results = [context executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+            return;
+        }
 
-    for (ReaderAbstractTopic *topic in results) {
-        DDLogInfo(@"Deleting topic: %@", topic.title);
-        [self preserveSavedPostsFromTopic:topic];
-        [self.managedObjectContext deleteObject:topic];
-    }
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        for (ReaderAbstractTopic *topic in results) {
+            DDLogInfo(@"Deleting topic: %@", topic.title);
+            [self preserveSavedPostsFromTopic:topic];
+            [context deleteObject:topic];
+        }
     }];
 }
 
