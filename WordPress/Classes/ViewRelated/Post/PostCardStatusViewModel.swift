@@ -19,6 +19,7 @@ class PostCardStatusViewModel: NSObject {
         case cancelAutoUpload
         case share
         case copyLink
+        case blaze
     }
 
     struct ButtonGroups: Equatable {
@@ -183,6 +184,13 @@ class PostCardStatusViewModel: NSObject {
                     buttons.append(.stats)
                 }
                 buttons.append(.share)
+            }
+
+            let canBlaze = post.blog.isBlazeApproved &&
+                post.status == .publish &&
+                post.password == nil
+            if FeatureFlag.blaze.enabled && canBlaze {
+                buttons.append(.blaze)
             }
 
             if post.status == .publish || post.status == .draft {
