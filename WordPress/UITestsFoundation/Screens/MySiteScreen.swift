@@ -151,6 +151,11 @@ public class MySiteScreen: ScreenObject {
     }
 
     public func goToMenu() {
+        // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
+        guard XCUIDevice.isPhone else {
+            return
+        }
+
         segmentedControlMenuButton(app).tap()
     }
 
