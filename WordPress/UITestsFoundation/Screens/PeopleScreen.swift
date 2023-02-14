@@ -4,12 +4,18 @@ import XCTest
 public class PeopleScreen: ScreenObject {
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
+        let filterButtonGetter: (String) -> (XCUIApplication) -> XCUIElement = { identifier in
+            return { app in
+                app.buttons[identifier]
+            }
+        }
+
         try super.init(
             expectedElementGetters: [
                 // See the PeopleViewController.Filter rawValues
-                { $0.buttons["users"] },
-                { $0.buttons["followers"] },
-                { $0.buttons["email"] },
+                filterButtonGetter("users"),
+                filterButtonGetter("followers"),
+                filterButtonGetter("email")
             ],
             app: app,
             waitTimeout: 7
