@@ -16,7 +16,6 @@ class SupportTableViewController: UITableViewController {
 
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserPersistentStoreFactory.instance()
-    private let featureFlagStore: RemoteFeatureFlagStore
     private let isForumShown = SupportConfiguration.current() == .forum
 
     /// This closure is called when this VC is about to be dismissed due to the user
@@ -26,9 +25,8 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped, featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
         self.configuration = configuration
-        self.featureFlagStore = featureFlagStore
         super.init(style: style)
     }
 
@@ -265,7 +263,7 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if SupportConfiguration.current(featureFlagStore: self.featureFlagStore) == .zendesk {
+            if SupportConfiguration.current() == .zendesk {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
