@@ -783,6 +783,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         shareController.sharePost(post, fromView: view, inViewController: self)
     }
 
+    func blaze(_ post: AbstractPost) {
+        // TODO: Show Blaze webview with post details filled out
+    }
+
     // MARK: - Searching
 
     override func updateForLocalPostsMatchingSearchText() {
