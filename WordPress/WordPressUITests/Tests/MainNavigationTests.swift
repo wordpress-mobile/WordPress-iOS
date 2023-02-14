@@ -24,12 +24,11 @@ class MainNavigationTests: XCTestCase {
     func testLoadsPeopleScreen() throws {
         XCTAssert(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
 
-        mySiteScreen.goToMenu()
-        mySiteScreen.goToPeople()
+        try mySiteScreen
+            .goToMenu()
+            .goToPeople()
 
-        // We don't have a ScreenObject for the people screen,
-        // so we just check that the previous screen is not loaded
-        XCTAssertFalse(MySiteScreen.isLoaded(), "MySitesScreen screen isn't loaded.")
+        XCTAssertTrue(PeopleScreen.isLoaded(), "PeopleScreen screen isn't loaded.")
     }
 
    func testTabBarNavigation() throws {

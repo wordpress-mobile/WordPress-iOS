@@ -150,17 +150,21 @@ public class MySiteScreen: ScreenObject {
         homeButtonGetter(app).tap()
     }
 
-    public func goToMenu() {
+    @discardableResult
+    public func goToMenu() -> Self {
         // On iPad, the menu items are already listed on screen, so we don't need to tap the menu button
         guard XCUIDevice.isPhone else {
-            return
+            return self
         }
 
         segmentedControlMenuButton(app).tap()
+        return self
     }
 
-    public func goToPeople() {
+    @discardableResult
+    public func goToPeople() throws -> PeopleScreen {
         app.cells[ElementStringIDs.peopleButton].tap()
+        return try PeopleScreen()
     }
 
     public static func isLoaded() -> Bool {
