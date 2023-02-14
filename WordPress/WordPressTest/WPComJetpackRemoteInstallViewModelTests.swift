@@ -120,8 +120,13 @@ private extension WPComJetpackRemoteInstallViewModelTests {
     }
 
     class MockEventTracker: EventTracker {
-        var event: WPAnalyticsEvent? = nil
-        var properties = [AnyHashable: Any]()
+        func track(_ event: WordPress.WPAnalyticsEvent) {
+            // no op
+        }
+
+        func track(_ event: WordPress.WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+            // no op
+        }
     }
 
     func makeBlog(with type: BlogType) -> Blog {
