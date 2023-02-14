@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-30 08:10:52+0000 */
+/* Translation-Revision-Date: 2023-02-08 08:14:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: de */
@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inaktiv, automatische Updates an";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Vorschlag einbinden";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "In der Website enthalten";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Innenarchitektur";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Neu: Themenvorschläge";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Neu: Story-Beiträge";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Block entfernen";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Aus Dashboard entfernen";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Aus Einsichten entfernen";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Du kannst Beiträgen zu einem bestimmten Thema folgen, indem du ein Thema hinzufügst.";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Unter Meine Website > Einstellungen > Blog-Erinnerungen kannst du jederzeit mehr erfahren und Erinnerungen festlegen.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Unter Meine Website, Einstellungen, Blog-Erinnerungen kannst du jederzeit mehr erfahren und Erinnerungen festlegen.";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
 
@@ -9705,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Jetzt testen";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "tägliche Themenvorschläge";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "Zum Wechseln der Einheit zweimal tippen";
 
@@ -9893,9 +9875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Weitere Informationen auf jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Beobachte dank hilfreicher Einblicke und umfassender Statistiken, wie dein Traffic wächst.";
 
 /* Name of the Statistics feature. */
@@ -10390,8 +10370,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Gefällt mir";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Website-Statistiken konnten nicht geladen werden.";
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Die heutigen Statistiken konnten nicht geladen werden.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Bleibe auf dem Laufenden über die heutigen Aktivitäten auf deiner WordPress-Website.";

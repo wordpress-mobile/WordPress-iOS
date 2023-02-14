@@ -269,7 +269,7 @@ class AutomatedTransferHelper {
     private func refreshSite() {
         DDLogInfo("[AT] Starting to refresh the site after AT process completed.")
 
-        let service = BlogService.withMainContext()
+        let service = BlogService(coreDataStack: ContextManager.shared)
 
         guard let blog = try? BlogQuery().blogID(site.siteID).dotComAccountUsername(site.username).blog(in: ContextManager.sharedInstance().mainContext) else {
             DDLogInfo("[AT] Couldn't find a blog with provided JetpackSiteRef. This definitely shouldn't have happened. Bailing.")

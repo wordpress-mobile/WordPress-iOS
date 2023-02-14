@@ -69,6 +69,38 @@ public extension Blog {
         try? BlogQuery().xmlrpc(matching: xmlrpc).selfHostedBlogUsername(username).blog(in: context)
     }
 
+    /// Searches for a `Blog` object for this account with the given XML-RPC endpoint
+    ///
+    /// - Warning: If more than one blog is found, they'll be considered duplicates and be
+    /// deleted leaving only one of them.
+    ///
+    /// - Parameters:
+    ///   - xmlrpc: the XML-RPC endpoint URL as a string
+    ///   - account: the account the blog belongs to
+    ///   - context: the NSManagedObjectContext containing the account and the Blog object.
+    /// - Returns: the blog if one was found, otherwise it returns nil
+    static func lookup(xmlrpc: String, andRemoveDuplicateBlogsOf account: WPAccount, in context: NSManagedObjectContext) -> Blog? {
+        let predicate = NSPredicate(format: "xmlrpc like %@", xmlrpc)
+        let foundBlogs = account.blogs.filter { predicate.evaluate(with: $0) }
+
+        guard foundBlogs.count > 1 else {
+            return foundBlogs.first
+        }
+
+        // If more than one blog matches, return the first and delete the rest
+
+        // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+        let blogToReturn = foundBlogs.first { $0.url?.starts(with: "https://") == false }
+            ?? foundBlogs.randomElement()!
+
+        // Remove the duplicates
+        var duplicates = foundBlogs
+        duplicates.remove(blogToReturn)
+        duplicates.forEach(context.delete(_:))
+
+        return blogToReturn
+    }
+
     @objc(countInContext:)
     static func count(in context: NSManagedObjectContext) -> Int {
         BlogQuery().count(in: context)
@@ -77,6 +109,24 @@ public extension Blog {
     @objc(wpComBlogCountInContext:)
     static func wpComBlogCount(in context: NSManagedObjectContext) -> Int {
         BlogQuery().hostedByWPCom(true).count(in: context)
+    }
+
+    static func hasAnyJetpackBlogs(in context: NSManagedObjectContext) throws -> Bool {
+        let fetchRequest = NSFetchRequest<Self>(entityName: Blog.entityName())
+        fetchRequest.predicate = NSPredicate(format: "account != NULL AND isHostedAtWPcom = NO")
+        if try context.count(for: fetchRequest) > 0 {
+            return true
+        }
+
+        return Blog.selfHosted(in: context)
+            .filter { $0.jetpack?.isConnected == true }
+            .count > 0
+    }
+
+    @available(swift, obsoleted: 1.0)
+    @objc(hasAnyJetpackBlogsInContext:)
+    static func objc_hasAnyJetpackBlogs(in context: NSManagedObjectContext) -> Bool {
+        (try? hasAnyJetpackBlogs(in: context)) == true
     }
 
     @objc(selfHostedInContext:)

@@ -18,7 +18,7 @@ class BlogJetpackTests: CoreDataTestCase {
     }()
 
     lazy private var blogService: BlogService = {
-        .init(managedObjectContext: mainContext)
+        .init(coreDataStack: contextManager)
     }()
 
     override func tearDown() {
@@ -77,6 +77,8 @@ class BlogJetpackTests: CoreDataTestCase {
         jetpackLegacyBlog.url = "http://jetpack.example.com/"
         jetpackLegacyBlog.options = makeBlogOptions(version: "1.8.2", clientID: "2")
 
+        contextManager.saveContextAndWait(mainContext)
+
         // wp.com + jetpack
         XCTAssertEqual(1, try WPAccount.lookupNumberOfAccounts(in: mainContext))
         // wp.com + jetpack (legacy)
@@ -124,6 +126,8 @@ class BlogJetpackTests: CoreDataTestCase {
         jetpackBlog.username = "jetpack"
         jetpackBlog.xmlrpc = "https://jetpack.example.com/xmlrpc.php" // now in https
         jetpackBlog.url = "https://jetpack.example.com/" // now in https
+
+        contextManager.saveContextAndWait(mainContext)
 
         XCTAssertEqual(1, try WPAccount.lookupNumberOfAccounts(in: mainContext))
         // wp.com + jetpack (legacy)
