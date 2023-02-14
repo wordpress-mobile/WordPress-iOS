@@ -186,7 +186,6 @@ private extension SupportTableViewController {
         return ImmuTable(sections: sections)
     }
 
-    // TODO - remove after FeatureFlag.wordPressSupportForum is removed
     func jetpackAppTableViewModel() -> ImmuTable {
 
         // Help Section
