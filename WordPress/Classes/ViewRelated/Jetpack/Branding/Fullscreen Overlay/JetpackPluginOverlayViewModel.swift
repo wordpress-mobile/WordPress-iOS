@@ -34,6 +34,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     func didDisplayOverlay() {
+        WPAnalytics.track(.jetpackInstallPluginModalViewed)
     }
 
     func didTapLink() {
@@ -42,13 +43,16 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
     func didTapPrimary() {
         coordinator?.navigateToPrimaryRoute()
+        WPAnalytics.track(.jetpackInstallPluginModalInstallTapped)
     }
 
     func didTapClose() {
+        WPAnalytics.track(.jetpackInstallPluginModalDismissed)
     }
 
     func didTapSecondary() {
         coordinator?.navigateToSecondaryRoute()
+        // TODO: Do we use the same `jetpackInstallPluginModalDismissed` event here?
     }
 
     private static func subtitle(withSiteName siteName: String, plugin: Plugin) -> NSAttributedString {
@@ -145,7 +149,7 @@ private extension JetpackPluginOverlayViewModel {
             value: "Please install the full Jetpack plugin",
             comment: "Jetpack Plugin Modal title"
         )
-        
+
         static let subtitleSingular = NSLocalizedString(
             "jetpack.plugin.modal.subtitle.singular",
             value: """

@@ -425,6 +425,9 @@ import Foundation
     case jetpackBrandingMenuCardRemindLater
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
+    case jetpackInstallPluginModalViewed
+    case jetpackInstallPluginModalDismissed
+    case jetpackInstallPluginModalInstallTapped
 
     // Help & Support
     case supportOpenMobileForumTapped
@@ -1159,6 +1162,12 @@ import Foundation
             return "remove_feature_card_menu_accessed"
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
+        case .jetpackInstallPluginModalViewed:
+            return "jp_install_full_plugin_onboarding_modal_viewed"
+        case .jetpackInstallPluginModalDismissed:
+            return "jp_install_full_plugin_onboarding_modal_dismissed"
+        case .jetpackInstallPluginModalInstallTapped:
+            return "jp_install_full_plugin_onboarding_modal_install_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:
