@@ -206,10 +206,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     if (!topic) {
         return;
     }
-    [self preserveSavedPostsFromTopic:topic];
-    [self.managedObjectContext deleteObject:topic];
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderAbstractTopic *topicInContext = [context existingObjectWithID:topic.objectID error:nil];
+        if (topicInContext == nil) {
+            return;
+        }
+        [self preserveSavedPostsFromTopic:topicInContext];
+        [context deleteObject:topicInContext];
     }];
 }
 
