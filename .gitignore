@@ -109,3 +109,7 @@ WordPress/Credentials/wpcom_internal_app_credentials
 WordPress/InfoPlist.h
 WordPress/InfoPlist-alpha.h
 WordPress/InfoPlist-internal.h
+
+
+# SwiftLint Remote Config Cache
+.swiftlint/RemoteConfigCache

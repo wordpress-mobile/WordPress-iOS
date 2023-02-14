@@ -16,11 +16,11 @@ extension BlockEditorSettings {
     ///
     @NSManaged public var isFSETheme: Bool
 
-    /// Stores a date indicating the last time stamp that the settings were modified. 
+    /// Stores a date indicating the last time stamp that the settings were modified.
     ///
     @NSManaged public var lastUpdated: Date
 
-    /// Stores the raw JSON string that comes from the Global Styles Setting Request. 
+    /// Stores the raw JSON string that comes from the Global Styles Setting Request.
     ///
     @NSManaged public var rawStyles: String?
 
@@ -33,7 +33,7 @@ extension BlockEditorSettings {
     ///
     @NSManaged public var elements: Set<BlockEditorSettingElement>?
 
-    /// Stores a reference back to the parent blog. 
+    /// Stores a reference back to the parent blog.
     ///
     @NSManaged public var blog: Blog
 }

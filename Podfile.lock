@@ -498,6 +498,7 @@ PODS:
   - Sodium (0.9.1)
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
+  - SwiftLint (0.50.3)
   - UIDeviceIdentifier (2.1.0)
   - WordPress-Aztec-iOS (1.19.8)
   - WordPress-Editor-iOS (1.19.8):
@@ -608,6 +609,7 @@ DEPENDENCIES:
   - RNTAztecView (from `https://github.com/wordpress-mobile/gutenberg-mobile.git`, tag `v1.88.0`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
+  - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 5.1-beta)
   - WordPressKit (~> 6.1.0-beta)
@@ -656,6 +658,7 @@ SPEC REPOS:
     - Sodium
     - Starscream
     - SVProgressHUD
+    - SwiftLint
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
@@ -873,6 +876,7 @@ SPEC CHECKSUMS:
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
   UIDeviceIdentifier: e6a801d25f4f178de5bdf475ffe29050d0148176
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
@@ -892,6 +896,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 57f1756ab179666215005618f13b735bc2677b44
+PODFILE CHECKSUM: 8a63cc132d60f7c34f91768e923cdf7923c0b22b
 
 COCOAPODS: 1.11.2

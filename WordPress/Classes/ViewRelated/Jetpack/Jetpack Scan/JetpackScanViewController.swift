@@ -170,7 +170,7 @@ class JetpackScanViewController: UIViewController, JetpackScanView {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    // MARK: - Private: 
+    // MARK: - Private:
     private func configureTableView() {
         tableView.delegate = self
         tableView.register(JetpackScanStatusCell.defaultNib, forCellReuseIdentifier: Constants.statusCellIdentifier)

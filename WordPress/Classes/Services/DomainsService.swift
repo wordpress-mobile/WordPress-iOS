@@ -106,7 +106,7 @@ struct DomainsService {
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
         let request = DomainSuggestionRequest(query: query, quantity: quantity)
-        
+
         remote.getDomainSuggestions(base: base,
                                     quantity: quantity,
                                     domainSuggestionType: domainSuggestionType,
