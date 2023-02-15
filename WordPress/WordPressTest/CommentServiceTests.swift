@@ -19,7 +19,7 @@ final class CommentServiceTests: CoreDataTestCase {
 
         let remoteFactory = CommentServiceRemoteFactoryMock()
         remoteFactory.restRemote = remoteMock
-        service = CommentService(managedObjectContext: mainContext, commentServiceRemoteFactory: remoteFactory)
+        service = CommentService(coreDataStack: contextManager, commentServiceRemoteFactory: remoteFactory)
     }
 
     override func tearDown() {

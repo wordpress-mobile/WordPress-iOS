@@ -140,7 +140,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
 
     private lazy var commentService: CommentService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     /// Ideally, this property should be configurable as one of the initialization parameters (to make this testable).
@@ -1118,20 +1118,15 @@ private extension CommentDetailViewController {
             return
         }
 
-        guard let reply = commentService.createReply(for: comment) else {
-            DDLogError("Failed creating comment reply.")
-            return
+        commentService.createReply(for: comment, content: content) { reply in
+            self.commentService.uploadComment(reply, success: { [weak self] in
+                self?.displayReplyNotice(success: true)
+                self?.refreshCommentReplyIfNeeded()
+            }, failure: { [weak self] error in
+                DDLogError("Failed uploading comment reply: \(String(describing: error))")
+                self?.displayReplyNotice(success: false)
+            })
         }
-
-        reply.content = content
-
-        commentService.uploadComment(reply, success: { [weak self] in
-            self?.displayReplyNotice(success: true)
-            self?.refreshCommentReplyIfNeeded()
-        }, failure: { [weak self] error in
-            DDLogError("Failed uploading comment reply: \(String(describing: error))")
-            self?.displayReplyNotice(success: false)
-        })
     }
 
     func createPostCommentReply(content: String) {
