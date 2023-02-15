@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-30 10:24:14+0000 */
+/* Translation-Revision-Date: 2023-02-14 08:51:42+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -9899,6 +9899,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Funkce Jetpacku se přesunuly";
 
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Přepněte na aplikaci Jetpack, abyste do svého zařízení i nadále dostávali upozornění v reálném čase.";
+
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Získejte oznámení pomocí aplikace Jetpack";
 
@@ -10366,6 +10369,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "To se mi líbí";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Nelze načíst statistiky webu.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Zůstaňte v obraze o dnešních aktivitách na vašem WordPress webu.";
