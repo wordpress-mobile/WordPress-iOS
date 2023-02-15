@@ -373,6 +373,51 @@ class ContextManagerTests: XCTestCase {
         try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
     }
 
+    func testUpdateUsingSyncAPI() throws {
+        // First, insert an account into the database.
+        let contextManager = ContextManager.forTesting()
+        contextManager.performAndSave { context in
+            let account = WPAccount(context: context)
+            account.userID = 1
+            account.username = "First User"
+        }
+
+        // Fetch the account in the main context
+        let account = try WPAccount.lookup(withUserID: 1, in: contextManager.mainContext)
+        XCTAssertEqual(account?.username, "First User")
+
+        // Update the account in a background context using the `performAndSave` API, which saves the changes synchronously.
+        var theBackgroundContext: NSManagedObjectContext? = nil
+        contextManager.performAndSave { context in
+            theBackgroundContext = context
+            guard let objectID = account?.objectID, let accountInContext = try? context.existingObject(with: objectID) as? WPAccount else {
+                XCTFail("Can't find the account")
+                return
+            }
+            accountInContext.username = "Updated"
+            XCTAssertEqual(theBackgroundContext?.hasChanges, true)
+        }
+
+        XCTAssertEqual(theBackgroundContext?.hasChanges, false, "The background context should be saved when `performAndSave` returns")
+
+        XCTExpectFailure("The account object in the main context doesn't get the updated value immediately")
+        XCTAssertEqual(account?.username, "Updated")
+
+        // But eventually (probably in next run loop), it will get the updated value.
+        expect(account?.username).toEventually(equal("Updated"))
+
+        // The above issue doesn't present in the async version of `performAndSave` API
+        contextManager.performAndSave({ context in
+            guard let objectID = account?.objectID, let accountInContext = try? context.existingObject(with: objectID) as? WPAccount else {
+                XCTFail("Can't find the account")
+                return
+            }
+            accountInContext.username = "Updated Again"
+        }, completion: {
+            XCTAssertEqual(account?.username, "Updated Again", "The account object in the main context gets the updated value when the completion block is called")
+        }, on: .main)
+    }
+
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
