@@ -10,7 +10,7 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     // MARK: Properties
 
     /// The view controller can implement the closure to subscribe to every `state` changes.
-    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)? { get set }
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)? { get set }
 
     /// An enum that represents the current installation state.
     var state: JetpackRemoteInstallState { get }
@@ -48,9 +48,9 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     func cancelTapped()
 }
 
-// MARK: - Default Init Jetpack State View Data
+// MARK: - Default Init Jetpack State View Model
 
-extension JetpackRemoteInstallStateViewData {
+extension JetpackRemoteInstallStateViewModel {
 
     init(state: JetpackRemoteInstallState,
          image: UIImage? = nil,

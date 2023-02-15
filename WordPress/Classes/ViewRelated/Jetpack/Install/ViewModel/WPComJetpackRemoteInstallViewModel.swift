@@ -23,11 +23,11 @@ class WPComJetpackRemoteInstallViewModel {
 
     let supportSourceTag: WordPressSupportSourceTag? = .jetpackFullPluginInstallErrorSourceTag
 
-    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)? = nil
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)? = nil
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
-            onChangeState?(state, viewData)
+            onChangeState?(state, stateViewModel)
         }
     }
 
@@ -123,8 +123,8 @@ private extension WPComJetpackRemoteInstallViewModel {
         )
     }
 
-    // View data overrides.
-    var viewData: JetpackRemoteInstallStateViewData {
+    // State view model overrides.
+    var stateViewModel: JetpackRemoteInstallStateViewModel {
         return .init(
             state: state,
             descriptionText: (state == .success ? Constants.successDescriptionText : state.message),

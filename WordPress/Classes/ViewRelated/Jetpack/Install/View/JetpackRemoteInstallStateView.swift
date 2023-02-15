@@ -5,7 +5,7 @@ protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func customerSupportButtonDidTouch()
 }
 
-struct JetpackRemoteInstallStateViewData {
+struct JetpackRemoteInstallStateViewModel {
     let image: UIImage?
     let titleText: String
     let descriptionText: String
@@ -35,18 +35,18 @@ class JetpackRemoteInstallStateView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func configure(with viewData: JetpackRemoteInstallStateViewData) {
-        imageView.image = viewData.image
+    func configure(with viewModel: JetpackRemoteInstallStateViewModel) {
+        imageView.image = viewModel.image
 
-        titleLabel.text = viewData.titleText
-        descriptionLabel.text = viewData.descriptionText
+        titleLabel.text = viewModel.titleText
+        descriptionLabel.text = viewModel.descriptionText
 
-        mainButton.isHidden = viewData.hidesMainButton
-        mainButton.setTitle(viewData.buttonTitleText, for: .normal)
+        mainButton.isHidden = viewModel.hidesMainButton
+        mainButton.setTitle(viewModel.buttonTitleText, for: .normal)
 
-        activityIndicatorContainer.isHidden = viewData.hidesLoadingIndicator
+        activityIndicatorContainer.isHidden = viewModel.hidesLoadingIndicator
 
-        supportButton.isHidden = viewData.hidesSupportButton
+        supportButton.isHidden = viewModel.hidesSupportButton
     }
 }
 

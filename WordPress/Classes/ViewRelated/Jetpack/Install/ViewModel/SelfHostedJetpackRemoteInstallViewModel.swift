@@ -2,7 +2,7 @@ import WordPressFlux
 import WordPressAuthenticator
 
 class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
-    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)?
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)?
     private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
