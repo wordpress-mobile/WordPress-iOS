@@ -17,32 +17,30 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext: self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext: context];
 
-    // Keep a reference to the NSManagedObjectID (if it exists).
-    // We'll use it to verify that the account did not change while fetching topics.
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
-    [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
+        // Keep a reference to the NSManagedObjectID (if it exists).
+        // We'll use it to verify that the account did not change while fetching topics.
+        ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:context]];
+        [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
 
-        NSAssert(NSThread.isMainThread, @"This callback must be dispatched on the main thread");
-        WPAccount *reloadedAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+            NSAssert(NSThread.isMainThread, @"This callback must be dispatched on the main thread");
+            WPAccount *reloadedAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
 
-        // Make sure that we have the same account now that we did when we started.
-        if ((!defaultAccount && !reloadedAccount) || [defaultAccount.objectID isEqual:reloadedAccount.objectID]) {
-            // If both accounts are nil, or if both accounts exist and are identical we're good to go.
-        } else {
-            // The account changed so our results are invalid. Fetch them anew!
-            [self fetchReaderMenuWithSuccess:success failure:failure];
-            return;
-        }
+            // Make sure that we have the same account now that we did when we started.
+            if ((!defaultAccount && !reloadedAccount) || [defaultAccount.objectID isEqual:reloadedAccount.objectID]) {
+                // If both accounts are nil, or if both accounts exist and are identical we're good to go.
+            } else {
+                // The account changed so our results are invalid. Fetch them anew!
+                [self fetchReaderMenuWithSuccess:success failure:failure];
+                return;
+            }
 
-        [self mergeMenuTopics:topics withSuccess:success];
+            [self mergeMenuTopics:topics withSuccess:success];
 
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+        } failure:failure];
+    } completion:nil onQueue:dispatch_get_main_queue()];
 }
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)(void))success failure:(void(^)(NSError *error))failure
