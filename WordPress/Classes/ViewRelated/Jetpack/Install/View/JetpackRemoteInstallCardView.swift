@@ -43,6 +43,7 @@ class JetpackRemoteInstallCardView: UIView {
         label.font = Constants.noticeLabelFont
         label.attributedText = viewModel.noticeLabel
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -51,6 +52,7 @@ class JetpackRemoteInstallCardView: UIView {
         button.setTitle(Strings.learnMore, for: .normal)
         button.setTitleColor(.primary, for: .normal)
         button.titleLabel?.font = Constants.learnMoreFont
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.contentHorizontalAlignment = .leading
         button.addTarget(self, action: #selector(onLearnMoreTap), for: .touchUpInside)
         return button
