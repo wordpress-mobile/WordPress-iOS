@@ -802,12 +802,6 @@ import Combine
             predicates.append(NSPredicate(format: "siteID = %@", siteBlocking.blogID))
         }
 
-        // Blocked author predicate
-        let authorBlockings = BlockedAuthor.find(.accountID(account.userID), context: viewContext).map { $0.authorID }
-        if !authorBlockings.isEmpty {
-            predicates.append(NSPredicate(format: "authorID IN %@", authorBlockings))
-        }
-
         // Perform request
         let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
         request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
@@ -828,7 +822,6 @@ import Combine
         }
         header.configureHeader(topic)
     }
-
 
     func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
