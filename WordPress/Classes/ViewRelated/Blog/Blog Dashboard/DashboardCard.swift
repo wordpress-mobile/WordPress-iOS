@@ -7,6 +7,7 @@ import Foundation
 ///
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable {
+    case jetpackInstall
     case quickStart
     case prompts
     case todaysStats = "todays_stats"
@@ -22,6 +23,8 @@ enum DashboardCard: String, CaseIterable {
 
     var cell: DashboardCollectionViewCell.Type {
         switch self {
+        case .jetpackInstall:
+            return DashboardJetpackInstallCardCell.self
         case .quickStart:
             return DashboardQuickStartCardCell.self
         case .draftPosts:
@@ -47,6 +50,8 @@ enum DashboardCard: String, CaseIterable {
 
     func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
         switch self {
+        case .jetpackInstall:
+            return JetpackRemoteInstallCardView.shouldShowJetpackInstallCard
         case .quickStart:
             return QuickStartTourGuide.quickStartEnabled(for: blog) && mySiteSettings.defaultSection == .dashboard
         case .draftPosts, .scheduledPosts, .todaysStats:
