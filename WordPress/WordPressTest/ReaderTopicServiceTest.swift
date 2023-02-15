@@ -278,7 +278,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         // Setup
         let expect = expectation(description: "topics saved expectation")
         let service = ReaderTopicService(managedObjectContext: mainContext)
-        service.currentTopic = nil
+        service.setCurrentTopic(nil)
 
         // Current topic is not nil after a sync
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
@@ -295,12 +295,12 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         let results = try! mainContext.fetch(request)
 
         var topic = results.last as! ReaderAbstractTopic
-        XCTAssertEqual(service.currentTopic.type, ReaderDefaultTopic.TopicType, "The curent topic should have been a default topic")
+        XCTAssertEqual(service.currentTopic(in: mainContext).type, ReaderDefaultTopic.TopicType, "The curent topic should have been a default topic")
 
         topic = results.first as! ReaderAbstractTopic
-        service.currentTopic = topic
+        service.setCurrentTopic(topic)
 
-        XCTAssertEqual(service.currentTopic.path, topic.path, "The current topic did not match the topic we assiged to it")
+        XCTAssertEqual(service.currentTopic(in: mainContext).path, topic.path, "The current topic did not match the topic we assiged to it")
     }
 
     /**

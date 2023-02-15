@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
-extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderAbstractTopic;
@@ -12,11 +10,9 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @interface ReaderTopicService : LocalCoreDataService
 
-/**
- Sets the currentTopic and dispatches the `ReaderTopicDidChangeNotification` notification.
- Passing `nil` for the topic will not dispatch the notification.
- */
-@property (nonatomic) ReaderAbstractTopic *currentTopic;
+- (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
+
+- (void)setCurrentTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Fetches the topics for the reader's menu.

@@ -10,8 +10,6 @@
 @import WordPressKit;
 
 
-NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
-NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
@@ -60,20 +58,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (ReaderAbstractTopic *)currentTopic
+- (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context
 {
     ReaderAbstractTopic *topic;
-    topic = [self currentTopicFromSavedPath];
+    topic = [self currentTopicFromSavedPathInContext:context];
 
     if (!topic) {
-        topic = [self currentTopicFromDefaultTopic];
+        topic = [self currentTopicFromDefaultTopicInContext:context];
         [self setCurrentTopic:topic];
     }
 
     return topic;
 }
 
-- (ReaderAbstractTopic *)currentTopicFromSavedPath
+- (ReaderAbstractTopic *)currentTopicFromSavedPathInContext:(NSManagedObjectContext *)context
 {
     ReaderAbstractTopic *topic;
     NSString *topicPathString = [[UserPersistentStoreFactory userDefaultsInstance] stringForKey:ReaderTopicCurrentTopicPathKey];
@@ -82,7 +80,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         request.predicate = [NSPredicate predicateWithFormat:@"path = %@", topicPathString];
 
         NSError *error;
-        topic = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
+        topic = [[context executeFetchRequest:request error:&error] firstObject];
         if (error) {
             DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
         }
@@ -90,7 +88,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
-- (ReaderAbstractTopic *)currentTopicFromDefaultTopic
+- (ReaderAbstractTopic *)currentTopicFromDefaultTopicInContext:(NSManagedObjectContext *)context
 {
     // Return the default topic
     ReaderAbstractTopic *topic;
@@ -98,7 +96,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderDefaultTopic classNameWithoutNamespaces]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
-    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray *topics = [context executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
         return nil;
@@ -122,14 +120,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     if (!topic) {
         [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
-        [NSUserDefaults resetStandardUserDefaults];
     } else {
         [[UserPersistentStoreFactory userDefaultsInstance] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
-        [NSUserDefaults resetStandardUserDefaults];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil]; 
-        });
     }
 }
 
@@ -870,7 +862,8 @@ array are marked as being unfollowed in Core Data.
         if ([currentTopics count] > 0) {
             for (ReaderAbstractTopic *topic in currentTopics) {
                 if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topicsToKeep containsObject:topic]) {
-                    if ([topic isEqual:self.currentTopic]) {
+                    
+                    if ([topic isEqual:[self currentTopicInContext:self.managedObjectContext]]) {
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
