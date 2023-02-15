@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 #import "Blog.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -10,11 +10,7 @@ extern NSString *const WPBlogUpdatedNotification;
 @class WPAccount;
 @class SiteInfo;
 
-@interface BlogService : LocalCoreDataService
-
-+ (instancetype)serviceWithMainContext;
-
-- (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+@interface BlogService : CoreDataService
 
 /**
  *  Sync all available blogs for an acccount
@@ -116,36 +112,7 @@ extern NSString *const WPBlogUpdatedNotification;
                                      success:(void (^)(void))success
                                      failure:(void (^)(NSError *error))failure;
 
-/**
- *  Update the password for the blog.
- *
- *  @discussion This is only valid for self-hosted sites that don't use jetpack.
- *
- *  @param password the new password to use for the blog
- *  @param blog to change the password.
- */
-- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
-
-- (BOOL)hasAnyJetpackBlogs;
-
 - (void)removeBlog:(Blog *)blog;
-
-///--------------------
-/// @name Blog creation
-///--------------------
-
-/**
- Searches for a `Blog` object for this account with the given XML-RPC endpoint
-
- @warn If more than one blog is found, they'll be considered duplicates and be
- deleted leaving only one of them.
-
- @param xmlrpc the XML-RPC endpoint URL as a string
- @param account the account the blog belongs to
- @return the blog if one was found, otherwise it returns nil
- */
-- (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                            inAccount:(WPAccount *)account;
 
 @end
 

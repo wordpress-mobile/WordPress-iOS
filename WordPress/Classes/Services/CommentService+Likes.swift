@@ -2,7 +2,7 @@ extension CommentService {
 
     /**
      Fetches a list of users from remote that liked the comment with the given IDs.
-     
+
      @param commentID       The ID of the comment to fetch likes for
      @param siteID          The ID of the site that contains the post
      @param count           Number of records to retrieve. Optional. Defaults to the endpoint max of 90.
@@ -52,7 +52,7 @@ extension CommentService {
 
     /**
      Fetches a list of users from Core Data that liked the comment with the given IDs.
-     
+
      @param commentID   The ID of the comment to fetch likes for.
      @param siteID      The ID of the site that contains the post.
      @param after       Filter results to likes after this Date. Optional.

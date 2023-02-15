@@ -4,6 +4,7 @@
 * [**] [internal] New Forum Support Help Card Screen. [#19993]
 * [*] [internal] Refactored account related operations (i.e. log in and out of the app). [#19893]
 * [*] [internal] Refactored how reader topics are fetched from the database. [#20129]
+* [*] [internal] Refactored blog related operations (i.e. loading blogs of the logged in account, updating blog settings). [#20047]
 
 21.7
 -----

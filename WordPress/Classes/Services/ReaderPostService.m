@@ -31,13 +31,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 #pragma mark - Fetch Methods
 
 - (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
-                   success:(void (^)(NSInteger count, BOOL hasMore))success
-                   failure:(void (^)(NSError *error))failure
-{
-    [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
-}
-
-- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure
@@ -297,40 +290,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
 
     }];
-}
-
-- (void)setFollowing:(BOOL)following
-  forWPComSiteWithID:(NSNumber *)siteID
-              andURL:(NSString *)siteURL
-             success:(void (^)(void))success
-             failure:(void (^)(NSError *error))failure
-{
-    // Optimistically Update
-    [self setFollowing:following forPostsFromSiteWithID:siteID andURL:siteURL];
-
-    // Define success block
-    void (^successBlock)(void) = ^void() {
-        if (success) {
-            success();
-        }
-    };
-
-    // Define failure block
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Revert changes on failure
-        [self setFollowing:!following forPostsFromSiteWithID:siteID andURL:siteURL];
-
-        if (failure) {
-            failure(error);
-        }
-    };
-
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if (following) {
-        [siteService followSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
-    } else {
-        [siteService unfollowSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
-    }
 }
 
 - (void)toggleFollowingForPost:(ReaderPost *)post
@@ -608,58 +567,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         post.isFollowing = following;
     }
     [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-}
-
-- (void)deletePostsWithSiteID:(NSNumber *)siteID andSiteURL:(NSString *)siteURL fromTopic:(ReaderAbstractTopic *)topic
-{
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSString *likeSiteURL = [NSString stringWithFormat:@"%@*", siteURL];
-    NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@", siteID, likeSiteURL, topic];
-    request.predicate = [self predicateIgnoringSavedForLaterPosts:postsMatching];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
-        return;
-    }
-
-    if ([results count] == 0) {
-        return;
-    }
-
-    for (ReaderPost *post in results) {
-        [self.managedObjectContext deleteObject:post];
-    }
-
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-}
-
-- (void)deletePostsFromSiteWithID:(NSNumber *)siteID
-{
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
-    request.predicate = [self predicateIgnoringSavedForLaterPosts:postsMatching];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        return;
-    }
-
-    if ([results count] == 0) {
-        return;
-    }
-
-    for (ReaderPost *post in results) {
-        DDLogInfo(@"Deleting post: %@", post);
-        [self.managedObjectContext deleteObject:post];
-    }
-
-    [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }

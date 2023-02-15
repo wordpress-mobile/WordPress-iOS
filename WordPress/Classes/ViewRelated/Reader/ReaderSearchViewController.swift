@@ -312,7 +312,7 @@ import Gridicons
 
         endSearch()
 
-        if let previousTopic = previousTopic {
+        if let previousTopic, topic != previousTopic {
             service.delete(previousTopic)
         }
     }

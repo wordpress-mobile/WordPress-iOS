@@ -24,7 +24,7 @@
 
     self.coreDataStack = [self coreDataStackForTesting];
 
-    self.blogService = [[BlogService alloc] initWithManagedObjectContext:[self.coreDataStack mainContext]];
+    self.blogService = [[BlogService alloc] initWithCoreDataStack:self.coreDataStack];
     AccountService *service = [[AccountService alloc] initWithCoreDataStack:self.coreDataStack];
     NSManagedObjectID *accountID = [service createOrUpdateAccountWithUsername:@"test" authToken:@"token"];
     WPAccount *account = [self.coreDataStack.mainContext existingObjectWithID:accountID error:nil];

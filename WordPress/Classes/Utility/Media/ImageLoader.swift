@@ -169,7 +169,7 @@ import AutomatticTracks
         case .privateSelfHostedSite:
             finalURL = url
         case .publicWPComSite: fallthrough
-        case .privateAtomicWPComSite(siteID: _):
+        case .privateAtomicWPComSite:
             finalURL = photonUrl(with: url, preferredSize: size)
         case .privateWPComSite:
             finalURL = privateImageURL(with: url, from: host, preferredSize: size)

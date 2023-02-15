@@ -40,7 +40,7 @@ open class SettingsPickerViewController: UITableViewController {
     open var pickerMaximumValue: Int!
 
     /// Closure to be executed whenever the Switch / Picker is updated
-    @objc open var onChange : ((_ enabled: Bool, _ newValue: Int) -> ())?
+    @objc open var onChange: ((_ enabled: Bool, _ newValue: Int) -> ())?
 
 
 

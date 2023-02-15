@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactief, auto-updates aan";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Opdracht bijvoegen";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inbegrepen bij site";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Binnenhuisarchitectuur";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Nieuw: opdrachten";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introductie verhalen";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Verwijder blok";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Verwijder van dashboard";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Je kunt berichten over een bepaald onderwerp volgen door een onderwerp toe te voegen.";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Je vindt meer informatie en kunt te allen tijde herinneringen instellen via Mijn site > Instellingen > Blog-herinneringen.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Je vindt meer informatie en kunt te allen tijde herinneringen instellen via Mijn site, Instellingen, Blog-herinneringen.";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Je kunt deze instellingen ongedaan maken voor individuele berichten.";
 
@@ -9690,9 +9675,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.dismissButton.title" = "Afwijzen";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
@@ -9830,9 +9812,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Ga naar jetpack.com voor meer informatie";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Laat het aantal bezoekers van je site groeien via waardevolle inzichten en uitgebreide statistieken.";
 
 /* Name of the Statistics feature. */
@@ -9846,9 +9826,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack-functies zijn verplaatst.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack-app om realtime meldingen te blijven ontvangen op je apparaat.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ontvang meldingen met de Jetpack-app";
@@ -10248,9 +10225,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Vind-ik-leuks";
-
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Kan site statistieken niet laden.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Blijf op de hoogte van de activiteiten van vandaag op je WordPress site.";

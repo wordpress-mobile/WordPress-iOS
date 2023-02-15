@@ -32,7 +32,7 @@ final class SitePickerViewController: UIViewController {
          mediaService: MediaService? = nil) {
         self.blog = blog
         self.meScenePresenter = meScenePresenter
-        self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.mediaService = mediaService ?? MediaService(managedObjectContext: ContextManager.shared.mainContext)
         super.init(nibName: nil, bundle: nil)
     }

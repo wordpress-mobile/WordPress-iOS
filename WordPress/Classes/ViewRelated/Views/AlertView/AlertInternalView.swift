@@ -6,7 +6,7 @@ import WordPressShared
 ///
 open class AlertInternalView: UIView {
     // MARK: - Public Properties
-    @objc open var onClick : (() -> ())?
+    @objc open var onClick: (() -> ())?
 
 
 

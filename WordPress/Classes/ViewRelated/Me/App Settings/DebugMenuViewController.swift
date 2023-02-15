@@ -3,11 +3,6 @@ import AutomatticTracks
 import SwiftUI
 
 class DebugMenuViewController: UITableViewController {
-    private var blogService: BlogService {
-        let context = ContextManager.sharedInstance().mainContext
-        return BlogService(managedObjectContext: context)
-    }
-
     fileprivate var handler: ImmuTableViewHandler!
 
     override init(style: UITableView.Style) {
@@ -122,7 +117,7 @@ class DebugMenuViewController: UITableViewController {
 
     private func displayBlogPickerForQuickStart(type: QuickStartType) {
         let successHandler: BlogSelectorSuccessHandler = { [weak self] selectedObjectID in
-            guard let blog = self?.blogService.managedObjectContext.object(with: selectedObjectID) as? Blog else {
+            guard let blog = ContextManager.shared.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
 

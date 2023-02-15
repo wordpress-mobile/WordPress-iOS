@@ -100,7 +100,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     init(meScenePresenter: ScenePresenter, blogService: BlogService? = nil, mySiteSettings: MySiteSettings = MySiteSettings()) {
         self.meScenePresenter = meScenePresenter
-        self.blogService = blogService ?? BlogService(managedObjectContext: ContextManager.shared.mainContext)
+        self.blogService = blogService ?? BlogService(coreDataStack: ContextManager.shared)
         self.mySiteSettings = mySiteSettings
 
         super.init(nibName: nil, bundle: nil)
@@ -310,7 +310,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     ///     - Segmented control container view
     ///       - Segmented control
     ///     - Blog dashboard view controller OR blog details view controller
-    /// 
+    ///
     private func setupConstraints() {
         view.addSubview(scrollView)
         view.pinSubviewToAllEdges(scrollView)
