@@ -126,7 +126,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 return
             }
 
-            getBlazeStatus(for: newBlog)
+            updateBlazeStatus(for: newBlog)
             showSitePicker(for: newBlog)
             showBlogDetails(for: newBlog)
             updateNavigationTitle(for: newBlog)
@@ -815,7 +815,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.getBlazeStatus(for: blog)
+            self.updateBlazeStatus(for: blog)
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.updateChildViewController(for: blog)
@@ -945,7 +945,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Blaze
 
-    private func getBlazeStatus(for blog: Blog?) {
+    private func updateBlazeStatus(for blog: Blog?) {
         guard FeatureFlag.blaze.enabled,
               let blog = blog,
               let blazeService = BlazeService() else {
