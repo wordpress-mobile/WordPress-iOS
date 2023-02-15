@@ -849,12 +849,12 @@ array are marked as being unfollowed in Core Data.
  */
 - (void)mergeMenuTopics:(NSArray *)topics isLoggedIn:(BOOL)isLoggedIn withSuccess:(void (^)(void))success
 {
-    [self.managedObjectContext performBlock:^{
-        NSArray *currentTopics = [ReaderAbstractTopic lookupAllMenusInContext:self.managedObjectContext error:nil];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSArray *currentTopics = [ReaderAbstractTopic lookupAllMenusInContext:context error:nil];
         NSMutableArray *topicsToKeep = [NSMutableArray array];
 
         for (RemoteReaderTopic *remoteTopic in topics) {
-            ReaderAbstractTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic inContext:self.managedObjectContext];
+            ReaderAbstractTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic inContext:context];
             if (newTopic != nil) {
                 [topicsToKeep addObject:newTopic];
             } else {
@@ -866,7 +866,7 @@ array are marked as being unfollowed in Core Data.
             for (ReaderAbstractTopic *topic in currentTopics) {
                 if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topicsToKeep containsObject:topic]) {
                     
-                    if ([topic isEqual:[self currentTopicInContext:self.managedObjectContext]]) {
+                    if ([topic isEqual:[self currentTopicInContext:context]]) {
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
@@ -899,15 +899,12 @@ array are marked as being unfollowed in Core Data.
 
                         DDLogInfo(@"Deleting topic: %@", topic.title);
                         [self preserveSavedPostsFromTopic:topic];
-                        [self.managedObjectContext deleteObject:topic];
+                        [context deleteObject:topic];
                     }
                 }
             }
         }
-
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
-
-    }];
+    } completion:success onQueue:dispatch_get_main_queue()];
 }
 
 - (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success
