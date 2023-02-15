@@ -1,4 +1,5 @@
 import UIKit
+import Lottie
 
 class JetpackRemoteInstallCardView: UIView {
 
@@ -12,24 +13,29 @@ class JetpackRemoteInstallCardView: UIView {
 
     private let viewModel: JetpackRemoteInstallCardViewModel
 
-    private lazy var warningImageView: UIImageView = {
-        let imageView = UIImageView(image: Constants.warningIconImage)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addConstraints(imageConstraints(for: imageView))
-        return imageView
+    private lazy var animation: Animation? = {
+        viewModel.layoutDirection == .leftToRight ?
+        Animation.named(Constants.lottieLTRFileName) :
+        Animation.named(Constants.lottieRTLFileName)
     }()
 
-    private lazy var jetpackImageView: UIImageView = {
-        let imageView = UIImageView(image: Constants.jetpackIconImage)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addConstraints(imageConstraints(for: imageView))
-        return imageView
+    private lazy var logosAnimationView: AnimationView = {
+        let view = AnimationView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.animation = animation
+        let animationSize = animation?.size ?? .init(width: 1, height: 1)
+        let ratio = animationSize.width / animationSize.height
+        view.addConstraints([
+            view.heightAnchor.constraint(equalToConstant: Constants.iconHeight),
+            view.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: ratio),
+        ])
+        view.currentProgress = 1.0
+
+        return view
     }()
 
-    private lazy var imageStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [warningImageView, jetpackImageView, UIView()])
-        stackView.spacing = Constants.iconSpacing
-        return stackView
+    private lazy var logosStackView: UIStackView = {
+        return UIStackView(arrangedSubviews: [logosAnimationView, UIView()])
     }()
 
     private lazy var noticeLabel: UILabel = {
@@ -51,7 +57,7 @@ class JetpackRemoteInstallCardView: UIView {
     }()
 
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageStackView, noticeLabel, learnMoreButton])
+        let stackView = UIStackView(arrangedSubviews: [logosStackView, noticeLabel, learnMoreButton])
         stackView.axis = .vertical
         stackView.spacing = Constants.contentSpacing
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -102,22 +108,13 @@ class JetpackRemoteInstallCardView: UIView {
         pinSubviewToAllEdges(cardFrameView)
     }
 
-    private func imageConstraints(for imageView: UIImageView) -> [NSLayoutConstraint] {
-        return [
-            imageView.widthAnchor.constraint(equalToConstant: Constants.iconWidth),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.iconHeight)
-        ]
-    }
-
     // MARK: Constants
 
     struct Constants {
-        static let warningIconImage = UIImage(named: "jetpack-install-warning")
-        static let jetpackIconImage = UIImage(named: "jetpack-install-icon")
+        static let lottieLTRFileName = "JetpackInstallPluginLogoAnimation_ltr"
+        static let lottieRTLFileName = "JetpackInstallPluginLogoAnimation_rtl"
         static let hideThisImage = UIImage(systemName: "eye.slash")
         static let iconHeight: CGFloat = 30.0
-        static let iconWidth: CGFloat = 30.0
-        static let iconSpacing: CGFloat = -6.0
         static let contentSpacing: CGFloat = 10.0
         static let noticeLabelFont = WPStyleGuide.fontForTextStyle(.callout)
         static let learnMoreFont = WPStyleGuide.fontForTextStyle(.callout).semibold()
@@ -140,6 +137,7 @@ class JetpackRemoteInstallCardView: UIView {
 
 struct JetpackRemoteInstallCardViewModel {
 
+    let layoutDirection: UITraitEnvironmentLayoutDirection
     let onLearnMoreTap: () -> Void
     var noticeLabel: NSAttributedString {
         switch installedPlugin {
@@ -158,8 +156,10 @@ struct JetpackRemoteInstallCardViewModel {
 
     private let installedPlugin: JetpackPlugin
 
-    init(onLearnMoreTap: @escaping () -> Void = {},
+    init(layoutDirection: UITraitEnvironmentLayoutDirection = .leftToRight,
+         onLearnMoreTap: @escaping () -> Void = {},
          installedPlugin: JetpackPlugin = .multiple) {
+        self.layoutDirection = layoutDirection
         self.onLearnMoreTap = onLearnMoreTap
         self.installedPlugin = installedPlugin
     }
