@@ -120,10 +120,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     if (!topic) {
         [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
-        [NSUserDefaults resetStandardUserDefaults];
     } else {
         [[UserPersistentStoreFactory userDefaultsInstance] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
-        [NSUserDefaults resetStandardUserDefaults];
     }
 }
 
