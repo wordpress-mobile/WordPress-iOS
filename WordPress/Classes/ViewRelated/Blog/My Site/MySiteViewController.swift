@@ -952,7 +952,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        blazeService.getStatus(for: blog)
+        blazeService.updateStatus(for: blog)
     }
 
     // MARK: - Blogging Prompts
