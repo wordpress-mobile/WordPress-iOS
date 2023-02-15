@@ -398,19 +398,26 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     // Find existing tag by slug
-    ReaderTagTopic *existingTopic = [ReaderTagTopic lookupWithSlug:slug inContext:self.managedObjectContext];
+    NSManagedObjectID * __block existingTopic = nil;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * _Nonnull context) {
+        existingTopic = [[ReaderTagTopic lookupWithSlug:slug inContext:context] objectID];
+    }];
     if (existingTopic) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            success(existingTopic.objectID);
+            success(existingTopic);
         });
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchTagInfoForTagWithSlug:slug success:^(RemoteReaderTopic *remoteTopic) {
-        ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic inContext:self.managedObjectContext];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            success(topic.objectID);
+        NSManagedObjectID * __block topicObjectID = nil;
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic inContext:context];
+            [context obtainPermanentIDsForObjects:@[topic] error:nil];
+            topicObjectID = topic.objectID;
+        } completion:^{
+            success(topicObjectID);
         } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), slug, error);
