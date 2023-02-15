@@ -545,13 +545,15 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
-    ReaderSiteTopic *siteTopic;
+    ReaderSiteTopic * __block siteTopic = nil;
 
-    if (isFeed) {
-        siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.managedObjectContext];
-    } else {
-        siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.managedObjectContext];
-    }
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        if (isFeed) {
+            siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:context];
+        } else {
+            siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+        }
+    }];
 
     if (siteTopic) {
         if (success) {
@@ -560,17 +562,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
             return;
         }
 
-        ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:self.managedObjectContext];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            success(topic.objectID, siteInfo.isFollowing);
+        NSManagedObjectID * __block topicObjectID = nil;
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:context];
+            [context obtainPermanentIDsForObjects:@[topic] error:nil];
+            topicObjectID = topic.objectID;
+        } completion:^{
+            success(topicObjectID, siteInfo.isFollowing);
         } onQueue:dispatch_get_main_queue()];
-
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
         if (failure) {
