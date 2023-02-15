@@ -575,8 +575,8 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
-    func gutenbergDidRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        GutenbergNetworkRequest(path: path, blog: post.blog).request(completion: completion)
+    func gutenbergDidRequestFetch(path: String, options: NSDictionary? = nil, completion: @escaping (Result<Any, NSError>) -> Void) {
+        GutenbergNetworkRequest(path: path, blog: post.blog).request(options: options, completion: completion)
     }
 
     func editorDidAutosave() {

@@ -12,9 +12,9 @@ struct GutenbergNetworkRequest {
         self.blog = blog
     }
 
-    func request(completion: @escaping CompletionHandler) {
+    func request(options: NSDictionary? = nil, completion: @escaping CompletionHandler) {
         if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
-            dotComRequest(with: dotComID, completion: completion)
+            dotComRequest(with: dotComID, options: options, completion: completion)
         } else {
             selfHostedRequest(completion: completion)
         }
@@ -22,8 +22,31 @@ struct GutenbergNetworkRequest {
 
     // MARK: - dotCom
 
-    private func dotComRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
+    private func dotComRequest(with dotComID: NSNumber, options: NSDictionary? = nil, completion: @escaping CompletionHandler) {
+        let getMethod = "GET"
+        let postMethod = "POST"
+
+        if let requestMethod = options?["method"] as? String {
+            if requestMethod == getMethod {
+                dotComGetRequest(with: dotComID, completion: completion)
+            } else if requestMethod == postMethod {
+                dotComPostRequest(with: dotComID, data: options?["data"] as? NSDictionary ?? nil, completion: completion)
+            }
+        } else {
+            dotComGetRequest(with: dotComID, completion: completion)
+        }
+    }
+
+    private func dotComGetRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi()?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
+            completion(.success(response))
+        }, failure: { (error, httpResponse) in
+            completion(.failure(error.nsError(with: httpResponse)))
+        })
+    }
+
+    private func dotComPostRequest(with dotComID: NSNumber, data: NSDictionary?, completion: @escaping CompletionHandler) {
+        blog.wordPressComRestApi()?.POST(dotComPath(with: dotComID), parameters: data as? [ String: AnyObject ], success: { (response, httpResponse) in
             completion(.success(response))
         }, failure: { (error, httpResponse) in
             completion(.failure(error.nsError(with: httpResponse)))
@@ -33,6 +56,7 @@ struct GutenbergNetworkRequest {
     private func dotComPath(with dotComID: NSNumber) -> String {
         return path.replacingOccurrences(of: "/wp/v2/", with: "/wp/v2/sites/\(dotComID)/")
                    .replacingOccurrences(of: "/oembed/1.0/", with: "/oembed/1.0/sites/\(dotComID)/")
+                   .replacingOccurrences(of: "/wpcom/v2/", with: "/wpcom/v2/sites/\(dotComID)/")
     }
 
     // MARK: - Self-Hosed
