@@ -194,4 +194,31 @@ final class BlogTests: CoreDataTestCase {
         XCTAssertTrue((blog.version as Any) is String)
         XCTAssertEqual(blog.version, "")
     }
+
+    func testRemoveDuplicates() async throws {
+        // Create an account with duplicated blogs
+        let xmlrpc = "https://xmlrpc.test.wordpress.com"
+        let account = try await contextManager.performAndSave { context in
+            let account = WPAccount(context: context)
+            account.username = "username"
+            account.authToken = "authToken"
+            account.blogs = Set(
+                (1...10).map { _ in
+                    let blog = BlogBuilder(context).build()
+                    blog.xmlrpc = xmlrpc
+                    return blog
+                }
+            )
+            return account
+        }
+        try XCTAssertEqual(mainContext.count(for: Blog.fetchRequest()), 10)
+
+        try await contextManager.performAndSave { context in
+            let accountInContext = try XCTUnwrap(context.existingObject(with: account.objectID) as? WPAccount)
+            let blog = Blog.lookup(xmlrpc: xmlrpc, andRemoveDuplicateBlogsOf: accountInContext, in: context)
+            XCTAssertNotNil(blog)
+        }
+
+        try XCTAssertEqual(mainContext.count(for: Blog.fetchRequest()), 1)
+    }
 }

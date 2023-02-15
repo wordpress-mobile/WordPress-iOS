@@ -47,8 +47,7 @@ class WordPressComSyncService {
         }
 
         if isJetpackLogin && !account.isDefaultWordPressComAccount {
-            let context = ContextManager.sharedInstance().mainContext
-            let blogService = BlogService(managedObjectContext: context)
+            let blogService = BlogService(coreDataStack: ContextManager.shared)
             blogService.associateSyncedBlogs(toJetpackAccount: account, success: onSuccessInternal, failure: onFailureInternal)
 
         } else {

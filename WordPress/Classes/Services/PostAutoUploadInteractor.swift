@@ -78,7 +78,7 @@ final class PostAutoUploadInteractor {
 
     /// Temporary method to support old _Retry_ upload functionality.
     ///
-    /// This is going to be removed later. 
+    /// This is going to be removed later.
     func canRetryUpload(of post: AbstractPost) -> Bool {
         guard post.isFailed,
             let status = post.status else {

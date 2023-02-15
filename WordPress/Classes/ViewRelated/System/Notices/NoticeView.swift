@@ -120,7 +120,7 @@ class NoticeView: UIView {
         // Construct a mask path with the notice's roundrect cut out of a larger padding rect.
         // This, combined with the `kCAFillRuleEvenOdd` gives us an inverted mask, so
         // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
-        // and obscure the blur visual effect view. 
+        // and obscure the blur visual effect view.
         let maskPath = CGMutablePath()
         let leftInset = notice.style.layoutMargins.left * 2
         let topInset = notice.style.layoutMargins.top * 2
