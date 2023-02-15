@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 5.1-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/20089-add-blaze-status-endpoint`)
+  - WordPressKit (~> 6.1.0-beta)
   - WordPressShared (~> 2.0-beta)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.7)
@@ -661,6 +661,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -777,9 +778,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.88.0
-  WordPressKit:
-    :branch: task/20089-add-blaze-status-endpoint
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.88.0/third-party-podspecs/Yoga.podspec.json
 
@@ -795,9 +793,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.88.0
-  WordPressKit:
-    :commit: 1355d800201c2c1d90139d2f235789890ba820d7
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -901,6 +896,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 702fe5fc5cd08a75ab654f7fc8913db3626d51d4
+PODFILE CHECKSUM: 8a63cc132d60f7c34f91768e923cdf7923c0b22b
 
 COCOAPODS: 1.11.2
