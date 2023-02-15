@@ -159,7 +159,7 @@ private extension JetpackPluginOverlayViewModel {
             """,
             comment: """
             Jetpack Plugin Modal (single plugin) subtitle with formatted texts.
-            One is for the site name, the other for the specıfıc plugin
+            One is for the site name, the other for the specific plugin
             and the last one for 'full Jetpack Plugin'
             """
         )
