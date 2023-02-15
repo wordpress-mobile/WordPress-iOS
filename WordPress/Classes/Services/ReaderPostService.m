@@ -188,8 +188,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 - (void)refreshPostsForFollowedTopic
 {
     [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
+        ReaderAbstractTopic *topic = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
         if (topic) {
             ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
             [service fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
@@ -317,7 +316,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         return;
     }
 
-    ReaderSiteTopic *feedSiteTopic = [topicService findSiteTopicWithFeedID:post.feedID];
+    ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:post.feedID inContext:self.managedObjectContext];
     if (feedSiteTopic) {
         [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
         return;
@@ -335,7 +334,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // If the post in question belongs to the default followed sites topic, skip refreshing.
     // We don't want to jar the user.
-    BOOL shouldRefreshFollowedPosts = post.topic != [topicService topicForFollowedSites];
+    BOOL shouldRefreshFollowedPosts = post.topic != [ReaderAbstractTopic lookupFollowedSitesTopicInContext:self.managedObjectContext];
 
     // Define success block
     void (^successBlock)(void) = ^void() {

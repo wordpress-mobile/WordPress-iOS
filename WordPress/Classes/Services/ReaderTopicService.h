@@ -129,13 +129,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
 
 /**
- Fetch the topic for 'sites I follow' if it exists.
-
- @return A `ReaderAbstractTopic` instance or nil.
- */
-- (ReaderAbstractTopic *)topicForFollowedSites;
-
-/**
  Fetch a tag topic for a tag with the specified slug.
 
  @param slug The slug for the tag.
@@ -158,48 +151,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                         isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;
-
-
-/**
- Fetch all saved Site topics
-
- @return A list of site topic
- */
-- (NSArray <ReaderSiteTopic *>*)allSiteTopics;
-
-/**
- Find a topic by its exact path.
- 
- @param path The path of the topic
- 
- @returns A matching abstract topic or nil.
- */
-- (ReaderAbstractTopic *)findWithPath:(NSString *)path;
-
-/**
- Find a topic where its path contains a specified path.
-
- @param path The path of the topic
-
- @returns A matching abstract topic or nil.
- */
-- (ReaderAbstractTopic *)findContainingPath:(NSString *)path;
-
-/**
- Find a site topic by its site id
-
- @param siteID The site id of the topic
- @return A matched site topic
- */
-- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID;
-
-/**
- Find a site topic by its feed id
-
- @param feedID The feed id of the topic
- @return A matched site topic
- */
-- (ReaderSiteTopic *)findSiteTopicWithFeedID:(NSNumber *)feedID;
 
 @end
 
