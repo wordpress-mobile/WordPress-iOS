@@ -362,7 +362,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    self.blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [self preloadMetadata];
 
     if (self.blog.account && !self.blog.account.userID) {
@@ -987,6 +987,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self shouldAddPeopleRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
+                                      accessibilityIdentifier:@"People Row"
                                                         image:[UIImage gridiconOfType:GridiconTypeUser]
                                                      callback:^{
                                                          [weakSelf showPeople];
@@ -1712,8 +1713,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)confirmRemoveSite
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService removeBlog:self.blog];
     [[WordPressAppDelegate shared] trackLogoutIfNeeded];
 

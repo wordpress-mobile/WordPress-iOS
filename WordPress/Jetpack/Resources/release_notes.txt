@@ -1,3 +1,5 @@
-* [*] Fixed an issue where stats were not displaying latest data when the system date rolls over to the next day while the app is in background. [#19989]
-* [*] Hide Scan Login Code when logged into an account with 2FA. [#19567]
-* [**] Blogging Prompts: add the ability to answer previous prompts, disable prompts, and other minor enhancements. [#20055]
+We made some tweaks to blogging prompts so you can answer old prompts or disable new ones. (Although we can’t imagine why you would.)
+
+You won’t see the Scan Login QR code if your account uses two-factor authentication.
+
+The Stats view consistently shows the day’s latest data, even if the date changes while the app is in the device’s background. All in a day’s work.

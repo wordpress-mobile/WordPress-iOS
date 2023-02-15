@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "プラグイン無効化中。自動更新オン";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "プロンプトが含まれます";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "サイトに含まれています";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "インテリアデザイン";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "プロンプトのご紹介";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "ストーリー投稿の紹介";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "ブロックを削除";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "ダッシュボードから削除";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "統計概要から削除";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "トピックを追加すると、特定の内容に関する投稿をフォローできます。";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "「参加サイト > 設定 > ブログ投稿のリマインダー」でいつでも詳細を確認し、リマインダーを設定できます。";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "「参加サイト」、「設定」、「ブログ投稿のリマインダー」でいつでも詳細を確認し、リマインダーを設定できます。";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "各投稿のこれらの設定を上書きできます。";
 
@@ -9705,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "今すぐ試す";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
@@ -9893,9 +9875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "詳細は jetpack.com をご覧ください";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "便利な統計概要と包括的な統計情報で、トラフィックの成長を確認できます。";
 
 /* Name of the Statistics feature. */
@@ -9918,9 +9898,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 機能が移動しました。";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "端末でリアルタイムの通知を引き続き受信するには、Jetpack アプリに切り替えてください。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Jetpack アプリで通知を受け取る";
@@ -10389,9 +10366,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "いいね";
-
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "サイト統計情報を読み込めません。";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "今日のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";

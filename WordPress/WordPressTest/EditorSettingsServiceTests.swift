@@ -1,13 +1,14 @@
 import Foundation
 import XCTest
+import Nimble
 @testable import WordPress
 
 private class TestableEditorSettingsService: EditorSettingsService {
     let mockApi: WordPressComRestApi
 
-    init(managedObjectContext context: NSManagedObjectContext, wpcomApi: WordPressComRestApi) {
+    init(coreDataStack: CoreDataStack, wpcomApi: WordPressComRestApi) {
         mockApi = wpcomApi
-        super.init(managedObjectContext: context)
+        super.init(coreDataStack: coreDataStack)
     }
 
     override func api(for blog: Blog) -> WordPressComRestApi? {
@@ -29,7 +30,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         super.setUp()
         remoteApi = MockWordPressComRestApi()
         database = EphemeralKeyValueDatabase()
-        service = TestableEditorSettingsService(managedObjectContext: mainContext, wpcomApi: remoteApi)
+        service = TestableEditorSettingsService(coreDataStack: contextManager, wpcomApi: remoteApi)
         Environment.replaceEnvironment(contextManager: contextManager)
         setupDefaultAccount(with: mainContext)
     }
@@ -45,6 +46,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         let blog = makeTestBlog()
         // Self-Hosted sites will default to Aztec
         blog.account = nil
+        contextManager.saveContextAndWait(mainContext)
 
         sync(with: blog)
 
@@ -57,7 +59,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         // Begin migration from local to remote
 
         // Should call POST local settings to remote (migration)
-        XCTAssertTrue(remoteApi.postMethodCalled)
+        expect(self.remoteApi.postMethodCalled).toEventually(beTrue())
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("platform=mobile&editor=gutenberg") ?? false)
         // Respond with mobile editor set on the server
         let finalResponse = responseWith(mobileEditor: "gutenberg")
