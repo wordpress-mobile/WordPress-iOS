@@ -112,6 +112,7 @@ private extension JetpackRemoteInstallViewController {
     /// Cancels the flow.
     @objc func cancel() {
         viewModel.track(.cancel)
+        viewModel.cancelTapped()
         delegate?.jetpackRemoteInstallCanceled()
     }
 
@@ -157,6 +158,8 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     }
 
     func customerSupportButtonDidTouch() {
-        navigationController?.pushViewController(SupportTableViewController(), animated: true)
+        let supportViewController = SupportTableViewController()
+        supportViewController.sourceTag = viewModel.supportSourceTag
+        navigationController?.pushViewController(supportViewController, animated: true)
     }
 }
