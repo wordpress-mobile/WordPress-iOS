@@ -435,6 +435,7 @@ private extension SupportTableViewController {
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.selectionStyle = .none
+            cell.accessibilityIdentifier = accessibilityIdentifier
             WPStyleGuide.configureTableViewCell(cell)
         }
     }
@@ -457,6 +458,7 @@ private extension SupportTableViewController {
 
             cell.button.setTitle(title, for: .normal)
             cell.button.accessibilityHint = accessibilityHint
+            cell.accessibilityIdentifier = accessibilityIdentifier
             cell.button.addAction(UIAction { _ in
                 action?(self)
             }, for: .touchUpInside)

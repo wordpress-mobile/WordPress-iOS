@@ -15,9 +15,7 @@ class SupportScreenTests: XCTestCase {
         try PrologueScreen()
             .selectContinue()
             .selectHelp()
-            .contactSupport()
-            .assertCanNotSendEmptyMessage()
-            .enterText("A")
-            .assertCanSendMessage()
+            .assertVisitForumButtonEnabled()
+            .visitForums()
     }
 }
