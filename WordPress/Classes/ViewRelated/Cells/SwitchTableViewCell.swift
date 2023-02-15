@@ -5,7 +5,7 @@ import WordPressShared
 ///
 open class SwitchTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
-    @objc open var onChange : ((_ newValue: Bool) -> ())?
+    @objc open var onChange: ((_ newValue: Bool) -> ())?
 
     @objc open var name: String {
         get {
