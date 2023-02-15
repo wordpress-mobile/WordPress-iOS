@@ -819,28 +819,26 @@ array are marked as being unfollowed in Core Data.
 */
 - (void)mergeFollowedSites:(NSArray *)sites withSuccess:(void (^)(void))success
 {
-     [self.managedObjectContext performBlock:^{
-         NSArray *currentSiteTopics = [ReaderAbstractTopic lookupAllSitesInContext:self.managedObjectContext error:nil];
-         NSMutableArray *remoteFeedIds = [NSMutableArray array];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSArray *currentSiteTopics = [ReaderAbstractTopic lookupAllSitesInContext:context error:nil];
+        NSMutableArray *remoteFeedIds = [NSMutableArray array];
 
-         for (RemoteReaderSiteInfo *siteInfo in sites) {
-             if (siteInfo.feedID) {
-                 [remoteFeedIds addObject:siteInfo.feedID];
-             }
+        for (RemoteReaderSiteInfo *siteInfo in sites) {
+            if (siteInfo.feedID) {
+                [remoteFeedIds addObject:siteInfo.feedID];
+            }
 
-             [self siteTopicForRemoteSiteInfo:siteInfo inContext:self.managedObjectContext];
-         }
+            [self siteTopicForRemoteSiteInfo:siteInfo inContext:context];
+        }
 
-         for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
-             // If a site fetched from Core Data isn't included in the list of sites
-             // fetched from remote, that means it's no longer being followed.
-             if (![remoteFeedIds containsObject:siteTopic.feedID]) {
-                 siteTopic.following = NO;
-             }
-         }
-
-         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:success onQueue:dispatch_get_main_queue()];
-     }];
+        for (ReaderSiteTopic *siteTopic in currentSiteTopics) {
+            // If a site fetched from Core Data isn't included in the list of sites
+            // fetched from remote, that means it's no longer being followed.
+            if (![remoteFeedIds containsObject:siteTopic.feedID]) {
+                siteTopic.following = NO;
+            }
+        }
+    } completion:success onQueue:dispatch_get_main_queue()];
 }
 
 /**
