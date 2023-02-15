@@ -95,9 +95,7 @@ import Gridicons
             return ReaderSearchViewController.controller()
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
-        guard let topic = service.find(withPath: path) as? ReaderSearchTopic else {
+        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) as? ReaderSearchTopic else {
             return ReaderSearchViewController.controller()
         }
 

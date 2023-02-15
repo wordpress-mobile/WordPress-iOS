@@ -30,6 +30,7 @@ static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickS
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
 static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetailsMigrationSuccessCell";
 static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDetailsJetpackBrandingCardCellIdentifier";
+static NSString *const BlogDetailsJetpackInstallCardCellIdentifier = @"BlogDetailsJetpackInstallCardCellIdentifier";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -358,6 +359,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
     [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
     [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
+    [self.tableView registerClass:[JetpackRemoteInstallTableViewCell class] forCellReuseIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -742,6 +744,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
+
+    if (JetpackRemoteInstallCardView.shouldShowJetpackInstallCard) {
+        [marr addObject:[self jetpackInstallSectionViewModel]];
+    }
+
     if (self.shouldShowTopJetpackBrandingMenuCard == YES) {
         [marr addObject:[self jetpackCardSectionViewModel]];
     }
@@ -1171,6 +1178,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
+
+    if (section.category == BlogDetailsSectionCategoryJetpackInstallCard) {
+        JetpackRemoteInstallTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
+        [cell configureWithBlog:self.blog viewController:self];
+        return cell;
+    }
 
     if (section.category == BlogDetailsSectionCategoryQuickAction) {
         QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
