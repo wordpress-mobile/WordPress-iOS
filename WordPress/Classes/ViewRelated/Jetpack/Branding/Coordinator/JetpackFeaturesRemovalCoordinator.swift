@@ -166,12 +166,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
-        presentOverlay(
-            navigationViewController: navigationViewController,
-            viewModel: viewModel,
-            in: viewController,
-            fullScreen: fullScreen
-        )
+        presentOverlay(navigationViewController: navigationViewController, in: viewController, fullScreen: fullScreen)
         frequencyTracker.track()
     }
 
@@ -203,15 +198,10 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
-        presentOverlay(
-            navigationViewController: navigationViewController,
-            viewModel: viewModel,
-            in: viewController
-        )
+        presentOverlay(navigationViewController: navigationViewController, in: viewController)
     }
 
     private static func presentOverlay(navigationViewController: UINavigationController,
-                                       viewModel: JetpackFullscreenOverlayViewModel,
                                        in viewController: UIViewController,
                                        fullScreen: Bool = false) {
         let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
