@@ -146,9 +146,9 @@ struct JetpackRemoteInstallCardViewModel {
         case .multiple:
             return NSAttributedString(string: Strings.multiplePlugins)
         default:
-            let noticeText = String(format: Strings.individualPluginFormat, installedPlugin.rawValue)
+            let noticeText = String(format: Strings.individualPluginFormat, installedPlugin.displayName)
             let boldNoticeText = NSMutableAttributedString(string: noticeText)
-            guard let range = noticeText.nsRange(of: installedPlugin.rawValue) else {
+            guard let range = noticeText.nsRange(of: installedPlugin.displayName) else {
                 return boldNoticeText
             }
             boldNoticeText.addAttributes([.font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .bold)], range: range)
@@ -162,16 +162,6 @@ struct JetpackRemoteInstallCardViewModel {
          installedPlugin: JetpackPlugin = .multiple) {
         self.onLearnMoreTap = onLearnMoreTap
         self.installedPlugin = installedPlugin
-    }
-
-    enum JetpackPlugin: String {
-        case search     = "Jetpack Search"
-        case backup     = "Jetpack Backup"
-        case protect    = "Jetpack Protect"
-        case videoPress = "Jetpack VideoPress"
-        case social     = "Jetpack Social"
-        case boost      = "Jetpack Boost"
-        case multiple
     }
 
     // MARK: Constants

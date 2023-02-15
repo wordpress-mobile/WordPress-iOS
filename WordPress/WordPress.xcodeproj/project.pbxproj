@@ -1911,6 +1911,8 @@
 		8379669A299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83796698299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift */; };
 		8379669C299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669B299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift */; };
 		8379669D299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669B299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift */; };
+		8379669F299D51EC004A92B9 /* JetpackPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669E299D51EC004A92B9 /* JetpackPlugin.swift */; };
+		837966A0299D51EC004A92B9 /* JetpackPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669E299D51EC004A92B9 /* JetpackPlugin.swift */; };
 		837B49D7283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */; };
 		837B49D8283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */; };
 		837B49D9283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D4283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift */; };
@@ -7096,6 +7098,7 @@
 		8370D10911FA499A009D650F /* WPTableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewActivityCell.m; sourceTree = "<group>"; };
 		83796698299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardJetpackInstallCardCell.swift; sourceTree = "<group>"; };
 		8379669B299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallTableViewCell.swift; sourceTree = "<group>"; };
+		8379669E299D51EC004A92B9 /* JetpackPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPlugin.swift; sourceTree = "<group>"; };
 		837B49C6283C28730061A657 /* WordPress 141.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 141.xcdatamodel"; sourceTree = "<group>"; };
 		837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPromptSettings+CoreDataClass.swift"; sourceTree = "<group>"; };
 		837B49D4283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPromptSettings+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -14074,6 +14077,7 @@
 		9A8ECE032254A3260043C8DA /* Install */ = {
 			isa = PBXGroup;
 			children = (
+				8379669E299D51EC004A92B9 /* JetpackPlugin.swift */,
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
 				9A8ECE1F22550A210043C8DA /* Error */,
 				9A8ECE1A2254ADFA0043C8DA /* View */,
@@ -21259,6 +21263,7 @@
 				E17FEADA221494B2006E1D2D /* Blog+Analytics.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
+				8379669F299D51EC004A92B9 /* JetpackPlugin.swift in Sources */,
 				2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */,
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
 				8BB185D624B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift in Sources */,
@@ -23499,6 +23504,7 @@
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,
 				FABB22BA2602FC2C00C8785C /* JetpackRemoteInstallViewController.swift in Sources */,
 				FABB22BB2602FC2C00C8785C /* PlanDetailViewController.swift in Sources */,
+				837966A0299D51EC004A92B9 /* JetpackPlugin.swift in Sources */,
 				FABB22BC2602FC2C00C8785C /* Array+Page.swift in Sources */,
 				FABB22BD2602FC2C00C8785C /* WPTableViewHandler.m in Sources */,
 				FABB22BE2602FC2C00C8785C /* JetpackScanThreatViewModel.swift in Sources */,
