@@ -11,6 +11,9 @@ class WPComJetpackRemoteInstallViewModel {
     private let service: PluginJetpackProxyService
     private let tracker: EventTracker
 
+    /// For request cancellation purposes.
+    private var progress: Progress? = nil
+
     // MARK: Properties
 
     // The flow should always complete after the plugin is installed.
@@ -53,7 +56,7 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         // trigger the loading state.
         state = .installing
 
-        service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
+        progress = service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
             switch result {
             case .success:
                 self?.state = .success
@@ -62,8 +65,6 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
                 self?.state = .failure(.unknown)
             }
         }
-
-        // TODO: Handle cancellation?
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {
@@ -83,6 +84,16 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         default:
             break
         }
+    }
+
+    /// NOTE: There's no guarantee that the plugin installation will be properly cancelled.
+    /// We *might* be able to cancel if the request hasn't been fired; but if it has, it'll probably succeed.
+    ///
+    /// An alternative would be to have a listener that checks if installation completes after cancellation,
+    /// and fires background request to uninstall the plugin. But this will not be implemented now.
+    func cancelTapped() {
+        progress?.cancel()
+        progress = nil
     }
 }
 

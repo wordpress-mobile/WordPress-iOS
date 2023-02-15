@@ -35,6 +35,12 @@ protocol JetpackRemoteInstallViewModel: AnyObject {
     ///
     /// - Parameter event: The events to track. See `JetpackRemoteInstallEvent` for more info.
     func track(_ event: JetpackRemoteInstallEvent)
+
+    /// Called by the view controller when the user taps Cancel.
+    ///
+    /// This allows the view model to perform necessary operation cleanups, but note that
+    /// the actual navigation actions upon cancellation should be controlled by `JetpackRemoteInstallDelegate`.
+    func cancelTapped()
 }
 
 // MARK: - Default Init Jetpack State View Data

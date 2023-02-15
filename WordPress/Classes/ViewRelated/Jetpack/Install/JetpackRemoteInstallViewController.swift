@@ -112,6 +112,7 @@ private extension JetpackRemoteInstallViewController {
     /// Cancels the flow.
     @objc func cancel() {
         viewModel.track(.cancel)
+        viewModel.cancelTapped()
         delegate?.jetpackRemoteInstallCanceled()
     }
 

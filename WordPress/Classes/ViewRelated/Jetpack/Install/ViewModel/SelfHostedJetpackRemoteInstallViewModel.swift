@@ -60,4 +60,8 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
             break
         }
     }
+
+    func cancelTapped() {
+         // No op
+    }
 }
