@@ -20,11 +20,17 @@ final class BlazeService {
 
     // MARK: - Methods
 
+    /// Fetches blaze status from the server.
+    ///
+    /// - Parameters:
+    ///   - blog: A blog
+    ///   - success: Closure to be called on success
+    ///   - failure: Closure to be caleld on failure
     func getStatus(for blog: Blog,
-                   success: @escaping (Bool) -> Void,
-                   failure: @escaping (Error) -> Void) {
+                   success: ((Bool) -> Void)? = nil,
+                   failure: ((Error) -> Void)? = nil) {
         guard let siteId = blog.dotComID?.intValue else {
-            failure(BlazeServiceError.invalidSiteId)
+            failure?(BlazeServiceError.invalidSiteId)
             return
         }
 
@@ -34,16 +40,19 @@ final class BlazeService {
 
                 self.contextManager.performAndSave({ context in
                     guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
-                        failure(BlazeServiceError.blogNotFound)
+                        DDLogError("Unable to update isBlazeApproved value for blog")
+                        failure?(BlazeServiceError.blogNotFound)
                         return
                     }
                     blog.isBlazeApproved = approved
+                    DDLogInfo("Successfully updated isBlazeApproved value for blog: \(approved)")
                 }, completion: {
-                    success(approved)
+                    success?(approved)
                 }, on: .main)
 
             case .failure(let error):
-                failure(error)
+                DDLogError("Unable to fetch isBlazeApproved value from remote: \(error.localizedDescription)")
+                failure?(error)
             }
         }
     }

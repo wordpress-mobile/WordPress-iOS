@@ -952,11 +952,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        blazeService.getStatus(for: blog, success: { approved in
-            print(approved)
-        }, failure: { error in
-            print(error)
-        })
+        blazeService.getStatus(for: blog)
     }
 
     // MARK: - Blogging Prompts
