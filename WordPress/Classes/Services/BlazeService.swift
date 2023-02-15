@@ -34,6 +34,7 @@ final class BlazeService {
 
                 self.contextManager.performAndSave({ context in
                     guard let blog = Blog.lookup(withObjectID: blog.objectID, in: context) else {
+                        failure(BlazeServiceError.blogNotFound)
                         return
                     }
                     blog.isBlazeApproved = approved
@@ -52,5 +53,6 @@ extension BlazeService {
 
     enum BlazeServiceError: Error {
         case invalidSiteId
+        case blogNotFound
     }
 }
