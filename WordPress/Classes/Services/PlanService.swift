@@ -223,15 +223,18 @@ extension PlanService {
                         success()
                         return
                 }
-                PlanStorage.updateHasDomainCredit(planIdInt,
-                                                  forSite: siteID,
-                                                  hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+                PlanStorage.updateHasDomainCredit(
+                    planIdInt,
+                    forSite: siteID,
+                    hasDomainCredit: plans.activePlan.hasDomainCredit ?? false
+                )
                 success()
-        },
+            },
             failure: { error in
                 DDLogError("Failed checking prices for blog for site \(siteID): \(error.localizedDescription)")
                 failure(error)
-        })
+            }
+        )
     }
 }
 
