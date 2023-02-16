@@ -461,7 +461,7 @@ struct ReaderPostMenuButtonTitles {
         let notice = Notice(title: String(format: NoticeMessages.followSuccess, siteTitle),
                             message: NoticeMessages.enableNotifications,
                             actionTitle: NoticeMessages.enableButtonLabel) { _ in
-            let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            let service = ReaderTopicService(coreDataStack: ContextManager.shared)
             service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
                 WPAnalytics.track(.readerListNotificationEnabled)
             })

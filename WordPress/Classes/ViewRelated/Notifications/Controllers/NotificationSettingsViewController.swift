@@ -123,7 +123,7 @@ class NotificationSettingsViewController: UIViewController {
         let service = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         let dispatchGroup = DispatchGroup()
-        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let siteService = ReaderTopicService(coreDataStack: ContextManager.shared)
 
         activityIndicatorView.startAnimating()
 

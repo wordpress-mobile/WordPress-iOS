@@ -78,7 +78,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
-        [self unfollowSiteTopicWithSiteID:@(siteID)];
+        [self markUnfollowedSiteTopicWithSiteID:@(siteID)];
         if (success) {
             success();
         }
@@ -139,24 +139,12 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
-        [self unfollowSiteTopicWithURL:siteURL];
+        [self markUnfollowedSiteTopicWithFeedURL:siteURL];
         if (success) {
             success();
         }
         [WPAnalytics trackReaderStat:WPAnalyticsStatReaderSiteUnfollowed properties:@{@"url":siteURL}];
     } failure:failure];
-}
-
-- (void)unfollowSiteTopicWithSiteID:(NSNumber *)siteID
-{
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [topicService markUnfollowedSiteTopicWithSiteID:siteID];
-}
-
-- (void)unfollowSiteTopicWithURL:(NSString *)siteURL
-{
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [topicService markUnfollowedSiteTopicWithFeedURL:siteURL];
 }
 
 - (void)syncPostsForFollowedSites
@@ -195,7 +183,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     DDLogInfo(@"Fetch and store followed topic");
-    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
                             success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
@@ -243,6 +231,27 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [service flagPostsFromSite:siteID asBlocked:blocked];
 }
 
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL
+{
+    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithFeedURL:feedURL inContext:self.managedObjectContext];
+    if (!topic) {
+        return;
+    }
+    topic.following = NO;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.managedObjectContext];
+    if (!topic) {
+        return;
+    }
+    topic.following = NO;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
 
 #pragma mark - Error messages
 

@@ -308,7 +308,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 
     // If this post belongs to a site topic, let the topic service do the work.
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
