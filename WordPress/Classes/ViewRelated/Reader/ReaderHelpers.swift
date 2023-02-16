@@ -46,6 +46,11 @@ struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
     static let blockSite = NSLocalizedString("Block this site", comment: "The title of a button that triggers blocking a site from the user's reader.")
     static let reportPost = NSLocalizedString("Report this post", comment: "The title of a button that triggers reporting of a post from the user's reader.")
+    static let reportPostAuthor = NSLocalizedString(
+        "reader.post.menu.report.user",
+        value: "Report this user",
+        comment: "The title of a button that triggers the reporting of a post's author."
+    )
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
     static let unfollow = NSLocalizedString("Unfollow site", comment: "Verb. An option to unfollow a site.")

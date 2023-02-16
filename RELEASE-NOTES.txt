@@ -6,8 +6,8 @@
 * [*] [internal] Refactored comment related operations (i.e. like a comment, reply to a post or comment).
 * [*] [internal] Refactored how reader topics are fetched from the database. [#20129]
 * [*] [internal] Refactored blog related operations (i.e. loading blogs of the logged in account, updating blog settings). [#20047]
-* [*] Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to block a followed site. [#20053]
+* [*] Reader: Add ability to report a post's author. [#20064]
 
 21.7
 -----
