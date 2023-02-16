@@ -373,6 +373,9 @@ class ContextManagerTests: XCTestCase {
         try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
     }
 
+    /// This test case documents a pitfall in `ContextManager.performAndSave(_:)`, where the
+    /// saved changes aren't immediately accessible on the objects in the main context. This
+    /// issue doesn't present in `performAndSave(_:completion:on:)`.
     func testUpdateUsingSyncAPI() throws {
         // First, insert an account into the database.
         let contextManager = ContextManager.forTesting()
