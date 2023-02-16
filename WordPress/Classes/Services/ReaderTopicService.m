@@ -262,15 +262,15 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     // Optimistically unfollow the topic
-    topic.following = NO;
-    if (!topic.isRecommended) {
-        topic.showInMenu = NO;
-    }
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderTagTopic *topicInContext = [context existingObjectWithID:topic.objectID error:nil];
+        topicInContext.following = NO;
+        if (!topicInContext.isRecommended) {
+            topicInContext.showInMenu = NO;
+        }
     }];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     NSString *slug = topic.slug;
     if (!slug) {
         // Fallback. It *shouldn't* happen, but we've had a couple of crash reports
@@ -358,8 +358,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)toggleFollowingForTag:(ReaderTagTopic *)tagTopic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
+    NSAssert(NSThread.isMainThread, @"%s must be called from the main thread", __FUNCTION__);
+
     NSError *error;
-    ReaderTagTopic *topic = (ReaderTagTopic *)[self.managedObjectContext existingObjectWithID:tagTopic.objectID error:&error];
+    ReaderTagTopic *topic = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         if (failure) {
@@ -373,24 +375,29 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     BOOL oldShowInMenuValue = topic.showInMenu;
 
     // Optimistically update and save
-    topic.following = !topic.following;
-    if (topic.following) {
-        topic.showInMenu = YES;
-    }
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
+        topicInContext.following = !oldFollowingValue;
+        if (topicInContext.following) {
+            topicInContext.showInMenu = YES;
+        }
+    }];
 
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        topic.following = oldFollowingValue;
-        topic.showInMenu = oldShowInMenuValue;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        if (failure) {
-            failure(error);
-        }
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
+            topicInContext.following = oldFollowingValue;
+            topicInContext.showInMenu = oldShowInMenuValue;
+        } completion:^{
+            if (failure) {
+                failure(error);
+            }
+        } onQueue:dispatch_get_main_queue()];
     };
 
-    if (topic.following) {
+    if (!oldFollowingValue) {
         [self followTagWithSlug:topic.slug withSuccess:success failure:failureBlock];
     } else {
         [self unfollowTag:topic withSuccess:success failure:failureBlock];
@@ -437,8 +444,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(BOOL follow))success
                        failure:(void (^)(BOOL follow, NSError *error))failure
 {
+    NSAssert(NSThread.isMainThread, @"%s must be called from the main thread", __FUNCTION__);
+
     NSError *error;
-    ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.managedObjectContext existingObjectWithID:siteTopic.objectID error:&error];
+    ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.coreDataStack.mainContext existingObjectWithID:siteTopic.objectID error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         if (failure) {
@@ -455,10 +464,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSString *siteURLForPostService = topic.siteURL;
 
     // Optimistically update
-    topic.following = newFollowValue;
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderSiteTopic *topicInContext = (ReaderSiteTopic *)[context existingObjectWithID:siteTopic.objectID error:nil];
+        topicInContext.following = newFollowValue;
+    }];
+
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
     [postService setFollowing:newFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     // Define success block
     void (^successBlock)(void) = ^void() {
@@ -488,16 +500,18 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
      
         // Revert changes on failure, unless the error is that we're already following
         // a site.
-        topic.following = oldFollowValue;
         [postService setFollowing:oldFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-        if (failure) {
-            failure(newFollowValue, error);
-        }
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderSiteTopic *topicInContext = (ReaderSiteTopic *)[context existingObjectWithID:siteTopic.objectID error:nil];
+            topicInContext.following = oldFollowValue;
+        } completion:^{
+            if (failure) {
+                failure(newFollowValue, error);
+            }
+        } onQueue:dispatch_get_main_queue()];
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
     if (topic.isExternal) {
         if (newFollowValue) {
             [siteService followSiteAtURL:topic.feedURL success:successBlock failure:failureBlock];
