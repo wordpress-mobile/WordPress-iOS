@@ -21,6 +21,14 @@ import Combine
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
+    // MARK: - Dependencies
+
+    private lazy var postsLoader: ReaderPostsLoader = {
+        let context = coreDataStack.mainContext
+        let service = ReaderPostService(managedObjectContext: context)
+        return ReaderPostsLoader(postService: service)
+    }()
+
     // MARK: - Micro Controllers
 
     /// Object responsible for encapsulating and facililating the site blocking logic.
@@ -1215,9 +1223,7 @@ import Combine
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
-                let earlierThan = sortDate
-                service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)
+                self.postsLoader.fetchPosts(for: topic, earlierThan: sortDate, success: success, failure: failure)
             }
         }
     }

@@ -15,7 +15,7 @@ final class ReaderPostsLoader {
     // MARK: - Fetch Posts
 
     func fetchPosts(for topic: ReaderAbstractTopic, earlierThan date: Date, success: SuccessCallback?, failure: ErrorCallback?) {
-
+        self.postService.fetchPosts(for: topic, earlierThan: date, success: success, failure: failure)
     }
 
     // MARK: - Types
