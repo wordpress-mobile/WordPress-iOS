@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 147
+
+@salimbraksa 2023-02-04
+
+- Created a new entity `BlockedSite` with:
+    - `accountID` (required, no default, `Int 64`)
+    - `blogID` (required, no default, `Int 64`)
+
 ## WordPress 146
 
 @salimbraksa 2023-01-31
