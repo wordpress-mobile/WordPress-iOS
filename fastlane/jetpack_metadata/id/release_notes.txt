@@ -1,0 +1,5 @@
+We made some tweaks to blogging prompts so you can answer old prompts or disable new ones. (Although we can’t imagine why you would.)
+
+- Layar Pindai Kode QR untuk Login tidak lagi ditampilkan jika akun Anda menggunakan otentikasi dua faktor.
+
+The Stats view consistently shows the day’s latest data, even if the date changes while the app is in the device’s background. All in a day’s work.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-08 12:08:00+0000 */
+/* Translation-Revision-Date: 2023-02-10 21:44:25+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
@@ -3775,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inaktiv, automatiska uppdateringar på";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "Inkludera ett bloggningsförslag";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Ingår i webbplatsen";
 
@@ -3872,6 +3875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Inredningsdesign";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "Introducerar bloggningsförslag";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Lär känna berättelseinlägg";
@@ -9337,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kan alltid logga in med hjälp av en länk av samma typ som du just tryckte på. Men du kan ocksa spara ett lösenord, om du vill.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Du kan kontrollera bloggningsförslag och påminnelser när som helst i Min webbplats > Inställningar > Bloggande";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Du kan kontrollera bloggningsförslag och påminnelser när som helst i min webbplats, inställningar, bloggande";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Du kan visa statistik för en enskild webbplats under Idag i notiscentret i iOS.";
 
@@ -9881,6 +9893,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Läs mer på jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Få aviseringar för nya kommentarer, gilla-markeringar, visningar och mer.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Se din trafik öka med användbara insikter och omfattande statistik.";
 
@@ -10148,6 +10163,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Bloggningsförslag dolt";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Avfärda";
 
@@ -10346,6 +10364,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Flest visningar någonsin";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Kan inte ladda statistik sedan starten.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Skapa eller lägg till en webbplats för att se statistik sedan starten.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Inlägg";
 
@@ -10367,6 +10391,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Logga in på Jetpack för att se dagens statistik.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Kan inte ladda denna veckas statistik.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Skapa eller lägg till en webbplats för att se denna veckas statistik.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Håll dig uppdaterad om veckans statistik för din WordPress-webbplats.";
 
@@ -10379,11 +10409,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Kommentarer";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistik har flyttat till Jetpack-appen. Att byta är gratis och tar bara en minut.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Gillamarkeringar";
 
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Kan inte ladda webbplatsstatistik.";
+
 /* Title of the no data view in today widget */
 "widget.today.nodata.view.title" = "Det gick inte att ladda dagens statistik.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Skapa eller lägg till en webbplats för att se dagens statistik.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Håll dig uppdaterad om statistiken för idag för din WordPress-webbplats.";

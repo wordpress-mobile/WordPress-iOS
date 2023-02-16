@@ -1,0 +1,5 @@
+Fizemos alguns ajustes nas sugestões de publicação, para que você possa responder a sugestões antigas ou desativar as novas. (Ainda que não consigamos imaginar um motivo pelo qual você o faça.)
+
+Você não verá a opção de verificar o código QR de login se sua conta usar a autenticação em dois fatores.
+
+A visualização Estatísticas mostra, de forma consistente, os dados mais recentes do dia, mesmo se os dados sofrerem alterações enquanto o aplicativo executa no fundo. Tudo em um dia de trabalho.

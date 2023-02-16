@@ -1,0 +1,5 @@
+Vi har gjort några förbättringar av bloggningsförslagen som gör att du kan svara på gamla förslag eller inaktivera nya förslag. (Även om vi inte kan föreställa oss varför du skulle vilja göra det.)
+
+Meddelandet Skanna QR-kod för inloggning kommer inte att visas om ditt konto använder tvåfaktorsautentisering.
+
+Statistikvyn visar konsekvent dagens senaste data, även om datumet ändras medan appen körs i bakgrunden. Allt på en arbetsdag.

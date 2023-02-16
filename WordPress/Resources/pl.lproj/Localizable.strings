@@ -1,7 +1,10 @@
-/* Translation-Revision-Date: 2023-02-03 15:16:48+0000 */
+/* Translation-Revision-Date: 2023-02-13 11:57:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pl */
+
+/* Per-year postfix shown after a domain's cost. */
+" \/ year" = " \/ rocznie";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Przycisk „Więcej”";
@@ -169,17 +172,26 @@
 /* No comment provided by engineer. */
 "Add To End" = "Dodaj na końcu";
 
+/* Button Title. Tapping subscribes the user to a new topic. */
+"Add Topic" = "Dodaj temat";
+
 /* The title on the add category screen */
 "Add a Category" = "Dodaj kategorię";
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Dodaj zdjęcie profilowe";
 
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
+"Add a Topic" = "Dodaj temat";
+
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Dodaj domenę";
 
 /* No Tags View Button Label */
 "Add a site" = "Utwórz witrynę";
+
+/* No Topics View Button Label */
+"Add a topic" = "Dodaj temat";
 
 /* Add self-hosted site button */
 "Add self-hosted site" = "Dodaj stronę z własnym hostingiem";
@@ -545,6 +557,9 @@
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Wybierz nową ikonkę aplikacji";
 
+/* A text for title label on Login epilogue screen */
+"Choose a site to open." = "Wybierz witrynę, którą chcesz otworzyć.";
+
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
 "Choose a theme" = "Wybierz motyw";
@@ -824,6 +839,12 @@
 
 /* No comment provided by engineer. */
 "Create link" = "Stwórz odnośnik";
+
+/* Title for the card prompting the user to create their first post. */
+"Create your first post" = "Stwórz swój pierwszy wpis";
+
+/* Title for the card prompting the user to create a new post. */
+"Create your next post" = "Utwórz kolejny wpis";
 
 /* No comment provided by engineer. */
 "Current" = "Obecnie";
@@ -2575,6 +2596,10 @@
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Wybierz domenę";
 
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Wybrano: %s";
+
 /* No comment provided by engineer. */
 "Selected: Default" = "Wybrano: domyślne";
 
@@ -3567,6 +3592,9 @@
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "np. 44";
 
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Więcej";
+
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
    Site Address placeholder */
@@ -3803,8 +3831,14 @@
 /* Title of the migration done screen. */
 "migration.done.title" = "Dziękujemy za przejście na Jetpacka!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Aplikacja WordPressa została już zainstalowana.";
+
 /* The primary button title in the Load WordPress screen */
 "migration.loadWordpress.primaryButton" = "Otwórz WordPressa";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Witamy w Jetpacku!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";
