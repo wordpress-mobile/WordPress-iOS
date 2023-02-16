@@ -17,8 +17,14 @@ final class ReaderReportPostAction {
         origin.present(navController, animated: true)
 
         // Track the report action
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: nil, forKey: nil)
-        WPAnalytics.trackReader(.readerPostReported, properties: properties)
+        switch target {
+        case .post:
+            let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: nil, forKey: nil)
+            WPAnalytics.trackReader(.readerPostReported, properties: properties)
+        case .author:
+            let properties = ReaderHelpers.statsPropertiesForPostAuthor(post)
+            WPAnalytics.trackReader(.readerPostAuthorReported, properties: properties)
+        }
     }
 
     /// Safely generate the report URL

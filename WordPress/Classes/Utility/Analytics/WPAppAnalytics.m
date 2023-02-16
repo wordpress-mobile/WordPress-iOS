@@ -14,6 +14,7 @@ NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_o
 NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated  = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID                            = @"blog_id";
 NSString * const WPAppAnalyticsKeyPostID                            = @"post_id";
+NSString * const WPAppAnalyticsKeyPostAuthorID                      = @"post_author_id";
 NSString * const WPAppAnalyticsKeyFeedID                            = @"feed_id";
 NSString * const WPAppAnalyticsKeyFeedItemID                        = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack                         = @"is_jetpack";

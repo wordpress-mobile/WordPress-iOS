@@ -232,8 +232,12 @@ final class ReaderShowMenuAction {
     }
 
     private func postSiteBlockingDidFail(_ post: ReaderPost, error: Error?) {
+        var userInfo: [String: Any] = [ReaderNotificationKeys.post: post]
+        if let error {
+            userInfo[ReaderNotificationKeys.error] = error
+        }
         NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
                                         object: nil,
-                                        userInfo: [ReaderNotificationKeys.post: post, ReaderNotificationKeys.error: error])
+                                        userInfo: userInfo)
     }
 }
