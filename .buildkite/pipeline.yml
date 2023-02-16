@@ -117,14 +117,18 @@ steps:
         notify:
           - github_commit_status:
               context: "Lint Translations"
-      # This step uses Danger to run RuboCop, but it's "agnostic" about it.
-      # That is, it outwardly only mentions RuboCop, not Danger
-      - label: ":rubocop: Lint Ruby Tooling"
-        command: .buildkite/commands/rubocop-via-danger.sh
-        plugins: *common_plugins
-        agents:
-          queue: "android"
+
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: *common_plugins
         env: *common_env
+
+      - label: ":rubocop: RuboCop"
+        command: rubocop
+        agents:
+          queue: "linter"
+
+      - label: ":swift: SwiftLint"
+        command: swiftlint
+        agents:
+          queue: "linter"
