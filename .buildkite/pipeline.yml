@@ -38,14 +38,12 @@ steps:
         env: *common_env
 
       - label: ":rubocop: RuboCop"
-        command: rubocop
         agents:
-          queue: "linter"
+          queue: "rubocop"
 
       - label: ":swift: SwiftLint"
-        command: swiftlint
         agents:
-          queue: "linter"
+          queue: "swiftlint"
 
       - label: ":danger: Danger"
         agents:
