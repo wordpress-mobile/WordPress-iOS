@@ -224,32 +224,39 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase
+- (void)createSearchTopicForSearchPhrase:(NSString *)phrase completion:(void (^)(NSManagedObjectID *))completion
 {
     NSAssert([phrase length] > 0, @"A search phrase is required.");
 
-    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
-    ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
+    NSManagedObjectID * __block topicObjectID = nil;
 
-    NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
-    ReaderSearchTopic *topic = (ReaderSearchTopic *)[ReaderAbstractTopic lookupWithPath:path inContext:self.managedObjectContext];
-    if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
-        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
-                                              inManagedObjectContext:self.managedObjectContext];
-    }
-    topic.type = [ReaderSearchTopic TopicType];
-    topic.title = phrase;
-    topic.path = path;
-    topic.showInMenu = NO;
-    topic.following = NO;
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
+        ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
-    // Save / update the search phrase to use it as a suggestion later.
-    ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    [suggestionService createOrUpdateSuggestionForPhrase:phrase];
+        NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
+        ReaderSearchTopic *topic = (ReaderSearchTopic *)[ReaderAbstractTopic lookupWithPath:path inContext:context];
+        if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
+            topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
+                                                  inManagedObjectContext:context];
+        }
+        topic.type = [ReaderSearchTopic TopicType];
+        topic.title = phrase;
+        topic.path = path;
+        topic.showInMenu = NO;
+        topic.following = NO;
 
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+        [context obtainPermanentIDsForObjects:@[topic] error:nil];
+        topicObjectID = topic.objectID;
+    } completion:^{
+        // Save / update the search phrase to use it as a suggestion later.
+        ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+        [suggestionService createOrUpdateSuggestionForPhrase:phrase];
 
-    return topic;
+        if (completion) {
+            completion(topicObjectID);
+        }
+    } onQueue:dispatch_get_main_queue()];
 }
 
 - (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure

@@ -1,6 +1,7 @@
 import XCTest
 import Foundation
 import CoreData
+import Nimble
 
 @testable import WordPress
 
@@ -384,8 +385,18 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         let service = ReaderTopicService(managedObjectContext: mainContext)
 
         let phrase = "coffee talk"
-        let topic = service.searchTopic(forSearchPhrase: phrase)
+        waitUntil { done in
+            service.createSearchTopic(forSearchPhrase: phrase) { objectID in
+                guard let objectID else {
+                    XCTFail("A nil object id is returned")
+                    return
+                }
 
-        XCTAssert(topic?.type == "search")
+                let topic = try? self.mainContext.existingObject(with: objectID) as? ReaderSearchTopic
+                XCTAssertEqual(topic?.type, "search")
+
+                done()
+            }
+        }
     }
 }

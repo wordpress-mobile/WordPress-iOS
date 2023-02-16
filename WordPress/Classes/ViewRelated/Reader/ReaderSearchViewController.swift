@@ -306,14 +306,19 @@ import Gridicons
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
+        service.createSearchTopic(forSearchPhrase: phrase) { topicID in
+            assert(Thread.isMainThread)
+            self.endSearch()
 
-        let topic = service.searchTopic(forSearchPhrase: phrase)
-        streamController.readerTopic = topic
+            guard let topicID, let topic = try? ContextManager.shared.mainContext.existingObject(with: topicID) as? ReaderAbstractTopic else {
+                DDLogError("Failed to create a search topic")
+                return
+            }
+            streamController.readerTopic = topic
 
-        endSearch()
-
-        if let previousTopic, topic != previousTopic {
-            service.delete(previousTopic)
+            if let previousTopic, topic != previousTopic {
+                service.delete(previousTopic)
+            }
         }
     }
 

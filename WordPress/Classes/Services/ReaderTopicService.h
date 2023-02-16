@@ -62,10 +62,9 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  Creates a ReaderSearchTopic from the specified search phrase.
  
  @param phrase: The search phrase.
- 
- @return A ReaderSearchTopic instance.
+ @param completion: A completion callback to receive the created ReaderSearchTopic instance.
  */
-- (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase;
+- (void)createSearchTopicForSearchPhrase:(NSString *)phrase completion:(void (^)(NSManagedObjectID *))completion;
 
 /**
  Unfollows the specified topic
