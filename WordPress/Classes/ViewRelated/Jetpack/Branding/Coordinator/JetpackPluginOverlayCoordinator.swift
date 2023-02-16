@@ -1,5 +1,3 @@
-import UIKit
-
 final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
     private unowned let viewController: UIViewController
 
@@ -8,14 +6,14 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
     }
 
     func navigateToPrimaryRoute() {
-        // TODO
+        // TODO: Navigate to the installation flow.
     }
 
     func navigateToSecondaryRoute() {
-        // TODO
+        // TODO: Contact support with support origin.
     }
 
     func navigateToLinkRoute(url: URL, source: String) {
-        // TODO
+        // TODO: Open wordpress.com/tos via in-app browser.
     }
 }
