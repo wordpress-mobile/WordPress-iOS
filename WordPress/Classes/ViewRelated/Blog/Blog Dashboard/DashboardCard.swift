@@ -48,6 +48,17 @@ enum DashboardCard: String, CaseIterable {
         }
     }
 
+    var viewedAnalytic: WPAnalyticsEvent? {
+        switch self {
+        case .jetpackInstall:
+            return .jetpackInstallFullPluginCardViewed
+        case .prompts:
+            return .promptsDashboardCardViewed
+        default:
+            return nil
+        }
+    }
+
     func shouldShow(for blog: Blog, apiResponse: BlogDashboardRemoteEntity? = nil, mySiteSettings: DefaultSectionProvider = MySiteSettings()) -> Bool {
         switch self {
         case .jetpackInstall:

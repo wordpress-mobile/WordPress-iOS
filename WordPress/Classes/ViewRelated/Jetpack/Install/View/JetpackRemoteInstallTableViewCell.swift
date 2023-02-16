@@ -10,10 +10,15 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
     private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            WPAnalytics.track(.jetpackInstallFullPluginCardDismissed, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
             JetpackInstallPluginHelper.hideCard(for: self?.blog)
             self?.presenterViewController?.reloadTableView()
         }
-        return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap)
+        let onLearnMoreTap: () -> Void = {
+            WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
+        }
+        return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
+                                                 onLearnMoreTap: onLearnMoreTap)
     }()
 
     private lazy var cardView: JetpackRemoteInstallCardView = {
