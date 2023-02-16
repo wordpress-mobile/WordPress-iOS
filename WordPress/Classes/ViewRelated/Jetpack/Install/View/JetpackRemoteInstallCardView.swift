@@ -5,12 +5,6 @@ class JetpackRemoteInstallCardView: UIView {
 
     // MARK: Properties
 
-    @objc static var shouldShowJetpackInstallCard: Bool {
-        // TODO: Display logic for showing/hiding the card
-        // TODO: iPad display logic. Currently displays in both menu and dashboard
-        return false
-    }
-
     private let viewModel: JetpackRemoteInstallCardViewModel
 
     private lazy var animation: Animation? = {
