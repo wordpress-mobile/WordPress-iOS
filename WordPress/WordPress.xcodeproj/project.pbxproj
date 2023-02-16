@@ -1927,6 +1927,8 @@
 		8379669D299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669B299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift */; };
 		8379669F299D51EC004A92B9 /* JetpackPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669E299D51EC004A92B9 /* JetpackPlugin.swift */; };
 		837966A0299D51EC004A92B9 /* JetpackPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379669E299D51EC004A92B9 /* JetpackPlugin.swift */; };
+		837966A2299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837966A1299E9C85004A92B9 /* JetpackInstallPluginHelper.swift */; };
+		837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837966A1299E9C85004A92B9 /* JetpackInstallPluginHelper.swift */; };
 		837B49D7283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */; };
 		837B49D8283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */; };
 		837B49D9283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837B49D4283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift */; };
@@ -7130,6 +7132,7 @@
 		83796698299C048E004A92B9 /* DashboardJetpackInstallCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardJetpackInstallCardCell.swift; sourceTree = "<group>"; };
 		8379669B299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallTableViewCell.swift; sourceTree = "<group>"; };
 		8379669E299D51EC004A92B9 /* JetpackPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPlugin.swift; sourceTree = "<group>"; };
+		837966A1299E9C85004A92B9 /* JetpackInstallPluginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackInstallPluginHelper.swift; sourceTree = "<group>"; };
 		837B49C6283C28730061A657 /* WordPress 141.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 141.xcdatamodel"; sourceTree = "<group>"; };
 		837B49D3283C2AE80061A657 /* BloggingPromptSettings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPromptSettings+CoreDataClass.swift"; sourceTree = "<group>"; };
 		837B49D4283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BloggingPromptSettings+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -14135,6 +14138,7 @@
 		9A8ECE032254A3260043C8DA /* Install */ = {
 			isa = PBXGroup;
 			children = (
+				837966A1299E9C85004A92B9 /* JetpackInstallPluginHelper.swift */,
 				8379669E299D51EC004A92B9 /* JetpackPlugin.swift */,
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
 				9A8ECE1F22550A210043C8DA /* Error */,
@@ -21332,6 +21336,7 @@
 				D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */,
 				FAD954B825B7A99900F011B5 /* JetpackBackupStatusFailedViewController.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
+				837966A2299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				3FD0316F24201E08005C0993 /* GravatarButtonView.swift in Sources */,
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,
 				E17FEADA221494B2006E1D2D /* Blog+Analytics.swift in Sources */,
@@ -24321,6 +24326,7 @@
 				FABB24F52602FC2C00C8785C /* ReaderTagTopic.swift in Sources */,
 				FABB24F62602FC2C00C8785C /* Media.swift in Sources */,
 				9839CEBC26FAA0530097406E /* CommentModerationBar.swift in Sources */,
+				837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
 				FABB24F72602FC2C00C8785C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				FABB24F82602FC2C00C8785C /* GravatarPickerViewController.swift in Sources */,
