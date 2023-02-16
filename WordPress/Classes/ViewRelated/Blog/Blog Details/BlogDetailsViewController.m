@@ -745,7 +745,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
 
-    if ([JetpackInstallPluginHelper shouldShowCardFor:self.blog]) {
+    if (![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog]) {
         [marr addObject:[self jetpackInstallSectionViewModel]];
     }
 
