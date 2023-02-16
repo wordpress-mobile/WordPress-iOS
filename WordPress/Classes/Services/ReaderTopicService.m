@@ -305,15 +305,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     topicName = [[topicName lowercaseString] trim];
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
             NSDictionary *properties = @{@"tag":topicName, @"source":source};
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
-            [self selectTopicWithID:topicID inContext:self.managedObjectContext];
-            if (success) {
-                success();
-            }
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                [self selectTopicWithID:topicID inContext:context];
+            } completion:success onQueue:dispatch_get_main_queue()];
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
