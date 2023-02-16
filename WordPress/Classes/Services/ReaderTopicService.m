@@ -337,7 +337,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:self.managedObjectContext]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
         successBlock();
     } failure:^(NSError *error) {
