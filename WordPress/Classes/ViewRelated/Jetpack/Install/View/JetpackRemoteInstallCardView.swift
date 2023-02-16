@@ -8,7 +8,7 @@ class JetpackRemoteInstallCardView: UIView {
     private let viewModel: JetpackRemoteInstallCardViewModel
 
     private lazy var animation: Animation? = {
-        viewModel.layoutDirection == .leftToRight ?
+        effectiveUserInterfaceLayoutDirection == .leftToRight ?
         Animation.named(Constants.lottieLTRFileName) :
         Animation.named(Constants.lottieRTLFileName)
     }()
@@ -132,7 +132,6 @@ class JetpackRemoteInstallCardView: UIView {
 
 struct JetpackRemoteInstallCardViewModel {
 
-    let layoutDirection: UITraitEnvironmentLayoutDirection
     let onHideThisTap: UIActionHandler
     let onLearnMoreTap: () -> Void
     var noticeLabel: NSAttributedString {
@@ -152,11 +151,9 @@ struct JetpackRemoteInstallCardViewModel {
 
     private let installedPlugin: JetpackPlugin
 
-    init(layoutDirection: UITraitEnvironmentLayoutDirection = .leftToRight,
-         onHideThisTap: @escaping UIActionHandler = { _ in },
+    init(onHideThisTap: @escaping UIActionHandler = { _ in },
          onLearnMoreTap: @escaping () -> Void = {},
          installedPlugin: JetpackPlugin = .multiple) {
-        self.layoutDirection = layoutDirection
         self.onHideThisTap = onHideThisTap
         self.onLearnMoreTap = onLearnMoreTap
         self.installedPlugin = installedPlugin
