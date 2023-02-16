@@ -64,9 +64,8 @@ class JetpackRemoteInstallCardView: UIView {
     private lazy var contextMenu: UIMenu = {
         let hideThisAction = UIAction(title: Strings.hideThis,
                                       image: Constants.hideThisImage,
-                                      attributes: [UIMenuElement.Attributes.destructive]) { _ in
-            // TODO: Showing/hiding the card
-        }
+                                      attributes: [UIMenuElement.Attributes.destructive],
+                                      handler: viewModel.onHideThisTap)
         return UIMenu(title: String(), options: .displayInline, children: [hideThisAction])
     }()
 
@@ -134,6 +133,7 @@ class JetpackRemoteInstallCardView: UIView {
 struct JetpackRemoteInstallCardViewModel {
 
     let layoutDirection: UITraitEnvironmentLayoutDirection
+    let onHideThisTap: UIActionHandler
     let onLearnMoreTap: () -> Void
     var noticeLabel: NSAttributedString {
         switch installedPlugin {
@@ -153,9 +153,11 @@ struct JetpackRemoteInstallCardViewModel {
     private let installedPlugin: JetpackPlugin
 
     init(layoutDirection: UITraitEnvironmentLayoutDirection = .leftToRight,
+         onHideThisTap: @escaping UIActionHandler = { _ in },
          onLearnMoreTap: @escaping () -> Void = {},
          installedPlugin: JetpackPlugin = .multiple) {
         self.layoutDirection = layoutDirection
+        self.onHideThisTap = onHideThisTap
         self.onLearnMoreTap = onLearnMoreTap
         self.installedPlugin = installedPlugin
     }
