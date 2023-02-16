@@ -27,7 +27,9 @@ protocol ReaderFollowedInterestsService: AnyObject {
 // MARK: - CoreData Fetching
 extension ReaderTopicService: ReaderFollowedInterestsService {
     public func fetchFollowedInterestsLocally(completion: @escaping ([ReaderTagTopic]?) -> Void) {
-        completion(followedInterests())
+        DispatchQueue.main.async {
+            completion(self.followedInterests())
+        }
     }
 
     public func fetchFollowedInterestsRemotely(completion: @escaping ([ReaderTagTopic]?) -> Void) {
@@ -70,19 +72,20 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
                                         success: @escaping ([ReaderTagTopic]?) -> Void,
                                         failure: @escaping (Error) -> Void) {
 
-
-        interests.forEach { interest in
-            let topic = ReaderTagTopic(remoteInterest: interest, context: managedObjectContext, isFollowing: true)
-            topic.path = path(slug: interest.slug)
-        }
-
-        ContextManager.sharedInstance().save(managedObjectContext, completion: { [weak self] in
+        self.coreDataStack.performAndSave({ context in
+            interests.forEach { interest in
+                let topic = ReaderTagTopic(remoteInterest: interest, context: context, isFollowing: true)
+                topic.path = self.path(slug: interest.slug)
+            }
+        }, completion: { [weak self] in
             self?.fetchFollowedInterestsLocally(completion: success)
         }, on: .main)
     }
 
     private func apiRequest() -> WordPressComRestApi {
-        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
+        let defaultAccount = self.coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        }
         let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,
@@ -100,9 +103,11 @@ extension ReaderTopicService: ReaderFollowedInterestsService {
     }
 
     private func followedInterests() -> [ReaderTagTopic]? {
+        assert(Thread.isMainThread, "\(#function) must be called from the main thread")
+
         let fetchRequest = followedInterestsFetchRequest()
         do {
-            return try managedObjectContext.fetch(fetchRequest)
+            return try coreDataStack.mainContext.fetch(fetchRequest)
         } catch {
             DDLogError("Could not fetch followed interests: \(String(describing: error))")
 
