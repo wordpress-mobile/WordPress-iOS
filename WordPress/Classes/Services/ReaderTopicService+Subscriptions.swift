@@ -30,15 +30,13 @@ extension ReaderTopicService {
 
         if siteTopic.postSubscription == nil {
             siteTopic.postSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionPost.classNameWithoutNamespaces(),
-                                                                             into: managedObjectContext) as? ReaderSiteInfoSubscriptionPost
+                                                                             into: context) as? ReaderSiteInfoSubscriptionPost
         }
 
         if siteTopic.emailSubscription == nil {
             siteTopic.emailSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionEmail.classNameWithoutNamespaces(),
-                                                                              into: managedObjectContext) as? ReaderSiteInfoSubscriptionEmail
+                                                                              into: context) as? ReaderSiteInfoSubscriptionEmail
         }
-
-        ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
 
         return siteTopic
     }
@@ -46,39 +44,35 @@ extension ReaderTopicService {
     private func remoteAction(for action: SubscriptionAction, _ subscribe: Bool, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
 
-        let successBlock = {
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: success, on: .main)
-        }
-
         switch action {
         case .notifications(let siteId):
             if subscribe {
                 service.subscribeSiteNotifications(with: siteId, {
                     WPAnalytics.trackReader(.followedBlogNotificationsReaderMenuOn, properties: ["blogId": siteId])
-                    successBlock()
+                    success()
                 }, failure)
             } else {
                 service.unsubscribeSiteNotifications(with: siteId, {
                     WPAnalytics.trackReader(.followedBlogNotificationsReaderMenuOff, properties: ["blog_id": siteId])
-                    successBlock()
+                    success()
                 }, failure)
             }
 
         case .postsEmail(let siteId):
             if subscribe {
-                service.subscribePostsEmail(with: siteId, successBlock, failure)
+                service.subscribePostsEmail(with: siteId, success, failure)
             } else {
-                service.unsubscribePostsEmail(with: siteId, successBlock, failure)
+                service.unsubscribePostsEmail(with: siteId, success, failure)
             }
 
         case .updatePostsEmail(let siteId, let frequency):
-            service.updateFrequencyPostsEmail(with: siteId, frequency: frequency, successBlock, failure)
+            service.updateFrequencyPostsEmail(with: siteId, frequency: frequency, success, failure)
 
         case .comments(let siteId):
             if subscribe {
-                service.subscribeSiteComments(with: siteId, successBlock, failure)
+                service.subscribeSiteComments(with: siteId, success, failure)
             } else {
-                service.unsubscribeSiteComments(with: siteId, successBlock, failure)
+                service.unsubscribeSiteComments(with: siteId, success, failure)
             }
         }
     }
@@ -109,7 +103,9 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        toggleSiteNotifications(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
+        coreDataStack.performAndSave { context in
+            self.toggleSiteNotifications(with: siteId, subscribe: subscribe, in: context, successBlock, failureBlock)
+        }
     }
 
 
@@ -125,12 +121,13 @@ extension ReaderTopicService {
         postSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
-                failure(.topicNotfound(id: siteId))
-                return
-            }
-            siteTopic.postSubscription?.sendPosts = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+            self.coreDataStack.performAndSave({ context in
+                guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
+                    failure(.topicNotfound(id: siteId))
+                    return
+                }
+                siteTopic.postSubscription?.sendPosts = oldValue
+            }, completion: {
                 failure(error)
             }, on: .main)
         }
@@ -167,7 +164,9 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        togglePostComments(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
+        coreDataStack.performAndSave { context in
+            self.togglePostComments(with: siteId, subscribe: subscribe, in: context, successBlock, failureBlock)
+        }
     }
 
 
@@ -183,12 +182,13 @@ extension ReaderTopicService {
         emailSubscription.sendComments = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
-                failure(.topicNotfound(id: siteId))
-                return
-            }
-            siteTopic.emailSubscription?.sendComments = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+            self.coreDataStack.performAndSave({ context in
+                guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
+                    failure(.topicNotfound(id: siteId))
+                    return
+                }
+                siteTopic.emailSubscription?.sendComments = oldValue
+            }, completion: {
                 failure(error)
             }, on: .main)
         }
@@ -225,7 +225,9 @@ extension ReaderTopicService {
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
-        togglePostsEmail(with: siteId, subscribe: subscribe, in: self.managedObjectContext, successBlock, failureBlock)
+        coreDataStack.performAndSave { context in
+            self.togglePostsEmail(with: siteId, subscribe: subscribe, in: context, successBlock, failureBlock)
+        }
     }
 
 
@@ -250,7 +252,10 @@ extension ReaderTopicService {
             failure?(error)
             DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
-        updatePostsEmail(with: siteId, frequency: frequency, in: self.managedObjectContext, successBlock, failureBlock)
+
+        coreDataStack.performAndSave { context in
+            self.updatePostsEmail(with: siteId, frequency: frequency, in: context, successBlock, failureBlock)
+        }
     }
 
 
@@ -279,12 +284,13 @@ extension ReaderTopicService {
         emailSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
-                failure(nil)
-                return
-            }
-            siteTopic.emailSubscription?.sendPosts = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+            self.coreDataStack.performAndSave({ context in
+                guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
+                    failure(nil)
+                    return
+                }
+                siteTopic.emailSubscription?.sendPosts = oldValue
+            }, completion: {
                 failure(error)
             }, on: .main)
         }
@@ -302,12 +308,13 @@ extension ReaderTopicService {
         emailSubscription.postDeliveryFrequency = frequency.rawValue
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
-            guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
-                failure(.topicNotfound(id: siteId))
-                return
-            }
-            siteTopic.emailSubscription?.postDeliveryFrequency = oldValue
-            ContextManager.sharedInstance().save(self.managedObjectContext, completion: {
+            self.coreDataStack.performAndSave({ context in
+                guard let siteTopic = try? ReaderSiteTopic.lookup(withSiteID: NSNumber(value: siteId), in: context) else {
+                    failure(.topicNotfound(id: siteId))
+                    return
+                }
+                siteTopic.emailSubscription?.postDeliveryFrequency = oldValue
+            }, completion: {
                 failure(error)
             }, on: .main)
         }
