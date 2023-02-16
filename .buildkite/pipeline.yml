@@ -46,3 +46,7 @@ steps:
         command: swiftlint
         agents:
           queue: "linter"
+
+      - label: ":danger: Danger"
+        agents:
+          queue: "danger"
