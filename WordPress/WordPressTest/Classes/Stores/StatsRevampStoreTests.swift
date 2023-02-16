@@ -23,7 +23,7 @@ class StatsRevampStoreTests: XCTestCase {
     // MARK: - Statuses
 
     func testViewsAndVisitorsStatusIdleWithInitialState() {
-        var state = StatsRevampStoreState()
+        let state = StatsRevampStoreState()
         sut = StatsRevampStore(initialState: state, dispatcher: dispatcher)
 
         XCTAssertTrue(sut.viewsAndVisitorsStatus == .idle)

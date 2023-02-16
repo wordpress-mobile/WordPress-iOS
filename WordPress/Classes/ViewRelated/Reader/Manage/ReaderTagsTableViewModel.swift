@@ -165,9 +165,11 @@ extension ReaderTagsTableViewModel {
         service.followTagNamed(tagName, withSuccess: { [weak self] in
             generator.notificationOccurred(.success)
 
+            guard let self else { return }
+
             // A successful follow makes the new tag the currentTopic.
-            if let tag = service.currentTopic as? ReaderTagTopic {
-                self?.scrollToTag(tag)
+            if let tag = service.currentTopic(in: self.context) as? ReaderTagTopic {
+                self.scrollToTag(tag)
             }
         }, failure: { (error) in
             DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")

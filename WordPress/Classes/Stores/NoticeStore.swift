@@ -132,7 +132,7 @@ enum NoticeAction: Action {
     /// 4. MediaBrowser dispatches `dismiss` which dismisses **NoticeB**!
     ///
     /// If MediaBrowser used `clear` or `clearWithTag`, the NoticeB should not have been dismissed
-    /// prematurely. 
+    /// prematurely.
     case dismiss
     /// Removes the given `Notice` from the Store.
     case clear(Notice)

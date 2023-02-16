@@ -27,7 +27,7 @@ final class InteractiveNotificationsManager: NSObject {
     /// Returns a CommentService instance.
     ///
     @objc var commentService: CommentService {
-        return CommentService(managedObjectContext: context)
+        return CommentService(coreDataStack: ContextManager.shared)
     }
 
     /// Returns a NotificationSyncMediator instance.

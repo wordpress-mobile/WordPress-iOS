@@ -54,6 +54,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var actionInfoLabel: UILabel!
 
     // MARK: Initializers
 
@@ -136,6 +137,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setTitle()
         subtitleLabel.attributedText = viewModel.subtitle
         footnoteLabel.text = viewModel.footnote
+        actionInfoLabel.attributedText = viewModel.actionInfoText
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
@@ -161,6 +163,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupColors() {
         view.backgroundColor = Colors.backgroundColor
         footnoteLabel.textColor = Colors.footnoteTextColor
+        actionInfoLabel.textColor = Colors.actionInfoTextColor
         learnMoreButton.tintColor = Colors.learnMoreButtonTextColor
         switchButton.backgroundColor = Colors.switchButtonBackgroundColor
         switchButton.tintColor = Colors.switchButtonTextColor
@@ -173,6 +176,8 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true
+        actionInfoLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        actionInfoLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -304,6 +309,7 @@ private extension JetpackFullscreenOverlayViewController {
                                              dark: .muriel(color: .jetpackGreen, .shade100))
         static let footnoteTextColor = UIColor(light: .muriel(color: .gray, .shade50),
                                                dark: .muriel(color: .gray, .shade5))
+        static let actionInfoTextColor = UIColor.textSubtle
         static let learnMoreButtonTextColor = UIColor(light: jetpackGreen50, dark: jetpackGreen30)
         static let switchButtonBackgroundColor = jetpackGreen50
         static let continueButtonTextColor = UIColor(light: jetpackGreen50, dark: .white)

@@ -6,8 +6,16 @@ import CoreData
 /// - SeeAlso: ContextManager.init(modelName:store:)
 let ContextManagerModelNameCurrent = "$CURRENT"
 
+public protocol CoreDataStackSwift: CoreDataStack {
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue)
+
+    func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T
+
+}
+
 @objc
-public class ContextManager: NSObject, CoreDataStack {
+public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     static var inMemoryStoreURL: URL {
         URL(fileURLWithPath: "/dev/null")
     }
@@ -15,6 +23,13 @@ public class ContextManager: NSObject, CoreDataStack {
     private let modelName: String
     private let storeURL: URL
     private let persistentContainer: NSPersistentContainer
+
+    /// A serial queue used to ensure there is only one writing operation at a time.
+    ///
+    /// - Note: This queue currently is not used in `performAndSave(_:)` the "save synchronously" function, since it's
+    ///   not safe to block current thread. Considering the aforementioned `performAndSave(_:)` function is going to be
+    ///   removed soon, I think it's okay to make this compromise.
+    private let writerQueue: OperationQueue
 
     @objc
     public var mainContext: NSManagedObjectContext {
@@ -41,6 +56,9 @@ public class ContextManager: NSObject, CoreDataStack {
         self.modelName = modelName
         self.storeURL = storeURL
         self.persistentContainer = Self.createPersistentContainer(storeURL: storeURL, modelName: modelName)
+        self.writerQueue = OperationQueue()
+        self.writerQueue.name = "org.wordpress.CoreDataStack.writer"
+        self.writerQueue.maxConcurrentOperationCount = 1
 
         super.init()
 
@@ -61,17 +79,41 @@ public class ContextManager: NSObject, CoreDataStack {
         context.performAndWait {
             block(context)
 
-            self.save(context, .synchronously)
+            self.save(context, .alreadyInContextQueue)
         }
     }
 
     @objc(performAndSaveUsingBlock:completion:onQueue:)
-    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: @escaping () -> Void, on queue: DispatchQueue) {
+    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {
         let context = newDerivedContext()
-        context.perform {
-            block(context)
+        self.writerQueue.addOperation(AsyncBlockOperation { done in
+            context.perform {
+                block(context)
 
-            self.save(context, .asynchronouslyWithCallback(completion: completion, queue: queue))
+                self.save(context, .alreadyInContextQueue)
+                queue.async { completion?() }
+                done()
+            }
+        })
+    }
+
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue) {
+        let context = newDerivedContext()
+        self.writerQueue.addOperation(AsyncBlockOperation { done in
+            context.perform {
+                let result = Result(catching: { try block(context) })
+                if case .success = result {
+                    self.save(context, .alreadyInContextQueue)
+                }
+                queue.async { completion?(result) }
+                done()
+            }
+        })
+    }
+
+    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            performAndSave(block, completion: continuation.resume(with:), on: DispatchQueue.global())
         }
     }
 
@@ -113,7 +155,7 @@ private extension ContextManager {
             switch option {
             case let .asynchronouslyWithCallback(completion, queue):
                 queue.async(execute: completion)
-            case .synchronously, .asynchronously:
+            case .synchronously, .asynchronously, .alreadyInContextQueue:
                 // Do nothing
                 break
             }
@@ -130,6 +172,8 @@ private extension ContextManager {
             context.performAndWait(block)
         case .asynchronously, .asynchronouslyWithCallback:
             context.perform(block)
+        case .alreadyInContextQueue:
+            block()
         }
     }
 }
@@ -231,9 +275,9 @@ private extension ContextManager {
 extension ContextManager {
     private static let internalSharedInstance = ContextManager()
     /// Tests purpose only
-    static var overrideInstance: CoreDataStack?
+    static var overrideInstance: ContextManager?
 
-    @objc class func sharedInstance() -> CoreDataStack {
+    @objc class func sharedInstance() -> ContextManager {
         if let overrideInstance = overrideInstance {
             return overrideInstance
         }
@@ -241,7 +285,7 @@ extension ContextManager {
         return ContextManager.internalSharedInstance
     }
 
-    static var shared: CoreDataStack {
+    static var shared: ContextManager {
         return sharedInstance()
     }
 }
@@ -250,4 +294,5 @@ private enum SaveContextOption {
     case synchronously
     case asynchronously
     case asynchronouslyWithCallback(completion: () -> Void, queue: DispatchQueue)
+    case alreadyInContextQueue
 }

@@ -109,7 +109,7 @@
 
     if (self.reconnecting) {
         // Resync publicize connections.
-        SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
+        SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
         [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
             [self handleReconnectSucceeded];
         } failure:^(NSError *error) {

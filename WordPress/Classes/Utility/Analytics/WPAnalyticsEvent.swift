@@ -426,6 +426,17 @@ import Foundation
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
 
+    // Jetpack full plugin installation for individual sites
+    case jetpackInstallFullPluginViewed
+    case jetpackInstallFullPluginCancelTapped
+    case jetpackInstallFullPluginInstallTapped
+    case jetpackInstallFullPluginRetryTapped
+    case jetpackInstallFullPluginCompleted
+    case jetpackInstallFullPluginDoneTapped
+
+    // Help & Support
+    case supportOpenMobileForumTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -453,7 +464,7 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
-        // Editor    
+        // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
         case .editorPostPublishDismissed:
@@ -1157,6 +1168,23 @@ import Foundation
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
 
+        // Jetpack full plugin installation for individual sites
+        case .jetpackInstallFullPluginViewed:
+            return "jp_install_full_plugin_flow_viewed"
+        case .jetpackInstallFullPluginInstallTapped:
+            return "jp_install_full_plugin_flow_install_tapped"
+        case .jetpackInstallFullPluginCancelTapped:
+            return "jp_install_full_plugin_flow_cancel_tapped"
+        case .jetpackInstallFullPluginRetryTapped:
+            return "jp_install_full_plugin_flow_retry_tapped"
+        case .jetpackInstallFullPluginCompleted:
+            return "jp_install_full_plugin_flow_success"
+        case .jetpackInstallFullPluginDoneTapped:
+            return "jp_install_full_plugin_flow_done_tapped"
+
+        // Help & Support
+        case .supportOpenMobileForumTapped:
+            return "support_open_mobile_forum_tapped"
         } // END OF SWITCH
     }
 

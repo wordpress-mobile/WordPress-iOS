@@ -1,7 +1,7 @@
 @testable import WordPress
 
 
-/// A null mock implementation of the KeyValueDatabase protocol 
+/// A null mock implementation of the KeyValueDatabase protocol
 class NullMockUserDefaults: KeyValueDatabase {
     func object(forKey defaultName: String) -> Any? {
         return nil

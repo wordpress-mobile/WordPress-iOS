@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "비활성화, 자동 업데이트 켜기";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "프롬프트 포함";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "사이트에 포함됨";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "인테리어 디자인";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "프롬프트 소개";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "이야기 글 소개";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "알림판에서 제거";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "특정 주제에 토픽을 추가하여 글을 따를 수 있습니다.";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "내 사이트 > 설정 > 블로깅 알림에서 언제든지 자세히 알아보고 알림을 설정할 수 있습니다.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "내 사이트, 설정, 블로깅 알림에서 언제든지 자세히 알아보고 알림을 설정할 수 있습니다.";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "개별 글에 대해 이러한 설정을 우선 적용할 수 있습니다.";
 
@@ -9705,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "지금 시도";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "일일 프롬프트";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
@@ -9893,9 +9875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "jetpack.com에서 더 알아보기";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "유용한 인사이트와 포괄적인 통계를 통해 트래픽 증가를 지켜보세요.";
 
 /* Name of the Statistics feature. */
@@ -9918,9 +9898,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "젯팩 기능이 제거되었습니다.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "젯팩 앱으로 전환하여 계속 기기에서 실시간 알림을 받으세요.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "젯팩 앱으로 알림 받기";
@@ -10389,9 +10366,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "좋아요";
-
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "사이트 통계를 로드할 수 없습니다.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "워드프레스닷컴 사이트의 오늘 활동을 최신 상태로 유지하세요.";

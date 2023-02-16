@@ -274,9 +274,7 @@ import Combine
             return nil
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
-        guard let topic = service.find(withPath: path) else {
+        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) else {
             return nil
         }
 
