@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
@@ -8,7 +8,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
 
-@interface ReaderTopicService : LocalCoreDataService
+@interface ReaderTopicService : CoreDataService
 
 - (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
 

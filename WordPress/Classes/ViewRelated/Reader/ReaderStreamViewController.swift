@@ -425,7 +425,7 @@ import Combine
             displayLoadingStream()
         }
 
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
@@ -462,7 +462,7 @@ import Combine
             displayLoadingStream()
         }
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.tagTopicForTag(withSlug: tagSlug,
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
@@ -1303,7 +1303,7 @@ import Combine
             generator.notificationOccurred(.success)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forTag: topic, success: {
             completion?(true)
         }, failure: { (error: Error?) in
@@ -1317,7 +1317,7 @@ import Combine
             ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: topic, success: { follow in
             ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)

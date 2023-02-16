@@ -539,7 +539,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)refreshPostsForFollowedTopic
 {
-    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
     [postService refreshPostsForFollowedTopic];
 }
 

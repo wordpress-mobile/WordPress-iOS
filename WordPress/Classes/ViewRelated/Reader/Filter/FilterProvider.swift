@@ -161,7 +161,7 @@ extension ReaderSiteTopic {
     /// Fetch sites from remote service
     ///
     private static func fetchFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
-        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let siteService = ReaderTopicService(coreDataStack: ContextManager.shared)
 
         siteService.fetchFollowedSites(success: {
             let sites = (try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []

@@ -150,7 +150,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     func testUnfollowedSiteIsUnfollowedDuringSync() {
         // Arrange: Setup
         let remoteSites = remoteSiteInfoForTests()
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
         let foo = remoteSites.first as RemoteReaderSiteInfo?
 
         // Act: Save sites
@@ -194,7 +194,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
         service.mergeMenuTopics(remoteTopics, isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
@@ -237,7 +237,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
         service.mergeMenuTopics(startingTopics, isLoggedIn: true, withSuccess: { () -> Void in
             expect.fulfill()
         })
@@ -278,7 +278,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
 
         // Setup
         let expect = expectation(description: "topics saved expectation")
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
         service.setCurrentTopic(nil)
 
         // Current topic is not nil after a sync
@@ -310,7 +310,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     func testDeleteAllTopics() {
         seedTopics()
         XCTAssertFalse(countTopics() == 0, "The number of seeded topics should not be zero")
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
         service.deleteAllTopics()
         XCTAssertTrue(countTopics() == 0, "The number of seeded topics should be zero")
     }
@@ -355,7 +355,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     }
 
     func testTopicTitleFormatting() {
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
 
         var unformatted = "WordPress"
         var formatted = service.formatTitle(unformatted)
@@ -382,7 +382,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     }
 
     func testReaderSearchTopicCreated() {
-        let service = ReaderTopicService(managedObjectContext: mainContext)
+        let service = ReaderTopicService(coreDataStack: contextManager)
 
         let phrase = "coffee talk"
         waitUntil { done in

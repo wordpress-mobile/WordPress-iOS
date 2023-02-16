@@ -65,7 +65,7 @@ class ReaderCoordinator: NSObject {
     }
 
     private func getTagTopic(tagSlug: String, completion: @escaping (Result<ReaderTagTopic, Error>) -> Void) {
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.tagTopicForTag(withSlug: tagSlug,
             success: { objectID in
 
@@ -94,7 +94,7 @@ class ReaderCoordinator: NSObject {
     }
 
     private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (Result<ReaderSiteTopic, Error>) -> Void) {
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
         isFeed: isFeed,
         success: { objectID, isFollowing in

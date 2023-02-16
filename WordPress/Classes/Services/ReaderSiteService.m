@@ -214,7 +214,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     DDLogInfo(@"Fetch and store followed topic");
-    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
                             success:^(NSManagedObjectID *objectID, BOOL isFollowing) {

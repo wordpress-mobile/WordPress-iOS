@@ -14,7 +14,9 @@ extension ReaderTopicService {
 
     private func apiRequest() -> WordPressComRestApi {
 
-        let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
+        let defaultAccount = coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        }
         if let api = defaultAccount?.wordPressComRestApi, api.hasCredentials() {
             return api
         }
