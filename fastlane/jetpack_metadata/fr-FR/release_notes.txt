@@ -1,0 +1,5 @@
+Nous avons apporté quelques modifications aux invites pour bloguer afin que vous puissiez répondre aux anciennes invites ou désactiver les nouvelles. (Même si nous ne voyons pas pourquoi vous le feriez).
+
+Si votre compte utilise l’authentification à deux facteurs, l’option permettant de scanner le code QR pour se connecter ne s’affichera pas.
+
+La vue des statistiques affiche systématiquement les dernières données du jour, même si la date change alors que l’application est en arrière-plan sur l’appareil. Tout ça en une journée de travail.
