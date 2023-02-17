@@ -8,6 +8,7 @@
 * [*] [internal] Refactored blog related operations (i.e. loading blogs of the logged in account, updating blog settings). [#20047]
 * [*] Reader: Add ability to block a followed site. [#20053]
 * [*] Reader: Add ability to report a post's author. [#20064]
+* [*] [internal] Refactored the topic related features in the Reader tab (i.e. following, unfollowing, and search). [#20150]
 
 21.7
 -----
