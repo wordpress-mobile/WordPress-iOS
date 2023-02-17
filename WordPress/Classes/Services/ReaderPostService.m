@@ -571,12 +571,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
-- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray *results = [context executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
         return;
@@ -589,10 +589,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     for (ReaderPost *post in results) {
         post.isSiteBlocked = blocked;
     }
-
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
 }
 
 

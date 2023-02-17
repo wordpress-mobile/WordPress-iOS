@@ -227,8 +227,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
 {
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [service flagPostsFromSite:siteID asBlocked:blocked];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+        [service flagPostsFromSite:siteID asBlocked:blocked inContext:context];
+    }];
 }
 
 // Updates the site topic's following status in core data only.

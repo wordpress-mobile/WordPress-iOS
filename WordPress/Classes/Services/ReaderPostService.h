@@ -144,7 +144,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  */
 - (void)clearInUseFlags;
 
-- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked inContext:(NSManagedObjectContext *)context;
 
 /**
  Updates in core data the following status of posts belonging to the specified site & url
