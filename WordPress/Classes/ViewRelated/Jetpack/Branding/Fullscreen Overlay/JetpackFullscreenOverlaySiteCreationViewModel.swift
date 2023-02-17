@@ -2,13 +2,28 @@ import Foundation
 
 /// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the site creation phase
 /// Should be used for Site Creation overlays.
-struct JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayViewModel {
-
+final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOverlayViewModel {
     let phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase
     let source: String
-    let actionInfoText: NSAttributedString? = nil
-    let footnote: String? = nil
-    let learnMoreButtonURL: String? = nil
+    let actionInfoText: NSAttributedString?
+    let footnote: String?
+    let learnMoreButtonURL: String?
+
+    let coordinator: JetpackDefaultOverlayCoordinator?
+
+    init(phase: JetpackFeaturesRemovalCoordinator.SiteCreationPhase,
+         source: String,
+         actionInfoText: NSAttributedString? = nil,
+         learnMoreButtonURL: String? = nil,
+         footnote: String? = nil,
+         coordinator: JetpackDefaultOverlayCoordinator) {
+        self.phase = phase
+        self.source = source
+        self.footnote = footnote
+        self.actionInfoText = actionInfoText
+        self.learnMoreButtonURL = learnMoreButtonURL
+        self.coordinator = coordinator
+    }
 
     var shouldShowOverlay: Bool {
         switch phase {

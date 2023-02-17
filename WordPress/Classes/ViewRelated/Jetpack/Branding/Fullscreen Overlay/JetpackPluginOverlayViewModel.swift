@@ -11,6 +11,8 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         case multiple
     }
 
+    // MARK: View Model Properties
+
     let title: String = Strings.title
     let subtitle: NSAttributedString
     let animationLtr: String = Constants.lottieLTRFileName
@@ -25,25 +27,39 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     var onWillDismiss: JetpackOverlayDismissCallback?
     var onDidDismiss: JetpackOverlayDismissCallback?
     var secondaryView: UIView? = nil
-    let isCompact = false
+    let isCompact = false // compact layout is not supported for this overlay.
+
+    // MARK: Dependencies
+
+    var coordinator: JetpackOverlayCoordinator?
+
+    // MARK: Methods
 
     init(siteName: String, plugin: Plugin) {
         self.subtitle = Self.subtitle(withSiteName: siteName, plugin: plugin)
     }
 
-    func trackOverlayDisplayed() {
+    func didDisplayOverlay() {
+        WPAnalytics.track(.jetpackInstallPluginModalViewed)
     }
 
-    func trackLearnMoreTapped() {
+    func didTapLink() {
+        // TODO: coordinator?.navigateToLinkRoute
     }
 
-    func trackSwitchButtonTapped() {
+    func didTapPrimary() {
+        coordinator?.navigateToPrimaryRoute()
+        WPAnalytics.track(.jetpackInstallPluginModalInstallTapped)
     }
 
-    func trackCloseButtonTapped() {
+    func didTapClose() {
+        // TODO: Dismiss the overlay.
+        WPAnalytics.track(.jetpackInstallPluginModalDismissed)
     }
 
-    func trackContinueButtonTapped() {
+    func didTapSecondary() {
+        // TODO: Make the auto-dismiss logic optional in the view controller's `continueButtonPressed`.
+        coordinator?.navigateToSecondaryRoute()
     }
 
     private static func subtitle(withSiteName siteName: String, plugin: Plugin) -> NSAttributedString {
@@ -67,20 +83,14 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         )
 
         return NSAttributedString(
-            format: attributedSubtitle(
-                with: Strings.subtitlePlural,
-                fontWeight: .regular),
+            format: attributedSubtitle(with: Strings.subtitlePlural, fontWeight: .regular),
             args: ("%1$@", siteNameAttributedText), ("%2$@", jetpackPluginAttributedText)
         )
     }
 
     private static func subtitleSinglePlugin(withSiteName siteName: String, pluginName: String) -> NSAttributedString {
-        let siteNameAttributedText = attributedSubtitle(
-            with: siteName,
-            fontWeight: .bold
-        )
-        let jetpackBackupAttributedText = attributedSubtitle(
-            with: pluginName,
+        let siteNameAttributedText = attributedSubtitle(with: siteName, fontWeight: .bold)
+        let jetpackBackupAttributedText = attributedSubtitle(with: pluginName,
             fontWeight: .bold
         )
         let jetpackPluginAttributedText = attributedSubtitle(
@@ -144,39 +154,39 @@ private extension JetpackPluginOverlayViewModel {
         static let subtitleSingular = NSLocalizedString(
             "jetpack.plugin.modal.subtitle.singular",
             value: """
-            %1$@ is using the %2$@, which doesn't support all features of the app yet.
+            %1$@ is using the %2$@ plugin, which doesn't support all features of the app yet.
 
             Please install the %3$@ to use the app with this site.
             """,
             comment: """
             Jetpack Plugin Modal (single plugin) subtitle with formatted texts.
-            One is for the site name, the other for the specıfıc plugin
-            and the last one for 'full Jetpack Plugin'
+            %1$@ is for the site name, %2$@ for the specific plugin name,
+            and %3$@ is for 'full Jetpack plugin' in bold style.
             """
         )
 
         static let subtitlePlural = NSLocalizedString(
             "jetpack.plugin.modal.subtitle.plural",
             value: """
-            %1$@ is using individual plugins, which don't support all features of the app yet.
+            %1$@ is using individual Jetpack plugins, which don't support all features of the app yet.
 
             Please install the %2$@ to use the app with this site.
             """,
             comment: """
-            Jetpack Plugin Modal (multiple plugin) subtitle with formatted texts.
-            One is for the site name and the other one for 'full Jetpack Plugin'
+            Jetpack Plugin Modal (multiple plugins) subtitle with formatted texts.
+            %1$@ is for the site name, and %2$@ for 'full Jetpack plugin' in bold style.
             """
         )
 
         static let jetpackPluginText = NSLocalizedString(
             "jetpack.plugin.modal.subtitle.jetpack.plugin",
-            value: "full Jetpack Plugin",
-            comment: "The 'full Jetpack Plugin' string in the subtitle"
+            value: "full Jetpack plugin",
+            comment: "The 'full Jetpack plugin' string in the subtitle"
         )
 
         static let footnote = NSLocalizedString(
             "jetpack.plugin.modal.footnote",
-            value: "By setting up jetpack you agree to our %@",
+            value: "By setting up Jetpack you agree to our %@",
             comment: "Jetpack Plugin Modal footnote"
         )
 

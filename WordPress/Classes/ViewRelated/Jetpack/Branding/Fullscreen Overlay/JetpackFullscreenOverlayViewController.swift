@@ -82,7 +82,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupFonts()
         setupButtons()
         animationView.play()
-        viewModel.trackOverlayDisplayed()
+        viewModel.didDisplayOverlay()
     }
 
     // MARK: Helpers
@@ -232,7 +232,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     // MARK: Actions
 
     @objc private func closeButtonPressed(sender: UIButton) {
-        viewModel.trackCloseButtonTapped()
+        viewModel.didTapClose()
         viewModel.onWillDismiss?()
         dismiss(animated: true) { [weak self] in
             self?.viewModel.onDidDismiss?()
@@ -241,15 +241,11 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        // Try to export WordPress data to a shared location before redirecting the user.
-        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
-            JetpackRedirector.redirectToJetpack()
-            self?.viewModel.trackSwitchButtonTapped()
-        }
+        viewModel.didTapPrimary()
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
-        viewModel.trackContinueButtonTapped()
+        viewModel.didTapSecondary()
         viewModel.onWillDismiss?()
         dismiss(animated: true) { [weak self] in
             self?.viewModel.onDidDismiss?()
@@ -257,16 +253,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
-        guard let urlString = viewModel.learnMoreButtonURL,
-              let url = URL(string: urlString) else {
-            return
-        }
-
-        let source = "jetpack_overlay_\(viewModel.analyticsSource)"
-        let webViewController = WebViewControllerFactory.controller(url: url, source: source)
-        let navController = UINavigationController(rootViewController: webViewController)
-        present(navController, animated: true)
-        viewModel.trackLearnMoreTapped()
+        viewModel.didTapLink()
     }
 }
 

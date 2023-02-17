@@ -195,11 +195,17 @@
 		082A645C291C2DD700668D2C /* Routes+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A645A291C2DD700668D2C /* Routes+Jetpack.swift */; };
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
+		0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */; };
+		0839F88C2993C1B500415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
+		0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */; };
 		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		084A07062848E1820054508A /* FeatureHighlightStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084A07052848E1820054508A /* FeatureHighlightStore.swift */; };
 		084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */; };
 		084FC3B729913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */; };
+		084FC3BC299155C900A17BCF /* JetpackOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */; };
+		084FC3BD299155CA00A17BCF /* JetpackOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */; };
+		0857BB40299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */; };
 		0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */; };
 		0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2721CE5375F0014AE99 /* MenuItemInsertionView.m */; };
 		0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2741CE5375F0014AE99 /* MenuItemsVisualOrderingView.m */; };
@@ -5672,7 +5678,10 @@
 		084A07052848E1820054508A /* FeatureHighlightStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlightStore.swift; sourceTree = "<group>"; };
 		084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video-device-gps.m4v"; sourceTree = "<group>"; };
 		084FC3B629913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayViewModelTests.swift; sourceTree = "<group>"; };
+		084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackOverlayCoordinator.swift; sourceTree = "<group>"; };
+		084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackPluginOverlayCoordinator.swift; sourceTree = "<group>"; };
 		084FF460C7742309671B3A86 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
+		0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackDefaultOverlayCoordinator.swift; sourceTree = "<group>"; };
 		0857C26F1CE5375F0014AE99 /* MenuItemAbstractView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemAbstractView.h; sourceTree = "<group>"; };
 		0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemAbstractView.m; sourceTree = "<group>"; };
 		0857C2711CE5375F0014AE99 /* MenuItemInsertionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemInsertionView.h; sourceTree = "<group>"; };
@@ -10866,6 +10875,9 @@
 				803DE820290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift */,
 				803D90F6292F0188007CC0D0 /* JetpackRedirector.swift */,
 				801D9519291AC0B00051993E /* JetpackOverlayFrequencyTracker.swift */,
+				084FC3B829914BD700A17BCF /* JetpackOverlayCoordinator.swift */,
+				084FC3BA29914C7F00A17BCF /* JetpackPluginOverlayCoordinator.swift */,
+				0857BB3F299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -20228,6 +20240,7 @@
 				C395FB262821FE7B00AE7C11 /* RemoteSiteDesign+Thumbnail.swift in Sources */,
 				9A73B7152362FBAE004624A8 /* SiteStatsViewModel+AsyncBlock.swift in Sources */,
 				74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
+				0857BB40299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
 				B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */,
@@ -20769,6 +20782,7 @@
 				B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */,
 				E1389ADB1C59F7C200FB2466 /* PlanListViewController.swift in Sources */,
 				1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */,
+				084FC3BC299155C900A17BCF /* JetpackOverlayCoordinator.swift in Sources */,
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				E1B912891BB01288003C25B9 /* PeopleViewController.swift in Sources */,
 				3FEC241525D73E8B007AFE63 /* ConfettiView.swift in Sources */,
@@ -21180,6 +21194,7 @@
 				46B1A16B26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
 				590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */,
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
+				0839F88C2993C1B500415038 /* JetpackPluginOverlayCoordinator.swift in Sources */,
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
 				FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */,
@@ -23399,6 +23414,7 @@
 				FABB22282602FC2C00C8785C /* GutenbergAudioUploadProcessor.swift in Sources */,
 				FABB22292602FC2C00C8785C /* AsyncOperation.swift in Sources */,
 				FABB222A2602FC2C00C8785C /* JetpackScanThreatSectionGrouping.swift in Sources */,
+				0839F88D2993C1B600415038 /* JetpackPluginOverlayCoordinator.swift in Sources */,
 				FABB222B2602FC2C00C8785C /* MediaService+Swift.swift in Sources */,
 				FABB222C2602FC2C00C8785C /* ReaderActionHelpers.swift in Sources */,
 				FABB222D2602FC2C00C8785C /* NoteBlockUserTableViewCell.swift in Sources */,
@@ -23414,6 +23430,7 @@
 				FABB22352602FC2C00C8785C /* CameraCaptureCoordinator.swift in Sources */,
 				C77FC90A28009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */,
 				FABB22362602FC2C00C8785C /* HomeWidgetCache.swift in Sources */,
+				0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				FABB22372602FC2C00C8785C /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */,
 				FABB22392602FC2C00C8785C /* TodayStatsRecordValue+CoreDataClass.swift in Sources */,
@@ -24020,6 +24037,7 @@
 				FABB24102602FC2C00C8785C /* ThemeService.m in Sources */,
 				FABB24112602FC2C00C8785C /* NSAttributedString+RichTextView.swift in Sources */,
 				FABB24122602FC2C00C8785C /* NoteBlockButtonTableViewCell.swift in Sources */,
+				084FC3BD299155CA00A17BCF /* JetpackOverlayCoordinator.swift in Sources */,
 				C7F7ABD6261CED7A00CE547F /* JetpackAuthenticationManager.swift in Sources */,
 				FABB24142602FC2C00C8785C /* ThemeBrowserSectionHeaderView.swift in Sources */,
 				8B065CC727BD5452005BA7AB /* DashboardEmptyPostsCardCell.swift in Sources */,
