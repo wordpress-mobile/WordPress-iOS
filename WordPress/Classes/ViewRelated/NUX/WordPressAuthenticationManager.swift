@@ -293,33 +293,14 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag,
                         lastStep: AuthenticatorAnalyticsTracker.Step,
                         lastFlow: AuthenticatorAnalyticsTracker.Flow) {
-        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
-        WPStyleGuide.configureNavigationAppearance()
-
-        // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
-        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
-        // it here manually before tracking the new step.
-        let step = tracker.state.lastStep
-
-        tracker.track(step: .help)
-
-        let controller = SupportTableViewController { [weak self] in
-            self?.tracker.track(click: .dismiss)
-            self?.tracker.set(step: step)
-        }
-        controller.sourceTag = sourceTag
-
-        let navController = UINavigationController(rootViewController: controller)
-        navController.modalPresentationStyle = .formSheet
-
-        sourceViewController.present(navController, animated: true)
+        presentSupport(from: sourceViewController, sourceTag: sourceTag)
     }
 
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
+        presentSupport(from: sourceViewController, sourceTag: sourceTag)
     }
 
     /// A self-hosted site URL is available and needs validated
@@ -734,5 +715,33 @@ private extension WordPressAuthenticationManager {
             RecentSitesService().touch(blog: blog)
             onCompletion()
         }
+    }
+}
+
+// MARK: - Support Helper
+//
+private extension WordPressAuthenticationManager {
+    /// Presents the support screen which displays different support options depending on whether this is the WordPress app or the Jetpack app.
+    private func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+        // Reset the nav style so the Support nav bar has the WP style, not the Auth style.
+        WPStyleGuide.configureNavigationAppearance()
+
+        // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
+        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
+        // it here manually before tracking the new step.
+        let step = tracker.state.lastStep
+
+        tracker.track(step: .help)
+
+        let controller = SupportTableViewController { [weak self] in
+            self?.tracker.track(click: .dismiss)
+            self?.tracker.set(step: step)
+        }
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+
+        sourceViewController.present(navController, animated: true)
     }
 }
