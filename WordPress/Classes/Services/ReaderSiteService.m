@@ -149,12 +149,12 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)syncPostsForFollowedSites
 {
-    ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:self.managedObjectContext];
-    if (!followedSites) {
-        return;
-    }
-
     [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
+        if (!followedSites) {
+            return;
+        }
+
         ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
         [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
     }];
