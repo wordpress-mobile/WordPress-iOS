@@ -511,7 +511,7 @@ PODS:
     - WordPressKit (~> 6.0-beta)
     - WordPressShared (~> 2.0-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (6.1.0-beta.1):
+  - WordPressKit (6.1.0-beta.2):
     - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
@@ -612,7 +612,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.8)
   - WordPressAuthenticator (~> 5.1-beta)
-  - WordPressKit (~> 6.1.0-beta)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `48d969d1fd9164e51b33bd4dc390ad1807f45f89`)
   - WordPressShared (~> 2.0-beta)
   - WordPressUI (~> 1.12.5)
   - WPMediaPicker (~> 1.8.7)
@@ -623,7 +623,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
   trunk:
     - Alamofire
@@ -778,6 +777,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.89.0
+  WordPressKit:
+    :commit: 48d969d1fd9164e51b33bd4dc390ad1807f45f89
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   Yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.89.0/third-party-podspecs/Yoga.podspec.json
 
@@ -793,6 +795,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
     :submodules: true
     :tag: v1.89.0
+  WordPressKit:
+    :commit: 48d969d1fd9164e51b33bd4dc390ad1807f45f89
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
@@ -881,7 +886,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 7d11d598f14c82c727c08b56bd35fbeb7dafb504
   WordPress-Editor-iOS: 9eb9f12f21a5209cb837908d81ffe1e31cb27345
   WordPressAuthenticator: 0b13d0fc6488a9d6b2a48f4f841e41ce41f08f3b
-  WordPressKit: c44a1186285cf9bbd61c8e2c8ab323912d7de989
+  WordPressKit: 7e422fc4b5f274c0925fb9f5408265364abe2609
   WordPressShared: 8e59bc8cec256f54a7c4cc6c94911adc2a9a65d2
   WordPressUI: c5be816f6c7b3392224ac21de9e521e89fa108ac
   WPMediaPicker: 0d45dfd7b3c5651c5236ffd48c1b0b2f60a2d5d2
@@ -896,6 +901,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: d851d81f272d28ad08e164edaec3601d41c0198f
+PODFILE CHECKSUM: cbcc05904a09faed468f779758f1a480086841ff
 
 COCOAPODS: 1.11.2
