@@ -149,7 +149,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)syncPostsForFollowedSites
 {
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
         if (!followedSites) {
             return;
@@ -183,7 +183,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     DDLogInfo(@"Fetch and store followed topic");
-    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
                             success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
