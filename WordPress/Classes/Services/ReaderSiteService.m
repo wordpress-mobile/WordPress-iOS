@@ -260,23 +260,19 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 // Updates the site topic's following status in core data only.
 - (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL
 {
-    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithFeedURL:feedURL inContext:self.managedObjectContext];
-    if (!topic) {
-        return;
-    }
-    topic.following = NO;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithFeedURL:feedURL inContext:context];
+        topic.following = NO;
+    }];
 }
 
 // Updates the site topic's following status in core data only.
 - (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID
 {
-    ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.managedObjectContext];
-    if (!topic) {
-        return;
-    }
-    topic.following = NO;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+        topic.following = NO;
+    }];
 }
 
 #pragma mark - Error messages
