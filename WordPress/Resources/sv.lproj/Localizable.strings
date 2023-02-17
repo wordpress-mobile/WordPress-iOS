@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-10 21:44:25+0000 */
+/* Translation-Revision-Date: 2023-02-15 11:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sv_SE */
@@ -9896,6 +9896,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the Notifications feature. */
 "jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Få aviseringar för nya kommentarer, gilla-markeringar, visningar och mer.";
 
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Hitta och följ dina favoritwebbplatser och -communities samt dela ditt innehåll.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Se din trafik öka med användbara insikter och omfattande statistik.";
 
@@ -10162,6 +10165,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
+
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Gå till Webbplatsinställningar för att aktivera igen";
 
 /* Title of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.title" = "Bloggningsförslag dolt";

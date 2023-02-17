@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-03 05:56:41+0000 */
+/* Translation-Revision-Date: 2023-02-15 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -3772,6 +3772,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactif, mises à jour automatiques activées";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "Inclure une invite pour bloguer";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inclus avec le site";
 
@@ -3869,6 +3872,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Décoration d’intérieur";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "Présentation des invites pour bloguer";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Présentation des publications de story";
@@ -8124,6 +8130,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Essayer avec l’adresse du site";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Désactiver les invites";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Désactivez les notifications";
 
@@ -9331,6 +9340,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Vous pouvez toujours vous connecter avec un lien de connexion comme celui que vous venez d’utiliser. Vous pouvez également définir un mot de passe si vous le préférez.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site > Réglages > Blogging";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site, Réglages, Blogging";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Vous pouvez afficher les statistiques d’un seul site dans la vue Aujourd’hui\/Centre de notification de l’iOS.";
 
@@ -9875,6 +9890,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Lire la suite sur jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Recevez des notifications pour tout nouveau commentaire, mention J’aime, vue, et plus encore.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Trouvez et suivez vos sites et communautés préférés, et partagez votre contenu.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Suivez l’évolution de votre trafic avec des tendances utiles et des statistiques complètes.";
 
@@ -9898,6 +9919,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Les fonctionnalités Jetpack ont été déplacées.";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passez à l’application Jetpack pour continuer à recevoir des notifications en temps réel sur votre appareil.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Obtenir des notifications avec l’application JetPack";
@@ -10139,6 +10163,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Options de l’image mise en avant";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Consulter les réglages du site pour réactiver";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Invites pour bloguer masquées";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignorer";
 
@@ -10201,6 +10231,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Erreur de partage";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Afficher les invites";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Rappels";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 derniers jours";
@@ -10331,6 +10367,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Record de vues";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Impossible de charger toutes les statistiques.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Créez ou ajoutez un site pour voir toutes les statistiques.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Articles";
 
@@ -10352,6 +10394,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Connectez-vous à Jetpack pour voir les statistiques du jour.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Impossible de charger les statistiques de la semaine.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Créez ou ajoutez un site pour voir les statistiques de la semaine.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Gardez toujours un œil sur l'activité hebdomadaire de votre site WordPress.";
 
@@ -10364,8 +10412,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Commentaires";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Les statistiques sont désormais disponibles dans l’application Jetpack. Passer d’une application à l’autre est gratuit et ne prend qu’une minute.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "J’aime";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Impossible de charger les statistiques pour le site.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Impossible de charger les statistiques du jour.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Créez ou ajoutez un site pour voir les statistiques du jour.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Gardez toujours un œil sur l'activité quotidienne de votre site WordPress.";

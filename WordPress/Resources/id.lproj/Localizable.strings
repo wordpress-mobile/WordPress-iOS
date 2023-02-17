@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-14 11:54:10+0000 */
+/* Translation-Revision-Date: 2023-02-16 21:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -9894,10 +9894,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.learnMore" = "Baca selengkapnya di jetpack.com";
 
 /* Description of the Notifications feature. */
-"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Dapatkan notifikasi komentar baru, jumlah suka, jumlah pengunjung, dan lain-lain.";
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Dapatkan notifikasi komentar, jumlah suka, jumlah pengunjung baru, dan lainnya.";
 
 /* Description of the Reader feature. */
-"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Temukan dan ikuti situs dan komunitas kesukaan Anda, dan bagikan konten Anda.";
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Temukan dan ikuti situs dan komunitas favorit Anda, serta bagikan konten Anda.";
 
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Amati peningkatan lalu lintas Anda lewat statistik lengkap dan wawasan penuh makna.";
@@ -9924,7 +9924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Fitur-fitur Jetpack telah berpindah.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Ganti ke aplikasi Jetpack agar dapat tetap menerima notifikasi real-time di perangkat Anda.";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Beralih ke aplikasi Jetpack agar tetap dapat menerima notifikasi real-time di perangkat Anda.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Dapatkan pemberitahuan dengan aplikasi Jetpack";
@@ -10167,10 +10167,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "postSettings.featuredImageUploadActionSheet.title" = "Pilihan Gambar Andalan";
 
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.subtitle" = "Kunjungi Pengaturan Situs untuk menyalakan";
+"prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
 
 /* Title of the notification when prompts are hidden from the dashboard card */
-"prompts.notification.removed.title" = "Prompt Bloggin tersembunyi";
+"prompts.notification.removed.title" = "Prompt Blogging tersembunyi";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Tutup";
@@ -10416,7 +10416,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "widget.today.comments.label" = "Komentar-komentar";
 
 /* Title of the disabled view in today widget */
-"widget.today.disabled.view.title" = "Statistik telah berpindah ke aplikasi Jetpack. Pemindahannya gratis dan hanya memakan waktu sebentar.";
+"widget.today.disabled.view.title" = "Statistik telah beralih ke aplikasi Jetpack. Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Suka";
