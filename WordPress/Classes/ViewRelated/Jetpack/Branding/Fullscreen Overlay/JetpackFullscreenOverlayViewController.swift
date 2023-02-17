@@ -54,7 +54,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var actionInfoLabel: UILabel!
+    @IBOutlet weak var actionInfoButton: UIButton!
 
     // MARK: Initializers
 
@@ -137,13 +137,13 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setTitle()
         subtitleLabel.attributedText = viewModel.subtitle
         footnoteLabel.text = viewModel.footnote
-        actionInfoLabel.attributedText = viewModel.actionInfoText
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
         learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
         continueButton.isHidden = viewModel.continueButtonIsHidden
         setupLearnMoreButtonTitle()
+        setupActionInfoButtonTitle()
     }
 
     private func setTitle() {
@@ -163,7 +163,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupColors() {
         view.backgroundColor = Colors.backgroundColor
         footnoteLabel.textColor = Colors.footnoteTextColor
-        actionInfoLabel.textColor = Colors.actionInfoTextColor
+        actionInfoButton.setTitleColor(Colors.actionInfoTextColor, for: .normal)
         learnMoreButton.tintColor = Colors.learnMoreButtonTextColor
         switchButton.backgroundColor = Colors.switchButtonBackgroundColor
         switchButton.tintColor = Colors.switchButtonTextColor
@@ -176,8 +176,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true
-        actionInfoLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        actionInfoLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -227,6 +225,23 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         let learnMoreText = NSMutableAttributedString(string: "\(Strings.learnMoreButtonText) \u{FEFF}")
         learnMoreText.append(attachmentString)
         learnMoreButton.setAttributedTitle(learnMoreText, for: .normal)
+    }
+
+    private func setupActionInfoButtonTitle() {
+        actionInfoButton.setAttributedTitle(viewModel.actionInfoText, for: .normal)
+        actionInfoButton.isHidden = viewModel.actionInfoText == nil
+
+        if let actionInfoText = viewModel.actionInfoText,
+           !actionInfoText.string.isEmpty,
+           let titleLabel = actionInfoButton.titleLabel,
+           let stackView = actionInfoButton.superview as? UIStackView {
+            titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+            titleLabel.adjustsFontForContentSizeCategory = true
+            titleLabel.textAlignment = .center
+            titleLabel.numberOfLines = 0
+            actionInfoButton.pinSubviewToAllEdges(titleLabel)
+            stackView.setCustomSpacing(Metrics.actionInfoButtonBottomSpacing, after: actionInfoButton)
+        }
     }
 
     // MARK: Actions
@@ -281,6 +296,7 @@ private extension JetpackFullscreenOverlayViewController {
         static let titleKern: CGFloat = 0.37
         static let buttonsNormalBottomSpacing: CGFloat = 30
         static let singleButtonBottomSpacing: CGFloat = 60
+        static let actionInfoButtonBottomSpacing: CGFloat = 24
     }
 
     enum Constants {
