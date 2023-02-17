@@ -16,7 +16,6 @@ class SupportTableViewController: UITableViewController {
 
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserPersistentStoreFactory.instance()
-    private let isForumShown = SupportConfiguration.current() == .forum
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.
@@ -46,7 +45,7 @@ class SupportTableViewController: UITableViewController {
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
-        if !isForumShown {
+        if SupportConfiguration.current() == .zendesk {
             checkForAutomatticEmail()
         }
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
@@ -137,21 +136,34 @@ private extension SupportTableViewController {
 
     // MARK: - Table Model
 
-    func wordPressAppTableViewModel() -> ImmuTable {
+    func tableViewModel() -> ImmuTable {
 
-        // Community Forums Section
-        var communityForumsSectionRows = [ImmuTableRow]()
-        communityForumsSectionRows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
-                                                          action: nil,
-                                                          accessibilityIdentifier: "visit-wordpress-forums-prompt"))
-        communityForumsSectionRows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
-                                                                accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
-                                                                action: visitForumsSelected(),
-                                                                accessibilityIdentifier: "visit-wordpress-forums-button"))
+        // Support section
+        let helpSection: ImmuTableSection?
+        switch SupportConfiguration.current() {
+        case .zendesk:
+            var rows = [ImmuTableRow]()
+            rows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
+            rows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            rows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
+            rows.append(SupportEmailRow(title: LocalizedText.contactEmail,
+                                        value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                        accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
+                                        action: supportEmailSelected(),
+                                        accessibilityIdentifier: "set-contact-email-button"))
+            helpSection = ImmuTableSection(headerText: LocalizedText.prioritySupportSectionHeader, rows: rows, footerText: nil)
+        case .forum:
+            var rows = [ImmuTableRow]()
+            rows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
+                                        action: nil,
+                                        accessibilityIdentifier: "visit-wordpress-forums-prompt"))
+            rows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
+                                              accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
+                                              action: visitForumsSelected(),
+                                              accessibilityIdentifier: "visit-wordpress-forums-button"))
 
-        let forumsSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader,
-                                             rows: communityForumsSectionRows,
-                                             footerText: nil)
+            helpSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: rows, footerText: nil)
+        }
 
         // Information Section
         var informationSection: ImmuTableSection?
@@ -180,60 +192,6 @@ private extension SupportTableViewController {
         }
 
         // Create and return table
-        let sections = [forumsSection, informationSection, logOutSections].compactMap { $0 }
-        return ImmuTable(sections: sections)
-    }
-
-    func jetpackAppTableViewModel() -> ImmuTable {
-
-        // Help Section
-        var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
-
-        if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
-            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
-            helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
-                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
-                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected(),
-                                                   accessibilityIdentifier: "set-contact-email-button"))
-        } else {
-            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
-        }
-
-        let helpSection = ImmuTableSection(
-                headerText: LocalizedText.prioritySupportSectionHeader,
-                rows: helpSectionRows,
-                footerText: nil)
-
-        // Information Section
-        var informationSection: ImmuTableSection?
-        if configuration.showsLogsSection {
-            let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-            let logsRow = NavigationItemRow(title: LocalizedText.logs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
-            let switchRow = SwitchRow(title: LocalizedText.debug,
-                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
-                                      onChange: extraDebugToggled())
-            informationSection = ImmuTableSection(
-                    headerText: LocalizedText.advancedSectionHeader,
-                    rows: [versionRow, logsRow, switchRow],
-                    footerText: LocalizedText.informationFooter
-            )
-        }
-
-        // Log out Section
-        var logOutSections: ImmuTableSection?
-        if configuration.showsLogOutButton {
-            let logOutRow = DestructiveButtonRow(
-                    title: LocalizedText.logOutButtonTitle,
-                    action: logOutTapped(),
-                    accessibilityIdentifier: ""
-            )
-            logOutSections = .init(headerText: LocalizedText.wpAccount, optionalRows: [logOutRow])
-        }
-
-        // Create and return table
         let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
         return ImmuTable(sections: sections)
     }
@@ -243,7 +201,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = isForumShown ? wordPressAppTableViewModel() : jetpackAppTableViewModel()
+        tableHandler?.viewModel = tableViewModel()
     }
 
     // MARK: - Row Handlers
@@ -263,17 +221,13 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if SupportConfiguration.current() == .zendesk {
-                guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                    return
+            guard let controllerToShowFrom = self.controllerToShowFrom() else {
+                return
+            }
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
+                if identityUpdated {
+                    self?.reloadViewModel()
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                    if identityUpdated {
-                        self?.reloadViewModel()
-                    }
-                }
-            } else {
-                self.launchForum(url: Constants.forumsURL)
             }
         }
     }
