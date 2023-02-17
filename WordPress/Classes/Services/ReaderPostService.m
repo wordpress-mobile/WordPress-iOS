@@ -368,7 +368,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     if (!post.isExternal) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
