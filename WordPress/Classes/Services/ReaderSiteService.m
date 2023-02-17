@@ -198,11 +198,16 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
  */
 - (WordPressComRestApi *)apiForRequest
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
+    WordPressComRestApi * __block api = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+        api = [defaultAccount wordPressComRestApi];
+    }];
+
     if (![api hasCredentials]) {
         return nil;
     }
+
     return api;
 }
 
