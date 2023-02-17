@@ -228,9 +228,28 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-        [service flagPostsFromSite:siteID asBlocked:blocked inContext:context];
+        [self flagPostsFromSite:siteID asBlocked:blocked inContext:context];
     }];
+}
+
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked inContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSiteBlocked = blocked;
+    }
 }
 
 // Updates the site topic's following status in core data only.
