@@ -550,11 +550,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderSiteTopic * __block siteTopic = nil;
 
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+    [self.coreDataStack.mainContext performBlockAndWait:^{
         if (isFeed) {
-            siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:context];
+            siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.coreDataStack.mainContext];
         } else {
-            siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+            siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.coreDataStack.mainContext];
         }
     }];
 
