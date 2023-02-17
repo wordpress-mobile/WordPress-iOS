@@ -55,16 +55,9 @@ final class SiteCreationVerticalsService: SiteVerticalsService {
     private let remoteService: WordPressComServiceRemote
 
     init(coreDataStack: CoreDataStack) {
-        let account = coreDataStack.performQuery { context in
-            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-        }
-
-        let api: WordPressComRestApi
-        if let account {
-            api = account.wordPressComRestV2Api
-        } else {
-            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
-        }
+        let api = coreDataStack.performQuery({ context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestV2Api
+        }) ?? WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
     }
 
