@@ -8,8 +8,16 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
     private var blog: Blog?
     private weak var presenterViewController: BlogDetailsViewController?
 
+    private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
+        let onHideThisTap: UIActionHandler = { [weak self] _ in
+            JetpackInstallPluginHelper.hideCard(for: self?.blog)
+            self?.presenterViewController?.reloadTableView()
+        }
+        return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap)
+    }()
+
     private lazy var cardView: JetpackRemoteInstallCardView = {
-        let cardView = JetpackRemoteInstallCardView()
+        let cardView = JetpackRemoteInstallCardView(cardViewModel)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         return cardView
     }()
