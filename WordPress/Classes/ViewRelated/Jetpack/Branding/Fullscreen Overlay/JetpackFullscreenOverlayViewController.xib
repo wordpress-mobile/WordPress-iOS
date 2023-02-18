@@ -98,17 +98,29 @@
                                         </view>
                                     </subviews>
                                 </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHv-Wo-L7c" userLabel="Action Info Button">
+                                    <rect key="frame" x="29" y="418" width="317" height="30"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal">
+                                        <color key="titleColor" systemColor="secondaryLabelColor"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="TTg-Z6-h4X" firstAttribute="leading" secondItem="PbU-M0-J6O" secondAttribute="leading" constant="29" id="2d6-L5-bKl"/>
                                 <constraint firstItem="TTg-Z6-h4X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PbU-M0-J6O" secondAttribute="top" id="2nW-cN-NOi"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="leading" secondItem="TTg-Z6-h4X" secondAttribute="leading" id="9zz-z1-X7R"/>
                                 <constraint firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" constant="29" id="Q2G-S5-HVM"/>
-                                <constraint firstItem="TTg-Z6-h4X" firstAttribute="centerY" secondItem="PbU-M0-J6O" secondAttribute="centerY" id="WsY-Y2-V51"/>
+                                <constraint firstAttribute="bottom" secondItem="gHv-Wo-L7c" secondAttribute="bottom" constant="8" id="SJ0-jW-GXy"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TTg-Z6-h4X" secondAttribute="bottom" constant="20" id="xfD-Di-6UY"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" id="yKf-rX-Gsr"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="TTg-Z6-h4X" firstAttribute="centerY" secondItem="Qla-b8-9Ag" secondAttribute="centerY" priority="750" id="Bb8-jX-f5p"/>
                         <constraint firstItem="PbU-M0-J6O" firstAttribute="top" secondItem="Qla-b8-9Ag" secondAttribute="top" id="VPH-IZ-hYf"/>
                         <constraint firstAttribute="trailing" secondItem="PbU-M0-J6O" secondAttribute="trailing" id="VQr-HE-qvN"/>
                         <constraint firstAttribute="bottom" secondItem="PbU-M0-J6O" secondAttribute="bottom" id="ZRn-ZX-cw2"/>
@@ -120,15 +132,8 @@
                 <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="354" placeholderIntrinsicHeight="166" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vcE-wc-fHe">
                     <rect key="frame" x="10.5" y="471" width="354" height="166"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHv-Wo-L7c" userLabel="Action Info Button">
-                            <rect key="frame" x="0.0" y="0.0" width="354" height="34"/>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal">
-                                <color key="titleColor" systemColor="secondaryLabelColor"/>
-                            </state>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VGE-FS-gsd">
-                            <rect key="frame" x="0.0" y="42" width="354" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="354" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="354" id="93l-ng-h5B"/>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="DD0-7r-C5O">
@@ -142,7 +147,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPW-8A-Di4">
-                            <rect key="frame" x="0.0" y="100" width="354" height="66"/>
+                            <rect key="frame" x="0.0" y="58" width="354" height="108"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="cH2-GJ-f7z">
                                     <variation key="heightClass=compact-widthClass=regular" constant="44"/>

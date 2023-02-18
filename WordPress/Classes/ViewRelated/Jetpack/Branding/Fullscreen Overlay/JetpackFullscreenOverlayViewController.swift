@@ -233,14 +233,12 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
         if let actionInfoText = viewModel.actionInfoText,
            !actionInfoText.string.isEmpty,
-           let titleLabel = actionInfoButton.titleLabel,
-           let stackView = actionInfoButton.superview as? UIStackView {
+           let titleLabel = actionInfoButton.titleLabel {
             titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
             titleLabel.adjustsFontForContentSizeCategory = true
             titleLabel.textAlignment = .center
             titleLabel.numberOfLines = 0
             actionInfoButton.pinSubviewToAllEdges(titleLabel)
-            stackView.setCustomSpacing(Metrics.actionInfoButtonBottomSpacing, after: actionInfoButton)
         }
     }
 
