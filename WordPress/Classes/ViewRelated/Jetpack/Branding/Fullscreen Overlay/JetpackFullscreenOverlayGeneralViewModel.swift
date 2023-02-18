@@ -274,6 +274,10 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         }
     }
 
+    var shouldDismissOnSecondaryButtonTap: Bool {
+        return true
+    }
+
     var analyticsSource: String {
         return source.rawValue
     }

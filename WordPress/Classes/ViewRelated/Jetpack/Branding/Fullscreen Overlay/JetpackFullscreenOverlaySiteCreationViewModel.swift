@@ -77,6 +77,10 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
         return true
     }
 
+    var shouldDismissOnSecondaryButtonTap: Bool {
+        return true
+    }
+
     var analyticsSource: String {
         return Constants.analyticsSource
     }

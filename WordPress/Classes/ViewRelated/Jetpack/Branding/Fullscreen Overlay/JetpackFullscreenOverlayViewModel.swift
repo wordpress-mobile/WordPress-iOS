@@ -13,6 +13,7 @@ protocol JetpackFullscreenOverlayViewModel: AnyObject {
     var switchButtonText: String { get }
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
+    var shouldDismissOnSecondaryButtonTap: Bool { get }
     var analyticsSource: String { get }
     var actionInfoText: NSAttributedString? { get }
     var onWillDismiss: JetpackOverlayDismissCallback? { get }

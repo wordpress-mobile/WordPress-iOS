@@ -23,6 +23,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     let switchButtonText = Strings.primaryButtonTitle
     let continueButtonText: String? = Strings.secondaryButtonTitle
     let shouldShowCloseButton = true
+    let shouldDismissOnSecondaryButtonTap = false
     let analyticsSource: String = ""
     var onWillDismiss: JetpackOverlayDismissCallback?
     var onDidDismiss: JetpackOverlayDismissCallback?

@@ -242,14 +242,18 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         }
     }
 
-    // MARK: Actions
-
-    @objc private func closeButtonPressed(sender: UIButton) {
-        viewModel.didTapClose()
+    private func dismissOverlay() {
         viewModel.onWillDismiss?()
         dismiss(animated: true) { [weak self] in
             self?.viewModel.onDidDismiss?()
         }
+    }
+
+    // MARK: Actions
+
+    @objc private func closeButtonPressed(sender: UIButton) {
+        viewModel.didTapClose()
+        dismissOverlay()
     }
 
 
@@ -259,9 +263,9 @@ class JetpackFullscreenOverlayViewController: UIViewController {
 
     @IBAction func continueButtonPressed(_ sender: Any) {
         viewModel.didTapSecondary()
-        viewModel.onWillDismiss?()
-        dismiss(animated: true) { [weak self] in
-            self?.viewModel.onDidDismiss?()
+
+        if viewModel.shouldDismissOnSecondaryButtonTap {
+            dismissOverlay()
         }
     }
 
