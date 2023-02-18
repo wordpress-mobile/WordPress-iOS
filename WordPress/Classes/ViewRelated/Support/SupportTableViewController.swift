@@ -136,11 +136,11 @@ private extension SupportTableViewController {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewModel(supportConfiguration: SupportConfiguration) -> ImmuTable {
 
         // Support section
         let helpSection: ImmuTableSection?
-        switch SupportConfiguration.current() {
+        switch supportConfiguration {
         case .zendesk:
             var rows = [ImmuTableRow]()
             rows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
@@ -161,7 +161,6 @@ private extension SupportTableViewController {
                                               accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
                                               action: visitForumsSelected(),
                                               accessibilityIdentifier: "visit-wordpress-forums-button"))
-
             helpSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: rows, footerText: nil)
         }
 
@@ -201,7 +200,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = tableViewModel()
+        tableHandler?.viewModel = tableViewModel(supportConfiguration: SupportConfiguration.current())
     }
 
     // MARK: - Row Handlers
