@@ -107,7 +107,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     private static func actionInfoString() -> NSAttributedString {
-        let actionInfoBaseFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        let actionInfoBaseFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         let actionInfoBaseText = NSAttributedString(string: Strings.footnote, attributes: [.font: actionInfoBaseFont])
 
         let actionInfoTermsText = NSAttributedString(

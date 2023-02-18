@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackFullscreenOverlayViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="actionInfoLabel" destination="aEp-ih-kuy" id="Cwy-BJ-fhk"/>
+                <outlet property="actionInfoButton" destination="gHv-Wo-L7c" id="cmp-X3-xhS"/>
                 <outlet property="animationView" destination="v3d-AD-Jsf" id="8wg-bB-WH5"/>
                 <outlet property="buttonsSuperViewBottomConstraint" destination="zhh-p2-mZx" id="4cZ-ra-9SF"/>
                 <outlet property="contentStackView" destination="TTg-Z6-h4X" id="rbe-WF-3kb"/>
@@ -98,27 +98,29 @@
                                         </view>
                                     </subviews>
                                 </stackView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-ih-kuy">
-                                    <rect key="frame" x="29" y="427.5" width="317" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHv-Wo-L7c" userLabel="Action Info Button">
+                                    <rect key="frame" x="29" y="418" width="317" height="30"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal">
+                                        <color key="titleColor" systemColor="secondaryLabelColor"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="TTg-Z6-h4X" firstAttribute="leading" secondItem="PbU-M0-J6O" secondAttribute="leading" constant="29" id="2d6-L5-bKl"/>
                                 <constraint firstItem="TTg-Z6-h4X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PbU-M0-J6O" secondAttribute="top" id="2nW-cN-NOi"/>
-                                <constraint firstItem="aEp-ih-kuy" firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" id="OkA-Av-jes"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="leading" secondItem="TTg-Z6-h4X" secondAttribute="leading" id="9zz-z1-X7R"/>
                                 <constraint firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" constant="29" id="Q2G-S5-HVM"/>
-                                <constraint firstAttribute="bottom" secondItem="aEp-ih-kuy" secondAttribute="bottom" constant="8" id="UMz-vz-s2I"/>
-                                <constraint firstItem="TTg-Z6-h4X" firstAttribute="centerY" secondItem="PbU-M0-J6O" secondAttribute="centerY" id="WsY-Y2-V51"/>
-                                <constraint firstItem="aEp-ih-kuy" firstAttribute="leading" secondItem="TTg-Z6-h4X" secondAttribute="leading" id="b5S-wL-EE8"/>
-                                <constraint firstItem="aEp-ih-kuy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TTg-Z6-h4X" secondAttribute="top" id="f30-as-UAp"/>
+                                <constraint firstAttribute="bottom" secondItem="gHv-Wo-L7c" secondAttribute="bottom" constant="8" id="SJ0-jW-GXy"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TTg-Z6-h4X" secondAttribute="bottom" constant="20" id="xfD-Di-6UY"/>
+                                <constraint firstItem="gHv-Wo-L7c" firstAttribute="trailing" secondItem="TTg-Z6-h4X" secondAttribute="trailing" id="yKf-rX-Gsr"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="TTg-Z6-h4X" firstAttribute="centerY" secondItem="Qla-b8-9Ag" secondAttribute="centerY" priority="750" id="Bb8-jX-f5p"/>
                         <constraint firstItem="PbU-M0-J6O" firstAttribute="top" secondItem="Qla-b8-9Ag" secondAttribute="top" id="VPH-IZ-hYf"/>
                         <constraint firstAttribute="trailing" secondItem="PbU-M0-J6O" secondAttribute="trailing" id="VQr-HE-qvN"/>
                         <constraint firstAttribute="bottom" secondItem="PbU-M0-J6O" secondAttribute="bottom" id="ZRn-ZX-cw2"/>
@@ -188,6 +190,9 @@
         </designable>
     </designables>
     <resources>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
