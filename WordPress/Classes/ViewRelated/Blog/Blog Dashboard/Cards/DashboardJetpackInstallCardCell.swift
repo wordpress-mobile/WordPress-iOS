@@ -9,9 +9,13 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
 
     private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
+            guard let self,
+                  let helper = JetpackInstallPluginHelper(self.blog) else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardDismissed, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
-            JetpackInstallPluginHelper.hideCard(for: self?.blog)
-            self?.presenterViewController?.reloadCardsLocally()
+            helper.hideCard()
+            self.presenterViewController?.reloadCardsLocally()
         }
 
         let onLearnMoreTap: () -> Void = {
