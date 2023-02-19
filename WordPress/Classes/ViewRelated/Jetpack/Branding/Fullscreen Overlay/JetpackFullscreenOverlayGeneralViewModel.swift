@@ -274,6 +274,10 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
         }
     }
 
+    var shouldDismissOnSecondaryButtonTap: Bool {
+        return true
+    }
+
     var analyticsSource: String {
         return source.rawValue
     }
@@ -293,6 +297,10 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
 
     var isCompact: Bool {
         return phase == .newUsers
+    }
+
+    func didTapActionInfo() {
+        // No op.
     }
 }
 

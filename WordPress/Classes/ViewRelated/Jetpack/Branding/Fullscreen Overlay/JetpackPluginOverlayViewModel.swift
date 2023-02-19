@@ -4,11 +4,8 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     private enum Constants {
         static let lottieLTRFileName = "JetpackInstallPluginLogoAnimation_ltr"
         static let lottieRTLFileName = "JetpackInstallPluginLogoAnimation_rtl"
-    }
-
-    enum Plugin {
-        case single(name: String)
-        case multiple
+        static let termsURL = URL(string: "https://wordpress.com/tos")
+        static let webViewSource = "jetpack_plugin_install_overlay"
     }
 
     // MARK: View Model Properties
@@ -23,6 +20,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     let switchButtonText = Strings.primaryButtonTitle
     let continueButtonText: String? = Strings.secondaryButtonTitle
     let shouldShowCloseButton = true
+    let shouldDismissOnSecondaryButtonTap = false
     let analyticsSource: String = ""
     var onWillDismiss: JetpackOverlayDismissCallback?
     var onDidDismiss: JetpackOverlayDismissCallback?
@@ -35,7 +33,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
 
     // MARK: Methods
 
-    init(siteName: String, plugin: Plugin) {
+    init(siteName: String, plugin: JetpackPlugin) {
         self.subtitle = Self.subtitle(withSiteName: siteName, plugin: plugin)
     }
 
@@ -58,21 +56,32 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     func didTapSecondary() {
-        // TODO: Make the auto-dismiss logic optional in the view controller's `continueButtonPressed`.
         coordinator?.navigateToSecondaryRoute()
     }
 
-    private static func subtitle(withSiteName siteName: String, plugin: Plugin) -> NSAttributedString {
-        switch plugin {
-        case .single(let name):
-            return subtitleSinglePlugin(withSiteName: siteName, pluginName: name)
-        case .multiple:
-            return subtitlePluralPlugins(withSiteName: siteName)
+    func didTapActionInfo() {
+        guard let termsURL = Constants.termsURL else {
+            return
         }
-
+        coordinator?.navigateToLinkRoute(url: termsURL, source: Constants.webViewSource)
     }
 
-    private static func subtitlePluralPlugins(withSiteName siteName: String) -> NSAttributedString {
+}
+
+// MARK: - Private Helpers
+
+private extension JetpackPluginOverlayViewModel {
+
+    static func subtitle(withSiteName siteName: String, plugin: JetpackPlugin) -> NSAttributedString {
+        switch plugin {
+        case .multiple:
+            return subtitleForPluralPlugins(withSiteName: siteName)
+        default:
+            return subtitleForSinglePlugin(withSiteName: siteName, pluginName: plugin.displayName)
+        }
+    }
+
+    static func subtitleForPluralPlugins(withSiteName siteName: String) -> NSAttributedString {
         let siteNameAttributedText = attributedSubtitle(
             with: siteName,
             fontWeight: .bold
@@ -88,7 +97,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         )
     }
 
-    private static func subtitleSinglePlugin(withSiteName siteName: String, pluginName: String) -> NSAttributedString {
+    static func subtitleForSinglePlugin(withSiteName siteName: String, pluginName: String) -> NSAttributedString {
         let siteNameAttributedText = attributedSubtitle(with: siteName, fontWeight: .bold)
         let jetpackBackupAttributedText = attributedSubtitle(with: pluginName,
             fontWeight: .bold
@@ -106,7 +115,7 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         )
     }
 
-    private static func actionInfoString() -> NSAttributedString {
+    static func actionInfoString() -> NSAttributedString {
         let actionInfoBaseFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         let actionInfoBaseText = NSAttributedString(string: Strings.footnote, attributes: [.font: actionInfoBaseFont])
 
@@ -124,26 +133,13 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         )
     }
 
-    private static func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSAttributedString {
+    static func attributedSubtitle(with string: String, fontWeight: UIFont.Weight) -> NSAttributedString {
         let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: fontWeight)
         return NSAttributedString(string: string, attributes: [.font: font])
     }
-}
 
-private extension NSAttributedString {
-    convenience init(format: NSAttributedString, args: (String, NSAttributedString)...) {
-        let mutableNSAttributedString = NSMutableAttributedString(attributedString: format)
+    // MARK: Strings
 
-        args.forEach { (key, attributedString) in
-            let range = NSString(string: mutableNSAttributedString.string).range(of: key)
-            mutableNSAttributedString.replaceCharacters(in: range, with: attributedString)
-        }
-        self.init(attributedString: mutableNSAttributedString)
-    }
-}
-
-// MARK: - Strings
-private extension JetpackPluginOverlayViewModel {
     enum Strings {
         static let title = NSLocalizedString(
             "jetpack.plugin.modal.title",
@@ -207,5 +203,17 @@ private extension JetpackPluginOverlayViewModel {
             value: "Contact Support",
             comment: "Jetpack Plugin Modal secondary button title"
         )
+    }
+}
+
+private extension NSAttributedString {
+    convenience init(format: NSAttributedString, args: (String, NSAttributedString)...) {
+        let mutableNSAttributedString = NSMutableAttributedString(attributedString: format)
+
+        args.forEach { (key, attributedString) in
+            let range = NSString(string: mutableNSAttributedString.string).range(of: key)
+            mutableNSAttributedString.replaceCharacters(in: range, with: attributedString)
+        }
+        self.init(attributedString: mutableNSAttributedString)
     }
 }

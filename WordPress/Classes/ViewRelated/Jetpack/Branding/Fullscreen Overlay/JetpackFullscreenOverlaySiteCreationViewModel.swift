@@ -77,6 +77,10 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
         return true
     }
 
+    var shouldDismissOnSecondaryButtonTap: Bool {
+        return true
+    }
+
     var analyticsSource: String {
         return Constants.analyticsSource
     }
@@ -91,6 +95,10 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
 
     var isCompact: Bool {
         return false
+    }
+
+    func didTapActionInfo() {
+        // No op
     }
 }
 
