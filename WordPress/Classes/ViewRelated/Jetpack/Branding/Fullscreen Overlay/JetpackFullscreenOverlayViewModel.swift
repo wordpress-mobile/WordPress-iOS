@@ -32,6 +32,7 @@ protocol JetpackFullscreenOverlayViewModel: AnyObject {
     func didTapPrimary()
     func didTapClose()
     func didTapSecondary()
+    func didTapActionInfo()
 }
 
 extension JetpackFullscreenOverlayViewModel {

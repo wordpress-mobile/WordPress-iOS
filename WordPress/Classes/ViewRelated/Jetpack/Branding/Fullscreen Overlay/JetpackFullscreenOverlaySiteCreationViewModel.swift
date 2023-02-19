@@ -96,6 +96,10 @@ final class JetpackFullscreenOverlaySiteCreationViewModel: JetpackFullscreenOver
     var isCompact: Bool {
         return false
     }
+
+    func didTapActionInfo() {
+        // No op
+    }
 }
 
 private extension JetpackFullscreenOverlaySiteCreationViewModel {

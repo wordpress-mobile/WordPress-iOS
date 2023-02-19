@@ -1,6 +1,10 @@
 final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
     private unowned let viewController: UIViewController
 
+    private var presentingViewController: UIViewController {
+        return viewController.navigationController ?? viewController
+    }
+
     init(viewController: UIViewController) {
         self.viewController = viewController
     }
@@ -14,6 +18,8 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
     }
 
     func navigateToLinkRoute(url: URL, source: String) {
-        // TODO: Open wordpress.com/tos via in-app browser.
+        let webViewController = WebViewControllerFactory.controller(url: url, source: source)
+        let navigationController = UINavigationController(rootViewController: webViewController)
+        presentingViewController.present(navigationController, animated: true)
     }
 }

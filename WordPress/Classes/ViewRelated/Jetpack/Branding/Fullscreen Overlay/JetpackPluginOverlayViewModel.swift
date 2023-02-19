@@ -4,6 +4,8 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     private enum Constants {
         static let lottieLTRFileName = "JetpackInstallPluginLogoAnimation_ltr"
         static let lottieRTLFileName = "JetpackInstallPluginLogoAnimation_rtl"
+        static let termsURL = URL(string: "https://wordpress.com/tos")
+        static let webViewSource = "jetpack_plugin_install_overlay"
     }
 
     enum Plugin {
@@ -59,8 +61,14 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
     }
 
     func didTapSecondary() {
-        // TODO: Make the auto-dismiss logic optional in the view controller's `continueButtonPressed`.
         coordinator?.navigateToSecondaryRoute()
+    }
+
+    func didTapActionInfo() {
+        guard let termsURL = Constants.termsURL else {
+            return
+        }
+        coordinator?.navigateToLinkRoute(url: termsURL, source: Constants.webViewSource)
     }
 
     private static func subtitle(withSiteName siteName: String, plugin: Plugin) -> NSAttributedString {

@@ -272,6 +272,10 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
         viewModel.didTapLink()
     }
+
+    @IBAction func actionInfoButtonTapped(_ sender: Any) {
+        viewModel.didTapActionInfo()
+    }
 }
 
 // MARK: Constants

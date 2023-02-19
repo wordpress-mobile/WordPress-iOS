@@ -298,6 +298,10 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
     var isCompact: Bool {
         return phase == .newUsers
     }
+
+    func didTapActionInfo() {
+        // No op.
+    }
 }
 
 // MARK: Helpers

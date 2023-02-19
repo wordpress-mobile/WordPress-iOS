@@ -105,6 +105,9 @@
                                     <state key="normal">
                                         <color key="titleColor" systemColor="secondaryLabelColor"/>
                                     </state>
+                                    <connections>
+                                        <action selector="actionInfoButtonTapped:" destination="-1" eventType="touchUpInside" id="ceP-s4-257"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
