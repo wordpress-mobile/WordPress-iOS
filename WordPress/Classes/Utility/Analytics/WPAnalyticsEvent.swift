@@ -437,6 +437,9 @@ import Foundation
     case jetpackInstallFullPluginRetryTapped
     case jetpackInstallFullPluginCompleted
     case jetpackInstallFullPluginDoneTapped
+    case jetpackInstallFullPluginCardViewed
+    case jetpackInstallFullPluginCardTapped
+    case jetpackInstallFullPluginCardDismissed
 
     // Help & Support
     case supportOpenMobileForumTapped
@@ -1193,6 +1196,12 @@ import Foundation
             return "jp_install_full_plugin_flow_success"
         case .jetpackInstallFullPluginDoneTapped:
             return "jp_install_full_plugin_flow_done_tapped"
+        case .jetpackInstallFullPluginCardViewed:
+            return "jp_install_full_plugin_card_viewed"
+        case .jetpackInstallFullPluginCardTapped:
+            return "jp_install_full_plugin_card_tapped"
+        case .jetpackInstallFullPluginCardDismissed:
+            return "jp_install_full_plugin_card_dismissed"
 
         // Help & Support
         case .supportOpenMobileForumTapped:

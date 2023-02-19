@@ -416,6 +416,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
+
+    if ([self shouldShowJetpackInstall]) {
+        [WPAnalytics trackEvent:WPAnalyticsEventJetpackInstallFullPluginCardViewed
+                     properties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -745,7 +750,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
 
-    if (JetpackRemoteInstallCardView.shouldShowJetpackInstallCard) {
+    if ([self shouldShowJetpackInstall]) {
         [marr addObject:[self jetpackInstallSectionViewModel]];
     }
 
@@ -1700,6 +1705,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (BOOL)shouldShowJetpackInstall
+{
+    return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
 }
 
 #pragma mark - Remove Site

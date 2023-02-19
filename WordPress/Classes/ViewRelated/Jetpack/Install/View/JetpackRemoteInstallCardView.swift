@@ -5,16 +5,10 @@ class JetpackRemoteInstallCardView: UIView {
 
     // MARK: Properties
 
-    @objc static var shouldShowJetpackInstallCard: Bool {
-        // TODO: Display logic for showing/hiding the card
-        // TODO: iPad display logic. Currently displays in both menu and dashboard
-        return false
-    }
-
     private let viewModel: JetpackRemoteInstallCardViewModel
 
     private lazy var animation: Animation? = {
-        viewModel.layoutDirection == .leftToRight ?
+        effectiveUserInterfaceLayoutDirection == .leftToRight ?
         Animation.named(Constants.lottieLTRFileName) :
         Animation.named(Constants.lottieRTLFileName)
     }()
@@ -70,9 +64,8 @@ class JetpackRemoteInstallCardView: UIView {
     private lazy var contextMenu: UIMenu = {
         let hideThisAction = UIAction(title: Strings.hideThis,
                                       image: Constants.hideThisImage,
-                                      attributes: [UIMenuElement.Attributes.destructive]) { _ in
-            // TODO: Showing/hiding the card
-        }
+                                      attributes: [UIMenuElement.Attributes.destructive],
+                                      handler: viewModel.onHideThisTap)
         return UIMenu(title: String(), options: .displayInline, children: [hideThisAction])
     }()
 
@@ -139,7 +132,7 @@ class JetpackRemoteInstallCardView: UIView {
 
 struct JetpackRemoteInstallCardViewModel {
 
-    let layoutDirection: UITraitEnvironmentLayoutDirection
+    let onHideThisTap: UIActionHandler
     let onLearnMoreTap: () -> Void
     var noticeLabel: NSAttributedString {
         switch installedPlugin {
@@ -158,10 +151,10 @@ struct JetpackRemoteInstallCardViewModel {
 
     private let installedPlugin: JetpackPlugin
 
-    init(layoutDirection: UITraitEnvironmentLayoutDirection = .leftToRight,
+    init(onHideThisTap: @escaping UIActionHandler = { _ in },
          onLearnMoreTap: @escaping () -> Void = {},
          installedPlugin: JetpackPlugin = .multiple) {
-        self.layoutDirection = layoutDirection
+        self.onHideThisTap = onHideThisTap
         self.onLearnMoreTap = onLearnMoreTap
         self.installedPlugin = installedPlugin
     }

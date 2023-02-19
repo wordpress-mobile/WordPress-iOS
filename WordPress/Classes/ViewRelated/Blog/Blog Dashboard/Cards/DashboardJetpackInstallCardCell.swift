@@ -7,8 +7,22 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
     private var blog: Blog?
     private weak var presenterViewController: BlogDashboardViewController?
 
+    private lazy var cardViewModel: JetpackRemoteInstallCardViewModel = {
+        let onHideThisTap: UIActionHandler = { [weak self] _ in
+            WPAnalytics.track(.jetpackInstallFullPluginCardDismissed, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+            JetpackInstallPluginHelper.hideCard(for: self?.blog)
+            self?.presenterViewController?.reloadCardsLocally()
+        }
+
+        let onLearnMoreTap: () -> Void = {
+            WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+        }
+        return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
+                                                 onLearnMoreTap: onLearnMoreTap)
+    }()
+
     private lazy var cardView: JetpackRemoteInstallCardView = {
-        let cardView = JetpackRemoteInstallCardView()
+        let cardView = JetpackRemoteInstallCardView(cardViewModel)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         return cardView
     }()
