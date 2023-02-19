@@ -202,6 +202,8 @@ import Combine
 
     let ghostableTableView = UITableView()
 
+    private var cancellables = Set<AnyCancellable>()
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -354,6 +356,14 @@ import Combine
             updateContent(synchronize: false)
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
+        }
+
+        if let readerTopic {
+            readerTopic.objectWillChange
+                .sink { [weak self] _ in
+                    self?.updateStreamHeaderIfNeeded()
+                }
+                .store(in: &cancellables)
         }
     }
 
@@ -1362,8 +1372,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
             self?.updateStreamHeaderIfNeeded()
             completion()
         }
-
-        updateStreamHeaderIfNeeded()
     }
 }
 
