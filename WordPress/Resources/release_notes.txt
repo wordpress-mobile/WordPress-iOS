@@ -1,3 +1,10 @@
-There are no updates
-Our team is busy coding
-Enjoy this haiku
+* [*] [WordPress-only] We have redesigned and simplified the landing screen. [#20061]
+* [**] [internal] New Forum Support Help Card Screen. [#19993]
+* [*] [internal] Refactored account related operations (i.e. log in and out of the app). [#19893]
+* [*] [internal] Refactored comment related operations (i.e. like a comment, reply to a post or comment).
+* [*] [internal] Refactored how reader topics are fetched from the database. [#20129]
+* [*] [internal] Refactored blog related operations (i.e. loading blogs of the logged in account, updating blog settings). [#20047]
+* [*] Reader: Add ability to block a followed site. [#20053]
+* [*] Reader: Add ability to report a post's author. [#20064]
+* [*] [internal] Refactored the topic related features in the Reader tab (i.e. following, unfollowing, and search). [#20150]
+
