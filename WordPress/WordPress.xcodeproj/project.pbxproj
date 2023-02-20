@@ -3691,6 +3691,8 @@
 		FA98B61729A3B76A0071AAE8 /* DashboardBlazeCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */; };
 		FA98B61929A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
 		FA98B61A29A3BF050071AAE8 /* BlazeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */; };
+		FA98B61C29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
+		FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */; };
 		FAA4012D27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4012E27B405DB009E1137 /* DashboardQuickActionsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */; };
 		FAA4013427B52455009E1137 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4013327B52455009E1137 /* QuickActionButton.swift */; };
@@ -8926,6 +8928,7 @@
 		FA98B61329A39DA80071AAE8 /* WordPress 148.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 148.xcdatamodel"; sourceTree = "<group>"; };
 		FA98B61529A3B76A0071AAE8 /* DashboardBlazeCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCell.swift; sourceTree = "<group>"; };
 		FA98B61829A3BF050071AAE8 /* BlazeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCardView.swift; sourceTree = "<group>"; };
+		FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeHelper.swift; sourceTree = "<group>"; };
 		FAA4012C27B405DB009E1137 /* DashboardQuickActionsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardQuickActionsCardCell.swift; sourceTree = "<group>"; };
 		FAA4013327B52455009E1137 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
 		FAA9084B27BD60710093FFA8 /* MySiteViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySiteViewController+QuickStart.swift"; sourceTree = "<group>"; };
@@ -12792,6 +12795,7 @@
 				80C523A0299597E600B1C14B /* BlazeWebViewCoordinator.swift */,
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
 				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
+				FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -21645,6 +21649,7 @@
 				73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				F59AAC10235E430F00385EE6 /* ChosenValueRow.swift in Sources */,
+				FA98B61C29A3DB840071AAE8 /* BlazeHelper.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				40EE94802213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */,
 				931215EE267F6799008C3B69 /* ReferrerDetailsCell.swift in Sources */,
@@ -23643,6 +23648,7 @@
 				98BAA7C426F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */,
 				FABB22C22602FC2C00C8785C /* PasswordAlertController.swift in Sources */,
 				4A1E77CD2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
+				FA98B61D29A3DB840071AAE8 /* BlazeHelper.swift in Sources */,
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,
 				98DCF4A6275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
 				FABB22C42602FC2C00C8785C /* ReaderPostCellActions.swift in Sources */,
