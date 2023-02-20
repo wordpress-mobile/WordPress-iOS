@@ -511,7 +511,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         } onQueue:dispatch_get_main_queue()];
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:self.coreDataStack];
     if (topic.isExternal) {
         if (newFollowValue) {
             [siteService followSiteAtURL:topic.feedURL success:successBlock failure:failureBlock];

@@ -284,6 +284,6 @@ private extension NotificationActionsService {
     }
 
     var siteService: ReaderSiteService {
-        return ReaderSiteService(managedObjectContext: managedObjectContext)
+        return ReaderSiteService(coreDataStack: ContextManager.shared)
     }
 }

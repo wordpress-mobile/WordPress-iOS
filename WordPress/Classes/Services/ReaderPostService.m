@@ -368,7 +368,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     if (!post.isExternal) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
@@ -567,30 +567,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         post.isFollowing = following;
     }
     [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-}
-
-- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
-{
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        return;
-    }
-
-    if ([results count] == 0) {
-        return;
-    }
-
-    for (ReaderPost *post in results) {
-        post.isSiteBlocked = blocked;
-    }
-
-    [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
