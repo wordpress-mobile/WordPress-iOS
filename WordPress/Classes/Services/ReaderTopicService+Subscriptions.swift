@@ -13,11 +13,10 @@ extension ReaderTopicService {
     // MARK: Private methods
 
     private func apiRequest() -> WordPressComRestApi {
-
-        let defaultAccount = coreDataStack.performQuery { context in
-            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        let api = coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestApi
         }
-        if let api = defaultAccount?.wordPressComRestApi, api.hasCredentials() {
+        if let api, api.hasCredentials() {
             return api
         }
 

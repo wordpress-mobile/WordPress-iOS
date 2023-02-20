@@ -17,10 +17,9 @@ extension ReaderTopicService: ReaderSiteInfoService {
     }
 
     private func apiRequest() -> WordPressComRestApi {
-        let defaultAccount = self.coreDataStack.performQuery { context in
-            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
+        let token = self.coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.authToken
         }
-        let token: String? = defaultAccount?.authToken
 
         return WordPressComRestApi.defaultApi(oAuthToken: token,
                                               userAgent: WPUserAgent.wordPress())
