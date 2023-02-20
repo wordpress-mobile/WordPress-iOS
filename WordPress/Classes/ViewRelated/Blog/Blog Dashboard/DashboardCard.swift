@@ -81,7 +81,7 @@ enum DashboardCard: String, CaseIterable {
         case .jetpackBadge:
             return JetpackBrandingVisibility.all.enabled
         case .blaze:
-            return FeatureFlag.blaze.enabled && blog.isBlazeApproved
+            return BlazeHelper.shouldShowCard(for: blog)
         }
     }
 
