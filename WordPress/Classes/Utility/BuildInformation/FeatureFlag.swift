@@ -46,6 +46,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
     case wordPressSupportForum
     case jetpackIndividualPluginSupport
     case blaze
+    case siteCreationDomainPurchasing
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -145,6 +146,8 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackIndividualPluginSupport:
             return false
         case .blaze:
+            return false
+        case .siteCreationDomainPurchasing:
             return false
         }
     }
@@ -282,6 +285,8 @@ extension FeatureFlag {
             return "Jetpack Individual Plugin Support"
         case .blaze:
             return "Blaze"
+        case .siteCreationDomainPurchasing:
+            return "Site Creation Domain Purchasing"
         }
     }
 
