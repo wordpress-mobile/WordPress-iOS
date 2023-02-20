@@ -377,10 +377,17 @@ const NSInteger ThemeOrderTrailing = 9999;
                            forBlog:(Blog *)blog
                            success:(ThemeServiceThemeRequestSuccessBlock)success
 {
-    blog.currentThemeId = theme.themeId;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        Theme *themeInContext = [context existingObjectWithID:theme.objectID error:nil];
+        if (themeInContext == nil) {
+            return;
+        }
+
+        Blog *blogInContext = [context existingObjectWithID:blog.objectID error:nil];
+        blogInContext.currentThemeId = themeInContext.themeId;
+    } completion:^{
         if (success) {
-            success(theme);
+            success([self.coreDataStack.mainContext existingObjectWithID:theme.objectID error:nil]);
         }
     } onQueue:dispatch_get_main_queue()];
 }
