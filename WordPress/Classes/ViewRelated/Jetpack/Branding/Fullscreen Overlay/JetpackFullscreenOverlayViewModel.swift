@@ -3,7 +3,7 @@ import Foundation
 typealias JetpackOverlayDismissCallback = () -> Void
 
 /// Protocol used to configure `JetpackFullscreenOverlayViewController`
-protocol JetpackFullscreenOverlayViewModel {
+protocol JetpackFullscreenOverlayViewModel: AnyObject {
     var title: String { get }
     var subtitle: NSAttributedString { get }
     var animationLtr: String { get }
@@ -13,6 +13,7 @@ protocol JetpackFullscreenOverlayViewModel {
     var switchButtonText: String { get }
     var continueButtonText: String? { get }
     var shouldShowCloseButton: Bool { get }
+    var shouldDismissOnSecondaryButtonTap: Bool { get }
     var analyticsSource: String { get }
     var actionInfoText: NSAttributedString? { get }
     var onWillDismiss: JetpackOverlayDismissCallback? { get }
@@ -26,11 +27,12 @@ protocol JetpackFullscreenOverlayViewModel {
     /// Useful for packed overlays.
     var isCompact: Bool { get }
 
-    func trackOverlayDisplayed()
-    func trackLearnMoreTapped()
-    func trackSwitchButtonTapped()
-    func trackCloseButtonTapped()
-    func trackContinueButtonTapped()
+    func didDisplayOverlay()
+    func didTapLink()
+    func didTapPrimary()
+    func didTapClose()
+    func didTapSecondary()
+    func didTapActionInfo()
 }
 
 extension JetpackFullscreenOverlayViewModel {

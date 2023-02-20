@@ -73,11 +73,11 @@ final class BlogDashboardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        viewModel.loadCards { cards in
-            guard cards.hasPrompts else {
+        viewModel.loadCards { [weak self] cards in
+            guard let trackCardViewed = self?.trackCardViewed else {
                 return
             }
-            WPAnalytics.track(.promptsDashboardCardViewed)
+            cards.forEach(trackCardViewed)
         }
         QuickStartTourGuide.shared.currentEntryPoint = .blogDashboard
         startAlertTimer()
@@ -207,6 +207,13 @@ final class BlogDashboardViewController: UIViewController {
     @objc private func willEnterForeground() {
         BlogDashboardAnalytics.shared.reset()
         loadCards()
+    }
+
+    private func trackCardViewed(_ card: DashboardCardModel) {
+        guard let event = card.cardType.viewedAnalytic else {
+            return
+        }
+        WPAnalytics.track(event, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
     }
 }
 

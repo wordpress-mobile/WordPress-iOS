@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-31 09:54:09+0000 */
+/* Translation-Revision-Date: 2023-02-16 21:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: id */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Pemirsa Blog";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Penulisan Blog";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Pengingat Blogging";
@@ -3772,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Tidak aktif, Pembaruan Otomatis aktif";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "Sertakan Prompt Blogging";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Disertakan dengan Situs";
 
@@ -3869,6 +3875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Desain Interior";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "Memperkenalkan Prompt Blogging";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Memperkenalkan Pos Cerita";
@@ -8124,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Coba dengan alamat situs";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Matikan prompt";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Nonaktifkan pemberitahuan situs";
 
@@ -9331,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Anda dapat login dengan tautan seperti yang baru Anda gunakan, tetapi Anda juga dapat menyiapkan kata sandi.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Anda dapat mengendalikan Prompt dan Pengingat Blogging kapan pun di Situs Saya > Pengaturan > Blogging";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Anda dapat mengendalikan Prompt dan Pengingat Blogging kapan pun di Situs Saya, Pengaturan, Blogging";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Anda dapat menampilkan statistik situs tunggal di tampilan iOS Today\/Pusat Pemberitahuan.";
 
@@ -9875,6 +9893,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Baca selengkapnya di jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Dapatkan notifikasi komentar, jumlah suka, jumlah pengunjung baru, dan lainnya.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Temukan dan ikuti situs dan komunitas favorit Anda, serta bagikan konten Anda.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Amati peningkatan lalu lintas Anda lewat statistik lengkap dan wawasan penuh makna.";
 
@@ -9898,6 +9922,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Fitur-fitur Jetpack telah berpindah.";
+
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Beralih ke aplikasi Jetpack agar tetap dapat menerima notifikasi real-time di perangkat Anda.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Dapatkan pemberitahuan dengan aplikasi Jetpack";
@@ -10139,6 +10166,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Pilihan Gambar Andalan";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Buka Pengaturan Situs untuk menyalakan kembali";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Prompt Blogging tersembunyi";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Tutup";
 
@@ -10201,6 +10234,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error saat Berbagi";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Tampilkan prompt";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Pengingat";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 hari terakhir";
@@ -10331,6 +10370,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Terbanyak dilihat";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Tidak dapat memuat statistik sepanjang waktu.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik sepanjang waktu.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Tulisan-tulisan";
 
@@ -10352,6 +10397,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Login ke Jetpack untuk melihat statistik hari ini.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Tidak dapat memuat statistik minggu ini.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik minggu ini.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Dapatkan kabar terbaru tentang aktivitas minggu ini di situs WordPress Anda.";
 
@@ -10364,8 +10415,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Komentar-komentar";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistik telah beralih ke aplikasi Jetpack. Beralihlah ke aplikasi—gratis dan prosesnya cepat!";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Suka";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Tidak dapat memuat statistik situs.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Tidak dapat memuat statistik hari ini.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Buat atau tambahkan situs untuk melihat statistik hari ini.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Dapatkan kabar terbaru tentang aktivitas hari ini di situs WordPress Anda.";

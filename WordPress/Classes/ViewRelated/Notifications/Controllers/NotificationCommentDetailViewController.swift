@@ -36,7 +36,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     private let managedObjectContext = ContextManager.shared.mainContext
 
     private lazy var commentService: CommentService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     private lazy var postService: ReaderPostService = {

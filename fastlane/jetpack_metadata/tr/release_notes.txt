@@ -1,0 +1,5 @@
+Eski talepleri yanıtlayabilmeniz veya yeni talepleri devre dışı bırakabilmeniz için blog taleplerinde bazı ince ayarlar yaptık. (Neden yapacağınızı anlayamasak da.)
+
+Hesabınızda iki faktörlü kimlik doğrulama kullanılıyorsa Giriş Tarama QR kodunu görmezsiniz.
+
+İstatistikler görünümü, uygulama cihazın arka planında çalışırken tarih değişse bile günün en son verilerini tutarlı bir şekilde gösterir. Hepsi bir günlük iş.

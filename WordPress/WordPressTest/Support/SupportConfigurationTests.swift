@@ -8,41 +8,56 @@ final class SupportConfigurationTests: XCTestCase {
         XCTAssertEqual(configuration, .forum)
     }
 
-    func testSupportConfigurationWhenWordPressAndFeatureFlagEnabled() {
+    func testSupportConfigurationWhenWordPressWithFreePlanAndFeatureFlagEnabled() {
         let configuration = SupportConfiguration.current(
             featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
             isWordPress: true,
-            zendeskEnabled: true
+            zendeskEnabled: true,
+            hasPaidPlan: false
         )
 
         XCTAssertTrue(configuration == .forum)
     }
 
-    func testSupportConfigurationWhenWordPressAndFeatureFlagDisabled() {
+    func testSupportConfigurationWhenWordPressWithFreePlanAndFeatureFlagDisabled() {
         let configuration = SupportConfiguration.current(
             featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: false),
             isWordPress: true,
-            zendeskEnabled: true
+            zendeskEnabled: true,
+            hasPaidPlan: false
         )
 
         XCTAssertTrue(configuration == .zendesk)
     }
 
-    func testSupportConfigurationWhenJetpackAndFeatureFlagEnabled() {
+    func testSupportConfigurationWhenWordPressWithPaidPlanAndFeatureFlagEnabled() {
+        let configuration = SupportConfiguration.current(
+            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
+            isWordPress: true,
+            zendeskEnabled: true,
+            hasPaidPlan: true
+        )
+
+        XCTAssertTrue(configuration == .zendesk)
+    }
+
+    func testSupportConfigurationWhenJetpackWithFreePlanAndFeatureFlagEnabled() {
         let configuration = SupportConfiguration.current(
             featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
             isWordPress: false,
-            zendeskEnabled: true
+            zendeskEnabled: true,
+            hasPaidPlan: false
         )
 
         XCTAssertTrue(configuration == .zendesk)
     }
 
-    func testSupportConfigurationWhenJetpackAndFeatureFlagDisabled() {
+    func testSupportConfigurationWhenJetpackWithPaidPlanAndFeatureFlagEnabled() {
         let configuration = SupportConfiguration.current(
-            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: false),
+            featureFlagStore: RemoteFeatureFlagStoreMock(isSupportForumEnabled: true),
             isWordPress: false,
-            zendeskEnabled: true
+            zendeskEnabled: true,
+            hasPaidPlan: true
         )
 
         XCTAssertTrue(configuration == .zendesk)

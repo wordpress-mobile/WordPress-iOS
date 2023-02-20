@@ -1,12 +1,15 @@
 import WordPressFlux
+import WordPressAuthenticator
 
 class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
-    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)?
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)?
     private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
     /// Always proceed to the Jetpack Connection flow after successfully installing Jetpack.
     let shouldConnectToJetpack = true
+
+    let supportSourceTag: WordPressSupportSourceTag? = nil
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
@@ -38,7 +41,6 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
             return
         }
 
-        track(isRetry ? .retry : .start)
         store.onDispatch(JetpackInstallAction.install(url: url, username: username, password: password))
     }
 
@@ -60,5 +62,9 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         default:
             break
         }
+    }
+
+    func cancelTapped() {
+         // No op
     }
 }

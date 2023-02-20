@@ -1,0 +1,11 @@
+Hantera eller skapa din WordPress-blogg eller -webbplats direkt på din iOS-enhet: skapa och redigera inlägg och sidor, ladda upp favoritfoton och -videoklipp, visa statistik och svara på kommentarer.
+
+Med WordPress för iOS har du kraften att publicera i din hand. Skapa en spontan haiku i soffan. Ta och publicera ett foto på din lunchrast. Svara på dina senaste kommentarer och kolla din statistik för att vilka nya länder dagens besökare kommer från.
+
+WordPress för iOS är ett projekt med öppen källkod, vilket innebär att du också kan bidra till dess utveckling. Läs mer på https://apps.wordpress.com/contribute/.
+
+WordPress för iOS stöder WordPress.com och WordPress.org-webbplatser som drivs på egen server och kör WordPress 4.0 eller senare.
+
+Behöver du hjälp med appen? Besök forumen på https://wordpress.org/support/forum/mobile/ eller kontakta oss på Twitter via @WordPressiOS.
+
+Visa sekretessmeddelandet för användare i Kalifornien på https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

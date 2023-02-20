@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-29 21:18:59+0000 */
+/* Translation-Revision-Date: 2023-02-15 18:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: tr */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Blogun izleyicisi";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Blog Yazma";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Blog Hatırlatıcıları";
@@ -3772,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Etkin değil, otomatik güncellemeler açık";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "Blog Talebi Dahil Etme";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Site ile beraber";
 
@@ -3869,6 +3875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "İç Tasarım";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "Blog Talepleriyle Tanışın";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Öykü Yayınlarına Giriş";
@@ -8124,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Site adresi ile deneyin";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Talepleri kapat";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Site bildirimlerini kapat";
 
@@ -9331,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Her zaman az önce kullandığınız gibi bir bağlantıyla oturum açabilirsiniz, ancak isterseniz bir parola da oluşturabilirsiniz.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Blog Taleplerini ve Hatırlatıcılarını istediğiniz zaman Sitem > Ayarlar > Blog Yazma bölümünden kontrol edebilirsiniz.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Blog Taleplerini ve Hatırlatıcılarını istediğiniz zaman Sitem, Ayarlar, Blog Yazma bölümünden kontrol edebilirsiniz.";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "iOS Bugün\/Bildirim Merkezi görünümünde tek bir sitenin istatistiklerini görüntüleyebilirsiniz.";
 
@@ -9875,6 +9893,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Jetpack.com'da daha fazla bilgi edinin";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Yeni yorumlar, beğeniler, görüntülemeler ve daha fazlası için bildirim alın.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Favori sitelerinizi ve topluluklarınızı bulup takip edin ve içeriğinizi paylaşın.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Yararlı bilgiler ve kapsamlı istatistiklerle trafiğinizin büyümesini izleyin.";
 
@@ -10139,6 +10163,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Öne çıkan görsel seçenekleri";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Tekrar açmak için Site Ayarlarını ziyaret edin";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Blog Talepleri gizlendi";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Kapat";
 
@@ -10201,6 +10231,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Paylaşım hatası";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Talepleri göster";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Hatırlatıcılar";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Son 7 gün";
@@ -10331,6 +10367,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Şuana kadar ki en iyi görüntülemeler";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Tüm zamanların istatistikleri yüklenemiyor.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Tüm zamanların istatistiklerini görmek için bir site oluşturun veya ekleyin.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Yazılar";
 
@@ -10352,6 +10394,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Bugünün istatistiklerini görüntülemek için Jetpack oturumu açın.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Bu haftanın istatistikleri yüklenemedi.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Bu haftanın istatistiklerini görmek için bir site oluşturun veya ekleyin.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "WordPress sitenizde bu haftaki etkinliklerden haberdar olun";
 
@@ -10364,8 +10412,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Yorumlar";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "İstatistikler Jetpack uygulamasına taşındı. Geçiş ücretsizdir ve yalnızca bir dakika sürer.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Beğenilenler";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Site istatistikleri yüklenemiyor.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Bugünün istatistikleri yüklenemiyor.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Bugünün istatistiklerini görmek için bir site oluşturun veya ekleyin.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "WordPress sitenizde bugünkü etkinliklerden haberdar olun.";

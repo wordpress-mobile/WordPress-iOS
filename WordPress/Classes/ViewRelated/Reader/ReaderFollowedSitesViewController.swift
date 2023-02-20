@@ -177,7 +177,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
         isSyncing = true
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.fetchFollowedSites(success: {[weak self] in
             self?.isSyncing = false
             self?.configureNoResultsView()
@@ -198,7 +198,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
 
     @objc func refreshFollowedPosts() {
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.syncPostsForFollowedSites()
     }
 
@@ -212,7 +212,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
                                         object: nil,
                                         userInfo: [ReaderNotificationKeys.topic: site])
 
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: site, success: { [weak self] follow in
             let siteURL = URL(string: site.siteURL)
             let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
@@ -240,7 +240,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.followSite(by: url, success: { [weak self] in
             let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
                                 message: url.host,
@@ -268,7 +268,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
     private func postFollowedNotification(siteUrl: URL) {
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.topic(withSiteURL: siteUrl, success: { topic in
             if let topic = topic {
                 NotificationCenter.default.post(name: .ReaderSiteFollowed,

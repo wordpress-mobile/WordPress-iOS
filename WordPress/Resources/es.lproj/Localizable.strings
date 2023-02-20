@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-08 10:21:47+0000 */
+/* Translation-Revision-Date: 2023-02-15 11:54:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: es */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Lector del blog";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Bloguear";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Recordatorios de blogueo";
@@ -3772,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inactivo, actualizaciones automáticas activas";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "Incluir un estímulo para bloguear";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluido con el sitio";
 
@@ -3869,6 +3875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Diseño de interiores";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "Presentamos los estímulos para bloguear";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Presentando las entradas de historias";
@@ -8124,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Prueba con la dirección del sitio";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Desactivar estímulos";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Desactivar los avisos del sitio";
 
@@ -9331,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Siempre puedes acceder con un enlace como el que acabas de usar, pero también puedes configurar una contraseña si lo prefieres.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Puedes gestionar los recordatorios y estímulos para bloguear en cualquier momento desde Mi sitio > Ajustes > Bloguear.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Puedes gestionar los recordatorios y estímulos para bloguear en cualquier momento desde Mi sitio > Ajustes > Bloguear.";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Puedes mostrar las estadísticas de un sitio individual en la vista Hoy\/Centro de notificaciones de iOS.";
 
@@ -9875,6 +9893,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Encontrarás más información en jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Recibe notificaciones por nuevos comentarios, Me gusta, visualizaciones, etc.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Comparte tu contenido y busca tus comunidades y sitios favoritos para seguirlos.";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Consulta el crecimiento del tráfico a tu sitio con información útil y estadísticas completas.";
 
@@ -10145,6 +10169,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle of the notification when prompts are hidden from the dashboard card */
 "prompts.notification.removed.subtitle" = "Visitar los ajustes del sitio para volver a activar";
 
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Se han ocultado los estímulos para bloguear.";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Descartar";
 
@@ -10207,6 +10234,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Error al compartir";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Mostrar estímulos";
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Recordatorios";
@@ -10339,6 +10369,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Mayor número de visitas";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "No se han podido cargar las estadísticas totales.";
 
 /* Title of the no site view in all time widget */
 "widget.alltime.nosite.view.title" = "Crear o añadir un sitio para ver las estadísticas de todo el tiempo.";

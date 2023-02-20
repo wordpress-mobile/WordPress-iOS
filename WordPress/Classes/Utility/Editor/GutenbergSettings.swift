@@ -68,13 +68,13 @@ class GutenbergSettings {
     func performGutenbergPhase2MigrationIfNeeded() {
         guard
             ReachabilityUtils.isInternetReachable(),
-            let account = coreDataStack.performQuery({ try? WPAccount.lookupDefaultWordPressComAccount(in: $0) })
+            let userID = coreDataStack.performQuery({ try? WPAccount.lookupDefaultWordPressComAccount(in: $0)?.userID })
         else {
             return
         }
 
         var rollout = GutenbergRollout(database: database)
-        if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
+        if rollout.shouldPerformPhase2Migration(userId: userID.intValue) {
             setGutenbergEnabledForAllSites()
             rollout.isUserInRolloutGroup = true
             trackSettingChange(to: true, from: .onProgressiveRolloutPhase2)

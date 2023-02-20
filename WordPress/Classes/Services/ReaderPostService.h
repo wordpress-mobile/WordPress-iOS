@@ -10,17 +10,6 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 @interface ReaderPostService : LocalCoreDataService
 
 /**
- Fetches the posts for the specified topic
-
- @param topic The Topic for which to request posts.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
-                   success:(void (^)(NSInteger count, BOOL hasMore))success
-                   failure:(void (^)(NSError *error))failure;
-
-/**
  Fetches and saves the posts for the specified topic
 
  @param topic The Topic for which to request posts.
@@ -154,43 +143,6 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  Globally sets the `inUse` flag to false for all posts.
  */
 - (void)clearInUseFlags;
-
-/**
- Delete posts from the specified site/feed from the specified topic
- 
- @param siteID The id of the site or feed.
- @param siteURL The URL of the site or feed.
- @param topic The `ReaderAbstractTopic` owning the posts.
- */
-- (void)deletePostsWithSiteID:(NSNumber *)siteID
-                   andSiteURL:(NSString *)siteURL
-                    fromTopic:(ReaderAbstractTopic *)topic;
-
-/**
- Delete posts from the specified site (not feed)
-
- @param siteID The id of the site or feed.
- */
-
-- (void)deletePostsFromSiteWithID:(NSNumber *)siteID;
-
-- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
-
-/**
- Follows or unfollows the specified site. Posts belonging to that site and URL
- have their following status updated in core data. 
-
- @param following Whether the user is following the site.
- @param siteID The ID of the site
- @siteURL the URL of the site. 
- @param success block called on a successful call.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)setFollowing:(BOOL)following
-  forWPComSiteWithID:(NSNumber *)siteID
-              andURL:(NSString *)siteURL
-             success:(void (^)(void))success
-             failure:(void (^)(NSError *error))failure;
 
 /**
  Updates in core data the following status of posts belonging to the specified site & url

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 #import "ReaderTopicService.h"
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
@@ -9,7 +9,7 @@ typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
 
 extern NSString * const ReaderSiteServiceErrorDomain;
 
-@interface ReaderSiteService : LocalCoreDataService
+@interface ReaderSiteService : CoreDataService
 
 /**
  Follow a site by its URL.
@@ -73,19 +73,6 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  a site/feed is followed or unfollowed.
  */
 - (void)syncPostsForFollowedSites;
-
-/**
- Block/unblock the specified site from appearing in the user's reader
- 
- @param siteID The ID of the site.
- @param blocked Boolean value. YES to block a site. NO to unblock a site.
- @param success block called on a successful block.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)flagSiteWithID:(NSNumber *)siteID
-             asBlocked:(BOOL)blocked
-               success:(void(^)(void))success
-               failure:(void(^)(NSError *error))failure;
 
 /**
  Returns a ReaderSiteTopic for the given site URL.
