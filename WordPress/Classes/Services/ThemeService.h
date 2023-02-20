@@ -23,19 +23,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (BOOL)blogSupportsThemeServices:(Blog *)blog;
 
-#pragma mark - Local queries: finding themes
-
-/**
- *  @brief      Obtains the theme with the specified ID if it exists.
- *
- *  @param      themeId     The ID of the theme to retrieve.  Cannot be nil.
- *  @param      blog        Blog to find theme for. May be nil for account.
- *
- *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
- */
-- (Theme *)findThemeWithId:(NSString *)themeId
-                   forBlog:(Blog *)blog;
-
 #pragma mark - Remote queries: Getting theme info
 
 /**
