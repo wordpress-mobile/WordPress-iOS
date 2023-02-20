@@ -27,6 +27,13 @@ final class BlazeCardView: UIView {
         return stackView
     }()
 
+    private lazy var flameIcon: UIImageView = {
+        let image = UIImage(named: "blaze-flame")
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
     private lazy var contextMenu: UIMenu = {
         let hideThisAction = UIAction(title: Strings.hideThis,
                                       image: Style.hideThisImage,
@@ -43,6 +50,7 @@ final class BlazeCardView: UIView {
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
         frameView.add(subview: contentStackView)
+        frameView.clipsToBounds = true
         frameView.translatesAutoresizingMaskIntoConstraints = false
         return frameView
     }()
@@ -64,6 +72,13 @@ final class BlazeCardView: UIView {
     func setupView() {
         addSubview(cardFrameView)
         pinSubviewToAllEdges(cardFrameView)
+
+        cardFrameView.addSubview(flameIcon)
+        cardFrameView.bringSubviewToFront(flameIcon)
+        NSLayoutConstraint.activate([
+            flameIcon.trailingAnchor.constraint(equalTo: cardFrameView.trailingAnchor),
+            flameIcon.bottomAnchor.constraint(equalTo: cardFrameView.bottomAnchor)
+        ])
     }
 }
 
