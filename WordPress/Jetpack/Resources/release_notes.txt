@@ -1,4 +1,3 @@
-* [*] [WordPress-only] We have redesigned and simplified the landing screen. [#20061]
 * [**] [internal] New Forum Support Help Card Screen. [#19993]
 * [*] [internal] Refactored account related operations (i.e. log in and out of the app). [#19893]
 * [*] [internal] Refactored comment related operations (i.e. like a comment, reply to a post or comment).
