@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
-extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
-extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderAbstractTopic;
@@ -10,13 +8,11 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
 
-@interface ReaderTopicService : LocalCoreDataService
+@interface ReaderTopicService : CoreDataService
 
-/**
- Sets the currentTopic and dispatches the `ReaderTopicDidChangeNotification` notification.
- Passing `nil` for the topic will not dispatch the notification.
- */
-@property (nonatomic) ReaderAbstractTopic *currentTopic;
+- (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
+
+- (void)setCurrentTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Fetches the topics for the reader's menu.
@@ -66,10 +62,9 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  Creates a ReaderSearchTopic from the specified search phrase.
  
  @param phrase: The search phrase.
- 
- @return A ReaderSearchTopic instance.
+ @param completion: A completion callback to receive the created ReaderSearchTopic instance.
  */
-- (ReaderSearchTopic *)searchTopicForSearchPhrase:(NSString *)phrase;
+- (void)createSearchTopicForSearchPhrase:(NSString *)phrase completion:(void (^)(NSManagedObjectID *))completion;
 
 /**
  Unfollows the specified topic
@@ -111,22 +106,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic
                        success:(void (^)(BOOL follow))success
                        failure:(void (^)(BOOL follow, NSError *error))failure;
-
-/**
- Mark a site topic as unfollowed in core data only. Should be called after unfollowing
- a post to ensure that any existing site topics reflect the correct following status.
-
- @param feedURL The feedURL of the site topic.
- */
-- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL;
-
-/**
- Mark a site topic as unfollowed in core data only. Should be called after unfollowing
- a post to ensure that any existing site topics reflect the correct following status.
-
- @param siteID the siteID of the site topic.
- */
-- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID;
 
 /**
  Fetch a tag topic for a tag with the specified slug.

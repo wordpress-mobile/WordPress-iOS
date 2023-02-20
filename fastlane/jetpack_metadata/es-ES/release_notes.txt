@@ -1,0 +1,5 @@
+Hemos introducido algunos cambios en los estímulos para bloguear, de manera que ahora puedes responder a estímulos antiguos o desactivar los nuevos (aunque nos extrañaría mucho que quisieras desactivarlos).
+
+El código QR de escaneado de acceso no se mostrará si tu cuenta utiliza la autenticación de dos factores.
+
+La vista Estadísticas muestra los datos más recientes del día, incluso si la fecha cambia mientras la aplicación está funcionando en segundo plano en el dispositivo. Forma parte del trabajo.

@@ -17,9 +17,23 @@ import Combine
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc class ReaderStreamViewController: UIViewController, UIViewControllerRestoration {
+@objc class ReaderStreamViewController: UIViewController, UIViewControllerRestoration, ReaderSiteBlockingControllerDelegate {
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
+
+    // MARK: - Micro Controllers
+
+    /// Object responsible for encapsulating and facililating the site blocking logic.
+    ///
+    /// Currently some of the site blocking logic is still performed by `ReaderStreamViewController`
+    /// but the goal is to move that logic to `ReaderSiteBlockingController`.
+    ///
+    /// There is nothing really wrong with keeping the blocking logic in `ReaderSiteBlockingController` but this
+    /// view controller is very large, with over 2000 lines of code!
+    private let siteBlockingController = ReaderSiteBlockingController()
+
+    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
+    private let sharingController = PostSharingController()
 
     // MARK: - Properties
 
@@ -96,7 +110,6 @@ import Combine
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: IndexPath?
     private var didSetupView = false
-    private var listentingForBlockedSiteNotification = false
     private var didBumpStats = false
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
 
@@ -116,7 +129,6 @@ import Combine
             }
         }
     }
-
 
     private var tagSlug: String? {
         didSet {
@@ -188,10 +200,11 @@ import Combine
     }
     var statSource: StatSource = .reader
 
-    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
-    let sharingController = PostSharingController()
-
     let ghostableTableView = UITableView()
+
+    private var cancellables = Set<AnyCancellable>()
+
+    // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
@@ -304,6 +317,9 @@ import Combine
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Setup Site Blocking Controller
+        self.siteBlockingController.delegate = self
+
         // Disable the view until we have a topic.  This prevents a premature
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
@@ -340,6 +356,14 @@ import Combine
             updateContent(synchronize: false)
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
+        }
+
+        if let readerTopic {
+            readerTopic.objectWillChange
+                .sink { [weak self] _ in
+                    self?.updateStreamHeaderIfNeeded()
+                }
+                .store(in: &cancellables)
         }
     }
 
@@ -425,7 +449,7 @@ import Combine
             displayLoadingStream()
         }
 
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
@@ -462,7 +486,7 @@ import Combine
             displayLoadingStream()
         }
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.tagTopicForTag(withSlug: tagSlug,
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
@@ -646,14 +670,6 @@ import Combine
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
         }
-
-        if !listentingForBlockedSiteNotification {
-            listentingForBlockedSiteNotification = true
-            NotificationCenter.default.addObserver(self,
-                selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
-                name: .ReaderSiteBlocked,
-                object: nil)
-        }
     }
 
 
@@ -777,10 +793,25 @@ import Combine
     ///
     private func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
-
+        removeBlockedPosts()
         content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
     }
 
+    private func removeBlockedPosts() {
+        guard let topic = readerTopic as? ReaderSiteTopic,
+              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
+              let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
+        else {
+            return
+        }
+        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
+        request.predicate = NSPredicate(format: "siteID = %@", blocked.blogID)
+        let result = (try? viewContext.fetch(request)) ?? []
+        for post in result {
+            viewContext.deleteObject(post)
+        }
+        try? viewContext.save()
+    }
 
     func updateStreamHeaderIfNeeded() {
         guard let topic = readerTopic else {
@@ -807,14 +838,13 @@ import Combine
 
     /// Update the post card when a site is blocked from post details.
     ///
-    @objc private func handleBlockSiteNotification(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo,
-              let aPost = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
-              let post = (try? viewContext.existingObject(with: aPost.objectID)) as? ReaderPost,
-              let indexPath = content.indexPath(forObject: post) else {
+    func readerSiteBlockingController(_ controller: ReaderSiteBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+        guard case .success = result,
+              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+              let indexPath = content.indexPath(forObject: post)
+        else {
             return
         }
-
         recentlyBlockedSitePostObjectIDs.remove(post.objectID)
         updateAndPerformFetchRequest()
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
@@ -1303,7 +1333,7 @@ import Combine
             generator.notificationOccurred(.success)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forTag: topic, success: {
             completion?(true)
         }, failure: { (error: Error?) in
@@ -1317,7 +1347,7 @@ import Combine
             ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: topic, success: { follow in
             ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)
@@ -1342,8 +1372,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
             self?.updateStreamHeaderIfNeeded()
             completion()
         }
-
-        updateStreamHeaderIfNeeded()
     }
 }
 
@@ -1554,16 +1582,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
 
         // Check to see if we need to load more.
-        let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
-        if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
-            // We only what to load more when:
-            // - there is more content,
-            // - when we are not alrady syncing
-            // - when we are not waiting for scrolling to end to cleanup and refresh the list
-            if let syncHelper = syncHelper, syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
-                syncHelper.syncMoreContent()
-            }
-        }
+        syncMoreContentIfNeeded(for: tableView, indexPathForVisibleRow: indexPath)
+
         guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
@@ -1574,6 +1594,27 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let post = posts[indexPath.row]
         bumpRenderTracker(post)
+    }
+
+    /// Loads more posts when certain conditions are fulfilled.
+    ///
+    /// More items loading is triggered when:
+    /// - There is more content to load.
+    /// - When we are not alrady syncing.
+    /// - When we are not waiting for scrolling to end to cleanup and refresh the list.
+    /// - When there are no ongoing blocking requests.
+    private func syncMoreContentIfNeeded(for tableView: UITableView, indexPathForVisibleRow indexPath: IndexPath) {
+        let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
+        guard let syncHelper = syncHelper, (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) else {
+            return
+        }
+        let shouldLoadMoreItems = syncHelper.hasMoreContent
+        && !syncHelper.isSyncing
+        && !cleanupAndRefreshAfterScrolling
+        && !siteBlockingController.isBlockingSites
+        if shouldLoadMoreItems {
+            syncHelper.syncMoreContent()
+        }
     }
 
     func bumpRenderTracker(_ post: ReaderPost) {

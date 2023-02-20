@@ -168,7 +168,7 @@ private extension ReaderCommentsViewController {
     }
 
     var commentService: CommentService {
-        return CommentService(managedObjectContext: ContextManager.shared.mainContext)
+        return CommentService(coreDataStack: ContextManager.shared)
     }
 
     /// Returns a `UIMenu` structure to be displayed when the accessory button is tapped.

@@ -71,7 +71,7 @@ extension CommentService {
                 childComment.visibleOnReader = isVisible
             }
 
-            ContextManager.shared.save(context)
+            self.coreDataStack.save(context)
             DispatchQueue.main.async {
                 completion?()
             }
@@ -85,6 +85,8 @@ private extension CommentService {
     /// - Parameter accountService: The service used to fetch the default `WPAccount`.
     /// - Returns: The current user's dotcom ID if exists, or nil otherwise.
     func getCurrentUserID(accountService: AccountService? = nil) -> NSNumber? {
-        return try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)?.userID
+        self.coreDataStack.performQuery { context in
+            (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.userID
+        }
     }
 }

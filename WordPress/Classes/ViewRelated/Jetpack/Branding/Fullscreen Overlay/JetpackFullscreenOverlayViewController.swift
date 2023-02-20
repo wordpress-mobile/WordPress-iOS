@@ -54,7 +54,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var buttonsSuperViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var actionInfoLabel: UILabel!
+    @IBOutlet weak var actionInfoButton: UIButton!
 
     // MARK: Initializers
 
@@ -82,7 +82,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setupFonts()
         setupButtons()
         animationView.play()
-        viewModel.trackOverlayDisplayed()
+        viewModel.didDisplayOverlay()
     }
 
     // MARK: Helpers
@@ -137,13 +137,13 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         setTitle()
         subtitleLabel.attributedText = viewModel.subtitle
         footnoteLabel.text = viewModel.footnote
-        actionInfoLabel.attributedText = viewModel.actionInfoText
         switchButton.setTitle(viewModel.switchButtonText, for: .normal)
         continueButton.setTitle(viewModel.continueButtonText, for: .normal)
         footnoteLabel.isHidden = viewModel.footnoteIsHidden
         learnMoreButton.isHidden = viewModel.learnMoreButtonIsHidden
         continueButton.isHidden = viewModel.continueButtonIsHidden
         setupLearnMoreButtonTitle()
+        setupActionInfoButtonTitle()
     }
 
     private func setTitle() {
@@ -163,7 +163,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private func setupColors() {
         view.backgroundColor = Colors.backgroundColor
         footnoteLabel.textColor = Colors.footnoteTextColor
-        actionInfoLabel.textColor = Colors.actionInfoTextColor
+        actionInfoButton.setTitleColor(Colors.actionInfoTextColor, for: .normal)
         learnMoreButton.tintColor = Colors.learnMoreButtonTextColor
         switchButton.backgroundColor = Colors.switchButtonBackgroundColor
         switchButton.tintColor = Colors.switchButtonTextColor
@@ -176,8 +176,6 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         subtitleLabel.adjustsFontForContentSizeCategory = true
         footnoteLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         footnoteLabel.adjustsFontForContentSizeCategory = true
-        actionInfoLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        actionInfoLabel.adjustsFontForContentSizeCategory = true
         learnMoreButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         switchButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         continueButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
@@ -229,44 +227,54 @@ class JetpackFullscreenOverlayViewController: UIViewController {
         learnMoreButton.setAttributedTitle(learnMoreText, for: .normal)
     }
 
-    // MARK: Actions
+    private func setupActionInfoButtonTitle() {
+        actionInfoButton.setAttributedTitle(viewModel.actionInfoText, for: .normal)
+        actionInfoButton.isHidden = viewModel.actionInfoText == nil
 
-    @objc private func closeButtonPressed(sender: UIButton) {
-        viewModel.trackCloseButtonTapped()
+        if let actionInfoText = viewModel.actionInfoText,
+           !actionInfoText.string.isEmpty,
+           let titleLabel = actionInfoButton.titleLabel {
+            titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+            titleLabel.adjustsFontForContentSizeCategory = true
+            titleLabel.textAlignment = .center
+            titleLabel.numberOfLines = 0
+            actionInfoButton.pinSubviewToAllEdges(titleLabel)
+        }
+    }
+
+    private func dismissOverlay() {
         viewModel.onWillDismiss?()
         dismiss(animated: true) { [weak self] in
             self?.viewModel.onDidDismiss?()
         }
+    }
+
+    // MARK: Actions
+
+    @objc private func closeButtonPressed(sender: UIButton) {
+        viewModel.didTapClose()
+        dismissOverlay()
     }
 
 
     @IBAction func switchButtonPressed(_ sender: Any) {
-        // Try to export WordPress data to a shared location before redirecting the user.
-        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
-            JetpackRedirector.redirectToJetpack()
-            self?.viewModel.trackSwitchButtonTapped()
-        }
+        viewModel.didTapPrimary()
     }
 
     @IBAction func continueButtonPressed(_ sender: Any) {
-        viewModel.trackContinueButtonTapped()
-        viewModel.onWillDismiss?()
-        dismiss(animated: true) { [weak self] in
-            self?.viewModel.onDidDismiss?()
+        viewModel.didTapSecondary()
+
+        if viewModel.shouldDismissOnSecondaryButtonTap {
+            dismissOverlay()
         }
     }
 
     @IBAction func learnMoreButtonPressed(_ sender: Any) {
-        guard let urlString = viewModel.learnMoreButtonURL,
-              let url = URL(string: urlString) else {
-            return
-        }
+        viewModel.didTapLink()
+    }
 
-        let source = "jetpack_overlay_\(viewModel.analyticsSource)"
-        let webViewController = WebViewControllerFactory.controller(url: url, source: source)
-        let navController = UINavigationController(rootViewController: webViewController)
-        present(navController, animated: true)
-        viewModel.trackLearnMoreTapped()
+    @IBAction func actionInfoButtonTapped(_ sender: Any) {
+        viewModel.didTapActionInfo()
     }
 }
 
@@ -294,6 +302,7 @@ private extension JetpackFullscreenOverlayViewController {
         static let titleKern: CGFloat = 0.37
         static let buttonsNormalBottomSpacing: CGFloat = 30
         static let singleButtonBottomSpacing: CGFloat = 60
+        static let actionInfoButtonBottomSpacing: CGFloat = 24
     }
 
     enum Constants {

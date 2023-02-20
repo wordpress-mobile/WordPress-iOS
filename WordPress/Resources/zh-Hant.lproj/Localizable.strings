@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-03 05:56:53+0000 */
+/* Translation-Revision-Date: 2023-02-14 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_TW */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "網誌的瀏覽者";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "撰寫網誌";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "網誌提醒";
@@ -3772,6 +3775,9 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "未啟用，開啟自動更新";
 
+/* Title of the switch to turn on or off the blogging prompts feature. */
+"Include a Blogging Prompt" = "包含網誌提示";
+
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "已隨附於網站中";
 
@@ -3869,6 +3875,9 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "室內設計";
+
+/* Title displayed on the feature introduction view. */
+"Introducing Blogging Prompts" = "網誌提示簡介";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "限時動態文章介紹";
@@ -8124,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "請嘗試使用網站位址登入";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "關閉提示";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "關閉網站通知";
 
@@ -9331,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "你可以像剛剛一樣隨時使用連結來登入，也可以依需要設定密碼。";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "你可以隨時前往「我的網站」>「設定」>「撰寫網誌」控制網誌提示和提醒";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "你可以隨時前往「我的網站」>「設定」>「撰寫網誌」控制網誌提示和提醒";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "你可以在 iOS「今天\/通知中心」檢視畫面中顯示單一網站的統計資料。";
 
@@ -9875,6 +9893,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "瞭解更多：jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "接收新留言、按讚、瀏覽次數等內容的通知。";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "尋找並追蹤你喜愛的網站和社群，並分享你的內容。";
+
 /* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "透過實用的洞察報告和全面的統計觀察你的流量成長。";
 
@@ -10139,6 +10163,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "精選圖片選項";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "前往「網站設定」以重新啟用";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "已隱藏網誌提示";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "關閉";
 
@@ -10201,6 +10231,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "分享錯誤";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "顯示提示";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "提醒";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去 7 天";
@@ -10331,6 +10367,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最高記錄的瀏覽次數";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "無法載入所有時間的統計資料。";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "建立或新增網站以查看所有時間的統計資料。";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "文章";
 
@@ -10352,6 +10394,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "登入 Jetpack 以查看今日的統計資料。";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "無法載入本週統計資料。";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "建立或新增網站以查看本週統計資料。";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "隨時掌握本週 WordPress 網站上的活動。";
 
@@ -10364,8 +10412,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "留言";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "統計資料已移至 Jetpack 應用程式。你可以免費切換，只需一分鐘就能完成。";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "按讚數";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "無法載入網站統計資料。";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "無法載入本日統計資料。";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "建立或新增網站以查看本日統計資料。";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "隨時掌握今天 WordPress 網站上的活動。";

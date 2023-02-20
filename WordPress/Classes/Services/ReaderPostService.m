@@ -308,7 +308,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 
     // If this post belongs to a site topic, let the topic service do the work.
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
@@ -368,7 +368,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     if (!post.isExternal) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
@@ -567,30 +567,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         post.isFollowing = following;
     }
     [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-}
-
-- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
-{
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        return;
-    }
-
-    if ([results count] == 0) {
-        return;
-    }
-
-    for (ReaderPost *post in results) {
-        post.isSiteBlocked = blocked;
-    }
-
-    [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }

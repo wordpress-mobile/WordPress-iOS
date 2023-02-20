@@ -24,34 +24,45 @@ final class ReaderShowMenuAction {
 
         // Block button
         if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
+            let handler: (UIAlertAction) -> Void = { action in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                self.postSiteBlockingWillBeginNotification(post)
+                ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
+                    ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
+                    self.postSiteBlockingDidFinish(post)
+                },
+                failure: { error in
+                    ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
+                    self.postSiteBlockingDidFail(post, error: error)
+                })
+            }
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
-                                               handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {
-                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: true)
-
-                                                        // Notify Reader Cards Stream so the post card is updated.
-                                                        NotificationCenter.default.post(name: .ReaderSiteBlocked,
-                                                                                        object: nil,
-                                                                                        userInfo: [ReaderNotificationKeys.post: post])
-                                                    },
-                                                    failure: { _ in
-                                                        ReaderHelpers.dispatchSiteBlockedMessage(post: post, success: false)
-                                                    })
-                                                }
-                                               })
+                                               handler: handler)
         }
 
-        // Report button
+        // Report post button
         if shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPost,
-                                               style: .default,
+                                               style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderReportPostAction().execute(with: post, context: context, origin: vc)
                                                 }
             })
+        }
+
+        // Report user button
+        if shouldShowReportUserMenuItem(readerTopic: readerTopic, post: post) {
+            let handler: (UIAlertAction) -> Void = { _ in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                ReaderReportPostAction().execute(with: post, target: .author, context: context, origin: vc)
+            }
+            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPostAuthor, style: .destructive, handler: handler)
         }
 
         // Notification
@@ -175,11 +186,15 @@ final class ReaderShowMenuAction {
         return ReaderHelpers.isTopicTag(topic) ||
             ReaderHelpers.topicIsDiscover(topic) ||
             ReaderHelpers.topicIsFreshlyPressed(topic) ||
-            (ReaderHelpers.topicIsFollowing(topic) && !post.isFollowing)
+            ReaderHelpers.topicIsFollowing(topic)
     }
 
     private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
         return shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post)
+    }
+
+    private func shouldShowReportUserMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post)
     }
 
     private static func trackToggleCommentSubscription(isSubscribed: Bool, post: ReaderPost, sourceViewController: UIViewController) {
@@ -199,5 +214,30 @@ final class ReaderShowMenuAction {
         }
 
         return "unknown"
+    }
+
+    // MARK: - Sending Notifications
+
+    private func postSiteBlockingWillBeginNotification(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderSiteBlockingWillBegin,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    /// Notify Reader Cards Stream so the post card is updated.
+    private func postSiteBlockingDidFinish(_ post: ReaderPost) {
+        NotificationCenter.default.post(name: .ReaderSiteBlocked,
+                                        object: nil,
+                                        userInfo: [ReaderNotificationKeys.post: post])
+    }
+
+    private func postSiteBlockingDidFail(_ post: ReaderPost, error: Error?) {
+        var userInfo: [String: Any] = [ReaderNotificationKeys.post: post]
+        if let error {
+            userInfo[ReaderNotificationKeys.error] = error
+        }
+        NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
+                                        object: nil,
+                                        userInfo: userInfo)
     }
 }

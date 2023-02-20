@@ -30,6 +30,7 @@ static NSString *const BlogDetailsQuickStartCellIdentifier = @"BlogDetailsQuickS
 static NSString *const BlogDetailsSectionFooterIdentifier = @"BlogDetailsSectionFooterView";
 static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetailsMigrationSuccessCell";
 static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDetailsJetpackBrandingCardCellIdentifier";
+static NSString *const BlogDetailsJetpackInstallCardCellIdentifier = @"BlogDetailsJetpackInstallCardCellIdentifier";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -358,6 +359,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
     [self.tableView registerClass:[MigrationSuccessCell class] forCellReuseIdentifier:BlogDetailsMigrationSuccessCellIdentifier];
     [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
+    [self.tableView registerClass:[JetpackRemoteInstallTableViewCell class] forCellReuseIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
 
     self.hasLoggedDomainCreditPromptShownEvent = NO;
 
@@ -414,6 +416,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
+
+    if ([self shouldShowJetpackInstall]) {
+        [WPAnalytics trackEvent:WPAnalyticsEventJetpackInstallFullPluginCardViewed
+                     properties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -742,6 +749,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (MigrationSuccessCardView.shouldShowMigrationSuccessCard == YES) {
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
+
+    if ([self shouldShowJetpackInstall]) {
+        [marr addObject:[self jetpackInstallSectionViewModel]];
+    }
+
     if (self.shouldShowTopJetpackBrandingMenuCard == YES) {
         [marr addObject:[self jetpackCardSectionViewModel]];
     }
@@ -1172,6 +1184,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
 
+    if (section.category == BlogDetailsSectionCategoryJetpackInstallCard) {
+        JetpackRemoteInstallTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
+        [cell configureWithBlog:self.blog viewController:self];
+        return cell;
+    }
+
     if (section.category == BlogDetailsSectionCategoryQuickAction) {
         QuickActionsCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsQuickActionsCellIdentifier];
         [self configureQuickActionsWithCell: cell];
@@ -1394,8 +1412,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadComments
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    CommentService *commentService = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [commentService syncCommentsForBlog:self.blog withStatus:CommentStatusFilterAll success:nil failure:nil];
@@ -1688,6 +1705,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (BOOL)shouldShowJetpackInstall
+{
+    return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
 }
 
 #pragma mark - Remove Site

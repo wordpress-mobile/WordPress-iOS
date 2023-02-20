@@ -64,7 +64,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     }
 
     private var sections: [Section] = []
-    private let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    private let service = ReaderTopicService(coreDataStack: ContextManager.shared)
     private let siteId: Int
     private var siteTopic: ReaderSiteTopic?
     private let siteSubscription = SiteSubscription()

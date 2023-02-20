@@ -157,7 +157,7 @@ extension ReaderTagsTableViewModel {
             return
         }
 
-        let service = ReaderTopicService(managedObjectContext: context)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
 
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
@@ -165,9 +165,11 @@ extension ReaderTagsTableViewModel {
         service.followTagNamed(tagName, withSuccess: { [weak self] in
             generator.notificationOccurred(.success)
 
+            guard let self else { return }
+
             // A successful follow makes the new tag the currentTopic.
-            if let tag = service.currentTopic as? ReaderTagTopic {
-                self?.scrollToTag(tag)
+            if let tag = service.currentTopic(in: self.context) as? ReaderTagTopic {
+                self.scrollToTag(tag)
             }
         }, failure: { (error) in
             DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")
@@ -187,7 +189,7 @@ extension ReaderTagsTableViewModel {
     /// - Parameters:
     ///     - topic: The tag topic that is to be unfollowed.
     private func unfollow(_ topic: ReaderTagTopic) {
-        let service = ReaderTopicService(managedObjectContext: context)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 

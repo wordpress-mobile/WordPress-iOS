@@ -1,3 +1,5 @@
+import WordPressAuthenticator
+
 /// Controls the Jetpack Remote Install flow for Jetpack-connected self-hosted sites.
 ///
 /// A site can establish a Jetpack connection through individual Jetpack plugins, but the site may not have
@@ -11,16 +13,21 @@ class WPComJetpackRemoteInstallViewModel {
     private let service: PluginJetpackProxyService
     private let tracker: EventTracker
 
+    /// For request cancellation purposes.
+    private var progress: Progress? = nil
+
     // MARK: Properties
 
     // The flow should always complete after the plugin is installed.
     let shouldConnectToJetpack = false
 
-    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewData) -> Void)? = nil
+    let supportSourceTag: WordPressSupportSourceTag? = .jetpackFullPluginInstallErrorSourceTag
+
+    var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)? = nil
 
     private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
-            onChangeState?(state, viewData)
+            onChangeState?(state, stateViewModel)
         }
     }
 
@@ -53,7 +60,7 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         // trigger the loading state.
         state = .installing
 
-        service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
+        progress = service.installPlugin(for: siteID, pluginSlug: Constants.jetpackSlug, active: true) { [weak self] result in
             switch result {
             case .success:
                 self?.state = .success
@@ -62,8 +69,6 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
                 self?.state = .failure(.unknown)
             }
         }
-
-        // TODO: Handle cancellation?
     }
 
     func track(_ event: JetpackRemoteInstallEvent) {
@@ -83,6 +88,16 @@ extension WPComJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
         default:
             break
         }
+    }
+
+    /// NOTE: There's no guarantee that the plugin installation will be properly cancelled.
+    /// We *might* be able to cancel if the request hasn't been fired; but if it has, it'll probably succeed.
+    ///
+    /// An alternative would be to have a listener that checks if installation completes after cancellation,
+    /// and fires background request to uninstall the plugin. But this will not be implemented now.
+    func cancelTapped() {
+        progress?.cancel()
+        progress = nil
     }
 }
 
@@ -108,13 +123,19 @@ private extension WPComJetpackRemoteInstallViewModel {
         )
     }
 
-    // View data overrides.
-    var viewData: JetpackRemoteInstallStateViewData {
+    // State view model overrides.
+    var stateViewModel: JetpackRemoteInstallStateViewModel {
         return .init(
             state: state,
             descriptionText: (state == .success ? Constants.successDescriptionText : state.message),
             buttonTitleText: (state == .success ? Constants.successButtonTitleText : state.buttonTitle)
         )
+    }
+}
+
+extension WordPressSupportSourceTag {
+    static var jetpackFullPluginInstallErrorSourceTag: WordPressSupportSourceTag {
+        .init(name: "jetpackInstallFullPluginError", origin: "origin:jp-install-full-plugin-error")
     }
 }
 

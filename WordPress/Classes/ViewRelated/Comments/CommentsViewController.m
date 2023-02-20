@@ -331,7 +331,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)approveComment:(Comment *)comment
 {
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];;
 
     [self.tableView setEditing:NO animated:YES];
     [service approveComment:comment success:nil failure:^(NSError *error) {
@@ -342,7 +342,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)unapproveComment:(Comment *)comment
 {
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     
     [self.tableView setEditing:NO animated:YES];
     [service unapproveComment:comment success:nil failure:^(NSError *error) {
@@ -353,7 +353,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)deleteComment:(Comment *)comment
 {
     [CommentAnalytics trackCommentTrashedWithComment:comment];
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     
     [self.tableView setEditing:NO animated:YES];
     [service deleteComment:comment success:nil failure:^(NSError *error) {
@@ -475,74 +475,58 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     
     __typeof(self) __weak weakSelf = self;
 
-    NSManagedObjectID *blogObjectID = self.blog.objectID;
     BOOL filterUnreplied = [self isUnrepliedFilterSelected:self.filterTabBar];
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-        if (!blogInContext) {
-            return;
+    CommentService *commentService  = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [commentService syncCommentsForBlog:self.blog
+                             withStatus:self.currentStatusFilter
+                        filterUnreplied:filterUnreplied
+                                success:^(BOOL hasMore) {
+        if (success) {
+            weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success(hasMore);
+            });
+        }
+    }
+                                failure:^(NSError *error) {
+        if (failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
         }
 
-        CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService syncCommentsForBlog:blogInContext
-                                 withStatus:self.currentStatusFilter
-                            filterUnreplied:filterUnreplied
-                                    success:^(BOOL hasMore) {
-            if (success) {
-                weakSelf.cachedStatusFilter = weakSelf.currentStatusFilter;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    success(hasMore);
-                });
-            }
-        }
-                                    failure:^(NSError *error) {
-            if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure(error);
-                });
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.footerActivityIndicator stopAnimating];
-                [weakSelf refreshNoConnectionView];
-            });
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.footerActivityIndicator stopAnimating];
+            [weakSelf refreshNoConnectionView];
+        });
     }];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     __typeof(self) __weak weakSelf = self;
-    NSManagedObjectID *blogObjectID = self.blog.objectID;
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext * _Nonnull context) {
-        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-        if (!blogInContext) {
-            return;
-        }
-
-        CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService loadMoreCommentsForBlog:blogInContext
-                                     withStatus:self.currentStatusFilter
-                                        success:^(BOOL hasMore) {
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    success(hasMore);
-                });
-            }
-        }
-                                        failure:^(NSError *error) {
-            if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure(error);
-                });
-            }
-            
+    CommentService *commentService  = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [commentService loadMoreCommentsForBlog:self.blog
+                                 withStatus:self.currentStatusFilter
+                                    success:^(BOOL hasMore) {
+        if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.footerActivityIndicator stopAnimating];
+                success(hasMore);
             });
-        }];
+        }
+    }
+                                    failure:^(NSError *error) {
+        if (failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.footerActivityIndicator stopAnimating];
+        });
     }];
     
     [self refreshInfiniteScroll];
