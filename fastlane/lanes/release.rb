@@ -16,7 +16,7 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true, skip_glotpress: true)
+    ios_bump_version_release(skip_deliver: true)
     new_version = ios_get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
