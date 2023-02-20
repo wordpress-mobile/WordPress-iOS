@@ -10,6 +10,7 @@ enum DashboardCard: String, CaseIterable {
     case jetpackInstall
     case quickStart
     case prompts
+    case blaze
     case todaysStats = "todays_stats"
     case draftPosts
     case scheduledPosts
@@ -45,6 +46,8 @@ enum DashboardCard: String, CaseIterable {
             return DashboardFailureCardCell.self
         case .jetpackBadge:
             return DashboardBadgeCell.self
+        case .blaze:
+            return DashboardBlazeCardCell.self
         }
     }
 
@@ -77,6 +80,8 @@ enum DashboardCard: String, CaseIterable {
             return blog.dashboardState.isFirstLoadFailure
         case .jetpackBadge:
             return JetpackBrandingVisibility.all.enabled
+        case .blaze:
+            return FeatureFlag.blaze.enabled && blog.isBlazeApproved
         }
     }
 
