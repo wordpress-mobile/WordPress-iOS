@@ -39,52 +39,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                               failure:(ThemeServiceFailureBlock)failure;
 
 /**
- *  @brief      Gets the list of purchased themes for a blog.
- *
- *  @param      blogId      The blog to get the purchased themes for.  Cannot be nil.
- *  @param      success     The success handler.  Can be nil.
- *  @param      failure     The failure handler.  Can be nil.
- *
- *  @returns    The progress object.
- */
-- (NSProgress *)getPurchasedThemesForBlog:(Blog *)blog
-                                  success:(ThemeServiceThemesRequestSuccessBlock)success
-                                  failure:(ThemeServiceFailureBlock)failure;
-
-
-/**
- *  @brief      Gets information for a specific theme.
- *
- *  @param      themeId     The identifier of the theme to request info for.  Cannot be nil.
- *  @param      account     The account to get the theme from.  Cannot be nil.
- *  @param      success     The success handler.  Can be nil.
- *  @param      failure     The failure handler.  Can be nil.
- *
- *  @returns    The progress object.
- */
-- (NSProgress *)getThemeId:(NSString*)themeId
-                forAccount:(WPAccount *)account
-                   success:(ThemeServiceThemeRequestSuccessBlock)success
-                   failure:(ThemeServiceFailureBlock)failure;
-
-/**
- *  @brief      Gets the list of WP.com available themes.
- *  @details    Includes premium themes even if not purchased.  Don't call this method if the list
- *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
- *
- *  @param      account     The account to get the theme from.  Cannot be nil.
- *  @param      page        Results page to return.
- *  @param      success     The success handler.  Can be nil.
- *  @param      failure     The failure handler.  Can be nil.
- *
- *  @returns    The progress object.
- */
-- (NSProgress *)getThemesForAccount:(WPAccount *)account
-                               page:(NSInteger)page
-                            success:(ThemeServiceThemesRequestSuccessBlock)success
-                            failure:(ThemeServiceFailureBlock)failure;
-
-/**
  *  @brief      Gets the list of available themes for a blog.
  *  @details    Includes premium themes even if not purchased.  The only difference with the
  *              regular getThemes method is that legacy themes that are no longer available to new
@@ -110,22 +64,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                                   sync:(BOOL)sync
                                success:(ThemeServiceThemesRequestSuccessBlock)success
                                failure:(ThemeServiceFailureBlock)failure;
-
-/**
- *  @brief      Gets a list of suggested starter themes for the given site category
- *              (blog, website, portfolio).
- *  @details    During the site creation process, a list of suggested mobile-friendly starter
- *              themes is displayed for the selected category.
- *
- *  @param      category    The category for the site being created.  Cannot be nil.
- *  @param      page        Results page to return.  Cannot be nil.
- *  @param      success     The success handler.  Can be nil.
- *  @param      failure     The failure handler.  Can be nil.
- */
-- (void)getStartingThemesForCategory:(NSString *)category
-                                page:(NSInteger)page
-                             success:(ThemeServiceThemesRequestSuccessBlock)success
-                             failure:(ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Activating themes
 

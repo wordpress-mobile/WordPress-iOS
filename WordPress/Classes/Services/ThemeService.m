@@ -161,93 +161,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     return progress;
 }
 
-- (NSProgress *)getPurchasedThemesForBlog:(Blog *)blog
-                                   success:(ThemeServiceThemesRequestSuccessBlock)success
-                                   failure:(ThemeServiceFailureBlock)failure
-{
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    NSAssert([self blogSupportsThemeServices:blog],
-             @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
-    
-    if (blog.wordPressComRestApi == nil) {
-        return nil;
-    }
-
-    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
-    
-    NSProgress *progress = [remote getPurchasedThemesForBlogId:[blog dotComID]
-                                                         success:^(NSArray *remoteThemes) {
-                                                             NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                                    forBlog:blog];
-                                                             
-                                                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                                 if (success) {
-                                                                     success(themes, NO, themes.count);
-                                                                 }
-                                                             } onQueue:dispatch_get_main_queue()];
-                                                         } failure:failure];
-    
-    return progress;
-}
-
-- (NSProgress *)getThemeId:(NSString*)themeId
-                 forAccount:(WPAccount *)account
-                    success:(ThemeServiceThemeRequestSuccessBlock)success
-                    failure:(ThemeServiceFailureBlock)failure
-{
-    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSParameterAssert(account.wordPressComRestApi != nil);
-
-    if (account.wordPressComRestApi == nil) {
-        return nil;
-    }
-
-    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
-    
-    NSProgress *progress = [remote getThemeId:themeId
-                                        success:^(RemoteTheme *remoteTheme) {
-                                            Theme *theme = [self themeFromRemoteTheme:remoteTheme
-                                                                              forBlog:nil];
-                                            
-                                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                if (success) {
-                                                    success(theme);
-                                                }
-                                            } onQueue:dispatch_get_main_queue()];
-                                        } failure:failure];
-    
-    return progress;
-}
-
-- (NSProgress *)getThemesForAccount:(WPAccount *)account
-                                page:(NSInteger)page
-                             success:(ThemeServiceThemesRequestSuccessBlock)success
-                             failure:(ThemeServiceFailureBlock)failure
-{
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-
-    if (account.wordPressComRestApi == nil) {
-        return nil;
-    }
-
-    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
-    
-    NSProgress *progress = [remote getWPThemesPage:page
-                                          freeOnly:false
-                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
-                                                NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                       forBlog:nil];
-
-                                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                    if (success) {
-                                                        success(themes, hasMore, totalThemeCount);
-                                                    }
-                                                } onQueue:dispatch_get_main_queue()];
-                                            } failure:failure];
-    
-    return progress;
-}
-
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                              page:(NSInteger)page
                              sync:(BOOL)sync
@@ -366,30 +279,6 @@ const NSInteger ThemeOrderTrailing = 9999;
                                             }
                                         } onQueue:dispatch_get_main_queue()];
                                     } failure:failure];
-}
-
-- (void)getStartingThemesForCategory:(NSString *)category
-                                        page:(NSInteger)page
-                                     success:(ThemeServiceThemesRequestSuccessBlock)success
-                                     failure:(ThemeServiceFailureBlock)failure
-{
-    NSParameterAssert(page > 0);
-    NSParameterAssert([category isKindOfClass:[NSString class]]);
-    
-    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:nil localeKey:[WordPressComRestApi LocaleKeyDefault]];
-    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api];
-    
-    [remote getStartingThemesForCategory:category
-                                    page:page
-                                 success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
-                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                            forBlog:nil];
-                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                         if (success) {
-                                             success(themes, hasMore, themes.count);
-                                         }
-                                     } onQueue:dispatch_get_main_queue()];
-                                 } failure:failure];
 }
 
 #pragma mark - Remote queries: Activating themes
