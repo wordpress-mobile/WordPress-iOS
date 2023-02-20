@@ -98,7 +98,7 @@ private extension CommentService {
             return
         }
 
-        ContextManager.shared.performAndSave({ derivedContext in
+        coreDataStack.performAndSave({ derivedContext in
             let likers = remoteLikeUsers.map { remoteUser in
                 LikeUserHelper.createOrUpdateFrom(remoteUser: remoteUser, context: derivedContext)
             }

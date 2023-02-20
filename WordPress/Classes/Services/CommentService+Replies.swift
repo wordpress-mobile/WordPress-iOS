@@ -71,7 +71,7 @@ extension CommentService {
                 childComment.visibleOnReader = isVisible
             }
 
-            ContextManager.shared.save(context)
+            self.coreDataStack.save(context)
             DispatchQueue.main.async {
                 completion?()
             }
