@@ -143,7 +143,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .wordPressSupportForum:
             return false
         case .jetpackIndividualPluginSupport:
-            return false
+            return true
         case .blaze:
             return false
         }

@@ -1056,10 +1056,30 @@ private extension MySiteViewController {
     }
 }
 
-// MARK: Jetpack Install Plugin
+// MARK: Jetpack Install Plugin Overlay
 
 private extension MySiteViewController {
     func displayJetpackInstallOverlayIfNeeded() {
-        JetpackPluginOverlayCoordinator.presentOverlayIfNeeded(for: self.blog, in: self)
+        JetpackInstallPluginHelper.presentOverlayIfNeeded(in: self, blog: blog, delegate: self)
+    }
+
+    func dismissOverlayAndRefresh() {
+        dismiss(animated: true) {
+            self.pulledToRefresh()
+        }
+    }
+}
+
+extension MySiteViewController: JetpackRemoteInstallDelegate {
+    func jetpackRemoteInstallCompleted() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // no op
     }
 }
