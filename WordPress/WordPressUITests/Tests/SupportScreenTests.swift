@@ -11,11 +11,12 @@ class SupportScreenTests: XCTestCase {
         removeApp()
     }
 
-    func testContactUsCanBeLoadedDuringLogin() throws {
+    func testSupportForumsCanBeLoadedDuringLogin() throws {
         try PrologueScreen()
             .selectContinue()
             .selectHelp()
             .assertVisitForumButtonEnabled()
             .visitForums()
+            .assertForumsLoaded()
     }
 }

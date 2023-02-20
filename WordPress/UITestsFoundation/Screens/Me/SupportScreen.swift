@@ -32,7 +32,7 @@ public class SupportScreen: ScreenObject {
                 // swiftlint:enable opening_brace
             ],
             app: app,
-            waitTimeout: 22
+            waitTimeout: 7
         )
     }
 
@@ -41,24 +41,32 @@ public class SupportScreen: ScreenObject {
         return self
     }
 
-    public func visitForums() {
-        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+    public func visitForums() -> SupportScreen {
         visitForumsButton.tap()
 
         // Select the Address bar when Safari opens
-        let addressBar = safari.textFields["Address"]
+        let addressBar = findSafariAddressBar(hasBeenTapped: false)
+
         guard addressBar.waitForExistence(timeout: 5) else {
             XCTFail("Address bar not found")
-            return
+            return self
         }
         addressBar.tap()
 
+        return self
+    }
+
+    public func assertForumsLoaded() {
+        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
         guard safari.wait(for: .runningForeground, timeout: 4) else {
             XCTFail("Safari wait failed")
             return
         }
 
+        let addressBar = findSafariAddressBar(hasBeenTapped: true)
+
         XCTAssertEqual(addressBar.value as! String, "https://wordpress.org/support/forum/mobile/")
+
         app.activate() //Back to app
     }
 
