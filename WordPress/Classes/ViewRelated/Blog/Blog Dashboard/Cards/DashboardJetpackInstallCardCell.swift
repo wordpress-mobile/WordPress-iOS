@@ -19,7 +19,15 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
         }
 
         let onLearnMoreTap: () -> Void = {
+            guard let presenterViewController = self.presenterViewController else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "dashboard"])
+            JetpackInstallPluginHelper.presentOverlayIfNeeded(in: presenterViewController,
+                                                              blog: self.blog,
+                                                              delegate: presenterViewController,
+                                                              force: true)
+
         }
         return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
                                                  onLearnMoreTap: onLearnMoreTap)

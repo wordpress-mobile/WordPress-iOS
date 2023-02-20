@@ -19,7 +19,14 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
             self.presenterViewController?.reloadTableView()
         }
         let onLearnMoreTap: () -> Void = {
+            guard let presenterViewController = self.presenterViewController else {
+                return
+            }
             WPAnalytics.track(.jetpackInstallFullPluginCardTapped, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
+            JetpackInstallPluginHelper.presentOverlayIfNeeded(in: presenterViewController,
+                                                              blog: self.blog,
+                                                              delegate: presenterViewController,
+                                                              force: true)
         }
         return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
                                                  onLearnMoreTap: onLearnMoreTap)
@@ -58,7 +65,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
 // MARK: - BlogDetailsViewController view model
 
-extension BlogDetailsViewController {
+extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
 
     @objc func jetpackInstallSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
@@ -68,6 +75,24 @@ extension BlogDetailsViewController {
                                          footerTitle: nil,
                                          category: .jetpackInstallCard)
         return section
+    }
+
+    func jetpackRemoteInstallCompleted() {
+        dismiss(animated: true) {
+            self.configureTableViewData()
+            self.reloadTableViewPreservingSelection()
+        }
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismiss(animated: true) {
+            self.configureTableViewData()
+            self.reloadTableViewPreservingSelection()
+        }
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // No op
     }
 
 }
