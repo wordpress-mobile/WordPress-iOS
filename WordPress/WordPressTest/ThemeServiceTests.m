@@ -41,7 +41,7 @@
     
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
 
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
+    ThemeService *service = [[ThemeService alloc] initWithCoreDataStack:self.manager];
     BOOL result = NO;
     
     XCTAssertNoThrow(result = [service blogSupportsThemeServices:blog]);
@@ -53,7 +53,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertSelfHostedBlogWithContext:context];
 
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
+    ThemeService *service = [[ThemeService alloc] initWithCoreDataStack:self.manager];
     BOOL result = NO;
     
     XCTAssertNoThrow(result = [service blogSupportsThemeServices:blog]);
@@ -79,7 +79,7 @@
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service getActiveThemeForBlog:blog
                                             success:nil
                                             failure:nil]);
@@ -87,10 +87,9 @@
 
 - (void)testThatGetActiveThemeForBlogThrowsExceptionWithoutBlog
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     ThemeService *service = nil;
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service getActiveThemeForBlog:nil
                                            success:nil
                                            failure:nil]);
@@ -113,7 +112,7 @@
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service getThemesForBlog:blog
                                           page:1
                                           sync:NO
@@ -123,10 +122,9 @@
 
 - (void)testThatGetThemesForBlogThrowsExceptionWithoutBlog
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     ThemeService *service = nil;
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service getThemesForBlog:nil
                                          page:1
                                          sync:NO
@@ -154,7 +152,7 @@
               success:[OCMArg any]
               failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service activateTheme:theme
                                     forBlog:blog
                                     success:nil
@@ -172,7 +170,7 @@
     blog.dotComID = blogId;
     blog.account.wordPressComRestApi = api;
 
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service activateTheme:nil
                                    forBlog:blog
                                    success:nil
@@ -187,7 +185,7 @@
 
     theme.themeId = @"SomeThemeId";
 
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service activateTheme:theme
                                    forBlog:nil
                                    success:nil

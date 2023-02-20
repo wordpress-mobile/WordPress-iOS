@@ -1,4 +1,4 @@
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 @class Blog;
 @class Theme;
@@ -9,7 +9,7 @@ typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
 typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
-@interface ThemeService : LocalCoreDataService
+@interface ThemeService : CoreDataService
 
 #pragma mark - Themes availability
 
