@@ -116,18 +116,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     return theme;
 }
 
-- (NSArray *)findAccountThemes
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog.@count == 0"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Theme entityName]];
-    fetchRequest.predicate = predicate;
-    
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-
-    return results;
-}
-
 #pragma mark - Remote queries: Getting theme info
 
 - (NSProgress *)getActiveThemeForBlog:(Blog *)blog
