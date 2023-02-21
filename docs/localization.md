@@ -136,6 +136,9 @@ NSLocalizedString(
 
 GlotPress currently does not support pluralization using the [`.stringsdict` file](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/LocalizingYourApp/LocalizingYourApp.html#//apple_ref/doc/uid/10000171i-CH5-SW10). So, right now, you have to support plurals manually by having separate localized strings.
 
+This is not an ideal situation, and in the future we're hoping to properly support real pluralization with `.stringdict` files, which takes into account the complexity of different locales having different pluralization rules (sometimes way more complex than the simple singular/plural rule that English has, e.g. like [in Irish](https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html#ga)).
+
+In the meantime, we sadly have to make-do with the simplistic solution of providing two different localized strings and doing the pluralization decision by code, even if that will lead to some inexact pluralization in some locales.
 ```swift
 struct PostCountLabels {
     static let singular = NSLocalizedString("reader.post.title" ,value: "%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
