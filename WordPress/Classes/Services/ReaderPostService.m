@@ -46,7 +46,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 {
     NSNumber *rank = @([[NSDate date] timeIntervalSinceReferenceDate]);
     if (offset > 0) {
-        rank = [self rankForPostAtOffset:offset - 1 forTopic:topic];
+        rank = [self rankForPostAtOffset:offset - 1 forTopic:topic inContext:self.managedObjectContext];
     }
 
     if (offset >= ReaderPostServiceMaxSearchPosts && [topic isKindOfClass:[ReaderSearchTopic class]]) {
@@ -630,7 +630,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     return count;
 }
 
-- (NSNumber *)rankForPostAtOffset:(NSUInteger)offset forTopic:(ReaderAbstractTopic *)topic
+- (NSNumber *)rankForPostAtOffset:(NSUInteger)offset forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -643,7 +643,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     fetchRequest.fetchOffset = offset;
     fetchRequest.fetchLimit = 1;
 
-    ReaderPost *post = [[self.managedObjectContext executeFetchRequest:fetchRequest error:&error] firstObject];
+    ReaderPost *post = [[context executeFetchRequest:fetchRequest error:&error] firstObject];
     if (error || !post) {
         DDLogError(@"Error fetching post at a specific offset.", error);
         return nil;
