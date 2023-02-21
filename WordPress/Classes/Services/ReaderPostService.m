@@ -180,7 +180,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)refreshPostsForFollowedTopic
 {
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderAbstractTopic *topic = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
         if (topic) {
             ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -308,7 +308,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 
     // If this post belongs to a site topic, let the topic service do the work.
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
 
     if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
@@ -368,7 +368,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:self.coreDataStack];
     if (!post.isExternal) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
