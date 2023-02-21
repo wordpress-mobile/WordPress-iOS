@@ -135,23 +135,20 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        NSManagedObjectContext *context = self.managedObjectContext;
-        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
+        NSManagedObjectID * __block postObjectID = nil;
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
 
-        NSError *error;
-        BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
-        if (!obtainedID) {
-            DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
-        }
-
-        [[ContextManager sharedInstance] saveContext:context];
-        success(post);
-
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+            NSError *error;
+            BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
+            if (!obtainedID) {
+                DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+            }
+            postObjectID = post.objectID;
+        } completion:^{
+            success([self.coreDataStack.mainContext existingObjectWithID:postObjectID error:nil]);
+        } onQueue:dispatch_get_main_queue()];
+    } failure:failure];
 }
 
 - (void)fetchPostAtURL:(NSURL *)postURL
