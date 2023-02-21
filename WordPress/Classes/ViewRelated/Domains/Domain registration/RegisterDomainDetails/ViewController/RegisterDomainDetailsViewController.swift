@@ -54,7 +54,13 @@ class RegisterDomainDetailsViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         // This form is only used to redeem an existing domain credit
-        WPAnalytics.track(.domainsRegistrationFormViewed, properties: WPAnalytics.domainsProperties(usingCredit: true))
+        WPAnalytics.track(
+            .domainsRegistrationFormViewed,
+            properties: WPAnalytics.domainsProperties(
+                usingCredit: true,
+                origin: .menu
+            )
+        )
     }
 
     private func configureView() {
@@ -187,7 +193,13 @@ class RegisterDomainDetailsViewController: UITableViewController {
 extension RegisterDomainDetailsViewController {
 
     @objc private func registerDomainButtonTapped(sender: UIButton) {
-        WPAnalytics.track(.domainsRegistrationFormSubmitted, properties: WPAnalytics.domainsProperties(usingCredit: true))
+        WPAnalytics.track(
+            .domainsRegistrationFormSubmitted,
+            properties: WPAnalytics.domainsProperties(
+                usingCredit: true,
+                origin: nil
+            )
+        )
 
         viewModel.register()
     }
