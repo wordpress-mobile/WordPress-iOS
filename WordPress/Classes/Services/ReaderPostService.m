@@ -189,20 +189,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
-- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID
-{
-    NSError *error;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(@"Error loading cached post for site: %@", error);
-        return nil;
-    }
-    
-    return results.firstObject;
-}
-
 #pragma mark - Update Methods
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure

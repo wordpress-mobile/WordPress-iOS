@@ -210,7 +210,7 @@ private extension NotificationCommentDetailViewController {
                   return
               }
 
-        if let post = postService.findPost(withID: postID, forSite: siteID) {
+        if let post = try? ReaderPost.lookup(withID: postID, forSiteWithID: siteID, in: managedObjectContext) {
             self.post = post
             completion()
             return

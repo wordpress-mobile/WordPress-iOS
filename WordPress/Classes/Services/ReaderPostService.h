@@ -186,14 +186,4 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success;
 
-
-/**
- Get a cached site's ReaderPost with the specified ID.
- 
- @param postID ID of the post.
- @param siteID ID of th site the post belongs to.
- @return the matching ReaderPost.
- */
-- (ReaderPost *)findPostWithID:(NSNumber *)postID forSite:(NSNumber *)siteID;
-
 @end
