@@ -155,7 +155,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
 
-        ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+        ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
         [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
     }];
 }

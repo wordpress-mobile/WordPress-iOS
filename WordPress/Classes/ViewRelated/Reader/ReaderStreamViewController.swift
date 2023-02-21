@@ -1079,12 +1079,12 @@ import Combine
             }
 
             if ReaderHelpers.isTopicSearchTopic(topic) {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 service.fetchPosts(for: topic, atOffset: 0, deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
             }
         }
@@ -1141,7 +1141,7 @@ import Combine
                 }
             }
 
-            let service = ReaderPostService(managedObjectContext: context)
+            let service = ReaderPostService(coreDataStack: ContextManager.shared)
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
                 service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
@@ -1200,13 +1200,13 @@ import Combine
             }
 
             if ReaderHelpers.isTopicSearchTopic(topic) {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 let offset = UInt(self.content.contentCount)
                 service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
+                let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 let earlierThan = sortDate
                 service.fetchPosts(for: topic, earlierThan: earlierThan, success: success, failure: failure)
             }

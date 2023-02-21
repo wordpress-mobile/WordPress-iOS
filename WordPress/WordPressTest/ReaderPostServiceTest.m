@@ -36,7 +36,7 @@
 - (void)testDeletePostsWithoutATopic {
     id<CoreDataStack> coreDataStack = [self coreDataStackForTesting];
     NSManagedObjectContext *context = [coreDataStack mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:coreDataStack];
 
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];

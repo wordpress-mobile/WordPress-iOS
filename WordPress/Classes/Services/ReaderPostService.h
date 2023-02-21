@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 @class ReaderPost;
 @class ReaderAbstractTopic;
@@ -7,7 +7,7 @@
 extern NSString * const ReaderPostServiceErrorDomain;
 extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
-@interface ReaderPostService : LocalCoreDataService
+@interface ReaderPostService : CoreDataService
 
 /**
  Fetches and saves the posts for the specified topic

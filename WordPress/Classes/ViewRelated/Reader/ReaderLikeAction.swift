@@ -8,7 +8,7 @@ final class ReaderLikeAction {
             ReaderHelpers.bumpPageViewForPost(post)
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
-        let service = ReaderPostService(managedObjectContext: context)
+        let service = ReaderPostService(coreDataStack: ContextManager.shared)
         service.toggleLiked(for: post, success: {
             completion?()
         }, failure: { (error: Error?) in

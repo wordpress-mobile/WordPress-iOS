@@ -1043,8 +1043,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof(self) weakSelf  = self;
     
     self.postSiteID = siteID;

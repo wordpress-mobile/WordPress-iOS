@@ -40,7 +40,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     }()
 
     private lazy var postService: ReaderPostService = {
-        return .init(managedObjectContext: managedObjectContext)
+        return .init(coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - Notification Navigation Buttons

@@ -185,7 +185,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderAbstractTopic *topic = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
         if (topic) {
-            ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+            ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
             [service fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
         }
     }];
