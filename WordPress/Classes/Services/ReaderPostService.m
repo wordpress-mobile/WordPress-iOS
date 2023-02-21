@@ -267,7 +267,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     };
 
     // Call the remote service.
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:context]];
     if (like) {
         [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     } else {
@@ -470,7 +470,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     };
 
     // Call the remote service.
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequestInContext:context]];
 
     if (readerPost.isWPCom) {
         [remoteService markBlogPostSeenWithSeen:seen
@@ -579,8 +579,18 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  */
 - (WordPressComRestApi *)apiForRequest
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
+    WordPressComRestApi * __block api = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        api = [self apiForRequestInContext:self.coreDataStack.mainContext];
+    }];
+    return api;
+}
+
+- (WordPressComRestApi *)apiForRequestInContext:(NSManagedObjectContext *)context
+{
+    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:context];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
+
     if (![api hasCredentials]) {
         api = [WordPressComRestApi defaultApiWithOAuthToken:nil
                                                   userAgent:[WPUserAgent wordPressUserAgent]
