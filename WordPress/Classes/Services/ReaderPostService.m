@@ -704,17 +704,10 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    // Use a performBlock here so the work to merge does not block the main thread.
-    [context performBlock:^{
+    NSUInteger __block postsCount = 0;
+    BOOL __block hasMore = NO;
 
-        if (context.parentContext == [[ContextManager sharedInstance] mainContext]) {
-            // Its possible the ReaderAbstractTopic was deleted the parent main context.
-            // If so, and we merge and save, it will cause a crash.
-            // Reset the context so it will be current with its parent context.
-            [context reset];
-        }
-
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         NSError *error;
         ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[context existingObjectWithID:topicObjectID error:&error];
         if (error || !readerTopic) {
@@ -725,7 +718,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        NSUInteger postsCount = [remotePosts count];
+        postsCount = [remotePosts count];
         if (postsCount == 0) {
             [self deletePostsRankedLessThan:rank forTopic:readerTopic inContext:context];
         } else {
@@ -784,7 +777,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic inContext:context];
         [self deletePostsFromBlockedSitesInContext:context];
 
-        BOOL hasMore = NO;
         BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic inContext:context] < [self maxPostsToSaveForTopic:readerTopic]);
         if ([ReaderHelpers isTopicTag:readerTopic]) {
             // For tags, assume there is more content as long as more than zero results are returned.
@@ -793,14 +785,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             // For other topics, assume there is more content as long as the number of results requested is returned.
             hasMore = ([remotePosts count] == [self numberToSyncForTopic:readerTopic]) && spaceAvailable;
         }
-
-        [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
-            // Is called on main queue
-            if (success) {
-                success(postsCount, hasMore);
-            }
-        } onQueue:dispatch_get_main_queue()];
-    }];
+    } completion:^{
+        if (success) {
+            success(postsCount, hasMore);
+        }
+    } onQueue:dispatch_get_main_queue()];
 }
 
 - (BOOL)checkIfRemotePosts:(NSArray *)remotePosts overlapExistingPostsinTopic:(ReaderAbstractTopic *)readerTopic inContext:(NSManagedObjectContext *)context
