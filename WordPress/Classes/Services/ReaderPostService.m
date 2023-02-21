@@ -253,16 +253,17 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Define failure block. Make sure rollback happens in the moc's queue,
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-            ReaderPost *readerPostInContext = (ReaderPost *)[context existingObjectWithID:readerPost.objectID error:nil];
+        [context performBlockAndWait:^{
             // Revert changes on failure
-            readerPostInContext.isLiked = oldValue;
-            readerPostInContext.likeCount = oldCount;
-        } completion:^{
-            if (failure) {
-                failure(error);
-            }
-        } onQueue:dispatch_get_main_queue()];
+            readerPost.isLiked = oldValue;
+            readerPost.likeCount = oldCount;
+
+            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        }];
     };
 
     // Call the remote service.
@@ -278,16 +279,27 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                        success:(void (^)(BOOL follow))success
                        failure:(void (^)(BOOL follow, NSError *error))failure
 {
-    // Get a the post in our own context
-    NSError *error;
-    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
-    if (error) {
-        if (failure) {
-            failure(true, error);
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            if (failure) {
+                failure(true, error);
+            }
+            return;
         }
-        return;
-    }
 
+        [self toggleFollowingForPost:readerPost inContext:context success:success failure:failure];
+    }];
+}
+
+- (void)toggleFollowingForPost:(ReaderPost *)readerPost
+                     inContext:(NSManagedObjectContext *)context
+                       success:(void (^)(BOOL follow))success
+                       failure:(void (^)(BOOL follow, NSError *error))failure
+{
+    NSParameterAssert(readerPost.managedObjectContext == context);
 
     // If this post belongs to a site topic, let the topic service do the work.
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
@@ -298,7 +310,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         return;
     }
 
-    ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:post.feedID inContext:self.managedObjectContext];
+    ReaderSiteTopic *feedSiteTopic = [ReaderSiteTopic lookupWithFeedID:readerPost.feedID inContext:context];
     if (feedSiteTopic) {
         [topicService toggleFollowingForSite:feedSiteTopic success:success failure:failure];
         return;
@@ -311,12 +323,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Optimistically update
     readerPost.isFollowing = follow;
-    [self setFollowing:follow forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
+    [self setFollowing:follow forPostsFromSiteWithID:readerPost.siteID andURL:readerPost.blogURL];
 
 
     // If the post in question belongs to the default followed sites topic, skip refreshing.
     // We don't want to jar the user.
-    BOOL shouldRefreshFollowedPosts = post.topic != [ReaderAbstractTopic lookupFollowedSitesTopicInContext:self.managedObjectContext];
+    BOOL shouldRefreshFollowedPosts = readerPost.topic != [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
 
     // Define success block
     void (^successBlock)(void) = ^void() {
@@ -342,26 +354,25 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isFollowing = oldValue;
-        [self setFollowing:oldValue forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
-
-        if (failure) {
-            failure(follow, error);
-        }
+        [self setFollowing:oldValue forPostsFromSiteWithID:readerPost.siteID andURL:readerPost.blogURL completion:^{
+            if (failure) {
+                failure(follow, error);
+            }
+        }];
     };
 
     ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:self.coreDataStack];
-    if (!post.isExternal) {
+    if (!readerPost.isExternal) {
         if (follow) {
-            [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
         }
-    } else if (post.blogURL) {
+    } else if (readerPost.blogURL) {
         if (follow) {
-            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService followSiteAtURL:readerPost.blogURL success:successBlock failure:failureBlock];
         } else {
-            [siteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService unfollowSiteAtURL:readerPost.blogURL success:successBlock failure:failureBlock];
         }
     } else {
         NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
@@ -544,25 +555,29 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
 {
-    // Fetch all the posts for the specified site ID and update its following status
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND blogURL = %@", siteID, siteURL];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
-        return;
-    }
-    if ([results count] == 0) {
-        return;
-    }
+    [self setFollowing:following forPostsFromSiteWithID:siteID andURL:siteURL completion:nil];
+}
 
-    for (ReaderPost *post in results) {
-        post.isFollowing = following;
-    }
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+- (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL completion:(void (^)(void))completion
+{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        // Fetch all the posts for the specified site ID and update its following status
+        NSError *error;
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+        request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND blogURL = %@", siteID, siteURL];
+        NSArray *results = [context executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
+            return;
+        }
+        if ([results count] == 0) {
+            return;
+        }
+
+        for (ReaderPost *post in results) {
+            post.isFollowing = following;
+        }
+    } completion:completion onQueue:dispatch_get_main_queue()];
 }
 
 
