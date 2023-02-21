@@ -386,9 +386,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context performBlock:^{
-
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         // Get a the post in our own context
         NSError *error;
         ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
@@ -402,11 +400,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
 
         readerPost.isSavedForLater = !readerPost.isSavedForLater;
-
-        [[ContextManager sharedInstance] saveContext:context];
-
-        success();
-    }];
+    } completion:success onQueue:dispatch_get_main_queue()];
 }
 
 - (void)toggleSeenForPost:(ReaderPost *)post
