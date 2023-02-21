@@ -68,7 +68,7 @@ let alertWarning = String(format: NSLocalizedString(
 
 ## Do not use Variables
 
-Do not use variables as the argument of `NSLocalizedString()`. The string value will not be automatically picked up. 
+Do not use variables as the argument of `NSLocalizedString()` (neither for the key, the value or the comment). The string key, value and comment will not be automatically picked up by the `genstrings` tool which expects string literals.
 
 ```swift
 // Do
