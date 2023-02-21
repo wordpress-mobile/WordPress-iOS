@@ -214,11 +214,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    [self.managedObjectContext performBlock:^{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlock:^{
 
         // Get a the post in our own context
         NSError *error;
-        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
@@ -228,68 +229,74 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        // Keep previous values in case of failure
-        BOOL oldValue = readerPost.isLiked;
-        BOOL like = !oldValue;
-        NSNumber *oldCount = [readerPost.likeCount copy];
-
-        // Optimistically update
-        readerPost.isLiked = like;
-        if (like) {
-            readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
-        } else {
-            readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
-        }
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-        NSDictionary *railcar = [readerPost railcarDictionary];
-        // Define success block.
-        NSNumber *postID = readerPost.postID;
-        NSNumber *siteID = readerPost.siteID;
-        void (^successBlock)(void) = ^void() {
-            if (postID && siteID) {
-                NSDictionary *properties = @{
-                                              WPAppAnalyticsKeyPostID: postID,
-                                              WPAppAnalyticsKeyBlogID: siteID
-                                              };
-                if (like) {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
-                    if (railcar) {
-                        [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
-                    }
-                } else {
-                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
-                }
-            }
-            if (success) {
-                success();
-            }
-        };
-
-        // Define failure block. Make sure rollback happens in the moc's queue,
-        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-            [self.managedObjectContext performBlockAndWait:^{
-                // Revert changes on failure
-                readerPost.isLiked = oldValue;
-                readerPost.likeCount = oldCount;
-
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (failure) {
-                        failure(error);
-                    }
-                } onQueue:dispatch_get_main_queue()];
-            }];
-        };
-
-        // Call the remote service.
-        ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-        if (like) {
-            [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-        } else {
-            [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-        }
-
+        [self toggleLikedForPost:readerPost inContext:context success:success failure:failure];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
+}
+
+- (void)toggleLikedForPost:(ReaderPost *)readerPost inContext:(NSManagedObjectContext *)context success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(readerPost.managedObjectContext == context);
+
+    // Keep previous values in case of failure
+    BOOL oldValue = readerPost.isLiked;
+    BOOL like = !oldValue;
+    NSNumber *oldCount = [readerPost.likeCount copy];
+
+    // Optimistically update
+    readerPost.isLiked = like;
+    if (like) {
+        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
+    } else {
+        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
+    }
+
+    NSDictionary *railcar = [readerPost railcarDictionary];
+    // Define success block.
+    NSNumber *postID = readerPost.postID;
+    NSNumber *siteID = readerPost.siteID;
+    void (^successBlock)(void) = ^void() {
+        if (postID && siteID) {
+            NSDictionary *properties = @{
+                                          WPAppAnalyticsKeyPostID: postID,
+                                          WPAppAnalyticsKeyBlogID: siteID
+                                          };
+            if (like) {
+                [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
+                if (railcar) {
+                    [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:railcar];
+                }
+            } else {
+                [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleUnliked properties:properties];
+            }
+        }
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block. Make sure rollback happens in the moc's queue,
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        [context performBlockAndWait:^{
+            // Revert changes on failure
+            readerPost.isLiked = oldValue;
+            readerPost.likeCount = oldCount;
+
+            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        }];
+    };
+
+    // Call the remote service.
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    if (like) {
+        [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+    } else {
+        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+    }
 }
 
 - (void)toggleFollowingForPost:(ReaderPost *)post
