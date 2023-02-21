@@ -46,7 +46,7 @@ Comments help give more context to translators.
 
 ## Use positional placeholders
 
-Use the %n$x format (with n being an integer for the parameter position/index in the arguments to String(format:), and x being one of the type specifiers like @ or d) and don't use just %x (the one without explicit positional index) for positional placeholders.
+Use the `%n$x` format (with `n` being an integer for the parameter position/index in the arguments to `String(format:)`, and `x` being one of the type specifiers like `@` or `d`); in particular, don't use just `%x` (the one without explicit positional index) for positional placeholders. This way, translators will not risk of messing up the parameter resolution order when translating the copy in locales where the order of the words in the sentence might be different than the one in English.
 
 ```swift
 // Do
