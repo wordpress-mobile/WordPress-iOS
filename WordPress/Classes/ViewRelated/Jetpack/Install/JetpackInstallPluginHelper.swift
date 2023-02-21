@@ -104,10 +104,10 @@ private extension JetpackInstallPluginHelper {
 
     var cardHiddenSites: [String] {
         get {
-            (repository.array(forKey: .cardHiddenSitesKey) as? [String]) ?? [String]()
+            (repository.array(forKey: Constants.cardHiddenSitesKey) as? [String]) ?? [String]()
         }
         set {
-            repository.set(newValue, forKey: .cardHiddenSitesKey)
+            repository.set(newValue, forKey: Constants.cardHiddenSitesKey)
         }
     }
 
@@ -117,21 +117,19 @@ private extension JetpackInstallPluginHelper {
 
     var overlayShownSites: [String] {
         get {
-            (repository.array(forKey: .overlayShownSitesKey) as? [String]) ?? [String]()
+            (repository.array(forKey: Constants.overlayShownSitesKey) as? [String]) ?? [String]()
         }
         set {
-            repository.set(newValue, forKey: .overlayShownSitesKey)
+            repository.set(newValue, forKey: Constants.overlayShownSitesKey)
         }
     }
 
     var shouldPromptInstall: Bool {
         blog.jetpackIsConnectedWithoutFullPlugin
     }
-}
 
-// MARK: - String Constants
-
-private extension String {
-    static let cardHiddenSitesKey = "jetpack-install-card-hidden-sites"
-    static let overlayShownSitesKey = "jetpack-install-overlay-shown-sites"
+    struct Constants {
+        static let cardHiddenSitesKey = "jetpack-install-card-hidden-sites"
+        static let overlayShownSitesKey = "jetpack-install-overlay-shown-sites"
+    }
 }
