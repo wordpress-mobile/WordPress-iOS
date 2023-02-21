@@ -78,17 +78,11 @@ extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
     }
 
     func jetpackRemoteInstallCompleted() {
-        dismiss(animated: true) {
-            self.configureTableViewData()
-            self.reloadTableViewPreservingSelection()
-        }
+        dismiss(animated: true)
     }
 
     func jetpackRemoteInstallCanceled() {
-        dismiss(animated: true) {
-            self.configureTableViewData()
-            self.reloadTableViewPreservingSelection()
-        }
+        dismiss(animated: true)
     }
 
     func jetpackRemoteInstallWebviewFallback() {
