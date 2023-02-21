@@ -64,8 +64,10 @@ public class SupportScreen: ScreenObject {
         }
 
         let addressBar = findSafariAddressBar(hasBeenTapped: true)
-
-        XCTAssertEqual(addressBar.value as! String, "https://wordpress.org/support/forum/mobile/")
+        let predicate = NSPredicate(format: "value == 'https://wordpress.org/support/forum/mobile/'")
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: addressBar)
+        let result = XCTWaiter.wait(for: [expectation], timeout: 5)
+        XCTAssertEqual(result, .completed)
 
         app.activate() //Back to app
     }
