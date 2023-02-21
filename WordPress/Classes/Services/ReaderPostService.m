@@ -138,7 +138,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:self.managedObjectContext];
 
         NSError *error;
         BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
@@ -167,7 +167,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:self.managedObjectContext];
 
         NSError *error;
         BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
@@ -727,7 +727,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             }
 
             // Create or update the synced posts.
-            NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+            NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic inContext:self.managedObjectContext];
 
             // When refreshing, some content previously synced may have been deleted remotely.
             // Remove anything we've synced that is missing.
@@ -1102,11 +1102,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  @param topic The `ReaderAbsractTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
  */
-- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderAbstractTopic *)topic
+- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSMutableArray *newPosts = [NSMutableArray array];
     for (RemoteReaderPost *post in posts) {
-        ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic];
+        ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic inContext:context];
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
@@ -1123,9 +1123,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  @param topic The `ReaderAbstractTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
  */
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    return [ReaderPost createOrReplaceFromRemotePost:remotePost forTopic:topic context:self.managedObjectContext];
+    NSParameterAssert(context != nil);
+    NSParameterAssert(topic == nil || topic.managedObjectContext == context);
+    return [ReaderPost createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
 }
 
 @end
