@@ -80,6 +80,10 @@ myTextLabel?.text = myText
 // Don't
 let myText = "This is the text I want to translate."
 myTextLabel?.text = NSLocalizedString("some.place.title", value: myText, comment: "Put a meaningful comment here.")
+let myKey = "some.place.title"
+myTextLabel?.text = NSLocalizedString(myKey, value: "This is the text I want to translate.", comment: "Put a meaningful comment here.")
+let comment = "Put a meaningful comment here."
+myTextLabel?.text = NSLocalizedString("some.place.title", value: "This is the text I want to translate.", comment: comment)
 ```
 
 ## Do not use Interpolated Strings
