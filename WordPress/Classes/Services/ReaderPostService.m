@@ -400,11 +400,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    [self.managedObjectContext performBlock:^{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlock:^{
 
         // Get a the post in our own context
         NSError *error;
-        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
@@ -416,7 +417,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         readerPost.isSavedForLater = !readerPost.isSavedForLater;
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:context];
 
         success();
     }];
@@ -434,12 +435,13 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         return;
     }
-    
-    [self.managedObjectContext performBlock:^{
-        
+
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlock:^{
+
         // Get a the post in our own context
         NSError *error;
-        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
@@ -448,52 +450,62 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             });
             return;
         }
-        
-        // Keep previous values in case of failure
-        BOOL oldValue = readerPost.isSeen;
-        BOOL seen = !oldValue;
-        
-        // Optimistically update
-        readerPost.isSeen = seen;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        
-        // Define success block.
-        void (^successBlock)(void) = ^void() {
-            if (success) {
-                success();
-            }
-        };
-        
-        // Define failure block. Make sure rollback happens in the managedObjectContext's queue.
-        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-            [self.managedObjectContext performBlockAndWait:^{
-                
-                DDLogError(@"Error while toggling post Seen status: %@", error);
-                readerPost.isSeen = oldValue;
-                
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (failure) {
-                        failure(error);
-                    }
-                } onQueue:dispatch_get_main_queue()];
-            }];
-        };
-        
-        // Call the remote service.
-        ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-        
-        if (readerPost.isWPCom) {
-            [remoteService markBlogPostSeenWithSeen:seen
-                                             blogID:readerPost.siteID
-                                             postID:readerPost.postID
-                                            success:successBlock failure:failureBlock];
-        } else {
-            [remoteService markFeedPostSeenWithSeen:seen
-                                             feedID:readerPost.feedID
-                                         feedItemID:readerPost.feedItemID
-                                            success:successBlock failure:failureBlock];
-        }
+
+        [self toggleSeenForPost:readerPost inContext:context success:success failure:failure];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
+}
+
+- (void)toggleSeenForPost:(ReaderPost *)readerPost
+                inContext:(NSManagedObjectContext *)context
+                  success:(void (^)(void))success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(readerPost.managedObjectContext == context);
+
+    // Keep previous values in case of failure
+    BOOL oldValue = readerPost.isSeen;
+    BOOL seen = !oldValue;
+
+    // Optimistically update
+    readerPost.isSeen = seen;
+
+    // Define success block.
+    void (^successBlock)(void) = ^void() {
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block. Make sure rollback happens in the managedObjectContext's queue.
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        [context performBlockAndWait:^{
+
+            DDLogError(@"Error while toggling post Seen status: %@", error);
+            readerPost.isSeen = oldValue;
+
+            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        }];
+    };
+
+    // Call the remote service.
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+
+    if (readerPost.isWPCom) {
+        [remoteService markBlogPostSeenWithSeen:seen
+                                         blogID:readerPost.siteID
+                                         postID:readerPost.postID
+                                        success:successBlock failure:failureBlock];
+    } else {
+        [remoteService markFeedPostSeenWithSeen:seen
+                                         feedID:readerPost.feedID
+                                     feedItemID:readerPost.feedItemID
+                                        success:successBlock failure:failureBlock];
+    }
 }
 
 - (void)deletePostsWithNoTopic
