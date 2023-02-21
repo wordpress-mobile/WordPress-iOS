@@ -6,7 +6,7 @@ During the release process, `NSLocalizedString` statements are scanned and store
 
 ## Use unique reverse-DNS naming style Keys
 
-Use unique reverse-DNS naming style keys for localized strings (instead of using the English copy as key) to avoid issues where the same word in English could need different translations based on context or long keys being uncomfortable for translators.
+Use unique reverse-DNS naming style for keys of localized strings (instead of using the English copy as key). This allows to avoid issues where the same word in English could need different translations based on context, or very long keys causing issues with some translation services.
 
 ```swift
 // Do
