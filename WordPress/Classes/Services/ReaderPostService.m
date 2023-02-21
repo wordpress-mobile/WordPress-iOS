@@ -599,7 +599,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceMaxSearchPosts : ReaderPostServiceMaxPosts;
 }
 
-- (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
+- (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -607,7 +607,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
 
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
     return count;
 }
 
@@ -682,18 +682,19 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
+    NSManagedObjectContext *context = self.managedObjectContext;
     // Use a performBlock here so the work to merge does not block the main thread.
-    [self.managedObjectContext performBlock:^{
+    [context performBlock:^{
 
-        if (self.managedObjectContext.parentContext == [[ContextManager sharedInstance] mainContext]) {
+        if (context.parentContext == [[ContextManager sharedInstance] mainContext]) {
             // Its possible the ReaderAbstractTopic was deleted the parent main context.
             // If so, and we merge and save, it will cause a crash.
             // Reset the context so it will be current with its parent context.
-            [self.managedObjectContext reset];
+            [context reset];
         }
 
         NSError *error;
-        ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[context existingObjectWithID:topicObjectID error:&error];
         if (error || !readerTopic) {
             // if there was an error or the topic was deleted just bail.
             if (success) {
@@ -704,7 +705,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
-            [self deletePostsRankedLessThan:rank forTopic:readerTopic inContext:self.managedObjectContext];
+            [self deletePostsRankedLessThan:rank forTopic:readerTopic inContext:context];
         } else {
             NSArray *posts = remotePosts;
             BOOL overlap = NO;
@@ -712,7 +713,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             if (!deleteEarlier) {
                 // Before processing the new posts, check if there is an overlap between
                 // what is currently cached, and what is being synced.
-                overlap = [self checkIfRemotePosts:posts overlapExistingPostsinTopic:readerTopic];
+                overlap = [self checkIfRemotePosts:posts overlapExistingPostsinTopic:readerTopic inContext:context];
 
                 // A strategy to avoid false positives in gap detection is to sync
                 // one extra post. Only remove the extra post if we received a
@@ -726,43 +727,43 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             }
 
             // Create or update the synced posts.
-            NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic inContext:self.managedObjectContext];
+            NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic inContext:context];
 
             // When refreshing, some content previously synced may have been deleted remotely.
             // Remove anything we've synced that is missing.
             // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
-            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank inContext:self.managedObjectContext];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank inContext:context];
 
             // If deleting earlier, delete every post older than the last post in this batch.
             if (deleteEarlier) {
                 ReaderPost *lastPost = [newPosts lastObject];
-                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic inContext:self.managedObjectContext];
-                [self removeGapMarkerForTopic:readerTopic]; // Paranoia
+                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic inContext:context];
+                [self removeGapMarkerForTopic:readerTopic inContext:context]; // Paranoia
 
             } else {
 
                 // Handle an overlap in posts that were synced
                 if (overlap) {
-                    [self removeGapMarkerForTopic:readerTopic ifNewPostsOverlapMarker:newPosts];
+                    [self removeGapMarkerForTopic:readerTopic ifNewPostsOverlapMarker:newPosts inContext:context];
 
                 } else {
                     // If there are existing posts older than the oldest of the
                     // new posts then append a gap placeholder to the end of the
                     // new posts
                     ReaderPost *lastPost = [newPosts lastObject];
-                    if ([self topic:readerTopic hasPostsRankedLessThan:lastPost.sortRank]) {
-                        [self insertGapMarkerBeforePost:lastPost forTopic:readerTopic];
+                    if ([self topic:readerTopic hasPostsRankedLessThan:lastPost.sortRank inContext:context]) {
+                        [self insertGapMarkerBeforePost:lastPost forTopic:readerTopic inContext:context];
                     }
                 }
             }
         }
 
         // Clean up
-        [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
-        [self deletePostsFromBlockedSites];
+        [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic inContext:context];
+        [self deletePostsFromBlockedSitesInContext:context];
 
         BOOL hasMore = NO;
-        BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic] < [self maxPostsToSaveForTopic:readerTopic]);
+        BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic inContext:context] < [self maxPostsToSaveForTopic:readerTopic]);
         if ([ReaderHelpers isTopicTag:readerTopic]) {
             // For tags, assume there is more content as long as more than zero results are returned.
             hasMore = (postsCount > 0 ) && spaceAvailable;
@@ -771,7 +772,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             hasMore = ([remotePosts count] == [self numberToSyncForTopic:readerTopic]) && spaceAvailable;
         }
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
             // Is called on main queue
             if (success) {
                 success(postsCount, hasMore);
@@ -780,7 +781,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
-- (BOOL)checkIfRemotePosts:(NSArray *)remotePosts overlapExistingPostsinTopic:(ReaderAbstractTopic *)readerTopic
+- (BOOL)checkIfRemotePosts:(NSArray *)remotePosts overlapExistingPostsinTopic:(ReaderAbstractTopic *)readerTopic inContext:(NSManagedObjectContext *)context
 {
     // Get global IDs of new posts to use as part of the predicate.
     NSSet *remoteGlobalIDs = [self globalIDsOfRemotePosts:remotePosts];
@@ -790,7 +791,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND globalID in %@", readerTopic, remoteGlobalIDs];
 
     NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         return NO;
@@ -814,9 +815,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 #pragma mark Gap Detection Methods
 
-- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic ifNewPostsOverlapMarker:(NSArray *)newPosts
+- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic ifNewPostsOverlapMarker:(NSArray *)newPosts inContext:(NSManagedObjectContext *)context
 {
-    ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
+    ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic inContext:context];
     if (gapMarker) {
         double highestRank = [((ReaderPost *)newPosts.firstObject).sortRank doubleValue];
         double lowestRank = [((ReaderPost *)newPosts.lastObject).sortRank doubleValue];
@@ -824,18 +825,18 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         // Confirm the overlap includes the gap marker.
         if (lowestRank < gapRank && gapRank < highestRank) {
             // No need for a gap placeholder. Remove any that existed
-            [self removeGapMarkerForTopic:topic];
+            [self removeGapMarkerForTopic:topic inContext:context];
         }
     }
 }
 
-- (ReaderGapMarker *)gapMarkerForTopic:(ReaderAbstractTopic *)topic
+- (ReaderGapMarker *)gapMarkerForTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
 
     NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         return nil;
@@ -845,12 +846,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     return results.firstObject;
 }
 
-- (void)insertGapMarkerBeforePost:(ReaderPost *)post forTopic:(ReaderAbstractTopic *)topic
+- (void)insertGapMarkerBeforePost:(ReaderPost *)post forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    [self removeGapMarkerForTopic:topic];
+    [self removeGapMarkerForTopic:topic inContext:context];
 
     ReaderGapMarker *marker = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([ReaderGapMarker class])
-                                                            inManagedObjectContext:self.managedObjectContext];
+                                                            inManagedObjectContext:context];
 
     // Synced posts do not use millisecond precision for their dates. We can take
     // advantage of this and make our marker post a fraction of a second earlier
@@ -868,13 +869,13 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 }
 
 
-- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic
+- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
 
     NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         return;
@@ -883,17 +884,17 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     // There should only ever be one, but loop over all results just in case.
     for (ReaderGapMarker *marker in results) {
         DDLogInfo(@"Deleting Gap Marker: %@", marker);
-        [self.managedObjectContext deleteObject:marker];
+        [context deleteObject:marker];
     }
 }
 
-- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsRankedLessThan:(NSNumber *)rank
+- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsRankedLessThan:(NSNumber *)rank inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
 
     NSError *error;
-    NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    NSInteger count = [context countForFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(error.localizedDescription);
         return NO;
