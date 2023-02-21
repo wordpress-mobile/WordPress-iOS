@@ -84,12 +84,13 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm
 {
-    [self.managedObjectContext performBlock:^{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    [context performBlock:^{
         NSError *error;
-        ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[context existingObjectWithID:topicObjectID error:&error];
         topic.algorithm = algorithm;
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 
@@ -138,15 +139,16 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:self.managedObjectContext];
+        NSManagedObjectContext *context = self.managedObjectContext;
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
 
         NSError *error;
-        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
         if (!obtainedID) {
             DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
         }
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:context];
         success(post);
 
     } failure:^(NSError *error) {
@@ -167,15 +169,16 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:self.managedObjectContext];
+        NSManagedObjectContext *context = self.managedObjectContext;
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
 
         NSError *error;
-        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
         if (!obtainedID) {
             DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
         }
 
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:context];
         success(post);
 
     } failure:^(NSError *error) {
