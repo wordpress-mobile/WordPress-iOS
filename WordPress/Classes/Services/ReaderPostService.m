@@ -84,13 +84,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context performBlock:^{
-        NSError *error;
-        ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[context existingObjectWithID:topicObjectID error:&error];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[context existingObjectWithID:topicObjectID error:nil];
         topic.algorithm = algorithm;
-
-        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 
