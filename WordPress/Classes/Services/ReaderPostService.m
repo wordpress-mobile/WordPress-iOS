@@ -704,8 +704,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
-            [self deletePostsRankedLessThan:rank forTopic:readerTopic];
-
+            [self deletePostsRankedLessThan:rank forTopic:readerTopic inContext:self.managedObjectContext];
         } else {
             NSArray *posts = remotePosts;
             BOOL overlap = NO;
@@ -732,12 +731,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             // When refreshing, some content previously synced may have been deleted remotely.
             // Remove anything we've synced that is missing.
             // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
-            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingRank:rank inContext:self.managedObjectContext];
 
             // If deleting earlier, delete every post older than the last post in this batch.
             if (deleteEarlier) {
                 ReaderPost *lastPost = [newPosts lastObject];
-                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic];
+                [self deletePostsRankedLessThan:lastPost.sortRank forTopic:readerTopic inContext:self.managedObjectContext];
                 [self removeGapMarkerForTopic:readerTopic]; // Paranoia
 
             } else {
@@ -923,7 +922,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  @param rank The sortRank to delete posts less than.
  @param topic The `ReaderAbstractTopic` to delete posts from.
  */
-- (void)deletePostsRankedLessThan:(NSNumber *)rank forTopic:(ReaderAbstractTopic *)topic
+- (void)deletePostsRankedLessThan:(NSNumber *)rank forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
@@ -935,7 +934,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
-    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *currentPosts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
@@ -947,7 +946,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post);
-            [self.managedObjectContext deleteObject:post];
+            [context deleteObject:post];
         }
     }
 }
@@ -965,7 +964,10 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  @param posts The batch of posts to use as a filter.
  @param startingRank The starting rank of the batch of posts. May be less than the highest ranked post in the batch.
  */
-- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingRank:(NSNumber *)startingRank
+- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic
+           missingFromBatch:(NSArray *)posts
+           withStartingRank:(NSNumber *)startingRank
+                  inContext:(NSManagedObjectContext *)context
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
@@ -981,7 +983,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
-    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *currentPosts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
@@ -997,7 +999,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post);
-            [self.managedObjectContext deleteObject:post];
+            [context deleteObject:post];
         }
     }
 }
@@ -1010,6 +1012,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  @param topic the `ReaderAbstractTopic` to delete posts from.
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic
+{
+    [self deletePostsInExcessOfMaxAllowedForTopic:topic inContext:self.managedObjectContext];
+}
+
+- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
@@ -1025,12 +1032,12 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
     // Just perform the fetch and remove the excess.
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
     if (count <= maxPosts) {
         return;
     }
 
-    NSArray *posts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *posts = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
         DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
         return;
@@ -1043,7 +1050,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
-            [self.managedObjectContext deleteObject:post];
+            [context deleteObject:post];
         }
     }
 
@@ -1051,7 +1058,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     ReaderPost *lastPost = [posts objectAtIndex:maxPosts - 1];
     if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
         DDLogInfo(@"Deleting Last GapMarker: %@", lastPost);
-        [self.managedObjectContext deleteObject:lastPost];
+        [context deleteObject:lastPost];
     }
 }
 
@@ -1062,10 +1069,15 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  */
 - (void)deletePostsFromBlockedSites
 {
+    [self deletePostsFromBlockedSitesInContext:self.managedObjectContext];
+}
+
+- (void)deletePostsFromBlockedSitesInContext:(NSManagedObjectContext *)context
+{
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     request.predicate = [NSPredicate predicateWithFormat:@"isSiteBlocked = YES"];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray *results = [context executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
         return;
@@ -1081,7 +1093,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
-            [self.managedObjectContext deleteObject:post];
+            [context deleteObject:post];
         }
     }
 }
