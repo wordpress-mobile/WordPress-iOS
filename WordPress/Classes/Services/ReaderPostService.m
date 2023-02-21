@@ -44,9 +44,11 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure
 {
-    NSNumber *rank = @([[NSDate date] timeIntervalSinceReferenceDate]);
+    NSNumber * __block rank = @([[NSDate date] timeIntervalSinceReferenceDate]);
     if (offset > 0) {
-        rank = [self rankForPostAtOffset:offset - 1 forTopic:topic inContext:self.managedObjectContext];
+        [self.coreDataStack.mainContext performBlockAndWait:^{
+            rank = [self rankForPostAtOffset:offset - 1 forTopic:topic inContext:self.coreDataStack.mainContext];
+        }];
     }
 
     if (offset >= ReaderPostServiceMaxSearchPosts && [topic isKindOfClass:[ReaderSearchTopic class]]) {
