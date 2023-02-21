@@ -528,20 +528,20 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)clearInUseFlags
 {
-    NSError *error;
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"inUse = true"];
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@, marking posts not in use.: %@", NSStringFromSelector(_cmd), error);
-        return;
-    }
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSError *error;
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+        request.predicate = [NSPredicate predicateWithFormat:@"inUse = true"];
+        NSArray *results = [context executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"%@, marking posts not in use.: %@", NSStringFromSelector(_cmd), error);
+            return;
+        }
 
-    for (ReaderPost *post in results) {
-        post.inUse = NO;
-    }
-
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+        for (ReaderPost *post in results) {
+            post.inUse = NO;
+        }
+    }];
 }
 
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
