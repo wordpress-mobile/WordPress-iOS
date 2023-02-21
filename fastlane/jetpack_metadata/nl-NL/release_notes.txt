@@ -1,0 +1,5 @@
+We hebben wat aanpassingen gedaan aan de blogmeldingen, zodat je oude meldingen kunt beantwoorden of nieuwe kunt uitschakelen. (Hoewel we niet zouden weten waarom je dat zou doen.)
+
+Je ziet de QR-code voor inloggen niet als je account tweevoudige verificatie gebruikt.
+
+De Statistiekweergave geeft consequent de nieuwste gegevens van de dag weer, zelfs als de datum verandert terwijl de app op de achtergrond draait. Lekker alledaags.

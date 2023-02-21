@@ -230,8 +230,7 @@ private extension JetpackConnectionWebViewController {
     }
 
     func handleMobileRedirect() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         let success: () -> Void = { [weak self] in
             self?.delegate?.jetpackConnectionCompleted()
         }

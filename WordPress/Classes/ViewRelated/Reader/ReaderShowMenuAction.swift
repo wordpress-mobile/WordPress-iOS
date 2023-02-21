@@ -68,15 +68,26 @@ final class ReaderShowMenuAction {
             )
         }
 
-        // Report button
+        // Report post button
         if shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPost,
-                                               style: .default,
+                                               style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     ReaderReportPostAction().execute(with: post, context: context, origin: vc)
                                                 }
             })
+        }
+
+        // Report user button
+        if shouldShowReportUserMenuItem(readerTopic: readerTopic, post: post) {
+            let handler: (UIAlertAction) -> Void = { _ in
+                guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
+                    return
+                }
+                ReaderReportPostAction().execute(with: post, target: .author, context: context, origin: vc)
+            }
+            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPostAuthor, style: .destructive, handler: handler)
         }
 
         // Notification
@@ -203,6 +214,10 @@ final class ReaderShowMenuAction {
             ReaderHelpers.topicIsFollowing(topic)
     }
 
+    private func shouldShowReportUserMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post)
+    }
+
     private func shouldShowBlockUserMenuItem(post: ReaderPost) -> Bool {
         guard isLoggedIn else {
             return false
@@ -252,9 +267,13 @@ final class ReaderShowMenuAction {
     }
 
     private func postSiteBlockingDidFail(_ post: ReaderPost, error: Error?) {
+        var userInfo: [String: Any] = [ReaderNotificationKeys.post: post]
+        if let error {
+            userInfo[ReaderNotificationKeys.error] = error
+        }
         NotificationCenter.default.post(name: .ReaderSiteBlockingFailed,
                                         object: nil,
-                                        userInfo: [ReaderNotificationKeys.post: post, ReaderNotificationKeys.error: error])
+                                        userInfo: userInfo)
     }
 
     private func postUserBlockingWillBeginNotification(_ post: ReaderPost) {

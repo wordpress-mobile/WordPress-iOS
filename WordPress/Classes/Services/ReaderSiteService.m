@@ -78,7 +78,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
-        [self unfollowSiteTopicWithSiteID:@(siteID)];
+        [self markUnfollowedSiteTopicWithSiteID:@(siteID)];
         if (success) {
             success();
         }
@@ -139,7 +139,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
-        [self unfollowSiteTopicWithURL:siteURL];
+        [self markUnfollowedSiteTopicWithFeedURL:siteURL];
         if (success) {
             success();
         }
@@ -147,27 +147,14 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     } failure:failure];
 }
 
-- (void)unfollowSiteTopicWithSiteID:(NSNumber *)siteID
-{
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [topicService markUnfollowedSiteTopicWithSiteID:siteID];
-}
-
-- (void)unfollowSiteTopicWithURL:(NSString *)siteURL
-{
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [topicService markUnfollowedSiteTopicWithFeedURL:siteURL];
-}
-
 - (void)syncPostsForFollowedSites
 {
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
-    if (!followedSites) {
-        return;
-    }
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
+        if (!followedSites) {
+            return;
+        }
 
-    [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
         [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
     }];
@@ -179,9 +166,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];
     
     [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
         NSNumber *site = [NSNumber numberWithUnsignedLong:siteID];
-        ReaderSiteTopic *topic = [topicService findSiteTopicWithSiteID:site];
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:site inContext:self.coreDataStack.mainContext];
         success(topic);
     } failure:^(NSError *error) {
         failure(error);
@@ -197,7 +183,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     DDLogInfo(@"Fetch and store followed topic");
-    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
     [service siteTopicForSiteWithID:@(siteID)
                              isFeed:false
                             success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
@@ -212,11 +198,16 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
  */
 - (WordPressComRestApi *)apiForRequest
 {
-    WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.managedObjectContext];
-    WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
+    WordPressComRestApi * __block api = nil;
+    [self.coreDataStack.mainContext performBlockAndWait:^{
+        WPAccount *defaultAccount = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
+        api = [defaultAccount wordPressComRestApi];
+    }];
+
     if (![api hasCredentials]) {
         return nil;
     }
+
     return api;
 }
 
@@ -241,10 +232,48 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
 {
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [service flagPostsFromSite:siteID asBlocked:blocked];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        [self flagPostsFromSite:siteID asBlocked:blocked inContext:context];
+    }];
 }
 
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked inContext:(NSManagedObjectContext *)context
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSiteBlocked = blocked;
+    }
+}
+
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithFeedURL:(NSString *)feedURL
+{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithFeedURL:feedURL inContext:context];
+        topic.following = NO;
+    }];
+}
+
+// Updates the site topic's following status in core data only.
+- (void)markUnfollowedSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        ReaderSiteTopic *topic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+        topic.following = NO;
+    }];
+}
 
 #pragma mark - Error messages
 

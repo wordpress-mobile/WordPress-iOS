@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 23:54:07+0000 */
+/* Translation-Revision-Date: 2023-02-14 13:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "블로그 방문자";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "블로깅";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "블로깅 알림";
@@ -3773,7 +3776,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "비활성화, 자동 업데이트 켜기";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "프롬프트 포함";
+"Include a Blogging Prompt" = "블로깅 프롬프트 포함";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "사이트에 포함됨";
@@ -3874,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "인테리어 디자인";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "프롬프트 소개";
+"Introducing Blogging Prompts" = "블로깅 프롬프트 소개";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "이야기 글 소개";
@@ -6128,9 +6131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "블록 제거하기";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "알림판에서 제거";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "인사이트에서 제거";
 
@@ -7034,6 +7034,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "생략하기";
+
+/* Menu title to skip today's prompt. */
+"Skip for today" = "오늘 건너뛰기";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "슬래시 삽입기 결과";
@@ -8129,6 +8132,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "사이트 주소로 시도";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "프롬프트 끄기";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "사이트 알림 끄기";
@@ -9337,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "방금 사용한 것과 같은 링크로 항상 로그인할 수 있지만, 원하는 경우 비밀번호를 설정할 수도 있습니다.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "언제든지 내 사이트 > 설정 > 블로깅에서 블로깅 프롬프트와 알림을 관리할 수 있습니다.";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "언제든지 내 사이트, 설정, 블로깅에서 블로깅 프롬프트와 알림을 관리할 수 있습니다.";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "iOS 오늘\/알림 센터 창에서 단일 사이트의 통계를 표시할 수 있습니다.";
 
@@ -9348,12 +9360,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "특정 주제에 토픽을 추가하여 글을 따를 수 있습니다.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "내 사이트 > 설정 > 블로깅 알림에서 언제든지 자세히 알아보고 알림을 설정할 수 있습니다.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "내 사이트, 설정, 블로깅 알림에서 언제든지 자세히 알아보고 알림을 설정할 수 있습니다.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "개별 글에 대해 이러한 설정을 우선 적용할 수 있습니다.";
@@ -9821,6 +9827,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "이 링크를 활용하면 일일이 한 명씩 초대하지 않아도 여러 팀원이 팀에 참여할 수 있게 됩니다. 이 URL을 방문하는 사람은 누구나 조직에 가입할 수 있습니다. 다른 사람을 통해서 이 링크를 전달받은 사람도 가입할 수 있기 때문에 신뢰할 수 있는 사람에게만 공유하세요.";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "임시글로 저장";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "임시글로 저장";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "임시글로 저장";
 
@@ -9881,6 +9893,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "jetpack.com에서 더 알아보기";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "새 댓글, 좋아요, 조회수 등에 대한 알림을 받으세요.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "즐겨 찾는 사이트와 커뮤니티를 찾아서 팔로우하고, 자신의 콘텐츠를 공유하세요.";
+
+/* Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "유용한 인사이트와 포괄적인 통계를 통해 트래픽 증가를 지켜보세요.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "통계 및 인사이트";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "젯팩을 통해 워드프레스 사이트에서 더 많은 작업을 수행할 수 있습니다. 전환은 무료이며 1분밖에 걸리지 않습니다.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "젯팩으로 워드프레스 성능 향상";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "알림으로 계속";
 
@@ -9892,9 +9922,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "젯팩 기능이 제거되었습니다.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "젯팩 앱으로 전환하여 계속 기기에서 실시간 알림을 받으세요.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "젯팩 앱으로 알림 받기";
@@ -9944,6 +9971,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "리더로 계속";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "젯팩 모바일 앱은 젯팩 플러그인과 연동하도록 설계되었습니다. 지금 전환하여 통계, 리더, 알림 등에 대한 접근 권한을 이용하세요.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "사이트에 젯팩 플러그인 있음";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "젯팩 없이 계속";
 
@@ -9964,6 +9997,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "더 알아보기";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "사이트의 전체 잠재력을 잠금 해제하세요. 젯팩으로 통계, 리더, 알림 등을 이용하세요.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "젯팩으로 전환";
@@ -10070,6 +10106,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "나중에 결정";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "모든 워드프레스 알림을 계속 받으려면 경고가 표시될 때 허용을 누르세요.";
+
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "허용";
 
@@ -10123,6 +10162,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
+
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "사이트 설정으로 이동하여 다시 켜기";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "블로깅 프롬프트 숨김";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "해제";
@@ -10186,6 +10231,48 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "공유 오류";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "프롬프트 표시";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "이전 7일";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "이전 7일보다 *%1$@%2$@(%3$@%%)* 많음";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "이전 7일보다 *%1$@%2$@(%3$@%%)* 적음";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "이전 7일과 동일";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "최근 7일의 조회수가 이전 7일보다 %@ 많습니다.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "최근 7일의 조회수가 이전 7일보다 %@ 적습니다.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "최근 7일의 조회수가 이전 7일과 동일합니다.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "최근 7일";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "이전 7일";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "최근 7일의 방문자 수가 이전 7일보다 %@ 많습니다.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "최근 7일의 방문자 수가 이전 7일보다 %@ 적습니다.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "최근 7일의 방문자 수가 이전 7일과 동일합니다.\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "댓글";
@@ -10277,6 +10364,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "최고 조회수";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "모든 시간 통계를 로드할 수 없습니다.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "모든 시간 통계를 표시할 사이트를 생성하거나 추가하세요.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "글";
 
@@ -10298,6 +10391,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "젯팩에 로그인하여 오늘 통계를 참조하세요.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "이번 주의 통계를 로드할 수 없습니다.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "이번 주의 통계를 표시할 사이트를 생성하거나 추가하세요.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "워드프레스닷컴 사이트의 이번 주 활동을 최신 상태로 유지하세요.";
 
@@ -10310,11 +10409,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "댓글";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "통계가 젯팩 앱으로 이동했습니다. 전환은 무료이며 1분밖에 걸리지 않습니다.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "좋아요";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "사이트 통계를 로드할 수 없습니다.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "사이트 통계를 로드할 수 없습니다.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "오늘의 통계를 로드할 수 없습니다.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "오늘의 통계를 표시할 사이트를 생성하거나 추가하세요.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "워드프레스닷컴 사이트의 오늘 활동을 최신 상태로 유지하세요.";

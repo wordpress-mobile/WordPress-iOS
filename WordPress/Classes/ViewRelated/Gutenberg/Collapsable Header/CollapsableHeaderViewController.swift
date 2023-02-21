@@ -97,7 +97,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         didSet {
             visualEffects.forEach { (visualEffect) in
                 visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
-                // Allow touches to pass through to the scroll view behind the header. 
+                // Allow touches to pass through to the scroll view behind the header.
                 visualEffect.contentView.isUserInteractionEnabled = false
             }
         }
@@ -475,7 +475,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
      * at the bottome of the tableView when multiple cells are rendered.
      */
     private func updateFooterInsets() {
-        /// Update the footer height if it's being displayed. 
+        /// Update the footer height if it's being displayed.
         if footerHeightContraint.constant > 0 {
             footerHeightContraint.constant = footerHeight
         }

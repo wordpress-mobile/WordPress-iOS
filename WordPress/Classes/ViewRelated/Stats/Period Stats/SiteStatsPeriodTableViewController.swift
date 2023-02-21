@@ -29,10 +29,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
         return MediaService(managedObjectContext: mainContext)
     }()
 
-    private lazy var blogService: BlogService = {
-        return BlogService(managedObjectContext: mainContext)
-    }()
-
     var selectedDate: Date?
     var selectedPeriod: StatsPeriodUnit? {
         didSet {

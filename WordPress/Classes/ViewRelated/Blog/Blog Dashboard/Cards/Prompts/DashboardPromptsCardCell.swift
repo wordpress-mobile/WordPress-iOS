@@ -77,7 +77,6 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // This provides a quick way to toggle in flux features.
     // Since they probably will not be included in Blogging Prompts V1,
     // they are disabled by default.
-    private let removeFromDashboardEnabled = false
     private let sharePromptEnabled = false
 
     // Used to present:
@@ -169,7 +168,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         button.setTitle(answerInfoText, for: .normal)
         button.titleLabel?.font = WPStyleGuide.BloggingPrompts.answerInfoButtonFont
         button.setTitleColor(
-            FeatureFlag.bloggingPromptsEnhancements.enabled
+            FeatureFlag.bloggingPromptsSocial.enabled
             ? WPStyleGuide.BloggingPrompts.buttonTitleColor
             : WPStyleGuide.BloggingPrompts.answerInfoButtonColor,
             for: .normal
@@ -182,7 +181,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
     @objc
     private func didTapAnswerInfoButton() {
-        guard FeatureFlag.bloggingPromptsEnhancements.enabled,
+        guard FeatureFlag.bloggingPromptsSocial.enabled,
         let promptID = prompt?.promptID else {
             return
         }
@@ -301,8 +300,8 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
             .skip(skipMenuTapped)
         ]
 
-        if removeFromDashboardEnabled {
-            return [defaultItems, [.learnMore(learnMoreTapped), .remove(removeMenuTapped)]]
+        if FeatureFlag.bloggingPromptsEnhancements.enabled {
+            return [defaultItems, [.learnMore(learnMoreTapped)], [.remove(removeMenuTapped)]]
         }
 
         return [defaultItems, [.learnMore(learnMoreTapped)]]
@@ -352,12 +351,13 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
+              blog.isAccessibleThroughWPCom(),
               let promptsService = BloggingPromptsService(blog: blog),
-              let settings = promptsService.localSettings else {
+              let siteID = blog.dotComID?.stringValue else {
             return false
         }
 
-        let shouldDisplayCard = settings.promptRemindersEnabled || settings.isPotentialBloggingSite
+        let shouldDisplayCard = UserPersistentStoreFactory.instance().promptsEnabledSettings[siteID] ?? false
         guard let todaysPrompt = promptsService.localTodaysPrompt else {
             // If there is no cached prompt, it can't have been skipped. So show the card.
             return shouldDisplayCard
@@ -499,8 +499,23 @@ private extension DashboardPromptsCardCell {
     }
 
     func removeMenuTapped() {
+        guard let siteID = blog?.dotComID?.stringValue else {
+            return
+        }
         WPAnalytics.track(.promptsDashboardCardMenuRemove)
-        // TODO.
+        updatePromptSettings(for: siteID, removed: true)
+        let notice = Notice(title: Strings.promptRemovedTitle, message: Strings.promptRemovedSubtitle, feedbackType: .success, actionTitle: Strings.undoSkipTitle) { [weak self] _ in
+            self?.updatePromptSettings(for: siteID, removed: false)
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func updatePromptSettings(for siteID: String, removed: Bool) {
+        let repository = UserPersistentStoreFactory.instance()
+        var promptsEnabledSettings = repository.promptsEnabledSettings
+        promptsEnabledSettings[siteID] = !removed
+        repository.promptsEnabledSettings = promptsEnabledSettings
+        presenterViewController?.reloadCardsLocally()
     }
 
     func learnMoreTapped() {
@@ -547,6 +562,12 @@ private extension DashboardPromptsCardCell {
         static let errorTitle = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         static let promptSkippedTitle = NSLocalizedString("Prompt skipped", comment: "Title of the notification presented when a prompt is skipped")
         static let undoSkipTitle = NSLocalizedString("Undo", comment: "Button in the notification presented when a prompt is skipped")
+        static let promptRemovedTitle = NSLocalizedString("prompts.notification.removed.title",
+                                                          value: "Blogging Prompts hidden",
+                                                          comment: "Title of the notification when prompts are hidden from the dashboard card")
+        static let promptRemovedSubtitle = NSLocalizedString("prompts.notification.removed.subtitle",
+                                                             value: "Visit Site Settings to turn back on",
+                                                             comment: "Subtitle of the notification when prompts are hidden from the dashboard card")
     }
 
     struct Style {
@@ -585,7 +606,7 @@ private extension DashboardPromptsCardCell {
             case .skip:
                 return NSLocalizedString("Skip for today", comment: "Menu title to skip today's prompt.")
             case .remove:
-                return NSLocalizedString("Remove from dashboard", comment: "Destructive menu title to remove the prompt card from the dashboard.")
+                return NSLocalizedString("Turn off prompts", comment: "Destructive menu title to remove the prompt card from the dashboard.")
             case .learnMore:
                 return NSLocalizedString("Learn more", comment: "Menu title to show the prompts feature introduction modal.")
             }

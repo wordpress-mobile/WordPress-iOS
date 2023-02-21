@@ -6,6 +6,6 @@ WordPress blogunuzu veya web sitenizi doğrudan iOS cihazınızdan yönetin veya
 
 İOS için WordPress, WordPress.com'u ve WordPress 4.0 veya daha üstünü çalıştıran, kendi kendine barındırılan WordPress.org sitelerini destekler.
 
-Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org/ adresindeki forumları ziyaret edin veya @WordPressiOS etiketiyle bize tweet atın.
+Uygulamayla ilgili yardım mı gerekli? https://wordpress.org/support/forum/mobile/ adresindeki forumları ziyaret edin veya @WordPressiOS etiketiyle bize tweet atın.
 
 Kaliforniya'daki Kullanıcılar Gizlilik Bildirimi'ni https://automattic.com/privacy/#california-consumer-privacy-act-ccpa adresinden görüntüleyebilirler.

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 10:54:07+0000 */
+/* Translation-Revision-Date: 2023-02-15 09:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ja_JP */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "ブログの読者";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "ブログ";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "ブログ投稿のリマインダー";
@@ -3773,7 +3776,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "プラグイン無効化中。自動更新オン";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "プロンプトが含まれます";
+"Include a Blogging Prompt" = "ブログのプロンプトを含める";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "サイトに含まれています";
@@ -3874,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "インテリアデザイン";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "プロンプトのご紹介";
+"Introducing Blogging Prompts" = "ブログのプロンプトのご紹介";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "ストーリー投稿の紹介";
@@ -6128,9 +6131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "ブロックを削除";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "ダッシュボードから削除";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "統計概要から削除";
 
@@ -7034,6 +7034,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "スキップ";
+
+/* Menu title to skip today's prompt. */
+"Skip for today" = "今日にスキップ";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "スラッシュインサーターの結果";
@@ -8129,6 +8132,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "サイトアドレスで試す";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "プロンプトをオフにする";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "サイト通知を無効にする";
@@ -9337,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "先ほど使用したようなリンクでいつでもログインできますが、ご希望の場合はパスワードを設定することもできます。";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "ブログのプロンプトやリマインダーは、「参加サイト」>「設定」>「ブログ」でいつでもコントロールできます";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "ブログのプロンプトやリマインダーは、「参加サイト」、「設定」、「ブログ」でいつでもコントロールできます";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "1つのサイトに関する統計を iOS の「今日」\/「通知センター」ビューに表示することができます。";
 
@@ -9348,12 +9360,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "トピックを追加すると、特定の内容に関する投稿をフォローできます。";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "「参加サイト > 設定 > ブログ投稿のリマインダー」でいつでも詳細を確認し、リマインダーを設定できます。";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "「参加サイト」、「設定」、「ブログ投稿のリマインダー」でいつでも詳細を確認し、リマインダーを設定できます。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "各投稿のこれらの設定を上書きできます。";
@@ -9821,6 +9827,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "このリンクを使用すると、チームメンバーを1人ずつではなく一括で招待できます。 この URL にアクセスすると、だれでも組織に登録されます。リンクをだれから受け取ったかは関係ないため、信頼できる人と共有するようにしてください。";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "下書きとして保存";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "下書きとして保存";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "下書きとして保存";
 
@@ -9881,6 +9893,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "詳細は jetpack.com をご覧ください";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "新しいコメントや「いいね」、表示数などの通知を受信できます。";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "お気に入りのサイトやコミュニティを見つけてフォローし、コンテンツを共有できます。";
+
+/* Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "便利な統計概要と包括的な統計情報で、トラフィックの成長を確認できます。";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "統計情報と統計概要";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack を使用すれば、WordPress でさらなる機能を利用できます。 切り替えは無料で、数分で終わります。";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Jetpack で WordPress をレベルアップ";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "通知に進む";
 
@@ -9894,7 +9924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 機能が移動しました。";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "端末でリアルタイムの通知を引き続き受信するには、Jetpack アプリに切り替えてください。";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "お使いの端末でリアルタイムの通知を引き続き受信するには、Jetpack アプリに移行してください。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Jetpack アプリで通知を受け取る";
@@ -9944,6 +9974,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Reader に進む";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "Jetpack モバイルアプリは、Jetpack プラグインと連携させて利用できます。 今すぐ乗り換えて、統計、Reader、通知などをご利用ください。";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "ご利用のサイトには Jetpack プラグインが設定されています";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Jetpack なしで続行";
 
@@ -9964,6 +10000,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "さらに詳しく";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "サイトの可能性を十分に引き出すことができます。 Jetpack で統計、Reader、通知などを利用できます。";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Jetpack に切り替える";
@@ -10070,6 +10109,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "後で決める";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "アラートが表示されたら「許可する」をタップして、すべての WordPress の通知を引き続き受信します。";
+
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "許可する";
 
@@ -10123,6 +10165,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
+
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "「サイトの設定」に移動して表示をオンに戻す";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "ブログのプロンプトが非表示";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "閉じる";
@@ -10186,6 +10234,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共有エラー";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "プロンプトを表示";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "リマインダー";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "過去7日間";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "前の7日間";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*増加";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*減少";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "前の7日間と同じ";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "過去7日間の表示数は、その前の7日間よりも%@人増えました。\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "過去7日間の表示数は、その前の7日間よりも%@人減りました。\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "過去7日間の表示数は、その前の7日間と同じでした。\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "過去7日間";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "前の7日間";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "過去7日間の訪問者数は、その前の7日間よりも%@人増えました。\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "過去7日間の訪問者数は、その前の7日間よりも%@人減りました。\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "過去7日間の訪問者数は、その前の7日間と同じでした。\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "コメント";
@@ -10277,6 +10370,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "過去最高の表示数";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "全期間の統計情報を読み込めません。";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "サイトを作成または追加して、全期間の統計情報を表示します。";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "投稿";
 
@@ -10298,6 +10397,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Jetpack にログインして今日の統計情報を確認しましょう。";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "今週の統計情報を読み込めません。";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "サイトを作成または追加して、今週の統計情報を表示します。";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "今週のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";
 
@@ -10310,11 +10415,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "コメント";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "統計情報は Jetpack アプリに移動しました。わずかな時間で無料で移行できます。";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "いいね";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "サイト統計情報を読み込めません。";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "サイト統計情報を読み込めません。";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "今日の統計情報を読み込めません。";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "サイトを作成または追加して、今日の統計情報を表示します。";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "今日のアクティビティを確認して WordPress サイトの最新情報を常に把握しましょう。";

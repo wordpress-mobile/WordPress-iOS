@@ -52,10 +52,15 @@ struct ReaderPostMenuButtonTitles {
     static let blockSite = NSLocalizedString("Block this site", comment: "The title of a button that triggers blocking a site from the user's reader.")
     static let blockUser = NSLocalizedString(
         "reader.post.menu.block.user",
-        value: "Block user",
+        value: "Block this user",
         comment: "The title of a button that triggers blocking a user from the user's reader."
     )
     static let reportPost = NSLocalizedString("Report this post", comment: "The title of a button that triggers reporting of a post from the user's reader.")
+    static let reportPostAuthor = NSLocalizedString(
+        "reader.post.menu.report.user",
+        value: "Report this user",
+        comment: "The title of a button that triggers the reporting of a post's author."
+    )
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
     static let unfollow = NSLocalizedString("Unfollow site", comment: "Verb. An option to unfollow a site.")
@@ -251,6 +256,11 @@ struct ReaderPostMenuButtonTitles {
         return properties
     }
 
+    @objc open class func statsPropertiesForPostAuthor(_ post: ReaderPost, andValue value: AnyObject? = nil, forKey key: String? = nil) -> [AnyHashable: Any] {
+        var properties = Self.statsPropertiesForPost(post, andValue: value, forKey: key)
+        properties[WPAppAnalyticsKeyPostAuthorID] = post.authorID
+        return properties
+    }
 
     @objc open class func bumpPageViewForPost(_ post: ReaderPost) {
         // Don't bump page views for feeds else the wrong blog/post get's bumped
@@ -472,7 +482,7 @@ struct ReaderPostMenuButtonTitles {
         let notice = Notice(title: String(format: NoticeMessages.followSuccess, siteTitle),
                             message: NoticeMessages.enableNotifications,
                             actionTitle: NoticeMessages.enableButtonLabel) { _ in
-            let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            let service = ReaderTopicService(coreDataStack: ContextManager.shared)
             service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
                 WPAnalytics.track(.readerListNotificationEnabled)
             })

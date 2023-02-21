@@ -36,7 +36,7 @@ open class JetpackConnectionViewController: UITableViewController {
     @objc public convenience init(blog: Blog) {
         self.init(style: .insetGrouped)
         self.blog = blog
-        self.service = BlogJetpackSettingsService(managedObjectContext: blog.managedObjectContext!)
+        self.service = BlogJetpackSettingsService(coreDataStack: ContextManager.shared)
     }
 
     // MARK: - View Lifecycle
@@ -106,10 +106,8 @@ open class JetpackConnectionViewController: UITableViewController {
                                                success: { [weak self] in
                                                    self?.stopLoading()
                                                    if let blog = self?.blog {
-                                                       let context = ContextManager.sharedInstance().mainContext
-                                                       let service = BlogService(managedObjectContext: context)
+                                                       let service = BlogService(coreDataStack: ContextManager.sharedInstance())
                                                        service.remove(blog)
-                                                       try? context.save()
                                                        self?.delegate?.jetpackDisconnectedForBlog(blog)
                                                    } else {
                                                        self?.dismiss()

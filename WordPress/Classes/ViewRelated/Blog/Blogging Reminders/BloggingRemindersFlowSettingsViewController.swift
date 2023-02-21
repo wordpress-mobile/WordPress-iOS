@@ -187,7 +187,7 @@ class BloggingRemindersFlowSettingsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubviews([bloggingPromptsTitleStackView, bloggingPromptsDescription, bloggingPromptsSwitch])
-        view.isHidden = !FeatureFlag.bloggingPrompts.enabled
+        view.isHidden = !isBloggingPromptsEnabled
         return view
     }()
 
@@ -558,7 +558,7 @@ private extension BloggingRemindersFlowSettingsViewController {
     }
 
     func configureBloggingPromptsConstraints() {
-        guard FeatureFlag.bloggingPrompts.enabled else {
+        guard isBloggingPromptsEnabled else {
             NSLayoutConstraint.activate([
                 bloggingPromptsView.widthAnchor.constraint(equalToConstant: .zero),
                 bloggingPromptsView.heightAnchor.constraint(equalToConstant: .zero),
@@ -664,8 +664,12 @@ extension BloggingRemindersFlowSettingsViewController: ChildDrawerPositionable {
 
 private extension BloggingRemindersFlowSettingsViewController {
 
+    var isBloggingPromptsEnabled: Bool {
+        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom()
+    }
+
     var promptRemindersEnabled: Bool {
-        guard FeatureFlag.bloggingPrompts.enabled,
+        guard isBloggingPromptsEnabled,
               let settings = bloggingPromptsService?.localSettings else {
             return false
         }
@@ -680,7 +684,7 @@ private extension BloggingRemindersFlowSettingsViewController {
     ///
     /// - Returns: A closure used to reset changes made to the prompt settings. Returns nil if the update condition is not fulfilled.
     func temporarilyUpdatePromptSettings() -> (() -> Void)? {
-        guard FeatureFlag.bloggingPrompts.enabled,
+        guard isBloggingPromptsEnabled,
               bloggingPromptsSwitch.isOn || (promptRemindersEnabled && !bloggingPromptsSwitch.isOn),
               let settings = bloggingPromptsService?.localSettings,
               let context = settings.managedObjectContext else {
@@ -725,7 +729,7 @@ private extension BloggingRemindersFlowSettingsViewController {
     ///
     /// - Parameter completion: Closure called when the process completes.
     func syncPromptsScheduleIfNeeded(_ completion: @escaping () -> Void) {
-        guard FeatureFlag.bloggingPrompts.enabled,
+        guard isBloggingPromptsEnabled,
               let service = bloggingPromptsService,
               let settings = service.localSettings else {
             completion()
@@ -754,7 +758,7 @@ private enum TextContent {
     static let nextButtonTitle = NSLocalizedString("Notify me", comment: "Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications.")
 
     static let updateButtonTitle = NSLocalizedString("Update", comment: "(Verb) Title of button confirming updating settings for blogging reminders.")
-    static let bloggingPromptsTitle = NSLocalizedString("Include prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
+    static let bloggingPromptsTitle = NSLocalizedString("Include a Blogging Prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
     static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
     static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
 }

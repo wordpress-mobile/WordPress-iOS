@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
-                               [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                               [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                                    Blog *blog = (Blog *)[context existingObjectWithID:blogID error:nil];
                                    if (!blog) {
                                        if (failure) {
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithPaging:paging
                             success:^(NSArray<RemotePostCategory *> *categories) {
-                                [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                                [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                                     Blog *blog = (Blog *)[context existingObjectWithID:blogID error:nil];
                                     if (!blog) {
                                         if (failure) {
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     [self mergeCategories:categories forBlog:blog inContext:context];
                                 } completion: ^{
                                     if (success) {
-                                        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                        NSManagedObjectContext *context = [self.coreDataStack mainContext];
                                         NSArray *postCategories = [categories wp_map:^id(RemotePostCategory *obj) {
                                             return [PostCategory lookupWithBlogObjectID:blogID categoryID:obj.categoryID inContext:context];
                                         }];
@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
                            if (success) {
                                PostCategory *newCategory = [PostCategory lookupWithBlogObjectID:blogObjectID
                                                                            categoryID:receivedCategory.categoryID
-                                                                            inContext:[[ContextManager sharedInstance] mainContext]];
+                                                                            inContext:[self.coreDataStack mainContext]];
                                success(newCategory);
                            }
                            if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {

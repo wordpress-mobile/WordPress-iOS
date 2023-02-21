@@ -83,6 +83,7 @@ import Foundation
     case readerToggleCommentNotifications
     case readerMoreToggleFollowConversation
     case readerPostReported
+    case readerPostAuthorReported
     case readerArticleDetailMoreTapped
     case readerSharedItem
     case readerSuggestedSiteVisited
@@ -405,6 +406,7 @@ import Foundation
     case promptsNotificationTapped
     case promptsNotificationDismissed
     case promptsOtherAnswersTapped
+    case promptsSettingsShowPromptsTapped
 
     // Jetpack branding
     case jetpackPoweredBadgeTapped
@@ -424,6 +426,23 @@ import Foundation
     case jetpackBrandingMenuCardRemindLater
     case jetpackBrandingMenuCardContextualMenuAccessed
     case jetpackFeatureIncorrectlyAccessed
+    case jetpackInstallPluginModalViewed
+    case jetpackInstallPluginModalDismissed
+    case jetpackInstallPluginModalInstallTapped
+
+    // Jetpack full plugin installation for individual sites
+    case jetpackInstallFullPluginViewed
+    case jetpackInstallFullPluginCancelTapped
+    case jetpackInstallFullPluginInstallTapped
+    case jetpackInstallFullPluginRetryTapped
+    case jetpackInstallFullPluginCompleted
+    case jetpackInstallFullPluginDoneTapped
+    case jetpackInstallFullPluginCardViewed
+    case jetpackInstallFullPluginCardTapped
+    case jetpackInstallFullPluginCardDismissed
+
+    // Help & Support
+    case supportOpenMobileForumTapped
 
     /// A String that represents the event
     var value: String {
@@ -452,7 +471,7 @@ import Foundation
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
-        // Editor    
+        // Editor
         case .editorPostPublishTap:
             return "editor_post_publish_tapped"
         case .editorPostPublishDismissed:
@@ -565,6 +584,8 @@ import Foundation
             return "reader_more_toggle_follow_conversation"
         case .readerPostReported:
             return "reader_post_reported"
+        case .readerPostAuthorReported:
+            return "reader_post_author_reported"
         case .readerArticleDetailMoreTapped:
             return "reader_article_detail_more_tapped"
         case .readerSharedItem:
@@ -1117,6 +1138,8 @@ import Foundation
             return "blogging_reminders_notification_prompt_dismissed"
         case .promptsOtherAnswersTapped:
             return "blogging_prompts_my_site_card_view_answers_tapped"
+        case .promptsSettingsShowPromptsTapped:
+            return "blogging_prompts_settings_show_prompts_tapped"
 
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:
@@ -1153,7 +1176,36 @@ import Foundation
             return "remove_feature_card_menu_accessed"
         case .jetpackFeatureIncorrectlyAccessed:
             return "jetpack_feature_incorrectly_accessed"
+        case .jetpackInstallPluginModalViewed:
+            return "jp_install_full_plugin_onboarding_modal_viewed"
+        case .jetpackInstallPluginModalDismissed:
+            return "jp_install_full_plugin_onboarding_modal_dismissed"
+        case .jetpackInstallPluginModalInstallTapped:
+            return "jp_install_full_plugin_onboarding_modal_install_tapped"
 
+        // Jetpack full plugin installation for individual sites
+        case .jetpackInstallFullPluginViewed:
+            return "jp_install_full_plugin_flow_viewed"
+        case .jetpackInstallFullPluginInstallTapped:
+            return "jp_install_full_plugin_flow_install_tapped"
+        case .jetpackInstallFullPluginCancelTapped:
+            return "jp_install_full_plugin_flow_cancel_tapped"
+        case .jetpackInstallFullPluginRetryTapped:
+            return "jp_install_full_plugin_flow_retry_tapped"
+        case .jetpackInstallFullPluginCompleted:
+            return "jp_install_full_plugin_flow_success"
+        case .jetpackInstallFullPluginDoneTapped:
+            return "jp_install_full_plugin_flow_done_tapped"
+        case .jetpackInstallFullPluginCardViewed:
+            return "jp_install_full_plugin_card_viewed"
+        case .jetpackInstallFullPluginCardTapped:
+            return "jp_install_full_plugin_card_tapped"
+        case .jetpackInstallFullPluginCardDismissed:
+            return "jp_install_full_plugin_card_dismissed"
+
+        // Help & Support
+        case .supportOpenMobileForumTapped:
+            return "support_open_mobile_forum_tapped"
         } // END OF SWITCH
     }
 

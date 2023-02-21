@@ -265,6 +265,162 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(accounts(), ["First User", "Second User"])
     }
 
+    func testSaveUsingBlockWithNestedCallsUsingAsyncAPI() {
+        let contextManager = ContextManager.forTesting()
+        let accounts: () -> Set<String> = {
+            let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
+            return Set(all.map { $0.username! })
+        }
+        XCTAssertTrue(accounts().isEmpty)
+
+        let saveOperations = [
+            self.expectation(description: "First User is saved"),
+            self.expectation(description: "Second User is saved"),
+        ]
+
+        contextManager.performAndSave({
+            let account = WPAccount(context: $0)
+            account.userID = 1
+            account.username = "First User"
+
+            contextManager.performAndSave({
+                let account = WPAccount(context: $0)
+                account.userID = 2
+                account.username = "Second User"
+            }, completion: {
+                saveOperations[1].fulfill()
+            }, on: .main)
+        }, completion: {
+            saveOperations[0].fulfill()
+        }, on: .main)
+
+        wait(for: saveOperations, timeout: 1)
+        XCTAssertEqual(accounts(), ["First User", "Second User"])
+    }
+
+    func testConcurrencyAsyncAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "AsyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            contextManager.performAndSave({ context in
+                do {
+                    try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+                } catch {
+                    XCTFail("Failed to create/update the account: \(error)")
+                }
+            }, completion: { expectation.fulfill() }, on: .main)
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
+    func testConcurrencyAsyncThrowingAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "AsyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            contextManager.performAndSave({ context in
+                try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+            }, completion: { _ in expectation.fulfill() }, on: .main)
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
+    func testConcurrencySyncAPI() throws {
+        let contextManager = ContextManager.forTesting()
+
+        let iterations = 50
+        let username = "SyncAPI"
+
+        var allCompleted: [XCTestExpectation] = []
+        for iter in 1...iterations {
+            let expectation = self.expectation(description: "Sync API test iteration \(iter) completed")
+            allCompleted.append(expectation)
+            DispatchQueue.global().async {
+                contextManager.performAndSave { context in
+                    do {
+                        try self.createOrUpdateAccount(username: username, newToken: "new-token", in: context)
+                    } catch {
+                        XCTFail("Failed to create/update the account: \(error)")
+                    }
+                }
+                expectation.fulfill()
+            }
+        }
+        wait(for: allCompleted, timeout: 1)
+
+        let request = WPAccount.fetchRequest()
+        request.predicate = NSPredicate(format: "username = %@", username)
+        XCTExpectFailure("See the comment in `ContextManager.writerQueue` for details")
+        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+    }
+
+    /// This test case documents a pitfall in `ContextManager.performAndSave(_:)`, where the
+    /// saved changes aren't immediately accessible on the objects in the main context. This
+    /// issue doesn't present in `performAndSave(_:completion:on:)`.
+    func testUpdateUsingSyncAPI() throws {
+        // First, insert an account into the database.
+        let contextManager = ContextManager.forTesting()
+        contextManager.performAndSave { context in
+            let account = WPAccount(context: context)
+            account.userID = 1
+            account.username = "First User"
+        }
+
+        // Fetch the account in the main context
+        let account = try WPAccount.lookup(withUserID: 1, in: contextManager.mainContext)
+        XCTAssertEqual(account?.username, "First User")
+
+        // Update the account in a background context using the `performAndSave` API, which saves the changes synchronously.
+        var theBackgroundContext: NSManagedObjectContext? = nil
+        contextManager.performAndSave { context in
+            theBackgroundContext = context
+            guard let objectID = account?.objectID, let accountInContext = try? context.existingObject(with: objectID) as? WPAccount else {
+                XCTFail("Can't find the account")
+                return
+            }
+            accountInContext.username = "Updated"
+            XCTAssertEqual(theBackgroundContext?.hasChanges, true)
+        }
+
+        XCTAssertEqual(theBackgroundContext?.hasChanges, false, "The background context should be saved when `performAndSave` returns")
+
+        XCTExpectFailure("The account object in the main context doesn't get the updated value immediately")
+        XCTAssertEqual(account?.username, "Updated")
+
+        // But eventually (probably in next run loop), it will get the updated value.
+        expect(account?.username).toEventually(equal("Updated"))
+
+        // The above issue doesn't present in the async version of `performAndSave` API
+        contextManager.performAndSave({ context in
+            guard let objectID = account?.objectID, let accountInContext = try? context.existingObject(with: objectID) as? WPAccount else {
+                XCTFail("Can't find the account")
+                return
+            }
+            accountInContext.username = "Updated Again"
+        }, completion: {
+            XCTAssertEqual(account?.username, "Updated Again", "The account object in the main context gets the updated value when the completion block is called")
+        }, on: .main)
+    }
+
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
@@ -280,6 +436,15 @@ class ContextManagerTests: XCTestCase {
         blog.url = "http://test.blog/"
         blog.account = account
         return blog
+    }
+
+    private func createOrUpdateAccount(username: String, newToken: String, in context: NSManagedObjectContext) throws {
+        var account = try WPAccount.lookup(withUsername: username, in: context)
+        if account == nil {
+            account = WPAccount(context: context)
+            account?.username = username
+        }
+        account?.authToken = newToken
     }
 
     /// Insert data into `storeURL` using the context object provided by this function.

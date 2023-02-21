@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-24 13:46:39+0000 */
+/* Translation-Revision-Date: 2023-02-03 06:00:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pt_BR */
@@ -3772,9 +3772,6 @@ translators: Block name. %s: The localized block name */
 /* The plugin is not active on the site and has enabled automatic updates */
 "Inactive, Autoupdates on" = "Inativo, atualizações automáticas ligadas";
 
-/* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Incluir sugestão";
-
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluído com o site";
 
@@ -3872,9 +3869,6 @@ translators: Block name. %s: The localized block name */
 
 /* Interior Design site intent topic */
 "Interior Design" = "Design de interiores";
-
-/* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Apresentando Sugestões";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Apresentando os posts de Story";
@@ -6127,9 +6121,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Remove block" = "Remover bloco";
-
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Remover do painel";
 
 /* Option to remove Insight from view. */
 "Remove from insights" = "Remover do resumo";
@@ -9352,12 +9343,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Você pode seguir posts de um assunto específico adicionando um tópico.";
 
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Você pode ler mais sobre lembretes e configurá-los a qualquer momento em Meu site > Configurações > Lembretes de publicação.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Você pode saber mais e configurar lembretes a qualquer momento em Meu site, Configurações, Lembretes de publicação.";
-
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "É possível substituir essas configurações para posts individuais.";
 
@@ -9705,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Experimente já";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "sugestõesdiárias";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "toque duas vezes para alterar a unidade";
 
@@ -9893,9 +9875,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Saiba mais em br.jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Acompanhe o crescimento de seu site com análises úteis e estatísticas fáceis de entender.";
 
 /* Name of the Statistics feature. */
@@ -9918,9 +9898,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Recursos do Jetpack foram movidos.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Mude para o aplicativo Jetpack para continuar recebendo notificações em tempo real no seu dispositivo.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Receba notificações com o aplicativo Jetpack";
@@ -10231,9 +10208,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 dias anteriores";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.
-   Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* maior do que os sete dias anteriores";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* a menos que nos sete dias anteriores";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "As mesmas dos sete dias anteriores";
@@ -10387,9 +10366,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Curtidas";
-
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Não foi possível carregar as estatísticas do site.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Fique por dentro das atividades diárias no seu site WordPress.";

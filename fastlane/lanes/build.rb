@@ -150,7 +150,7 @@ platform :ios do
 
     version = options[:beta_release] ? ios_get_build_version : ios_get_app_version
     create_release(
-      repository: GHHELPER_REPO,
+      repository: GITHUB_REPO,
       version: version,
       release_notes_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'release_notes.txt'),
       release_assets: archive_zip_path.to_s,

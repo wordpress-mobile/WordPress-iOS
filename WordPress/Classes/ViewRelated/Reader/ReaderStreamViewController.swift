@@ -21,14 +21,6 @@ import Combine
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
-    // MARK: - Dependencies
-
-    private lazy var postsLoader: ReaderPostsLoader = {
-        let context = coreDataStack.mainContext
-        let service = ReaderPostService(managedObjectContext: context)
-        return ReaderPostsLoader(postService: service)
-    }()
-
     // MARK: - Micro Controllers
 
     /// Object responsible for encapsulating and facililating the site blocking logic.
@@ -42,6 +34,10 @@ import Combine
 
     /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
     private let sharingController = PostSharingController()
+
+    // MARK: - Services
+
+    private lazy var readerPostService = ReaderPostService(managedObjectContext: coreDataStack.mainContext)
 
     // MARK: - Properties
 
@@ -210,6 +206,8 @@ import Combine
 
     let ghostableTableView = UITableView()
 
+    private var cancellables = Set<AnyCancellable>()
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -282,9 +280,7 @@ import Combine
             return nil
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
-        guard let topic = service.find(withPath: path) else {
+        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) else {
             return nil
         }
 
@@ -365,6 +361,14 @@ import Combine
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
+
+        // Make sure the header is in-sync with the `readerTopic` object if it exists.
+        readerTopic?
+            .objectWillChange
+            .sink { [weak self] _ in
+                self?.updateStreamHeaderIfNeeded()
+            }
+            .store(in: &cancellables)
     }
 
 
@@ -449,7 +453,7 @@ import Combine
             displayLoadingStream()
         }
 
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
@@ -486,7 +490,7 @@ import Combine
             displayLoadingStream()
         }
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.tagTopicForTag(withSlug: tagSlug,
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
@@ -798,21 +802,14 @@ import Combine
     }
 
     private func removeBlockedPosts() {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext) else {
+        guard let topic = readerTopic as? ReaderSiteTopic,
+              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
+              let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
+        else {
             return
         }
-
-        // Blocked site predicate
-        var predicates = [NSPredicate]()
-        if let topic = readerTopic as? ReaderSiteTopic,
-           let siteBlocking = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext)
-        {
-            predicates.append(NSPredicate(format: "siteID = %@", siteBlocking.blogID))
-        }
-
-        // Perform request
         let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
-        request.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+        request.predicate = NSPredicate(format: "siteID = %@", blocked.blogID)
         let result = (try? viewContext.fetch(request)) ?? []
         for post in result {
             viewContext.deleteObject(post)
@@ -844,8 +841,9 @@ import Combine
 
     /// Update the post card when a site is blocked from post details.
     ///
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost) {
-        guard let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+        guard case .success = result,
+              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
               let indexPath = content.indexPath(forObject: post)
         else {
             return
@@ -1101,8 +1099,8 @@ import Combine
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
-                let service = ReaderPostService(managedObjectContext: context)
-                service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
+                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: Date(), forceRetry: true, success: success, failure: failure)
+//                service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
             }
         }
     }
@@ -1223,7 +1221,7 @@ import Combine
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
-                self.postsLoader.fetchPosts(for: topic, earlierThan: sortDate, success: success, failure: failure)
+                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: sortDate, success: success, failure: failure)
             }
         }
     }
@@ -1348,7 +1346,7 @@ import Combine
             generator.notificationOccurred(.success)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forTag: topic, success: {
             completion?(true)
         }, failure: { (error: Error?) in
@@ -1362,7 +1360,7 @@ import Combine
             ReaderSubscribingNotificationAction().execute(for: siteID, context: viewContext, subscribe: false)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: topic, success: { follow in
             ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)
@@ -1387,8 +1385,6 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
             self?.updateStreamHeaderIfNeeded()
             completion()
         }
-
-        updateStreamHeaderIfNeeded()
     }
 }
 
@@ -1629,6 +1625,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         && !syncHelper.isSyncing
         && !cleanupAndRefreshAfterScrolling
         && !siteBlockingController.isBlockingPosts
+        && !readerPostService.isSilentlyFetchingPosts
         if shouldLoadMoreItems {
             syncHelper.syncMoreContent()
         }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 15:54:07+0000 */
+/* Translation-Revision-Date: 2023-02-15 11:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: zh_CN */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "博客查看者";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "撰写博客";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "博客发布提醒";
@@ -3773,7 +3776,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "无效，自动更新已启用";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "包括提示";
+"Include a Blogging Prompt" = "推出博客提示功能";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "包含在站点中";
@@ -3874,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "室内设计";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "提示功能简介";
+"Introducing Blogging Prompts" = "隆重推出博客提示功能";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "故事文章简介";
@@ -6128,9 +6131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "移除区块";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "从仪表盘中移除";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "从数据分析中删除";
 
@@ -7034,6 +7034,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "跳过";
+
+/* Menu title to skip today's prompt. */
+"Skip for today" = "跳过今天";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜杠插入器结果";
@@ -8129,6 +8132,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "试试站点地址";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "关闭提示";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "关闭站点通知";
@@ -9337,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "通常情况下，您可以随时使用刚刚用过的链接登录，但如果您愿意，也可以设置密码。";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "您随时可以访问“我的站点”>“设置”>“博客”，控制博客提示和提醒。";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "您随时可以访问“我的站点”、“设置”、“博客”，控制博客提示和提醒。";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "您可以在 iOS 今天\/通知中心视图显示单个站点的统计资料。";
 
@@ -9348,12 +9360,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "您可以通过添加主题的方式来关注特定主题的文章。";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "您可以在“我的站点”>“设置”>“博客提醒”中了解更多信息并随时设置提醒。";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "您可以在“我的站点”、“设置”、“博客提醒”中了解详情并随时设置提醒。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
@@ -9821,6 +9827,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "使用此链接请团队成员加入，而不必逐个邀请团队成员。 使用此 URL 的任何人都可以注册您的组织（即使他们收到了其他人的链接），因此请确保与值得信任的人共享。";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "保存为草稿";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "保存为草稿";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "保存为草稿";
 
@@ -9878,6 +9890,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "请访问 jetpack.com 以了解详情";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "接收有关新评论、点赞、查看等内容的通知。";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "查找并关注您喜欢的站点和社区，并分享您的内容。";
+
+/* Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "借助有用的数据分析和全面的统计信息，观察您的流量增长情况。";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "统计信息与数据分析";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "有了 Jetpack，您可以通过自己的 WordPress 站点做更多事情。 切换免费，只需一会儿。";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "借助Jetpack，进一步提升 WordPress 体验";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "继续以使用通知功能";
 
@@ -9889,9 +9919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack 功能已移动。";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "切换到 Jetpack 应用，以在设备上接收实时通知。";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "使用 Jetpack 应用获取通知";
@@ -9941,6 +9968,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "继续以使用阅读器功能";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "Jetpack 移动应用程序旨在与 Jetpack 插件配合使用。 立即切换，访问统计信息、阅读器、通知以及更多功能。";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "您的站点已安装 Jetpack 插件";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "继续，不使用 Jetpack";
 
@@ -9961,6 +9994,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "详细了解";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "释放站点的全部潜力。 通过 Jetpack，获取统计信息、阅读器和通知功能。";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "切换至 Jetpack";
@@ -10061,6 +10097,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "稍后再决定";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "出现警报时，点击“允许”可继续接收所有 WordPress 通知。";
+
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "允许";
 
@@ -10114,6 +10153,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
+
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "访问“站点设置”以重新打开";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "已隐藏博客提示";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "忽略";
@@ -10177,6 +10222,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "共享错误";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "显示提示";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "提醒";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "过去 7 天";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "上一个 7 天";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "比上一个 7 天高 *%1$@%2$@ (%3$@%%)*";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "比上一个 7 天低 *%1$@%2$@ (%3$@%%)*";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "与上一个 7 天相同";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "您过去 7 天的查看数比上一个 7 天高 %@。\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "您过去 7 天的查看数比上一个 7 天低 %@。\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "您过去 7 天的查看数与上一个 7 天相同 。\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "过去 7 天";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "上一个 7 天";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "您过去 7 天的访客数比上一个 7 天高 %@ 。\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "您过去 7 天的访客数比上一个 7 天低 %@。\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "您过去 7 天的访客数与上一个 7 天相同 。\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "评论数";
@@ -10268,6 +10358,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "最受欢迎的文章";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "无法加载所有时间的统计信息。";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "创建或添加站点以查看所有时间的统计信息。";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "文章";
 
@@ -10289,6 +10385,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "登录 Jetpack，查看今天的统计信息。";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "无法加载本周的统计信息。";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "创建或添加站点以查看本周的统计信息。";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "在您的WordPress网站上了解本周活动更新。";
 
@@ -10301,11 +10403,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "评论";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "统计信息功能已转移至 Jetpack 应用。您可以免费切换，并且只需 1 分钟即可完成。";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "赞";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "无法加载站点统计数据。";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "无法加载站点统计信息。";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "无法加载今天的统计信息。";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "创建或添加站点以查看今天的统计信息。";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "在您的WordPress网站上了解今日活动。";

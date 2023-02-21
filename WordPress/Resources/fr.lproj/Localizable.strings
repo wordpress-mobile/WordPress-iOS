@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-12 23:54:08+0000 */
+/* Translation-Revision-Date: 2023-02-15 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: fr */
@@ -3773,7 +3773,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "Inactif, mises à jour automatiques activées";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Inclure une incitation";
+"Include a Blogging Prompt" = "Inclure une invite pour bloguer";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inclus avec le site";
@@ -3874,7 +3874,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "Décoration d’intérieur";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Présentation de Prompts";
+"Introducing Blogging Prompts" = "Présentation des invites pour bloguer";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Présentation des publications de story";
@@ -6128,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "Retirer le bloc";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Supprimer du tableau de bord";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Retirer des thématiques";
 
@@ -7034,6 +7031,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection.
    Title for the Skip button in the Site Name Screen. */
 "Skip" = "Sauter";
+
+/* Menu title to skip today's prompt. */
+"Skip for today" = "Ignorer";
 
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Résultats de l’outil d’insertion de barre oblique";
@@ -8129,6 +8129,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Essayer avec l’adresse du site";
+
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Désactiver les invites";
 
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Désactivez les notifications";
@@ -9337,6 +9340,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Vous pouvez toujours vous connecter avec un lien de connexion comme celui que vous venez d’utiliser. Vous pouvez également définir un mot de passe si vous le préférez.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site > Réglages > Blogging";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site, Réglages, Blogging";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Vous pouvez afficher les statistiques d’un seul site dans la vue Aujourd’hui\/Centre de notification de l’iOS.";
 
@@ -9348,12 +9357,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Vous pouvez suivre des articles sur un sujet spécifique en ajoutant un sujet.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Pour en savoir plus et configurer des rappels à tout moment, accédez à Mon site > Réglages > Rappels de blog.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Pour en savoir plus et configurer des rappels à tout moment, accédez à Mon site, Réglages, Rappels de blog.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Vous pouvez remplacer ces paramètres pour des articles précis.";
@@ -9821,6 +9824,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Utilisez ce lien pour ajouter les membres de votre équipe sans avoir à les inviter individuellement. Toute personne ayant accès à ce lien sera en mesure de rejoindre votre organisation, même si le lien a été envoyé par quelqu’un d’autre que vous. Veillez à le partager uniquement avec des personnes de confiance.";
 
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack */
+"ios-jetpack-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
+
+/* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
+"ios-jetpack-sharesheet.CFBundleName" = "Enregistrer comme brouillon";
+
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress */
 "ios-sharesheet.CFBundleDisplayName" = "Enregistrer comme brouillon";
 
@@ -9881,6 +9890,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Lire la suite sur jetpack.com";
 
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Recevez des notifications pour tout nouveau commentaire, mention J’aime, vue, et plus encore.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Trouvez et suivez vos sites et communautés préférés, et partagez votre contenu.";
+
+/* Description of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Suivez l’évolution de votre trafic avec des tendances utiles et des statistiques complètes.";
+
+/* Name of the Statistics feature. */
+"jetpack.fullscreen.overlay.newUsers.stats.title" = "Statistiques et tendances";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.subtitle" = "Jetpack vous aide à en faire plus avec votre site WordPress. Passer d’une application à l’autre est gratuit et ne prend qu’une minute.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.newUsers.title" = "Booster WordPress avec Jetpack";
+
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Poursuivre vers la section Notifications";
 
@@ -9894,7 +9921,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Les fonctionnalités Jetpack ont été déplacées.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passez à l’application Jetpack pour continuer de recevoir des notifications en temps réel sur votre appareil.";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Passez à l’application Jetpack pour continuer à recevoir des notifications en temps réel sur votre appareil.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Obtenir des notifications avec l’application JetPack";
@@ -9944,6 +9971,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Reader screen. */
 "jetpack.fullscreen.overlay.reader.continue.title" = "Poursuivre vers la section Lecteur";
 
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.subtitle" = "L’application mobile Jetpack est conçue pour compléter l’extension Jetpack. Commencez à l’utiliser dès maintenant pour accéder à des statistiques, au lecteur, à des notifications et bien d’autres choses encore.";
+
+/* Title of a screen that prompts the user to switch the Jetpack app. */
+"jetpack.fullscreen.overlay.selfHosted.title" = "Votre site comporte l’extension Jetpack";
+
 /* Title of a button that navigates the user to the Jetpack app if installed, or to the app store. */
 "jetpack.fullscreen.overlay.siteCreation.continue.title" = "Continuer sans Jetpack";
 
@@ -9964,6 +9997,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.menuCard.learnMore" = "Lire la suite";
+
+/* Description inside a menu card prompting users to switch to the Jetpack app. */
+"jetpack.menuCard.newUsers.title" = "Libérez tout le potentiel de votre site. Profitez de statistiques, du lecteur, de notifications et de bien d’autres choses encore avec Jetpack.";
 
 /* Title of a button prompting users to switch to the Jetpack app. */
 "jetpack.menuCard.phaseFour.title" = "Passer à Jetpack";
@@ -10070,6 +10106,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Décider ultérieurement";
 
+/* Footer for the migration notifications screen. */
+"migration.notifications.footer" = "Lorsque l’alerte s’affiche à l’écran, sélectionnez Autoriser pour continuer de recevoir l’ensemble de vos notifications WordPress.";
+
 /* Highlighted text in the footer of the migration notifications screen. */
 "migration.notifications.footer.highlighted" = "Autoriser";
 
@@ -10123,6 +10162,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Options de l’image mise en avant";
+
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Consulter les réglages du site pour réactiver";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Invites pour bloguer masquées";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignorer";
@@ -10186,6 +10231,51 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Erreur de partage";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Afficher les invites";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Rappels";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 derniers jours";
+
+/* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
+"stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 jours précédents";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higher" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+
+/* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
+"stats.insights.label.totalLikes.same" = "Identique aux 7 jours précédents";
+
+/* Stats insights views higher than previous 7 days */
+"stats.insights.label.views.sevenDays.higher" = "Au cours des 7 derniers jours, vous avez enregistré %@ de vues en plus par rapport aux 7 jours précédents.\n";
+
+/* Stats insights views lower than previous 7 days */
+"stats.insights.label.views.sevenDays.lower" = "Au cours des 7 derniers jours, vous avez enregistré %@ de vues en moins par rapport aux 7 jours précédents.\n";
+
+/* Stats insights label shown when the user's view count is the same as the previous 7 days. */
+"stats.insights.label.views.sevenDays.same" = "Au cours des 7 derniers jours, vous avez enregistré autant de vues qu’au cours des 7 jours précédents.\n";
+
+/* Last 7-days legend label */
+"stats.insights.label.viewsVisitorsLastDays" = "7 derniers jours";
+
+/* Previous 7-days legend label */
+"stats.insights.label.viewsVisitorsPreviousDays" = "7 jours précédents";
+
+/* Stats insights visitors higher than previous 7 days */
+"stats.insights.label.visitors.sevenDays.higher" = "Au cours des 7 derniers jours, vous avez enregistré %@ de visiteurs en plus par rapport aux 7 jours précédents.\n";
+
+/* Stats insights visitors lower than previous 7 days */
+"stats.insights.label.visitors.sevenDays.lower" = "Au cours des 7 derniers jours, vous avez enregistré %@ de visiteurs en moins par rapport aux 7 jours précédents.\n";
+
+/* Stats insights label shown when the user's visitor count is the same as the previous 7 days. */
+"stats.insights.label.visitors.sevenDays.same" = "Au cours des 7 derniers jours, vous avez enregistré autant de visiteurs qu’au cours des 7 jours précédents.\n";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Commentaires";
@@ -10277,6 +10367,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Record de vues";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Impossible de charger toutes les statistiques.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Créez ou ajoutez un site pour voir toutes les statistiques.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Articles";
 
@@ -10298,6 +10394,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Connectez-vous à Jetpack pour voir les statistiques du jour.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Impossible de charger les statistiques de la semaine.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Créez ou ajoutez un site pour voir les statistiques de la semaine.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Gardez toujours un œil sur l'activité hebdomadaire de votre site WordPress.";
 
@@ -10310,11 +10412,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Commentaires";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Les statistiques sont désormais disponibles dans l’application Jetpack. Passer d’une application à l’autre est gratuit et ne prend qu’une minute.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "J’aime";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Impossible de charger les statistiques pour le site.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Impossible de charger les statistiques pour le site.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Impossible de charger les statistiques du jour.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Créez ou ajoutez un site pour voir les statistiques du jour.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Gardez toujours un œil sur l'activité quotidienne de votre site WordPress.";

@@ -80,6 +80,21 @@ final class ReaderPostBlockingController {
         )
     }
 
+    // MARK: -
+
+    private func removeBlockedPosts(authorID: NSNumber) {
+        let context = ContextManager.shared.mainContext
+        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
+        request.predicate = .init(format: "\(#keyPath(ReaderPost.authorID)) = %@", authorID)
+        guard let result = try? context.fetch(request) else {
+            return
+        }
+        for object in result {
+            context.deleteObject(object)
+        }
+        try? context.save()
+    }
+
     // MARK: - Handling Notifications
 
     @objc private func handleUserBlockingWillBegin(notification: Foundation.Notification) {
@@ -100,6 +115,7 @@ final class ReaderPostBlockingController {
             return
         }
         self.ongoingUsersBlocking.remove(authorID)
+        self.removeBlockedPosts(authorID: authorID)
         self.delegate?.readerSiteBlockingController(self, didFinishBlockingPostAuthor: post, result: result)
     }
 

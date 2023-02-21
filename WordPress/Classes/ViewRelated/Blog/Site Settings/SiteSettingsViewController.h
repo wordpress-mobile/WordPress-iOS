@@ -6,6 +6,7 @@
 
 typedef NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
+    SiteSettingsSectionBlogging,
     SiteSettingsSectionHomepage,
     SiteSettingsSectionAccount,
     SiteSettingsSectionEditor,

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "LocalCoreDataService.h"
+#import "CoreDataService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,31 +14,19 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class RemoteUser;
 @class CommentServiceRemoteFactory;
 
-@interface CommentService : LocalCoreDataService
+@interface CommentService : CoreDataService
 
 /// Initializes the instance with a custom service remote provider.
 ///
-/// @param context The context this instance will use for interacting with CoreData.
+/// @param coreDataStack The `CoreDataStack` this instance will use for interacting with CoreData.
 /// @param commentServiceRemoteFactory The factory this instance will use to get service remote instances from.
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
-                 commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
-
-+ (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
-
-// Create comment
-- (Comment * _Nullable)createCommentForBlog:(Blog *)blog;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+          commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
 // Create reply
-- (Comment * _Nullable)createReplyForComment:(Comment *)comment;
-
-// Restore draft reply
-- (Comment * _Nullable)restoreReplyForComment:(Comment *)comment;
+- (void)createReplyForComment:(Comment *)comment content:(NSString *)content completion:(void (^)(Comment *reply))completion;
 
 // Sync comments
-- (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^ _Nullable)(BOOL hasMore))success
-                    failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
-
 - (void)syncCommentsForBlog:(Blog *)blog
                  withStatus:(CommentStatusFilter)status
                     success:(void (^ _Nullable)(BOOL hasMore))success
@@ -54,10 +42,6 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 + (BOOL)shouldRefreshCacheFor:(Blog *)blog;
 
 // Load extra comments
-- (void)loadMoreCommentsForBlog:(Blog *)blog
-                        success:(void (^ _Nullable)(BOOL hasMore))success
-                        failure:(void (^ _Nullable)(NSError * _Nullable))failure;
-
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                      withStatus:(CommentStatusFilter)status
                         success:(void (^ _Nullable)(BOOL hasMore))success

@@ -377,8 +377,7 @@ class MeViewController: UITableViewController {
             return
         }
 
-        let context = ContextManager.shared.mainContext
-        let accountService = AccountService(managedObjectContext: context)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         let accountSettingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
 
         Task {

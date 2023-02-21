@@ -1,7 +1,7 @@
 import ScreenObject
 import XCTest
 
-/// This screen object is for the Support section. In the app, it's a modal we can get to from Me 
+/// This screen object is for the Support section. In the app, it's a modal we can get to from Me
 /// > Help & Support, or, when logged out, from Prologue > tap either continue button > Help.
 public class SupportScreen: ScreenObject {
 
