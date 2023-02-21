@@ -193,9 +193,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context performBlock:^{
-
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         // Get a the post in our own context
         NSError *error;
         ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
@@ -209,7 +207,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
 
         [self toggleLikedForPost:readerPost inContext:context success:success failure:failure];
-        [[ContextManager sharedInstance] saveContext:context];
     }];
 }
 
@@ -256,17 +253,16 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
     // Define failure block. Make sure rollback happens in the moc's queue,
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        [context performBlockAndWait:^{
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderPost *readerPostInContext = (ReaderPost *)[context existingObjectWithID:readerPost.objectID error:nil];
             // Revert changes on failure
-            readerPost.isLiked = oldValue;
-            readerPost.likeCount = oldCount;
-
-            [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
-                if (failure) {
-                    failure(error);
-                }
-            } onQueue:dispatch_get_main_queue()];
-        }];
+            readerPostInContext.isLiked = oldValue;
+            readerPostInContext.likeCount = oldCount;
+        } completion:^{
+            if (failure) {
+                failure(error);
+            }
+        } onQueue:dispatch_get_main_queue()];
     };
 
     // Call the remote service.
