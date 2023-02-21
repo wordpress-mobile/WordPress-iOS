@@ -1013,7 +1013,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic
 {
-    [self deletePostsInExcessOfMaxAllowedForTopic:topic inContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        [self deletePostsInExcessOfMaxAllowedForTopic:topic inContext:context];
+    }];
 }
 
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
@@ -1069,7 +1071,9 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
  */
 - (void)deletePostsFromBlockedSites
 {
-    [self deletePostsFromBlockedSitesInContext:self.managedObjectContext];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        [self deletePostsFromBlockedSitesInContext:context];
+    }];
 }
 
 - (void)deletePostsFromBlockedSitesInContext:(NSManagedObjectContext *)context
