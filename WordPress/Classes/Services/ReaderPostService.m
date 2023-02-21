@@ -487,25 +487,25 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 - (void)deletePostsWithNoTopic
 {
-    NSError *error;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+        NSError *error;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false"];
-    pred = [self predicateIgnoringSavedForLaterPosts:pred];
-    [fetchRequest setPredicate:pred];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false"];
+        pred = [self predicateIgnoringSavedForLaterPosts:pred];
+        [fetchRequest setPredicate:pred];
 
-    NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(@"%@, error fetching posts belonging to no topic: %@", NSStringFromSelector(_cmd), error);
-        return;
-    }
+        NSArray *arr = [context executeFetchRequest:fetchRequest error:&error];
+        if (error) {
+            DDLogError(@"%@, error fetching posts belonging to no topic: %@", NSStringFromSelector(_cmd), error);
+            return;
+        }
 
-    for (ReaderPost *post in arr) {
-        DDLogInfo(@"%@, deleting topicless post: %@", NSStringFromSelector(_cmd), post);
-        [self.managedObjectContext deleteObject:post];
-    }
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        for (ReaderPost *post in arr) {
+            DDLogInfo(@"%@, deleting topicless post: %@", NSStringFromSelector(_cmd), post);
+            [context deleteObject:post];
+        }
+    }];
 }
 
 - (void)clearSavedPostFlags
