@@ -39,7 +39,7 @@ final class BlazeCardView: UIView {
     }()
 
     private lazy var flameIcon: UIImageView = {
-        let image = UIImage(named: "blaze-flame")
+        let image = UIImage(named: "blaze-flame")?.imageFlippedForRightToLeftLayoutDirection()
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

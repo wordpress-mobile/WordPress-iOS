@@ -946,7 +946,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
         BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
                                                  accessibilityIdentifier:@"Blaze Row"
-                                                                   image:blazeIcon
+                                                                   image:[blazeIcon imageFlippedForRightToLeftLayoutDirection]
                                                               imageColor:nil
                                                            renderingMode:UIImageRenderingModeAlwaysOriginal
                                                                 callback:^{

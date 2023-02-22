@@ -30,9 +30,9 @@ import UIKit
     ///    the blaze site flow is triggered. If a valid value is passed, the blaze post flow is triggered.
     @objc(presentBlazeFlowInViewController:source:blog:postID:)
     static func presentBlazeFlow(in viewController: UIViewController,
-                                source: BlazeSource,
-                                blog: Blog,
-                                postID: NSNumber? = nil) {
+                                 source: BlazeSource,
+                                 blog: Blog,
+                                 postID: NSNumber? = nil) {
         let blazeViewController = BlazeWebViewController(source: source, blog: blog, postID: postID)
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
