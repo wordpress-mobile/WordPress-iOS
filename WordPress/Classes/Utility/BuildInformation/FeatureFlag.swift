@@ -142,7 +142,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .wordPressSupportForum:
-            return false
+            return true
         case .jetpackIndividualPluginSupport:
             return false
         case .blaze:
@@ -174,7 +174,7 @@ enum FeatureFlag: Int, CaseIterable, OverrideableFlag {
         case .jetpackMigrationPreventDuplicateNotifications:
             return "prevent_duplicate_notifs_remote_field"
         case .wordPressSupportForum:
-            return "enable_wordpress_support_forum"
+            return "wordpress_support_forum_remote_field"
         case .blaze:
             return "blaze"
             default:
