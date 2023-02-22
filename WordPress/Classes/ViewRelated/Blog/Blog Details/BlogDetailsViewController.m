@@ -941,14 +941,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
-                                      accessibilityIdentifier:@"Blaze Row"
-                                                        image:[UIImage imageNamed:@"icon-blaze"]
-                                                   imageColor:nil
-                                                renderingMode:UIImageRenderingModeAlwaysOriginal
-                                                     callback:^{
-                                                         [weakSelf showBlaze];
-                                                     }]];
+        BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                                 accessibilityIdentifier:@"Blaze Row"
+                                                                   image:[UIImage imageNamed:@"icon-blaze"]
+                                                              imageColor:nil
+                                                           renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                                callback:^{
+                                                                    [weakSelf showBlaze];
+                                                                }];
+        blazeRow.showsSelectionState = NO;
+        [rows addObject:blazeRow];
     }
     NSString *title = @"";
 
