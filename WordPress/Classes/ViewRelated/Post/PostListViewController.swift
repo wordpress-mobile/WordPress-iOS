@@ -784,7 +784,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func blaze(_ post: AbstractPost) {
-        // TODO: Show Blaze webview with post details filled out
+        BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: .postsList, blog: blog, postID: post.postID)
     }
 
     // MARK: - Searching
