@@ -36,6 +36,7 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
+CGFloat const BlogDetailGridiconSize = 24.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailQuickStartSectionHeaderHeight = 48.0;
 CGFloat const BlogDetailSectionTitleHeaderHeight = 40.0;
@@ -941,9 +942,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     
     if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
+        CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
+        UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
         BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
                                                  accessibilityIdentifier:@"Blaze Row"
-                                                                   image:[UIImage imageNamed:@"icon-blaze"]
+                                                                   image:blazeIcon
                                                               imageColor:nil
                                                            renderingMode:UIImageRenderingModeAlwaysOriginal
                                                                 callback:^{
