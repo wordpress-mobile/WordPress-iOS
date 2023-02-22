@@ -13531,7 +13531,7 @@
 		93FA59DA18D88BDB001446BC /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */,
+				F4EDAA4F29A66DA900622D3D /* Reader Post */,
 				5D44EB361986D8BA008B7175 /* ReaderSiteService.h */,
 				F4F09CCB2989BF5B00A5F420 /* ReaderSiteService_Internal.h */,
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
@@ -13617,8 +13617,6 @@
 				082AB9D81C4EEEF4000CA523 /* PostTagService.m */,
 				B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */,
 				8BB185C524B5FB8500A4CCE8 /* ReaderCardService.swift */,
-				5D3D559518F88C3500782892 /* ReaderPostService.h */,
-				5D3D559618F88C3500782892 /* ReaderPostService.m */,
 				8B16CE9925251C89007BE5A9 /* ReaderPostStreamService.swift */,
 				FA8E1F7625EEFA7300063673 /* ReaderPostService+RelatedPosts.swift */,
 				E62079E01CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift */,
@@ -16973,6 +16971,16 @@
 				F4D82971293109A600038726 /* DashboardMigrationSuccessCell+Jetpack.swift */,
 			);
 			path = "Collection View";
+			sourceTree = "<group>";
+		};
+		F4EDAA4F29A66DA900622D3D /* Reader Post */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D559518F88C3500782892 /* ReaderPostService.h */,
+				5D3D559618F88C3500782892 /* ReaderPostService.m */,
+				F4EDAA4B29A516E900622D3D /* ReaderPostService.swift */,
+			);
+			path = "Reader Post";
 			sourceTree = "<group>";
 		};
 		F4F9D5E82909615D00502576 /* WordPress-to-Jetpack Migration */ = {
