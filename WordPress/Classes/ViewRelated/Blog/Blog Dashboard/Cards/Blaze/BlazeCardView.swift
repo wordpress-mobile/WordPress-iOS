@@ -8,6 +8,16 @@ final class BlazeCardView: UIView {
 
     // MARK: - Views
 
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = Style.titleLabelFont
+        label.text = Strings.title
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = Style.descriptionLabelFont
@@ -19,10 +29,9 @@ final class BlazeCardView: UIView {
     }()
 
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [descriptionLabel])
-        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
-        stackView.addGestureRecognizer(tap)
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
         stackView.axis = .vertical
+        stackView.spacing = Metrics.stackViewSpacing
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = Metrics.contentDirectionalLayoutMargins
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,11 +55,11 @@ final class BlazeCardView: UIView {
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
-        frameView.icon = .none
-        frameView.title = Strings.title
+        frameView.configureButtonContainerStackView()
         frameView.onEllipsisButtonTap = {}
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
+        frameView.hideHeader()
         frameView.add(subview: contentStackView)
         frameView.clipsToBounds = true
         frameView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +90,9 @@ final class BlazeCardView: UIView {
             flameIcon.trailingAnchor.constraint(equalTo: cardFrameView.trailingAnchor),
             flameIcon.bottomAnchor.constraint(equalTo: cardFrameView.bottomAnchor)
         ])
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        addGestureRecognizer(tap)
     }
 
     // MARK: - Private
@@ -93,12 +105,14 @@ final class BlazeCardView: UIView {
 extension BlazeCardView {
 
     private enum Style {
+        static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static let descriptionLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
         static let hideThisImage = UIImage(systemName: "minus.circle")
     }
 
     private enum Metrics {
-        static let contentDirectionalLayoutMargins = NSDirectionalEdgeInsets(top: 0.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
+        static let stackViewSpacing = 8.0
+        static let contentDirectionalLayoutMargins = NSDirectionalEdgeInsets(top: 16.0, leading: 16.0, bottom: 8.0, trailing: 16.0)
     }
 
     private enum Strings {
