@@ -4,6 +4,7 @@ class JetpackInstallPluginHelper: NSObject {
     // MARK: Dependencies
 
     private let repository: UserPersistentRepository
+    private let receipt: RecentJetpackInstallReceipt
     private let blog: Blog
     private let siteIDString: String
 
@@ -66,7 +67,9 @@ class JetpackInstallPluginHelper: NSObject {
         }
     }
 
-    init?(_ blog: Blog?, repository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+    init?(_ blog: Blog?,
+          repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+          receipt: RecentJetpackInstallReceipt = .shared) {
         guard let blog,
               let siteID = blog.dotComID?.stringValue,
               blog.account != nil,
@@ -77,6 +80,7 @@ class JetpackInstallPluginHelper: NSObject {
         self.blog = blog
         self.siteIDString = siteID
         self.repository = repository
+        self.receipt = receipt
     }
 
     func hideCard() {
@@ -125,11 +129,30 @@ private extension JetpackInstallPluginHelper {
     }
 
     var shouldPromptInstall: Bool {
-        blog.jetpackIsConnectedWithoutFullPlugin
+        blog.jetpackIsConnectedWithoutFullPlugin && !receipt.installed(for: siteIDString)
     }
 
     struct Constants {
         static let cardHiddenSitesKey = "jetpack-install-card-hidden-sites"
         static let overlayShownSitesKey = "jetpack-install-overlay-shown-sites"
+    }
+}
+
+// MARK: - Recent Jetpack Install Receipt
+
+/// A simple helper class that tracks recent Jetpack installations in-memory.
+/// This is done to help keep things updated as soon as the plugin is installed.
+/// Otherwise, we'd have to manually call sync from each callsites, wait for them to complete, and _then_ update.
+class RecentJetpackInstallReceipt {
+    private(set) static var shared = RecentJetpackInstallReceipt()
+
+    private var siteIDs = Set<String>()
+
+    func installed(for siteID: String) -> Bool {
+        return siteIDs.contains(siteID)
+    }
+
+    func store(_ siteID: String) {
+        siteIDs.insert(siteID)
     }
 }
