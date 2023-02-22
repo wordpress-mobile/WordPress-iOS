@@ -20,6 +20,8 @@ final class BlazeCardView: UIView {
 
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [descriptionLabel])
+        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        stackView.addGestureRecognizer(tap)
         stackView.axis = .vertical
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = Metrics.contentDirectionalLayoutMargins
@@ -80,6 +82,12 @@ final class BlazeCardView: UIView {
             flameIcon.bottomAnchor.constraint(equalTo: cardFrameView.bottomAnchor)
         ])
     }
+
+    // MARK: - Private
+
+    @objc private func viewTapped() {
+        viewModel.onViewTap()
+    }
 }
 
 extension BlazeCardView {
@@ -110,9 +118,12 @@ extension BlazeCardView {
 
 struct BlazeCardViewModel {
 
+    let onViewTap: () -> Void
     let onHideThisTap: UIActionHandler
 
-    init(onHideThisTap: @escaping UIActionHandler = { _ in }) {
+    init(onViewTap: @escaping () -> Void = {},
+         onHideThisTap: @escaping UIActionHandler = { _ in }) {
+        self.onViewTap = onViewTap
         self.onHideThisTap = onHideThisTap
     }
 }
