@@ -1659,7 +1659,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBlaze
 {
-    // TODO: Show Blaze screen
+    [BlazeWebViewCoordinator presentBlazeFlowInViewController:self
+                                                       source:BlazeSourceMenuItem
+                                                         blog:self.blog
+                                                       postID:nil];
 }
 
 - (void)showScan
