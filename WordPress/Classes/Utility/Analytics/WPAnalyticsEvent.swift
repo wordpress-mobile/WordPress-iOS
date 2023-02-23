@@ -441,6 +441,12 @@ import Foundation
     case jetpackInstallFullPluginCardTapped
     case jetpackInstallFullPluginCardDismissed
 
+    // Blaze
+    case blazeFeatureDisplayed
+    case blazeFeatureTapped
+    case blazeContextualMenuAccessed
+    case blazeCardHidden
+
     // Help & Support
     case supportOpenMobileForumTapped
 
@@ -1202,6 +1208,16 @@ import Foundation
             return "jp_install_full_plugin_card_tapped"
         case .jetpackInstallFullPluginCardDismissed:
             return "jp_install_full_plugin_card_dismissed"
+
+        // Blaze
+        case .blazeFeatureDisplayed:
+            return "blaze_feature_displayed"
+        case .blazeFeatureTapped:
+            return "blaze_feature_tapped"
+        case .blazeContextualMenuAccessed:
+            return "blaze_feature_menu_accessed"
+        case .blazeCardHidden:
+            return "blaze_feature_hide_tapped"
 
         // Help & Support
         case .supportOpenMobileForumTapped:
