@@ -126,4 +126,30 @@
                                  failure:^(NSError * _Nonnull error) {}];
 }
 
+- (void)testSyncSuccessShouldBeCalledOnce
+{
+    TaxonomyServiceRemoteREST *remote = self.service.remoteForStubbing;
+
+    XCTestExpectation *completion = [self expectationWithDescription:@"Only the success block is called"];
+    OCMStub([remote getCategoriesWithSuccess:[OCMArg invokeBlock]
+                                     failure:[OCMArg isNotNil]]);
+    [self.service syncCategoriesForBlog:self.blog
+                                success:^{ [completion fulfill]; }
+                                failure:^(NSError * _Nonnull error) {[completion fulfill]; }];
+    [self waitForExpectations:@[completion] timeout:1];
+}
+
+- (void)testSyncFailureShouldBeCalledOnce
+{
+    TaxonomyServiceRemoteREST *remote = self.service.remoteForStubbing;
+
+    XCTestExpectation *completion = [self expectationWithDescription:@"Only the failure block is called"];
+    OCMStub([remote getCategoriesWithSuccess:[OCMArg isNotNil]
+                                     failure:[OCMArg invokeBlock]]);
+    [self.service syncCategoriesForBlog:self.blog
+                                success:^{ [completion fulfill]; }
+                                failure:^(NSError * _Nonnull error) {[completion fulfill]; }];
+    [self waitForExpectations:@[completion] timeout:1];
+}
+
 @end
