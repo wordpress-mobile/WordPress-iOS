@@ -44,7 +44,7 @@ final class ReaderShowMenuAction {
         }
 
         // Block user button
-        if shouldShowBlockUserMenuItem(post: post) {
+        if shouldShowBlockUserMenuItem(topic: readerTopic, post: post) {
             let handler: (UIAlertAction) -> Void = { _ in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
                     return
@@ -218,14 +218,10 @@ final class ReaderShowMenuAction {
         return shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post)
     }
 
-    private func shouldShowBlockUserMenuItem(post: ReaderPost) -> Bool {
-        guard isLoggedIn else {
-            return false
-        }
-
-        // we don't currently handle blocking users on non-WP.com sites due to
-        // author IDs not being unique
-        return post.isWPCom
+    private func shouldShowBlockUserMenuItem(topic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {
+        return FeatureFlag.readerUserBlocking.enabled
+        && shouldShowReportUserMenuItem(readerTopic: topic, post: post)
+        && post.isWPCom
     }
 
     private func shouldShowReportPostMenuItem(readerTopic: ReaderAbstractTopic?, post: ReaderPost) -> Bool {

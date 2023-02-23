@@ -1112,8 +1112,12 @@ import Combine
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
-                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: Date(), forceRetry: true, success: success, failure: failure)
-//                service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
+                if FeatureFlag.readerUserBlocking.enabled {
+                    self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: Date(), forceRetry: true, success: success, failure: failure)
+                } else {
+                    let service = ReaderPostService(managedObjectContext: context)
+                    service.fetchPosts(for: topic, earlierThan: Date(), success: success, failure: failure)
+                }
             }
         }
     }
@@ -1234,7 +1238,12 @@ import Combine
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
             } else {
-                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: sortDate, success: success, failure: failure)
+                if FeatureFlag.readerUserBlocking.enabled {
+                    self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: sortDate, success: success, failure: failure)
+                } else {
+                    let service = ReaderPostService(managedObjectContext: context)
+                    service.fetchPosts(for: topic, earlierThan: sortDate, success: success, failure: failure)
+                }
             }
         }
     }
