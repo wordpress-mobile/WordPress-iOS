@@ -1,6 +1,6 @@
 import Foundation
 
-struct BlazeEventsTracker {
+@objcMembers class BlazeEventsTracker: NSObject {
 
     static func trackBlazeFeatureDisplayed(for source: BlazeSource) {
         WPAnalytics.track(.blazeFeatureDisplayed, properties: analyticsProperties(for: source))

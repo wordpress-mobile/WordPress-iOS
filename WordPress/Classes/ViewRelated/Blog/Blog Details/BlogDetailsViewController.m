@@ -444,6 +444,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [WPAnalytics trackEvent:WPAnalyticsEventJetpackInstallFullPluginCardViewed
                      properties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
     }
+    
+    if ([self shouldShowBlaze]) {
+        [BlazeEventsTracker trackBlazeFeatureDisplayedFor:BlazeSourceMenuItem];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -538,7 +542,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             }
             break;
         case BlogDetailsSubsectionBlaze:
-            if ([self.blog supports:BlogFeatureBlaze]) {
+            if ([self shouldShowBlaze]) {
                 self.restorableSelectedIndexPath = indexPath;
                 [self.tableView selectRowAtIndexPath:indexPath
                                             animated:NO
@@ -941,7 +945,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:settingsRow];
     }
     
-    if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
+    if ([self shouldShowBlaze]) {
         CGSize iconSize = CGSizeMake(BlogDetailGridiconSize, BlogDetailGridiconSize);
         UIImage *blazeIcon = [[UIImage imageNamed:@"icon-blaze"] resizedImage:iconSize interpolationQuality:kCGInterpolationHigh];
         BlogDetailsRow *blazeRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
@@ -1664,6 +1668,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showBlaze
 {
+    [BlazeEventsTracker trackBlazeFeatureTappedFor:BlazeSourceMenuItem];
+    
     [BlazeWebViewCoordinator presentBlazeFlowInViewController:self
                                                        source:BlazeSourceMenuItem
                                                          blog:self.blog
@@ -1767,6 +1773,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (BOOL)shouldShowJetpackInstall
 {
     return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
+}
+
+- (BOOL)shouldShowBlaze
+{
+    return [Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze];
 }
 
 #pragma mark - Remove Site
