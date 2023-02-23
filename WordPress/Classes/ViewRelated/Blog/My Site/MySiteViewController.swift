@@ -424,6 +424,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             return
         }
 
+        updateBlazeStatus(for: mainBlog)
         showSitePicker(for: mainBlog)
         showBlogDetails(for: mainBlog)
         updateNavigationTitle(for: mainBlog)
