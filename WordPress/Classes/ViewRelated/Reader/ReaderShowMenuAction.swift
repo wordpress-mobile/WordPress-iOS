@@ -281,6 +281,6 @@ final class ReaderShowMenuAction {
     private func postUserBlockingDidFinishNotification(_ post: ReaderPost, result: Result<Void, Error>) {
         let center = NotificationCenter.default
         let userInfo: [String: Any] = [ReaderNotificationKeys.post: post, ReaderNotificationKeys.result: result]
-        center.post(name: .ReaderUserBlockingDidFinish, object: nil, userInfo: userInfo)
+        center.post(name: .ReaderUserBlockingDidEnd, object: nil, userInfo: userInfo)
     }
 }

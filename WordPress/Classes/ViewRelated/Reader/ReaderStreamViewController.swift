@@ -866,7 +866,7 @@ import Combine
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
 
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didFinishBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didEndBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {
         guard case .success = result,
               let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
               let indexPath = content.indexPath(forObject: post)

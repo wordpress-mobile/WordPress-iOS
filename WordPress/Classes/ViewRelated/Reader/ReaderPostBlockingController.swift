@@ -4,14 +4,14 @@ protocol ReaderSiteBlockingControllerDelegate: AnyObject {
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, willBeginBlockingSiteOfPost post: ReaderPost)
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>)
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, willBeginBlockingPostAuthor post: ReaderPost)
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didFinishBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>)
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didEndBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>)
 }
 
 extension ReaderSiteBlockingControllerDelegate {
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, willBeginBlockingSiteOfPost post: ReaderPost) {}
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {}
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, willBeginBlockingPostAuthor post: ReaderPost) {}
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didFinishBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {}
+    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didEndBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {}
 }
 
 final class ReaderPostBlockingController {
@@ -68,8 +68,8 @@ final class ReaderPostBlockingController {
         )
         center.addObserver(
             self,
-            selector: #selector(handleUserBlockingDidFinish(notification:)),
-            name: .ReaderUserBlockingDidFinish,
+            selector: #selector(handleUserBlockingDidEnd(notification:)),
+            name: .ReaderUserBlockingDidEnd,
             object: nil
         )
     }
@@ -101,7 +101,7 @@ final class ReaderPostBlockingController {
         self.delegate?.readerSiteBlockingController(self, willBeginBlockingPostAuthor: post)
     }
 
-    @objc private func handleUserBlockingDidFinish(notification: Foundation.Notification) {
+    @objc private func handleUserBlockingDidEnd(notification: Foundation.Notification) {
         guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost,
               let result = notification.userInfo?[ReaderNotificationKeys.result] as? Result<Void, Error>,
               let authorID = post.authorID
@@ -110,7 +110,7 @@ final class ReaderPostBlockingController {
         }
         self.ongoingUsersBlocking.remove(authorID)
         self.removeBlockedPosts(authorID: authorID)
-        self.delegate?.readerSiteBlockingController(self, didFinishBlockingPostAuthor: post, result: result)
+        self.delegate?.readerSiteBlockingController(self, didEndBlockingPostAuthor: post, result: result)
     }
 
     @objc private func handleSiteBlockingWillBeginNotification(_ notification: Foundation.Notification) {

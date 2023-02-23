@@ -21,7 +21,7 @@ extension NSNotification.Name {
     // Sent when the user blocking request is sent
     static let ReaderUserBlockingWillBegin = NSNotification.Name(rawValue: "ReaderUserBlockingWillBegin")
     // Sent when the user blocking request is complete
-    static let ReaderUserBlockingDidFinish = NSNotification.Name(rawValue: "ReaderUserBlockingDidFinish")
+    static let ReaderUserBlockingDidEnd = NSNotification.Name(rawValue: "ReaderUserBlockingDidEnd")
 }
 
 struct ReaderNotificationKeys {
