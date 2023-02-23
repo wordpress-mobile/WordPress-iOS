@@ -71,7 +71,7 @@ extension ReaderPostService {
 
         // Filter out blocked posts
         let filteredPosts = self.remotePostsByFilteringOutBlockedPosts(posts)
-        let hasMore = self.canLoadMorePosts(for: topic, remotePosts: posts)
+        let hasMore = self.canLoadMorePosts(for: topic, remotePosts: posts, in: managedObjectContext)
 
         // Construct a rank from the date provided
         let allPostsAreFilteredOut = filteredPosts.isEmpty && !posts.isEmpty

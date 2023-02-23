@@ -206,6 +206,6 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 - (WordPressComRestApi *)apiForRequest;
 - (NSUInteger)numberToSyncForTopic:(ReaderAbstractTopic *)topic;
 - (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm;
-- (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts;
+- (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts inContext: (NSManagedObjectContext * _Nonnull)context;
 
 @end
