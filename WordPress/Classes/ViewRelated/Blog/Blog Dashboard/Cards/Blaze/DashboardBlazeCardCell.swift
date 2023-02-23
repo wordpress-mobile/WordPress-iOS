@@ -14,17 +14,23 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
                   let blog = self?.blog else {
                 return
             }
-            // TODO: Track analytics event
+            BlazeEventsTracker.trackBlazeFeatureTapped(for: .dashboardCard)
             BlazeWebViewCoordinator.presentBlazeFlow(in: presentingViewController, source: .dashboardCard, blog: blog)
         }
 
+        let onEllipsisTap: () -> Void = { [weak self] in
+            BlazeEventsTracker.trackContextualMenuAccessed(for: .dashboardCard)
+        }
+
         let onHideThisTap: UIActionHandler = { [weak self] _ in
-            // TODO: Track analytics event
+            BlazeEventsTracker.trackHideThisTapped(for: .dashboardCard)
             BlazeHelper.hideBlazeCard(for: self?.blog)
             self?.presentingViewController?.reloadCardsLocally()
         }
 
-        return BlazeCardViewModel(onViewTap: onViewTap, onHideThisTap: onHideThisTap)
+        return BlazeCardViewModel(onViewTap: onViewTap,
+                                  onEllipsisTap: onEllipsisTap,
+                                  onHideThisTap: onHideThisTap)
     }()
 
     private lazy var cardView: BlazeCardView = {
@@ -56,5 +62,6 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.blog = blog
         self.presentingViewController = viewController
+        BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .dashboardCard)
     }
 }
