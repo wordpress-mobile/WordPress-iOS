@@ -77,6 +77,7 @@ class PostActionSheet {
                         self?.interactivePostViewDelegate?.share(post, fromView: view)
                     }
                 case .blaze:
+                    BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .postsList)
                     actionSheetController.addDefaultActionWithTitle(Titles.blaze) { [weak self] _ in
                         self?.interactivePostViewDelegate?.blaze(post)
                     }

@@ -784,6 +784,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func blaze(_ post: AbstractPost) {
+        BlazeEventsTracker.trackBlazeFeatureTapped(for: .postsList)
         BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: .postsList, blog: blog, postID: post.postID)
     }
 
