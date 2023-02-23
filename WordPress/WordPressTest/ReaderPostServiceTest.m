@@ -11,7 +11,7 @@
 
 @interface ReaderPostService()
 
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic;
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context;
 
 @end
 
@@ -39,7 +39,7 @@
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
     [coreDataStack saveContext:context];
 
     [service deletePostsWithNoTopic];
