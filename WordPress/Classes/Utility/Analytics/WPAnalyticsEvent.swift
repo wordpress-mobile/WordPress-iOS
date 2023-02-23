@@ -78,6 +78,7 @@ import Foundation
     case readerArticleVisited
     case itemSharedReader
     case readerBlogBlocked
+    case readerAuthorBlocked
     case readerChipsMoreToggled
     case readerToggleFollowConversation
     case readerToggleCommentNotifications
@@ -574,6 +575,8 @@ import Foundation
             return "item_shared_reader"
         case .readerBlogBlocked:
             return "reader_blog_blocked"
+        case .readerAuthorBlocked:
+            return "reader_author_blocked"
         case .readerChipsMoreToggled:
             return "reader_chips_more_toggled"
         case .readerToggleFollowConversation:

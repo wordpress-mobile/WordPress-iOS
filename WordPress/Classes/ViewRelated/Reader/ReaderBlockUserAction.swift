@@ -40,12 +40,21 @@ final class ReaderBlockUserAction {
         }
         do {
             try context.save()
+            self.trackEvent(authorID: authorID, blocked: blocked)
             completion?(.success(()))
         } catch let error {
             let operation = blocked ? "block" : "unblock"
             DDLogError("Couldn't \(operation) author: \(error.localizedDescription)")
             completion?(.failure(error))
         }
+    }
+
+    private func trackEvent(authorID: NSNumber, blocked: Bool) {
+        guard blocked else {
+            return
+        }
+        let properties = ["authorID": authorID]
+        WPAnalytics.track(.readerAuthorBlocked, properties: properties)
     }
 
     // MARK: - Types
