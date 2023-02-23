@@ -282,7 +282,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
                        failure:(void (^)(BOOL follow, NSError *error))failure
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        // Get a the post in our own context
         NSError *error;
         ReaderPost *readerPost = (ReaderPost *)[context existingObjectWithID:post.objectID error:&error];
         if (error) {
