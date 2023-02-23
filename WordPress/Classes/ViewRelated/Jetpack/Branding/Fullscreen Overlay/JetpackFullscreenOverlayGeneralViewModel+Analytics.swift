@@ -26,24 +26,39 @@ extension JetpackFullscreenOverlayGeneralViewModel {
 
     // MARK: Analytics Implementation
 
-    func trackOverlayDisplayed() {
+    func didDisplayOverlay() {
         WPAnalytics.track(.jetpackFullscreenOverlayDisplayed, properties: defaultProperties)
     }
 
-    func trackLearnMoreTapped() {
+    func didTapLink() {
+        guard let urlString = learnMoreButtonURL,
+              let url = URL(string: urlString) else {
+            return
+        }
+
+        let source = "jetpack_overlay_\(analyticsSource)"
+        coordinator?.navigateToLinkRoute(url: url, source: source)
         WPAnalytics.track(.jetpackFullscreenOverlayLinkTapped, properties: defaultProperties)
     }
 
-    func trackSwitchButtonTapped() {
-        WPAnalytics.track(.jetpackFullscreenOverlayButtonTapped, properties: defaultProperties)
+    func didTapPrimary() {
+        // Try to export WordPress data to a shared location before redirecting the user.
+        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            JetpackRedirector.redirectToJetpack()
+            WPAnalytics.track(.jetpackFullscreenOverlayButtonTapped, properties: self.defaultProperties)
+        }
     }
 
-    func trackCloseButtonTapped() {
+    func didTapClose() {
         trackOverlayDismissed(dismissalType: .close)
     }
 
-    func trackContinueButtonTapped() {
+    func didTapSecondary() {
         trackOverlayDismissed(dismissalType: .continue)
+        onWillDismiss?()
     }
 
     // MARK: Helpers

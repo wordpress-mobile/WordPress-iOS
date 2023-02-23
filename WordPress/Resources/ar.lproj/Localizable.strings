@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-31 21:54:25+0000 */
+/* Translation-Revision-Date: 2023-02-15 13:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ar */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "مشاهد المدونة";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "التدوين";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "تذكيرات التدوين";
@@ -3773,7 +3776,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "غير نشط، التحديثات التلقائية قيد التشغيل";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "تضمين مطالبة";
+"Include a Blogging Prompt" = "تضمين مطالبة التدوين";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "تم التضمين مع الموقع";
@@ -3874,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "التصميم الداخلي";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "تقديم المطالبات";
+"Introducing Blogging Prompts" = "تقديم مطالبات التدوين";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "مقدمة لمقالات القصص";
@@ -6128,9 +6131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "إزالة المكوِّن";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "إزالة من لوحة التحكم";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "إزالة من الرؤى";
 
@@ -8133,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "حاول بعنوان رابط الموقع";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "إيقاف تشغيل المطالبات";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "إيقاف تشغيل التنبيهات في الموقع";
 
@@ -9340,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "يمكنك دائمًا تسجيل الدخول باستخدام رابط مثل الرابط الذي استخدمته للتو، ولكن يمكنك أيضًا إعداد كلمة مرور إذا كنت تفضل ذلك.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "يمكنك التحكم في مطالبات التدوين والتذكيرات في أي وقت ضمن موقعي > الإعدادات > التدوين";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "يمكنك التحكم في مطالبات التدوين والتذكيرات في أي وقت ضمن موقعي، الإعدادات، التدوين";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "يمكنك عرض إحصاءات موقع واحد في طريقة عرض اليوم \/ مركز الإشعارات في iOS.";
 
@@ -9351,12 +9360,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "يمكنك متابعة مقالات حول موضوع معيَّن عن طريق إضافة موضوع.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "يمكنك معرفة المزيد وإعداد التذكيرات في أي وقت في موقعي > الإعدادات > تذكيرات التدوين.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "يمكنك معرفة المزيد وإعداد التذكيرات في أي وقت في موقعي، ثم الإعدادات، ثم تذكيرات التدوين.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
@@ -9705,9 +9708,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "تجربة ذلك الآن";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "المطالبات اليومية";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "أنقر نقرًا مزدوجًا لتغيير الوحدة";
 
@@ -9893,9 +9893,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "معرفة المزيد على jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "تلقَّ تنبيهات بالتعليقات والإعجابات والمشاهدات الجديدة، والمزيد.";
+
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "راقب الزيادة في حركة المرور لديك من خلال الرؤى المفيدة والإحصاءات الشاملة.";
 
 /* Name of the Statistics feature. */
@@ -9918,9 +9919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "لقد انتقلت ميزات Jetpack.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "قم بالتبديل إلى تطبيق Jetpack للاستمرار في تلقي التنبيهات في الوقت الفعلي على جهازك.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "تلقي تنبيهاتك من خلال تطبيق Jetpack";
@@ -10162,6 +10160,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "خيارات الصور المتميزة";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "زيارة إعدادات الموقع لإعادة التشغيل";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "تم إخفاء مطالبات التدوين";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "تجاهل";
 
@@ -10224,6 +10228,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "خطأ في المشاركة";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "إظهار المطالبات";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "التذكيرات";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "آخر 7 أيام";
@@ -10354,6 +10364,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "أفضل المشاهدات على الإطلاق";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "يتعذر تحميل إحصاءات كل الأوقات.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "أنشئ موقعًا أو أضفه لرؤية إحصاءات كل الأوقات.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "مقالات";
 
@@ -10375,6 +10391,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "سجّل الدخول إلى Jetpack لرؤية إحصاءات اليوم.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "يتعذر تحميل إحصاءات هذا الأسبوع.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "أنشئ موقعًا أو أضفه لرؤية إحصاءات هذا الأسبوع.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "أبق على اطلاع بنشاط هذا الأسبوع على موقع ووردبريس الخاص بك.";
 
@@ -10387,11 +10409,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "تعليقات";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "لقد انتقلت الإحصاءات إلى تطبيق Switching، وأصبح التبديل مجانيًا ولا يستغرق سوى لحظات.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "إعجابات";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "يتعذر تحميل إحصاءات الموقع.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "يتعذر تحميل إحصاءات الموقع.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "يتعذر تحميل إحصاءات اليوم.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "أنشئ موقعًا أو أضفه لرؤية إحصاءات اليوم.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "أبق على اطلاع بنشاط اليوم على موقع ووردبريس الخاص بك.";

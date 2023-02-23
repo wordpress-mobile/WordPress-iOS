@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-03 05:51:52+0000 */
+/* Translation-Revision-Date: 2023-02-15 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: he_IL */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "הצופה של הבלוג";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "פרסום בבלוג";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "תזכורת לכתיבת בלוג";
@@ -3773,7 +3776,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "לא פעיל, עדכונים אוטומטיים מופעלים";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "כולל הצעה";
+"Include a Blogging Prompt" = "לכלול 'הצעות כתיבה בבלוג'";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "כלול באתר";
@@ -3874,7 +3877,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "עיצוב פנים";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "שמחים להציג את האפשרות 'הצעות'";
+"Introducing Blogging Prompts" = "שמחים להציג את האפשרות 'הצעות כתיבה בבלוג'";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "אנו שמחים להציג את האפשרות 'פוסטים של סטורי'.";
@@ -6128,9 +6131,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "להסיר בלוק";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "להסיר מלוח הבקרה";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "הסרה מהתובנות";
 
@@ -8133,6 +8133,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "ניתן לנסות באמצעות כתובת האתר";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "להשבית הצעות כתיבה";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "השבתת הודעות אתר";
 
@@ -9340,6 +9343,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "אפשר תמיד להתחבר באמצעות קישור, כמו הקישור שבו השתמשת כעת, אבל באפשרותך גם להגדיר סיסמה לבחירתך.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "אפשר לשלוט ב'הצעות כתיבה בבלוג' וב'תזכורות' בכל עת דרך 'האתר שלי' > 'הגדרות' > 'פרסום בבלוג'";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "אפשר לשלוט ב'הצעות כתיבה בבלוג' וב'תזכורות' בכל עת דרך 'האתר שלי', 'הגדרות', 'פרסום בבלוג'";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "ניתן להציג סטטיסטיקות של אתר יחיד בתצוגת Ios Today\/מרכז ההודעות.";
 
@@ -9351,12 +9360,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "אפשר לעקוב אחר פוסטים בנושא מסוים על ידי הוספת נושא.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "אפשר לקבל מידע נוסף ולהגדיר תזכורות בכל עת דרך 'האתר שלי' > 'הגדרות' > 'תזכורות לכתיבת בלוג'.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "אפשר לקבל מידע נוסף ולהגדיר תזכורות בכל עת דרך 'האתר שלי' > 'הגדרות' > 'תזכורות לכתיבת בלוג'.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "אפשר לעקוף הגדרות אלה בפוסטים נפרדים.";
@@ -9705,9 +9708,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "כדאי לנסות עכשיו";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
@@ -9893,9 +9893,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "מידע נוסף באתר Jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "לקבל הודעות על תגובות חדשות, לייקים, צפיות ועוד.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "למצוא את האתרים והקהילות המועדפים עליך, לעקוב אחריהם ולשתף את התוכן שלך.";
+
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "להגדיל את התעבורה לאתר בעזרת גישה לתובנות שימושיות ולנתונים סטטיסטיים מקיפים.";
 
 /* Name of the Statistics feature. */
@@ -9920,7 +9924,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseFour.title" = "האפשרויות של Jetpack הועברו.";
 
 /* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "יש לעבור לאפליקציה של Jetpack כדי להמשיך לקבל התראות בזמן אמת אל המכשיר שלך.";
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "יש לעבור לאפליקציה של Jetpack כדי להמשיך לקבל התראות בזמן אמת במכשיר שלך.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "אפשר לקבל הודעות דרך האפליקציה של Jetpack";
@@ -10162,6 +10166,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "אפשרויות לתמונה המרכזית";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "יש לעבור אל הגדרות האתר כדי להפעיל אותן בחזרה";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "הצעות הכתיבה בבלוג מוסתרות";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "ביטול";
 
@@ -10224,6 +10234,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "שגיאה בשיתוף";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "להציג הצעות כתיבה";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "תזכורות";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "שבעת הימים האחרונים";
@@ -10354,6 +10370,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "כמות הצפיות הגבוהה בכל הזמנים";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "לא ניתן לטעון את הנתונים הסטטיסטיים מכל הזמנים.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "יש ליצור או להוסיף אתר כדי לראות את הנתונים הסטטיסטיים מכל הזמנים.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "פוסטים";
 
@@ -10375,6 +10397,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "יש להתחבר לחשבון ב-Jetpack כדי להציג את הנתונים הסטטיסטיים של היום.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "לא ניתן לטעון את הנתונים הסטטיסטיים של השבוע.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "יש ליצור או להוסיף אתר כדי לראות את הנתונים הסטטיסטיים של השבוע.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "אפשר להתעדכן לגבי כל הפעילות החדשה השבוע באתר שלך ב-WordPress.";
 
@@ -10387,11 +10415,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "תגובות";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "הנתונים הסטטיסטיים עוברים לאפליקציה של Jetpack. ההחלפה היא חינמית ואורכת דקה בלבד.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = " לייקים";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "אין אפשרות לטעון את הנתונים הסטטיסטיים של האתר.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "אין אפשרות לטעון את הנתונים הסטטיסטיים של האתר.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "לא ניתן לטעון את הנתונים הסטטיסטיים של היום.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "יש ליצור או להוסיף אתר כדי לראות את הנתונים הסטטיסטיים של היום.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "אפשר להתעדכן לגבי כל הפעילות החדשה היום באתר שלך ב-WordPress.";

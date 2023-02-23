@@ -5,7 +5,7 @@ final class ReaderSubscribingNotificationAction {
             return
         }
 
-        let service = ReaderTopicService(managedObjectContext: context)
+        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe, completion, failure)
     }
 }

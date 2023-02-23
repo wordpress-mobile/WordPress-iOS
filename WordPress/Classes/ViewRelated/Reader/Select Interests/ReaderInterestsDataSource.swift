@@ -55,8 +55,7 @@ class ReaderInterestsDataSource {
         self.topics = topics
 
         guard let service = service else {
-            let context = ContextManager.sharedInstance().mainContext
-            self.interestsService = ReaderTopicService(managedObjectContext: context)
+            self.interestsService = ReaderTopicService(coreDataStack: ContextManager.shared)
             return
         }
 

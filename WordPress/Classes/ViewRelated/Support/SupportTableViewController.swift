@@ -16,7 +16,6 @@ class SupportTableViewController: UITableViewController {
 
     private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserPersistentStoreFactory.instance()
-    private let featureFlagStore: RemoteFeatureFlagStore
 
     /// This closure is called when this VC is about to be dismissed due to the user
     /// tapping the dismiss button.
@@ -25,9 +24,8 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Init
 
-    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped, featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
+    init(configuration: Configuration = .init(), style: UITableView.Style = .grouped) {
         self.configuration = configuration
-        self.featureFlagStore = featureFlagStore
         super.init(style: style)
     }
 
@@ -47,7 +45,9 @@ class SupportTableViewController: UITableViewController {
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
-        checkForAutomatticEmail()
+        if SupportConfiguration.current() == .zendesk {
+            checkForAutomatticEmail()
+        }
         ZendeskUtils.sharedInstance.cacheUnlocalizedSitePlans()
         ZendeskUtils.fetchUserInformation()
     }
@@ -101,14 +101,14 @@ private extension SupportTableViewController {
     }
 
     func setupNavBar() {
-        title = featureFlagStore.value(for: FeatureFlag.wordPressSupportForum) ? LocalizedText.viewTitle : LocalizedText.viewTitleSupport
+        title = LocalizedText.viewTitle
 
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
-                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
+                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,
                                                                action: #selector(SupportTableViewController.dismissPressed(_:)))
-            navigationItem.leftBarButtonItem?.accessibilityIdentifier = "close-button"
+            navigationItem.rightBarButtonItem?.accessibilityIdentifier = "close-button"
         }
     }
 
@@ -136,39 +136,33 @@ private extension SupportTableViewController {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewModel(supportConfiguration: SupportConfiguration) -> ImmuTable {
 
-        // Help Section
-        var helpSection: ImmuTableSection?
-        if SupportConfiguration.current(featureFlagStore: featureFlagStore) == .zendesk {
-            var helpSectionRows = [ImmuTableRow]()
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(SupportEmailRow(title: LocalizedText.email,
-                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
-                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected(),
-                                                   accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSection = ImmuTableSection(
-                    headerText: LocalizedText.prioritySupportSectionHeader,
-                    rows: helpSectionRows,
-                    footerText: nil)
+        // Support section
+        let helpSection: ImmuTableSection?
+        switch supportConfiguration {
+        case .zendesk:
+            var rows = [ImmuTableRow]()
+            rows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button"))
+            rows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button"))
+            rows.append(HelpRow(title: LocalizedText.tickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button"))
+            rows.append(SupportEmailRow(title: LocalizedText.contactEmail,
+                                        value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                        accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
+                                        action: supportEmailSelected(),
+                                        accessibilityIdentifier: "set-contact-email-button"))
+            helpSection = ImmuTableSection(headerText: LocalizedText.prioritySupportSectionHeader, rows: rows, footerText: nil)
+        case .forum:
+            var rows = [ImmuTableRow]()
+            rows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
+                                        action: nil,
+                                        accessibilityIdentifier: "visit-wordpress-forums-prompt"))
+            rows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
+                                              accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
+                                              action: visitForumsSelected(),
+                                              accessibilityIdentifier: "visit-wordpress-forums-button"))
+            helpSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: rows, footerText: nil)
         }
-
-        // Community Forums Section
-        var communityForumsSectionRows = [ImmuTableRow]()
-        communityForumsSectionRows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
-                                                          action: nil,
-                                                          accessibilityIdentifier: "visit-wordpress-forums-prompt"))
-        communityForumsSectionRows.append(SupportForumButtonRow(title: LocalizedText.visitWpForumsButton,
-                                                                accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
-                                                                action: visitForumsSelected(),
-                                                                accessibilityIdentifier: "visit-wordpress-forums-button"))
-
-        let forumsSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader,
-                                             rows: communityForumsSectionRows,
-                                             footerText: nil)
 
         // Information Section
         var informationSection: ImmuTableSection?
@@ -197,62 +191,6 @@ private extension SupportTableViewController {
         }
 
         // Create and return table
-        let sections = [helpSection, forumsSection, informationSection, logOutSections].compactMap { $0 }
-        return ImmuTable(sections: sections)
-    }
-
-    // TODO - remove after FeatureFlag.wordPressSupportForum is removed
-    func oldTableViewModel() -> ImmuTable {
-
-        // Help Section
-        var helpSectionRows = [ImmuTableRow]()
-        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected(), accessibilityIdentifier: "help-center-link-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-
-        if ZendeskUtils.zendeskEnabled {
-            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected(), accessibilityIdentifier: "contact-support-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator, accessibilityIdentifier: "my-tickets-button", featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-            helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
-                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
-                                                   accessibilityHint: LocalizedText.contactEmailAccessibilityHint,
-                                                   action: supportEmailSelected(),
-                                                   accessibilityIdentifier: "set-contact-email-button",
-                                                   featureFlagSupportForumEnabled: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-        } else {
-            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected(), featureFlagSupportForum: featureFlagStore.value(for: FeatureFlag.wordPressSupportForum)))
-        }
-
-        let helpSection = ImmuTableSection(
-                headerText: nil,
-                rows: helpSectionRows,
-                footerText: LocalizedText.helpFooter)
-
-        // Information Section
-        var informationSection: ImmuTableSection?
-        if configuration.showsLogsSection {
-            let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-            let switchRow = SwitchRow(title: LocalizedText.extraDebug,
-                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
-                                      onChange: extraDebugToggled())
-            let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
-            informationSection = ImmuTableSection(
-                    headerText: nil,
-                    rows: [versionRow, switchRow, logsRow],
-                    footerText: LocalizedText.informationFooterOld
-            )
-        }
-
-        // Log out Section
-        var logOutSections: ImmuTableSection?
-        if configuration.showsLogOutButton {
-            let logOutRow = DestructiveButtonRow(
-                    title: LocalizedText.logOutButtonTitle,
-                    action: logOutTapped(),
-                    accessibilityIdentifier: ""
-            )
-            logOutSections = .init(headerText: LocalizedText.wpAccount, optionalRows: [logOutRow])
-        }
-
-        // Create and return table
         let sections = [helpSection, informationSection, logOutSections].compactMap { $0 }
         return ImmuTable(sections: sections)
     }
@@ -262,7 +200,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler?.viewModel = featureFlagStore.value(for: FeatureFlag.wordPressSupportForum) ? tableViewModel() : oldTableViewModel()
+        tableHandler?.viewModel = tableViewModel(supportConfiguration: SupportConfiguration.current())
     }
 
     // MARK: - Row Handlers
@@ -282,17 +220,13 @@ private extension SupportTableViewController {
         return { [weak self] row in
             guard let self = self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if SupportConfiguration.current(featureFlagStore: self.featureFlagStore) == .zendesk {
-                guard let controllerToShowFrom = self.controllerToShowFrom() else {
-                    return
+            guard let controllerToShowFrom = self.controllerToShowFrom() else {
+                return
+            }
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
+                if identityUpdated {
+                    self?.reloadViewModel()
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag) { [weak self] identityUpdated in
-                    if identityUpdated {
-                        self?.reloadViewModel()
-                    }
-                }
-            } else {
-                self.launchForum(url: Constants.forumsURL)
             }
         }
     }
@@ -405,26 +339,20 @@ private extension SupportTableViewController {
         let showIndicator: Bool
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
-        let featureFlagSupportForumEnabled: Bool
 
-        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil, featureFlagSupportForum: Bool = false) {
+        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
             self.title = title
             self.showIndicator = showIndicator
             self.action = action
             self.accessibilityIdentifier = accessibilityIdentifier
-            self.featureFlagSupportForumEnabled = featureFlagSupportForum
         }
 
         func configureCell(_ cell: UITableViewCell) {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            if featureFlagSupportForumEnabled {
-                cell.accessoryType = .disclosureIndicator
-            } else {
-                cell.textLabel?.textColor = .primary
-                cell.showIndicator = showIndicator
-            }
+            cell.textLabel?.textColor = .primary
+            cell.showIndicator = showIndicator
             cell.accessibilityTraits = .button
             cell.accessibilityIdentifier = accessibilityIdentifier
         }
@@ -438,15 +366,12 @@ private extension SupportTableViewController {
         let accessibilityHint: String
         let action: ImmuTableAction?
         let accessibilityIdentifier: String?
-        let featureFlagSupportForumEnabled: Bool
 
         func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            if !featureFlagSupportForumEnabled {
-                cell.textLabel?.textColor = .primary
-            }
+            cell.textLabel?.textColor = .primary
             cell.accessibilityTraits = .button
             cell.accessibilityHint = accessibilityHint
             cell.accessibilityIdentifier = accessibilityIdentifier
@@ -502,9 +427,9 @@ private extension SupportTableViewController {
 
     struct LocalizedText {
         static let viewTitle = NSLocalizedString("support.title", value: "Help", comment: "View title for Help & Support page.")
-        static let closeButton = NSLocalizedString("support.button.close.title", value: "Close", comment: "Dismiss the current view")
+        static let closeButton = NSLocalizedString("support.button.close.title", value: "Done", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("support.row.helpCenter.title", value: "WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact Support", comment: "Option in Support view to contact the support team.")
+        static let contactUs = NSLocalizedString("support.row.contactUs.title", value: "Contact support", comment: "Option in Support view to contact the support team.")
         static let wpForums = NSLocalizedString("support.row.forums.title", value: "WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let prioritySupportSectionHeader = NSLocalizedString("support.sectionHeader.prioritySupport.title", value: "Priority Support", comment: "Section header in Support view for priority support.")
         static let wpForumsSectionHeader = NSLocalizedString("support.sectionHeader.forum.title", value: "Community Forums", comment: "Section header in Support view for the Forums.")
@@ -512,9 +437,7 @@ private extension SupportTableViewController {
         static let wpForumPrompt = NSLocalizedString("support.row.communityForum.title", value: "Ask a question in the community forum and get help from our group of volunteers.", comment: "Suggestion in Support view to visit the Forums.")
         static let visitWpForumsButton = NSLocalizedString("support.button.visitForum.title", value: "Visit WordPress.org", comment: "Option in Support view to visit the WordPress.org support forums.")
         static let visitWpForumsButtonAccessibilityHint = NSLocalizedString("support.button.visitForum.accessibilityHint", value: "Tap to visit the community forum website in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the support forums website.")
-        static let myTickets = NSLocalizedString("support.row.myTickets.title", value: "My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let tickets = NSLocalizedString("support.row.tickets.title", value: "Tickets", comment: "Option in Support view to access previous help tickets.")
-        static let helpFooter = NSLocalizedString("support.sectionFooter.helpCenter.title", value: "Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("support.row.version.title", value: "Version", comment: "Label in Support view displaying the app version.")
         static let debug = NSLocalizedString("support.row.debug.title", value: "Debug", comment: "Option in Support view to enable/disable adding debug information to support ticket.")
         static let logs = NSLocalizedString("support.row.logs.title", value: "Logs", comment: "Option in Support view to see activity logs.")
@@ -524,13 +447,7 @@ private extension SupportTableViewController {
         static let emailNotSet = NSLocalizedString("support.row.contactEmail.emailNoteSet.detail", value: "Not Set", comment: "Display value for Support email field if there is no user email address.")
         static let wpAccount = NSLocalizedString("support.sectionHeader.account.title", value: "WordPress.com Account", comment: "WordPress.com sign-out section header title")
         static let logOutButtonTitle = NSLocalizedString("support.button.logOut.title", value: "Log Out", comment: "Button for confirming logging out from WordPress.com account")
-
-        //TODO - can remove these below after WordPressSupportForum feature flag removed
-        static let activityLogs = NSLocalizedString("support.row.activityLogs.title", value: "Activity Logs", comment: "Option in Support view to see activity logs.")
-        static let informationFooterOld = NSLocalizedString("support.sectionFooter.advanced.old.title", value: "The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
-        static let extraDebug = NSLocalizedString("support.row.extraDebug.title", value: "Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
-        static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Contact Email", comment: "Support email label.")
-        static let viewTitleSupport = NSLocalizedString("zendeskSupport.title", value: "Support", comment: "View title for Help & Support page.")
+        static let contactEmail = NSLocalizedString("support.row.contactEmail.title", value: "Email", comment: "Support email label.")
     }
 
     // MARK: - User Defaults Keys

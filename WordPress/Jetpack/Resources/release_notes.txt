@@ -1,3 +1,1 @@
-* [*] Fixed an issue where stats were not displaying latest data when the system date rolls over to the next day while the app is in background. [#19989]
-* [*] Hide Scan Login Code when logged into an account with 2FA. [#19567]
-* [**] Blogging Prompts: add the ability to answer previous prompts, disable prompts, and other minor enhancements. [#20055]
+You can now block sites that you follow, as well as report a post’s author for spam, inappropriate content, or possible harm. No jokes here—stay safe out there.

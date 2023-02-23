@@ -37,7 +37,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
 
     override init(managedObjectContext context: NSManagedObjectContext) {
         self.accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
-        self.blogService = BlogService(managedObjectContext: context)
+        self.blogService = BlogService(coreDataStack: ContextManager.sharedInstance())
 
         let api: WordPressComRestApi
         if let wpcomApi = (try? WPAccount.lookupDefaultWordPressComAccount(in: context))?.wordPressComRestApi {
@@ -140,7 +140,7 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
         let xmlRpcUrlString = createdSite.xmlrpcString
 
         let blog: Blog
-        if let existingBlog = blogService.findBlog(withXmlrpc: xmlRpcUrlString, in: defaultAccount) {
+        if let existingBlog = Blog.lookup(xmlrpc: xmlRpcUrlString, andRemoveDuplicateBlogsOf: defaultAccount, in: managedObjectContext) {
             blog = existingBlog
         } else {
             blog = Blog.createBlankBlog(with: defaultAccount)

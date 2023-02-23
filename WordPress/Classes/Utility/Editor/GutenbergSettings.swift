@@ -68,13 +68,13 @@ class GutenbergSettings {
     func performGutenbergPhase2MigrationIfNeeded() {
         guard
             ReachabilityUtils.isInternetReachable(),
-            let account = coreDataStack.performQuery({ try? WPAccount.lookupDefaultWordPressComAccount(in: $0) })
+            let userID = coreDataStack.performQuery({ try? WPAccount.lookupDefaultWordPressComAccount(in: $0)?.userID })
         else {
             return
         }
 
         var rollout = GutenbergRollout(database: database)
-        if rollout.shouldPerformPhase2Migration(userId: account.userID.intValue) {
+        if rollout.shouldPerformPhase2Migration(userId: userID.intValue) {
             setGutenbergEnabledForAllSites()
             rollout.isUserInRolloutGroup = true
             trackSettingChange(to: true, from: .onProgressiveRolloutPhase2)
@@ -89,7 +89,7 @@ class GutenbergSettings {
                 database.set(true, forKey: Key.enabledOnce(for: blog))
             }
         }
-        let editorSettingsService = EditorSettingsService(managedObjectContext: coreDataStack.mainContext)
+        let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.migrateGlobalSettingToRemote(isGutenbergEnabled: true, overrideRemote: true, onSuccess: {
             WPAnalytics.refreshMetadata()
         })
@@ -145,7 +145,7 @@ class GutenbergSettings {
     ///
     /// - Parameter blog: The site to synch editor settings
     func postSettingsToRemote(for blog: Blog) {
-        let editorSettingsService = EditorSettingsService(managedObjectContext: coreDataStack.mainContext)
+        let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
         editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
             DDLogError("Failed to post new post selection with Error: \(error)")
         }

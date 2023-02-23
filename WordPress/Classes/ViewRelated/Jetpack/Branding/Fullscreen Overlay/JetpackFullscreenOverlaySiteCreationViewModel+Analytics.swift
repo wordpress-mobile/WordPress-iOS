@@ -26,24 +26,32 @@ extension JetpackFullscreenOverlaySiteCreationViewModel {
 
     // MARK: Analytics Implementation
 
-    func trackOverlayDisplayed() {
+    func didDisplayOverlay() {
         WPAnalytics.track(.jetpackSiteCreationOverlayDisplayed, properties: defaultProperties)
     }
 
-    func trackLearnMoreTapped() {
+    func didTapLink() {
         assert(false, "Not implemnted because it should never be called.")
     }
 
-    func trackSwitchButtonTapped() {
-        WPAnalytics.track(.jetpackSiteCreationOverlayButtonTapped, properties: defaultProperties)
+    func didTapPrimary() {
+        // Try to export WordPress data to a shared location before redirecting the user.
+        ContentMigrationCoordinator.shared.startAndDo { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            JetpackRedirector.redirectToJetpack()
+            WPAnalytics.track(.jetpackFullscreenOverlayButtonTapped, properties: self.defaultProperties)
+        }
     }
 
-    func trackCloseButtonTapped() {
+    func didTapClose() {
         trackOverlayDismissed(dismissalType: .close)
     }
 
-    func trackContinueButtonTapped() {
+    func didTapSecondary() {
         trackOverlayDismissed(dismissalType: .continue)
+        onWillDismiss?()
     }
 
     // MARK: Helpers

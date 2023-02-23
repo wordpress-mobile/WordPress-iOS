@@ -1,8 +1,5 @@
-Scopri come stanno andando i tuoi contenuti con le nostre modifiche alla Panoramica delle statistiche e scopri quali tipi di contenuti piacciono ai tuoi lettori.
+Abbiamo apportato alcune modifiche alle richieste di blog in modo da poter rispondere alle vecchie richieste o disabilitarne di nuove (sebbene non riusciamo a immaginare perché lo dovresti fare).
 
-Abbiamo anche risolto alcuni problemi in varie aree dell'app.
+Non vedrai il codice QR Scan Login se il tuo account utilizza l'autenticazione a due fattori.
 
-- Il messaggio "Nessun media corrispondente alla tua ricerca" nel Selettore multimediale ora appare nel punto giusto. Casa, dolce casa.
-- Alcuni utenti si sono bloccati sulla schermata "Su cosa vorresti concentrarti prima?" dopo l'accesso, ma non accadrà più: problema eliminato, amici.
-- Non passerai più alla fine del flusso di migrazione se chiudi l'app durante la migrazione dei contenuti del tuo sito da WordPress a Jetpack. Abbiamo anche apportato alcune modifiche di design alla schermata di migrazione finale.
-- Pull-to-refresh aggiorna correttamente le statistiche dei follower nella schermata Dettagli follower totali. 10 su 10 tirerebbero di nuovo.
+La vista Statistiche mostra costantemente i dati più recenti della giornata, anche se la data cambia mentre l'app è in background sul dispositivo. Tutto in una giornata lavorativa.

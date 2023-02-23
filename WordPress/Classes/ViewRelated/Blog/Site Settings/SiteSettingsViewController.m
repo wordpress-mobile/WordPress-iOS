@@ -1038,8 +1038,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (void)refreshData
 {
     __weak __typeof__(self) weakSelf = self;
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+    BlogService *service = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
     [service syncSettingsForBlog:self.blog success:^{
         [weakSelf.refreshControl endRefreshing];
@@ -1083,15 +1082,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];
     __weak __typeof__(self) weakSelf = self;
     [api checkCredentials:self.username password:self.password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD dismiss];
+        [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
                 return;
             }
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
-            [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
-        });
+
+            Blog *blogInContext = [context existingObjectWithID:strongSelf.blog.objectID error:nil];
+            blogInContext.password = strongSelf.password;
+        } completion:^{
+            [SVProgressHUD dismiss];
+        } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
@@ -1135,7 +1136,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         return;
     }
     
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [blogService updateSettingsForBlog:self.blog success:^{
         [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
     } failure:^(NSError *error) {

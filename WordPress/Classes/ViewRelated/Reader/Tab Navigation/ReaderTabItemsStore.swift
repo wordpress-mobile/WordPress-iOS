@@ -15,7 +15,7 @@ class ReaderTabItemsStore: ItemsStore {
     init(context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext,
          service: ReaderTopicService? = nil) {
         self.context = context
-        self.service = service ?? ReaderTopicService(managedObjectContext: context)
+        self.service = service ?? ReaderTopicService(coreDataStack: ContextManager.shared)
     }
 
     enum State {

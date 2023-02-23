@@ -1,11 +1,11 @@
-Gérez ou créez votre blog ou site WordPress directement depuis votre appareil iOS : créez et modifiez vos articles et pages, téléversez vos photos et vidéos préférées, regardez vos statistiques et répondez aux commentaires.
+Gérez ou créez votre blog ou site Web WordPress directement à partir de votre appareil iOS : créez et modifiez des articles et des pages, chargez vos photos et vidéos préférées, affichez des statistiques et répondez à des commentaires.
 
-Avec WordPress pour iOS, vous avez le pouvoir de publier dans le creux de la main. Griffonnez un petit poème sur le pouce. Prenez une photo et publiez-la à la pause déjeuner. Répondez aux derniers commentaires ou vérifiez vos statistiques pour voir de quel pays proviennent vos visiteurs du jour.
+Avec WordPress pour iOS, vous pouvez publier depuis le creux de votre main. Rédigez un haïku spontané depuis votre canapé. Prenez une photo et publiez-la pendant votre pause déjeuner. Répondez à vos derniers commentaires ou consultez vos statistiques pour voir de quels nouveaux pays sont originaires les visiteurs du jour.
 
-WordPress pour iOS est un projet Open Source, ce qui veut dire que vous aussi vous pouvez contribuer à son développement. Apprenez-en plus sur https://apps.wordpress.com/contribute/.
+WordPress pour iOS est un projet Open Source, ce qui signifie que vous pouvez également contribuer à son développement. Apprenez-en plus à l’adresse https://apps.wordpress.com/contribute/.
 
-WordPress pour iOS fonctionne avec les sites WordPress.com et auto-hébergés tournant sous WordPress 4.0 ou ultérieurs.
+WordPress pour iOS prend en charge les sites WordPress.com et WordPress.org auto-hébergés exécutant WordPress 4.0 ou une version supérieure.
 
-Besoin d’aide avec l’app ? Visitez le forum sur https://ios.forums.wordpress.org/ ou envoyez-nous un tweet sur @WordPressiOS.
+Vous avez besoin d’aide pour utiliser l’application ? Visitez les forums à l’adresse https://wordpress.org/support/forum/mobile/ ou envoyez-nous un tweet à @WordPressiOS.
 
-Voir l'avis de confidentialité pour les utilisateurs californiens sur https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+Consultez l’avis de confidentialité pour les utilisateurs californiens à l’adresse https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

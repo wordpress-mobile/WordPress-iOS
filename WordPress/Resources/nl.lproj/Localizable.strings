@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-03 06:51:38+0000 */
+/* Translation-Revision-Date: 2023-02-15 20:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: nl */
@@ -3773,7 +3773,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "Inactief, auto-updates aan";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Opdracht bijvoegen";
+"Include a Blogging Prompt" = "Blogmelding toevoegen";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inbegrepen bij site";
@@ -3874,7 +3874,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "Binnenhuisarchitectuur";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Nieuw: opdrachten";
+"Introducing Blogging Prompts" = "Nieuw: blogmeldingen";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introductie verhalen";
@@ -6128,9 +6128,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "Verwijder blok";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Verwijder van dashboard";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Verwijderen uit inzichten";
 
@@ -8133,6 +8130,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Probeer met het site-adres";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Meldingen uitschakelen";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Zet site meldingen uit";
 
@@ -9340,6 +9340,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen met een link zoals degene die je zojuist hebt gebruikt, maar kunt ook een wachtwoord instellen, als je wilt.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Je kunt blogmeldingen en -herinneringen te allen tijde beheren via Mijn site > Instellingen > Bloggen";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Je kunt blogmeldingen en -herinneringen te allen tijde beheren via Mijn site, Instellingen, Bloggen";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Je kunt de statistieken van één site tonen in de weergave iOS Vandaag\/Berichtencentrum.";
 
@@ -9351,12 +9357,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Je kunt berichten over een bepaald onderwerp volgen door een onderwerp toe te voegen.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Je vindt meer informatie en kunt te allen tijde herinneringen instellen via Mijn site > Instellingen > Blog-herinneringen.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Je vindt meer informatie en kunt te allen tijde herinneringen instellen via Mijn site, Instellingen, Blog-herinneringen.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Je kunt deze instellingen ongedaan maken voor individuele berichten.";
@@ -9690,9 +9690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Customize Insights button title */
 "customizeInsightsCell.dismissButton.title" = "Afwijzen";
 
-/* Search text that we fill when users taps the answers button on Daily Prompts Card to see answers from other people */
-"dailyprompts" = "dailyprompts";
-
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
@@ -9830,9 +9827,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Ga naar jetpack.com voor meer informatie";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Krijg meldingen over nieuwe reacties, likes, weergaven en meer.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Vind en volg je favoriete sites en community’s, en deel je content.";
+
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Laat het aantal bezoekers van je site groeien via waardevolle inzichten en uitgebreide statistieken.";
 
 /* Name of the Statistics feature. */
@@ -9846,9 +9847,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "Jetpack-functies zijn verplaatst.";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Schakel over naar de Jetpack-app om realtime meldingen te blijven ontvangen op je apparaat.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Ontvang meldingen met de Jetpack-app";
@@ -10069,6 +10067,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opties uitgelichte afbeelding";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Ga naar Site-instellingen om weer in te schakelen";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Blogmeldingen zijn verborgen";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Afwijzen";
 
@@ -10101,6 +10105,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog text. */
 "shareModularViewController.retryAlert.message" = "Oeps, er is iets fout gegaan tijdens het delen. Probeer het opnieuw, het kan een glitch zijn geweest.";
+
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Meldingen weergeven";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* minder dan de vorige 7 dagen";
@@ -10213,6 +10220,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Best bekeken ooit";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Kan statistieken sinds het begin niet laden.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Maak een site aan of voeg er een toe om de statistieken sinds het begin te zien.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Berichten";
 
@@ -10234,6 +10247,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Log in bij Jetpack om de statistieken van vandaag te zien.";
 
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Maak een site aan of voeg er een toe om de statistieken van deze week te zien.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Blijf op de hoogte met de activiteit van deze week op je WordPress site.";
 
@@ -10246,11 +10262,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Reacties";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistieken zullen naar de Jetpack-app worden verplaatst. Overstappen is gratis en duurt maar een minuut.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Vind-ik-leuks";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "Kan site statistieken niet laden.";
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Maak een site aan of voeg er een toe om de statistieken van vandaag te zien.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Blijf op de hoogte van de activiteiten van vandaag op je WordPress site.";

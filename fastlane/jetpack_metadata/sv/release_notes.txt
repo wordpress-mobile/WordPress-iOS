@@ -1,8 +1,5 @@
-Få reda på hur ditt innehåll presterar med våra ändringar av Statistik och insikter och lär dig vilken typ av innehåll dina läsare vill se.
+Vi har gjort några förbättringar av bloggningsförslagen som gör att du kan svara på gamla förslag eller inaktivera nya förslag. (Även om vi inte kan föreställa oss varför du skulle vilja göra det.)
 
-Vi har även åtgärdat ett antal problem i olika delar av appen.
+Meddelandet Skanna QR-kod för inloggning kommer inte att visas om ditt konto använder tvåfaktorsautentisering.
 
-- Meddelandet "Inga mediafiler matchar din sökning" i mediaväljaren visas nu på rätt plats. Hem, ljuva hem.
-- Vissa användare fastnade på skärmen "Vad vill du fokusera på först?" efter inloggning, men detta problem har nu åtgärdats. Fokusera på, vänner.
-- Du kommer inte längre att behöva hoppa till slutet av migreringsflödet om appen stängs medan du migrerar ditt webbplatsinnehåll från WordPress till Jetpack. Vi har även gjort några designjusteringar av den sista migreringsskärmen.
-- "Dra för att uppdatera" uppdaterar nu din följarstatistik på informationsskärmen Totalt antal följare. 10/10, skulle dra igen. 
+Statistikvyn visar konsekvent dagens senaste data, även om datumet ändras medan appen körs i bakgrunden. Allt på en arbetsdag.

@@ -123,7 +123,7 @@ class NotificationSettingsViewController: UIViewController {
         let service = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
 
         let dispatchGroup = DispatchGroup()
-        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let siteService = ReaderTopicService(coreDataStack: ContextManager.shared)
 
         activityIndicatorView.startAnimating()
 
@@ -153,7 +153,7 @@ class NotificationSettingsViewController: UIViewController {
         }
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isExternal }
+            self?.followedSites = ((try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []).filter { !$0.isExternal }
             self?.setupSections()
             self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()

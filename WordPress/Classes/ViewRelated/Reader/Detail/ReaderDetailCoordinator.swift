@@ -108,9 +108,9 @@ class ReaderDetailCoordinator {
     /// - Parameter service: a Reader Post Service
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          readerPostService: ReaderPostService = ReaderPostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
-         topicService: ReaderTopicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         topicService: ReaderTopicService = ReaderTopicService(coreDataStack: ContextManager.shared),
          postService: PostService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext),
-         commentService: CommentService = CommentService(managedObjectContext: ContextManager.sharedInstance().mainContext),
+         commentService: CommentService = CommentService(coreDataStack: ContextManager.shared),
          sharingController: PostSharingController = PostSharingController(),
          readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
          view: ReaderDetailView) {

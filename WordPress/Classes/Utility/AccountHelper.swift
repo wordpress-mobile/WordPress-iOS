@@ -25,9 +25,7 @@ import Foundation
 
     @objc static var noSelfHostedBlogs: Bool {
         let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return BlogQuery().hostedByWPCom(false).count(in: context) == 0 && blogService.hasAnyJetpackBlogs() == false
+        return BlogQuery().hostedByWPCom(false).count(in: context) == 0 && (try? Blog.hasAnyJetpackBlogs(in: context)) == false
     }
 
     static var hasBlogs: Bool {

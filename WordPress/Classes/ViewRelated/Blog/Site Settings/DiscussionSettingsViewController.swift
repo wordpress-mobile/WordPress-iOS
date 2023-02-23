@@ -62,7 +62,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Persistance!
     fileprivate func refreshSettings() {
-        let service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         service.syncSettings(for: blog,
             success: { [weak self] in
                 self?.tableView.reloadData()
@@ -78,7 +78,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
-        let service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        let service = BlogService(coreDataStack: ContextManager.shared)
         service.updateSettings(for: blog,
             success: nil,
             failure: { (error: Error) -> Void in

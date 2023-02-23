@@ -13,7 +13,7 @@ class ReaderSelectInterestsCoordinator {
          userId: NSNumber? = nil,
          context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
 
-        self.interestsService = service ?? ReaderTopicService(managedObjectContext: context)
+        self.interestsService = service ?? ReaderTopicService(coreDataStack: ContextManager.shared)
         self.userId = userId ?? {
             return try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.userID
         }()
@@ -35,7 +35,7 @@ class ReaderSelectInterestsCoordinator {
     // MARK: - Display Logic
 
     /// Determines whether or not the select interests view should be displayed
-    /// - Returns: true 
+    /// - Returns: true
     public func isFollowingInterests(completion: @escaping (Bool) -> Void) {
         interestsService.fetchFollowedInterestsLocally { followedInterests in
             guard let interests = followedInterests else {

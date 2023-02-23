@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-01-24 19:27:42+0000 */
+/* Translation-Revision-Date: 2023-02-11 07:29:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: sq_AL */
@@ -1178,6 +1178,9 @@ translators: Block name. %s: The localized block name */
 
 /* Blog's Viewer Profile. Displayed when the name is empty! */
 "Blog's Viewer" = "Shikues Blogu";
+
+/* Title for the blogging section in site settings screen */
+"Blogging" = "Blogim";
 
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Kujtues Blogimi";
@@ -3767,7 +3770,7 @@ translators: Block name. %s: The localized block name */
 "Inactive, Autoupdates on" = "Jo aktive, me Vetëpërditësim të aktivizuar";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include prompt" = "Përfshi cytje";
+"Include a Blogging Prompt" = "Përfshi një Cytje Blogimi";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "E përfshirë me Sajtin";
@@ -3868,7 +3871,7 @@ translators: Block name. %s: The localized block name */
 "Interior Design" = "Dizajn Mjedisesh të Brendshëm";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Prompts" = "Ju prezantojmë Cytjet";
+"Introducing Blogging Prompts" = "Ju Paraqesim Cytje Blogimi";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Ju Paraqesim Postime Shkrimesh";
@@ -6119,9 +6122,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Remove block" = "Hiqe bllokun";
 
-/* Destructive menu title to remove the prompt card from the dashboard. */
-"Remove from dashboard" = "Hiqe nga pulti";
-
 /* Option to remove Insight from view. */
 "Remove from insights" = "Hiqe nga Prirjet";
 
@@ -8121,6 +8121,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Provoni me këtë adresë sajti";
 
+/* Destructive menu title to remove the prompt card from the dashboard. */
+"Turn off prompts" = "Çaktivizo cytjet";
+
 /* Verb. An option to switch off site notifications. */
 "Turn off site notifications" = "Çaktivizoni njoftime sajti";
 
@@ -9328,6 +9331,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Mundeni të hyni përherë me një lidhje si ajo që sapo përdorët, por mund të caktoni edhe një fjalëkalim, nëse parapëlqeni.";
 
+/* Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Cytjet dhe Kujtuesit për Blogim mund t’i kontrolloni në çfarëdo kohe që nga Sajti Im > Rregullime > Blogim";
+
+/* Accessibility hint for Note displayed in the Feature Introduction view. */
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Cytjet dhe Kujtuesit për Blogim mund t’i kontrolloni në çfarëdo kohe që nga Sajti Im, Rregullime, Blogim";
+
 /* Action sheet title for setting Today Widget site to the current one */
 "You can display a single site's stats in the iOS Today\/Notification Center view." = "Mund të shfaqni statistikat e një sajti të vetëm, te skena Qendër iOS Sot\/Njoftime.";
 
@@ -9339,12 +9348,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No Topics View Label */
 "You can follow posts on a specific subject by adding a topic." = "Duke shtuar një etiketë, mund të ndiqni postime lidhur me një subjekt të caktuar.";
-
-/* Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site > Settings > Blogging Reminders." = "Mund të mësoni më tepër dhe të ujdisni kujtues në çfarëdo kohe, që nga Sajti Im > Rregullime > Kujtues Blogimi.";
-
-/* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can learn more and set up reminders at any time in My Site, Settings, Blogging Reminders." = "Mund të mësoni më tepër dhe të ujdisni kujtues në çfarëdo kohe, që nga Sajti Im, Rregullime, Kujtues Blogimi.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Mund t’i anashkaloni këto rregullime për postime individuale.";
@@ -9878,9 +9881,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that displays a blog post in a web view. */
 "jetpack.fullscreen.overlay.learnMore" = "Mësoni më tepër te jetpack.com";
 
-/* Description of the Notifications feature.
-   Description of the Reader feature.
-   Description of the Statistics feature. */
+/* Description of the Notifications feature. */
+"jetpack.fullscreen.overlay.newUsers.notifications.subtitle" = "Merrni njoftime për komente, pëlqime, parje të reja, etj.";
+
+/* Description of the Reader feature. */
+"jetpack.fullscreen.overlay.newUsers.reader.subtitle" = "Gjeni dhe ndiqni sajtet dhe bashkësitë tuaja të parapëlqyera dhe ndani me të tjerë lëndën tuaj.";
+
+/* Description of the Statistics feature. */
 "jetpack.fullscreen.overlay.newUsers.stats.subtitle" = "Shiheni si rritet trafiku juaj, me prirje të dobishme dhe statistika të plota.";
 
 /* Name of the Statistics feature. */
@@ -10147,6 +10154,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
 
+/* Subtitle of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.subtitle" = "Për t’i aktivizuar, vizitoni Rregullime Sajti";
+
+/* Title of the notification when prompts are hidden from the dashboard card */
+"prompts.notification.removed.title" = "Cytje Blogimi të fshehura";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
 
@@ -10210,6 +10223,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Gabim Gjatë Ndarjes Me të Tjerë";
 
+/* Label for the blogging prompts setting */
+"sitesettings.prompts.title" = "Shfaq cytje";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "Kujtues";
+
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 ditët e fundit";
 
@@ -10218,6 +10237,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
 "stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* më sipër se 7 ditët e shkuara";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* më poshtë se 7 ditët e shkuara";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Njësoj si 7 ditët e shkuara";
@@ -10336,6 +10358,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Parjet më të mira ndonjëherë";
 
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "S’arrihet të ngarkohen statistika të krejt kohës.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Që të shihni statistika të krejt kohës, krijoni, ose shtoni një sajt.";
+
 /* Title of posts label in all time widget */
 "widget.alltime.posts.label" = "Postime";
 
@@ -10357,6 +10385,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the unconfigured view in today widget */
 "widget.jetpack.today.unconfigured.view.title" = "Që të shihni statistikat për sot, hyni në llogarinë tuaj Jetpack.";
 
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "S’arrihet të ngarkohen statistika të kësaj jave.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Që të shihni statistika të kësaj jave, krijoni, ose shtoni një sajt.";
+
 /* Description of all time widget in the preview */
 "widget.thisweek.preview.description" = "Jini i përditësuar me veprimtarinë e kësaj jave në sajtin tuaj WordPress.";
 
@@ -10369,11 +10403,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of comments label in today widget */
 "widget.today.comments.label" = "Komente";
 
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistikat kanë kaluar te aplikacioni Jetpack. Kalimi në të është falas dhe ha vetëm një minutë.";
+
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "Pëlqime";
 
-/* Title of the nodata view in today widget */
-"widget.today.nodata.view.title" = "S’arrihen të ngarkohen statistika sajti.";
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "S’arrihen të ngarkohen statistika sajti.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "S’arrihen të ngarkohen statistika të sotme.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Që të shihni statistika të sotmet, krijoni, ose shtoni një sajt.";
 
 /* Description of today widget in the preview */
 "widget.today.preview.description" = "Jini i përditësuar me veprimtarinë e sotme në sajtin tuaj WordPress.";

@@ -58,7 +58,7 @@ class EpilogueUserInfoCell: UITableViewCell {
         configureAccessibility()
 
         switch gravatarStatus {
-        case .uploading(image: _):
+        case .uploading:
             gravatarActivityIndicator.startAnimating()
         case .finished:
             gravatarActivityIndicator.stopAnimating()

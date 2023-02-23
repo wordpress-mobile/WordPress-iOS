@@ -1,7 +1,10 @@
-/* Translation-Revision-Date: 2023-01-30 11:26:29+0000 */
+/* Translation-Revision-Date: 2023-02-13 11:57:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: pl */
+
+/* Per-year postfix shown after a domain's cost. */
+" \/ year" = " \/ rocznie";
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
 "\"More\" Button" = "Przycisk „Więcej”";
@@ -169,14 +172,26 @@
 /* No comment provided by engineer. */
 "Add To End" = "Dodaj na końcu";
 
+/* Button Title. Tapping subscribes the user to a new topic. */
+"Add Topic" = "Dodaj temat";
+
 /* The title on the add category screen */
 "Add a Category" = "Dodaj kategorię";
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Dodaj zdjęcie profilowe";
 
+/* Title of a feature to add a new topic to the topics subscribed by the user. */
+"Add a Topic" = "Dodaj temat";
+
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Dodaj domenę";
+
+/* No Tags View Button Label */
+"Add a site" = "Utwórz witrynę";
+
+/* No Topics View Button Label */
+"Add a topic" = "Dodaj temat";
 
 /* Add self-hosted site button */
 "Add self-hosted site" = "Dodaj stronę z własnym hostingiem";
@@ -542,6 +557,9 @@
 /* OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "Choose a new app icon" = "Wybierz nową ikonkę aplikacji";
 
+/* A text for title label on Login epilogue screen */
+"Choose a site to open." = "Wybierz witrynę, którą chcesz otworzyć.";
+
 /* Title for the screen to pick a theme and homepage for a site.
    Title of a Quick Start Tour */
 "Choose a theme" = "Wybierz motyw";
@@ -793,6 +811,11 @@
    Label for action to create a new post. */
 "Create Post" = "Utwórz wpis";
 
+/* Button to progress to the next step
+   Site creation. Step 1. Screen title
+   Title for the button to progress with creating the site with the selected design. */
+"Create Site" = "Utwórz witrynę";
+
 /* Create WordPress.com site button */
 "Create WordPress.com site" = "Utwórz witrynę WordPress.com";
 
@@ -808,11 +831,20 @@
 /* Accessibility hint for create floating action button */
 "Create a post or page" = "Stwórz wpis lub stronę";
 
+/* Title for the Site Icon Picker */
+"Create a site icon" = "Utwórz ikonkę witryny";
+
 /* No comment provided by engineer. */
 "Create embed" = "Utwórz osadzoną treść";
 
 /* No comment provided by engineer. */
 "Create link" = "Stwórz odnośnik";
+
+/* Title for the card prompting the user to create their first post. */
+"Create your first post" = "Stwórz swój pierwszy wpis";
+
+/* Title for the card prompting the user to create a new post. */
+"Create your next post" = "Utwórz kolejny wpis";
 
 /* No comment provided by engineer. */
 "Current" = "Obecnie";
@@ -825,6 +857,10 @@
 
 /* No comment provided by engineer. */
 "Custom URL" = "Własny adres URL";
+
+/* Customize button that appears in Theme Browser Header
+   Theme Customize action title */
+"Customize" = "Dostosuj";
 
 /* No comment provided by engineer. */
 "Customize Gradient" = "Dostosuj gradient";
@@ -1219,6 +1255,11 @@
 /* Verb. An option to follow a site. */
 "Follow site" = "Obserwuj witrynę";
 
+/* Displayed in the Notification Settings View
+   Followed Sites Title
+   Section title for sites the user has followed. */
+"Followed Sites" = "Obserwowane witryny";
+
 /* Blog Followers
    Insights 'Followers' header
    Label for number of followers. */
@@ -1379,6 +1420,9 @@
 
 /* Hide All */
 "Hide All" = "Ukryj wszystko";
+
+/* Hide All Sites */
+"Hide All Sites" = "Ukryj wszystkie witryny";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Schowaj klawiature";
@@ -1792,6 +1836,9 @@
    Title of My Site tab */
 "My Site" = "Moja witryna";
 
+/* Title of the 'My Sites' tab - used for spotlight indexing on iOS. */
+"My Sites" = "Moje witryny";
+
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Moje witryny na WordPress";
 
@@ -1892,6 +1939,9 @@
 
 /* Text displayed when search for plugins returns no results */
 "No plugins found" = "Nie znaleziono wtyczek";
+
+/* A message title */
+"No posts" = "Brak wpisów";
 
 /* A message title */
 "No posts found" = "Nie znaleziono wpisów";
@@ -2096,6 +2146,9 @@
 /* Photography site intent topic */
 "Photography" = "Fotografia";
 
+/* Tab bar title for the Photos tab in Media Picker */
+"Photos" = "Zdjęcia";
+
 /* Action title. Noun. Links to a blog's Plans screen.
    Title for the plan selector */
 "Plans" = "Plany";
@@ -2155,6 +2208,11 @@
 
 /* Section title for Popular Languages */
 "Popular languages" = "Popularne języki";
+
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
+   Title shown when selecting a post type of Post from the Share Extension. */
+"Post" = "Wpis";
 
 /* For setting the format of a post.
    The post formats available for the post. Should be the same as in core WP. */
@@ -2470,6 +2528,9 @@
 /* Text displayed in HUD when a media item's metadata (title, etc) is saved successfully. */
 "Saved!" = "Zapisano!";
 
+/* A short message that informs the user a draft page is being saved to the server from the share extension. */
+"Saving page…" = "Zapisywanie strony...";
+
 /* Menus save button title while it is saving a Menu.
    Text displayed in HUD while a media item's metadata (title, etc) is being saved.
    Text displayed in HUD while a post is being saved as a draft. */
@@ -2499,6 +2560,9 @@
 /* Search domain - Title for the Suggested domains screen */
 "Search domains" = "Szukaj domen";
 
+/* title of the button that searches the first domain. */
+"Search for a domain" = "Szukaj domeny";
+
 /* Menus search bar placeholder text. */
 "Search..." = "Wyszukiwanie…";
 
@@ -2517,6 +2581,12 @@
 /* A step in a guided tour for quick start. %@ will be the name of the item to select. */
 "Select %@ to set a new title." = "Wybierz %@, aby ustawić nowy tytuł.";
 
+/* Title of button that allows the user to select more photos to access within the app */
+"Select More" = "Wybierz więcej";
+
+/* Blog Picker's Title */
+"Select Site" = "Wybierz witrynę";
+
 /* No comment provided by engineer. */
 "Select a color" = "Wybierz kolor";
 
@@ -2525,6 +2595,10 @@
 
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Wybierz domenę";
+
+/* translators: %s: Select font size option value e.g: \"Selected: Large\".
+translators: %s: Select control option value e.g: \"Auto, 25%\". */
+"Selected: %s" = "Wybrano: %s";
 
 /* No comment provided by engineer. */
 "Selected: Default" = "Wybrano: domyślne";
@@ -2638,6 +2712,15 @@
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Witryna";
 
+/* Title for the Language Picker View */
+"Site Language" = "Język witryny";
+
+/* Default title for a site
+   Label for site title blog setting
+   The item to select during a guided tour.
+   Title for screen that show site title editor */
+"Site Title" = "Tytuł witryny";
+
 /* The accessibility label for the followed sites search field
    The item to select during a guided tour. */
 "Site URL" = "Adres URL witryny";
@@ -2656,6 +2739,10 @@
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Tytuł witryny został zmieniony";
+
+/* Sites Filter Tab Title
+   Title of a Reader tab showing Sites matching a user's search query */
+"Sites" = "Witryny";
 
 /* Sites Filter Tab Title with Count */
 "Sites (%lu)" = "Witryny (%lu)";
@@ -3404,6 +3491,9 @@
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Nie można użyć tego adresu e-mail do rejestracji. Mamy problemy z blokowaniem naszych wiadomości przez wybranego dostawcę. Proszę, użyć adresu e-mail innego dostawcy.";
 
+/* Text shown to the user when setting up blogging reminders, if they complete the flow and have chosen not to add any reminders. */
+"You have no reminders set." = "Nie ustawiono żadnych przypomnień.";
+
 /* Show when clicking cancel on a comment text box and you didn't save your changes.
    Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment.
    Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post. */
@@ -3501,6 +3591,9 @@
 
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "np. 44";
+
+/* Accessibility label for more button in dashboard quick start card. */
+"ellipsisButton.AccessibilityLabel" = "Więcej";
 
 /* Placeholder for the site url textfield.
    Provides a sample of what a domain name looks like.
@@ -3617,9 +3710,6 @@
 
 /* Title of a button that dismisses an overlay and displays the Notifications screen. */
 "jetpack.fullscreen.overlay.notifications.continue.title" = "Przejdź do powiadomień";
-
-/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "Przełącz się na aplikację Jetpack, aby otrzymywać powiadomienia w czasie rzeczywistym na swoje urządzenie.";
 
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "Otrzymuj powiadomienia dzięki aplikacji Jetpack";
@@ -3741,8 +3831,14 @@
 /* Title of the migration done screen. */
 "migration.done.title" = "Dziękujemy za przejście na Jetpacka!";
 
+/* The description in the Load WordPress screen */
+"migration.loadWordpress.description" = "Aplikacja WordPressa została już zainstalowana.";
+
 /* The primary button title in the Load WordPress screen */
 "migration.loadWordpress.primaryButton" = "Otwórz WordPressa";
+
+/* The title in the Load WordPress screen */
+"migration.loadWordpress.title" = "Witamy w Jetpacku!";
 
 /* Secondary button title in the migration notifications screen. */
 "migration.notifications.actions.secondary.title" = "Zadecyduję póżniej";

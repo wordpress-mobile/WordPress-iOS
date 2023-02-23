@@ -1,8 +1,5 @@
-Finde dank unserer Änderungen an Statistikeinsichten heraus, wie erfolgreich deine Inhalte sind, und erfahre, welche Arten von Inhalten deine Leser sich wünschen.
+Wir haben ein paar raffinierte Änderungen an Blog-Schreibanregungen vorgenommen, damit du auf alte Themenvorschläge antworten oder neue deaktivieren kannst. (Auch wenn wir uns nicht vorstellen können, warum du das tun solltest.)
 
-Wir haben außerdem einige Fehler in verschiedenen Bereichen der App behoben.
+Wenn du für dein Konto die zweistufige Authentifizierung verwendest, wird dir der Anmelde-QR-Code zum Scannen nicht angezeigt.
 
-– Die Nachricht „Keine Medien entsprechen deiner Suche“ in der Medienauswahl wird nun an der richtigen Stelle angezeigt. Das wurde auch Zeit.
-– Einige Benutzer kamen nach der Anmeldung auf dem Bildschirm „Was möchtest du als Erstes tun?“ nicht weiter. Dieses Problem gehört nun jedoch der Vergangenheit an.
-– Wenn du die App während der Migration deiner Websiteinhalte von WordPress zu Jetpack schließt, springst du nicht länger ans Ende des Migrationsvorgangs. Außerdem haben wir auch das Design des letzten Bildschirms im Migrationsprozess angepasst.
-– Auf dem Bildschirm mit den Details zu „Follower insgesamt“ werden deine Follower-Statistiken nun korrekt aktualisiert, wenn du den Bildschirm nach unten ziehst. Ist das nicht super?
+In der Statistikansicht werden durchgehend die neuesten Daten des Tages angezeigt, auch wenn das Datum geändert wird, während die App im Hintergrund ausgeführt wird. Das ist doch selbstverständlich.

@@ -13,8 +13,7 @@ final class ReaderMenuAction {
                  source: ReaderPostMenuSource,
                  followCommentsService: FollowCommentsService
     ) {
-        let service: ReaderTopicService = ReaderTopicService(managedObjectContext: context)
-        let siteTopic: ReaderSiteTopic? = post.isFollowing ? service.findSiteTopic(withSiteID: post.siteID) : nil
+        let siteTopic: ReaderSiteTopic? = post.isFollowing ? (try? ReaderSiteTopic.lookup(withSiteID: post.siteID, in: context)) : nil
 
         ReaderShowMenuAction(loggedIn: isLoggedIn).execute(
             with: post,
