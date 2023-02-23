@@ -20,8 +20,7 @@ class PushAuthenticationManager {
 
 
     convenience init() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = PushAuthenticationService(managedObjectContext: context)
+        let service = PushAuthenticationService(coreDataStack: ContextManager.shared)
         self.init(pushAuthenticationService: service)
     }
 
