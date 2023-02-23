@@ -24,8 +24,8 @@ class JetpackRestoreWarningCoordinator {
          rewindID: String?,
          view: JetpackRestoreWarningView,
          service: JetpackRestoreService? = nil,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
-        self.service = service ?? JetpackRestoreService(managedObjectContext: context)
+         coreDataStack: CoreDataStack = ContextManager.shared) {
+        self.service = service ?? JetpackRestoreService(coreDataStack: coreDataStack)
         self.site = site
         self.rewindID = rewindID
         self.restoreTypes = restoreTypes
