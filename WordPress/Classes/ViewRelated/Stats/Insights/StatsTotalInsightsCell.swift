@@ -339,6 +339,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
             return NSAttributedString(string: string, attributes: defaultAttributes)
         }
 
+        let string = string.replacingOccurrences(of: String(TextContent.differenceDelimiter), with: "")
         let nsRange = NSRange(range, in: string)
 
         let mutableString = NSMutableAttributedString(string: string, attributes: defaultAttributes)
@@ -354,7 +355,6 @@ class StatsTotalInsightsCell: StatsBaseCell {
             return nil
         }
 
-        let string = string.replacingOccurrences(of: String(TextContent.differenceDelimiter), with: "")
         let range: Range<String.Index> = firstIndex..<string.index(lastIndex, offsetBy: -1)
 
         return range
