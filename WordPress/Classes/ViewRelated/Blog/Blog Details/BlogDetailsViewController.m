@@ -119,6 +119,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
              accessibilityHint:accessibilityHint
                          image:image
                     imageColor:[UIColor murielListIcon]
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                       callback:callback];
 }
 
@@ -148,14 +149,33 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
              accessibilityHint:nil
                          image:image
                     imageColor:imageColor
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                       callback:callback];
 }
+
+- (instancetype)initWithTitle:(NSString *)title
+      accessibilityIdentifier:(NSString *)accessibilityIdentifier
+                        image:(UIImage *)image
+                   imageColor:(UIColor *)imageColor
+                renderingMode:(UIImageRenderingMode)renderingMode
+                     callback:(void (^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+       accessibilityIdentifier:accessibilityIdentifier
+             accessibilityHint:nil
+                         image:image
+                    imageColor:imageColor
+                 renderingMode:renderingMode
+                      callback:callback];
+}
+
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
             accessibilityHint:(NSString * __nullable)accessibilityHint
                         image:(UIImage * __nonnull)image
-                   imageColor:(UIColor * __nonnull)imageColor
+                   imageColor:(UIColor * __nullable)imageColor
                      callback:(void(^_Nullable)(void))callback
 {
     return [self initWithTitle:title
@@ -164,21 +184,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
           accessibilityHint:nil
                       image:image
                  imageColor:imageColor
+                 renderingMode:UIImageRenderingModeAlwaysTemplate
                    callback:callback];
 }
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
-                    identifier:(NSString * __nonnull)identifier
-       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
-             accessibilityHint:(NSString *__nullable)accessibilityHint
-                         image:(UIImage * __nonnull)image
-                    imageColor:(UIColor * __nonnull)imageColor
-                      callback:(void(^)(void))callback
+                   identifier:(NSString * __nonnull)identifier
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+            accessibilityHint:(NSString *__nullable)accessibilityHint
+                        image:(UIImage * __nonnull)image
+                   imageColor:(UIColor * __nullable)imageColor
+                renderingMode:(UIImageRenderingMode)renderingMode
+                     callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
         _title = title;
-        _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _image = [image imageWithRenderingMode:renderingMode];
         _imageColor = imageColor;
         _callback = callback;
         _identifier = identifier;
@@ -514,6 +536,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionBlaze:
+            if ([self.blog supports:BlogFeatureBlaze]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showBlaze];
+            }
+            break;
         case BlogDetailsSubsectionJetpackSettings:
             if ([self.blog supports:BlogFeatureActivity]) {
                 self.restorableSelectedIndexPath = indexPath;
@@ -578,6 +609,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         case BlogDetailsSubsectionStats:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
+        case BlogDetailsSubsectionBlaze:
             return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionJetpackSettings:
             return [NSIndexPath indexPathForRow:1 inSection:section];
@@ -905,6 +938,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                            }];
 
         [rows addObject:settingsRow];
+    }
+    
+    if ([Feature enabled:FeatureFlagBlaze] && [self.blog supports:BlogFeatureBlaze]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blaze", @"Noun. Links to a blog's Blaze screen.")
+                                      accessibilityIdentifier:@"Blaze Row"
+                                                        image:[UIImage imageNamed:@"icon-blaze"]
+                                                   imageColor:nil
+                                                renderingMode:UIImageRenderingModeAlwaysOriginal
+                                                     callback:^{
+                                                         [weakSelf showBlaze];
+                                                     }]];
     }
     NSString *title = @"";
 
@@ -1611,6 +1655,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
+}
+
+- (void)showBlaze
+{
+    // TODO: Show Blaze screen
 }
 
 - (void)showScan

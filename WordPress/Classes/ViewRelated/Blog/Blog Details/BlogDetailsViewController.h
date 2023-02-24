@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionHome,
     BlogDetailsSubsectionMigrationSuccess,
     BlogDetailsSubsectionJetpackBrandingCard,
+    BlogDetailsSubsectionBlaze,
 };
 
 
@@ -110,7 +111,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 @property (nonatomic, strong, nullable) NSString *accessibilityIdentifier;
 @property (nonatomic, strong, nullable) NSString *accessibilityHint;
 @property (nonatomic, strong, nonnull) UIImage *image;
-@property (nonatomic, strong, nonnull) UIColor *imageColor;
+@property (nonatomic, strong, nullable) UIColor *imageColor;
 @property (nonatomic, strong, nullable) UIView *accessoryView;
 @property (nonatomic, strong, nullable) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
@@ -136,7 +137,14 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
                accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                                  image:(UIImage * __nonnull)image
-                            imageColor:(UIColor * __nonnull)imageColor
+                            imageColor:(UIColor * __nullable)imageColor
+                              callback:(void(^_Nullable)(void))callback;
+
+- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
+               accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                                 image:(UIImage * __nonnull)image
+                            imageColor:(UIColor * __nullable)imageColor
+                         renderingMode:(UIImageRenderingMode)renderingMode
                               callback:(void(^_Nullable)(void))callback;
 
 @end
