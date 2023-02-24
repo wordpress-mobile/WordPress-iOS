@@ -243,7 +243,7 @@ private extension ContextManager {
         }
 
         guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
-            objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
+            !objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
         else {
             return
         }
