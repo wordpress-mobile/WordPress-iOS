@@ -515,7 +515,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func blazePage(_ page: Page) {
-        // TODO: track event
+        BlazeEventsTracker.trackBlazeFeatureTapped(for: .pagesList)
         BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: .pagesList, blog: blog, postID: page.postID)
     }
 
@@ -778,7 +778,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         })
 
-        // TODO: track event
+        BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .pagesList)
     }
 
     private func addEditAction(to controller: UIAlertController, for page: AbstractPost) {
