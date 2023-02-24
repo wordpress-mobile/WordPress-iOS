@@ -135,6 +135,19 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
         WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
         loadHeaderView()
         addAddressHintView()
+        configureUIIfNeeded()
+    }
+
+    private func configureUIIfNeeded() {
+        guard FeatureFlag.siteCreationDomainPurchasing.enabled else {
+            return
+        }
+
+        NSLayoutConstraint.activate([
+            largeTitleView.widthAnchor.constraint(equalTo: headerStackView.widthAnchor)
+        ])
+        largeTitleView.textAlignment = .natural
+        promptView.textAlignment = .natural
     }
 
     private func loadHeaderView() {
@@ -423,7 +436,7 @@ final class WebAddressWizardContent: CollapsableHeaderViewController {
                                                            comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
         static let mainTitle: String = NSLocalizedString("Choose a domain",
                                                          comment: "Select domain name. Title")
-        static let prompt: String = NSLocalizedString("This is where people will find you on the internet.",
+        static let prompt: String = NSLocalizedString("Search for a short and memorable keyword to help people find and visit your website.",
                                                       comment: "Select domain name. Subtitle")
         static let createSite: String = NSLocalizedString("Create Site",
                                                           comment: "Button to progress to the next step")
