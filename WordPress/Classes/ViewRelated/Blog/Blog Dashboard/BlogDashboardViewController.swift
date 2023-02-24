@@ -347,3 +347,23 @@ private extension Collection where Element == DashboardCardModel {
         contains(where: { $0.cardType == .prompts })
     }
 }
+
+// MARK: - Jetpack Remote Install Delegate
+
+extension BlogDashboardViewController: JetpackRemoteInstallDelegate {
+    func jetpackRemoteInstallCompleted() {
+        dismiss(animated: true) {
+            self.pulledToRefresh()
+        }
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismiss(animated: true) {
+            self.pulledToRefresh()
+        }
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // No op
+    }
+}

@@ -7,6 +7,21 @@ enum JetpackPlugin: String {
     case boost      = "jetpack-boost"
     case multiple
 
+    init?(from rawValues: [String]?) {
+        guard let rawValues,
+              !rawValues.isEmpty else {
+            return nil
+        }
+
+        guard rawValues.count == 1,
+              let rawValue = rawValues.first else {
+            self = .multiple
+            return
+        }
+
+        self.init(rawValue: rawValue)
+    }
+
     var displayName: String {
         switch self {
         case .search:

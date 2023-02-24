@@ -3,13 +3,8 @@ import Foundation
 @objc extension ReaderSiteService {
 
     private var defaultAccount: WPAccount? {
-        let context = ContextManager.shared.mainContext
-        do {
-            let account = try WPAccount.lookupDefaultWordPressComAccount(in: context)
-            return account
-        } catch let error {
-            DDLogError("Couldn't fetch default account: \(error.localizedDescription)")
-            return nil
+        self.coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)
         }
     }
 
@@ -33,28 +28,24 @@ import Foundation
         service.flagSite(withID: id.uintValue, asBlocked: blocked) {
             let properties: [String: Any] = [WPAppAnalyticsKeyBlogID: id]
             WPAnalytics.track(.readerSiteBlocked, withProperties: properties)
-            self.flagSiteLocally(accountID: defaultAccount.userID, siteID: id, asBlocked: blocked)
-            success?()
+            self.coreDataStack.performAndSave({ context in
+                self.flagSiteLocally(accountID: defaultAccount.userID, siteID: id, asBlocked: blocked, in: context)
+            }, completion: {
+                success?()
+            }, on: .main)
         } failure: { error in
             self.flagPosts(fromSite: id, asBlocked: !blocked)
             failure?(error)
         }
     }
 
-    private func flagSiteLocally(accountID: NSNumber, siteID: NSNumber, asBlocked blocked: Bool) {
-        let context = ContextManager.shared.mainContext
+    private func flagSiteLocally(accountID: NSNumber, siteID: NSNumber, asBlocked blocked: Bool, in context: NSManagedObjectContext) {
         if blocked {
             let blocked = BlockedSite.insert(into: context)
             blocked.accountID = accountID
             blocked.blogID = siteID
         } else {
             BlockedSite.delete(accountID: accountID, blogID: siteID, context: context)
-        }
-        do {
-            try context.save()
-        } catch let error {
-            let operation = blocked ? "block" : "unblock"
-            DDLogError("Couldn't \(operation) site: \(error.localizedDescription)")
         }
     }
 }

@@ -250,7 +250,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topicObjectID = topic.objectID;
     } completion:^{
         // Save / update the search phrase to use it as a suggestion later.
-        ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+        ReaderSearchSuggestionService *suggestionService = [[ReaderSearchSuggestionService alloc] initWithCoreDataStack:self.coreDataStack];
         [suggestionService createOrUpdateSuggestionForPhrase:phrase];
 
         if (completion) {
@@ -511,7 +511,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         } onQueue:dispatch_get_main_queue()];
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.coreDataStack.mainContext];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithCoreDataStack:self.coreDataStack];
     if (topic.isExternal) {
         if (newFollowValue) {
             [siteService followSiteAtURL:topic.feedURL success:successBlock failure:failureBlock];

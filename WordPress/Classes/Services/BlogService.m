@@ -127,7 +127,7 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
                                    dispatch_group_leave(syncGroup);
                                }];
 
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithCoreDataStack:self.coreDataStack];
     dispatch_group_enter(syncGroup);
     [categoryService syncCategoriesForBlog:blog
                                    success:^{
