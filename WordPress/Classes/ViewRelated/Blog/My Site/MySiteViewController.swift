@@ -189,6 +189,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        displayJetpackInstallOverlayIfNeeded()
+
         displayOverlayIfNeeded()
 
         workaroundLargeTitleCollapseBug()
@@ -822,6 +824,8 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
             self.updateChildViewController(for: blog)
             self.createFABIfNeeded()
             self.fetchPrompt(for: blog)
+
+            self.displayJetpackInstallOverlayIfNeeded()
         }
 
         return sitePickerViewController
@@ -1064,5 +1068,33 @@ private extension MySiteViewController {
                 JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .appOpen, blog: self.blog)
             }
         }
+    }
+}
+
+// MARK: Jetpack Install Plugin Overlay
+
+private extension MySiteViewController {
+    func displayJetpackInstallOverlayIfNeeded() {
+        JetpackInstallPluginHelper.presentOverlayIfNeeded(in: self, blog: blog, delegate: self)
+    }
+
+    func dismissOverlayAndRefresh() {
+        dismiss(animated: true) {
+            self.pulledToRefresh()
+        }
+    }
+}
+
+extension MySiteViewController: JetpackRemoteInstallDelegate {
+    func jetpackRemoteInstallCompleted() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallCanceled() {
+        dismissOverlayAndRefresh()
+    }
+
+    func jetpackRemoteInstallWebviewFallback() {
+        // no op
     }
 }

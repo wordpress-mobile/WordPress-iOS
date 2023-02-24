@@ -440,7 +440,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     tourGuide.currentEntryPoint = QuickStartTourEntryPointBlogDetails;
     [WPAnalytics trackEvent: WPAnalyticsEventMySiteSiteMenuShown];
 
-    if ([self shouldShowJetpackInstall]) {
+    if ([self shouldShowJetpackInstallCard]) {
         [WPAnalytics trackEvent:WPAnalyticsEventJetpackInstallFullPluginCardViewed
                      properties:@{WPAppAnalyticsKeyTabSource: @"site_menu"}];
     }
@@ -788,7 +788,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self migrationSuccessSectionViewModel]];
     }
 
-    if ([self shouldShowJetpackInstall]) {
+    if ([self shouldShowJetpackInstallCard]) {
         [marr addObject:[self jetpackInstallSectionViewModel]];
     }
 
@@ -1770,7 +1770,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide shared] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (BOOL)shouldShowJetpackInstall
+- (BOOL)shouldShowJetpackInstallCard
 {
     return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
 }

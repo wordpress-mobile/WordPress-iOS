@@ -118,8 +118,9 @@ public protocol ThemePresenter: AnyObject {
         fetchRequest.fetchBatchSize = 20
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: self.themeService.managedObjectContext,
+        let frc = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: self.themeService.coreDataStack.mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -260,7 +261,7 @@ public protocol ThemePresenter: AnyObject {
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
      */
-    fileprivate let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    fileprivate let themeService = ThemeService(coreDataStack: ContextManager.sharedInstance())
     fileprivate var themesSyncHelper: WPContentSyncHelper!
     fileprivate var themesSyncingPage = 0
     fileprivate var customThemesSyncHelper: WPContentSyncHelper!
