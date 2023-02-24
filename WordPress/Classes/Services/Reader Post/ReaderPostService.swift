@@ -7,6 +7,9 @@ extension ReaderPostService {
         return try? WPAccount.lookupDefaultWordPressComAccount(in: managedObjectContext)
     }
 
+    // MARK: - Fetch Unblocked Posts
+
+    /// Fetches a list of posts from the API and filters out the posts that belong to a blocked author.
     func fetchUnblockedPosts(
         topic: ReaderAbstractTopic,
         earlierThan date: Date,
@@ -51,7 +54,7 @@ extension ReaderPostService {
         }
     }
 
-    func processFetchedPostsForTopic(
+    private func processFetchedPostsForTopic(
         _ topic: ReaderAbstractTopic,
         remotePosts posts: [Any],
         earlierThan date: Date,
@@ -61,7 +64,9 @@ extension ReaderPostService {
         success: SuccessCallback? = nil
     ) {
         // The passed-in topic might have missing data, the following code ensures fully realized object.
-        guard let topic = try? self.managedObjectContext.existingObject(with: topic.objectID) as? ReaderAbstractTopic else {
+        guard let posts = posts as? [RemoteReaderPost],
+              let topic = try? self.managedObjectContext.existingObject(with: topic.objectID) as? ReaderAbstractTopic
+        else {
             success?(0, true)
             return
         }
@@ -73,7 +78,33 @@ extension ReaderPostService {
         let filteredPosts = self.remotePostsByFilteringOutBlockedPosts(posts)
         let hasMore = self.canLoadMorePosts(for: topic, remotePosts: posts, in: managedObjectContext)
 
-        // Construct a rank from the date provided
+        // Persist filtered posts locally.
+        self.persistRemotePosts(
+            filteredPosts: filteredPosts,
+            allPosts: posts,
+            topic: topic,
+            beforeDate: date,
+            deletingEarlier: deletingEarlier,
+            hasMoreContent: hasMore,
+            success: success
+        )
+
+        // Fetch more posts when certain conditions are fulfilled. See method documentation for more details.
+        self.fetchMorePostsIfNeeded(filteredPosts: filteredPosts, allPosts: posts, topic: topic, retryOption: retryOption)
+    }
+
+    /// Persists the remote posts in Core Data.
+    private func persistRemotePosts(
+        filteredPosts: [RemoteReaderPost],
+        allPosts posts: [RemoteReaderPost],
+        topic: ReaderAbstractTopic,
+        beforeDate date: Date,
+        deletingEarlier: Bool,
+        hasMoreContent hasMore: Bool,
+        success: SuccessCallback? = nil
+    ) {
+        // We don't want to call `mergePosts` if all posts are blocked, henced filtered out.
+        // Because this somehow causes existing posts in Core Data to be removed.
         let allPostsAreFilteredOut = filteredPosts.isEmpty && !posts.isEmpty
         if !allPostsAreFilteredOut {
             let rank = date.timeIntervalSinceReferenceDate as NSNumber
@@ -83,34 +114,41 @@ extension ReaderPostService {
         } else {
             success?(filteredPosts.count, hasMore)
         }
-
-        // Silently fetch new content when the following conditions are fulfilled:
-        //
-        // 1. The retries count hasn't exceeded the limit.
-        // 2. The fetched posts are all blocked.
-        if case let .enabled(retry, maxRetries) = retryOption, let lastPost = posts.last as? RemoteReaderPost {
-            let shouldContinueRetrying = filteredPosts.isEmpty && retry < maxRetries
-            if shouldContinueRetrying {
-                self.fetchUnblockedPostsWithRetries(
-                    topic: topic,
-                    earlierThan: lastPost.sortDate,
-                    retryOption: .enabled(retry: retry + 1, maxRetries: maxRetries)
-                )
-            }
-            self.isSilentlyFetchingPosts = shouldContinueRetrying
-        }
     }
 
-    private func remotePostsByFilteringOutBlockedPosts(_ remotePosts: [Any]) -> [Any] {
-        let context = ContextManager.shared.mainContext
+    /// Silently fetch new content when the certain conditions are fulfiled.
+    ///
+    /// Those conditions are:
+    ///
+    /// 1. The retries count hasn't exceeded the limit.
+    /// 2. The fetched posts all belong to a blocked author(s). Which means, they all posts are filtered out.
+    private func fetchMorePostsIfNeeded(
+        filteredPosts: [RemoteReaderPost],
+        allPosts posts: [RemoteReaderPost],
+        topic: ReaderAbstractTopic,
+        retryOption: RetryOption
+    ) {
+        guard case let .enabled(retry, maxRetries) = retryOption, let lastPost = posts.last else {
+            return
+        }
+        let shouldContinueRetrying = filteredPosts.isEmpty && retry < maxRetries
+        if shouldContinueRetrying {
+            self.fetchUnblockedPostsWithRetries(
+                topic: topic,
+                earlierThan: lastPost.sortDate,
+                retryOption: .enabled(retry: retry + 1, maxRetries: maxRetries)
+            )
+        }
+        self.isSilentlyFetchingPosts = shouldContinueRetrying
+    }
 
-        guard let posts = remotePosts as? [RemoteReaderPost],
-              let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-        else {
-            return remotePosts
+    /// Takes a list of remote posts and returns a new list without the blocked posts.
+    private func remotePostsByFilteringOutBlockedPosts(_ posts: [RemoteReaderPost]) -> [RemoteReaderPost] {
+        guard let account = self.defaultAccount else {
+            return posts
         }
 
-        let blockedAuthors = Set(BlockedAuthor.find(.accountID(account.userID), context: context).map { $0.authorID })
+        let blockedAuthors = Set(BlockedAuthor.find(.accountID(account.userID), context: managedObjectContext).map { $0.authorID })
 
         guard !blockedAuthors.isEmpty else {
             return posts

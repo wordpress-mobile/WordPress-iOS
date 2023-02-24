@@ -1,7 +1,5 @@
 21.9
 -----
-
-----
 * [**] Reader: Add a button in the post menu to block an author and stop seeing their posts. [#20193]
 
 21.8
