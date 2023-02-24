@@ -358,13 +358,13 @@ import Combine
             displayLoadingStream()
         }
 
-        if let readerTopic {
-            readerTopic.objectWillChange
-                .sink { [weak self] _ in
-                    self?.updateStreamHeaderIfNeeded()
-                }
-                .store(in: &cancellables)
-        }
+        // Make sure the header is in-sync with the `readerTopic` object if it exists.
+        readerTopic?
+            .objectWillChange
+            .sink { [weak self] _ in
+                self?.updateStreamHeaderIfNeeded()
+            }
+            .store(in: &cancellables)
     }
 
 

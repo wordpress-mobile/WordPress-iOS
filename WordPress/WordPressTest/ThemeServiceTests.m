@@ -41,7 +41,7 @@
     
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
 
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
+    ThemeService *service = [[ThemeService alloc] initWithCoreDataStack:self.manager];
     BOOL result = NO;
     
     XCTAssertNoThrow(result = [service blogSupportsThemeServices:blog]);
@@ -53,7 +53,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertSelfHostedBlogWithContext:context];
 
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
+    ThemeService *service = [[ThemeService alloc] initWithCoreDataStack:self.manager];
     BOOL result = NO;
     
     XCTAssertNoThrow(result = [service blogSupportsThemeServices:blog]);
@@ -79,7 +79,7 @@
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service getActiveThemeForBlog:blog
                                             success:nil
                                             failure:nil]);
@@ -87,129 +87,12 @@
 
 - (void)testThatGetActiveThemeForBlogThrowsExceptionWithoutBlog
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     ThemeService *service = nil;
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service getActiveThemeForBlog:nil
                                            success:nil
                                            failure:nil]);
-}
-    
-- (void)testThatGetPurchasedThemesForBlogWorks
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
-    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
-    ThemeService *service = nil;
-    NSNumber *blogId = @1;
-    NSString *url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/themes/purchased", blogId];
-    blog.dotComID = blogId;
-    
-    OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
-             success:[OCMArg any]
-             failure:[OCMArg any]]);
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertNoThrow([service getPurchasedThemesForBlog:blog
-                                                success:nil
-                                                failure:nil]);
-}
-
-- (void)testThatGetPurchasedThemesForBlogThrowsExceptionWithoutBlog
-{
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    ThemeService *service = nil;
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertThrows([service getPurchasedThemesForBlog:nil
-                                               success:nil
-                                               failure:nil]);
-}
-
-- (void)testThatGetThemeIdWorks
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
-    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    account.wordPressComRestApi = api;
-    ThemeService *service = nil;
-    NSString *themeId = @"SomeTheme";
-    NSString *url = [NSString stringWithFormat:@"rest/v1.1/themes/%@", themeId];
-    
-    OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
-             success:[OCMArg any]
-             failure:[OCMArg any]]);
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertNoThrow([service getThemeId:themeId
-                              forAccount:account
-                                 success:nil
-                                 failure:nil]);
-}
-
-- (void)testThatGetThemeIdThrowsExceptionWithoutThemeId
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
-    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    account.wordPressComRestApi = api;
-    ThemeService *service = nil;
-
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertThrows([service getThemeId:nil
-                             forAccount:account
-                                success:nil
-                                failure:nil]);
-}
-
-- (void)testThatGetThemeIdThrowsExceptionWithoutAccount
-{
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    ThemeService *service = nil;
-    NSString *themeId = @"SomeTheme";
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertThrows([service getThemeId:themeId
-                             forAccount:nil
-                                success:nil
-                                failure:nil]);
-}
-
-- (void)testThatGetThemesForAccountWorks
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
-    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    account.wordPressComRestApi = api;
-    ThemeService *service = nil;
-    NSString *url = @"rest/v1.2/themes";
-
-    OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNotNil]
-             success:[OCMArg any]
-             failure:[OCMArg any]]);
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertNoThrow([service getThemesForAccount:account
-                                             page:1
-                                          success:nil
-                                          failure:nil]);
-}
-
-- (void)testThatGetThemesForAccountThrowsExceptionWithoutAccount
-{
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    ThemeService *service = nil;
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
-    XCTAssertThrows([service getThemesForAccount:nil
-                                            page:1
-                                         success:nil
-                                         failure:nil]);
 }
 
 - (void)testThatGetThemesForBlogWorks
@@ -229,7 +112,7 @@
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service getThemesForBlog:blog
                                           page:1
                                           sync:NO
@@ -239,10 +122,9 @@
 
 - (void)testThatGetThemesForBlogThrowsExceptionWithoutBlog
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     ThemeService *service = nil;
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service getThemesForBlog:nil
                                          page:1
                                          sync:NO
@@ -270,7 +152,7 @@
               success:[OCMArg any]
               failure:[OCMArg any]]);
     
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service activateTheme:theme
                                     forBlog:blog
                                     success:nil
@@ -288,7 +170,7 @@
     blog.dotComID = blogId;
     blog.account.wordPressComRestApi = api;
 
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service activateTheme:nil
                                    forBlog:blog
                                    success:nil
@@ -303,7 +185,7 @@
 
     theme.themeId = @"SomeThemeId";
 
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
+    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service activateTheme:theme
                                    forBlog:nil
                                    success:nil

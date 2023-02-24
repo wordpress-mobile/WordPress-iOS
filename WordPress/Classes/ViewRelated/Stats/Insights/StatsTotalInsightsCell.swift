@@ -335,22 +335,29 @@ class StatsTotalInsightsCell: StatsBaseCell {
     private func attributedDifferenceString(_ string: String, highlightAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
         let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.foregroundColor: UIColor.textSubtle]
 
-        guard let firstIndex = string.firstIndex(of: TextContent.differenceDelimiter),
-              let lastIndex = string.lastIndex(of: TextContent.differenceDelimiter),
-              firstIndex != lastIndex else {
-                  return NSAttributedString(string: string, attributes: defaultAttributes)
-              }
+        guard let range = StatsTotalInsightsCell.rangeOfDifferenceSubstring(string) else {
+            return NSAttributedString(string: string, attributes: defaultAttributes)
+        }
 
         let string = string.replacingOccurrences(of: String(TextContent.differenceDelimiter), with: "")
-
-        // Move the end of the range back by one as we've removed a character
-        let range: Range<String.Index> = firstIndex..<string.index(lastIndex, offsetBy: -1)
         let nsRange = NSRange(range, in: string)
 
         let mutableString = NSMutableAttributedString(string: string, attributes: defaultAttributes)
         mutableString.addAttributes(highlightAttributes, range: nsRange)
 
         return NSAttributedString(attributedString: mutableString)
+    }
+
+    static func rangeOfDifferenceSubstring(_ string: String) -> Range<String.Index>? {
+        guard let firstIndex = string.firstIndex(of: TextContent.differenceDelimiter),
+              let lastIndex = string.lastIndex(of: TextContent.differenceDelimiter),
+              firstIndex != lastIndex else {
+            return nil
+        }
+
+        let range: Range<String.Index> = firstIndex..<string.index(lastIndex, offsetBy: -1)
+
+        return range
     }
 
     @objc private func guideTapped() {
