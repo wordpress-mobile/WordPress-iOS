@@ -44,6 +44,14 @@ extension NavigationAction {
                 return false
         }
 
+        // TODO: This is a workaround. Remove after the Universal Link routes for the WordPress app are removed.
+        //
+        // Don't fallback to Safari if the counterpart WordPress/Jetpack app is installed.
+        // Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
+        if MigrationAppDetection.isCounterpartAppInstalled {
+            return false
+        }
+
         let noOptions: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
         UIApplication.shared.open(url, options: noOptions, completionHandler: nil)
         return true
