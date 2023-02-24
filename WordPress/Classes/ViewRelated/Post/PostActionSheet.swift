@@ -111,7 +111,7 @@ class PostActionSheet {
         static let retry = NSLocalizedString("Retry", comment: "Retry uploading the post.")
         static let edit = NSLocalizedString("Edit", comment: "Edit the post.")
         static let share = NSLocalizedString("Share", comment: "Share the post.")
-        static let blaze = NSLocalizedString("Promote with Blaze", comment: "Promote the post with Blaze.")
+        static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
         static let copyLink = NSLocalizedString("Copy Link", comment: "Copy the post url and paste anywhere in phone")
     }
 }
