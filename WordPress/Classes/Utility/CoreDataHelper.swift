@@ -255,9 +255,12 @@ extension CoreDataStack {
         let databaseReplaced = replaceDatabase(from: databaseLocation, to: currentDatabaseLocation)
 
         do {
+            let options = [NSMigratePersistentStoresAutomaticallyOption: true,
+                                 NSInferMappingModelAutomaticallyOption: true]
             try storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
                                                     configurationName: nil,
-                                                    at: currentDatabaseLocation)
+                                                    at: currentDatabaseLocation,
+                                                    options: options)
 
             if databaseReplaced {
                 // The database was replaced successfully and the store added with no errors so we
