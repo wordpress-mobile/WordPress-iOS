@@ -5,6 +5,17 @@ protocol JetpackRemoteInstallStateViewDelegate: AnyObject {
     func customerSupportButtonDidTouch()
 }
 
+struct JetpackRemoteInstallStateViewModel {
+    let image: UIImage?
+    let titleText: String
+    let descriptionText: String
+    let buttonTitleText: String
+
+    let hidesMainButton: Bool
+    let hidesLoadingIndicator: Bool
+    let hidesSupportButton: Bool
+}
+
 class JetpackRemoteInstallStateView: UIViewController {
     weak var delegate: JetpackRemoteInstallStateViewDelegate?
 
@@ -24,23 +35,18 @@ class JetpackRemoteInstallStateView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func setupView(for state: JetpackRemoteInstallState) {
-        imageView.image = state.image
+    func configure(with viewModel: JetpackRemoteInstallStateViewModel) {
+        imageView.image = viewModel.image
 
-        titleLabel.text = state.title
-        descriptionLabel.text = state.message
+        titleLabel.text = viewModel.titleText
+        descriptionLabel.text = viewModel.descriptionText
 
-        mainButton.isHidden = state == .installing
-        mainButton.setTitle(state.buttonTitle, for: .normal)
+        mainButton.isHidden = viewModel.hidesMainButton
+        mainButton.setTitle(viewModel.buttonTitleText, for: .normal)
 
-        activityIndicatorContainer.isHidden = state != .installing
+        activityIndicatorContainer.isHidden = viewModel.hidesLoadingIndicator
 
-        switch state {
-        case .failure:
-            supportButton.isHidden = false
-        default:
-            supportButton.isHidden = true
-        }
+        supportButton.isHidden = viewModel.hidesSupportButton
     }
 }
 

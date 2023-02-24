@@ -383,12 +383,13 @@ private extension StatsRevampStore {
 private extension StatsRevampStore {
     func persistData<TimeIntervalType: StatsTimeIntervalData & TimeIntervalStatsRecordValueConvertible>(_ data: TimeIntervalType?) {
         guard
+            let data,
             let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
             return
         }
 
-        data.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = StatsRecord.record(from: data, for: blog)
 
         do {
             try ContextManager.shared.mainContext.save()

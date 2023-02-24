@@ -35,7 +35,7 @@ class ReaderTabItemsStoreTests: CoreDataTestCase {
     private let mockError = NSError(domain: "mockContextDomain", code: -1, userInfo: nil)
 
     override func setUp() {
-        service = MockTopicService(managedObjectContext: mainContext)
+        service = MockTopicService(coreDataStack: contextManager)
         store = ReaderTabItemsStore(context: mainContext, service: service)
     }
 

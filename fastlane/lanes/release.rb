@@ -16,7 +16,7 @@ platform :ios do
     gutenberg_dep_check
     ios_codefreeze_prechecks(options)
 
-    ios_bump_version_release(skip_deliver: true, skip_glotpress: true)
+    ios_bump_version_release(skip_deliver: true)
     new_version = ios_get_app_version
 
     release_notes_source_path = File.join(PROJECT_ROOT_FOLDER, 'RELEASE-NOTES.txt')
@@ -44,8 +44,8 @@ platform :ios do
     )
     ios_update_release_notes(new_version: new_version)
 
-    setbranchprotection(repository: GHHELPER_REPO, branch: "release/#{new_version}")
-    setfrozentag(repository: GHHELPER_REPO, milestone: new_version)
+    setbranchprotection(repository: GITHUB_REPO, branch: "release/#{new_version}")
+    setfrozentag(repository: GITHUB_REPO, milestone: new_version)
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
 
     print_release_notes_reminder
@@ -142,10 +142,10 @@ platform :ios do
 
     # Wrap up
     version = ios_get_app_version
-    removebranchprotection(repository: GHHELPER_REPO, branch: release_branch_name)
-    setfrozentag(repository: GHHELPER_REPO, milestone: version, freeze: false)
-    create_new_milestone(repository: GHHELPER_REPO)
-    close_milestone(repository: GHHELPER_REPO, milestone: version)
+    removebranchprotection(repository: GITHUB_REPO, branch: release_branch_name)
+    setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
+    create_new_milestone(repository: GITHUB_REPO)
+    close_milestone(repository: GITHUB_REPO, milestone: version)
 
     trigger_release_build
   end

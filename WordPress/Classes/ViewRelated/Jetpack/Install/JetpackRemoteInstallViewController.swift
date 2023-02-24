@@ -7,19 +7,17 @@ protocol JetpackRemoteInstallDelegate: AnyObject {
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
-    private typealias JetpackInstallBlock = (String, String, String, WPAnalyticsStat) -> Void
-
     private weak var delegate: JetpackRemoteInstallDelegate?
-    private var promptType: JetpackLoginPromptType
     private var blog: Blog
     private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
 
-    init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
+    init(blog: Blog,
+         delegate: JetpackRemoteInstallDelegate?,
+         viewModel: JetpackRemoteInstallViewModel = SelfHostedJetpackRemoteInstallViewModel()) {
         self.blog = blog
         self.delegate = delegate
-        self.promptType = promptType
-        self.viewModel = JetpackRemoteInstallViewModel()
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -64,50 +62,63 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func setupViewModel() {
-        viewModel.onChangeState = { [weak self] state in
+        viewModel.onChangeState = { [weak self] state, viewData in
+            guard let self else {
+                return
+            }
+
             DispatchQueue.main.async {
-                self?.jetpackView.setupView(for: state)
+                self.jetpackView.configure(with: viewData)
             }
 
             switch state {
+            case .install:
+                self.viewModel.track(.initial)
+            case .installing:
+                self.viewModel.track(.loading)
             case .success:
-                WPAnalytics.track(.installJetpackRemoteCompleted)
+                self.viewModel.track(.completed)
+
+                // Hide the Cancel button if the flow skips the Jetpack connection.
+                if !self.viewModel.shouldConnectToJetpack {
+                    self.navigationItem.setLeftBarButton(nil, animated: false)
+                }
+
             case .failure(let error):
-                WPAnalytics.track(.installJetpackRemoteFailed,
-                                  withProperties: ["error_type": error.type.rawValue,
-                                                   "site_url": self?.blog.url ?? "unknown"])
-                let url = self?.blog.url ?? "unknown"
+                let blogURLString = self.blog.url ?? "unknown"
+                self.viewModel.track(.failed(description: error.type.rawValue, siteURLString: blogURLString))
+
                 let title = error.title ?? "no error message"
                 let type = error.type.rawValue
                 let code = error.code
-                DDLogError("Jetpack Remote Install error for site \(url) – \(title) (\(code): \(type))")
+                DDLogError("Jetpack Remote Install error for site \(blogURLString) – \(title) (\(code): \(type))")
 
                 if error.isBlockingError {
                     DDLogInfo("Jetpack Remote Install error - Blocking error")
-                    self?.delegate?.jetpackRemoteInstallWebviewFallback()
+                    self.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
-            default:
-                break
             }
         }
     }
 
     func openInstallJetpackURL() {
-        let event: WPAnalyticsStat = AccountHelper.isLoggedIn ? .installJetpackRemoteConnect : .installJetpackRemoteLogin
-        WPAnalytics.track(event)
+        viewModel.track(AccountHelper.isLoggedIn ? .connect : .login)
 
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
-        WPAnalytics.track(event)
-        viewModel.installJetpack(with: url, username: username, password: password)
+    /// Cancels the flow.
+    @objc func cancel() {
+        viewModel.track(.cancel)
+        viewModel.cancelTapped()
+        delegate?.jetpackRemoteInstallCanceled()
     }
 
-    @objc func cancel() {
-        delegate?.jetpackRemoteInstallCanceled()
+    /// Completes the Jetpack installation flow.
+    func complete() {
+        delegate?.jetpackRemoteInstallCompleted()
     }
 }
 
@@ -115,11 +126,11 @@ private extension JetpackRemoteInstallViewController {
 
 extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCanceled() {
-        delegate?.jetpackRemoteInstallCanceled()
+        cancel()
     }
 
     func jetpackConnectionCompleted() {
-        delegate?.jetpackRemoteInstallCompleted()
+        complete()
     }
 }
 
@@ -127,18 +138,19 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
-        guard let url = blog.url,
-            let username = blog.username,
-            let password = blog.password else {
-            return
-        }
-
         switch viewModel.state {
         case .install:
-            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteStart)
+            viewModel.track(.start)
+            viewModel.installJetpack(for: blog, isRetry: false)
         case .failure:
-            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteRetry)
+            viewModel.track(.retry)
+            viewModel.installJetpack(for: blog, isRetry: true)
         case .success:
+            viewModel.track(.completePrimaryButtonTapped)
+            guard viewModel.shouldConnectToJetpack else {
+                complete()
+                return
+            }
             openInstallJetpackURL()
         default:
             break
@@ -146,6 +158,8 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
     }
 
     func customerSupportButtonDidTouch() {
-        navigationController?.pushViewController(SupportTableViewController(), animated: true)
+        let supportViewController = SupportTableViewController()
+        supportViewController.sourceTag = viewModel.supportSourceTag
+        navigationController?.pushViewController(supportViewController, animated: true)
     }
 }

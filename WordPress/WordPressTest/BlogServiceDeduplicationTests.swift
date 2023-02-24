@@ -8,7 +8,7 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
 
-        blogService = BlogService(managedObjectContext: contextManager.mainContext)
+        blogService = BlogService(coreDataStack: contextManager)
     }
 
     override func tearDown() {
@@ -127,7 +127,7 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
 
 private extension BlogServiceDeduplicationTests {
     func deduplicateAndSave(_ account: WPAccount) {
-        blogService.deduplicateBlogs(for: account)
+        account.deduplicateBlogs()
         contextManager.saveContextAndWait(mainContext)
     }
 
@@ -143,8 +143,9 @@ private extension BlogServiceDeduplicationTests {
 
     @discardableResult
     func createAccount() -> WPAccount {
-        let accountService = AccountService(managedObjectContext: mainContext)
-        return accountService.createOrUpdateAccount(withUsername: "twoface", authToken: "twotoken")
+        let accountService = AccountService(coreDataStack: contextManager)
+        let accountID = accountService.createOrUpdateAccount(withUsername: "twoface", authToken: "twotoken")
+        return try! contextManager.mainContext.existingObject(with: accountID) as! WPAccount
     }
 
     @discardableResult

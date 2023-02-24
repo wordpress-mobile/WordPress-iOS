@@ -108,7 +108,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(managedObjectContext: mainContext).restoreDisassociatedAccountIfNecessary()
+        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
         configureAnalytics()
@@ -341,12 +341,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        mainContext.perform { [weak self] in
-            guard let self = self else {
-                return
-            }
-            AccountService(managedObjectContext: self.mainContext).mergeDuplicatesIfNecessary()
-        }
+        AccountService(coreDataStack: ContextManager.sharedInstance()).mergeDuplicatesIfNecessary()
     }
 
     private func setupPingHub() {
@@ -421,11 +416,8 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func configureAnalytics() {
-        let accountService = AccountService(managedObjectContext: mainContext)
-
-        analytics = WPAppAnalytics(accountService: accountService,
-                                   lastVisibleScreenBlock: { [weak self] in
-                                    return self?.currentlySelectedScreen
+        analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
+            return self?.currentlySelectedScreen
         })
     }
 
@@ -824,7 +816,7 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let accountService = AccountService(managedObjectContext: mainContext)
+        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting

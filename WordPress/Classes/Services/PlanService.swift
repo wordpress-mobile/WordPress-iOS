@@ -223,44 +223,33 @@ extension PlanService {
                         success()
                         return
                 }
-                PlanStorage.updateHasDomainCredit(planIdInt,
-                                                  forSite: siteID,
-                                                  hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
-                success()
-        },
+                ContextManager.shared.performAndSave({ context in
+                    PlanStorage.updateHasDomainCredit(
+                        planIdInt,
+                        forSite: siteID,
+                        hasDomainCredit: plans.activePlan.hasDomainCredit ?? false,
+                        in: context
+                    )
+                }, completion: success, on: .main)
+            },
             failure: { error in
                 DDLogError("Failed checking prices for blog for site \(siteID): \(error.localizedDescription)")
                 failure(error)
-        })
+            }
+        )
     }
 }
 
-struct PlanStorage {
-    static func activatePlan(_ planID: Int, forSite siteID: Int) {
-        ContextManager.shared.performAndSave { context in
-            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
-                let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
-                assertionFailure(error)
-                DDLogError(error)
-                return
-            }
-            if blog.planID?.intValue != planID {
-                blog.planID = NSNumber(value: planID)
-            }
+private struct PlanStorage {
+    static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool, in context: NSManagedObjectContext) {
+        guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
+            let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
+            assertionFailure(error)
+            DDLogError(error)
+            return
         }
-    }
-
-    static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool) {
-        ContextManager.shared.performAndSave { context in
-            guard let blog = try? Blog.lookup(withID: siteID, in: context) else {
-                let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
-                assertionFailure(error)
-                DDLogError(error)
-                return
-            }
-            if blog.hasDomainCredit != hasDomainCredit {
-                blog.hasDomainCredit = hasDomainCredit
-            }
+        if blog.hasDomainCredit != hasDomainCredit {
+            blog.hasDomainCredit = hasDomainCredit
         }
     }
 }
