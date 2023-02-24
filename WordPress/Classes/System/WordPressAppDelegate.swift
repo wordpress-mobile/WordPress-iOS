@@ -524,9 +524,12 @@ extension WordPressAppDelegate {
         //
         // Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
         if MigrationAppDetection.isCounterpartAppInstalled {
-            // If possible, try to convert the URL to a WP Admin link and open it in Safari.
-            WPAdminConvertibleRouter.shared.handle(url: url)
-            return
+            // If we can handle the URL, then let the UniversalLinkRouter do it.
+            guard UniversalLinkRouter.shared.canHandle(url: url) else {
+                // Otherwise, try to convert the URL to a WP Admin link and open it in Safari.
+                WPAdminConvertibleRouter.shared.handle(url: url)
+                return
+            }
         }
 
         trackDeepLink(for: url) { url in
