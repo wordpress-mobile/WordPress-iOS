@@ -31,18 +31,23 @@ NS_ASSUME_NONNULL_BEGIN
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
+                               NSError * __block error = nil;
                                [[ContextManager sharedInstance] performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                                    Blog *blog = (Blog *)[context existingObjectWithID:blogID error:nil];
                                    if (!blog) {
-                                       if (failure) {
-                                           failure([self serviceErrorNoBlog]);
-                                       }
+                                       error = [self serviceErrorNoBlog];
                                        return;
                                    }
                                    [self mergeCategories:categories forBlog:blog inContext:context];
                                } completion: ^{
-                                   if (success) {
-                                       success();
+                                   if (error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   } else {
+                                       if (success) {
+                                           success();
+                                       }
                                    }
                                } onQueue: dispatch_get_main_queue()];
                            } failure:failure];
