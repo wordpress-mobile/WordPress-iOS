@@ -186,10 +186,7 @@ class PostCardStatusViewModel: NSObject {
                 buttons.append(.share)
             }
 
-            let canBlaze = post.blog.isBlazeApproved &&
-                post.status == .publish &&
-                post.password == nil
-            if FeatureFlag.blaze.enabled && canBlaze {
+            if FeatureFlag.blaze.enabled && post.canBlaze {
                 buttons.append(.blaze)
             }
 

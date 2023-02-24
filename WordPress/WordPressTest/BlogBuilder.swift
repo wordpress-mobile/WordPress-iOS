@@ -98,6 +98,12 @@ final class BlogBuilder {
         return self
     }
 
+    func isBlazeApproved() -> Self {
+        blog.isBlazeApproved = true
+
+        return self
+    }
+
     func with(modules: [String]) -> Self {
         set(blogOption: "active_modules", value: modules)
     }

@@ -488,7 +488,7 @@
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Activity Log";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Activity Logs";
 
 /* Label for the Activity Type filter button */
@@ -1206,6 +1206,9 @@
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Blocks menu";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1932,15 +1935,11 @@
 /* The menu item to select during a guided tour. */
 "connections" = "connections";
 
-/* Support email label. */
-"Contact Email" = "Contact Email";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contact Support";
 
@@ -3196,9 +3195,6 @@
 /* Section title for the external table section in the blog details screen */
 "External" = "External";
 
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
-
 /* Status for Media object that is failed upload or export.
    The action failed */
 "Failed" = "Failed";
@@ -3238,6 +3234,9 @@
 
 /* Title of the Feature Flags screen used in debug builds of the app */
 "Feature flags" = "Feature flags";
+
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Blaze";
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Featured";
@@ -4347,6 +4346,12 @@
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Continue to Stats";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Ready to use this site with the app.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Done";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "Stats, Reader, Notifications and other features will move to the Jetpack mobile app soon.";
 
@@ -4364,6 +4369,37 @@
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Remind me later";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "By setting up Jetpack you agree to our %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Install the full plugin";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Contact Support";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "full Jetpack plugin";
+
+/* Jetpack Plugin Modal (multiple plugins) subtitle with formatted texts.
+%1$@ is for the site name, and %2$@ for 'full Jetpack plugin' in bold style. */
+"jetpack.plugin.modal.subtitle.plural" = "%1$@ is using individual Jetpack plugins, which don't support all features of the app yet.
+
+Please install the %2$@ to use the app with this site.";
+
+/* Jetpack Plugin Modal (single plugin) subtitle with formatted texts.
+%1$@ is for the site name, %2$@ for the specific plugin name,
+and %3$@ is for 'full Jetpack plugin' in bold style. */
+"jetpack.plugin.modal.subtitle.singular" = "%1$@ is using the %2$@ plugin, which doesn't support all features of the app yet.
+
+Please install the %3$@ to use the app with this site.";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Terms and Conditions";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Please install the full Jetpack plugin";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Add an author";
@@ -4400,6 +4436,18 @@
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Write a blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Learn more";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Hide this";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "This site is using the %1$@ plugin, which doesn't support all features of the app yet. Please install the full Jetpack plugin.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "This site is using individual Jetpack plugins, which don’t support all features of the app yet. Please install the full Jetpack plugin.";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
@@ -5157,9 +5205,6 @@
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "My Sites in WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "My Tickets";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "My Top Ten Cafes";
 
@@ -5530,9 +5575,6 @@
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
 "Not seeing the email? Check your Spam or Junk Mail folder." = "Not seeing the email? Check your Spam or Junk Mail folder.";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Not Set";
 
 /* Button that allows users unsure of what selection they'd like  */
 "Not sure, show me around" = "Not sure, show me around";
@@ -6508,6 +6550,9 @@
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "Reader CSS URL" = "Reader CSS URL";
 
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Report this user";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
 
@@ -7442,9 +7487,6 @@
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Shown publicly when you comment on blogs.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Shows a dialog for changing the Contact Email.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Shows all followers";
 
@@ -7943,9 +7985,74 @@
 "Super Admin" = "Super Admin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Support";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Done";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Log Out";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Tap to visit the community forum website in an external browser";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Visit WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Ask a question in the community forum and get help from our group of volunteers.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Shows a dialog for changing the Contact Email.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Not Set";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "Email";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Contact support";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Debug";
+
+/* Support email label. */
+"support.row.email.title" = "Email";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "WordPress Forums";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "WordPress Help Center";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Logs";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tickets";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Version";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Enable Debugging to include additional information in your logs that can help troubleshoot issues with the app.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "WordPress.com Account";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Advanced";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Community Forums";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Priority Support";
+
+/* View title for Help & Support page. */
+"support.title" = "Help";
 
 /* Button used to switch site */
 "Switch Site" = "Switch Site";
@@ -8198,9 +8305,6 @@
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.";
@@ -9296,9 +9400,6 @@
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verify your email address - instructions sent to %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Version";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Version ";
 
@@ -9417,9 +9518,6 @@
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Visit site";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Visit the Help Center to get answers to common questions, or contact us for more help.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9944,14 +10042,8 @@
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "WordPress for iOS Support";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress Forums";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress Help";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress Help Center";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress Media";
@@ -10019,8 +10111,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com Account";
 
 /* Jetpack Settings: WordPress.com Login settings */
