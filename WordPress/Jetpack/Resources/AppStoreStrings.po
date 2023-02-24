@@ -81,13 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v21.7-whats-new"
+msgctxt "v21.8-whats-new"
 msgid ""
-"We made some tweaks to blogging prompts so you can answer old prompts or disable new ones. (Although we can’t imagine why you would.)\n"
-"\n"
-"You won’t see the Scan Login QR code if your account uses two-factor authentication.\n"
-"\n"
-"The Stats view consistently shows the day’s latest data, even if the date changes while the app is in the device’s background. All in a day’s work.\n"
+"You can now block sites that you follow, as well as report a post’s author for spam, inappropriate content, or possible harm. No jokes here—stay safe out there.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
