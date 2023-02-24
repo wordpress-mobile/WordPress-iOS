@@ -268,8 +268,8 @@ class GutenbergMediaInserterHelper: NSObject {
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
                     case .success(let value):
                         var metadata: [String: Any] = [:]
-                        if media.videopressGUID != nil {
-                            metadata["videopressGUID"] = media.videopressGUID
+                        if let videopressGUID = media.videopressGUID {
+                            metadata["videopressGUID"] = videopressGUID
                         }
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID, metadata: metadata)
                     }
