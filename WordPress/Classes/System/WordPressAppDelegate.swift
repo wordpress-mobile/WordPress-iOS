@@ -523,7 +523,9 @@ extension WordPressAppDelegate {
         // TODO: Remove this after the Universal Link routes for the WordPress app are removed.
         //
         // Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
-        if MigrationAppDetection.isCounterpartAppInstalled && !UniversalLinkRouter.shared.canHandle(url: url) {
+        if MigrationAppDetection.isCounterpartAppInstalled {
+            // If possible, try to convert the URL to a WP Admin link and open it in Safari.
+            WPAdminConvertibleRouter.shared.handle(url: url)
             return
         }
 
