@@ -2,6 +2,7 @@ import Foundation
 
 protocol BlazeWebView {
     func load(request: URLRequest)
+    func reloadNavBar()
     var cookieJar: CookieJar { get }
 }
 
@@ -14,6 +15,7 @@ class BlazeWebViewModel {
     private let postID: NSNumber?
     private let view: BlazeWebView
     private var currentStep: String = Constants.undefinedStep
+    private let remoteConfig = RemoteConfig()
 
     // MARK: Initializer
 
@@ -65,7 +67,13 @@ class BlazeWebViewModel {
         // Use this to track the current step and take actions accordingly
         // We should also block unknown urls
         currentStep = extractCurrentStep(from: request)
+        view.reloadNavBar()
         return .allow
+    }
+
+    func isCurrentStepDismissible() -> Bool {
+        let nonDismissibleSteps = remoteConfig.blazeNonDismissibleSteps.value ?? []
+        return !nonDismissibleSteps.contains(currentStep)
     }
 
     // MARK: Helpers

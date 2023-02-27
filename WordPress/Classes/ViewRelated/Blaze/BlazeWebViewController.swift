@@ -62,6 +62,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         title = Strings.navigationTitle
         navigationItem.rightBarButtonItem = cancelButton
         configureNavBarAppearance()
+        reloadNavBar()
     }
 
     private func configureNavBarAppearance() {
@@ -84,6 +85,10 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     var cookieJar: CookieJar {
         webView.configuration.websiteDataStore.httpCookieStore
+    }
+
+    func reloadNavBar() {
+        cancelButton.isEnabled = viewModel?.isCurrentStepDismissible() ?? true
     }
 
     // MARK: Actions
