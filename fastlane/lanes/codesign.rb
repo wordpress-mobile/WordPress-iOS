@@ -53,27 +53,36 @@ platform :ios do
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match`) for all variants
+  # Downloads all the required certificates and profiles (using `match`) for all variants.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  lane :update_certs_and_profiles do
-    update_wordpress_certs_and_profiles
-    update_jetpack_certs_and_profiles
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_certs_and_profiles do |options|
+    update_wordpress_certs_and_profiles(options)
+    update_jetpack_certs_and_profiles(options)
   end
 
-  # Downloads all the required certificates and profiles (using `match`) for all WordPress variants
+  # Downloads all the required certificates and profiles (using `match`) for all WordPress variants.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  lane :update_wordpress_certs_and_profiles do
-    alpha_code_signing
-    internal_code_signing
-    appstore_code_signing
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_wordpress_certs_and_profiles do |options|
+    alpha_code_signing(options)
+    internal_code_signing(options)
+    appstore_code_signing(options)
   end
 
-  # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants
+  # Downloads all the required certificates and profiles (using `match`) for all Jetpack variants.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  lane :update_jetpack_certs_and_profiles do
-    jetpack_alpha_code_signing
-    jetpack_internal_code_signing
-    jetpack_appstore_code_signing
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_jetpack_certs_and_profiles do |options|
+    jetpack_alpha_code_signing(options)
+    jetpack_internal_code_signing(options)
+    jetpack_appstore_code_signing(options)
   end
 
   ########################################################################
@@ -81,72 +90,169 @@ platform :ios do
   ########################################################################
 
   # Downloads all the required certificates and profiles (using `match``) for the WordPress Alpha builds (`org.wordpress.alpha`) in the Enterprise account
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :alpha_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :alpha_code_signing do |options|
+    readonly = options.fetch(:readonly, true)
+
+    if readonly
+      # In readonly mode, we can use the API key
+      api_key_path = APP_STORE_CONNECT_KEY_PATH
+    else
+      # The Enterprise account APIs do not support authentication via API key.
+      # If we want to modify data (readonly = false) we need to authenticate manually.
+      prompt_user_for_app_store_connect_credentials
+      # We also need to pass no API key path, otherwise Fastlane will give
+      # precedence to that authentication mode.
+      api_key_path = nil
+    end
+
+    update_code_signing(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
-      readonly: true,
-      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') }
+      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.alpha') },
+      readonly: readonly,
+      api_key_path: api_key_path
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for the WordPress Internal builds (`org.wordpress.internal`) in the Enterprise account
+  # Downloads all the required certificates and profiles (using `match``) for the WordPress Internal builds (`org.wordpress.internal`) in the Enterprise account.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :internal_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :internal_code_signing do |options|
+    readonly = options.fetch(:readonly, true)
+
+    if readonly
+      # In readonly mode, we can use the API key
+      api_key_path = APP_STORE_CONNECT_KEY_PATH
+    else
+      # The Enterprise account APIs do not support authentication via API key.
+      # If we want to modify data (readonly = false) we need to authenticate manually.
+      prompt_user_for_app_store_connect_credentials
+      # We also need to pass no API key path, otherwise Fastlane will give
+      # precedence to that authentication mode.
+      api_key_path = nil
+    end
+
+    update_code_signing(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
-      readonly: true,
-      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.internal') }
+      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS.map { |id| id.sub(WORDPRESS_BUNDLE_IDENTIFIER, 'org.wordpress.internal') },
+      readonly: readonly,
+      api_key_path: api_key_path
     )
   end
 
   # Downloads all the required certificates and profiles (using `match``) for the WordPress App Store builds
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :appstore_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :appstore_code_signing do |options|
+    update_code_signing(
       type: 'appstore',
       team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      readonly: true,
-      app_identifier: ALL_WORDPRESS_BUNDLE_IDENTIFIERS
+      readonly: options.fetch(:readonly, true),
+      app_identifiers: ALL_WORDPRESS_BUNDLE_IDENTIFIERS,
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for the Jetpack Alpha builds (`com.jetpack.alpha`) in the Enterprise account
+  # Downloads all the required certificates and profiles (using `match``) for the Jetpack Alpha builds (`com.jetpack.alpha`) in the Enterprise account.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :jetpack_alpha_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :jetpack_alpha_code_signing do |options|
+    readonly = options.fetch(:readonly, true)
+
+    if readonly
+      # In readonly mode, we can use the API key
+      api_key_path = APP_STORE_CONNECT_KEY_PATH
+    else
+      # The Enterprise account APIs do not support authentication via API key.
+      # If we want to modify data (readonly = false) we need to authenticate manually.
+      prompt_user_for_app_store_connect_credentials
+      # We also need to pass no API key path, otherwise Fastlane will give
+      # precedence to that authentication mode.
+      api_key_path = nil
+    end
+
+    update_code_signing(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
-      readonly: true,
-      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') }
+      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.alpha') },
+      readonly: readonly,
+      api_key_path: api_key_path
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for the Jetpack Internal builds (`com.jetpack.internal`) in the Enterprise account
+  # Downloads all the required certificates and profiles (using `match``) for the Jetpack Internal builds (`com.jetpack.internal`) in the Enterprise account.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :jetpack_internal_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :jetpack_internal_code_signing do |options|
+    readonly = options.fetch(:readonly, true)
+
+    if readonly
+      # In readonly mode, we can use the API key
+      api_key_path = APP_STORE_CONNECT_KEY_PATH
+    else
+      # The Enterprise account APIs do not support authentication via API key.
+      # If we want to modify data (readonly = false) we need to authenticate manually.
+      prompt_user_for_app_store_connect_credentials
+      # We also need to pass no API key path, otherwise Fastlane will give
+      # precedence to that authentication mode.
+      api_key_path = nil
+    end
+
+    update_code_signing(
       type: 'enterprise',
       team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      # Warning: Turning this to `false` will also require authenticating using `FASTLANE_USER` and `FASTLANE_PASSWORD`, because the Enterprise portal does not support API key authentication.
-      readonly: true,
-      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.internal') }
+      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS.map { |id| id.sub(JETPACK_BUNDLE_IDENTIFIER, 'com.jetpack.internal') },
+      readonly: readonly,
+      api_key_path: api_key_path
     )
   end
 
-  # Downloads all the required certificates and profiles (using `match``) for the Jetpack App Store builds
+  # Downloads all the required certificates and profiles (using `match``) for the Jetpack App Store builds.
+  # Optionally, it can create any new necessary certificate or profile.
   #
-  private_lane :jetpack_appstore_code_signing do
-    match(
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  private_lane :jetpack_appstore_code_signing do |options|
+    update_code_signing(
       type: 'appstore',
       team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-      readonly: true,
-      app_identifier: ALL_JETPACK_BUNDLE_IDENTIFIERS
+      readonly: options.fetch(:readonly, true),
+      app_identifiers: ALL_JETPACK_BUNDLE_IDENTIFIERS,
+      api_key_path: APP_STORE_CONNECT_KEY_PATH
     )
   end
+end
+
+def prompt_user_for_app_store_connect_credentials
+  require 'credentials_manager'
+
+  # If Fastlane cannot instantiate a user, it will ask the caller for the email.
+  # Once we have it, we can set it as `FASTLANE_USER` in the environment (which has lifecycle limited to this call) so that the next commands will already have access to it.
+  # Note that if the user is already available to `AccountManager`, setting it in the environment is redundant, but Fastlane doesn't provide a way to check it so we have to do it anyway.
+  ENV['FASTLANE_USER'] = CredentialsManager::AccountManager.new.user
+end
+
+def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_path:)
+  match(
+    storage_mode: 'google_cloud',
+    google_cloud_bucket_name: 'a8c-fastlane-match',
+    google_cloud_keys_file: File.join(SECRETS_DIR, 'google_cloud_keys.json'),
+    type: type,
+    team_id: team_id,
+    readonly: readonly,
+    app_identifier: app_identifiers
+  )
 end
