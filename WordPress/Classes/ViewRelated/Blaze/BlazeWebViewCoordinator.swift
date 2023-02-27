@@ -5,6 +5,7 @@ import UIKit
     case dashboardCard
     case menuItem
     case postsList
+    case pagesList
 
     var description: String {
         switch self {
@@ -14,6 +15,8 @@ import UIKit
             return "menu_item"
         case .postsList:
             return "posts_list"
+        case .pagesList:
+            return "pages_list"
         }
     }
 }
