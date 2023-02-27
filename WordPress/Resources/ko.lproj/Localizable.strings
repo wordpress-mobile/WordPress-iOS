@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-14 13:54:11+0000 */
+/* Translation-Revision-Date: 2023-02-17 17:31:46+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ko_KR */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "활동 기록";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "활동 기록";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "사용할 수 없는 연결";
 
-/* Support email label. */
-"Contact Email" = "연락처 이메일";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "지원팀에 문의";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "외부";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "기타 디버그";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "내 워드프레스 사이트";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "내 티켓";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "상위 10개 카페";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "나중에";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "설정 안 함";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "업로드할 수 있는 충분한 공간이 없음";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "블로그에 댓글을 달 때 공개됩니다.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "연락처 이메일을 변경하기 위한 대화 상자를 표시합니다.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "팔로워를 모두 표시합니다.";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "최고 관리자";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "지원";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "해당 사용자명은 허용되지 않습니다.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "추가 디버그 기능을 사용하면 활동 로그에 추가 정보가 포함되므로 앱 문제 해결에 유용합니다.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "페이스북 페이지를 찾을 수 없습니다. 페이스북 프로필은 연결할 수 없으며 공개된 페이지로만 연결할 수 있습니다.";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "이메일 주소 확인 - %@에 지침 전송";
 
-/* Label in Support view displaying the app version. */
-"Version" = "버전";
-
 /* Description for the version label in the What's new page. */
 "Version " = "버전";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "사이트 방문";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "도움말 센터에서 일반적인 질문에 대한 답변을 얻거나 문의하기를 통해 추가 지원을 받으세요.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "워드프레스 블로그";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "워드프레스 포럼";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "워드프레스 도움말";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "워드프레스 헬프 센터";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "워드프레스 미디어";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "워드프레스닷컴";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com 계정";
 
 /* Title for the Plans list header */
@@ -9923,6 +9890,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a screen that prompts the user to switch the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseFour.title" = "젯팩 기능이 제거되었습니다.";
 
+/* Subtitle of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.notifications.subtitle" = "젯팩 앱으로 전환하여 계속 기기에서 실시간 알림을 받으세요.";
+
 /* Title of a screen displayed when the user accesses the Notifications screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.notifications.title" = "젯팩 앱으로 알림 받기";
 
@@ -10234,6 +10204,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label for the blogging prompts setting */
 "sitesettings.prompts.title" = "프롬프트 표시";
+
+/* Label for the blogging reminders setting */
+"sitesettings.reminders.title" = "알림";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "최근 7일";

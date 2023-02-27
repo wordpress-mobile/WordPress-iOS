@@ -70,7 +70,7 @@
 /* Title of alert when theme activation fails */
 "Activation Error" = "ผิดพลาดในการเปิดใช้งาน";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "log กิจกรรม";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -576,9 +576,6 @@
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Debug เพิ่มเติม";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -1659,8 +1656,7 @@
 "Super Admin" = "ผู้ควบคุมสูงสุด";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "สนับสนุน";
 
 /* Button used to switch site */
@@ -1710,9 +1706,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "ชื่อผู้ใช้นั้นไม่อนุญาตให้ใช้งาน";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "คำสั่งแก้ไขข้อผิดพลาดพิเศษได้รวมข้อมูลเพิ่มเติมในปูมกิจกรรมและสามารถช่วยเหลือเราในการรู้ถึงปัญหาด้วยแอพ";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -1987,9 +1980,6 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร";
 
-/* Label in Support view displaying the app version. */
-"Version" = "รุ่น";
-
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "ไฟล์วีดีโอ %@";
 
@@ -2072,20 +2062,13 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "บล็อกเวิร์ดเพรส";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "เวิร์ดเพรสฟอรั่ม";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "ศูนย์กลางช่วยเหลือเวิร์ดเพรส";
-
 /* No comment provided by engineer. */
 "WordPress version too old" = "เวิร์ดเพรสรุ่นนี้เก่าเกินไป";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "บัญชี WordPress.com";
 
 /* WordPress.com Notification Settings Title */

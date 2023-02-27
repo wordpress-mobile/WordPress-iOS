@@ -106,7 +106,7 @@
 /* Title of alert when theme activation fails */
 "Activation Error" = "Gwall Cychwyn";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Cofnodion Gweithgarwch";
 
 /* The title on the add category screen */
@@ -552,7 +552,6 @@
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Cysylltu â Chefnogaeth";
 
@@ -863,9 +862,6 @@
 
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Allforio cynnwys...";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Dadfygio Ychwanegol";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -2234,8 +2230,7 @@
 "Super Admin" = "Gweinyddwr Uwch";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Cefnogaeth";
 
 /* Button used to switch site */
@@ -2298,9 +2293,6 @@
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Nid yw'r enw defnyddiwr yna'n cael ei ganiatáu.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Mae'r nodwedd Dadfygio Ychwanegol yn cynnwys gwybodaeth ychwanegol yn y cofnodion gweithgaredd sy'n gallu'n cynorthwyo i ddatrys anhawsterau gyda'r ap.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet.
    Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2659,9 +2651,6 @@
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Fersiwn";
-
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "Video, %@" = "Fideo, %@";
 
@@ -2718,9 +2707,6 @@
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@ for more" = "Ewch i %@ am ragor";
 
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Ewch i'r Ganolfan Gymorth i gael atebion i gwestiynau cyffredin, neu cysylltwch â ni am fwy o gymorth.";
-
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
    Label for Period Overview visitors
@@ -2772,12 +2758,6 @@
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Fforymau WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Canolfan Cymorth WordPress";
-
 /* Explaining to the user why the app needs access to the device location. */
 "WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings." = "Mae angen WordPress caniatâd i gael lleoliad cyfredol eich dyfais er mwyn ei ychwanegu at eich cofnod. Diweddarwch eich gosodiadau preifatrwydd.";
 
@@ -2790,8 +2770,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Cyfrif WordPress.com";
 
 /* Title for the Plans list header */

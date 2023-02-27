@@ -1,5 +1,0 @@
-Abbiamo apportato alcune modifiche alle richieste di blog in modo da poter rispondere alle vecchie richieste o disabilitarne di nuove (sebbene non riusciamo a immaginare perché lo dovresti fare).
-
-Non vedrai il codice QR Scan Login se il tuo account utilizza l'autenticazione a due fattori.
-
-La vista Statistiche mostra costantemente i dati più recenti della giornata, anche se la data cambia mentre l'app è in background sul dispositivo. Tutto in una giornata lavorativa.
