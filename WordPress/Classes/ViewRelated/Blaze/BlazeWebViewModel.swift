@@ -5,14 +5,26 @@ protocol BlazeWebView {
     var cookieJar: CookieJar { get }
 }
 
-struct BlazeWebViewModel {
+class BlazeWebViewModel {
 
     // MARK: Private Variables
 
-    let source: BlazeWebViewCoordinator.Source
-    let blog: Blog
-    let postID: NSNumber?
-    let view: BlazeWebView
+    private let source: BlazeWebViewCoordinator.Source
+    private let blog: Blog
+    private let postID: NSNumber?
+    private let view: BlazeWebView
+
+    // MARK: Initializer
+
+    init(source: BlazeWebViewCoordinator.Source,
+         blog: Blog,
+         postID: NSNumber?,
+         view: BlazeWebView) {
+        self.source = source
+        self.blog = blog
+        self.postID = postID
+        self.view = view
+    }
 
     // MARK: Computed Variables
 
@@ -37,8 +49,8 @@ struct BlazeWebViewModel {
             // TODO: Track error & dismiss view
             return
         }
-        authenticatedRequest(for: initialURL, with: view.cookieJar) { (request) in
-            view.load(request: request)
+        authenticatedRequest(for: initialURL, with: view.cookieJar) { [weak self] (request) in
+            self?.view.load(request: request)
         }
     }
 
