@@ -13,6 +13,7 @@ class BlazeWebViewModel {
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
+    private var currentStep: String = Constants.undefinedStep
 
     // MARK: Initializer
 
@@ -63,7 +64,22 @@ class BlazeWebViewModel {
         // TODO: To be implemented
         // Use this to track the current step and take actions accordingly
         // We should also block unknown urls
+        currentStep = extractCurrentStep(from: request)
         return .allow
+    }
+
+    // MARK: Helpers
+
+    func extractCurrentStep(from request: URLRequest) -> String {
+        if let baseURL = initialURL?.absoluteString,
+           let url = request.url,
+           url.absoluteString.hasPrefix(baseURL),
+           let step = url.fragment {
+            print("Request Intercepted with URL \(url)")
+            print("Step is: \(step)")
+            return step
+        }
+        return Constants.undefinedStep
     }
 }
 
@@ -77,5 +93,6 @@ private extension BlazeWebViewModel {
     enum Constants {
         static let blazeSiteURLFormat = "https://wordpress.com/advertising/%@?source=%@"
         static let blazePostURLFormat = "https://wordpress.com/advertising/%@?blazepress-widget=post-%d&source=%@"
+        static let undefinedStep = "undefined"
     }
 }
