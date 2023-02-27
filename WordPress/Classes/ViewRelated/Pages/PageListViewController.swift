@@ -514,7 +514,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         QuickStartTourGuide.shared.visited(.newPage)
     }
 
-    private func blazePage(_ page: Page) {
+    private func blazePage(_ page: AbstractPost) {
         BlazeEventsTracker.trackBlazeFeatureTapped(for: .pagesList)
         BlazeWebViewCoordinator.presentBlazeFlow(in: self, source: .pagesList, blog: blog, postID: page.postID)
     }
@@ -773,9 +773,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let buttonTitle = NSLocalizedString("pages.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the page with Blaze.")
         controller.addActionWithTitle(buttonTitle, style: .default, handler: { [weak self] _ in
-            if let page = self?.pageForObjectID(page.objectID) {
-                self?.blazePage(page)
-            }
+            self?.blazePage(page)
         })
 
         BlazeEventsTracker.trackBlazeFeatureDisplayed(for: .pagesList)
