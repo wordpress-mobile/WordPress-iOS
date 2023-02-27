@@ -56,7 +56,7 @@ final class BlazeCardView: UIView {
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
         let frameView = BlogDashboardCardFrameView()
         frameView.configureButtonContainerStackView()
-        frameView.onEllipsisButtonTap = {}
+        frameView.onEllipsisButtonTap = viewModel.onEllipsisTap
         frameView.ellipsisButton.showsMenuAsPrimaryAction = true
         frameView.ellipsisButton.menu = contextMenu
         frameView.hideHeader()
@@ -133,11 +133,14 @@ extension BlazeCardView {
 struct BlazeCardViewModel {
 
     let onViewTap: () -> Void
+    let onEllipsisTap: () -> Void
     let onHideThisTap: UIActionHandler
 
     init(onViewTap: @escaping () -> Void = {},
+         onEllipsisTap: @escaping () -> Void = {},
          onHideThisTap: @escaping UIActionHandler = { _ in }) {
         self.onViewTap = onViewTap
+        self.onEllipsisTap = onEllipsisTap
         self.onHideThisTap = onHideThisTap
     }
 }

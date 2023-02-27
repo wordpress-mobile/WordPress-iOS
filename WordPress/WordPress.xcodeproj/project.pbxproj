@@ -3649,6 +3649,8 @@
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA4B202F29A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */; };
 		FA4B203029A619130089FE68 /* BlazeWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */; };
+		FA4B203529A786460089FE68 /* BlazeEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */; };
+		FA4B203629A786460089FE68 /* BlazeEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */; };
 		FA4B203829A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */; };
 		FA4B203929A8C48F0089FE68 /* AbstractPost+Blaze.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */; };
 		FA4BC0D02996A589005EB077 /* BlazeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BC0CF2996A589005EB077 /* BlazeService.swift */; };
@@ -8900,6 +8902,7 @@
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA4B202E29A619130089FE68 /* BlazeWebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeWebViewCoordinator.swift; sourceTree = "<group>"; };
+		FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeEventsTracker.swift; sourceTree = "<group>"; };
 		FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Blaze.swift"; sourceTree = "<group>"; };
 		FA4BC0CF2996A589005EB077 /* BlazeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeService.swift; sourceTree = "<group>"; };
 		FA4F383527D766020068AAF5 /* MySiteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteSettings.swift; sourceTree = "<group>"; };
@@ -12803,6 +12806,7 @@
 				80C523A329959DE000B1C14B /* BlazeWebViewController.swift */,
 				80C523A62995D73C00B1C14B /* BlazeWebViewModel.swift */,
 				FA98B61B29A3DB840071AAE8 /* BlazeHelper.swift */,
+				FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */,
 			);
 			path = Blaze;
 			sourceTree = "<group>";
@@ -20392,6 +20396,7 @@
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				2F668B62255DD11400D0038A /* JetpackSettingsViewController.swift in Sources */,
 				981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */,
+				FA4B203529A786460089FE68 /* BlazeEventsTracker.swift in Sources */,
 				FAD2538F26116A1600EDAF88 /* AppStyleGuide.swift in Sources */,
 				17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */,
 				C3835559288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */,
@@ -23027,6 +23032,7 @@
 				FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */,
 				FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */,
 				FE4DC5A8293A84E6008F322F /* MigrationDeepLinkRouter.swift in Sources */,
+				FA4B203629A786460089FE68 /* BlazeEventsTracker.swift in Sources */,
 				FABB20EA2602FC2C00C8785C /* ActivityTypeSelectorViewController.swift in Sources */,
 				FABB20EB2602FC2C00C8785C /* ActivityActionsParser.swift in Sources */,
 				FABB20EC2602FC2C00C8785C /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift in Sources */,
