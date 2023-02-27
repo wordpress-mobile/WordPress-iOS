@@ -820,10 +820,10 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
                 self.switchTab(to: .siteMenu)
             }
 
-            self.updateBlazeStatus(for: blog) { 
+            self.updateBlazeStatus(for: blog) {
                 self.updateChildViewController(for: blog)
             }
-            
+
             self.updateNavigationTitle(for: blog)
             self.updateSegmentedControl(for: blog)
             self.createFABIfNeeded()
