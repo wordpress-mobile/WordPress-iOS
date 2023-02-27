@@ -57,14 +57,12 @@ extension JetpackRemoteInstallStateViewModel {
          titleText: String? = nil,
          descriptionText: String? = nil,
          buttonTitleText: String? = nil,
-         hidesMainButton: Bool? = nil,
          hidesLoadingIndicator: Bool? = nil,
          hidesSupportButton: Bool? = nil) {
         self.image = image ?? state.image
         self.titleText = titleText ?? state.title
         self.descriptionText = descriptionText ?? state.message
         self.buttonTitleText = buttonTitleText ?? state.buttonTitle
-        self.hidesMainButton = hidesMainButton ?? (state == .installing)
         self.hidesLoadingIndicator = hidesLoadingIndicator ?? (state != .installing)
         self.hidesSupportButton = hidesSupportButton ?? {
             switch state {

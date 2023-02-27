@@ -11,7 +11,6 @@ struct JetpackRemoteInstallStateViewModel {
     let descriptionText: String
     let buttonTitleText: String
 
-    let hidesMainButton: Bool
     let hidesLoadingIndicator: Bool
     let hidesSupportButton: Bool
 }
