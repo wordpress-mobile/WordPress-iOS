@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 import OHHTTPStubs
 
 class ReaderSiteServiceTests: CoreDataTestCase {
@@ -38,15 +37,9 @@ class ReaderSiteServiceTests: CoreDataTestCase {
                 "post_count": 0,
             ], statusCode: 200, headers: nil)
         }
-        waitUntil { done in
-            self.service.followSite(by: URL(string: "https://test.blog")!) {
-                XCTAssertTrue(true)
-                done()
-            } failure: { _ in
-                XCTFail("")
-                done()
-            }
-        }
+
+        let success = expectation(description: "The success block should be called")
+        self.service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: nil)
     }
 
     func testFollowSiteByID() {
@@ -63,30 +56,18 @@ class ReaderSiteServiceTests: CoreDataTestCase {
                 "post_count": 0,
             ], statusCode: 200, headers: nil)
         }
-        waitUntil { done in
-            self.service.followSite(withID: 42) {
-                XCTAssertTrue(true)
-                done()
-            } failure: { _ in
-                XCTFail("")
-                done()
-            }
-        }
+
+        let success = expectation(description: "The success block should be called")
+        self.service.followSite(withID: 42, success: success.fulfill, failure: nil)
     }
 
     func testUnfollowSiteByID() {
         stub(condition: isPath("/rest/v1.1/sites/42/follows/mine/delete")) { _ in
             HTTPStubsResponse(jsonObject: [:], statusCode: 200, headers: nil)
         }
-        waitUntil { done in
-            self.service.unfollowSite(withID: 42) {
-                XCTAssertTrue(true)
-                done()
-            } failure: { _ in
-                XCTFail("")
-                done()
-            }
-        }
+
+        let success = expectation(description: "The success block should be called")
+        self.service.unfollowSite(withID: 42, success: success.fulfill, failure: nil)
     }
 
 }
