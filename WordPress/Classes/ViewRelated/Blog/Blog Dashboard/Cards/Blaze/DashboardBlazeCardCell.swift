@@ -10,7 +10,7 @@ class DashboardBlazeCardCell: DashboardCollectionViewCell {
     private lazy var cardViewModel: BlazeCardViewModel = {
         let onHideThisTap: UIActionHandler = { [weak self] _ in
             // TODO: Track analytics event
-            // TODO: Hide card
+            BlazeHelper.hideBlazeCard(for: self?.blog)
             self?.presentingViewController?.reloadCardsLocally()
         }
 
