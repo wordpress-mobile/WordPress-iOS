@@ -40,6 +40,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let success = expectation(description: "The success block should be called")
         self.service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: nil)
+        wait(for: [success], timeout: 0.5)
     }
 
     func testFollowSiteByID() {
@@ -59,6 +60,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let success = expectation(description: "The success block should be called")
         self.service.followSite(withID: 42, success: success.fulfill, failure: nil)
+        wait(for: [success], timeout: 0.5)
     }
 
     func testUnfollowSiteByID() {
@@ -68,6 +70,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let success = expectation(description: "The success block should be called")
         self.service.unfollowSite(withID: 42, success: success.fulfill, failure: nil)
+        wait(for: [success], timeout: 0.5)
     }
 
 }
