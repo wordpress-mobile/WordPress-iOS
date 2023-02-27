@@ -99,6 +99,7 @@ class BlogDashboardCardFrameView: UIView {
     var icon: UIImage? {
         didSet {
             iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
+            iconImageView.isHidden = icon == nil
         }
     }
 
