@@ -9,6 +9,12 @@ data model as well as any custom migrations.
 
 - `Blog`: added `isBlazeApproved` attribute. (required, default `NO`, `Boolean`)
 
+@salimbraksa 2023-02-22
+
+- Created a new entity `BlockedAuthor` with:
+    - `accountID` (required, no default, `Int 64`)
+    - `authorID` (required, no default, `Int 64`)
+
 ## WordPress 147
 
 @salimbraksa 2023-02-04
