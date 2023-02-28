@@ -5304,6 +5304,8 @@
 		FE23EB4C26E7C91F005A1698 /* richCommentStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = FE23EB4826E7C91F005A1698 /* richCommentStyle.css */; };
 		FE25C235271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
 		FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */; };
+		FE29EFCD29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE29EFCC29A91160007CE034 /* WPAdminConvertibleRouter.swift */; };
+		FE29EFCE29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE29EFCC29A91160007CE034 /* WPAdminConvertibleRouter.swift */; };
 		FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */; };
 		FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE320CC4294705990046899B /* ReaderPostBackupTests.swift */; };
 		FE32E7F12844971000744D80 /* ReminderScheduleCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */; };
@@ -8987,6 +8989,7 @@
 		FE23EB4726E7C91F005A1698 /* richCommentTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = richCommentTemplate.html; path = Resources/HTML/richCommentTemplate.html; sourceTree = "<group>"; };
 		FE23EB4826E7C91F005A1698 /* richCommentStyle.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = richCommentStyle.css; path = Resources/HTML/richCommentStyle.css; sourceTree = "<group>"; };
 		FE25C234271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsNotificationSheetViewController.swift; sourceTree = "<group>"; };
+		FE29EFCC29A91160007CE034 /* WPAdminConvertibleRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPAdminConvertibleRouter.swift; sourceTree = "<group>"; };
 		FE2E3728281C839C00A1E82A /* BloggingPromptsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsServiceTests.swift; sourceTree = "<group>"; };
 		FE320CC4294705990046899B /* ReaderPostBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostBackupTests.swift; sourceTree = "<group>"; };
 		FE32E7F02844971000744D80 /* ReminderScheduleCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -17476,6 +17479,7 @@
 			children = (
 				FE4DC5A2293A75FC008F322F /* MigrationDeepLinkRouter.swift */,
 				FE4DC5A6293A79F1008F322F /* WordPressExportRoute.swift */,
+				FE29EFCC29A91160007CE034 /* WPAdminConvertibleRouter.swift */,
 			);
 			path = Migration;
 			sourceTree = "<group>";
@@ -20949,6 +20953,7 @@
 				F5D399302541F25B0058D0AB /* SheetActions.swift in Sources */,
 				93F7214F271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				9895401126C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
+				FE29EFCD29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
 				8B7F51C924EED804008CF5B5 /* ReaderTracker.swift in Sources */,
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
 				931215E4267F5003008C3B69 /* ReferrerDetailsTableViewController.swift in Sources */,
@@ -22962,6 +22967,7 @@
 				FABB20CF2602FC2C00C8785C /* PageListViewController.swift in Sources */,
 				FABB20D02602FC2C00C8785C /* CoreDataHelper.swift in Sources */,
 				FABB20D12602FC2C00C8785C /* LocalCoreDataService.m in Sources */,
+				FE29EFCE29A91160007CE034 /* WPAdminConvertibleRouter.swift in Sources */,
 				FABB20D22602FC2C00C8785C /* AztecNavigationController.swift in Sources */,
 				FABB20D32602FC2C00C8785C /* Notification+Interface.swift in Sources */,
 				FABB20D42602FC2C00C8785C /* ReaderSaveForLater+Analytics.swift in Sources */,
