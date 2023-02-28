@@ -1453,7 +1453,7 @@ private extension NotificationDetailsViewController {
     }
 
     var actionsService: NotificationActionsService {
-        return NotificationActionsService(managedObjectContext: mainContext)
+        return NotificationActionsService(coreDataStack: ContextManager.shared)
     }
 
     enum DisplayError: Error {
