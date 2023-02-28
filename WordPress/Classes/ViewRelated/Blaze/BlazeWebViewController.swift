@@ -88,7 +88,13 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     func reloadNavBar() {
-        dismissButton.isEnabled = viewModel?.isCurrentStepDismissible() ?? true
+        guard let viewModel else {
+            dismissButton.isEnabled = true
+            dismissButton.title = Strings.cancelButtonTitle
+            return
+        }
+        dismissButton.isEnabled = viewModel.isCurrentStepDismissible()
+        dismissButton.title = viewModel.isFlowCompleted ? Strings.doneButtonTitle : Strings.cancelButtonTitle
     }
 
     // MARK: Actions
@@ -121,6 +127,7 @@ private extension BlazeWebViewController {
                                                        value: "Blaze",
                                                        comment: "Name of a feature that allows the user to promote their posts.")
         static let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        static let doneButtonTitle = NSLocalizedString("Done", comment: "Done. Action.")
     }
 
     enum Colors {
