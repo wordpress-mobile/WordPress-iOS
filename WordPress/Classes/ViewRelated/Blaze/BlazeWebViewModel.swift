@@ -141,7 +141,7 @@ private extension BlazeWebViewModel {
     }
 
     enum BlazeFlowSteps {
-        static let undefinedStep = "undefined"
+        static let undefinedStep = "unspecified"
         static let postsListStep = "posts-list"
         static let campaignsListStep = "campaigns-list"
         static let blazeWidgetDefaultStep = "step-1"
