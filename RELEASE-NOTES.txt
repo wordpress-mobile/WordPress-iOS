@@ -1,6 +1,6 @@
 21.9
 -----
-* [**] [Jetpack-only] Jetpack individual plugin support: Warns user about sites with only individual plugins not supporting all features of the app yet and gives the ability to install the full Jetpack plugin.
+* [**] [Jetpack-only] Jetpack individual plugin support: Warns user about sites with only individual plugins not supporting all features of the app yet and gives the ability to install the full Jetpack plugin. [#20223]
 
 21.8
 -----
