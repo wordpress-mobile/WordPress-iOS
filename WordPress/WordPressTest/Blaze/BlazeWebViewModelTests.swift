@@ -15,6 +15,8 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         super.setUp()
         contextManager.useAsSharedInstance(untilTestFinished: self)
         blog = BlogBuilder(mainContext).with(url: Self.blogURL).build()
+        remoteConfigStore.blazeNonDismissibleSteps = ["step-4"]
+        remoteConfigStore.blazeFlowCompletedStep = "step-5"
     }
 
     override func tearDown() {
