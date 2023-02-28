@@ -114,6 +114,12 @@ final class BlogBuilder {
         return self
     }
 
+    func with(url: String) -> Self {
+        blog.url = url
+
+        return self
+    }
+
     @discardableResult
     func build() -> Blog {
         return blog
