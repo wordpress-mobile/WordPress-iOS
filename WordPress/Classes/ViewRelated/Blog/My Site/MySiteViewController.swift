@@ -958,6 +958,7 @@ class MySiteViewController: UIViewController, NoResultsViewHost {
         guard FeatureFlag.blaze.enabled,
               let blog = blog,
               let blazeService = BlazeService() else {
+            completion()
             return
         }
 
