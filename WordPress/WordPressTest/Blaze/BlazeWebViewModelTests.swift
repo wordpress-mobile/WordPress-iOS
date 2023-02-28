@@ -261,6 +261,20 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let _ = viewModel.shouldNavigate(request: invalidRequest)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
+
+    func testCallingShouldNavigateReloadsTheNavBar() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
+        let request = URLRequest(url: url)
+
+        // When
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertTrue(view.reloadNavBarCalled)
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
