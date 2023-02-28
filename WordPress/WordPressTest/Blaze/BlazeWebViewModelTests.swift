@@ -60,6 +60,21 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
+
+    func testCampaignsStepWithQuery() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/campaigns?source=menu_item"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "campaigns-list")
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
