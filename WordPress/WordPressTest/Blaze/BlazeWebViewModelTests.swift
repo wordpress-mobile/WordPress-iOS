@@ -287,6 +287,32 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // Then
         XCTAssertTrue(view.dismissViewCalled)
     }
+
+    func testCallingStartBlazeSiteFlowLoadsTheView() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+
+        // When
+        viewModel.startBlazeFlow()
+
+        // Then
+        XCTAssertTrue(view.loadCalled)
+        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com?source=menu_item")
+    }
+
+    func testCallingStartBlazePostFlowLoadsTheView() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: 1, view: view)
+
+        // When
+        viewModel.startBlazeFlow()
+
+        // Then
+        XCTAssertTrue(view.loadCalled)
+        XCTAssertEqual(view.requestLoaded?.url?.absoluteString, "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-1&source=menu_item")
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
