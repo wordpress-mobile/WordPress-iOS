@@ -275,6 +275,18 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // Then
         XCTAssertTrue(view.reloadNavBarCalled)
     }
+
+    func testCallingDismissTappedDismissesTheView() {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+
+        // When
+        viewModel.dismissTapped()
+
+        // Then
+        XCTAssertTrue(view.dismissViewCalled)
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
