@@ -14,7 +14,7 @@ class BlazeWebViewModel {
 
     // MARK: Private Variables
 
-    private let source: BlazeWebViewCoordinator.Source
+    private let source: BlazeSource
     private let blog: Blog
     private let postID: NSNumber?
     private let view: BlazeWebView
@@ -23,7 +23,7 @@ class BlazeWebViewModel {
 
     // MARK: Initializer
 
-    init(source: BlazeWebViewCoordinator.Source,
+    init(source: BlazeSource,
          blog: Blog,
          postID: NSNumber?,
          view: BlazeWebView) {
@@ -41,10 +41,10 @@ class BlazeWebViewModel {
         }
         var urlString: String
         if let postID {
-            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.rawValue)
+            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.description)
         }
         else {
-            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.rawValue)
+            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.description)
         }
         return URL(string: urlString)
     }

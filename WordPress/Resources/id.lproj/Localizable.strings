@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Log Aktivitas";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Catatan Aktivitas";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Koneksi tidak tersedia";
 
-/* Support email label. */
-"Contact Email" = "Hubungi via Email";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Hubungi Dukungan";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Eksternal";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Debug Tambahan";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Situs Saya di WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Tiket Saya";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Sepuluh Kafe Favorit Saya";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Lain Kali";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Belum Ditetapkan";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Tidak cukup ruang untuk unggah.";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Ditampilkan secara publik saat Anda mengomentari blog.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Menampilkan dialog untuk mengubah Email Kontak.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Menampilkan semua pengikut";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Super Admin";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Dukungan";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Nama pengguna itu tidak diijinkan.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Fitur Extra Debug mencakup informasi tambahan dalam log aktivitas, dan dapat membantu kita memecahkan masalah aplikasi.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Koneksi Facebook tidak dapat menemukan Halaman apa pun. Publikasikan tidak dapat terhubung ke Profil Facebook, hanya Halaman yang dipublikasikan.";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Verifikasi alamat email Anda - instruksi dikirim ke %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versi";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versi:";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Kunjungi situs";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Kunjungi Pusat Bantuan untuk mendapatkan jawaban atas pertanyaan umum, atau hubungi kami untuk mendapatkan bantuan lebih lanjut.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Forum WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Bantuan WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Pusat Bantuan WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "Media WordPress";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Akun WordPress.com";
 
 /* Title for the Plans list header */

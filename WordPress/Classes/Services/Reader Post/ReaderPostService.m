@@ -25,7 +25,6 @@ NSString * const ReaderPostServiceToggleSiteFollowingState = @"ReaderPostService
 
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
-
 @implementation ReaderPostService
 
 #pragma mark - Fetch Methods
@@ -1163,6 +1162,21 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSParameterAssert(context != nil);
     NSParameterAssert(topic == nil || topic.managedObjectContext == context);
     return [ReaderPost createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
+}
+
+#pragma mark Internal
+
+- (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts inContext: (NSManagedObjectContext * _Nonnull)context {
+    BOOL hasMore = NO;
+    BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic inContext:context] < [self maxPostsToSaveForTopic:readerTopic]);
+    if ([ReaderHelpers isTopicTag:readerTopic]) {
+        // For tags, assume there is more content as long as more than zero results are returned.
+        hasMore = ([remotePosts count] > 0 ) && spaceAvailable;
+    } else {
+        // For other topics, assume there is more content as long as the number of results requested is returned.
+        hasMore = ([remotePosts count] == [self numberToSyncForTopic:readerTopic]) && spaceAvailable;
+    }
+    return hasMore;
 }
 
 @end

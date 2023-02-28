@@ -9,7 +9,7 @@ final class ReplyToCommentActionTests: CoreDataTestCase {
         }
 
         init(on: Bool, coreDataStack: CoreDataStack) {
-            service = MockNotificationActionsService(managedObjectContext: coreDataStack.mainContext)
+            service = MockNotificationActionsService(coreDataStack: coreDataStack)
             super.init(on: on)
         }
     }

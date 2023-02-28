@@ -198,14 +198,14 @@ final class JetpackFullscreenOverlayGeneralViewModel: JetpackFullscreenOverlayVi
     var footnote: String? {
         switch phase {
         case .one:
-            return nil
+            fallthrough
         case .two:
+            fallthrough
+        case .newUsers:
             return nil
         case .three:
             fallthrough
         case .four:
-            fallthrough
-        case .newUsers:
             fallthrough
         case .selfHosted:
             return Strings.General.footnote

@@ -21,7 +21,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Initializers
 
-    init(source: BlazeWebViewCoordinator.Source, blog: Blog, postID: NSNumber?) {
+    init(source: BlazeSource, blog: Blog, postID: NSNumber?) {
         self.webView = WKWebView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
         viewModel = BlazeWebViewModel(source: source, blog: blog, postID: postID, view: self)

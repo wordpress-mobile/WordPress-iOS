@@ -35,9 +35,9 @@ class JetpackScanHistoryCoordinator {
     init(blog: Blog,
          view: JetpackScanHistoryView,
          service: JetpackScanService? = nil,
-         context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+         coreDataStack: CoreDataStack = ContextManager.shared) {
 
-        self.service = service ?? JetpackScanService(managedObjectContext: context)
+        self.service = service ?? JetpackScanService(coreDataStack: coreDataStack)
         self.blog = blog
         self.view = view
     }

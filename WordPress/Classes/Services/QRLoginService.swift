@@ -1,12 +1,12 @@
 import Foundation
 import WordPressKit
 
-class QRLoginService: LocalCoreDataService {
+class QRLoginService {
     private let service: QRLoginServiceRemote
 
-    init(managedObjectContext: NSManagedObjectContext, remoteService: QRLoginServiceRemote? = nil) {
-        self.service = remoteService ?? QRLoginServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: managedObjectContext, localeKey: WordPressComRestApi.LocaleKeyV2))
-        super.init()
+    init(coreDataStack: CoreDataStack, remoteService: QRLoginServiceRemote? = nil) {
+        self.service = remoteService ??
+            coreDataStack.performQuery({ QRLoginServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)) })
     }
 
     func validate(token: QRLoginToken, success: @escaping(QRLoginValidationResponse) -> Void, failure: @escaping(Error?, QRLoginError?) -> Void) {

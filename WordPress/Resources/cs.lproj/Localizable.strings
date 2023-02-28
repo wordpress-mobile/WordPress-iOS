@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-14 08:51:42+0000 */
+/* Translation-Revision-Date: 2023-02-19 19:42:17+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: cs_CZ */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Protokol aktivit";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Protokoly aktivit";
 
 /* Label for the Activity Type filter button */
@@ -1873,15 +1873,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Připojení není povolené";
 
-/* Support email label. */
-"Contact Email" = "Kontaktní e-mail";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontaktovat podporu";
 
@@ -3098,9 +3094,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Externí";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra Debug";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4688,9 +4681,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Moje stránky na WordPressu";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Moje vstupenky";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Moje top desítka kaváren";
 
@@ -5042,9 +5032,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Později";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Nenastaveno";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Nedostatek místa k nahrání";
@@ -6882,9 +6869,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Zobrazit publikované komentáře na vašem blogu.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Zobrazí dialog pro změnu kontaktního e-mailu.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Zobrazuje všechny sledující";
 
@@ -7270,8 +7254,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Správa webů";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Podpora";
 
 /* Button used to switch site */
@@ -7510,9 +7493,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Toto uživatelské jméno není povoleno.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Extra funkce Debug obsahuje dodatečné informace v protokolech o činnostech, a nám může pomoci řešit problémy s aplikací.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Připojení k Facebooku nemůže najít žádné stránky. Publicita se nemůže připojit k profilům Facebooku, pouze k publikovaným stránkám.";
@@ -8605,9 +8585,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Ověřte svou e-mailovou adresu - pokyny zaslané na %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Verze";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Verze";
 
@@ -8720,9 +8697,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Zobrazit web";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Navštivte centrum nápovědy a získejte odpovědi na vaše nejčastější otázky, nebo nás kontaktujte pro další pomoc.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9163,14 +9137,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Web vývojářů WordPressu";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Fóra WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Nápověda WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Centrum nápovědy WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress média";
@@ -9220,8 +9188,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com Účet";
 
 /* Title for the Plans list header */
@@ -10369,6 +10336,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of likes label in today widget */
 "widget.today.likes.label" = "To se mi líbí";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Nelze načíst statistiky webu.";
 
 /* Title of the no data view in today widget */
 "widget.today.nodata.view.title" = "Nelze načíst statistiky webu.";

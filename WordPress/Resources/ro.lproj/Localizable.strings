@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-02-09 07:12:27+0000 */
+/* Translation-Revision-Date: 2023-02-22 07:59:20+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-alpha.3 */
 /* Language: ro */
@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Jurnal de activități";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Jurnale de activități";
 
 /* Label for the Activity Type filter button */
@@ -1160,6 +1160,9 @@ translators: Block name. %s: The localized block name */
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blocurile sunt părți de conținut pe care le poți insera, rearanja și folosi în forma lor fără să scrii sau să modifici vreun cod. Blocurile sunt o modalitate ușoară și modernă de a crea aranjamente frumoase.";
+
+/* No comment provided by engineer. */
+"Blocks menu" = "Meniu blocuri";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1876,15 +1879,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "Conectare indisponibilă";
 
-/* Support email label. */
-"Contact Email" = "Email de contact";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contactează suportul";
 
@@ -3101,9 +3100,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "Extern";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Extra depanare";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4693,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "Site-urile mele în WordPress";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "Tichetele mele";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Primele zece cafenele, pe gustul meu";
 
@@ -5051,9 +5044,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "Nu acum";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "Nesetată";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Nu există suficient spațiu pentru încărcare";
@@ -6891,9 +6881,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Arată public când comentezi pe bloguri.";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "Afișează un dialog pentru schimbarea emailului de contact.";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "Arată toți urmăritorii";
 
@@ -7279,8 +7266,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "Super-administrator";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Suport";
 
 /* Button used to switch site */
@@ -7519,9 +7505,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "Acel nume de utilizator nu e permis.";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "Facilitatea de extra depanare include informații suplimentare în jurnalele de activitate și ne poate ajuta în detectarea problemelor pe care le-ai avut cu aplicația.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Conexiunea Facebook nu găsește nicio pagină. Publicitatea nu se poate conecta la profilurile Facebook, ci numai la pagini Facebook publicate.";
@@ -8617,9 +8600,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "Confirmă-ți adresa de email - instrucțiunile au fost trimise la %@";
 
-/* Label in Support view displaying the app version. */
-"Version" = "Versiune";
-
 /* Description for the version label in the What's new page. */
 "Version " = "Versiune";
 
@@ -8732,9 +8712,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitează site-ul";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "Vizitează Centrul de ajutor pentru a găsi răspunsuri la întrebări frecvente sau contactează-ne pentru mai mult ajutor.";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9152,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog WordPress ";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "Forumuri WordPress";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "Ajutor WordPress";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "Centru de ajutor WordPress";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "Media WordPress";
@@ -9232,8 +9203,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "Cont WordPress.com";
 
 /* Title for the Plans list header */
@@ -9725,6 +9695,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "exemplu.com";
 
+/* Name of a feature that allows the user to promote their posts. */
+"feature.blaze.title" = "Fă-l cunoscut";
+
 /* Displayed in the confirmation alert when marking follow notifications as read. */
 "follow" = "urmărire";
 
@@ -9992,6 +9965,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of a button that dismisses an overlay and displays the Stats screen. */
 "jetpack.fullscreen.overlay.stats.continue.title" = "Continuă cu Statistici";
 
+/* The description text shown after the user has successfully installed the Jetpack plugin. */
+"jetpack.install-flow.success.description" = "Gata pentru a folosi acest site în aplicație.";
+
+/* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
+"jetpack.install-flow.success.primaryButtonText" = "Gata";
+
 /* Description inside a menu card communicating that features are moving to the Jetpack app. */
 "jetpack.menuCard.description" = "În curând, Statistici, Cititor, Notificări și alte funcționalități se vor muta în aplicația Jetpack pentru mobil.";
 
@@ -10009,6 +9988,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menu item title to hide the card for now and show it later. */
 "jetpack.menuCard.remindLater" = "Amintește-mi mai târziu";
+
+/* Jetpack Plugin Modal footnote */
+"jetpack.plugin.modal.footnote" = "Prin inițializarea Jetpack ești de acord cu %@";
+
+/* Jetpack Plugin Modal primary button title */
+"jetpack.plugin.modal.primary.button.title" = "Instalează modulul complet";
+
+/* Jetpack Plugin Modal secondary button title */
+"jetpack.plugin.modal.secondary.button.title" = "Contactează suportul";
+
+/* The 'full Jetpack plugin' string in the subtitle */
+"jetpack.plugin.modal.subtitle.jetpack.plugin" = "modul complet Jetpack";
+
+/* Jetpack Plugin Modal footnote terms and conditions */
+"jetpack.plugin.modal.terms" = "Termeni și condiții";
+
+/* Jetpack Plugin Modal title */
+"jetpack.plugin.modal.title" = "Te rog instalează modulul complet Jetpack";
 
 /* Add an author prompt for the jetpack prologue */
 "jetpack.prologue.prompt.addAuthor" = "Adaugi un autor";
@@ -10045,6 +10042,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Scrii un blog";
+
+/* Title for a call-to-action button on the Jetpack install card. */
+"jetpackinstallcard.button.learn" = "Află mai multe";
+
+/* Title for a menu action in the context menu on the Jetpack install card. */
+"jetpackinstallcard.menu.hide" = "Ascunde asta";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has an individual Jetpack plugin installed but not the full plugin. %1$@ is a placeholder for the plugin the user has installed. %1$@ is bold. */
+"jetpackinstallcard.notice.individual" = "Acest site folosește modulul %1$@, care încă nu suportă toate funcționalitățile aplicației. Te rog instalează modulul complet Jetpack.";
+
+/* Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin. */
+"jetpackinstallcard.notice.multiple" = "Acest site folosește module Jetpack individuale, care încă nu suportă toate funcționalitățile aplicației. Te rog instalează modulul complet Jetpack.";
 
 /* Later today */
 "later today" = "azi, mai târziu";
@@ -10180,6 +10189,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
+
+/* The title of a button that triggers the reporting of a post's author. */
+"reader.post.menu.report.user" = "Raportează acest utilizator";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Înapoi";
@@ -10342,6 +10354,72 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Membri site";
+
+/* Dismiss the current view */
+"support.button.close.title" = "Gata";
+
+/* Button for confirming logging out from WordPress.com account */
+"support.button.logOut.title" = "Dezautentificare";
+
+/* Accessibility hint, informing user the button can be used to visit the support forums website. */
+"support.button.visitForum.accessibilityHint" = "Atinge pentru a vizita site-ul forumului comunității într-un navigator extern";
+
+/* Option in Support view to visit the WordPress.org support forums. */
+"support.button.visitForum.title" = "Vizitează WordPress.org";
+
+/* Suggestion in Support view to visit the Forums. */
+"support.row.communityForum.title" = "Pune o întrebare pe forumul comunității și obține ajutor de la grupul nostru de voluntari.";
+
+/* Accessibility hint describing what happens if the Contact Email button is tapped. */
+"support.row.contactEmail.accessibilityHint" = "Afișează un dialog pentru modificarea emailului de contact.";
+
+/* Display value for Support email field if there is no user email address. */
+"support.row.contactEmail.emailNoteSet.detail" = "Nesetat";
+
+/* Support email label. */
+"support.row.contactEmail.title" = "Email";
+
+/* Option in Support view to contact the support team. */
+"support.row.contactUs.title" = "Contactează suportul";
+
+/* Option in Support view to enable/disable adding debug information to support ticket. */
+"support.row.debug.title" = "Depanare";
+
+/* Support email label. */
+"support.row.email.title" = "Email";
+
+/* Option in Support view to view the Forums. */
+"support.row.forums.title" = "Forumuri WordPress";
+
+/* Option in Support view to launch the Help Center. */
+"support.row.helpCenter.title" = "Centru de ajutor WordPress";
+
+/* Option in Support view to see activity logs. */
+"support.row.logs.title" = "Jurnale";
+
+/* Option in Support view to access previous help tickets. */
+"support.row.tickets.title" = "Tichete";
+
+/* Label in Support view displaying the app version. */
+"support.row.version.title" = "Versiune";
+
+/* Support screen footer text explaining the benefits of enabling the Debug feature. */
+"support.sectionFooter.advanced.title" = "Activează depanarea pentru a include informații suplimentare în jurnalele care te ajută să depanezi problemele din aplicație.";
+
+/* WordPress.com sign-out section header title */
+"support.sectionHeader.account.title" = "Cont WordPress.com";
+
+/* Section header in Support view for advanced information. */
+"support.sectionHeader.advanced.title" = "Avansat";
+
+/* Section header in Support view for the Forums. */
+"support.sectionHeader.forum.title" = "Forumuri pentru comunitate";
+
+/* Section header in Support view for priority support. */
+"support.sectionHeader.prioritySupport.title" = "Suport prioritar";
+
+/* View title for Help & Support page. */
+"support.title" = "Ajutor";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "aceste elemente vor fi șterse:";

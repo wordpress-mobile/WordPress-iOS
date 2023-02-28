@@ -9,7 +9,7 @@
 /* Lets a user know that a local draft does not have a title. */
 "(no title)" = "(nincs cím)";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "Tevékenységi napló";
 
 /* Accessibility label for add button to add items to the user's media library
@@ -276,9 +276,6 @@
    Generic error.
    Generic popup title for any type of error. */
 "Error" = "Hiba";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "Kibővített hibakeresés";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -852,8 +849,7 @@
 "Strike Through" = "Áthúzva";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "Segítség";
 
 /* Title of button that displays the App's terms of service */
@@ -1009,12 +1005,6 @@
 
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Üdvözöl a WordPress";
-
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress Fórumok";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress Segítés központ";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "A WordPress verziója túl régi";
