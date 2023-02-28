@@ -249,6 +249,26 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(viewModel.currentStep, "unspecified")
     }
+
+    func testCurrentStepMaintainedIfExtractionFails() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let postsListURL = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
+        let postsListRequest = URLRequest(url: postsListURL)
+        let invalidURL = try XCTUnwrap(URL(string: "https://test.com/test?example=test"))
+        let invalidRequest = URLRequest(url: invalidURL)
+
+        // When
+        let _ = viewModel.shouldNavigate(request: postsListRequest)
+
+        // Then
+        XCTAssertEqual(viewModel.currentStep, "posts-list")
+
+        // When
+        let _ = viewModel.shouldNavigate(request: invalidRequest)
+        XCTAssertEqual(viewModel.currentStep, "posts-list")
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
