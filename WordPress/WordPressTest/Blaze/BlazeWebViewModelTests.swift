@@ -19,10 +19,6 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         remoteConfigStore.blazeFlowCompletedStep = "step-5"
     }
 
-    override func tearDown() {
-        super.tearDown()
-    }
-
     // MARK: Tests
 
     func testPostsListStep() throws {
