@@ -68,7 +68,7 @@ class BlazeWebViewModel {
         }
     }
 
-    func cancelTapped() {
+    func dismissTapped() {
         // TODO: To be implemented
         // Track event
     }

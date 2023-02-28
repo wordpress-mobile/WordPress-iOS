@@ -11,11 +11,11 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     // MARK: Lazy Loaded Views
 
-    private lazy var cancelButton: UIBarButtonItem = {
+    private lazy var dismissButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: Strings.cancelButtonTitle,
                                      style: .plain,
                                      target: self,
-                                     action: #selector(cancelButtonTapped))
+                                     action: #selector(dismissButtonTapped))
         return button
     }()
 
@@ -60,7 +60,7 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
 
     private func configureNavBar() {
         title = Strings.navigationTitle
-        navigationItem.rightBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = dismissButton
         configureNavBarAppearance()
         reloadNavBar()
     }
@@ -88,14 +88,14 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
     }
 
     func reloadNavBar() {
-        cancelButton.isEnabled = viewModel?.isCurrentStepDismissible() ?? true
+        dismissButton.isEnabled = viewModel?.isCurrentStepDismissible() ?? true
     }
 
     // MARK: Actions
 
-    @objc func cancelButtonTapped() {
+    @objc func dismissButtonTapped() {
         dismiss(animated: true)
-        viewModel?.cancelTapped()
+        viewModel?.dismissTapped()
     }
 }
 
