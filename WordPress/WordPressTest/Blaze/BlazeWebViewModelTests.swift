@@ -345,6 +345,36 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // Then
         XCTAssertTrue(viewModel.isCurrentStepDismissible())
     }
+
+    func testIsFlowCompleted() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view, remoteConfigStore: remoteConfigStore)
+
+        // When
+        var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
+        var request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertFalse(viewModel.isFlowCompleted)
+
+        // When
+        url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-5"))
+        request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertTrue(viewModel.isFlowCompleted)
+
+        // When
+        url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
+        request = URLRequest(url: url)
+        let _ = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertFalse(viewModel.isFlowCompleted)
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
