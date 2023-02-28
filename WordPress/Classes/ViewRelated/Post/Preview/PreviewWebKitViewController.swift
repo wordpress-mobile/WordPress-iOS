@@ -139,6 +139,8 @@ class PreviewWebKitViewController: WebKitViewController {
                 space,
                 previewButton
             ]
+        case .withBaseURLOnly:
+            fallthrough
         case .hostOnly:
             if canPublish {
                 items = [
