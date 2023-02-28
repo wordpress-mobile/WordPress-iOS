@@ -171,6 +171,66 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertEqual(viewModel.currentStep, "campaigns-list")
     }
 
+    func testDefaultWidgetStepWithoutQuery() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-1")
+    }
+
+    func testDefaultWidgetStepWithPostsPathWithoutQuery() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-1")
+    }
+
+    func testExtractStepFromFragmentWithoutQuery() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2#step-2"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-2")
+    }
+
+    func testExtractStepFromFragmentPostsPathWithoutQuery() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-3"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-3")
+    }
+
     func testInitialStep() throws {
         // Given
         let view = BlazeWebViewMock()
