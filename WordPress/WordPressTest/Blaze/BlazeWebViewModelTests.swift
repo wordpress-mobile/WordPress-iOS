@@ -29,10 +29,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
@@ -44,10 +43,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
@@ -59,10 +57,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "campaigns-list")
     }
 
@@ -74,10 +71,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-1")
     }
 
@@ -89,10 +85,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-1")
     }
 
@@ -104,10 +99,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-2")
     }
 
@@ -119,10 +113,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-3")
     }
 
@@ -134,10 +127,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
@@ -149,10 +141,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
@@ -164,10 +155,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "campaigns-list")
     }
 
@@ -179,10 +169,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-1")
     }
 
@@ -194,10 +183,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-1")
     }
 
@@ -209,10 +197,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-2")
     }
 
@@ -224,10 +211,9 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let policy = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
-        XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-3")
     }
 
@@ -250,13 +236,15 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let invalidRequest = URLRequest(url: invalidURL)
 
         // When
-        let _ = viewModel.shouldNavigate(request: postsListRequest)
+        let _ = viewModel.shouldNavigate(to: postsListRequest, with: .linkActivated)
 
         // Then
         XCTAssertEqual(viewModel.currentStep, "posts-list")
 
         // When
-        let _ = viewModel.shouldNavigate(request: invalidRequest)
+        let _ = viewModel.shouldNavigate(to: invalidRequest, with: .linkActivated)
+
+        // Then
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
@@ -268,7 +256,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         let request = URLRequest(url: url)
 
         // When
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertTrue(view.reloadNavBarCalled)
@@ -320,7 +308,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
         var request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertTrue(viewModel.isCurrentStepDismissible())
@@ -328,7 +316,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-4"))
         request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertFalse(viewModel.isCurrentStepDismissible())
@@ -336,7 +324,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-5"))
         request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertTrue(viewModel.isCurrentStepDismissible())
@@ -350,7 +338,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         var url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
         var request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertFalse(viewModel.isFlowCompleted)
@@ -358,7 +346,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-5"))
         request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertTrue(viewModel.isFlowCompleted)
@@ -366,7 +354,7 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         // When
         url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2#step-1"))
         request = URLRequest(url: url)
-        let _ = viewModel.shouldNavigate(request: request)
+        let _ = viewModel.shouldNavigate(to: request, with: .linkActivated)
 
         // Then
         XCTAssertFalse(viewModel.isFlowCompleted)
