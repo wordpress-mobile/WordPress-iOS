@@ -1,11 +1,3 @@
-//
-//  BlazeWebViewModelTests.swift
-//  WordPressTest
-//
-//  Created by Hassaan El-Garem on 28/02/2023.
-//  Copyright © 2023 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
@@ -293,10 +285,3 @@ private class BlazeWebViewMock: BlazeWebView {
 
     var cookieJar: WordPress.CookieJar = MockCookieJar()
 }
-
-// 14 tests
-// Initial value is unspecified
-// If value set then passed wrong url, value doesn't change
-// TODO: Remove the above
-// TODO: Remove file header
-// TODO: Remove teardown
