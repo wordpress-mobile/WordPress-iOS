@@ -248,6 +248,36 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertEqual(viewModel.currentStep, "posts-list")
     }
 
+    func testInternalURLsAllowed() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let validURL = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?source=menu_item"))
+        var validRequest = URLRequest(url: validURL)
+        validRequest.mainDocumentURL = validURL
+
+        // When
+        let policy = viewModel.shouldNavigate(to: validRequest, with: .linkActivated)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+    }
+
+    func testExternalURLsBlocked() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let invalidURL = try XCTUnwrap(URL(string: "https://test.com/test?example=test"))
+        var invalidRequest = URLRequest(url: invalidURL)
+        invalidRequest.mainDocumentURL = invalidURL
+
+        // When
+        let policy = viewModel.shouldNavigate(to: invalidRequest, with: .linkActivated)
+
+        // Then
+        XCTAssertEqual(policy, .cancel)
+    }
+
     func testCallingShouldNavigateReloadsTheNavBar() throws {
         // Given
         let view = BlazeWebViewMock()
