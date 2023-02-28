@@ -116,11 +116,8 @@ extension BlazeWebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        let policy = viewModel.shouldNavigate(request: navigationAction.request)
-        if let redirect = policy.redirectRequest {
-            load(request: redirect)
-        }
-        decisionHandler(policy.action)
+        let policy = viewModel.shouldNavigate(to: navigationAction.request, with: navigationAction.navigationType)
+        decisionHandler(policy)
     }
 }
 

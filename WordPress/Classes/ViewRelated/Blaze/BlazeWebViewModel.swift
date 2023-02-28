@@ -21,6 +21,7 @@ class BlazeWebViewModel {
     private let postID: NSNumber?
     private let view: BlazeWebView
     private let remoteConfig: RemoteConfig
+    private var linkBehavior: LinkBehavior = .all
 
     // MARK: Initializer
 
@@ -34,6 +35,7 @@ class BlazeWebViewModel {
         self.postID = postID
         self.view = view
         self.remoteConfig = RemoteConfig(store: remoteConfigStore)
+        setLinkBehavior()
     }
 
     // MARK: Computed Variables
@@ -85,12 +87,11 @@ class BlazeWebViewModel {
         }
     }
 
-    func shouldNavigate(request: URLRequest) -> WebNavigationPolicy {
+    func shouldNavigate(to request: URLRequest, with type: WKNavigationType) -> WKNavigationActionPolicy {
         currentStep = extractCurrentStep(from: request) ?? currentStep
         updateIsFlowCompleted()
         view.reloadNavBar()
-        // TODO: Block unknown URLs
-        return .allow
+        return linkBehavior.handle(request: request, with: type)
     }
 
     func isCurrentStepDismissible() -> Bool {
@@ -99,6 +100,13 @@ class BlazeWebViewModel {
     }
 
     // MARK: Helpers
+
+    private func setLinkBehavior() {
+        guard let baseURLString else {
+            return
+        }
+        self.linkBehavior = .withBaseURLOnly(baseURLString)
+    }
 
     private func extractCurrentStep(from request: URLRequest) -> String? {
         guard let url = request.url,
