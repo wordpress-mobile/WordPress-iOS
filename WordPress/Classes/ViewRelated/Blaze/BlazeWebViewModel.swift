@@ -3,6 +3,7 @@ import Foundation
 protocol BlazeWebView {
     func load(request: URLRequest)
     func reloadNavBar()
+    func dismissView()
     var cookieJar: CookieJar { get }
 }
 
@@ -60,26 +61,26 @@ class BlazeWebViewModel {
 
     func startBlazeFlow() {
         guard let initialURL else {
-            // TODO: Track error & dismiss view
+            // TODO: Track error
+            view.dismissView()
             return
         }
+        // TODO: Track flow started
         authenticatedRequest(for: initialURL, with: view.cookieJar) { [weak self] (request) in
             self?.view.load(request: request)
         }
     }
 
     func dismissTapped() {
-        // TODO: To be implemented
-        // Track event
+        // TODO: Track event
+        view.dismissView()
     }
 
     func shouldNavigate(request: URLRequest) -> WebNavigationPolicy {
-        // TODO: To be implemented
-        // Use this to track the current step and take actions accordingly
-        // We should also block unknown urls
         currentStep = extractCurrentStep(from: request) ?? currentStep
         updateIsFlowCompleted()
         view.reloadNavBar()
+        // TODO: Block unknown URLs
         return .allow
     }
 

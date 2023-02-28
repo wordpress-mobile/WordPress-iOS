@@ -97,10 +97,13 @@ class BlazeWebViewController: UIViewController, BlazeWebView {
         dismissButton.title = viewModel.isFlowCompleted ? Strings.doneButtonTitle : Strings.cancelButtonTitle
     }
 
+    func dismissView() {
+        dismiss(animated: true)
+    }
+
     // MARK: Actions
 
     @objc func dismissButtonTapped() {
-        dismiss(animated: true)
         viewModel?.dismissTapped()
     }
 }
