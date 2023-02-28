@@ -10,7 +10,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
 
     override func setUpWithError() throws {
         remoteApi = MockWordPressComRestApi()
-        service = DomainsServiceAdapter(managedObjectContext: mainContext, api: remoteApi)
+        service = DomainsServiceAdapter(coreDataStack: contextManager, api: remoteApi)
 
         let json = Bundle(for: SiteSegmentTests.self).url(forResource: "domain-suggestions", withExtension: "json")!
         let data = try Data(contentsOf: json)

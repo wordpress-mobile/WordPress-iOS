@@ -1,16 +1,19 @@
 import Foundation
 
-@objc class JetpackRestoreService: LocalCoreDataService {
+@objc class JetpackRestoreService: CoreDataService {
 
     private lazy var serviceV1: ActivityServiceRemote_ApiVersion1_0 = {
-        let api = WordPressComRestApi.defaultApi(in: managedObjectContext)
+        let api = coreDataStack.performQuery {
+            WordPressComRestApi.defaultApi(in: $0)
+        }
 
         return ActivityServiceRemote_ApiVersion1_0(wordPressComRestApi: api)
     }()
 
     private lazy var service: ActivityServiceRemote = {
-        let api = WordPressComRestApi.defaultApi(in: managedObjectContext,
-                                                 localeKey: WordPressComRestApi.LocaleKeyV2)
+        let api = coreDataStack.performQuery {
+            WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)
+        }
 
         return ActivityServiceRemote(wordPressComRestApi: api)
     }()

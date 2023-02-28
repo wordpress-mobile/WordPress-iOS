@@ -13,4 +13,5 @@ protocol InteractivePostViewDelegate: AnyObject {
     func cancelAutoUpload(_ post: AbstractPost)
     func share(_ post: AbstractPost, fromView view: UIView)
     func copyLink(_ post: AbstractPost)
+    func blaze(_ post: AbstractPost)
 }

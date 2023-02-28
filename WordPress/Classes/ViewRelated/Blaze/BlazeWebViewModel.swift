@@ -9,7 +9,7 @@ struct BlazeWebViewModel {
 
     // MARK: Private Variables
 
-    let source: BlazeWebViewCoordinator.Source
+    let source: BlazeSource
     let blog: Blog
     let postID: NSNumber?
     let view: BlazeWebView
@@ -22,10 +22,10 @@ struct BlazeWebViewModel {
         }
         var urlString: String
         if let postID {
-            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.rawValue)
+            urlString = String(format: Constants.blazePostURLFormat, siteURL, postID.intValue, source.description)
         }
         else {
-            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.rawValue)
+            urlString = String(format: Constants.blazeSiteURLFormat, siteURL, source.description)
         }
         return URL(string: urlString)
     }

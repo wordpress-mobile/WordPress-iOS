@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataService.h"
 
+@import WordPressKit;
+@import WordPressShared;
+
 @class ReaderPost;
 @class ReaderAbstractTopic;
 
@@ -185,5 +188,14 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success;
+
+#pragma mark Internal
+
+@property (readwrite, assign) BOOL isSilentlyFetchingPosts;
+
+- (WordPressComRestApi *)apiForRequest;
+- (NSUInteger)numberToSyncForTopic:(ReaderAbstractTopic *)topic;
+- (void)updateTopic:(NSManagedObjectID *)topicObjectID withAlgorithm:(NSString *)algorithm;
+- (BOOL)canLoadMorePostsForTopic:(ReaderAbstractTopic * _Nonnull)readerTopic remotePosts:(NSArray * _Nonnull)remotePosts inContext: (NSManagedObjectContext * _Nonnull)context;
 
 @end

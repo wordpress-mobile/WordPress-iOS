@@ -26,7 +26,7 @@ class PushAuthenticationServiceTests: CoreDataTestCase {
         super.setUp()
         mockRemoteApi = MockWordPressComRestApi()
         mockPushAuthenticationServiceRemote = MockPushAuthenticationServiceRemote(wordPressComRestApi: mockRemoteApi)
-        pushAuthenticationService = PushAuthenticationService(managedObjectContext: mainContext)
+        pushAuthenticationService = PushAuthenticationService(coreDataStack: contextManager)
         pushAuthenticationService.authenticationServiceRemote = mockPushAuthenticationServiceRemote
     }
 

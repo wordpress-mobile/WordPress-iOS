@@ -3,6 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 148
+
+@momozw 2023-02-20
+
+- `Blog`: added `isBlazeApproved` attribute. (required, default `NO`, `Boolean`)
+
+@salimbraksa 2023-02-22
+
+- Created a new entity `BlockedAuthor` with:
+    - `accountID` (required, no default, `Int 64`)
+    - `authorID` (required, no default, `Int 64`)
+
 ## WordPress 147
 
 @salimbraksa 2023-02-04

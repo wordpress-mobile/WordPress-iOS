@@ -1,5 +1,0 @@
-Kami menerapkan beberapa perubahan kecil pada prompt blogging agar Anda dapat menjawab prompt lama atau menonaktifkan yang baru. (Meski kami tidak mengerti alasan Anda melakukannya.)
-
-Layar Pindai Kode QR untuk Login tidak lagi ditampilkan jika akun Anda menggunakan otentikasi dua faktor.
-
-Tampilan Statistik selalu menampilkan data harian terbaru, meski tanggalnya berubah saat aplikasi berfungsi di latar belakang perangkat. Totalitas kerja yang kami nikmati.

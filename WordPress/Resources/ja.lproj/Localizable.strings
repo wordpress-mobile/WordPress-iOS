@@ -484,7 +484,7 @@ translators: Block name. %s: The localized block name */
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "アクティビティログ";
 
-/* Option in Support view to see activity logs. */
+/* No comment provided by engineer. */
 "Activity Logs" = "アクティビティログ";
 
 /* Label for the Activity Type filter button */
@@ -1876,15 +1876,11 @@ translators: Block name. %s: The localized block name */
 /* Title of a prompt saying the app needs an internet connection before it can load post formats */
 "Connection not available" = "接続が利用できません";
 
-/* Support email label. */
-"Contact Email" = "連絡先メールアドレス";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
    Contact Support button title
    If a user taps this label, the app will navigate to the Support view.
-   Option in Support view to contact the support team.
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "サポートに問い合わせる";
 
@@ -3101,9 +3097,6 @@ translators: Block name. %s: The localized block name */
 
 /* Section title for the external table section in the blog details screen */
 "External" = "外部";
-
-/* Option in Support view to enable/disable adding extra information to support ticket. */
-"Extra Debug" = "追加デバッグ";
 
 /* Status for Media object that is failed upload or export.
    The action failed */
@@ -4697,9 +4690,6 @@ translators: Block name. %s: The localized block name */
 /* Siri Suggestion to open My Sites */
 "My Sites in WordPress" = "WordPress での参加サイト";
 
-/* Option in Support view to access previous help tickets. */
-"My Tickets" = "自分のチケット";
-
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "私のお気に入りカフェトップ10";
 
@@ -5051,9 +5041,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "後で";
-
-/* Display value for Support email field if there is no user email address. */
-"Not Set" = "未設定";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "アップロードするスペース容量が足りません";
@@ -6891,9 +6878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "ブログにコメントする際に公開表示されます。";
 
-/* Accessibility hint describing what happens if the Contact Email button is tapped. */
-"Shows a dialog for changing the Contact Email." = "連絡先メールアドレスの変更を促すダイアログを表示します。";
-
 /* Accessibility hint for a follow notification. */
 "Shows all followers" = "すべてのフォロワーを表示";
 
@@ -7279,8 +7263,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Super Admin" = "特権管理者";
 
 /* Support button that appears in the Theme Browser Header
-   Theme Support action title
-   View title for Support page. */
+   Theme Support action title */
 "Support" = "サポート";
 
 /* Button used to switch site */
@@ -7519,9 +7502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "ご指定のユーザー名はご利用いただけません。";
-
-/* Support screen footer text explaining the Extra Debug feature. */
-"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app." = "追加デバッグ機能にはアクティビティログの追加情報が含まれており、アプリの問題をトラブルシューティングするのに役立ちます。";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook との連携でページが見つかりません。パブリサイズで Facebook のプロフィールに連携できません。連携できるのは公開されているページのみです。";
@@ -8617,9 +8597,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notice displayed after domain credit redemption success. */
 "Verify your email address - instructions sent to %@" = "メールアドレスを検証してください。指示が %@ に送信されました";
 
-/* Label in Support view displaying the app version. */
-"Version" = "バージョン";
-
 /* Description for the version label in the What's new page. */
 "Version " = "バージョン";
 
@@ -8732,9 +8709,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "サイトを表示";
-
-/* Support screen footer text displayed when Zendesk is enabled. */
-"Visit the Help Center to get answers to common questions, or contact us for more help." = "「ヘルプセンター」では、よくある質問の回答を確認できます。さらにサポートが必要な場合にも、こちらからお問い合わせいただけます。";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label
@@ -9175,14 +9149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress ブログ";
 
-/* Option in Support view to view the Forums. */
-"WordPress Forums" = "WordPress フォーラム";
-
 /* Siri Suggestion to open Support */
 "WordPress Help" = "WordPress ヘルプ";
-
-/* Option in Support view to launch the Help Center. */
-"WordPress Help Center" = "WordPress ヘルプセンター";
 
 /* Name for the WordPress Media Library */
 "WordPress Media" = "WordPress メディア";
@@ -9232,8 +9200,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* WordPress.com sign-in/sign-out section header title
-   WordPress.com sign-out section header title */
+/* WordPress.com sign-in/sign-out section header title */
 "WordPress.com Account" = "WordPress.com アカウント";
 
 /* Title for the Plans list header */
