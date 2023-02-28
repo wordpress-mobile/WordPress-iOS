@@ -240,6 +240,15 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-3")
     }
+
+    func testInitialStep() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+
+        // Then
+        XCTAssertEqual(viewModel.currentStep, "unspecified")
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
