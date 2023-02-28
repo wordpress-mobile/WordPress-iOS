@@ -24,7 +24,7 @@ import Foundation
         WPAnalytics.track(.blazeFlowStarted, properties: analyticsProperties(for: source))
     }
 
-    static func trackBlazeFLowCompleted(for source: BlazeSource, currentStep: String) {
+    static func trackBlazeFlowCompleted(for source: BlazeSource, currentStep: String) {
         WPAnalytics.track(.blazeFlowCompleted, properties: analyticsProperties(for: source, currentStep: currentStep))
     }
 
