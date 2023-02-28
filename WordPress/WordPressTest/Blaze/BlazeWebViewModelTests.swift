@@ -105,6 +105,36 @@ final class BlazeWebViewModelTests: CoreDataTestCase {
         XCTAssertEqual(policy, .allow)
         XCTAssertEqual(viewModel.currentStep, "step-1")
     }
+
+    func testExtractStepFromFragment() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com?blazepress-widget=post-2&source=menu_item#step-2"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-2")
+    }
+
+    func testExtractStepFromFragmentPostsPath() throws {
+        // Given
+        let view = BlazeWebViewMock()
+        let viewModel = BlazeWebViewModel(source: .menuItem, blog: blog, postID: nil, view: view)
+        let url = try XCTUnwrap(URL(string: "https://wordpress.com/advertising/test.blog.com/posts?blazepress-widget=post-2&source=menu_item#step-3"))
+        let request = URLRequest(url: url)
+
+        // When
+        let policy = viewModel.shouldNavigate(request: request)
+
+        // Then
+        XCTAssertEqual(policy, .allow)
+        XCTAssertEqual(viewModel.currentStep, "step-3")
+    }
 }
 
 private class BlazeWebViewMock: BlazeWebView {
@@ -128,8 +158,6 @@ private class BlazeWebViewMock: BlazeWebView {
     }
 
     var cookieJar: WordPress.CookieJar = MockCookieJar()
-
-
 }
 
 // 14 tests
