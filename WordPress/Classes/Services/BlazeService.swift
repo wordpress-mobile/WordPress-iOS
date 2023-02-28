@@ -27,7 +27,7 @@ final class BlazeService {
     ///   - success: Closure to be called on success
     ///   - failure: Closure to be caleld on failure
     func updateStatus(for blog: Blog,
-                      success: ((Bool) -> Void)? = nil,
+                      success: (() -> Void)? = nil,
                       failure: ((Error) -> Void)? = nil) {
         guard let siteId = blog.dotComID?.intValue else {
             failure?(BlazeServiceError.invalidSiteId)
@@ -50,7 +50,7 @@ final class BlazeService {
                     DDLogInfo("Successfully updated isBlazeApproved value for blog: \(approved)")
 
                 }, completion: {
-                    success?(approved)
+                    success?()
                 }, on: .main)
 
             case .failure(let error):
